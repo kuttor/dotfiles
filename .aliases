@@ -1,0 +1,24 @@
+# supercharge tree command
+alias tree="tree -gspahDC"
+
+# examine wifi card
+alias wifi-card='lspci -nnk | grep -iA2 net'   
+
+# supercharge list files
+alias ll='ls -lahFgp'
+alias la='ls -A'
+alias l='ls -CF'
+
+# history
+alias h='history'
+
+# hub for git
+alias git='hub'
+
+# directory navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias 'bk=cd $OLDPWD'
+
+
