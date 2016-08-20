@@ -1,6 +1,23 @@
-# Go Programming Language
+# for a full list of active aliases, run `alias`
+
+# go Programming Language
 export PATH=$PATH:/usr/local/go/bin
 
-# Enable color in grep
-export GREP_OPTIONS='--color=auto'
-export GREP_COLOR='3;33'
+# enable color in grep
+# export GREP_OPTIONS='--color=auto'
+# export GREP_COLOR='3;33'
+
+# language
+export LC_ALL=C
+export LANG=en_US.UTF-8
+
+# local bin
+export PATH=$PATH:~/.local/bin
+
+# set system paths
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+export MANPATH="/usr/local/man:$MANPATH"
+
+# path to your oh-my-zsh installation.
+export ZSH=/home/andy/.oh-my-zsh
+
