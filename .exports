@@ -18,6 +18,5 @@ export PATH=$PATH:~/.local/bin
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
 
-# path to your oh-my-zsh installation.
-export ZSH=/home/andy/.oh-my-zsh
-
+# suggestion highlighting
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=red'

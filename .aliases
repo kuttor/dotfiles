@@ -21,4 +21,5 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias 'bk=cd $OLDPWD'
 
-
+# system
+alias update="sudo apt update && apt list --upgradable"
