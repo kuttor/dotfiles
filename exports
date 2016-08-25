@@ -20,3 +20,7 @@ export MANPATH="/usr/local/man:$MANPATH"
 
 # suggestion highlighting
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=red'
+
+# enhancd
+export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
+export ENHANCD_DIR=/home/akuttor/.zplug/repos/b4b4r07/enhancd

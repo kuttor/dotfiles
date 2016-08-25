@@ -1,6 +1,0 @@
-# autoenv activation for virtualenv
-source `which activate.sh`
-
-# set for enhancd
-source /home/andy/.oh-my-zsh/custom/plugins/enhancd
-
