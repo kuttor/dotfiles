@@ -1,33 +1,45 @@
-DOTFILES=`pwd`
+# set package manager (DNF or APT)
+python -mplatform | grep -qi ubuntu && pkgman=apt || pkgman=dnf
 
-touch $DOTFILES/.private-gitconfig
+# perform update
+sudo $pkgman update  -y
 
-echo 'Create $HOME symlink'
-ln -sf $DOTFILES/aliases             ~/.aliases
-ln -sf $DOTFILES/sources             ~/.sources
-# ln -sf $DOTFILES/.completions      ~/.completions
-ln -sf $DOTFILES/functions           ~/.functions
-ln -sf $DOTFILES/setops              ~/.setops
-ln -sf $DOTFILES/sources             ~/.sources
-ln -sf $DOTFILES/exports             ~/.exports
+# install percol
+sudo $pkgman install percol -y
 
+# install Go language
+sudo $pkgman install golang -y
 
-# installs for packages
+# install peco
+echo "\nInstalling Peco"
+export PATH=$PATH:/usr/local/go/bin
+go get github.com/peco/peco/cmd/peco
+cd 
+# install fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.zsh/fzf
+$HOME/zsh/fzf/install
 
-# hub                                                                                 
-#git clone https://github.com/github/hub.git ~/Downloads/hub
-#~/Downloads/script/build -o ~/.zsh/hub
-#eval "$(hub alias -s)"
+# install powerline fonts
+git clone https://github.com/powerline/fonts.git $HOME/.zsh/powerline-fonts
+$HOME/.zsh/powerline-fonts/install.sh
 
-# install zplug and plugins
-git clone https://github.com/b4b4r07/zplug ~/.zplug
-source ~/.zplug/init.zsh            
-zplug load
-zplug "zsh-users/zsh-syntax-highlighting", nice:10
-zplug "zsh-users/zsh-history-substring-search"
-zplug "Jxck/dotfiles", as:command, use:"bin/{histuniq,color}"
-zplug "plugins/git",   from:oh-my-zsh
-zplug "b4b4r07/enhancd", use:init.sh
-zplug load --verbose
-zplug install
-~                                             
+# install vimpager
+git clone git://github.com/rkitover/vimpager $HOME/Development/vimpager
+sudo $HOME/Development/vimpager/make install
+
+# install antigen
+curl https://cdn.rawgit.com/zsh-users/antigen/v1.0.4/antigen.zsh > $HOME/.zsh/.antigen-source.zsh
+
+# adding dotfiles to .zshrc
+dotfiles=`pwd`
+echo 'Adding source location to .zshrc'
+echo "\n\n# dotfile sources"      >> $HOME/.zshrc
+echo "source $dotfiles/antigen"   >> $HOME/.zshrc
+echo "source $dotfiles/aliases"   >> $HOME/.zshrc
+echo "source $dotfiles/functions" >> $HOME/.zshrc
+echo "source $dotfiles/exports"   >> $HOME/.zshrc
+                                  
+# Cool manual installations
+# Vimpager: https://github.com/rkitover/vimpager
+# Hub for Git: https://github.com/github/hub
+

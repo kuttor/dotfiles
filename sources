@@ -1,8 +1,0 @@
-# zplug
-source ~/.zplug/init.zsh
-
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# enhancd
-source ~/.zplug/repos/b4b4r07/enhancd/enhancd.sh

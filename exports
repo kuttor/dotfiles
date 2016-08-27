@@ -3,10 +3,6 @@
 # go Programming Language
 export PATH=$PATH:/usr/local/go/bin
 
-# enable color in grep
-# export GREP_OPTIONS='--color=auto'
-# export GREP_COLOR='3;33'
-
 # language
 export LC_ALL=C
 export LANG=en_US.UTF-8
@@ -18,9 +14,9 @@ export PATH=$PATH:~/.local/bin
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
 
-# suggestion highlighting
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=red'
-
 # enhancd
 export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
-export ENHANCD_DIR=/home/akuttor/.zplug/repos/b4b4r07/enhancd
+
+# vimpager
+export PAGER=/usr/local/bin/vimpager
+
