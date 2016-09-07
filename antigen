@@ -17,7 +17,7 @@ antigen bundle tarruda/zsh-autosuggestions
 antigen bundle "b4b4r07/enhancd" 
 
 # Load the theme.
-antigen theme pure
+antigen theme terminalparty
 
 # Tell antigen that you're done.
 antigen apply

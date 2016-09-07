@@ -13,7 +13,7 @@ alias l='ls -CF'
 alias h='history'
 
 # hub for git
-alias git='hub'
+# alias git='hub'
 
 # directory navigation
 alias ..='cd ..'
@@ -24,3 +24,14 @@ alias 'bk=cd $OLDPWD'
 # vimpager
 alias less=$PAGER
 alias zless=$PAGER
+
+# virtualenv
+alias v='workon'
+alias v.deactivate='deactivate'
+alias v.mk='mkvirtualenv'
+alias v.rm='rmvirtualenv'
+alias v.switch='workon'
+alias v.add2virtualenv='add2virtualenv'
+alias v.cdsitepackages='cdsitepackages'
+alias v.cd='cdvirtualenv'
+alias v.lssitepackages='lssitepackages'

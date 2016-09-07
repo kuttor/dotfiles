@@ -20,3 +20,6 @@ export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
 # vimpager
 export PAGER=/usr/local/bin/vimpager
 
+# virtualenvwrapper
+export WORKON_HOME=~/Envs
+source /home/akuttor/.local/bin/virtualenvwrapper.sh

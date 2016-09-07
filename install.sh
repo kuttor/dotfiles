@@ -1,6 +1,9 @@
 # set package manager (DNF or APT)
 python -mplatform | grep -qi ubuntu && pkgman=apt || pkgman=dnf
 
+# multiple package installer
+sudo $pkgman install git tree
+
 # perform update
 sudo $pkgman update  -y
 
@@ -9,6 +12,9 @@ sudo $pkgman install percol -y
 
 # install Go language
 sudo $pkgman install golang -y
+
+# install pip
+sudo $pkgman install python-pip y
 
 # install peco
 echo "\nInstalling Peco"
