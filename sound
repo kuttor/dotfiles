@@ -1,0 +1,8 @@
+alias char-major-116 snd
+alias snd-card-0 snd-hda-intel
+alias snd-card-1 snd-hda-intel
+
+options snd cards_limit=2
+
+options snd-hda-intel id=SB index=0
+options snd-hda-intel id=HDMI index=1
