@@ -1,8 +1,12 @@
 # .dotfiles
+source ~/.dotfiles/.awsrc
 source ~/.dotfiles/.functions
 source ~/.dotfiles/.aliases
 source ~/.dotfiles/.help
 source ~/.commacd.bash
+
+# Set default editor
+export EDITOR='sublime --wait'
 
 # For correcting commands
 eval "$(thefuck --alias)"
@@ -27,13 +31,13 @@ fi
 ### Prompt Colors
 # Modified version of @gf3’s Sexy Bash Prompt
 # (https://github.com/gf3/dotfiles)
-if [[ [31m$COLORTERM[39;49;00m = gnome-* [04m[31;01m&[39;49;00m[04m[31;01m&[39;49;00m [31m$TERM[39;49;00m = xterm ]] [04m[31;01m&[39;49;00m[04m[31;01m&[39;49;00m infocmp gnome-256color >/dev/null 2>&1; then
+if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
 	export TERM=gnome-256color
 elif infocmp xterm-256color >/dev/null 2>&1; then
 	export TERM=xterm-256color
 fi
 
-if tput setaf 1 [04m[31;01m&[39;49;00m> /dev/null; then
+if tput setaf 1 &> /dev/null; then
 	tput sgr0
 	if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
 		MAGENTA=$(tput setaf 9)
@@ -68,20 +72,23 @@ export RESET
 # (http://en.wikipedia.org/wiki/Unicode_symbols)
 symbol="⚡ "
 
-export PS1="\[[36m${[39;49;00mMAGENTA[36m}[39;49;00m\]\u \[[31m$RESET[39;49;00m\]in \[[31m$GREEN[39;49;00m\]\w\[[31m$RESET[39;49;00m\]\$([[ -n \$(git branch 2> /dev/null) ]] [04m[31;01m&[39;49;00m[04m[31;01m&[39;49;00m echo \" on \")\[[31m$PURPLE[39;49;00m\]\$(parse_git_branch)\[[31m$RESET[39;49;00m\]\n[31m$symbol[39;49;00m\[[31m$RESET[39;49;00m\]"
-export PS2="\[[31m$ORANGE[39;49;00m\]→ \[[31m$RESET[39;49;00m\]"
+export PS1="\[${MAGENTA}\]\u \[$RESET\]in \[$GREEN\]\w\[$RESET\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$PURPLE\]\$(parse_git_branch)\[$RESET\]\n$symbol\[$RESET\]"
+export PS2="\[$ORANGE\]→ \[$RESET\]"
 
 # Only show the current directory's name in the tab
-export PROMPT_COMMAND='echo -ne "\033]0;[36m${[39;49;00mPWD[37m##*/[39;49;00m[36m}[39;49;00m\007"'
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD##*/}\007"'
 
 # init z! (https://github.com/rupa/z)
 # . ~/z/z.sh
 
 # Integrate Basher
-export PATH="[31m$HOME[39;49;00m/.basher/bin:[31m$PATH[39;49;00m"
+export PATH="$HOME/.basher/bin:$PATH"
 eval "$(basher init -)"
 
 # Initializes autoenv
 source /usr/local/bin/activate.sh
 
-test -e "[36m${[39;49;00mHOME[36m}[39;49;00m/.iterm2_shell_integration.bash" [04m[31;01m&[39;49;00m[04m[31;01m&[39;49;00m source "[36m${[39;49;00mHOME[36m}[39;49;00m/.iterm2_shell_integration.bash"
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+# FZF Integration
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
