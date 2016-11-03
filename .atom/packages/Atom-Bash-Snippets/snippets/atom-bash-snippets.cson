@@ -1,0 +1,146 @@
+'.source.shell':
+  'stdout to /dev/null':
+    'prefix': '1'
+    'body': '>/dev/null'
+
+  'stderr to /dev/null':
+    'prefix': '2'
+    'body': '2>/dev/null'
+
+  'stdout/stderr to /dev/null':
+    'prefix': '12'
+    'body': '>/dev/null 2>&1'
+
+  'cat until EOF':
+    'prefix': 'cat'
+    'body': '''
+      cat <<-EOF ${1:>/path/to/file}
+      	$2
+      EOF
+    '''
+
+  'echo to stderr':
+    'prefix': 'e2'
+    'body': 'echo "$1" >&2'
+
+  'new function':
+    'prefix': 'function!'
+    'body': '''
+      # TODO $1's description
+      # @param	The first parameter
+      # @return
+      #
+      ${1:function_name}() {
+      	local ${2:param_name}="\\$1"; shift
+      	${3:echo "TODO !"}
+      }
+    '''
+
+  'getopts simple':
+    'prefix': 'getopts'
+    'body': '''
+      while getopts :${1:?}h arg
+      do
+      	case \$arg in
+      		${1})
+      			${0:: #statements}
+      			;;
+      		:|?|h)
+      			[[ \$arg == \\\\? ]] && print_error "L'arg -\$OPTARG n'est pas prise en charge !"
+      			[[ \$arg == : ]] && print_error "L'arg -\$OPTARG requiert un argument !"
+      			usage
+      			exit \$([[ \$arg == h ]] && echo 0 || echo 2)
+      			;;
+      	esac
+      done
+    '''
+
+  'getopts with long options':
+    'prefix': 'getopts long'
+    'body': '''
+      while getopts :${1:?}a-:fqvh arg
+      do
+      	case \$arg in
+      		-)
+      			if [[ \${!OPTIND} == -* ]]
+      			then
+      				value=
+      			else
+      				value="\${!OPTIND}"
+      				((OPTIND++))
+      			fi
+      			case \$OPTARG in
+      				host)
+      					HOST=\$value
+      					;;
+      				port)
+      					if [[ ! \$value =~ ^[0-9]+\$ ]]
+      					then
+      						print_error "L'arg --\$OPTARG a besoin d'un entier en parametre. \"\$value\" n'est pas un entier."
+      						usage
+      						exit 2
+      					fi
+      					;;
+      				*)
+      					print_error "Le parametre '--\$OPTARG' n'est pas reconnu !"
+                  		usage
+          				exit 2
+                  		;;
+      				esac
+      			;;
+      		a)
+      			[[ \$OPTARG == -* ]] && print_error "L'option -\$arg requiert un argument !" && usage && exit 2
+      			;;
+      		${1})
+      			${0:: #statements}
+      			;;
+      		f)
+      			FORCE=1
+      			;;
+      		q)
+      			QUIET=1
+      			;;
+      		v)
+      			VERBOSE=1
+      			;;
+      		:|?|h)
+      			[[ \$arg == \\\\? ]] && print_error "L'option -\$OPTARG n'est pas prise en charge !"
+      			[[ \$arg == : ]] && print_error "L'option -\$OPTARG requiert un argument !"
+      			usage
+      			exit \$([[ \$arg == h ]] && echo 0 || echo 2)
+      			;;
+      	esac
+      done
+    '''
+
+  'while loop to read file':
+    'prefix': 'while read file'
+    'body': '''
+      while read -r line
+      do
+      	${2:echo "\$line"}
+      done < ${1:/path/to/file}
+    '''
+
+  'usage function':
+    'prefix': 'usage'
+    'body': '''
+      usage() {
+      	cat <<-EOF
+      	Usage: pgihadmin ${1:tache} <CIBLE> [-f] [-q] [-h]
+      	Cette tache permet de ${2:bla bla}
+      	PARAMETRES:
+      	===========
+      	    CIBLE    Serveur cible : <vide> ou all, aps, ts, lb, ord, apsN, tsN, lbN, ordN (avec N un nombre)
+      	OPTIONS:
+      	========
+      	    -f    Mode force
+      	    -q    Mode silencieux
+      	    -h    Affiche ce message
+      	EOF
+      }
+    '''
+
+  'short if..then..else':
+    'prefix': 'ite'
+    'body': '[[ ${1:condition} ]] && ${2:echo "true"} || ${3:echo "false" >&2}'

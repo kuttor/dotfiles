@@ -1,0 +1,71 @@
+"*":
+  "atom-beautify":
+    apex: {}
+    arduino: {}
+    c: {}
+    cfml: {}
+    coffeescript: {}
+    cpp: {}
+    cs: {}
+    css: {}
+    d: {}
+    ejs: {}
+    erb: {}
+    fortran: {}
+    general:
+      _analyticsUserId: "65ede6a4-f9c2-4e60-aae1-7e2a07c3c023"
+    gherkin: {}
+    handlebars: {}
+    html: {}
+    jade: {}
+    java: {}
+    js: {}
+    json: {}
+    jsx: {}
+    latex: {}
+    less: {}
+    marko: {}
+    mustache: {}
+    nunjucks: {}
+    objectivec: {}
+    pawn: {}
+    perl: {}
+    php: {}
+    python: {}
+    r: {}
+    riot: {}
+    ruby: {}
+    rust: {}
+    scss: {}
+    spacebars: {}
+    sql: {}
+    svg: {}
+    swig: {}
+    tss: {}
+    twig: {}
+    typescript: {}
+    ux: {}
+    vala: {}
+    visualforce: {}
+    vue: {}
+    xml: {}
+    xtemplate: {}
+  core:
+    themes: [
+      "genesis-ui"
+      "one-dark-syntax"
+    ]
+  editor:
+    fontSize: 16
+    invisibles: {}
+    showIndentGuide: true
+    showInvisibles: true
+    softWrap: true
+  "exception-reporting":
+    userId: "69fe3271-afb7-9882-4433-69df8a956726"
+  linter:
+    errorPanelHeight: 25
+    showErrorPanel: false
+  "linter-js-yaml": {}
+  welcome:
+    showOnStartup: false
