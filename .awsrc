@@ -27,7 +27,7 @@ function awsswitch() {
 
 # Displays current AWS profile
 function awscurrent(){
-  aws configure listi
+  aws configure list
 };
 
 # AWS Completion
