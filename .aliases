@@ -1,0 +1,55 @@
+# Go home
+alias ~="cd ~"
+
+# Color LS
+colorflag="-G"
+alias ls="command ls ${colorflag}"
+alias la="ls -laF ${colorflag}" # all files inc dotfiles, in long format
+alias lsd='ls -lF ${colorflag} | grep "^d"' # only directories
+
+# Show open ports
+alias ports='netstat -lantip'
+
+# Colorize the grep command output for ease of use (good for log files)##
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Copy the working directory path
+alias cpwd='pwd|tr -d "\n"|pbcopy'
+
+# Find public ip
+alias myip='wget http://ipinfo.io/ip -qO -'
+
+# Quicker navigation
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+# Enable aliases to be sudo’ed
+alias sudo='sudo '
+
+# Colored up cat!
+# You must install Pygments first - "sudo easy_install Pygments"
+alias c='pygmentize -O style=monokai -f console256 -g'
+
+# Main Git commands aliased
+alias gs='git status'
+alias ga='git add .'
+alias gc='git commit -m' # requires you to type a commit message
+alias gp='git push'
+alias grm='git rm $(git ls-files --deleted)'
+
+# Trim newlines
+alias tn='tr -d "\n"'
+
+# Copy output of last command to clipboard
+alias cl="fc -e -|pbcopy"
+
+# Top
+alias cpu='top -o cpu'
+alias mem='top -o rsize' # memory
+
+# Sublime command-line
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
