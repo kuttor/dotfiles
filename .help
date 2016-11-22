@@ -1,5 +1,0 @@
-grep_options(){
-  echo -e "\t -n = line number"
-  echo -e "\t -i = case insensitive"
-  echo -e "\t -v - inverse grep"
-}
