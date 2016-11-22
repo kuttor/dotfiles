@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/bin/sh
 
 aws_userarns(){
@@ -38,4 +39,46 @@ cfvalidate() {
   file_path=$1
   aws cloudformation validate-template \
       --template-body file:///$file_path
+=======
+# Lists all available profiles to switch to
+function awsprofiles() {
+
+    cred_file=${AWS_SHARED_CREDENTIALS_FILE};
+    if [ -z $cred_file ]; then
+        cred_file=~/.aws/credentials
+    fi
+
+    while read line; do
+        if [[ $line == "["* ]]; then echo "$line"; fi;
+    done < $cred_file;
+};
+
+# Switches AWS Profiles
+function awsswitch() {
+   if [ -z $1 ]; then  echo "Usage: aws_switch profilename"; return; fi
+
+   exists="$(aws configure get aws_access_key_id --profile $1)"
+   if [[ -n $exists ]]; then
+       export AWS_DEFAULT_PROFILE=$1;
+       export AWS_PROFILE=$1;
+       export AWS_REGION=$(aws configure get region --profile $1);
+       echo "Switched to AWS Profile: $1";
+       aws configure list
+   fi
+};
+
+# Displays current AWS profile
+function awscurrent(){
+  aws configure list
+};
+
+# AWS Completion
+complete -C '/usr/local/bin/aws_completer' aws
+
+# CF Template validation
+aws_cf_validate(){
+  file_path=$1
+   aws cloudformation validate-template \
+    --template-body file:///$file_path
+>>>>>>> 985e1eabe883446c18e23dd565131b03d78873eb
 }

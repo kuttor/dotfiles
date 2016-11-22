@@ -1,6 +1,12 @@
 # Go home
 alias ~="cd ~"
 
+<<<<<<< HEAD
+=======
+# Make History simple
+alias h='history'
+
+>>>>>>> 985e1eabe883446c18e23dd565131b03d78873eb
 # Color LS
 colorflag="-G"
 alias ls="command ls ${colorflag}"
