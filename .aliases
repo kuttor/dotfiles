@@ -1,12 +1,12 @@
 # Go home
 alias ~="cd ~"
 
-<<<<<<< HEAD
-=======
 # Make History simple
 alias h='history'
 
->>>>>>> 985e1eabe883446c18e23dd565131b03d78873eb
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec $SHELL -l"
+
 # Color LS
 colorflag="-G"
 alias ls="command ls ${colorflag}"

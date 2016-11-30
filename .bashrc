@@ -3,17 +3,9 @@ source ~/.dotfiles/.awsrc
 source ~/.dotfiles/.functions
 source ~/.dotfiles/.aliases
 
-# Outputs all arguments of target script to stderr
-yell() {
-  echo "$0: $*" >&2; 
-}
-
-# Does the same as yell, but exits with a non-0 exit status, which means fail
-die() { yell "$*"; exit 111; }
-
-# Uses the || (boolean OR), which only evaluates the right side if the left one
-try() { "$@" || die "cannot $*"; }
-
+# History size
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000000
 
 
 # Set default editor
@@ -25,8 +17,18 @@ eval "$(thefuck --alias)"
 # Set Blocksize for dd, ls, df, du
 export BLOCKSIZE=1k
 
-# Shopt Init
+# Auto CD for navigation, don't need to use CD anymore
 shopt -s autocd
+
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob
+
+# Append to the Bash history file, rather than overwriting it
+shopt -s histappend
+
+# Autocorrect typos in path names when using `cd`
+shopt -s cdspell
+
 
 # Bash Completion
 if [ -f $(brew --prefix)/share/bash-completion/bash_completion ]; then
@@ -38,6 +40,11 @@ if [ -f "$(brew --prefix bash-git-prompt)/share/gitprompt.sh" ]; then
   GIT_PROMPT_THEME=Default
   source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"
 fi
+
+# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring
+# wildcards
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
+
 
 ### Prompt Colors
 # Modified version of @gf3’s Sexy Bash Prompt
