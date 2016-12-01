@@ -1,0 +1,13 @@
+# History size
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000000
+
+# Set default editor
+export EDITOR='sublime --wait'
+
+# For correcting commands
+eval "$(thefuck --alias)"
+
+# Set Blocksize for dd, ls, df, du
+export BLOCKSIZE=1k
+

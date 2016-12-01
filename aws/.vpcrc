@@ -1,0 +1,8 @@
+#!/usr/local/bin/bash -e
+list_vpcs(){
+	fmt="%-30s %-16s %-16s\n" #printf format
+	aws ec2 describe-vpcs --output text --query \
+	    'Vpcs[].[Tags[?Key==`Name`] | [0].Value,VpcId,CidrBlock]' | \
+	    xargs printf "${fmt}"
+}
+

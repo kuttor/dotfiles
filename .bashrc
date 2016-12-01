@@ -3,20 +3,6 @@ source ~/.dotfiles/.awsrc
 source ~/.dotfiles/.functions
 source ~/.dotfiles/.aliases
 
-# History size
-export HISTSIZE=1000000
-export HISTFILESIZE=1000000000
-
-
-# Set default editor
-export EDITOR='sublime --wait'
-
-# For correcting commands
-eval "$(thefuck --alias)"
-
-# Set Blocksize for dd, ls, df, du
-export BLOCKSIZE=1k
-
 # Auto CD for navigation, don't need to use CD anymore
 shopt -s autocd
 
