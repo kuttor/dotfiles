@@ -1,8 +1,20 @@
 #!/bin/sh
+# Test if arguments are empty
+# [  -z "$somevarname" ] && echo "Empty: Yes" || echo "Empty: No"
+
+# List all regions
+alias list_all_aws_regions='aws ec2 describe-regions --output text | cut -f3'
 
 # Outputs users ARN
-aws_userarns(){
+list_iam_arns(){
   aws iam list-users --output json --profile $1 | jq -r .Users[].Arn
+}
+
+# List mfa device serials for account
+list_mfa_device_serials(){
+  [[-z "$1"]] && echo "IAM User name empty; return"
+  iam list-virtual-mfa-devices --query 'VirtualMFADevices[*].SerialNumber[]'
+  --profiles $2 | grep $1
 }
 
 # Outputs the credential and config file
@@ -42,7 +54,7 @@ awsconfigure() {
 cfvalidate() {
   file_path=$1
   aws cloudformation validate-template \
-      --template-body file:///$file_path
+      --template-body file://`pwd`/$file_path
 }
 
 # Lists all available profiles to switch to

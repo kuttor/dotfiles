@@ -1,8 +1,14 @@
 # Go home
 alias ~="cd ~"
 
+# IDPS OnboardingCLI 
+alias OnboardingCLI="python /Users/akuttor/Development/IDPS/devops/Scripts/account-onboard/OnboardingCLI.py "
+
 # Make History simple
 alias h='history'
+
+# Upgrades all Pip packages
+alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"

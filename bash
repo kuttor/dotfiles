@@ -1,8 +1,3 @@
-# .dotfiles
-source ~/.dotfiles/.awsrc
-source ~/.dotfiles/.functions
-source ~/.dotfiles/.aliases
-
 # Auto CD for navigation, don't need to use CD anymore
 shopt -s autocd
 
