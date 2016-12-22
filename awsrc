@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/local/bin/bash
 # Test if arguments are empty
 # [  -z "$somevarname" ] && echo "Empty: Yes" || echo "Empty: No"
 
@@ -9,6 +9,10 @@ alias list_all_aws_regions='aws ec2 describe-regions --output text | cut -f3'
 list_iam_arns(){
   aws iam list-users --output json --profile $1 | jq -r .Users[].Arn
 }
+
+# Sets default AWS profile
+export AWS_DEFAULT_PROFILE=andrewkuttor
+
 
 # List mfa device serials for account
 list_mfa_device_serials(){
@@ -24,6 +28,20 @@ alias awsconf='dog ~/.aws/credentials'
 # aws completion for bash
 complete -C '/usr/local/bin/aws_completer' aws
 
+# Retrieves latest Intuit approved AMI
+latest_ami() {
+	if [ -z "$1" ]; then
+		echo "Please specify the desired AWS region: ex us-west-2"
+		echo "Usage: latest_ami us-west-2"
+		return 1
+  fi
+                                     
+	OSVERSION="rhel7.2"
+	AMI_RAW=$(curl -s "https://hosting.intuit.com/amiquery/amis?tag=osVersion:$OSVERSION&tag=virtualization:hvm&status=available&tag=relatedTechnology:linux&region=$1") 2>/dev/null
+	AMI_ID=$(echo "$AMI_RAW" | jq -r 'max_by(.tags.creationDate).id')
+    echo $REGION": "$AMI_ID
+}
+
 # Set default AWS profile
 awsprofile() {
   export AWS_DEFAULT_PROFILE=$1
@@ -33,7 +51,6 @@ awsprofile() {
 awsconfigure() {
   accounts=~/.aws/credentials
   #[[ ${accounts} ]] || accounts=~/.aws/credentials
-  
   profiles=($(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' $accounts))
 
   [[ -z "$1" ]] && printf \
@@ -50,28 +67,20 @@ awsconfigure() {
       aws configure list | awk 'NR>2{print $1 ": " $2}';
 } # end awsconfigure
 
-# cf template validation
-cfvalidate() {
+# cloudformation template validation
+validate_cloudformation() {
   file_path=$1
-  aws cloudformation validate-template \
-      --template-body file://`pwd`/$file_path
+  aws cloudformation validate-template --template-body file://`pwd`/$file_path
 }
 
 # Lists all available profiles to switch to
-function awsprofiles() {
-
-    cred_file=${AWS_SHARED_CREDENTIALS_FILE};
-    if [ -z $cred_file ]; then
-        cred_file=~/.aws/credentials
-    fi
-
-    while read line; do
-        if [[ $line == "["* ]]; then echo "$line"; fi;
-    done < $cred_file;
+list_iam_profiles() {
+  cred_file=${AWS_SHARED_CREDENTIALS_FILE};
+  [ -z $cred_file ] && cred_file=~/.aws/credentials
 }
 
 # Switches AWS Profiles
-awsswitch() {
+set_iam_profile() {
    if [ -z $1 ]; then  echo "Usage: aws_switch profilename"; return; fi
 
    exists="$(aws configure get aws_access_key_id --profile $1)"
@@ -89,12 +98,62 @@ awscurrent() {
   aws configure list
 }
 
-# AWS Completion
-complete -C '/usr/local/bin/aws_completer' aws
-
 # CF Template validation
 aws_cf_validate() {
   file_path=$1
   aws cloudformation validate-template \
     --template-body file:///$file_path
 }
+
+cliam() {
+	if [ $1 == '-h' ]; then
+		printf '%s\n' "\
+		  Usage: \
+          Switch profiles: $name -s [profile name] \
+          List all profiles: $name -l
+		"
+		exit 1
+	fi
+}
+
+
+# List IAM profiles, currently hardcoded default credential file
+cliamlist() {
+  cred_file=${AWS_SHARED_CREDENTIALS_FILE};
+  [ -z $cred_file ] && cred_file=~/.aws/credentials
+	profiles=($(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' $cred_file))
+	printf '%s\n' "total ${#profiles[@]}" 
+	# printf '%s\n' "${profiles[@]}"
+
+  for profile in "${profiles[@]}"
+  do
+    if [ "$profile" == "${AWS_DEFAULT_PROFILE}" ]
+    then
+      echo -e "\e[92m"$profile"\033[0m"
+    else
+      printf '%s\n' $profile
+    fi
+  done
+}
+
+# Displays current IAM profile
+cliamuser() {
+	aws configure list | awk '{ printf "%-20s %-40s\n", $1, $2 }' 
+}
+
+# Checks if IAM profile exists and if so switches to it
+cliamswitch() {
+	EXISTS="$(aws configure get aws_access_key_id --profile $1)"
+	if [ $EXISTS ]
+  then 
+    printf '%s\n' "Found profile: $3"
+	else
+		printf '%s\n' "Profile not found, please try again"
+		exit 1
+	fi
+	
+	printf '%s\n' "Switching profile to "$1
+	export AWS_DEFAULT_PROFILE=$1
+	echo $AWS_DEFAULT_PROFILE
+ }
+

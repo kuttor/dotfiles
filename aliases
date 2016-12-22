@@ -1,11 +1,18 @@
 # Go home
 alias ~="cd ~"
 
+# List all hosts configured in SSH Config
+alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
+
 # IDPS OnboardingCLI 
 alias OnboardingCLI="python /Users/akuttor/Development/IDPS/devops/Scripts/account-onboard/OnboardingCLI.py "
 
 # Make History simple
 alias h='history'
+
+# Setup for CustomerDB
+alias ssh-tunnel="ssh -f -N ec2-user@35.165.11.61 -i ~/.ssh/IDPS-Ops.pem -t -L3307:customerdb.cybrn9mnq2o6.us-west-2.rds.amazonaws.com:3306"
+customerdb="mysql -h 127.0.0.1 -P3307 -u admin -D customerdb -p"
 
 # Upgrades all Pip packages
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
@@ -65,3 +72,5 @@ alias mem='top -o rsize' # memory
 
 # Sublime command-line
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+
+# alias iams="source iams"

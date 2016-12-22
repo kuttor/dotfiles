@@ -1,3 +1,6 @@
+# SSH Host autocompletions
+#complete -o "default" -o "nospace" -W "$(awk '/^Host /{print $2}' ~/.ssh/config)" ssh 
+
 # Auto CD for navigation, don't need to use CD anymore
 shopt -s autocd
 
@@ -10,11 +13,8 @@ shopt -s histappend
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell
 
-
-# Bash Completion
-if [ -f $(brew --prefix)/share/bash-completion/bash_completion ]; then
-  . $(brew --prefix)/share/bash-completion/bash_completion
-fi
+# IAMS Completion by Profile
+complete -o "default" -o "nospace" -W "$(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' ~/.aws/credentials)" cliam cliamswitch 
 
 # Git Completion
 if [ -f "$(brew --prefix bash-git-prompt)/share/gitprompt.sh" ]; then
@@ -22,14 +22,7 @@ if [ -f "$(brew --prefix bash-git-prompt)/share/gitprompt.sh" ]; then
   source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"
 fi
 
-# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring
-# wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
-
-
 ### Prompt Colors
-# Modified version of @gf3’s Sexy Bash Prompt
-# (https://github.com/gf3/dotfiles)
 if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
 	export TERM=gnome-256color
 elif infocmp xterm-256color >/dev/null 2>&1; then

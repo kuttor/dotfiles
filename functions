@@ -1,10 +1,10 @@
 # Creates folder and CD's into it 
-mcd () { 
+mcd() { 
     mkdir -p "$1" && cd "$1";
 }
 
 # Creates Backup
-backup () { 
+backup() { 
     for file in "$@"; do
         local new=${file}.$(date '+%Y%m%d')
         while [[ -f $new ]]; do
