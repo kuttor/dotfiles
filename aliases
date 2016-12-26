@@ -12,7 +12,7 @@ alias h='history'
 
 # Setup for CustomerDB
 alias ssh-tunnel="ssh -f -N ec2-user@35.165.11.61 -i ~/.ssh/IDPS-Ops.pem -t -L3307:customerdb.cybrn9mnq2o6.us-west-2.rds.amazonaws.com:3306"
-customerdb="mysql -h 127.0.0.1 -P3307 -u admin -D customerdb -p"
+alias customerdb="mysql -h 127.0.0.1 -P3307 -u admin -D customerdb -p"
 
 # Upgrades all Pip packages
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
