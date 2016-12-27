@@ -93,4 +93,4 @@ alias mem='top -o rsize' # memory
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 
 # Retrieves public facing ip address
-alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)
+alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
