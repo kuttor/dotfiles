@@ -42,60 +42,10 @@ latest_ami() {
     echo $REGION": "$AMI_ID
 }
 
-# Set default AWS profile
-awsprofile() {
-  export AWS_DEFAULT_PROFILE=$1
-}
-
-# easily switches aws profiles on the fly
-awsconfigure() {
-  accounts=~/.aws/credentials
-  #[[ ${accounts} ]] || accounts=~/.aws/credentials
-  profiles=($(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' $accounts))
-
-  [[ -z "$1" ]] && printf \
-      "%s\n" \
-      "About: awsconfigure, version 1.0.0-2016 by Andrew Kuttor" \
-      "Usage: awsconfigure [profile-name]" \
-      "`echo -e "\n\e[4mAvailable Profiles\e[0m\n"`" \
-      "${profiles[@]}" && 
-      return
-
-  [[ ( -v "$1" && "${profiles[@]}" =~ "$1" ) ]] && \
-      export AWS_DEFAULT_PROFILE=$1;
-      printf "%s\n" "`echo -e "\n\e[4mActivated Credential\e[0m"`";
-      aws configure list | awk 'NR>2{print $1 ": " $2}';
-} # end awsconfigure
-
 # cloudformation template validation
 validate_cloudformation() {
   file_path=$1
   aws cloudformation validate-template --template-body file://`pwd`/$file_path
-}
-
-# Lists all available profiles to switch to
-list_iam_profiles() {
-  cred_file=${AWS_SHARED_CREDENTIALS_FILE};
-  [ -z $cred_file ] && cred_file=~/.aws/credentials
-}
-
-# Switches AWS Profiles
-set_iam_profile() {
-   if [ -z $1 ]; then  echo "Usage: aws_switch profilename"; return; fi
-
-   exists="$(aws configure get aws_access_key_id --profile $1)"
-   if [[ -n $exists ]]; then
-       export AWS_DEFAULT_PROFILE=$1;
-       export AWS_PROFILE=$1;
-       export AWS_REGION=$(aws configure get region --profile $1);
-       echo "Switched to AWS Profile: $1";
-       aws configure list
-   fi
-}
-
-# Displays current AWS profile
-awscurrent() {
-  aws configure list
 }
 
 # CF Template validation
