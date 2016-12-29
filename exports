@@ -10,3 +10,6 @@ eval "$(thefuck --alias)"
 
 # Set Blocksize for dd, ls, df, du
 export BLOCKSIZE=1k
+
+# Sets default AWS profile
+export AWS_DEFAULT_PROFILE=andrewkuttor

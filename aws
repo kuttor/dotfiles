@@ -9,10 +9,6 @@ list_iam_arns() {
   aws iam list-users --output json --profile $1 | jq -r .Users[].Arn
 }
 
-# Sets default AWS profile
-export AWS_DEFAULT_PROFILE=andrewkuttor
-
-
 # List mfa device serials for account
 list_mfa_device_serials(){
   [[-z "$1"]] && echo "IAM User name empty; return"
@@ -20,40 +16,12 @@ list_mfa_device_serials(){
   --profiles $2 | grep $1
 }
 
-
-# Retrieves latest Intuit approved AMI
-latest_ami() {
-  if [ -z "$1" ]; then
-    echo "Please specify the desired AWS region: ex us-west-2"
-    echo "Usage: latest_ami us-west-2"
-    return 1
-  fi
-
-  OSVERSION="rhel7.2"
-  AMI_RAW=$(curl -s "https://hosting.intuit.com/amiquery/amis?tag=osVersion:$OSVERSION&tag=virtualization:hvm&status=available&tag=relatedTechnology:linux&region=$1") 2>/dev/null
-  AMI_ID=$(echo "$AMI_RAW" | jq -r 'max_by(.tags.creationDate).id')
-  echo $REGION": "$AMI_ID
-}
-
-
 # CF Template validation
 aws_cf_validate() {
   file_path=$1
   aws cloudformation validate-template \
     --template-body file://`pwd`/$file_path
 }
-
-cliam() {
-  if [ $1 == '-h' ]; then
-    printf '%s\n' "\
-		  Usage: \
-          Switch profiles: $name -s [profile name] \
-          List all profiles: $name -l
-    "
-    exit 1
-  fi
-}
-
 
 # List IAM profiles, currently hardcoded default credential file
 cliamlist() {
