@@ -1,31 +1,31 @@
 ###################################################################################
-# Creates folder and CD's into it 
+# Creates folder and CD's into it
 ###################################################################################
-mcd() { 
-    mkdir -p "$1" && cd "$1";
+mcd() {
+  mkdir -p "$1" && cd "$1";
 }
 
 ###################################################################################
 # Creates Backup
 ###################################################################################
-backup() { 
-    for file in "$@"; do
-        local new=${file}.$(date '+%Y%m%d')
-        while [[ -f $new ]]; do
-            new+="~";
-        done;
-        printf "copying '%s' to '%s'\n" "$file" "$new";
-        \cp -ip "$file" "$new";
-    done
+backup() {
+  for file in "$@"; do
+    local new=${file}.$(date '+%Y%m%d')
+    while [[ -f $new ]]; do
+      new+="~";
+    done;
+    printf "copying '%s' to '%s'\n" "$file" "$new";
+    \cp -ip "$file" "$new";
+  done
 }
 
 ###################################################################################
 # Colorized cat output
 ###################################################################################
 dog(){
-    cat "$@" > /tmp/.tmp
-    pygmentize -g /tmp/.tmp
-    rm /tmp/.tmp
+  cat "$@" > /tmp/.tmp
+  pygmentize -g /tmp/.tmp
+  rm /tmp/.tmp
 }
 
 ###################################################################################
@@ -47,53 +47,53 @@ ii () {
 # Advanced tree one liners
 ###################################################################################
 l () {
-  tree -L 1 -CDFha --du --dirsfirst $@;
-};
+  tree -L 1 -CDFha --du --dirsfirst $@
+}
 
 ll () {
-  l -L 2 $@;
-};
+  l -L 2 $@
+}
 
-function lll() {
-  l -L 3 $@;
-};
+lll() {
+  l -L 3 $@
+}
 
 ###################################################################################
 # Get all processes owned by user
 ###################################################################################
 users_procs() {
-  ps $@ -u $1 -o pid,%cpu,%mem,start,time,bsdtime,command ;
+  ps $@ -u $1 -o pid,%cpu,%mem,start,time,bsdtime,command
 }
 
 ###################################################################################
 # Send RM to Trashcan instead
 ###################################################################################
 trash () {
-  command mv "$@" ~/.Trash ;
+  command mv "$@" ~/.Trash
 }
 
 ###################################################################################
 # Extract:  Extract most know archives with one command
 ###################################################################################
 extract () {
-        if [ -f $1 ] ; then
-                case $1 in
-                        *.tar.bz2)   tar xjf $1     ;;
-                        *.tar.gz)    tar xzf $1     ;;
-                        *.bz2)       bunzip2 $1     ;;
-                        *.rar)       unrar e $1     ;;
-                        *.gz)        gunzip $1      ;;
-                        *.tar)       tar xf $1      ;;
-                        *.tbz2)      tar xjf $1     ;;
-                        *.tgz)       tar xzf $1     ;;
-                        *.zip)       unzip $1       ;;
-                        *.Z)         uncompress $1  ;;
-                        *.7z)        7z x $1        ;;
-                        *)     echo "'$1' cannot be extracted via extract()" ;;
-                esac
-        else
-                echo "'$1' is not a valid file"
-        fi
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1     ;;
+      *.tar.gz)    tar xzf $1     ;;
+      *.bz2)       bunzip2 $1     ;;
+      *.rar)       unrar e $1     ;;
+      *.gz)        gunzip $1      ;;
+      *.tar)       tar xf $1      ;;
+      *.tbz2)      tar xjf $1     ;;
+      *.tgz)       tar xzf $1     ;;
+      *.zip)       unzip $1       ;;
+      *.Z)         uncompress $1  ;;
+      *.7z)        7z x $1        ;;
+      *)     echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
 };
 
 ###################################################################################
@@ -107,11 +107,11 @@ psa () {
 # Git branch details
 ###################################################################################
 parse_git_dirty() {
-        [[ $(git status 2> /dev/null | \
+  [[ $(git status 2> /dev/null | \
         tail -n1) != *"working directory clean"* ]] && echo "*"
 }
 
 parse_git_branch() {
-        git branch --no-color 2> /dev/null | \
+  git branch --no-color 2> /dev/null | \
         sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }

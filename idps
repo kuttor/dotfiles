@@ -1,0 +1,25 @@
+###################dd#########################################################
+# Retrieves Project ID value from EC2 Instance
+##############################################################################
+get-project-id () {
+  aws ec2 describe-tags \
+        --filters "Name=key, Values=Project" \
+	--profile $1 \
+	--output text | awk '{print $5}' | head -n1
+}
+
+###################dd#########################################################
+# Displays the most current Intuit AMI ID. Region is specified as argument
+###############################################################################
+get-current-intuit-ami() {
+  if [ -z "$1" ]; then
+    echo "Please specify the desired AWS region: ex us-west-2"
+    echo "Usage: latest_ami us-west-2"
+    return 1
+  fi
+
+  OSVERSION="rhel7.2"
+  AMI_RAW=$(curl -s "https://hosting.intuit.com/amiquery/amis?tag=osVersion:$OSVERSION&tag=virtualization:hvm&status=available&tag=relatedTechnology:linux&region=$1") 2>/dev/null
+  AMI_ID=$(echo "$AMI_RAW" | jq -r 'max_by(.tags.creationDate).id')
+  echo $REGION": "$AMI_ID
+}

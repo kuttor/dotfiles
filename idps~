@@ -1,0 +1,7 @@
+# Retrieves Project ID value from EC2 Instance
+get-project-id () {
+    aws ec2 describe-tags \
+        --filters "Name=key, Values=Project" \
+	--profile $1 \
+	--output text | awk '{print $5}' | head -n1
+}
