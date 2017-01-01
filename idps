@@ -1,11 +1,13 @@
+#!/usr/local/bin/bash
 ###################dd#########################################################
 # Retrieves Project ID value from EC2 Instance
 ##############################################################################
-get-project-id () {
+get-project-id() {
   aws ec2 describe-tags \
-        --filters "Name=key, Values=Project" \
-	--profile $1 \
-	--output text | awk '{print $5}' | head -n1
+    --filters "Name=key, Values=Project" "Name=key, Values=Environment" \
+	  --profile $1 \
+	  --output text 
+# | awk '{print $5}' | head -n1
 }
 
 ###################dd#########################################################
@@ -22,4 +24,20 @@ get-current-intuit-ami() {
   AMI_RAW=$(curl -s "https://hosting.intuit.com/amiquery/amis?tag=osVersion:$OSVERSION&tag=virtualization:hvm&status=available&tag=relatedTechnology:linux&region=$1") 2>/dev/null
   AMI_ID=$(echo "$AMI_RAW" | jq -r 'max_by(.tags.creationDate).id')
   echo $REGION": "$AMI_ID
+}
+
+
+va-cluster-details() {
+  [  -z $1 ] && echo "Error: Missing Argument - Usage: va-cluster-details [playground, pre-prod or prod]"
+  
+  case $1 in
+	  "playground") PLAYGROUND=$1;;
+	  "pre-prod") PRE-PRODUCTION=$1;;
+	  "prod") PRODUCTION=$1;;
+	  *) echo "Sorry, $1 is not a viable environment.";;
+  esac
+
+  aws ec2 describe-instances --output table --query 'Reservations[*].{AWS:OwnerId,REGION:Instances[0].Placement.AvailabilityZone, NAME:Instance[0].Tags[?Key==`Name`] | [0].Value, InstanceID:Instances[0].InstanceId}' --filters 'Name=tag:Name,Values=VA*' 'Name=tag:Environment,Values='$1
+
+  aws ec2 describe-instances --output table --query 'Reservations[0].{ENDPOINT:Instances[0].Tags[?Key==`Project-Endpoint`]|[0].Value, SERIAL:Instances[0].Tags[?Key==`Project`]|[0].Value}' --filters 'Name=tag:Environment,Values='$1 
 }

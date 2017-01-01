@@ -52,13 +52,5 @@ export PS2="\[$ORANGE\]→ \[$RESET\]"
 # Only show the current directory's name in the tab
 export PROMPT_COMMAND='echo -ne "\033]0;${PWD##*/}\007"'
 
-# Initializes autoenv
-source /usr/local/bin/activate.sh
-
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
-# FZF Integration
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
 # MOTD
 /usr/local/bin/fortune -a -o

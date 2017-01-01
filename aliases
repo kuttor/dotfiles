@@ -16,10 +16,6 @@ LPURPLE='\033[01;35m'
 LCYAN='\033[01;36m'
 WHITE='\033[01;37m'
 
-
-# Go home
-alias ~="cd ~"
-
 # List all hosts configured in SSH Config
 alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
 
@@ -31,7 +27,7 @@ alias h='history'
 
 # Setup for CustomerDB
 alias ssh-tunnel="ssh -f -N ec2-user@35.165.11.61 -i ~/.ssh/IDPS-Ops.pem -t -L3307:customerdb.cybrn9mnq2o6.us-west-2.rds.amazonaws.com:3306"
-alias customerdb="mysql -h 127.0.0.1 -P3307 -u admin -D customerdb -p"
+alias customerdb="mysql --login-path=safelogin -P3307 -D customerdb"
 
 # Upgrades all Pip packages
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
@@ -53,18 +49,6 @@ alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
-# Copy the working directory path
-alias cpwd='pwd|tr -d "\n"|pbcopy'
-
-# Find public ip
-alias myip='wget http://ipinfo.io/ip -qO -'
-
-# Quicker navigation
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
@@ -81,9 +65,6 @@ alias grm='git rm $(git ls-files --deleted)'
 
 # Trim newlines
 alias tn='tr -d "\n"'
-
-# Copy output of last command to clipboard
-alias cl="fc -e -|pbcopy"
 
 # Top
 alias cpu='top -o cpu'

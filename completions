@@ -13,6 +13,12 @@ then
   source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"
 fi
 
+# SSH Config, avoids wildcards
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh
+
 # SSH Config
 # #complete -o "default" -o "nospace" -W "$(awk '/^Host /{print $2}'
 # ~/.ssh/config)" ssh
+
+# Killall for common apps
+complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
