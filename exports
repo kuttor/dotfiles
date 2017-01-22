@@ -1,10 +1,10 @@
 #!/usr/local/bin/bash
 
+# Only show the current directory's name in the tab
+export PROMPT_COMMAND='echo -ne "\033]0;${PWD##*/}\007"'
+
 # Set default editor
 export EDITOR='vim'
-
-# For correcting commands
-eval "$(thefuck --alias)"
 
 # Set Blocksize for dd, ls, df, du
 export BLOCKSIZE=1k

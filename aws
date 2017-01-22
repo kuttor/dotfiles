@@ -1,7 +1,6 @@
 # Test if arguments are empty
 # [  -z "$somevarname" ] && echo "Empty: Yes" || echo "Empty: No"
 
-
 # List all regions
 alias list_all_aws_regions='aws ec2 describe-regions --output text | cut -f3'
 
@@ -21,7 +20,7 @@ list_mfa_device_serials(){
 
 
 # CF Template validation
-aws_cf_validate() {
+cf-validate-template() {
   file_path=$1
   aws cloudformation validate-template \
     --template-body file://`pwd`/$file_path
@@ -54,6 +53,7 @@ cliamuser() {
 }
 
 
+
 # Checks if IAM profile exists and if so switches to it
 cliamswitch() {
   EXISTS="$(aws configure get aws_access_key_id --profile $1)"
@@ -70,3 +70,10 @@ cliamswitch() {
   echo $AWS_DEFAULT_PROFILE
 }
 
+
+# Provides important VA info 
+idps-describe-va() {
+  aws ec2 describe-instances \
+    --output table
+    --query 'Reservations[].Instances[0].[Tags[?Key==`Name`] | [0].Value, Tags[?Key==`Project`] | [0].Value, InstanceId,PrivateIpAddress,State.Name]'
+}
