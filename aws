@@ -74,6 +74,6 @@ cliamswitch() {
 # Provides important VA info 
 idps-describe-va() {
   aws ec2 describe-instances \
-    --output table
+    --output table           \
     --query 'Reservations[].Instances[0].[Tags[?Key==`Name`] | [0].Value, Tags[?Key==`Project`] | [0].Value, InstanceId,PrivateIpAddress,State.Name]'
 }
