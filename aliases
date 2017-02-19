@@ -35,6 +35,9 @@ alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
+# Keeps your brew clean and updates
+alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
+
 # Color LS
 colorflag="-G"
 alias ls="command ls ${colorflag}"

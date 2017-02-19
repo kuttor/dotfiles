@@ -9,9 +9,6 @@ export EDITOR='vim'
 # Set Blocksize for dd, ls, df, du
 export BLOCKSIZE=1k
 
-# Sets default AWS profile
-export AWS_DEFAULT_PROFILE=andrewkuttor
-
 # Enable persistent REPL history for `node`.
 export NODE_REPL_HISTORY=~/.node_history
 

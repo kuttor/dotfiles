@@ -20,11 +20,10 @@ get-current-intuit-ami() {
     return 1
   fi
 
-  region=$1
   distro="rhel7.2"
   ami_raw=$(curl -s "https://hosting.intuit.com/amiquery/amis?tag=osVersion:$distro&tag=virtualization:hvm&status=available&tag=relatedTechnology:linux&region=$1") 2>/dev/null
   ami_id=$(echo "$ami_raw" | jq -r 'max_by(.tags.creationDate).id')
-  echo $ami_id
+  echo $region": "$ami_id
 }
 
 
