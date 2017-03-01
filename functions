@@ -1,12 +1,14 @@
+#!/usr/local/bin/bash
+
 # Creates folder and CD's into it
 mcd() {
   mkdir -p "$1" && cd "$1";
-}
+};
 
 # Run `dig` and display the most useful info
 dug() {
   dig +nocmd "$1" any +multiline +noall +answer;
-}
+};
 
 # Creates Backup
 backup() {
@@ -18,6 +20,11 @@ backup() {
     printf "copying '%s' to '%s'\n" "$file" "$new";
     \cp -ip "$file" "$new";
   done
+};
+
+# run found file
+hunter(){
+  vim $(find . -name $1 | peco)
 }
 
 # Colorized cat output
@@ -25,7 +32,7 @@ dog(){
   cat "$@" > /tmp/.tmp
   pygmentize -g /tmp/.tmp
   rm /tmp/.tmp
-}
+};
 
 
 # Useful host data

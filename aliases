@@ -78,3 +78,13 @@ alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 
 # Retrieves public facing ip address
 alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+
+# Renaming "web_search google"
+alias google="web_search google"
+
+# history with fzf
+alias h="peco_select_history"
+
+# Vim with a V
+alias v="vim "
+alias cls='clear'

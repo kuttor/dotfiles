@@ -1,0 +1,8 @@
+#!/usr/local/bin/bash
+
+idps-sanity_check(){
+  string="https://$(1)/porticor-sec/get_instance_status?serial=$(2)"
+  curl $string
+}
+
+

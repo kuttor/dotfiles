@@ -1,4 +1,0 @@
-def charlie():
-	print "is the shit"
-
-charlie()
