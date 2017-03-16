@@ -51,6 +51,7 @@ zplug "plugins/web-search", from:oh-my-zsh
 # Bring on the color
 zplug "Tarrasch/zsh-colors"
 zplug "chrissicool/zsh-256color"
+zplug "joel-porquet/zsh-dircolors-solarized"
 # zplug "unixorn/warhol.plugin.zsh"
 
 # DevOps plugs
