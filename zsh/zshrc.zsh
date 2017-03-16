@@ -2,9 +2,8 @@
 # Custom config file for Zshell
 
 # Init Zplug and load plugins
-source $ZDOTDIR/autoload.zsh
-source $ZDOTDIR/setopts.zsh
+source $ZDOTDIR/options.zsh
 source $ZDOTDIR/zplugs.zsh
-source $ZDOTDIR/completes.zsh
+source $ZDOTDIR/zstyles.zsh
 source $ZDOTDIR/exports.zsh
-
+source $ZDOTDIR/bindkeys.zsh
