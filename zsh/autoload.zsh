@@ -3,14 +3,15 @@
 # Holds all autoloads for zsh configuration
 # Author: Andrew Kuttor
 
-autoload -U colors zsh-mime-setup select-word-style
-colors          # colors
-zsh-mime-setup  # run everything as if it's an executable
-select-word-style bash # ctrl+w on words
+autoload -U  zsh-mime-setup && zsh-mime-setup  # run everything as if it's an executable
+
+# Bash hotkey, like ctrl+W
+autoload -U select-word-style bash && select-word-style bash
 
 autoload -Uz compinit && compiniti
 
 # Load Colors
 autoload colors && colors
 
-
+# Better Bash integration
+autoload bashcompinit && bashcompinit

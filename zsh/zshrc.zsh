@@ -7,3 +7,4 @@ source $ZDOTDIR/setopts.zsh
 source $ZDOTDIR/zplugs.zsh
 source $ZDOTDIR/completes.zsh
 source $ZDOTDIR/exports.zsh
+
