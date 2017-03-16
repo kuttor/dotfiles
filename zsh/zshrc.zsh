@@ -4,5 +4,6 @@
 # Init Zplug and load plugins
 source $ZDOTDIR/autoload.zsh
 source $ZDOTDIR/setopts.zsh
-source $ZDOTDIR/zplug.zsh
-source $ZDOTDIR/complete.zsh
+source $ZDOTDIR/zplugs.zsh
+source $ZDOTDIR/completes.zsh
+source $ZDOTDIR/exports.zsh
