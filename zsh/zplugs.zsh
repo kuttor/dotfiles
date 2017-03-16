@@ -52,7 +52,6 @@ zplug "plugins/web-search", from:oh-my-zsh
 zplug "Tarrasch/zsh-colors"
 zplug "chrissicool/zsh-256color"
 zplug "joel-porquet/zsh-dircolors-solarized"
-# zplug "unixorn/warhol.plugin.zsh"
 
 # DevOps plugs
 zplug "gko/ssh-connect"
@@ -84,3 +83,8 @@ then
 	bindkey '^[[B' history-substring-search-down
 fi
 
+# Dircolor checker
+if zplug check joel-porquet/zsh-dircolors-solarized
+then
+    setupsolarized dircolors.256dark
+fi
