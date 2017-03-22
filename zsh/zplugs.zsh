@@ -1,13 +1,13 @@
 #!/usr/bin/env zsh
 
 # Zplug install check
-if ! ${ZDOTDIR}/zplug/init.zsh
+if ! "${ZPLUG_HOME}/init.zsh"
 then
-    git clone "https://github.com/b4b4r07/zplug" "$ZDOTDIR/zplug"
+    git clone "https://github.com/b4b4r07/zplug" "$ZPLUG_HOME"
 fi
 
 # Initialize Zplug
-source "$ZDOTDIR/zplug/init.zsh"
+source "$ZPLUG_HOME/init.zsh"
 
 # Prompted plugin installer
 if ! zplug check --verbose
@@ -51,18 +51,17 @@ zplug "plugins/python",from:oh-my-zshvim
 zplug "plugins/ruby",from:oh-my-zsh
 zplug "plugins/pip",from:oh-my-zsh
 zplug "plugins/autopep8",from:oh-my-zsh
-zplug "plugins/aws",from:oh-my-zsh
 zplug "plugins/web-search",from:oh-my-zsh
 zplug "plugins/compleat", from:oh-my-zsh
 zplug "plugins/fasd", from:oh-my-zsh
 zplug "lib/completion", from:oh-my-zsh
 zplug "plugins/fasd", from:oh-my-zsh
 
-
+# Transforms Linux clock so it's human readable.
 zplug "sindresorhus/pretty-time-zsh",from:github
 
+# Bump up to 256 color
 zplug "chrissicool/zsh-256color",from:github
-
 
 # SysOps
 zplug "gko/ssh-connect"
@@ -74,9 +73,6 @@ zplug "EslamElHusseiny/aws_manager_plugin"
 zplug "glidenote/hub-zsh-completion"
 zplug 'Valodim/zsh-curl-completion'
 
-# Beautifies the time format so it's human readable
-zplug "sindresorhus/pretty-time-zsh"
-
 # System
 zplug "plugins/command-not-found", from:oh-my-zsh
 zplug "plugins/common-aliases", from:oh-my-zsh
@@ -87,7 +83,6 @@ zplug "zuxfoucault/colored-man-pages_mod", from:oh-my-zsh
 zplug 'b4b4r07/zplug-doctor', lazy:yes
 zplug 'b4b4r07/zplug-cd', lazy:yes
 zplug 'b4b4r07/zplug-rm', lazy:yes
-
 zplug "stedolan/jq", \
     as:command, from:gh-r, rename-to:jq
 
@@ -95,7 +90,7 @@ zplug "junegunn/fzf-bin", \
     as:command, from:gh-r, rename-to:fzf, use:"*${(L)$(uname -s)}*amd64*"
 
 # Uninstalled plugs check
-rplug check --verbose || zplug install
+zplug check --verbose || zplug install
 
 # Load plugs
 zplug load
