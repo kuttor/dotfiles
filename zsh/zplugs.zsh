@@ -91,16 +91,11 @@ zplug "stedolan/jq", \
     as:command, from:gh-r, rename-to:jq
 
 zplug "junegunn/fzf-bin", \
-    as:command, from:gh-r, rename-to:"fzf", frozen:1
-zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf, use:"*${(L)$(uname -s)}*amd64*"
+    as:command, from:gh-r, rename-to:fzf, \
+    use:"*${(L)$(uname -s)}*amd64*"
 
 # Uninstalled plugs check
 zplug check --verbose || zplug install
 
 # Load plugs
 zplug load
-
-
-# Autosuggestions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=136'
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
