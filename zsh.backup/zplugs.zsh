@@ -1,13 +1,13 @@
 #!/usr/bin/env zsh
 
 # Zplug install check
-if ! ${ZDOTDIR}/zplug/init.zsh
+if ! "${ZPLUG_HOME}/init.zsh"
 then
-    git clone "https://github.com/b4b4r07/zplug" "$ZDOTDIR/zplug"
+    git clone "https://github.com/b4b4r07/zplug" $ZPLUG_HOME
 fi
 
 # Initialize Zplug
-source "$ZDOTDIR/zplug/init.zsh"
+source "$ZPLUG_HOME/init.zsh"
 
 # Prompted plugin installer
 if ! zplug check --verbose
@@ -29,8 +29,11 @@ zplug "zplug/zplug", hook-build:"zplug --self-manage"
 
 # History
 zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-autosuggestions", defer:
-zplug "zsh-users/zsh-syntax-highlighting", defer:3
+#zplug "zsh-users/zsh-syntax-highlighting", defer:3
+
+# Navigation
+zplug "zsh-users/zsh-autosuggestions", defer:3
+zplug "plugins/fasd", from:oh-my-zsh
 zplug "rupa/z", use:z.sh
 
 # Theme
@@ -38,44 +41,37 @@ zplug "mafredri/zsh-async", from:github
 zplug "sindresorhus/pure", use:pure.zsh, defer:3, as:theme
 
 # Git
-zplug "plugins/git",from:oh-my-zsh
-zplug "plugins/gitfast",from:oh-my-zsh
+zplug "plugins/git", from:oh-my-zsh
+zplug "plugins/gitfast", from:oh-my-zsh
 zplug "plugins/git-extras", from:oh-my-zsh
 zplug "plugins/github", from:oh-my-zsh
 zplug "supercrabtree/k"
 zplug "peco/peco", from:gh-r
 
-# Oh-My-Zsh
-zplug "plugins/jsontools",from:oh-my-zsh
-zplug "plugins/python",from:oh-my-zshvim 
-zplug "plugins/ruby",from:oh-my-zsh
-zplug "plugins/pip",from:oh-my-zsh
-zplug "plugins/autopep8",from:oh-my-zsh
-zplug "plugins/aws",from:oh-my-zsh
-zplug "plugins/web-search",from:oh-my-zsh
-zplug "plugins/compleat", from:oh-my-zsh
-zplug "plugins/fasd", from:oh-my-zsh
-zplug "lib/completion", from:oh-my-zsh
-zplug "plugins/fasd", from:oh-my-zsh
+# Languages
+zplug "plugins/jsontools", from:oh-my-zsh
+zplug "plugins/python", from:oh-my-zsh
+zplug "plugins/ruby", from:oh-my-zsh
+zplug "plugins/pip", from:oh-my-zsh
 
+# Internet of things
+zplug "plugins/web-search", from:oh-my-zsh
 
-zplug "sindresorhus/pretty-time-zsh",from:github
-
-zplug "chrissicool/zsh-256color",from:github
-
+# Bring on the color
+zplug "chrissicool/zsh-256color"
+zplug "zsh-users/zsh-syntax-highlighting", defer:3
 
 # SysOps
 zplug "gko/ssh-connect"
 zplug "skx/sysadmin-util"
 
 # Completions
+zplug "plugins/compleat", from:oh-my-zsh
 zplug "zsh-users/zsh-completions"
+zplug "lib/completion", from:oh-my-zsh
 zplug "EslamElHusseiny/aws_manager_plugin"
 zplug "glidenote/hub-zsh-completion"
 zplug 'Valodim/zsh-curl-completion'
-
-# Beautifies the time format so it's human readable
-zplug "sindresorhus/pretty-time-zsh"
 
 # System
 zplug "plugins/command-not-found", from:oh-my-zsh
@@ -87,15 +83,19 @@ zplug "zuxfoucault/colored-man-pages_mod", from:oh-my-zsh
 zplug 'b4b4r07/zplug-doctor', lazy:yes
 zplug 'b4b4r07/zplug-cd', lazy:yes
 zplug 'b4b4r07/zplug-rm', lazy:yes
-
 zplug "stedolan/jq", \
     as:command, from:gh-r, rename-to:jq
 
 zplug "junegunn/fzf-bin", \
-    as:command, from:gh-r, rename-to:fzf, use:"*${(L)$(uname -s)}*amd64*"
+<<<<<<< HEAD
+    as:command, from:gh-r, rename-to:fzf, \
+    use:"*${(L)$(uname -s)}*amd64*"
+=======
+    as:command, from:gh-r, rename-to:"fzf", frozen:1
+>>>>>>> b051087acb15a694de0e947b1902e9354c454af1
 
 # Uninstalled plugs check
-rplug check --verbose || zplug install
+zplug check --verbose || zplug install
 
 # Load plugs
 zplug load
