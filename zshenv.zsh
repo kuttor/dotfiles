@@ -12,3 +12,5 @@ export DOTFILES="$HOME/.dotfiles"
 typeset -U path
 path=(~/bin /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin $path)
 
+# Source the main config
+source "$HOME/.zshrc"
