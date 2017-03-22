@@ -94,8 +94,3 @@ zplug check --verbose || zplug install
 
 # Load plugs
 zplug load
-
-
-# Autosuggestions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=136'
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
