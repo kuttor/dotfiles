@@ -8,7 +8,10 @@
 # Author: Andrew Kuttor                                              #
 #--------------------------------------------------------------------#
 
-zstyle ':completion:*' cache-path ~/.cache/zsh
+
+# Utilize caching
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path $ZSH_CACHE_DIR
 
 
 # AWS CLI

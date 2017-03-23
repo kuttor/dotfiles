@@ -1,10 +1,7 @@
 #!/usr/bin/env zsh
 
-# Emacs style bindings (for Home/End keys...)
-bindkey -e
-
 # In menu completion, the Return key will accept the current selected match
-bindkey -M menuselect '^M' .accept-line
+# bindkey -M menuselect '^M' .accept-line
 
 # shift-tab : go backward in menu (invert of tab)
 bindkey '^[[Z' reverse-menu-complete
