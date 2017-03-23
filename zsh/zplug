@@ -11,7 +11,6 @@
 # Initialize
 source "$ZPLUG_HOME/init.zsh"
 
-
 #============================================================================
 # Specify Plugins
 #============================================================================
@@ -28,6 +27,9 @@ zplug "rupa/z", use:z.sh
 # Theme
 zplug "mafredri/zsh-async", from:github
 zplug "sindresorhus/pure", use:pure.zsh, defer:3, as:theme
+
+# Exercism
+zplug "fabiokiatkowski/exercism.plugin.zsh"
 
 # Git
 zplug "plugins/git", from:oh-my-zsh
