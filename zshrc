@@ -15,3 +15,4 @@ source "$ZDOTDIR/bindkeys.zsh"
 
 # Shared 
 source "$DOTFILES/common/aliases"
+source "$DOTFILES/common/functions"

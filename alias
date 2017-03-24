@@ -1,29 +1,32 @@
-NC='\033[0m'
+# Simple
+alias df='df -h' # Disk Space, human-readable
+alias du='du -h' # Disk Usage, human-readable
+alias rm='rm -i' # RM force confirmation
 
-RED='\033[00;31m'
-GREEN='\033[00;32m'
-YELLOW='\033[00;33m'
-BLUE='\033[00;34m'
-PURPLE='\033[00;35m'
-CYAN='\033[00;36m'
-LIGHTGRAY='\033[00;37m'
+# Global aliases
+alias -g C='| wc -l'
 
-LRED='\033[01;31m'
-LGREEN='\033[01;32m'
-LYELLOW='\033[01;33m'
-LBLUE='\033[01;34m'
-LPURPLE='\033[01;35m'
-LCYAN='\033[01;36m'
-WHITE='\033[01;37m'
+# Hub-ify git
+eval "$(hub alias -s)"
+
+# Fasdz
+alias a='fasd -a'        # any
+alias s='fasd -si'       # show / search / select
+alias d='fasd -d'        # directory
+alias f='fasd -f'        # file
+alias sd='fasd -sid'     # interactive directory selection
+alias sf='fasd -sif'     # interactive file selection
+alias z='fasd_cd -d'     # cd, same functionality as j in autojump
+alias zz='fasd_cd -d -i' # cd with interactive selection
+
+# Macvim
+alias vim='mvim -v '
 
 # List all hosts configured in SSH Config
 alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
 
-# IDPS OnboardingCLI 
+# IDPS OnboardingCLI
 alias OnboardingCLI="python /Users/akuttor/Development/IDPS/devops/Scripts/account-onboard/OnboardingCLI.py "
-
-# Make History simple
-alias h='history'
 
 # Setup for CustomerDB
 alias ssh-tunnel="ssh -f -N ec2-user@35.165.11.61 -i ~/.ssh/IDPS-Ops.pem -t -L3307:customerdb.cybrn9mnq2o6.us-west-2.rds.amazonaws.com:3306"
@@ -38,19 +41,8 @@ alias reload="exec $SHELL -l"
 # Keeps your brew clean and updates
 alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
 
-# Color LS
-colorflag="-G"
-alias ls="command ls ${colorflag}"
-alias la="ls -laF ${colorflag}" # all files inc dotfiles, in long format
-alias lsd='ls -lF ${colorflag} | grep "^d"' # only directories
-
 # Show open ports
 alias ports='netstat -lantip'
-
-# Colorize the grep command output for ease of use (good for log files)##
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
 
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
@@ -59,19 +51,8 @@ alias sudo='sudo '
 # You must install Pygments first - "sudo easy_install Pygments"
 alias c='pygmentize -O style=monokai -f console256 -g'
 
-# Main Git commands aliased
-alias gs='git status'
-alias ga='git add .'
-alias gc='git commit -m' # requires you to type a commit message
-alias gp='git push'
-alias grm='git rm $(git ls-files --deleted)'
-
 # Trim newlines
 alias tn='tr -d "\n"'
-
-# Top
-alias cpu='top -o cpu'
-alias mem='top -o rsize' # memory
 
 # Sublime command-line
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
@@ -84,7 +65,3 @@ alias google="web_search google"
 
 # history with fzf
 alias h="peco_select_history"
-
-# Vim with a V
-alias v="vim "
-alias cls='clear'

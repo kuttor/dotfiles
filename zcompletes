@@ -1,4 +1,22 @@
-# Autocompletions
+#!/usr/bin/env zsh
+
+#--------------------------------------------------------------------#
+# File: Complete.zsh                                                     #
+#                                                                    #
+# Usage: Source file for Zsh Completions                             #
+#                                                                    #
+# Author: Andrew Kuttor                                              #
+#--------------------------------------------------------------------#
+
+
+# Utilize caching
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path $ZSH_CACHE_DIR
+
+
+# AWS CLI
+aws_completer="$HOME/.local/bin/aws_zsh_completer.sh"
+[ -f "${aws_completer}"  ] && source $aws_completer;
 
 # AWS
 complete -C '/usr/local/bin/aws_completer' aws
@@ -22,3 +40,6 @@ fi
 
 # Killall for common apps
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
+
+
+

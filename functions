@@ -106,3 +106,8 @@ function parse_git_dirty() {
 function parse_git_branch() {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 };
+
+idps-sanity_check(){
+  string="https://$(1)/porticor-sec/get_instance_status?serial=$(2)"
+  curl $string
+}
