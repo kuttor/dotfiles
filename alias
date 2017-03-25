@@ -1,15 +1,52 @@
-# Simple
-alias df='df -h' # Disk Space, human-readable
-alias du='du -h' # Disk Usage, human-readable
-alias rm='rm -i' # RM force confirmation
+#!/usr/bin/env bash 
 
-# Global aliases
-alias -g C='| wc -l'
+# alias: Aliases for both Bash and Zsh.
 
-# Hub-ify git
+# By: Andrew Kuttor
+# Contact: andrew.kuttor@gmail.com
+
+#------------------------------------------------------------------------------
+# Main
+#------------------------------------------------------------------------------
+
+alias df='df -hi'
+alias du='du -h'
+alias rm='rm -ii'
+alias vim='mvim -v '
+alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
+alias ssh-tunnel="ssh -f -N ec2-user@35.165.11.61 -i ~/.ssh/IDPS-Ops.pem -t -L3307:customerdb.cybrn9mnq2o6.us-west-2.rds.amazonaws.com:3306"
+alias customerdb="mysql --login-path=safelogin -P3307 -D customerdb"
+alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
+alias reload="exec $SHELL -l"
+alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
+alias ports='netstat -lantip'
+alias sudo='sudo '
+alias c='pygmentize -O style=monokai -f console256 -g'
+alias tn='tr -d "\n"'
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+alias google="web_search google"
+alias h="peco_select_history"
+
+#------------------------------------------------------------------------------
+# Global
+#------------------------------------------------------------------------------
+
+alias -g linect='| wc -l'
+
+
+#------------------------------------------------------------------------------
+# Git
+#------------------------------------------------------------------------------
+
 eval "$(hub alias -s)"
 
-# Fasdz
+
+
+#------------------------------------------------------------------------------
+# Fasd
+#------------------------------------------------------------------------------
+
 alias a='fasd -a'        # any
 alias s='fasd -si'       # show / search / select
 alias d='fasd -d'        # directory
@@ -19,49 +56,4 @@ alias sf='fasd -sif'     # interactive file selection
 alias z='fasd_cd -d'     # cd, same functionality as j in autojump
 alias zz='fasd_cd -d -i' # cd with interactive selection
 
-# Macvim
-alias vim='mvim -v '
 
-# List all hosts configured in SSH Config
-alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
-
-# IDPS OnboardingCLI
-alias OnboardingCLI="python /Users/akuttor/Development/IDPS/devops/Scripts/account-onboard/OnboardingCLI.py "
-
-# Setup for CustomerDB
-alias ssh-tunnel="ssh -f -N ec2-user@35.165.11.61 -i ~/.ssh/IDPS-Ops.pem -t -L3307:customerdb.cybrn9mnq2o6.us-west-2.rds.amazonaws.com:3306"
-alias customerdb="mysql --login-path=safelogin -P3307 -D customerdb"
-
-# Upgrades all Pip packages
-alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
-
-# Reload the shell (i.e. invoke as a login shell)
-alias reload="exec $SHELL -l"
-
-# Keeps your brew clean and updates
-alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
-
-# Show open ports
-alias ports='netstat -lantip'
-
-# Enable aliases to be sudo’ed
-alias sudo='sudo '
-
-# Colored up cat!
-# You must install Pygments first - "sudo easy_install Pygments"
-alias c='pygmentize -O style=monokai -f console256 -g'
-
-# Trim newlines
-alias tn='tr -d "\n"'
-
-# Sublime command-line
-alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
-
-# Retrieves public facing ip address
-alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
-
-# Renaming "web_search google"
-alias google="web_search google"
-
-# history with fzf
-alias h="peco_select_history"
