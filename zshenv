@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 # Info: .zshenv
 # Name: Andrew Kuttor
@@ -11,6 +11,7 @@ export DOTFILES="$HOME/.dotfiles"
 export ZDOTDIR="$HOME/.dotfiles"
 export ZPLUG_HOME="$HOME/.zplug"
 export CACHE_DIR="$HOME/.cache"
+
 [[ ! -d "${CACHE_DIR}" ]] && mkdir -p "${CACHE_DIR}"
 
 
@@ -71,3 +72,7 @@ HISTSIZE=1000000
 
 SAVEHIST=5000
 READNULLCMD=less
+
+# Replica .zshrc
+source "$HOME/.dotfiles/zsh.config"
+

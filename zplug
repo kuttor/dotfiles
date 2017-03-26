@@ -15,14 +15,14 @@ source "$ZPLUG_HOME/init.zsh"
 # Specify Plugins
 #============================================================================
 
-# Self-management
+# Selfless
 zplug "zplug/zplug", hook-build:"zplug --self-manage"
 
-# History
+# github: zsh-user 
+zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:3
-zplug "rupa/z", use:z.sh
 
 # Theme
 zplug "mafredri/zsh-async", from:github
@@ -31,42 +31,28 @@ zplug "sindresorhus/pure", use:pure.zsh, defer:3, as:theme
 # Exercism
 zplug "fabiokiatkowski/exercism.plugin.zsh"
 
-# Git
+# oh-my-zsh/plugins
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/gitfast", from:oh-my-zsh
 zplug "plugins/git-extras", from:oh-my-zsh
 zplug "plugins/github", from:oh-my-zsh
-zplug "supercrabtree/k"
-
-# Oh-My-Zsh
 zplug "plugins/jsontools", from:oh-my-zsh
 zplug "plugins/python", from:oh-my-zsh
 zplug "plugins/ruby", from:oh-my-zsh
 zplug "plugins/pip", from:oh-my-zsh
 zplug "plugins/autopep8", from:oh-my-zsh
 zplug "plugins/web-search", from:oh-my-zsh
+zplug "plugins/fasd", from:oh-my-zsh
 zplug "plugins/compleat", from:oh-my-zsh
 zplug "lib/completion", from:oh-my-zsh
-zplug "plugins/fasd", from:oh-my-zsh
-
-# Transforms Linux clock so it's human readable.
+i
+# Misc
 zplug "sindresorhus/pretty-time-zsh", from:github
-
-# Bump up to 256 color
-zplug "chrissicool/zsh-256color", from:github
-
-# SysOps
 zplug "gko/ssh-connect"
-zplug "skx/sysadmin-util"
-
-# Completions
-zplug "zsh-users/zsh-completions"
-zplug "glidenote/hub-zsh-completion"
+zplug "gliddenote/hub-zsh-completion"
 zplug "Valodim/zsh-curl-completion"
-
-# System
+zplug "lib/completion", from:oh-my-zsh
 zplug "plugins/command-not-found", from:oh-my-zsh
-zplug "plugins/common-aliases", from:oh-my-zsh
 zplug "jamesob/desk", from:github, as:command, use:"desk"
 zplug "plugins/composer", from:oh-my-zsh
 zplug "plugins/aws", from:oh-my-zsh
@@ -74,6 +60,7 @@ zplug "zuxfoucault/colored-man-pages_mod", from:oh-my-zsh
 zplug "b4b4r07/zplug-doctor", lazy:yes
 zplug "b4b4r07/zplug-cd", lazy:yes
 zplug "b4b4r07/zplug-rm", lazy:yes
+# zplug "trapd00r/zsh-syntax-highlighting-filetypes"
 zplug "stedolan/jq", as:command, from:gh-r, rename-to:jq
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf,\
     use:"*${(L)$(uname -s)}*amd64*"
