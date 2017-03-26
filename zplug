@@ -61,7 +61,6 @@ zplug "skx/sysadmin-util"
 
 # Completions
 zplug "zsh-users/zsh-completions"
-zplug "EslamElHusseiny/aws_manager_plugin"
 zplug "glidenote/hub-zsh-completion"
 zplug "Valodim/zsh-curl-completion"
 

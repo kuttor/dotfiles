@@ -27,12 +27,18 @@ alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 alias google="web_search google"
 alias h="peco_select_history"
+alias keycode="sed -n l"
+
 
 #------------------------------------------------------------------------------
 # Global
 #------------------------------------------------------------------------------
 
-alias -g linect='| wc -l'
+# Pipe-wordcount,line: Append 'C' to the command.
+alias -g C='| wc -l'
+
+# Pipe-less: Append 'L' to the command.
+alias -g L='| less'
 
 
 #------------------------------------------------------------------------------
