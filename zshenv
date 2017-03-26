@@ -31,9 +31,6 @@ export CACHE_DIR="$HOME/.cache"
 export EDITOR="`which vim`"
 
 # Pager: Less
-export LESSCHARSET=utf-8
-export LESSHISTSIZE=1000
-export LESS='-M -i -R'
 export PAGER="less"
 
 # Color: 256

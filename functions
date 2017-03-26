@@ -1,17 +1,17 @@
 #!/usr/local/bin/bash
 
 # Creates folder and CD's into it
-mcd() {
+function mcd() {
   mkdir -p "$1" && cd "$1";
 };
 
 # Run `dig` and display the most useful info
-dug() {
+function dug() {
   dig +nocmd "$1" any +multiline +noall +answer;
 };
 
 # Creates Backup
-backup() {
+function backup() {
   for file in "$@"; do
     local new=${file}.$(date '+%Y%m%d')
     while [[ -f $new ]]; do
@@ -23,16 +23,16 @@ backup() {
 };
 
 # run found file
-hunter(){
-  vim $(find . -name $1 | peco)
+function hunter(){
+  vim $(find . -name $1 | fzf)
 }
 
 # Colorized cat output
-dog(){
+function dog(){
   cat "$@" > /tmp/.tmp
   pygmentize -g /tmp/.tmp
   rm /tmp/.tmp
-};
+}
 
 
 # Useful host data
@@ -94,7 +94,7 @@ extract () {
 };
 
 # Quickly GREP a process
-psa () {
+function psa () {
   ps aux | grep $1
 };
 
@@ -107,7 +107,7 @@ function parse_git_branch() {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 };
 
-idps-sanity_check(){
+function idps-sanity_check(){
   string="https://$(1)/porticor-sec/get_instance_status?serial=$(2)"
   curl $string
 }

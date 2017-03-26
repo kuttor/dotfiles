@@ -6,10 +6,9 @@
 # Load the sources
 #============================================================================
 
-source "$ZDOTDIR/zoptions"
+source "$ZDOTDIR/configs"
 source "$ZDOTDIR/zplug"
-source "$ZDOTDIR/zcompletes"
-source "$ZDOTDIR/exports.zsh"
-source "$ZDOTDIR/bindkeys.zsh"
-source "$ZDOTDIR/aliases"
+source "$ZDOTDIR/completions"
+source "$ZDOTDIR/keybindings"
+source "$ZDOTDIR/aliases_shell"
 source "$ZDOTDIR/functions"

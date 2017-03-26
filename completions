@@ -12,7 +12,7 @@
 # Utilize caching
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':completion::complete:*' cache-path $ZSH_CACHE_DIR
-
+export ZSH_CACHE_DIR="$HOME/.cache"
 
 # AWS CLI
 aws_completer="$HOME/.local/bin/aws_zsh_completer.sh"

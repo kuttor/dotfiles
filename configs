@@ -31,6 +31,7 @@ ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(\
 export CLICOLOR=YES
 eval $(gdircolors -b "$HOME/.dircolors")
 
+
 #============================================================================
 # Prompt
 #============================================================================
@@ -41,6 +42,7 @@ setopt PROMPT_SUBST
 # Load prompt
 autoload -U promptinit
 promptinit && prompt pure
+
 
 #============================================================================
 # Help
@@ -58,3 +60,16 @@ autoload run-help-ip
 # Enabled math functions
 zmodload zsh/mathfunc
 
+
+#============================================================================
+# Less
+#============================================================================
+
+# Enhanced Less
+export LESS='--tabs=4 --no-init --LONG-PROMPT \
+    --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS'
+
+# Settings
+export LESSCHARSET=utf-8
+export LESSHISTSIZE=1000
+export LESS='-M -i -R'
