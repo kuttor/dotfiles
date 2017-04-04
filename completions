@@ -14,15 +14,15 @@ zstyle ':completion::complete:*' use-cache 1
 zstyle ':completion::complete:*' cache-path $ZSH_CACHE_DIR
 export ZSH_CACHE_DIR="$HOME/.cache"
 
-# AWS CLI
+# AWS Cli completion
 aws_completer="$HOME/.local/bin/aws_zsh_completer.sh"
 [ -f "${aws_completer}"  ] && source $aws_completer;
 
 # AWS
-complete -C '/usr/local/bin/aws_completer' aws
+# complete -C '/usr/local/bin/aws_completer' aws
 
 # Cliam
-complete -o "default" -o "nospace" -W "$(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' ~/.aws/credentials)" cliam cliamswitch
+# complete -o "default" -o "nospace" -W "$(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' ~/.aws/credentials)" cliam cliamswitch
 
 # Git
 if [ -f "$(brew --prefix bash-git-prompt)/share/gitprompt.sh" ]
@@ -32,14 +32,14 @@ then
 fi
 
 # SSH Config, avoids wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh
+# [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh
 
 # SSH Config
 # #complete -o "default" -o "nospace" -W "$(awk '/^Host /{print $2}'
 # ~/.ssh/config)" ssh
 
 # Killall for common apps
-complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
+# complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
 
 
 

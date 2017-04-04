@@ -28,7 +28,8 @@ alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 alias google="web_search google"
 alias h="peco_select_history"
 alias keycode="sed -n l"
-
+alias jung="jungle"
+alias awsl="awless"
 
 #------------------------------------------------------------------------------
 # Global
@@ -39,14 +40,6 @@ alias -g C='| wc -l'
 
 # Pipe-less: Append 'L' to the command.
 alias -g L='| less'
-
-
-#------------------------------------------------------------------------------
-# Git
-#------------------------------------------------------------------------------
-
-eval "$(hub alias -s)"
-
 
 
 #------------------------------------------------------------------------------

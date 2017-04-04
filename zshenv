@@ -19,8 +19,8 @@ export CACHE_DIR="$HOME/.cache"
 # Path & Fpath
 #============================================================================
 
-# typeset -U path
-# path=("$HOME/bin" /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin $path)
+typeset -U path
+path=("$HOME/bin" /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin $path)
 
 # fpath=("$ZDOTDIR/functions" "$ZDOTDIR/completions" $fpath)
 
@@ -73,6 +73,14 @@ HISTSIZE=1000000
 SAVEHIST=5000
 READNULLCMD=less
 
-# Replica .zshrc
-source "$HOME/.dotfiles/zsh.config"
+
+#============================================================================-
+# Load the sources
+#============================================================================
+
+source "$HOME/.dotfiles/options"
+source "$HOME/.dotfiles/zplug"
+source "$HOME/.dotfiles/keybindings"
+source "$HOME/.dotfiles/aliases_shell"
+source "$HOME/.dotfiles/functions"
 

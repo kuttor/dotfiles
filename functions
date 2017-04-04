@@ -1,15 +1,25 @@
 #!/usr/local/bin/bash
 
-# Creates folder and CD's into it
+#------------------------------------------------------------------------------
+# mcd - Creates folder and CD's into it
+#------------------------------------------------------------------------------
+
 function mcd() {
   mkdir -p "$1" && cd "$1";
-};
+}
 
-# Run `dig` and display the most useful info
+#------------------------------------------------------------------------------
+# dug - useful dig info
+#------------------------------------------------------------------------------
+
 function dug() {
   dig +nocmd "$1" any +multiline +noall +answer;
 };
 
+
+#------------------------------------------------------------------------------
+# mcd - Creates folder and CD's into it
+#------------------------------------------------------------------------------
 # Creates Backup
 function backup() {
   for file in "$@"; do
@@ -20,18 +30,26 @@ function backup() {
     printf "copying '%s' to '%s'\n" "$file" "$new";
     \cp -ip "$file" "$new";
   done
-};
+}
 
-# run found file
+
+#------------------------------------------------------------------------------
+# hunter - run found file
+#------------------------------------------------------------------------------
+
 function hunter(){
   vim $(find . -name $1 | fzf)
 }
 
-# Colorized cat output
-function dog(){
+
+#------------------------------------------------------------------------------
+# dog - colorized cat
+#------------------------------------------------------------------------------
+
+function dog() {
   cat "$@" > /tmp/.tmp
   pygmentize -g /tmp/.tmp
-  rm /tmp/.tmp
+  rm -rmf /tmp/.tmp
 }
 
 
@@ -48,6 +66,9 @@ function dog(){
 #  echo
 #}
 
+#------------------------------------------------------------------------------
+# mcd - Creates folder and CD's into it
+#------------------------------------------------------------------------------
 # Advanced tree one liners
 l () {
   tree -L 1 -CDFha --du --dirsfirst $@;
@@ -93,11 +114,6 @@ extract () {
   fi
 };
 
-# Quickly GREP a process
-function psa () {
-  ps aux | grep $1
-};
-
 # Git branch details
 function parse_git_dirty() {
   [[ $(git status 2> /dev/null | tail -n1) != *"working directory clean"* ]] && echo "*"
@@ -112,23 +128,46 @@ function idps-sanity_check(){
   curl $string
 }
 
-# Interactive pid greap using percol
-function ppgrep() {
-    if [[ $1 == "" ]]; then
-        PERCOL=percol
+
+#------------------------------------------------------------------------------
+# aws-usr - profile switcher
+#------------------------------------------------------------------------------
+
+aws-usr-list() {
+  cred_file=${AWS_SHARED_CREDENTIALS_FILE};
+  [ -z $cred_file ] && cred_file=~/.aws/credentials
+	profiles=($(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' $cred_file))
+	printf '%s\n' "total ${#profiles[@]}"
+	# printf '%s\n' "${profiles[@]}"
+
+  for profile in "${profiles[@]}"
+  do
+    if [ "$profile" == "${AWS_DEFAULT_PROFILE}" ]
+    then
+      echo -e "\e[92m"$profile"\033[0m"
     else
-        PERCOL="percol --query $1"
+      printf '%s\n' $profile
     fi
-    ps aux | eval $PERCOL | awk '{ print $2 }'
+  done
 }
 
-# Interactive pid kill using percol
-function ppkill() {
-    if [[ $1 =~ "^-" ]]; then
-        QUERY=""            # options only
-    else
-        QUERY=$1            # with a query
-        [[ $# > 0 ]] && shift
-    fi
-    ppgrep $QUERY | xargs kill $*
+aws-usr-user() {
+	aws configure list | awk '{ printf "%-20s %-40s\n", $1, $2 }'
 }
+
+aws-usr() {
+	EXISTS="$(aws configure get aws_access_key_id --profile $1)"
+	if [ $EXISTS ]
+  then
+    printf '%s\n' "Found profile: $3"
+	else
+		printf '%s\n' "Profile not found, please try again"
+		exit 1
+	fi
+
+	printf '%s\n' "Switching profile to "$1
+	export AWS_DEFAULT_PROFILE=$1
+	echo $AWS_DEFAULT_PROFILE
+ }
+
+
