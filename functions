@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/local/bin/zsh
 
 #------------------------------------------------------------------------------
 # mcd - Creates folder and CD's into it
@@ -133,10 +133,11 @@ function idps-sanity_check(){
 # aws-usr - profile switcher
 #------------------------------------------------------------------------------
 
-aws-usr-list() {
-  cred_file=${AWS_SHARED_CREDENTIALS_FILE};
-  [ -z $cred_file ] && cred_file=~/.aws/credentials
-	profiles=($(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' $cred_file))
+awswap() {
+
+  AWS_SHARED_CREDENTIALS_FILE="$HOME/.aws/credentials"
+	
+  profiles=$(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' $AWS_SHARED_CREDENTIALS_FILE)
 	printf '%s\n' "total ${#profiles[@]}"
 	# printf '%s\n' "${profiles[@]}"
 
@@ -151,9 +152,6 @@ aws-usr-list() {
   done
 }
 
-aws-usr-user() {
-	aws configure list | awk '{ printf "%-20s %-40s\n", $1, $2 }'
-}
 
 aws-usr() {
 	EXISTS="$(aws configure get aws_access_key_id --profile $1)"
@@ -169,5 +167,3 @@ aws-usr() {
 	export AWS_DEFAULT_PROFILE=$1
 	echo $AWS_DEFAULT_PROFILE
  }
-
-

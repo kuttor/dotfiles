@@ -1,32 +1,3 @@
-#!/usr/bin/env zsh
-
-#============================================================================
-# Initialize Zplug
-#============================================================================
-
-# If check fails clone it
-[[ ! -d $ZPLUG_HOME ]] && \
-    git clone "https://github.com/b4b4r07/zplug" $ZPLUG_HOME
-
-# Initialize
-source "$ZPLUG_HOME/init.zsh"
-
-#============================================================================
-# Specify Plugins
-#============================================================================
-
-# Selfless
-zplug "zplug/zplug", hook-build:"zplug --self-manage"
-
-ccc
-zplug "tcnksm/ghr", \
-    as:command, \
-    from:gh-r
-
-zplug 'b4b4r07/epoch-cat', \
-    as:command, \
-    hook-build:'go get -d && go build'
-
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-autosuggestions"
@@ -46,17 +17,19 @@ zplug "plugins/autopep8", from:oh-my-zsh
 zplug "plugins/web-search", from:oh-my-zsh
 zplug "plugins/fasd", from:oh-my-zsh
 zplug "plugins/compleat", from:oh-my-zsh
-zplug "plugins/aws", from:oh-my-zsh
-zplug "plugins/command-not-found", from:oh-my-zsh
+zplug "lib/completion", from:oh-my-zsh
 zplug "sindresorhus/pretty-time-zsh", from:github
 zplug "gko/ssh-connect"
 zplug "glidenote/hub-zsh-completion"
 zplug "Valodim/zsh-curl-completion"
+zplug "plugins/command-not-found", from:oh-my-zsh
 zplug "jamesob/desk", from:github, as:command, use:"desk"
+zplug "plugins/aws", from:oh-my-zsh
 zplug "zuxfoucault/colored-man-pages_mod", from:oh-my-zsh
 zplug "b4b4r07/zplug-doctor", lazy:yes
 zplug "b4b4r07/zplug-cd", lazy:yes
 zplug "b4b4r07/zplug-rm", lazy:yes
+zplug "jhawthorn/fzy", as:command, hook-build:"make && sudo make install"
 zplug "b4b4r07/open-link.sh", as:command, use:'(*).bash', rename-to:'$1'
 zplug "b4b4r07/zsh-gomi", as:command, use:bin/gomi
 zplug "b4b4r07/ssh-keyreg", as:command, use:bin
@@ -70,14 +43,5 @@ zplug 'lib/spectrum', from:oh-my-zsh
 zplug 'lib/theme-and-appearance', from:oh-my-zsh
 zplug 'mutantcornholio/prok', as:command, use:'(*).sh', rename-to:'$1'
 zplug "stedolan/jq", as:command, from:gh-r, rename-to:jq
-zplug "jhawthorn/fzy", as:command, hook-build:"make && sudo make install"
-
-#============================================================================
-# Initialize Plugins
-#===========================================================================
-
-# If plugin non-exists, install it
-zplug check --verbose || zplug install
-
-# Load plugins
-zplug load
+zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf,\
+    use:"*${(L)$(uname -s)}*amd64*"

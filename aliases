@@ -17,7 +17,7 @@ alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
 alias ssh-tunnel="ssh -f -N ec2-user@35.165.11.61 -i ~/.ssh/IDPS-Ops.pem -t -L3307:customerdb.cybrn9mnq2o6.us-west-2.rds.amazonaws.com:3306"
 alias customerdb="mysql --login-path=safelogin -P3307 -D customerdb"
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
-alias reload="exec $SHELL -l"
+alias reload="exec $SHELL"
 alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
 alias ports='netstat -lantip'
 alias sudo='sudo '
@@ -25,11 +25,10 @@ alias c='pygmentize -O style=monokai -f console256 -g'
 alias tn='tr -d "\n"'
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
-alias google="web_search google"
-alias h="peco_select_history"
 alias keycode="sed -n l"
 alias jung="jungle"
 alias awsl="awless"
+alias dog="highlight -O ansi"
 
 #------------------------------------------------------------------------------
 # Global
