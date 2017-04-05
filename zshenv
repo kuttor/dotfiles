@@ -30,9 +30,6 @@ export EDITOR="`which vim`"
 # Pager: Less
 export PAGER="less"
 
-# Color: 256
-export TERM=xterm-256color
-
 # Default Shell: Sh
 [[ ${TERM:-dumb} != "dumb"  ]] || exec "/bin/sh"
 [ -t 1  ] || exec "/bin/sh"
@@ -45,17 +42,23 @@ umask 022
 #============================================================================
 
 source "$HOME/.dotfiles/zplug"
-source "$HOME/.dotfiles/keybindings"
+source "$HOME/.dotfiles/keybinds"
 source "$HOME/.dotfiles/aliases"
 source "$HOME/.dotfiles/functions"
+source "$HOME/.dotfiles/history"
+source "$HOME/.dotfiles/completions"
+source "$HOME/.dotfiles/hooks"
 
 # Autosuggestion
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=137"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=138"
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(\
     do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
-# Trapd00r LS Colors
-# eixport CLICOLOR=YES
+
+
+# Color: 256
+export TERM=xterm-256color
+export CLICOLOR=YES
 # alias dircolors=gdircolors
 # eval $(dircolors -b "$HOME/.dircolors")
 

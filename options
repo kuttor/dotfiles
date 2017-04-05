@@ -1,11 +1,12 @@
-lear``
+#!/usr/bin/usr zsh
 
 # Autosuggestion
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=136"
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(\
     do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
-# Trapd00r LS Colors
+# Colors
+export TERM=xterm-256color
 export CLICOLOR=YES
 alias dircolors=gdircolors
 eval $(dircolors -b "$HOME/.dircolors")
@@ -24,7 +25,7 @@ promptinit && prompt pure
 
 
 #============================================================================
-# Help
+# Misc
 #============================================================================
 
 # Hotkey: Meta+h for current command
@@ -36,20 +37,49 @@ autoload run-help-git
 autoload run-help-openssl
 autoload run-help-ip
 
+autoload -Uz smart-insert-last-word
+autoload -Uz terminfo
+autoload -Uz vcs_infoi
+
 # Enabled math functions
 zmodload zsh/mathfunc
 
 
+# Force refresh the terminal title before each command.
+autoload add-zsh-hook
+update_terminal_title() {
+  print -Pn "\e]0;%~ - Terminal\a"
+}
+add-zsh-hook precmd update_terminal_title
+
 #============================================================================
-# Less
+# Exports
 #============================================================================
+
+export VISUAL='subl 'i
+export PAGER="less"
 
 # Enhanced Less
-export LESS='--tabs=4 --no-init --LONG-PROMPT \
-    --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS'
+export LESS'--tabs=4 --no-init --LONG-PROMPT --ignore-case \
+--quit-if-one-screen --RAW-CONTROL-CHARS'
 
-# Settings
 export LESSCHARSET=utf-8
 export LESSHISTSIZE=1000
 export LESS='-M -i -R'
+eval $(lesspipe)
+# Colors for less binary.
+export LESS_TERMCAP_mb=$(tput bold; tput setaf 2) # green
+export LESS_TERMCAP_md=$(tput bold; tput setaf 6) # cyan
+export LESS_TERMCAP_me=$(tput sgr0)
+export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4) # yellow on blue
+export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
+export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) # white
+export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
+export LESS_TERMCAP_mr=$(tput rev)
+export LESS_TERMCAP_mh=$(tput dim)
+export LESS_TERMCAP_ZN=$(tput ssubm)
+export LESS_TERMCAP_ZV=$(tput rsubm)
+export LESS_TERMCAP_ZO=$(tput ssupm)
+export LESS_TERMCAP_ZW=$(tput rsupm)
+
 
