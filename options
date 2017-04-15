@@ -1,85 +1,64 @@
-#!/usr/bin/usr zsh
+#!/usr/bin/env zsh
 
-# Autosuggestion
+#------------------------------------------------------------------------------
+# About
+#------------------------------------------------------------------------------
+
+# Author : Andrew Kuttor
+# E-Mail : andrew_kuttor@intuit.com
+# Detail : Holds Shell and local settings
+
+#------------------------------------------------------------------------------
+# SetOpts
+#------------------------------------------------------------------------------
+
+umask 022
+
+autoload -U predict-on	    2> /dev/null
+zle -N predict-on		    2> /dev/null
+
+setopt APPEND_HISTORY       2> /dev/null
+setopt AUTO_COMPLETE	    2> /dev/null
+setopt AUTO_CD			    2> /dev/null
+setopt AUTO_LIST		    2> /dev/null
+setopt AUTO_NAME_DIRS	    2> /dev/null
+setopt AUTO_PARAM_SLASH	    2> /dev/null
+setopt AUTO_PUSHD		    2> /dev/null
+setopt BANG_HIST		    2> /dev/null
+setopt BARE_GLOB_QUAL	    2> /dev/null
+setopt BSD_ECHO			    2> /dev/null
+setopt CDABLE_VARS	    	2> /dev/null
+setopt CHECK_JOBS	    	2> /dev/null
+setopt CSH_NULL_GLOB	    2> /dev/null
+setopt C_BASES			    2> /dev/null
+setopt EXTENDED_HISTORY		2> /dev/null
+setopt HIST_SAVE_BY_COPY    2> /dev/null
+
+#setopt IGNORE_EOF		2> /dev/null
+setopt INTERACTIVE_COMMENTS	2> /dev/null
+setopt NOBEEP			    2> /dev/null
+setopt NO_BG_NICE		    2> /dev/null
+setopt NO_LIST_BEEP		    2> /dev/null
+setopt PATH_DIRS		    2> /dev/null
+setopt PRINT_EIGHT_BIT		2> /dev/null
+setopt RM_STAR_WAIT		    2> /dev/null
+setopt SHARE_HISTORY		2> /dev/null
+
+#------------------------------------------------------------------------------
+# Settings
+#------------------------------------------------------------------------------
+
+COMPLETION_WAITING_DOTS="true"
+DISABLE_CORRECTION="true"
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor root line)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=136"
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(\
-    do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
-# Colors
-export TERM=xterm-256color
-export CLICOLOR=YES
-alias dircolors=gdircolors
-eval $(dircolors -b "$HOME/.dircolors")
+# Navigation Coloring 
+export LSCOLORS="exfxcxdxbxegedabagacad"
+export CLICOLOR=true
 
-
-#============================================================================
-# Prompt
-#============================================================================
-
-# Prompt expansions powers
-setopt PROMPT_SUBST
-
-# Load prompt
-autoload -U promptinit
-promptinit && prompt pure
-
-
-#============================================================================
-# Misc
-#============================================================================
-
-# Hotkey: Meta+h for current command
-autoload run-help
-
-# Auto-Help responses
-autoload run-help-sudo
-autoload run-help-git
-autoload run-help-openssl
-autoload run-help-ip
-
-autoload -Uz smart-insert-last-word
-autoload -Uz terminfo
-autoload -Uz vcs_infoi
-
-# Enabled math functions
-zmodload zsh/mathfunc
-
-
-# Force refresh the terminal title before each command.
-autoload add-zsh-hook
-update_terminal_title() {
-  print -Pn "\e]0;%~ - Terminal\a"
-}
-add-zsh-hook precmd update_terminal_title
-
-#============================================================================
-# Exports
-#============================================================================
-
-export VISUAL='subl 'i
-export PAGER="less"
-
-# Enhanced Less
-export LESS'--tabs=4 --no-init --LONG-PROMPT --ignore-case \
---quit-if-one-screen --RAW-CONTROL-CHARS'
-
-export LESSCHARSET=utf-8
-export LESSHISTSIZE=1000
-export LESS='-M -i -R'
-eval $(lesspipe)
-# Colors for less binary.
-export LESS_TERMCAP_mb=$(tput bold; tput setaf 2) # green
-export LESS_TERMCAP_md=$(tput bold; tput setaf 6) # cyan
-export LESS_TERMCAP_me=$(tput sgr0)
-export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4) # yellow on blue
-export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
-export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) # white
-export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
-export LESS_TERMCAP_mr=$(tput rev)
-export LESS_TERMCAP_mh=$(tput dim)
-export LESS_TERMCAP_ZN=$(tput ssubm)
-export LESS_TERMCAP_ZV=$(tput rsubm)
-export LESS_TERMCAP_ZO=$(tput ssupm)
-export LESS_TERMCAP_ZW=$(tput rsupm)
-
+# Delete style (by word, up to slash)
+autoload -Uz select-word-style && select-word-style bash
+export WORDCHARS='*?_[]~=&;!#$%^(){}'
 

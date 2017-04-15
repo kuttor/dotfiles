@@ -1,4 +1,4 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
 # alias: Aliases for both Bash and Zsh.
 
@@ -17,41 +17,60 @@ alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
 alias ssh-tunnel="ssh -f -N ec2-user@35.165.11.61 -i ~/.ssh/IDPS-Ops.pem -t -L3307:customerdb.cybrn9mnq2o6.us-west-2.rds.amazonaws.com:3306"
 alias customerdb="mysql --login-path=safelogin -P3307 -D customerdb"
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
-alias reload="exec $SHELL"
 alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
 alias ports='netstat -lantip'
-alias sudo='sudo '
 alias c='pygmentize -O style=monokai -f console256 -g'
 alias tn='tr -d "\n"'
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 alias keycode="sed -n l"
 alias jung="jungle"
-alias awsl="awless"
-alias dog="highlight -O ansi"
+alias awl="awless"
+alias _='sudo'
+alias please='sudo'
+alias swap="asp"
+alias path='echo $PATH | tr -s ":" "\n"'
+alias d='ls'
+alias e='exit'
+alias exit='clear;exit'
+alias f='finger'
+alias less='less +g -RSC~'
+alias logout='exit'
+alias m='more'
+alias q='exit'
+alias quit='exit'
+alias reset='echo -e \\017; reset'
 
 #------------------------------------------------------------------------------
 # Global
 #------------------------------------------------------------------------------
 
-# Pipe-wordcount,line: Append 'C' to the command.
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
 alias -g C='| wc -l'
-
-# Pipe-less: Append 'L' to the command.
-alias -g L='| less'
-
+alias -g H='| head'
+alias -g L="| less"
+alias -g N="| /dev/null"
+alias -g S='| sort'
+alias -g G='| grep' # now you can do: ls foo G something
 
 #------------------------------------------------------------------------------
-# Fasd
+# Typos
 #------------------------------------------------------------------------------
 
-alias a='fasd -a'        # any
-alias s='fasd -si'       # show / search / select
-alias d='fasd -d'        # directory
-alias f='fasd -f'        # file
-alias sd='fasd -sid'     # interactive directory selection
-alias sf='fasd -sif'     # interactive file selection
-alias z='fasd_cd -d'     # cd, same functionality as j in autojump
-alias zz='fasd_cd -d -i' # cd with interactive selection
-
-
+alias dior='dir'
+alias dire='dir'
+alias dor='dir'
+alias die='dir'
+alias doe='dir'
+alias dur='dir'
+alias mroe='more'
+alias pcio='pico'
+alias pciop='pico'
+alias pin='pine'
+alias pnie='pine'
+alias ,pre='more'
+alias sl='ls'
+alias srln='slrn'
+alias grpe='grep'

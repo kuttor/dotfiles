@@ -167,3 +167,10 @@ aws-usr() {
 	export AWS_DEFAULT_PROFILE=$1
 	echo $AWS_DEFAULT_PROFILE
  }
+
+function set_aws {
+  eval $(awsenv shell $1)
+}
+function login_aws {
+  open $(awsenv console $1)
+}

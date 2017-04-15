@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-
-[toplevel] 
+[toplevel]
 
 #------------------------------------------------------------------------------
 # prints all AWS aliases
 #------------------------------------------------------------------------------
-aliases = 
+aliases =
   !f() {
     grep -E ^"#" ~/.aws/cli/alias;
   }; f
@@ -27,7 +26,8 @@ instances = ec2 describe-instances --output table \
 #------------------------------------------------------------------------------
 # find-access-key
 #------------------------------------------------------------------------------
-find-access-key = !f() {
+find-access-key =
+  !f() {
     clear_to_eol=$(tput el)
     for i in $(aws iam list-users --query "Users[].UserName" --output text); do
       printf "\r%sSearching...$i" "${clear_to_eol}"
@@ -87,7 +87,7 @@ subnets = ec2 describe-subnets --output table \
 #------------------------------------------------------------------------------
 elbs = elb describe-load-balancers --output table \
   --query 'LoadBalancerDescriptions[].{
-    Name:LoadBalancerName, 
+    Name:LoadBalancerName,
     DNSName:DNSName,
     SecGroup:DNSName.SecurityGroups
   }'
@@ -120,7 +120,7 @@ find-elb =
 # region: list or set region
 #------------------------------------------------------------------------------
 region =
-  !f() { 
+  !f() {
     [[ $# -eq 1 ]] && aws configure set region "$1" \
     || aws configure get region;
   }; f
@@ -128,29 +128,14 @@ region =
 #------------------------------------------------------------------------------
 # project-endpoint: finds all endpoints in aws account
 #------------------------------------------------------------------------------
-endpoints = ec2 describe-instances \
+endpoints = ec2 describe-instances --output text \
   --query 'Reservations[].Instances[].[Tags[?Key==`Project-Endpoint`].Value | [0]]' \
   --filter 'Name=tag:Component,Values=Appliance' \
-  --output text
-
-#------------------------------------------------------------------------------
-# profile: switches to a target IAM CLI user
-#------------------------------------------------------------------------------
-profile =
-  !f() {
-    if $1
-    then
-      printf "Setting profile to $1";
-      export AWS_DEFAULT_PROFILE=$1;
-    else
-      aws configure list;
-    fi
-  }; f
 
 #------------------------------------------------------------------------------
 # tostring: converts string to alias format via jmespath
 #------------------------------------------------------------------------------
-tostring = 
+tostring =
   !f() {
     jp -f "${1}" 'to_string(@)';
   }; f
@@ -158,7 +143,7 @@ tostring =
 #------------------------------------------------------------------------------
 # tostring-with-jq: converts string to alias format via JQ
 #------------------------------------------------------------------------------
-tostring-with-jq = 
+tostring-with-jq =
   !f() {
     cat "${1}" | jq 'tostring';
   }; f
@@ -166,7 +151,7 @@ tostring-with-jq =
 #------------------------------------------------------------------------------
 # latest-intuit-ami: retrieves latest ami build by using a region as argument.
 #------------------------------------------------------------------------------
-intuit-ami =
+ami =
   !f() {
     [[ $# -eq 1 ]] && region=$1 \
     || echo 'Missing Region: default'; region=$(aws configure get region);
