@@ -7,38 +7,24 @@
 # Key Bindings
 #------------------------------------------------------------------------------
 
-bindkey '^[[1~'   beginning-of-line
-bindkey '^[[2~'   overwrite-mode
-bindkey '^[[3~'   delete-char
-bindkey '^[[4~'   end-of-line
-bindkey '^[[5~'   up-history
-bindkey '^[[6~'   down-history
-bindkey '^[[7~'   beginning-of-line
-bindkey '^[[8~'   end-of-line
-bindkey '^[OD'    backward-word
-bindkey '^[OC'    forward-word
-bindkey '^[^[[D'  stack-cd-forward
-bindkey '^[^[[C'  stack-cd-backward
-bindkey '^[[1;3D' stack-cd-forward
-bindkey '^[[1;3C' stack-cd-backward
-bindkey '^[[Z'    reverse-menu-complete
+typeset -g -A key
 
-function copy-region-as-kill-deactivate-mark {
-  zle copy-region-as-kill
-  zle set-mark-command -n -1
-}
+bindkey -e
 
-zle -N copy-region-as-kill-deactivate-mark
-bindkey '^[w' copy-region-as-kill-deactivate-mark
+bindkey '^H' delete-word # iterm
+bindkey '^[[3~' delete-char # tmux
 
-zmodload zsh/complist
-bindkey -M menuselect ' ' accept-and-infer-next-history
-bindkey -M menuselect '^?' undo
+bindkey '^[[1;9D' backward-word # iterm
+bindkey '^[^[[D' backward-word # tmux os x
+bindkey '^[[1;3D' backward-word # tmux ubuntu
 
-if [[ ${+debian_missing_features} == 1 ]]
-then
-        function zle-line-init () {
-        }
-        function zle-line-finish () {
-        }
-fi
+bindkey '^[[1;9C' forward-word # iterm
+bindkey '^[^[[C' forward-word # tmux os x
+bindkey '^[[1;3C' forward-word # tmux ubuntu
+
+
+bindkey '^[[H' beginning-of-line # iterm
+bindkey '^[[1~' beginning-of-line # tmux
+
+bindkey '^[[F' end-of-line # iterm
+bindkey '^[[4~' end-of-line # tmux

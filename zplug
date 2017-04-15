@@ -72,7 +72,7 @@ zplug "lib/history", from:oh-my-zsh
 zplug "lib/misc", from:oh-my-zsh
 zplug "mutantcornholio/prok", as:command, use:"(*).sh", rename-to:"$1"
 zplug "stedolan/jq", as:command, from:"gh-r", rename-to:"jq"
-zplug "supercrabtree/k", from:oh-my-zsh
+zplug "supercrabtree/k"
 
 #------------------------------------------------------------------------------
 # Initialize Plugins
