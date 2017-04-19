@@ -72,24 +72,24 @@ function dog() {
 # Advanced tree one liners
 l () {
   tree -L 1 -CDFha --du --dirsfirst $@;
-};
+}
 
 ll () {
   l -L 2 $@;
-};
+}
 
 function lll() {
   l -L 3 $@;
-};
+}
 
 # Get all processes owned by user
-users_procs() {
+usersprocs() {
   ps $@ -u $1 -o pid,%cpu,%mem,start,time,bsdtime,command ;
 };
 
 # Send RM to Trashcan instead
 trash () {
-  command mv "$@" ~/.Trash ;
+  mv "$@" "$HOME/.Trash";
 };
 
 # Extract:  Extract most know archives with one command
@@ -168,9 +168,10 @@ aws-usr() {
 	echo $AWS_DEFAULT_PROFILE
  }
 
-function set_aws {
+set_aws {
   eval $(awsenv shell $1)
 }
+
 function login_aws {
   open $(awsenv console $1)
 }

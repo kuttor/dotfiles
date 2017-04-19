@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # alias: Aliases for both Bash and Zsh.
 
 # By: Andrew Kuttor
-# Contact: andrew.kuttor@gmail.com
+# Contact: andrew.kuttoR@gmail.com
 
 #------------------------------------------------------------------------------
 # Main
@@ -70,7 +70,7 @@ alias pcio='pico'
 alias pciop='pico'
 alias pin='pine'
 alias pnie='pine'
-alias ,pre='more'
+alias ,ipre='more'
 alias sl='ls'
 alias srln='slrn'
 alias grpe='grep'
