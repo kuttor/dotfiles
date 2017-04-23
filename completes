@@ -3,7 +3,6 @@
 # Zsh-completions
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-
 zmodload -i zsh/complist
 
 # Caching

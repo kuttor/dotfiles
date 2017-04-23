@@ -1,99 +1,64 @@
 #!/usr/local/bin/zsh
 
+# Reason: function - Mother always told you to be tidy and organize your toys
+# Author: Andrew Kuttor
+# E-mail: andrew.kuttor@gmail.com
+
 #------------------------------------------------------------------------------
 # mcd - Creates folder and CD's into it
 #------------------------------------------------------------------------------
 
-function mcd() {
-  mkdir -p "$1" && cd "$1";
-}
+function mcd(){ mkdir -p "$1" && cd "$1" }
 
 #------------------------------------------------------------------------------
 # dug - useful dig info
 #------------------------------------------------------------------------------
 
-function dug() {
-  dig +nocmd "$1" any +multiline +noall +answer;
-};
-
+function dug(){ dig +nocmd "$1" any +multiline +noall +answer }
 
 #------------------------------------------------------------------------------
 # mcd - Creates folder and CD's into it
 #------------------------------------------------------------------------------
-# Creates Backup
-function backup() {
-  for file in "$@"; do
-    local new=${file}.$(date '+%Y%m%d')
-    while [[ -f $new ]]; do
-      new+="~";
-    done;
-    printf "copying '%s' to '%s'\n" "$file" "$new";
-    \cp -ip "$file" "$new";
-  done
-}
 
+function backup(){ cp -p $@{,.backup$(date '+%Y%m%d')}}
 
 #------------------------------------------------------------------------------
 # hunter - run found file
 #------------------------------------------------------------------------------
 
-function hunter(){
-  vim $(find . -name $1 | fzf)
-}
-
+function hunter(){ vim $(find . -name $1 | fzf) }
 
 #------------------------------------------------------------------------------
 # dog - colorized cat
 #------------------------------------------------------------------------------
 
-function dog() {
+function dog(){
   cat "$@" > /tmp/.tmp
   pygmentize -g /tmp/.tmp
   rm -rmf /tmp/.tmp
 }
 
+#------------------------------------------------------------------------------
+# Tree on some major fertilizer
+#------------------------------------------------------------------------------
 
-# Useful host data
-#ii () {
-#  echo -e "\nYou are logged on ${RED}$HOST"
-#  echo -e "\nAdditionnal information:$NC " ; uname -a
-#  echo -e "\n${RED}Users logged on:$NC " ; w -
-#  echo -e "\n${RED}Current date :$NC " ; date
-#  echo -e "\n${RED}Machine stats :$NC " ; uptime
-#  echo -e "\n${RED}Current network location :$NC " ; scselect
-#  echo -e "\n${RED}Public facing IP Address :$NC " ;myip
-##  #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
-#  echo
-#}
+function l (){ tree -L 1 -CDFha --du --dirsfirst $@ }
+
+function ll (){ l -L 2 $@ }
+
+function lll(){ l -L 3 $@ }
 
 #------------------------------------------------------------------------------
-# mcd - Creates folder and CD's into it
+# Please tell me I don't need to explain this one
+#------------------------------------------------------------------------------```
+
+trash (){ mv "$@" "$HOME/.Trash" }
+
 #------------------------------------------------------------------------------
-# Advanced tree one liners
-l () {
-  tree -L 1 -CDFha --du --dirsfirst $@;
-}
+# Extracts several formats!
+#-----------------------------------------------------------------------------
 
-ll () {
-  l -L 2 $@;
-}
-
-function lll() {
-  l -L 3 $@;
-}
-
-# Get all processes owned by user
-usersprocs() {
-  ps $@ -u $1 -o pid,%cpu,%mem,start,time,bsdtime,command ;
-};
-
-# Send RM to Trashcan instead
-trash () {
-  mv "$@" "$HOME/.Trash";
-};
-
-# Extract:  Extract most know archives with one command
-extract () {
+extract (){
   if [ -f $1 ] ; then
     case $1 in
       *.tar.bz2)   tar xjf $1     ;;
@@ -112,66 +77,20 @@ extract () {
   else
     echo "'$1' is not a valid file"
   fi
-};
+}
 
 # Git branch details
-function parse_git_dirty() {
-  [[ $(git status 2> /dev/null | tail -n1) != *"working directory clean"* ]] && echo "*"
-};
+function parse_git_dirty(){
+  [[ $(git status 2> /dev/null | \
+      tail -n1) != *"working directory clean"* ]] && echo "*"
+}
 
-function parse_git_branch() {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
-};
+function parse_git_branch(){
+  git branch --no-color 2> /dev/null | \
+      sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+}
 
 function idps-sanity_check(){
   string="https://$(1)/porticor-sec/get_instance_status?serial=$(2)"
   curl $string
-}
-
-
-#------------------------------------------------------------------------------
-# aws-usr - profile switcher
-#------------------------------------------------------------------------------
-
-awswap() {
-
-  AWS_SHARED_CREDENTIALS_FILE="$HOME/.aws/credentials"
-	
-  profiles=$(awk '/\[/{ gsub(/\[|\]/,"") ; print $NF }' $AWS_SHARED_CREDENTIALS_FILE)
-	printf '%s\n' "total ${#profiles[@]}"
-	# printf '%s\n' "${profiles[@]}"
-
-  for profile in "${profiles[@]}"
-  do
-    if [ "$profile" == "${AWS_DEFAULT_PROFILE}" ]
-    then
-      echo -e "\e[92m"$profile"\033[0m"
-    else
-      printf '%s\n' $profile
-    fi
-  done
-}
-
-
-aws-usr() {
-	EXISTS="$(aws configure get aws_access_key_id --profile $1)"
-	if [ $EXISTS ]
-  then
-    printf '%s\n' "Found profile: $3"
-	else
-		printf '%s\n' "Profile not found, please try again"
-		exit 1
-	fi
-
-	printf '%s\n' "Switching profile to "$1
-	export AWS_DEFAULT_PROFILE=$1
-	echo $AWS_DEFAULT_PROFILE
- }
-
-set_aws {
-  eval $(awsenv shell $1)
-}
-
-function login_aws {
-  open $(awsenv console $1)
 }

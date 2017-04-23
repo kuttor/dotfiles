@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-# Info: .zshenv
+# Info: zshenv - One file to source them all
 # Author: Andrew Kuttor
-# Contact: andrew_kuttor@intuit.com
+# Contact: andrew.kuttor@gmail.com
 
 #----------------------------------------------------------------------------
 # Path & Fpath
@@ -45,7 +45,7 @@ unsetopt GLOBAL_RCS
 source "$HOME/.dotfiles/zplug"
 source "$HOME/.dotfiles/keybinds"
 source "$HOME/.dotfiles/aliases"
-# source "$HOME/.dotfiles/functions"
-# source "$HOME/.dotfiles/completes"
+source "$HOME/.dotfiles/functions"
+source "$HOME/.dotfiles/completes"
 # source "$HOME/.dotfiles/hooks"
 # source "$HOME/.dotfiles/options"
