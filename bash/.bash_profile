@@ -3,7 +3,14 @@
 # Author: Andrew Kuttor
 # E-mail: andrew.kuttor@gmail.com
 
+# If not interactive do not pass go
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
 BASHDOTS="$HOME/.dotfiles/bash/" # Home
+
 
 #-------------------------------------------------------------------------------
 # BUILTINS
@@ -29,7 +36,8 @@ else
 fi
 
 eval $(dircolors -b $BASHDOTS/.dircolors) # Coloring for 300 filetypes
-alias ls="ls -AFoqv --color --group-directories-first"
+alias ls="ls -AFoqv --color --group-directories-first |\
+  tail -n +2 && find -maxdepth 1 -type f -printf '%s\n'"
 
 
 #-------------------------------------------------------------------------------
@@ -51,12 +59,41 @@ export LC_ALL='en_US.UTF-8'
 
 
 #-------------------------------------------------------------------------------
+# Completionss
+#-------------------------------------------------------------------------------
+
+# Enable programmable completions
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+
+#-------------------------------------------------------------------------------
+# Extras
+#-------------------------------------------------------------------------------
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+
+#-------------------------------------------------------------------------------
 # Sources
 #-------------------------------------------------------------------------------
 
+# Aliases
 if [ -f "$BASHDOTS/.bash_aliases" ]
 then
   source "$BASHDOTS/.bash_aliases"
+fi
+
+# Functions
+if [ -f "$BASHDOTS/.bash_functions" ]
+then
+  source "$BASHDOTS/.bash_functions"
 fi
 
 
