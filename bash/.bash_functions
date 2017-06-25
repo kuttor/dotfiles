@@ -8,9 +8,14 @@
 # Functions
 #------------------------------------------------------------------------------
 
-# hops into new dir
+# Hops into new dir
 mcd() {
     mkdir -p $1 && cd $1
+}
+
+# Recursive SED
+rsed() {
+    find . -type f -exec sed "$@" {} \+ 
 }
 
 # better dig
