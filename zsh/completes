@@ -1,0 +1,57 @@
+#!/usr/bin/env zsh
+
+# Zsh-completions
+fpath=(/usr/local/share/zsh-completions $fpath)
+
+zmodload -i zsh/complist
+
+# Caching
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path ~/.zsh/cache/$HOST
+
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+unsetopt CASE_GLOB
+
+# Rehash when completing commands
+zstyle ":completion:*:commands" rehash 1
+
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
+zstyle ':completion:*' completer _complete _correct _approximate
+zstyle ':completion:*' glob on
+zstyle :compinstall filename ~/.zshrc
+
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+
+autoload -U compinit
+compinit
+
+# Array completion element sorting.
+zstyle ':completion:*:hosts' hosts $hosts
+
+# Directories
+zstyle ':completion:*:default' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS'
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+zstyle ':completion:*' squeeze-slashes true
+
+# Awless completion
+source <(awless completion zsh)
