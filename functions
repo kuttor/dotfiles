@@ -1,0 +1,96 @@
+#!/usr/local/bin/zsh
+
+# Reason: function - Mother always told you to be tidy and organize your toys
+# Author: Andrew Kuttor
+# E-mail: andrew.kuttor@gmail.com
+
+#------------------------------------------------------------------------------
+# mcd - Creates folder and CD's into it
+#------------------------------------------------------------------------------
+
+function mcd(){ mkdir -p "$1" && cd "$1" }
+
+#------------------------------------------------------------------------------
+# dug - useful dig info
+#------------------------------------------------------------------------------
+
+function dug(){ dig +nocmd "$1" any +multiline +noall +answer }
+
+#------------------------------------------------------------------------------
+# mcd - Creates folder and CD's into it
+#------------------------------------------------------------------------------
+
+function backup(){ cp -p $@{,.backup$(date '+%Y%m%d')}}
+
+#------------------------------------------------------------------------------
+# hunter - run found file
+#------------------------------------------------------------------------------
+
+function hunter(){ vim $(find . -name $1 | fzf) }
+
+#------------------------------------------------------------------------------
+# dog - colorized cat
+#------------------------------------------------------------------------------
+
+function dog(){
+  cat "$@" > /tmp/.tmp
+  pygmentize -g /tmp/.tmp
+  rm -rmf /tmp/.tmp
+}
+
+#------------------------------------------------------------------------------
+# Tree on some major fertilizer
+#------------------------------------------------------------------------------
+
+function l (){ tree -L 1 -CDFha --du --dirsfirst $@ }
+
+function ll (){ l -L 2 $@ }
+
+function lll(){ l -L 3 $@ }
+
+#------------------------------------------------------------------------------
+# Please tell me I don't need to explain this one
+#------------------------------------------------------------------------------```
+
+trash (){ mv "$@" "$HOME/.Trash" }
+
+#------------------------------------------------------------------------------
+# Extracts several formats!
+#-----------------------------------------------------------------------------
+
+extract (){
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1     ;;
+      *.tar.gz)    tar xzf $1     ;;
+      *.bz2)       bunzip2 $1     ;;
+      *.rar)       unrar e $1     ;;
+      *.gz)        gunzip $1      ;;
+      *.tar)       tar xf $1      ;;
+      *.tbz2)      tar xjf $1     ;;
+      *.tgz)       tar xzf $1     ;;
+      *.zip)       unzip $1       ;;
+      *.Z)         uncompress $1  ;;
+      *.7z)        7z x $1        ;;
+      *)     echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# Git branch details
+function parse_git_dirty(){
+  [[ $(git status 2> /dev/null | \
+      tail -n1) != *"working directory clean"* ]] && echo "*"
+}
+
+function parse_git_branch(){
+  git branch --no-color 2> /dev/null | \
+      sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+}
+
+function idps-sanity_check(){
+  string="https://$(1)/porticor-sec/get_instance_status?serial=$(2)"
+  curl $string
+}

@@ -26,8 +26,11 @@ alias swap="asp"
 alias path='echo $PATH | tr -s ":" "\n"'
 alias less='less +g -RSC~'
 alias quit='exit'
+<<<<<<< HEAD
 alias graphic_card="lspci -vnn | grep -i VGA -A 12"
 
+=======
+>>>>>>> eaa971907273f24e4b0bbcd8e698bcb737351119
 
 # Typos
 alias dior='dir'
@@ -41,6 +44,10 @@ alias pcio='pico'
 alias pciop='pico'
 alias pin='pine'
 alias pnie='pine'
+<<<<<<< HEAD
 alias ipre='more'
+=======
+alias ,ipre='more'
+>>>>>>> eaa971907273f24e4b0bbcd8e698bcb737351119
 alias sl='ls'
 alias srln='slrn'
