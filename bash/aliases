@@ -27,6 +27,12 @@ alias path='echo $PATH | tr -s ":" "\n"'
 alias less='less +g -RSC~'
 alias quit='exit'
 
+# Vim
+alias vim='nvim'
+alias vi='nvim'
+alias v='nvim'
+
+
 # Typos
 alias dior='dir'
 alias dire='dir'
