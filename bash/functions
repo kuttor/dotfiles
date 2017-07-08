@@ -33,6 +33,10 @@ dog(){
     pygmentize -o style=monokai -f console256 -g $1
 }
 
+
+# Get HTTP headers 
+httpHeaders () { curl -I -L $@ ; } 
+
 # better ls
 lx(){
     tree -L 1 -Ccfhau --du --dirsfirst $@

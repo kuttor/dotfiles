@@ -6,45 +6,54 @@
 # Contact: andrew.kuttor@gmail.com
 
 #------------------------------------------------------------------------------
-# Aliases
+# Package Management
 #------------------------------------------------------------------------------
 
+alias pip-upgrade="pip freeze --local | grep -v '^\-e' |\
+	cut -d = -f 1  | xargs pip install --user"
+
+#------------------------------------------------------------------------------
+# Terminal
+#------------------------------------------------------------------------------
+
+alias fix_stty='stty sane'
+alias path='echo $PATH | tr -s ":" "\n"'
+alias quit='exit'
+alias which='type -all'
+
+#------------------------------------------------------------------------------
+# Server Managemet
+#------------------------------------------------------------------------------
+
+alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
+
+#------------------------------------------------------------------------------
+# Networking
+#------------------------------------------------------------------------------
+
+alias myip='curl ip.appspot.com'                # Public facing IP Address
+alias netCons='lsof -i'                         # Show all open TCP/IP sockets
+alias allopensockets='sudo lsof -i -P'          # Show open sockets
+alias openudpsockets='sudo lsof -nP | grep UDP' # Show only open UDP sockets
+alias opentcpsockets='sudo lsof -nP | grep TCP' # Show only open TCP sockets
+alias showlistening='sudo lsof -i | grep LISTEN'    # All listening connections
+alias ports='netstat -lantip'
+
+#------------------------------------------------------------------------------
+# Editors
+#------------------------------------------------------------------------------
+
+alias vim='nvim' # Neovim
+alias vi='nvim'  # Neovim
+alias v='nvim'   # Neovim
+alias less='less +g -RSC~'
+
+#------------------------------------------------------------------------------
+# File and folder management
+#------------------------------------------------------------------------------
+
+alias mkdir="mkdir -pv"
 alias df='df -hi'
 alias du='du -h'
+alias free='freem -mt'
 alias rm='rm -ii'
-alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
-alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install --user"
-# alias brewup='brew update; brew upgrade; brew prune; brew cleanup; brew doctor'
-alias ports='netstat -lantip'
-alias c='pygmentize -O style=monokai -f console256 -g'
-alias tn='tr -d "\n"'
-alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
-# alias myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
-alias keycode="sed -n l"
-alias awl="awless"
-alias swap="asp"
-alias path='echo $PATH | tr -s ":" "\n"'
-alias less='less +g -RSC~'
-alias quit='exit'
-
-# Vim
-alias vim='nvim'
-alias vi='nvim'
-alias v='nvim'
-
-
-# Typos
-alias dior='dir'
-alias dire='dir'
-alias dor='dir'
-alias die='dir'
-alias doe='dir'
-alias dur='dir'
-alias mroe='more'
-alias pcio='pico'
-alias pciop='pico'
-alias pin='pine'
-alias pnie='pine'
-alias ,ipre='more'
-alias sl='ls'
-alias srln='slrn'
