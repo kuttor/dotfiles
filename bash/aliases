@@ -21,6 +21,7 @@ alias apt-upgrade='sudo apt-get update && sudo apt-get upgrade &&\
 alias fix_stty='stty sane'
 alias path='echo $PATH | tr -s ":" "\n"'
 alias quit='exit'
+alias rm='rm -ii'
 alias which='type -all'
 
 #------------------------------------------------------------------------------
@@ -47,7 +48,6 @@ alias ports='netstat -lantip'
 
 alias vim='nvim' # Neovim
 alias vi='nvim'  # Neovim
-alias v='nvim'   # Neovim
 alias less='less +g -RSC~'
 
 #------------------------------------------------------------------------------
@@ -57,5 +57,6 @@ alias less='less +g -RSC~'
 alias mkdir="mkdir -pv"
 alias df='df -hi'
 alias du='du -h'
-alias free='freem -mt'
+alias free='free -mt'
 alias rm='rm -ii'
+alias cp="cp -ri"       # Sets recursive and requires confirm overwrite
