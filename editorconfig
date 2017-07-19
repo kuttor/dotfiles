@@ -1,5 +1,7 @@
 # Editorconfig sets global settings for all editors
+# Ref: http://EditorConfig.org
 
+# top-most EditorConfig file
 root = true
 
 [*]
@@ -10,5 +12,14 @@ insert_final_newline = true
 indent_style = space
 indent_size = 2
 
+[*{.conf,.pl,.pm,.py}]
+indent_style = space
+indent_size = 4
+
+[*{.glsl,.go,.sh,.sql}]
+indent_style = tab
+
 [*.md]
 indent_style = tab
+insert_final_newline = false
+trim_trailing_whitespace = false

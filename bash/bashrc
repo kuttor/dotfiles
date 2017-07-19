@@ -32,6 +32,16 @@ shopt -s progcomp       # Programmable completions
 shopt -s expand_aliases # Expands aliases while in use
 
 #-------------------------------------------------------------------------------
+# Exports and Special Aliases
+#-------------------------------------------------------------------------------
+
+# FZF --top-down --bordeer --start-below-curser
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+
+# Hub: https://github.com/github/hub
+eval "$(hub alias -s)"
+
+#-------------------------------------------------------------------------------
 # Pretty Lights
 #-------------------------------------------------------------------------------
 
@@ -44,6 +54,7 @@ else
 fi
 
 eval $(dircolors -b $SCRIPT_DIR/dircolors) # Coloring for 300 filetypes
+
 # alias ls="ls -AFoqv --color --group-directories-first | tail -n +3"
 alias ls="ls -AFoqv $colorflag --group-directories-first"
 alias grep="grep $colorflag"
@@ -90,6 +101,8 @@ fi
 # Tab completions with sudo
 complete -cf sudo
 
+# FZF
+. /usr/share/fzf/completion.bash
 
 #-------------------------------------------------------------------------------
 # Extras
@@ -97,7 +110,6 @@ complete -cf sudo
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
 
 # KDE Konsol app blurry backgrounds
 #konsolex=$(qdbus | grep konsole | cut -f 2 -d\ )
@@ -117,18 +129,19 @@ umask 022
 
 
 #-------------------------------------------------------------------------------
+# Keybindings
+#-------------------------------------------------------------------------------
+
+# FZF
+. /usr/share/fzf/key-bindings.bash
+
+#------------------------------------------------------------------------------
 # Sources
 #-------------------------------------------------------------------------------
 
 # Aliases
-if [ -f "$SCRIPT_DIR/aliases" ]
-then
-  source "$SCRIPT_DIR/aliases"
-fi
+[[ -f "$SCRIPT_DIR/aliases" ]] && . "$SCRIPT_DIR/aliases"
 
 # Functions
-if [ -f "$SCRIPT_DIR/functions" ]
-then
-  source "$SCRIPT_DIR/functions"
-fi
+[[ -f "$SCRIPT_DIR/functions" ]] && . "$SCRIPT_DIR/functions"
 
