@@ -18,17 +18,17 @@ rsed() {
     find . -type f -exec sed "$@" {} \+ 
 }
 
-# better dig
+# Better dig
 dug() {
     dig +nocmd $1 any +multiline +noall +answer
 }
 
-# backup file
+# Backup file
 backup(){
     cp -p $@{,.backup$(date '+%Y%m%dx')}
 }
 
-# highlighted cat
+# Highlighted cat
 dog(){
     pygmentize -o style=monokai -f console256 -g $1
 }
@@ -37,7 +37,7 @@ dog(){
 # Get HTTP headers 
 httpHeaders () { curl -I -L $@ ; } 
 
-# better ls
+# Better ls
 lx(){
     tree -L 1 -Ccfhau --du --dirsfirst $@
 }
@@ -54,7 +54,7 @@ zed() {
     sed -i -e "s/$1/$2/g" $3
 }
 
-# multi-format unarchiver
+# Multi-format unarchiver
 extract() {
     if [ -f $1 ]; then 
         case $1 in
@@ -74,4 +74,9 @@ extract() {
   else
       echo "Incompatible archive: $1"
   fi
+}
+
+# Allow global pip package installations
+gpip() {
+    PIP_REQUIRE_VIRTUALENV="" pip "$@"
 }
