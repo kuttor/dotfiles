@@ -85,3 +85,4 @@ complete -cf sudo
 [[ -f "$SCRIPT_DIR/history" ]] && . "$SCRIPT_DIR/history"
 [[ -f "$SCRIPT_DIR/exports" ]] && . "$SCRIPT_DIR/exports"
 [[ -f "$SCRIPT_DIR/colors" ]] && . "$SCRIPT_DIR/colors"
+[[ -f "$SCRIPT_DIR/../inputrc" ]] && bind -f "$SCRIPT_DIR/../inputrc"
