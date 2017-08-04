@@ -46,26 +46,6 @@ shopt -s expand_aliases # Expands aliases while in use
 eval "$(hub alias -s)"
 
 #-------------------------------------------------------------------------------
-# Pretty Lights
-#-------------------------------------------------------------------------------
-
-# Detect GNU or OSX ls 
-if [[ "ls --color /dev/null 2>&1" ]]
-then
-    colorflag="--color=auto" # GNU
-else
-    colorflag="-G"           # OSX
-fi
-
-eval $(dircolors -b $SCRIPT_DIR/dircolors) # Coloring for 300 filetypes
-
-# alias ls="ls -AFoqv --color --group-directories-first | tail -n +3"
-alias ls="ls -AFoqv $colorflag --group-directories-first"
-alias grep="grep $colorflag"
-alias egrep="egrep $colorflag"
-alias fgrep="fgrep $colorflag"
-
-#-------------------------------------------------------------------------------
 # Completions
 #-------------------------------------------------------------------------------
 
@@ -81,6 +61,11 @@ fi
 # Tab completions with sudo
 complete -cf sudo
 
+# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+[ -e "$HOME/.ssh/config" ] && \
+    complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config |\
+    grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh
+
 # FZF
 . /usr/share/fzf/completion.bash
 
@@ -95,14 +80,8 @@ complete -cf sudo
 # Sources
 #-------------------------------------------------------------------------------
 
-# Aliases
-[[ -f "$SCRIPT_DIR/aliases" ]] && . "$SCRIPT_DIR/aliases"
-
-# Functions
 [[ -f "$SCRIPT_DIR/functions" ]] && . "$SCRIPT_DIR/functions"
-
-# History
+[[ -f "$SCRIPT_DIR/aliases" ]] && . "$SCRIPT_DIR/aliases"
 [[ -f "$SCRIPT_DIR/history" ]] && . "$SCRIPT_DIR/history"
-
-# Exports
 [[ -f "$SCRIPT_DIR/exports" ]] && . "$SCRIPT_DIR/exports"
+[[ -f "$SCRIPT_DIR/colors" ]] && . "$SCRIPT_DIR/colors"

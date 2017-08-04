@@ -24,7 +24,7 @@ alias quit='exit'
 alias which='type -all'
 
 #------------------------------------------------------------------------------
-# Server Managemet
+# SSH
 #------------------------------------------------------------------------------
 
 alias ssh_host_list='grep "^Host" $HOME/.ssh/config | awk "{print $2}"'
@@ -44,7 +44,6 @@ alias ports='netstat -lantip'
 # Editors
 #------------------------------------------------------------------------------
 
-
 # alias vim='nvim'
 # alias vi='nvim'
 alias e="$EDITOR"
@@ -57,7 +56,9 @@ alias less='less +g -RSC~'
 
 alias mkdir="mkdir -pv"
 alias df='df -hi'
-alias du='du -h'
+alias du='du -csh'
 alias free='free -mt'
 alias rm='rm -ii'
-alias cp="cp -ri"       # Sets recursive and requires confirm overwrite
+alias diff="colordiff -ru"
+alias dmesg="dmesg --color"
+alias cp="cp -ri" 
