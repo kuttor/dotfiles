@@ -32,7 +32,7 @@ export HISTCONTROL='ignoreboth'
 # export PROMPT_COMMAND="h -a; h -c; h -r; $PROMPT_COMMAND" # Reload after cmds
 
 # Specify commands to ignore recording to history file
-export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:date:histoiry"
+export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:date:history:clear:ls"
 
 # History format
 export HISTTIMEFORMAT="[%F %T] "
