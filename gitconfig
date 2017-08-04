@@ -1,10 +1,121 @@
-[user]
-	email = andrew.kuttor@gmail.com
-	name = Andrew Kuttor
 [core]
-	editor = vim
-	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-[web]
-	browser = chromium-browser
+    editor = nvim
+    pager = diff-so-fancy
+    autocrlf = input
+    whitespace = fix,space-before-tab,tab-in-indent,trailing-space
+    # Prevent macOS's revisiond daemon to mess up with our files.
+    # See: https://www.git-tower.com/blog/make-git-rebase-safe-on-osx/
+    trustctime = false
+[user]
+    name = Andrew Kuttor
+    email = andrew.kuttor@gmail.com
 [color]
-	ui = auto
+    diff = auto
+    status = auto
+    branch = auto
+    ui = auto
+    interactive = auto
+[apply]
+    whitespace = fix
+[diff]
+    renames = copies
+    # Source: http://blog.apiaxle.com/post/handy-git-tips-to-stop-you-getting-fired/
+    algorithm = patience
+    # Source: https://github.com/git/git/commit/3cde4e02ee891bff53bac7f6a7d977f50418a4b5
+    indentHeuristic = true
+[commit]
+    # Source: https://github.com/pstadler/keybase-gpg-github
+    gpgsign = true
+[log]
+    decorate = full
+[pull]
+    # Source: https://stackoverflow.com/a/18756102/487610
+    rebase = preserve
+[push]
+    # Prevent accidental pushes to branches which you’re not ready to push yet.
+    # Source: http://mislav.uniqpath.com/2010/07/git-tips/
+    default = tracking
+[stash]
+    # Shows the diff of a stash.
+    showPatch = true
+[submodule]
+    # Source: https://github.com/blog/2188-git-2-9-has-been-released/#faster-and-more-flexible-submodules
+    fetchJobs = 2
+[merge]
+    log = true
+[branch]
+    autosetuprebase = remote
+[rebase]
+    # Automatically stash and unstash the working directory before and after
+    # rebases.
+    autostash = true
+[alias]
+    br = branch
+    ci = commit
+    co = checkout
+    df = diff
+    g  = grep -I
+    lg = log -p
+    pp = !"echo 'Pull'; git pull; echo 'Push'; git push"
+    rb = rbranch
+    rv = review
+    st = status
+    # Legit addons
+    branches = !legit branches
+    graft = !legit graft
+    harvest = !legit harvest
+    publish = !legit publish
+    unpublish = !legit unpublish
+    sprout = !legit sprout
+    sync = !legit sync
+    switch = !legit switch
+    resync = !legit resync
+    # View abbreviated SHA, description, and history graph of the latest 20 commits
+    l = log --pretty=oneline -n 20 --graph --abbrev-commit --decorate
+    hist = log --pretty=format:\"%C(yellow)%h%C(reset) %C(green)%ad%C(reset) %C(red)|%C(reset) %s %C(bold blue)[%an]%C(reset)%C(yellow)%d%C(reset)\" --graph --date=short
+    # View the current working tree status using the short format
+    s = status -sb
+    # Show the diff between the latest commit and the current state
+    d = !"git diff-index --quiet HEAD -- || clear; git diff --patch-with-stat"
+    # `git di $number` shows the diff between the state `$number` revisions ago and the current state
+    di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+    # Pull in remote changes for the current repository and all its submodules
+    p = !"git pull; git submodule foreach git pull origin master"
+    # Clone a repository including all submodules
+    c = clone --recursive
+    # Commit all changes
+    ca = !git add -A && git commit -av
+    # Switch to a branch, creating it if necessary
+    go = !git checkout -b "$1" || git checkout "$1"
+    # Show verbose output about tags and remotes
+    tags = tag -l
+    remotes = remote -v
+    # Credit an author on the latest commit
+    credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+    # Interactive rebase with the given number of latest commits
+    reb = "!r() { git rebase -i HEAD~$1; }; r"
+    # Find branches containing commit
+    fb = "!f() { git branch -a --contains $1; }; f"
+    # Find tags containing commit
+    ft = "!f() { git describe --always --contains $1; }; f"
+    # Find commits by sourcecode
+    fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+    # Find commits by commit message
+    fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+    # Remove already merged branches
+    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+[url "git@github.com:"]
+    insteadOf = "gh:"
+    pushInsteadOf = "github:"
+    pushInsteadOf = "https://github.com/"
+    pushInsteadOf = "git://github.com/"
+[url "git://github.com/"]
+    insteadOf = "github:"
+
+[url "git@gist.github.com:"]
+    insteadOf = "gst:"
+    pushInsteadOf = "gist:"
+    pushInsteadOf = "git://gist.github.com/"
+[url "git://gist.github.com/"]
+pushInsteadOf = "
