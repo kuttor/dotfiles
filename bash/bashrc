@@ -4,7 +4,7 @@
 # E-mail: andrew.kuttor@gmail.com
 
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
-SCRIPT_DIR="$(dirname $(readlink -f $BASH_SOURCE))/" 
+SCRIPT_DIR="$(dirname $(readlink -f $BASH_SOURCE))/"``
 
 #-------------------------------------------------------------------------------
 # Terminal
@@ -39,11 +39,16 @@ shopt -s progcomp       # Programmable completions
 shopt -s expand_aliases # Expands aliases while in use
 
 #-------------------------------------------------------------------------------
-# Evals
+# Special
 #-------------------------------------------------------------------------------
 
 # Hub: https://github.com/github/hub
 eval "$(hub alias -s)"
+
+# Tilix VTE
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+    source "/etc/profile.d/vte.sh"
+fi
 
 #-------------------------------------------------------------------------------
 # Completions
@@ -67,14 +72,14 @@ complete -cf sudo
     grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh
 
 # FZF
-. /usr/share/fzf/completion.bash
+. "/usr/share/fzf/completion.bash"
 
 #-------------------------------------------------------------------------------
 # Keybindings
 #-------------------------------------------------------------------------------
 
 # FZF
-. /usr/share/fzf/key-bindings.bash
+. "/usr/share/fzf/key-bindings.bash"
 
 #------------------------------------------------------------------------------
 # Sources

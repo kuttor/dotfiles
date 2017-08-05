@@ -37,7 +37,7 @@ if [ -n GRC ]; then
     alias head='colourify head'
     alias ifconfig='colourify ifconfig'
     alias ld='colourify ld'
-    alias ls='colourify ls'
+    alias lsc='colourify ls'
     alias make='colourify make'
     alias mount='colourify mount'
     #mtr
