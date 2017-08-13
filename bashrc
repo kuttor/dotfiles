@@ -3,14 +3,12 @@
 # Author: Andrew Kuttor
 # E-mail: andrew.kuttor@gmail.com
 
+# ==============================================================================
+# Terminal
+# ==============================================================================
+
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
 SCRIPT_DIR="$(dirname $(readlink -f $BASH_SOURCE))/"``
-
-#-------------------------------------------------------------------------------
-# Terminal
-#-------------------------------------------------------------------------------
-
-safe_term=${TERM//[^[:alnum:]]/?}   # sanitize TERM
 
 # If not interactive do not pass go
 case $- in
@@ -27,9 +25,9 @@ umask 022
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-#-------------------------------------------------------------------------------
-# BUILTINS
-#-------------------------------------------------------------------------------
+# ==============================================================================
+# Shopt
+# ==============================================================================
 
 shopt -s autocd         # Auto cd when navigating file system
 shopt -s nocaseglob     # Case in-sensitive globbing
@@ -38,9 +36,9 @@ shopt -s checkwinsize   # Checks/Modifies term window size per command
 shopt -s progcomp       # Programmable completions
 shopt -s expand_aliases # Expands aliases while in use
 
-#-------------------------------------------------------------------------------
+# ==============================================================================
 # Special
-#-------------------------------------------------------------------------------
+# ==============================================================================
 
 # Hub: https://github.com/github/hub
 eval "$(hub alias -s)"
@@ -50,9 +48,9 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
     source "/etc/profile.d/vte.sh"
 fi
 
-#-------------------------------------------------------------------------------
+# ==============================================================================
 # Completions
-#-------------------------------------------------------------------------------
+# ==============================================================================
 
 # Enable programmable completions
 if ! shopt -oq posix; then
@@ -74,20 +72,20 @@ complete -cf sudo
 # FZF
 . "/usr/share/fzf/completion.bash"
 
-#-------------------------------------------------------------------------------
+# ==============================================================================
 # Keybindings
-#-------------------------------------------------------------------------------
+# ==============================================================================
 
 # FZF
 . "/usr/share/fzf/key-bindings.bash"
 
-#------------------------------------------------------------------------------
+# ==============================================================================
 # Sources
-#-------------------------------------------------------------------------------
+# ==============================================================================
 
-[[ -f "$SCRIPT_DIR/functions" ]] && . "$SCRIPT_DIR/functions"
-[[ -f "$SCRIPT_DIR/aliases" ]] && . "$SCRIPT_DIR/aliases"
-[[ -f "$SCRIPT_DIR/history" ]] && . "$SCRIPT_DIR/history"
+[[ -f "$SCRIPT_DIR/functions" ]] && . "$SCRIPT_DIR/bash_functions"
+[[ -f "$SCRIPT_DIR/aliases" ]] && . "$SCRIPT_DIR/bash_aliases"
+[[ -f "$SCRIPT_DIR/history" ]] && . "$SCRIPT_DIR/bash_history"
 [[ -f "$SCRIPT_DIR/exports" ]] && . "$SCRIPT_DIR/exports"
 [[ -f "$SCRIPT_DIR/colors" ]] && . "$SCRIPT_DIR/colors"
-[[ -f "$SCRIPT_DIR/../inputrc" ]] && bind -f "$SCRIPT_DIR/../inputrc"
+[[ -f "$SCRIPT_DIR/../inputrc" ]] && bind -f "$SCRIPT_DIR/inputrc"

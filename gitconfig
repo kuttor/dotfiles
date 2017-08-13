@@ -1,5 +1,5 @@
 [core]
-    editor = nvim
+    editor = vim
     pager = diff-so-fancy
     autocrlf = input
     whitespace = fix,space-before-tab,tab-in-indent,trailing-space
@@ -25,7 +25,6 @@
     indentHeuristic = true
 [commit]
     # Source: https://github.com/pstadler/keybase-gpg-github
-    gpgsign = true
 [log]
     decorate = full
 [pull]
@@ -104,18 +103,5 @@
     fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
     # Remove already merged branches
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
-
-[url "git@github.com:"]
-    insteadOf = "gh:"
-    pushInsteadOf = "github:"
-    pushInsteadOf = "https://github.com/"
-    pushInsteadOf = "git://github.com/"
-[url "git://github.com/"]
-    insteadOf = "github:"
-
-[url "git@gist.github.com:"]
-    insteadOf = "gst:"
-    pushInsteadOf = "gist:"
-    pushInsteadOf = "git://gist.github.com/"
-[url "git://gist.github.com/"]
-pushInsteadOf = "
+[gpg]
+	program = gpg2
