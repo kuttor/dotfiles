@@ -8,7 +8,8 @@
 # ==============================================================================
 
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
-SCRIPT_DIR="$(dirname $(readlink -f $BASH_SOURCE))/"``
+# SCRIPT_DIR="$(dirname $(readlink -f $BASH_SOURCE))/"`
+SCRIPT_DIR="$HOME/.dotfiles"
 
 # If not interactive do not pass go
 case $- in
@@ -83,9 +84,9 @@ complete -cf sudo
 # Sources
 # ==============================================================================
 
-[[ -f "$SCRIPT_DIR/functions" ]] && . "$SCRIPT_DIR/bash_functions"
-[[ -f "$SCRIPT_DIR/aliases" ]] && . "$SCRIPT_DIR/bash_aliases"
-[[ -f "$SCRIPT_DIR/history" ]] && . "$SCRIPT_DIR/bash_history"
+[[ -f "$SCRIPT_DIR/bash_functions" ]] && . "$SCRIPT_DIR/bash_functions"
+[[ -f "$SCRIPT_DIR/bash_aliases" ]] && . "$SCRIPT_DIR/bash_aliases"
+[[ -f "$SCRIPT_DIR/bash_history" ]] && . "$SCRIPT_DIR/bash_history"
 [[ -f "$SCRIPT_DIR/exports" ]] && . "$SCRIPT_DIR/exports"
 [[ -f "$SCRIPT_DIR/colors" ]] && . "$SCRIPT_DIR/colors"
 [[ -f "$SCRIPT_DIR/../inputrc" ]] && bind -f "$SCRIPT_DIR/inputrc"
