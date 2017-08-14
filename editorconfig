@@ -1,7 +1,6 @@
-# Editorconfig sets global settings for all editors
-# Ref: http://EditorConfig.org
+# Author: Andrew Kuttor
+# E-mail: andrew.kuttor@gmail.com
 
-# top-most EditorConfig file
 root = true
 
 [*]
