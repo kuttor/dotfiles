@@ -23,6 +23,7 @@ alias diff="colordiff -ru"
 alias ls="ls --color=auto"
 alias ll="ls -AFoqv --group-directories-first"
 alias l.="ls -d .*"
+alias pacr="pacaur"
 
 #===============================================================================
 # Networking

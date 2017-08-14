@@ -20,6 +20,17 @@ umask 022
 # Give LS filetypes lots of colors
 eval $(dircolors -b $SCRIPT_DIR/dircolors)
 
+# Hub: https://github.com/github/hub
+eval "$(hub alias -s)"
+
+# Tilix VTE
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+    source "/etc/profile.d/vte.sh"
+fi
+
+xhost +local:root > /dev/null 2>&1
+
+
 # ==============================================================================
 # Shopt
 # ==============================================================================
@@ -30,18 +41,6 @@ shopt -s cdspell        # Autocorrect typos in path when using cd
 shopt -s checkwinsize   # Checks/Modifies term window size per command
 shopt -s progcomp       # Programmable completions
 shopt -s expand_aliases # Expands aliases while in use
-
-# ==============================================================================
-# Special
-# ==============================================================================
-
-# Hub: https://github.com/github/hub
-eval "$(hub alias -s)"
-
-# Tilix VTE
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-    source "/etc/profile.d/vte.sh"
-fi
 
 # ==============================================================================
 # Completions
@@ -79,7 +78,8 @@ complete -cf sudo
 # ==============================================================================
 
 [[ -f "$SCRIPT_DIR/bash_functions" ]] && . "$SCRIPT_DIR/bash_functions"
-[[ -f "$SCRIPT_DIR/bash_aliases" ]] && . "$SCRIPT_DIR/bash_aliases"
+[[ -f "$SCRIPT_DIR/aliases" ]] && . "$SCRIPT_DIR/aliases"
 [[ -f "$SCRIPT_DIR/bash_history" ]] && . "$SCRIPT_DIR/bash_history"
 [[ -f "$SCRIPT_DIR/exports" ]] && . "$SCRIPT_DIR/exports"
-[[ -f "$SCRIPT_DIR/../inputrc" ]] && bind -f "$SCRIPT_DIR/inputrc"
+[[ -f "$SCRIPT_DIR/inputrc" ]] && bind -f "$SCRIPT_DIR/inputrc"
+[[ -f "$SCRIPT_DIR/bash_prompt" ]] && . "$SCRIPT_DIR/bash_prompt"
