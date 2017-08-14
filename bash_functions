@@ -1,58 +1,20 @@
 #!/usr/bin/env bash
 
-# Reason: function - Mother always told you to be tidy and organize your toys
 # Author: Andrew Kuttor
 # E-mail: andrew.kuttor@gmail.com
 
-#------------------------------------------------------------------------------
+# =============================================================================
 # Functions
-#------------------------------------------------------------------------------
+# =============================================================================
 
-# Hops into new dir
-mcd() {
-    mkdir -p $1 && cd $1
-}
-
-# Recursive SED
-rsed() {
-    find . -type f -exec sed "$@" {} \+ 
-}
-
-# Better dig
-dug() {
-    dig +nocmd $1 any +multiline +noall +answer
-}
-
-# Backup file
-backup(){
-    cp -p $@{,.backup$(date '+%Y%m%dx')}
-}
-
-# Highlighted cat
-dog(){
-    pygmentize -o style=monokai -f console256 -g $1
-}
-
-
-# Get HTTP headers 
-httpHeaders () { curl -I -L $@ ; } 
-
-# Better ls
-lx(){
-    tree -L 1 -Ccfhau --du --dirsfirst $@
-}
-
-# ll(){ l -l 2 $@; }
-
-# send to trash
-trash() {
-    mv $@ "$HOME/.Trash"
-}
-
-# Eazy-E's SED
-zed() {
-    sed -i -e "s/$1/$2/g" $3
-}
+mcd(){ mkdir -p $1 && cd $1; }                            # make/cd to folder
+rsed(){ find . -type f -exec sed "$@" {} \+ ;}            # recursive sed
+dug(){ dig +nocmd $1 any +multiline +noall +answer ;}     # better dig
+backup(){ cp -p $@{,.backup$(date '+%Y%m%dx')} ;}         # easy backup
+httpHeaders () { curl -I -L $@ ;}                         # get HTTP headers
+lx(){ tree -L 1 -Ccfhau --du --dirsfirst $@ ;}            # better ls
+trash() { mv $@ "$HOME/.Trash" ;}                         # easy backup
+zed(){ sed -i -e "s/$1/$2/g" $3 ;}                        # easy send
 
 # Multi-format unarchiver
 extract() {
@@ -77,9 +39,7 @@ extract() {
 }
 
 # Allow global pip package installations
-gpip() {
-    PIP_REQUIRE_VIRTUALENV="" pip "$@"
-}
+# gpip() { PIP_REQUIRE_VIRTUALENV="" pip "$@" ;}
 
 # alias last and save
 # use `als c NAME` to chop off the last argument (for filenames/patterns)

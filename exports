@@ -7,12 +7,13 @@
 # Exports
 # =============================================================================
 
-# Force virtualenv got Pip package installs
-export PIP_REQUIRE_VIRTUALENV=true
-
 # Set FZF defaults and size
-export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+export FZF_DEFAULT_OPTS='--height 41% --reverse --border'
 
 # Language 
 export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
+
+# Editor
+export EDITOR="vim"
+

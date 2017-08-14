@@ -9,7 +9,6 @@
 
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' |\
 	cut -d = -f 1  | xargs pip install --user"
-
 alias fix_stty='stty sane'                # Fixes bugged up TTY's
 alias path='echo $PATH | tr -s ":" "\n"'  # Pretty print $PATH
 alias quit='exit'
@@ -21,6 +20,9 @@ alias cp="cp -ri"
 alias free='free -mt'
 alias rm='rm -ii'
 alias diff="colordiff -ru"
+alias ls="ls --color=auto"
+alias ll="ls -AFoqv --group-directories-first"
+alias l.="ls -d .*"
 
 #===============================================================================
 # Networking

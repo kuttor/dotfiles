@@ -8,23 +8,17 @@
 # ==============================================================================
 
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
-# SCRIPT_DIR="$(dirname $(readlink -f $BASH_SOURCE))/"`
+DOTFILES="$(dirname $(readlink -f $BASH_SOURCE))/"
 SCRIPT_DIR="$HOME/.dotfiles"
 
-# If not interactive do not pass go
-case $- in
-	*i*) ;;
-	*) return;;
-esac
-
-# Promotes faster Terminal starts
-sudo rm -rf /private/var/log/asl/*.asl
-
-# Assigns perms so that current user only has read and write access
+# Set current user perms +rwrite 
 umask 022
 
-# make less more friendly for non-text input files, see lesspipe(1)
+# Extend Less filetype compatabilities
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# Give LS filetypes lots of colors
+eval $(dircolors -b $SCRIPT_DIR/dircolors)
 
 # ==============================================================================
 # Shopt
@@ -53,7 +47,7 @@ fi
 # Completions
 # ==============================================================================
 
-# Enable programmable completions
+# Programmable completions
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -62,16 +56,16 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Tab completions with sudo
+# Sudo
 complete -cf sudo
 
-# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+# SSH hostnames
 [ -e "$HOME/.ssh/config" ] && \
     complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config |\
     grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh
 
 # FZF
-. "/usr/share/fzf/completion.bash"
+[[ $- == *i* ]] && . "/usr/share/fzf/completion.bash" 2> "/dev/null"
 
 # ==============================================================================
 # Keybindings
@@ -88,5 +82,4 @@ complete -cf sudo
 [[ -f "$SCRIPT_DIR/bash_aliases" ]] && . "$SCRIPT_DIR/bash_aliases"
 [[ -f "$SCRIPT_DIR/bash_history" ]] && . "$SCRIPT_DIR/bash_history"
 [[ -f "$SCRIPT_DIR/exports" ]] && . "$SCRIPT_DIR/exports"
-[[ -f "$SCRIPT_DIR/colors" ]] && . "$SCRIPT_DIR/colors"
 [[ -f "$SCRIPT_DIR/../inputrc" ]] && bind -f "$SCRIPT_DIR/inputrc"
