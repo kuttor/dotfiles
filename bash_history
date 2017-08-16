@@ -7,32 +7,20 @@
 # History
 # =============================================================================
 
+# alias
+alias h="history"
 
-# Append to the history file, don't overwrite it.
-shopt -s histappend
+# shopt
+shopt -s histappend # Always append to history file, don't overwrite
+shopt -s histreedit # Allow editing after failed history substitution
+shopt -s histverify # Verify expansion before execute
 
-# Allow us to re-edit a failed history substitution.
-shopt -s histreedit
+# export
+export HISTSIZE=100000                            # History file size
+export HISTFILESIZE=$HISTSIZE                     # History limit
+export HISTCONTROL=ignoredups:erasedups           # Ignore lead-space & dupes
+export HISTTIMEFORMAT="[%F %T] "                  # Custom time format
+export HISTIGNORE="ls:cd::pwd:exit:history:clear" # Ignore recording commands
 
-# History expansions will be verified before execution.
-shopt -s histverify
-
-# Alias history command to "h"
-alias h=history
-
-# Set history file size
-export HISTSIZE="32768"
-
-# Set history limit
-export HISTFILESIZE="${HISTSIZE}"
-
-# Ignore recording leading spaces and dupes
-export HISTCONTROL='ignoreboth'
-
-# export PROMPT_COMMAND="h -a; h -c; h -r; $PROMPT_COMMAND" # Reload after cmds
-
-# Specify commands to ignore recording to history file
-export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:date:history:clear:ls"
-
-# History format
-export HISTTIMEFORMAT="[%F %T] "
+# Better save history logic
+PROMPT_COMMAND='history -a;history -n'
