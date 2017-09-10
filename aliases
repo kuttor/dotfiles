@@ -3,9 +3,9 @@
 # Author: Andrew Kuttor
 # E-mail: andrew.kuttor@gmail.com
 
-#===============================================================================
+# ==============================================================================
 # Main
-#===============================================================================
+# ==============================================================================
 
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' |\
 	cut -d = -f 1  | xargs pip install --user"
@@ -24,22 +24,38 @@ alias ls="ls --color=auto"
 alias ll="ls -AFoqv --group-directories-first"
 alias l.="ls -d .*"
 alias par="pacaur"
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias path='echo $PATH | tr -s ":" "\n"'
+alias ports='netstat -lantip'
 
-#===============================================================================
+
+# ==============================================================================
 # Networking
-#===============================================================================
+# ==============================================================================
 
 alias opensockets='sudo lsof -i -P'              # Open sockets
 alias openudp='sudo lsof -nP | grep UDP'     # Open UDP sockets
 alias opentcp='sudo lsof -nP | grep TCP'     # Open TCP sockets
-alias showlistening='sudo lsof -i | grep LISTEN'    # Listening Connections
+alias showlistening='sudo lsof -i | grep LISTEN'    # Listening onnections
 alias ports='netstat -lantip'
 
-#=============================================================================
-# Pacman 
-#=============================================================================
+# ============================================================================
+# Pacman ``
+# ============================================================================
 
 alias p='sudo pacman'
 alias pu='sudo pacman -Syu'
 alias pa='sudo pacman -Sy'
-alias pq='sudo pacman -Q'
+alias pq='sudo pacman -Qi'
+alias ya='yaourt'
+alias orphans='pacman -Qtdq'
+
+# ============================================================================
+# Docker
+# ============================================================================
+
+alias docker-delete-all-stopped='docker ps -a -q | xargs docker rm -v'i
+alias docker-delete-all-nolabel-nocontainer='docker images -f dangling=true -q | xargs docker rmi'
+alias docker-show-image-names="sudo docker ps --format '{{.Image}}'"

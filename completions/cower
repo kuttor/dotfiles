@@ -1,0 +1,125 @@
+#!/bin/bash
+
+__inarray() {
+  local i
+  for i in "${@:2}"; do
+    [[ $i == "$1" ]] && return
+  done
+}
+
+__hasprefix() {
+  local i
+  for i in "${@:2}"; do
+    [[ $i = "$1"* ]] && return
+  done
+}
+
+_cower() {
+  local argv0=${COMP_WORDS[0]}
+  local cur=${COMP_WORDS[COMP_CWORD]} prev=${COMP_WORDS[COMP_CWORD - 1]} prevprev=${COMP_WORDS[COMP_CWORD - 2]}
+
+  local shortopts=(-d -i -m -s -u -f -h -t -V -b -c -o -q -v)
+  local longopts=(--download --info --msearch --search --update --force --version
+                  --brief --debug --ignore-ood --no-ignore-ood --quiet --verbose --by)
+  local longoptsarg=(--ignore --ignorerepo --target --threads --timeout --color --format
+                     --sort --rsort -listdelim)
+  local allopts=("${shortopts[@]}" "${longopts[@]}" "${longoptsarg[@]}")
+
+  local sortfields=(firstsubmitted lastmodified license maintainer name outofdate version votes)
+
+  # maybe mangle the arguments in case we're looking at a --longopt=$val
+  [[ $cur = '=' ]] && cur=
+  if [[ $prev = '=' ]] && __inarray "$prevprev" "${allopts[@]}"; then
+    prev=$prevprev
+  fi
+
+  case $prev in
+    --format|--threads|--timeout|--listdelim)
+      COMPREPLY=()
+      return 0
+      ;;
+    -t|--target)
+      COMPREPLY=($(compgen -d -- "$cur"))
+      compopt -o filenames
+      return 0
+      ;;
+    -c|--color)
+      COMPREPLY=($(compgen -W 'auto never always' -- "$cur"))
+      return 0
+      ;;
+    --rsort|--sort)
+      COMPREPLY=($(compgen -W '${sortfields[*]}' -- "$cur"))
+      return 0
+      ;;
+    --ignore)
+      COMPREPLY=($(compgen -W "$(pacman -Qqm 2>/dev/null)" -- "$cur"))
+      return 0
+      ;;
+    --ignorerepo)
+      COMPREPLY=($(compgen -W "$(sed '/^\[\(.*\)\]$/!d;s//\1/;/options/d' /etc/pacman.conf)" -- "$cur"))
+      return 0
+      ;;
+    --by)
+      COMPREPLY=($(compgen -W 'name name-desc maintainer' -- "$cur"))
+      return 0
+      ;;
+  esac
+
+  case $cur in
+    --*)
+      if __hasprefix "$cur" "${longoptsarg[@]}"; then
+        compopt -o nospace
+        COMPREPLY=($(compgen -W '${longoptsarg[*]}' -S = -- "$cur"))
+      else
+        COMPREPLY=($(compgen -W '${longopts[*]}' -- "$cur"))
+      fi
+      return 0
+      ;;
+    -*)
+      COMPREPLY=($(compgen -W '${allopts[*]}' -- "$cur"))
+      return 0
+      ;;
+    *)
+      # completion based on mode -- always take the last specified
+      local i j w mode
+      for (( i = 1; i < ${#COMP_WORDS[*]}; i++ )); do
+        w=${COMP_WORDS[i]}
+        if (( i == 1 )) || [[ ${COMP_WORDS[i-1]} != -* ]]; then
+          case $w in
+            # mode from shortopt (possibly a bunch mushed together)
+            -[^-]*)
+              for (( j = 0; j < ${#w}; j++ )); do
+                case ${w:j:1} in
+                  d|i|m|s|u)
+                    mode=${w:j:1}
+                    ;;
+                esac
+              done
+              ;;
+            # mode from long opt
+            --@(download|info|?(m)search|update))
+              mode=${w#--}
+              ;;
+          esac
+        fi
+      done
+      case $mode in
+        d|download|i|info)
+          # complete based on AUR matches
+          if (( ${#cur} > 2 )); then
+            COMPREPLY=($(compgen -W "$("$argv0" -sq -- "$cur" 2>/dev/null)" -- "$cur"))
+            return 0
+          fi
+          ;;
+        u|update)
+          COMPREPLY=($(compgen -W '$(pacman -Qqm 2>/dev/null)' -- "$cur"))
+          return 0
+          ;;
+        *)
+          COMPREPLY=($(compgen -W '${allopts[*]}' -- "$cur"))
+          ;;
+      esac
+  esac
+}
+
+complete -F _cower cower

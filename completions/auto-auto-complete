@@ -1,0 +1,14 @@
+# bash completion for auto-auto-complete         -*- shell-script -*-
+
+_auto-auto-complete()
+{
+    local cur prev words cword
+    _init_completion -n = || return
+
+    options="--source --output --where "" bash zsh fish VARIABLE=VALUE"
+    COMPREPLY=( $( compgen -W "$options" -- "$cur" ) )
+
+}
+
+complete -o default -F _auto-auto-complete auto-auto-complete
+

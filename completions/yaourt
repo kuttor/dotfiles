@@ -1,0 +1,63 @@
+# vim: set ft=sh ts=2 sw=2 et:
+# file: /etc/bash_completion.d/yaourt
+
+# Bash completion for yaourt
+# Use pacman completion (_pacman())
+#
+# This file is in the public domain.
+#
+
+
+## yaourt completion
+
+_yaourt_backup_file() {
+  compopt -o filenames; _filedir 'tar.*'
+}
+
+_yaourt() {
+  local _yaourt_opts='-B --backup -C -G --getpkgbuild -P --pkgbuild --stats'
+  local _yaourt_c_opts='-c --clean'
+  local _yaourt_p_opts='-i --install'
+  local _yaourt_q_opts='--backupfile --date --conflicts --depends --nameonly
+    --provides --replaces'
+  local _yaourt_s_opts='-A --ignorearch -a --aur --aur-url -b --build
+    --conflicts --depends --devel --holdver --m-arg --maintainer --nameonly
+    --provides --replaces'
+
+  local cur=$(_get_cword) o op
+  COMPREPLY=()
+
+  if ((COMP_CWORD == 1)); then
+    if [[ $cur != -* ]]; then
+      _pacman_file
+    else
+      _pacman &> /dev/null
+      _arch_compgen "${COMPREPLY[@]}" "$_yaourt_opts"
+    fi
+    return 0
+  fi
+
+  for o in 'B backup' 'C' 'G getpkgbuild' 'P pkgbuild' 'Q query' 'S sync'; do
+    _arch_incomp "$o" && break
+  done
+  (($?)) && op="" || op="${o% *}"
+  _arch_incomp 'backupfile' || [[ $op == "B" ]] || _pacman &> /dev/null
+  if [[ "$cur" == -* ]]; then
+    case "$op" in
+      C) _arch_compgen "$_yaourt_c_opts";;
+      P) _arch_compgen "$_yaourt_p_opts";;
+      Q) _arch_compgen "${COMPREPLY[@]}" "$_yaourt_q_opts";;
+      S) _arch_compgen "${COMPREPLY[@]}" "$_yaourt_s_opts";;
+    esac
+  else
+    case "$op" in
+      B) _yaourt_backup_file;;
+      G) _pacman_pkg Slq;;
+      P) _arch_compgen "$_yaourt_p_opts"; _filedir -d;;
+      Q) _arch_incomp 'backupfile' && _yaourt_backup_file;;
+    esac
+  fi
+}
+
+_completion_loader pacman
+complete -o default -F _yaourt yaourt
