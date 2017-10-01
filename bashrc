@@ -8,8 +8,8 @@
 # ==============================================================================
 
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
-DOTFILES="$(dirname $(readlink -f $BASH_SOURCE))/"
-SCRIPT_DIR="$HOME/.dotfiles"
+# DOTFILES="$(dirname $(readlink -f $BASH_SOURCE))/"
+SCRIPTDIR="$HOME/.dotfiles"
 
 # Set current user perms +rwrite 
 umask 022
@@ -18,7 +18,7 @@ umask 022
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Give LS filetypes lots of colors
-eval $(dircolors -b $SCRIPT_DIR/dircolors)
+# eval $(dircolors -b $SCRIPT_DIR/dircolors)
 
 # Hub: https://github.com/github/hub
 eval "$(hub alias -s)"
@@ -63,23 +63,35 @@ complete -cf sudo
     complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config |\
     grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh
 
-# FZF
-[[ $- == *i* ]] && . "/usr/share/fzf/completion.bash" 2> "/dev/null"
+# FZF completions 
+complete -F _fzf_path_completion -o default -o bashdefault tree
+complete -F _fzf_path_completion -o default -o bashdefault ag
 
 # ==============================================================================
-# Keybindings
+# fzf
 # ==============================================================================
 
-# FZF
-. "/usr/share/fzf/key-bindings.bash"
+# Use ~~ as the trigger sequence instead of the default ** 
+export FZF_COMPLETION_TRIGGER='~~'
+
+#Options to fzf command
+export FZF_COMPLETION_OPTS='+c -x'
+
+# Use ag instead of the default find command for listing candidates.
+# - The first argument to the function is the base path to start traversal
+# - Note that ag only lists files not directories
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {   ag -g "" "$i1" ; }
 
 # ==============================================================================
 # Sources
 # ==============================================================================
 
-[[ -f "$SCRIPT_DIR/bash_functions" ]] && . "$SCRIPT_DIR/bash_functions"
-[[ -f "$SCRIPT_DIR/aliases" ]] && . "$SCRIPT_DIR/aliases"
-[[ -f "$SCRIPT_DIR/bash_history" ]] && . "$SCRIPT_DIR/bash_history"
-[[ -f "$SCRIPT_DIR/exports" ]] && . "$SCRIPT_DIR/exports"
-[[ -f "$SCRIPT_DIR/inputrc" ]] && bind -f "$SCRIPT_DIR/inputrc"
-[[ -f "$SCRIPT_DIR/bash_prompt" ]] && . "$SCRIPT_DIR/bash_prompt"
+[[ -f "$SCRIPTDIR/bash_functions" ]] && . "$SCRIPT_DIR/bash_functions"
+[[ -f "$SCRIPTDIR/aliases" ]] && . "$SCRIPT_DIR/aliases"
+[[ -f "$SCRIPTDIR/bash_history" ]] && . "$SCRIPT_DIR/bash_history"
+[[ -f "$SCRIPTDIR/exports" ]] && . "$SCRIPT_DIR/exports"
+#[[ -f "$SCRIPT_DIR/inputrc" ]] && bind -f "$SCRIPT_DIR/inputrc"
+
+
+
