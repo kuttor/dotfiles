@@ -29,7 +29,7 @@ alias pbpaste='xsel --clipboard --output'
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias path='echo $PATH | tr -s ":" "\n"'
 alias ports='netstat -lantip'
-
+alias sudo='sudo '
 
 # ==============================================================================
 # Networking
@@ -42,15 +42,16 @@ alias showlistening='sudo lsof -i | grep LISTEN'    # Listening onnections
 alias ports='netstat -lantip'
 
 # ============================================================================
-# Pacman ``
+# Pacman, Yaourt, Pacaur
 # ============================================================================
 
-alias p='sudo pacman'
-alias pu='sudo pacman -Syu'
-alias pa='sudo pacman -Sy'
-alias pq='sudo pacman -Qi'
-alias ya='yaourt'
-alias orphans='pacman -Qtdq'
+alias p='pacman'
+alias pac-update='pacman -Syyu'
+alias pa='pacman -Sy'
+alias pac-query='pacman -Qi'
+alias pac-orphans='pacman -Qtdq'
+alias pac='pacaur'
+alias ya="yaourt"
 
 # ============================================================================
 # Docker

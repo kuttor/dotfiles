@@ -8,8 +8,8 @@
 # ==============================================================================
 
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
-# DOTFILES="$(dirname $(readlink -f $BASH_SOURCE))/"
-SCRIPTDIR="$HOME/.dotfiles"
+DOTFILES="$(dirname $(readlink -f $BASH_SOURCE))/"
+# DOTFILES="$HOME/.dotfiles"
 
 # Set current user perms +rwrite 
 umask 022
@@ -18,7 +18,7 @@ umask 022
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Give LS filetypes lots of colors
-# eval $(dircolors -b $SCRIPT_DIR/dircolors)
+# eval $(dircolors -b $DOTFILES/dircolors)
 
 # Hub: https://github.com/github/hub
 eval "$(hub alias -s)"
@@ -87,11 +87,11 @@ _fzf_compgen_path() {   ag -g "" "$i1" ; }
 # Sources
 # ==============================================================================
 
-[[ -f "$SCRIPTDIR/bash_functions" ]] && . "$SCRIPT_DIR/bash_functions"
-[[ -f "$SCRIPTDIR/aliases" ]] && . "$SCRIPT_DIR/aliases"
-[[ -f "$SCRIPTDIR/bash_history" ]] && . "$SCRIPT_DIR/bash_history"
-[[ -f "$SCRIPTDIR/exports" ]] && . "$SCRIPT_DIR/exports"
-#[[ -f "$SCRIPT_DIR/inputrc" ]] && bind -f "$SCRIPT_DIR/inputrc"
+[[ -f "$DOTFILES/bash_functions" ]] && . "$DOTFILES/bash_functions"
+[[ -f "$DOTFILES/aliases" ]] && . "$DOTFILES/aliases"
+[[ -f "$DOTFILES/bash_history" ]] && . "$DOTFILES/bash_history"
+[[ -f "$DOTFILES/exports" ]] && . "$DOTFILES/exports"
+#[[ -f "$DOTFILES/inputrc" ]] && bind -f "$DOTFILES/inputrc"
 
 
 
