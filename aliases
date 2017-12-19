@@ -23,7 +23,7 @@ alias diff="colordiff -ru"
 alias ls="ls --color=auto"
 alias ll="ls -AFoqv --group-directories-first"
 alias l.="ls -d .*"
-alias par="pacaur"
+# alias par="pacaur"
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -45,18 +45,18 @@ alias ports='netstat -lantip'
 # Pacman, Yaourt, Pacaur
 # ============================================================================
 
-alias p='pacman'
-alias pac-update='pacman -Syyu'
-alias pa='pacman -Sy'
-alias pac-query='pacman -Qi'
-alias pac-orphans='pacman -Qtdq'
-alias pac='pacaur'
-alias ya="yaourt"
+#alias p='pacman'
+#alias pac-update='pacman -Syyu'
+#alias pa='pacman -Sy'
+#alias pac-query='pacman -Qi'
+#alias pac-orphans='pacman -Qtdq'
+#alias pac='pacaur'
+#alias ya="yaourt"
 
 # ============================================================================
 # Docker
 # ============================================================================
 
-alias docker-delete-all-stopped='docker ps -a -q | xargs docker rm -v'i
-alias docker-delete-all-nolabel-nocontainer='docker images -f dangling=true -q | xargs docker rmi'
-alias docker-show-image-names="sudo docker ps --format '{{.Image}}'"
+#alias docker-delete-all-stopped='docker ps -a -q | xargs docker rm -v'i
+#alias docker-delete-all-nolabel-nocontainer='docker images -f dangling=true -q | xargs docker rmi'
+#alias docker-show-image-names="sudo docker ps --format '{{.Image}}'"
