@@ -9,7 +9,7 @@
 
 # Absolute path to this script, e.g. /home/user/bin/foo.sh
 DOTFILES="$(dirname $(readlink -f $BASH_SOURCE))/"
-# DOTFILES="$HOME/.dotfiles"
+# DOTFILES="$HOME/Code
 
 # Set current user perms +rwrite 
 umask 022
@@ -18,7 +18,7 @@ umask 022
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Give LS filetypes lots of colors
-# eval $(dircolors -b $DOTFILES/dircolors)
+# eval $(dircolors -b ~/Code/dotfiles/dircolors)
 
 # Hub: https://github.com/github/hub
 eval "$(hub alias -s)"
@@ -29,6 +29,14 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
 fi
 
 xhost +local:root > /dev/null 2>&1
+
+# 
+if [ -t 1  ]; then
+  cd ~
+fi
+
+# More compact prompt
+# PS1='\e[37;1m\u@\e[35m\W\e[0m\$ '
 
 
 # ==============================================================================
