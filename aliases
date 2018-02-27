@@ -23,13 +23,17 @@ alias diff="colordiff -ru"
 alias ls="ls --color=auto"
 alias ll="ls -AFoqv --group-directories-first"
 alias l.="ls -d .*"
-# alias par="pacaur"
 alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias path='echo $PATH | tr -s ":" "\n"'
 alias ports='netstat -lantip'
 alias sudo='sudo '
+alias reload="exec $SHELL -l"
+alias tclip="termux-clipboard-set"
+alias tpaste="termux-clipboard-get"
+alias h="history"
+
 
 # ==============================================================================
 # Networking
@@ -52,6 +56,8 @@ alias ports='netstat -lantip'
 #alias pac-orphans='pacman -Qtdq'
 #alias pac='pacaur'
 #alias ya="yaourt"
+
+
 
 # ============================================================================
 # Docker
