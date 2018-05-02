@@ -1,4 +1,0 @@
-#! /bin/bash
-
-export WORKON_HOME=$HOME/Code/envs
-
