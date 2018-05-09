@@ -18,7 +18,8 @@ export LC_ALL='en_US.UTF-8'
 export EDITOR="vim"
 
 # colors
-eval $( dircolors -b "$HOME/.config/dircolors" )
+# eval $( dircolors -b "$HOME/.config/dircolors" )
+# eval $(dircolors -b ~/code/dircolors-solarized/dircolors.ansi-dark)
 export LS_COLORS='ow=01;36;40'
 
 # set BUILTIN defaults

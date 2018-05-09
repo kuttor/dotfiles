@@ -12,7 +12,9 @@ apt -y install \
   tree \
   silversearcher-ag \
   wget \
-  curl
+  curl \
+  xsel \
+  TMUX
 
 # config path
 CONFIG="$HOME/.config"
@@ -34,3 +36,7 @@ wget https://raw.github.com/trapd00r/LS_COLORS/master/LS_COLORS \
 cd /tmp
 git clone https://github.com/sampson-chen/sack.git && cd sack && chmod +x install_sack.sh && ./install_sack.sh
 
+# simlinking
+ln -s $HOME/code/dotfiles/curlrc ~/.curlrc
+ln -s $HOME/code/dotfiles/editorconfig ~/.editorconfig
+ln -s $HOME/code/dotfiles/inputrc ~/.inputrc
