@@ -62,3 +62,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# autoenv
+[[ -f "	`which autoenv`" ]] && \
+  source "`which autoenv`"
