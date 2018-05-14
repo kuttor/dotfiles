@@ -47,10 +47,10 @@ shopt -s expand_aliases     # Expands aliases while in use
   source "$DOTFILES/fzf.sh"
 
 # bash prompt
-if [[ -f "$HOME/.config/bash-prompt/gitprompt.sh" ]]; then
+if [[ -f "$HOME/.config/bash-git-prompt/gitprompt.sh" ]]; then
     GIT_PROMPT_ONLY_IN_REPO=0
     GIT_PROMPT_THEME=Solarized
-    source "$HOME/.config/bash-prompt/gitprompt.sh"
+    source "$HOME/.config/bash-git-prompt/gitprompt.sh"
 fi
 
 # bash completion
@@ -63,5 +63,5 @@ if ! shopt -oq posix; then
 fi
 
 # autoenv
-[[ -f "	`which autoenv`" ]] && \
-  source "`which autoenv`"
+[[ -f "$DOTFILES/autoev/activate.sh" ]] && \
+  source "$DOTFILES/autoenv/activate.sh"
