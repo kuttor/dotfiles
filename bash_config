@@ -2,7 +2,7 @@
 
 # ------------------------------------------------------------------------------
 # Name    : bashrc
-# About   : Extended user configurations for Bash
+# About   : Extended usercode/dotfilesurations for Bash
 # Author  : Andrew Kuttor
 # Contact : andrew.kuttor@gmail.com
 # ------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ export LC_ALL='en_US.UTF-8'
 export EDITOR="vim"
 
 # colors
-# eval $( dircolors -b "$HOME/.config/dircolors" )
+# eval $( dircolors -b "$HOME/code/dotfiles/dircolors" )
 # eval $(dircolors -b ~/code/dircolors-solarized/dircolors.ansi-dark)
 export LS_COLORS='ow=01;36;40'
 
@@ -31,26 +31,30 @@ shopt -s progcomp           # Programmable completions
 shopt -s expand_aliases     # Expands aliases while in use
 
 # bash functions
-[[ -f "$DOTFILES/bash_functions.sh" ]] && \
-  source "$DOTFILES/bash_functions.sh"
+[[ -f "$DOTFILES/bash_functions" ]] && \
+  source "$DOTFILES/bash_functions"
 
 # bash history
-[[ -f "$DOTFILES/bash_history.sh" ]] && \
-  source "$DOTFILES/bash_history.sh"
+[[ -f "$DOTFILES/bash_history" ]] && \
+  source "$DOTFILES/bash_history"
 
 # bash aliases
-[[ -f "$DOTFILES/bash_aliases.sh" ]] && \
-  source "$DOTFILES/bash_aliases.sh"
+[[ -f "$DOTFILES/bash_aliases" ]] && \
+  source "$DOTFILES/bash_aliases"
 
 # fzf
 [[ -f "$DOTFILES/fzf.sh" ]] && \
   source "$DOTFILES/fzf.sh"
 
+# autojump
+[[ -f "/usr/share/autojump/autojump.sh" ]] && \
+  source "/usr/share/autojump/autojump.sh"
+
 # bash prompt
-if [[ -f "$HOME/.config/bash-git-prompt/gitprompt.sh" ]]; then
+if [[ -f "$HOME/code/bash-git-prompt/gitprompt.sh" ]]; then
     GIT_PROMPT_ONLY_IN_REPO=0
     GIT_PROMPT_THEME=Solarized
-    source "$HOME/.config/bash-git-prompt/gitprompt.sh"
+    source "$HOME/code/bash-git-prompt/gitprompt.sh"
 fi
 
 # bash completion
