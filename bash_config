@@ -47,8 +47,8 @@ shopt -s expand_aliases     # Expands aliases while in use
   source "$DOTFILES/fzf.sh"
 
 # autojump
-[[ -f "/usr/share/autojump/autojump.sh" ]] && \
-  source "/usr/share/autojump/autojump.sh"
+[[ -f "/usr/share/autojump/autojump.bash" ]] && \
+  source "/usr/share/autojump/autojump.bash"
 
 # bash prompt
 if [[ -f "$HOME/code/bash-git-prompt/gitprompt.sh" ]]; then
