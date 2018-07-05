@@ -1,0 +1,41 @@
+#! /bin/bash
+
+# ------------------------------------------------------------------------------
+# Name    : bashrc
+# About   : Extended usercode/dotfilesurations for Bash
+# Author  : Andrew Kuttor
+# Contact : andrew.kuttor@gmail.com
+# ------------------------------------------------------------------------------
+
+# Vars
+DOTS=$HOME/.dotfiles
+
+# Language
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
+
+# Editor
+export EDITOR="vim"
+
+# Colors
+export CLICOLOR=1
+
+# Apps
+eval "$(hub alias -s)"
+
+# Builtins
+shopt -s autocd             # Auto cd when navigating file system
+shopt -s nocaseglob         # Case in-sensitive globbing
+shopt -s cdspell            # Autocorrect arguments in cd
+shopt -s dirspell           # Autocorrect directory name
+shopt -s checkwinsize       # Checks/Modifies term window size per command
+shopt -s progcomp           # Programmable completions
+shopt -s expand_aliases     # Expands aliases while in use
+
+# Sources
+[[ -f "$DOTS/functions" ]] && . $DOTS/functions
+[[ -f "$DOTS/history" ]] && . $DOTS/history
+[[ -f "$DOTS/aliases" ]] && . $DOTS/aliases
+[[ -f "$DOTS/completions" ]] && $DOTS/completions 
+
+
