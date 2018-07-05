@@ -15,6 +15,9 @@ brew install ripgrep
 # Hub: Git additions
 brew install hub
 
+# CoreUtils: Contains GNU alternatives
+brew install coreutils
+
 # Bash-Git-Prompt: Sexy Prompt
 git clone \
   https://github.com/magicmonty/bash-git-prompt.git \
