@@ -1,8 +1,14 @@
 #!/bin/bash
 
-# Author: Andrew Kuttor
-# E-mail: andrew.kuttor@gmail.com
+# ------------------------------------------------------------------------------
+# Name    : commands
+# About   : Contains user aliases and functions
+# Author  : Andrew Kuttor
+# Contact : andrew.kuttor@gmail.com
+# ------------------------------------------------------------------------------
 
+
+# Aliases
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' |\
 cut -d = -f 1  | s pip install --user"
 alias path='echo $PATH | tr -s ":" "\n"'  # Pretty print $PATH
@@ -24,3 +30,37 @@ alias ports='netstat -lantip'
 alias sudo='sudo '
 alias reload="exec $SHELL -l"
 alias h="history"
+
+# Functions
+mcd(){ mkdir -p $1 && cd $1; }                        # make/cd to folder
+rsed(){ find . -type f -exec sed "$@" {} \+ ;}        # recursive sed
+dug(){ dig +nocmd $1 any +multiline +noall +answer ;} # better dig
+backup(){ cp -p $@{,.backup$(date '+%Y%m%dx')} ;}     # easy backup
+httpHeaders() { curl -I -L $@ ;}                      # get HTTP headers
+ak1(){ tree -L 1 -Ccfhau --du --dirsfirst $@ ;}       # better ls
+ak2(){ tree -L 2 -Ccfhau --du --dirsfirst $@ ;}       # better ls
+ak3(){ tree -L 3 -Ccfhau --du --dirsfirst $@ ;}       # better ls
+trash() { mv $@ "$HOME/.Trash" ;}                     # easy backup
+zed(){ sed -i -e "s/$1/$2/g" $3 ;}                    # easy send
+
+# Multi-format unarchiver
+extract(){
+    if [ -f $1 ]; then
+        case $1 in
+          *.tar.bz2)   tar xjf $1     ;;
+          *.tar.gz)    tar xzf $1     ;;
+          *.bz2)       bunzip2 $1     ;;
+          *.rar)       unrar e $1     ;;
+          *.gz)        gunzip $1      ;;
+          *.tar)       tar xf $1      ;;
+          *.tbz2)      tar xjf $1     ;;
+          *.tgz)       tar xzf $1     ;;
+          *.zip)       unzip $1       ;;
+          *.Z)         uncompress $1  ;;
+          *.7z)        7z x $1        ;;
+          *)           echo "$1"      ;;
+      esac
+  else
+      echo "Incompatible archive: $1"
+  fi
+}

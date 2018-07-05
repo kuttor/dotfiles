@@ -20,22 +20,22 @@ export EDITOR="vim"
 # Colors
 export CLICOLOR=1
 
-# Apps
-eval "$(hub alias -s)"
-
 # Builtins
-shopt -s autocd             # Auto cd when navigating file system
-shopt -s nocaseglob         # Case in-sensitive globbing
-shopt -s cdspell            # Autocorrect arguments in cd
-shopt -s dirspell           # Autocorrect directory name
-shopt -s checkwinsize       # Checks/Modifies term window size per command
-shopt -s progcomp           # Programmable completions
-shopt -s expand_aliases     # Expands aliases while in use
+shopt -s autocd          # Auto execute CD
+shopt -s nocaseglob      # Case in-sensitive globbing
+shopt -s cdspell         # Autocorrect arguments in cd
+shopt -s dirspell        # Autocorrect directory name
+shopt -s checkwinsize    # Checks window size per command
+shopt -s progcomp        # Programmable completions
+shopt -s expand_aliases  # Expands aliases
+shopt -s histappend      # Append to history file, don't overwrite
+shopt -s histreedit      # Edit history after failed sub
+shopt -s histverify      # Verify expansion before execute
 
 # Sources
 [[ -f "$DOTS/functions" ]] && . $DOTS/functions
-[[ -f "$DOTS/history" ]] && . $DOTS/history
 [[ -f "$DOTS/aliases" ]] && . $DOTS/aliases
+[[ -f "$DOTS/history" ]] && . $DOTS/history
 [[ -f "$DOTS/completions" ]] && $DOTS/completions 
 
 

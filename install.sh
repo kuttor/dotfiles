@@ -18,9 +18,13 @@ brew install hub
 # CoreUtils: Contains GNU alternatives
 brew install coreutils
 
+# The Silver Searcher: Required for VIM config
+brew install the_silver_searcher
+
 # Bash-Git-Prompt: Sexy Prompt
 git clone \
   https://github.com/magicmonty/bash-git-prompt.git \
   .bash-git-prompt \
   --depth=1
+
 
