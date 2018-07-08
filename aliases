@@ -23,13 +23,40 @@ alias rm='rm -ii'
 alias diff="colordiff -ru"
 alias ll="gls -mFhlai --color --group-directories-first "
 alias ld="gls -d "
-alias l="gls -1 --color"
+alias l="gls -a1 --color --group-directories-first "
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias path='echo $PATH | tr -s ":" "\n"'
 alias ports='netstat -lantip'
 alias sudo='sudo '
 alias reload="exec $SHELL -l"
 alias h="history"
+alias nv="nvim"
+alias vim="nvim"
+alias vi="nim"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Functions
 mcd(){ mkdir -p $1 && cd $1; }                        # make/cd to folder
