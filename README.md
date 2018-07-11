@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Yeti's Dotfiles
 > My personal, super-delicious, dotfiles
 
