@@ -1,11 +1,13 @@
 #! /bin/bash
+ 
+#! /bin/bash
 
-# Author: Andrew Kuttor
-# E-mail: andrew.kuttor@gmail.com
-
-# =============================================================================
-# History
-# =============================================================================
+# ------------------------------------------------------------------------------
+# Name    : history
+# About   : Extended history configurations for dotfiles
+# Author  : Andrew Kuttor
+# Contact : andrew.kuttor@gmail.com
+# ------------------------------------------------------------------------------
 
 # alias
 alias h="history"
