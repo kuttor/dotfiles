@@ -20,6 +20,23 @@ export EDITOR="vim"
 # Colors
 export CLICOLOR=1
 
+# Hub
+eval "$(hub alias -s)"
+
+# Colored Man pages
+man() {
+    env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    man "$@"
+}
+
+# Completins
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+
 # Builtins
 shopt -s autocd          # Auto execute CD
 shopt -s nocaseglob      # Case in-sensitive globbing
@@ -38,4 +55,9 @@ shopt -s histverify      # Verify expansion before execute
 [[ -f "$DOTS/history" ]] && . $DOTS/history
 [[ -f "$DOTS/completions" ]] && $DOTS/completions 
 
+# prompt
+if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+  __GIT_PROMPT_DIR="/usr/local/opt/bash-git-prompt/share"
+  source "/usr/local/opt/bash-git-prompt/share/gitprompt.sh"
+fi
 
