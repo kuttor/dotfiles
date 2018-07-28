@@ -30,7 +30,8 @@ alias ports='netstat -lantip'
 alias sudo='sudo '
 alias reload="exec $SHELL -l"
 alias h="history"
+alias hu="h|rg "
 alias nv="nvim"
 alias vim="nvim"
 alias vi="nim"
-
+alias ak="tree -Csuh"
