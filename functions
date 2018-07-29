@@ -41,3 +41,99 @@ extract(){
   fi
 }
 
+# FASD directory warping aliased to j
+j() {
+    local dir="$(fasd -ld "$@")"
+    [[ -d "$dir" ]] && pushd "$dir"
+}
+complete -d j
+
+# FASD directory warping art ludacris speed
+jj() {
+    local dir
+    dir=$(fasd -Rdl |\
+        sed "s:$HOME:~:" |\
+        fzf --no-sort +m -q "$*" |\
+        sed "s:~:$HOME:")\
+    && pushd "$dir"
+}
+complete -d jj
+
+# Les, it's like less -- but in technicolor
+les() {
+    ftype=$(pygmentize -N "$1")
+    pygmentize -l "$ftype"\
+      -f terminal "$1" |\
+        less -R
+}
+
+v() {
+    local file
+    if [[ -e "$1" ]]; then
+        les "$1"
+    else
+        file=$(fzf --query="$1"\
+          --select-1 --exit-0)
+        [ -n "$file" ] && les "$file"
+    fi
+}
+
+complete -f les
+complete -f v
+
+# A dynamic duo recent directory navigator
+t() {
+  fasdlist=$( fasd -d -l -r $1 | \
+    fzf --query="$1 " --select-1 --exit-0 --height=25% --reverse --tac --no-sort --cycle) &&
+    cd "$fasdlist"
+}
+
+
+# FZF/FASD duo drop down fuzzy finding document opener
+fe() {
+  local files
+  IFS=$'\n' files=($(fzf-tmux --query="$1" --reverse --height=40
+% --tac --multi --select-1 --exit-0))
+  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+}
+
+
+# Brew
+bs() {
+  local inst=$(brew search | fzf --reverse -m)
+
+  if [[ $inst ]]; then
+    for prog in $(echo $inst);
+    do brew install $prog; done;
+  fi
+}
+
+bu() {
+  local upd=$(brew leaves | fzf --reverse -m)
+
+  if [[ $upd ]]; then
+    for prog in $(echo $upd);
+    do brew upgrade $prog; done;
+  fi
+}
+
+bd() {
+  local uninst=$(brew leaves | fzf --reverse -m)
+
+  if [[ $uninst ]]; then
+    for prog in $(echo $uninst);
+    do brew uninstall $prog; done;
+  fi
+}
+
+# fshow - git commit browser
+gshow() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF"
+}
