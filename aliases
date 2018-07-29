@@ -7,8 +7,6 @@
 # Contact : andrew.kuttor@gmail.com
 # ------------------------------------------------------------------------------
 
-
-# Aliases
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' |\
 cut -d = -f 1  | s pip install --user"
 alias path='echo $PATH | tr -s ":" "\n"'  # Pretty print $PATH
@@ -34,4 +32,6 @@ alias hu="h|rg "
 alias nv="nvim"
 alias vim="nvim"
 alias vi="nim"
-alias ak="tree -Csuh"
+alias ak="tree -C"
+alias doit='source !:1'
+alias dog='pygmentize -O style=monokai -f console256 -g'
