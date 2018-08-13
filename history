@@ -19,5 +19,3 @@ export HISTCONTROL=ignoredups:erasedups           # Ignore lead-space & dupes
 export HISTTIMEFORMAT="[%F %T] "                  # Custom time format
 export HISTIGNORE="ls:cd::pwd:exit:history:clear" # Ignore recording commands
 
-# Better save history logic
-PROMPT_COMMAND='history -a;history -n'

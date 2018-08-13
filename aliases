@@ -35,3 +35,4 @@ alias vi="nim"
 alias ak="tree -C"
 alias doit='source !:1'
 alias dog='pygmentize -O style=monokai -f console256 -g'
+alias pcat='pygmentize -f terminal256 -O style=monokai -g'
