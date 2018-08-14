@@ -23,6 +23,10 @@ export CLICOLOR=1
 # Hub
 eval "$(hub alias -s)"
 
+# FZF
+# FZF
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 # Colored Man pages
 man() {
     env \
@@ -36,10 +40,16 @@ man() {
 
 # Completins
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+if [ -d /usr/local/etc/bash_completion.d ]; then
+  for file in /usr/local/etc/bash_completion.d/*; do
+    . $file
+  done
+fi
+
 
 # Builtins
 shopt -s autocd          # Auto execute CD
-shopt -s nocaseglob      # Case in-sensitive globbing
+#shopt -s nocaseglob      # Case in-sensitive globbing
 shopt -s cdspell         # Autocorrect arguments in cd
 shopt -s dirspell        # Autocorrect directory name
 shopt -s checkwinsize    # Checks window size per command
@@ -53,7 +63,7 @@ shopt -s histverify      # Verify expansion before execute
 [[ -f "$DOTS/functions" ]] && . $DOTS/functions
 [[ -f "$DOTS/aliases" ]] && . $DOTS/aliases
 [[ -f "$DOTS/history" ]] && . $DOTS/history
-[[ -f "$DOTS/completions" ]] && $DOTS/completions 
+[[ -f "$DOTS/completions" ]] && . $DOTS/completions 
 
 # prompt
 if [ -f "/usr/local/opt/bash-git-prompt/share/gitprompt.sh" ]; then
