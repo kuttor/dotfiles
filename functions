@@ -41,23 +41,6 @@ extract(){
   fi
 }
 
-# FASD directory warping aliased to j
-j() {
-    local dir="$(fasd -ld "$@")"
-    [[ -d "$dir" ]] && pushd "$dir"
-}
-complete -d j
-
-# FASD directory warping art ludacris speed
-jj() {
-    local dir
-    dir=$(fasd -Rdl |\
-        sed "s:$HOME:~:" |\
-        fzf --no-sort +m -q "$*" |\
-        sed "s:~:$HOME:")\
-    && pushd "$dir"
-}
-complete -d jj
 
 # Les, it's like less -- but in technicolor
 les() {
@@ -90,9 +73,9 @@ t() {
 
 
 # FZF/FASD duo drop down fuzzy finding document opener
-fe() {
+jj() {
   local files
-  IFS=$'\n' files=($(fzf-tmux --query="$1" --reverse --height=40
+  IFS=$'\n' files=($(fzf-tmux --query="$1" --reverse --height=30
 % --tac --multi --select-1 --exit-0))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
@@ -126,8 +109,8 @@ bd() {
   fi
 }
 
-# fshow - git commit browser
-gshow() {
+# git-show - git commit browser
+git-show() {
   git log --graph --color=always \
       --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
   fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
@@ -136,4 +119,17 @@ gshow() {
                 xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
                 {}
 FZF-EOF"
+}
+
+# fuzzy grep open via ag
+fzgrep() {
+  local file
+
+  file="$(ag --nobreak --noheading $@ | fzf -0 -1 --reverse --height=30
+% | awk -F: '{print $1 " +" $2}')"
+
+  if [[ -n $file ]]
+  then
+     vim $file
+  fi
 }
