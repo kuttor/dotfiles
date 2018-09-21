@@ -122,7 +122,7 @@ FZF-EOF"
 }
 
 # fuzzy grep open via ag
-fzgrep() {
+az() {
   local file
 
   file="$(ag --nobreak --noheading $@ | fzf -0 -1 --reverse --height=30

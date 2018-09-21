@@ -17,6 +17,9 @@ export LC_ALL='en_US.UTF-8'
 # Editor
 export EDITOR="vim"
 
+# For Windows Molecule testing
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
 # fzf
 # --files: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...
