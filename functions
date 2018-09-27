@@ -41,6 +41,9 @@ extract(){
   fi
 }
 
+fzf-down() {
+  fzf --height 50% "$@" --border
+}
 
 # Les, it's like less -- but in technicolor
 les() {
@@ -50,36 +53,7 @@ les() {
         less -R
 }
 
-v() {
-    local file
-    if [[ -e "$1" ]]; then
-        les "$1"
-    else
-        file=$(fzf --query="$1"\
-          --select-1 --exit-0)
-        [ -n "$file" ] && les "$file"
-    fi
-}
-
 complete -f les
-complete -f v
-
-# A dynamic duo recent directory navigator
-t() {
-  fasdlist=$( fasd -d -l -r $1 | \
-    fzf --query="$1 " --select-1 --exit-0 --height=25% --reverse --tac --no-sort --cycle) &&
-    cd "$fasdlist"
-}
-
-
-# FZF/FASD duo drop down fuzzy finding document opener
-jj() {
-  local files
-  IFS=$'\n' files=($(fzf-tmux --query="$1" --reverse --height=30
-% --tac --multi --select-1 --exit-0))
-  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
-}
-
 
 # Brew
 bs() {

@@ -1,6 +1,4 @@
 #! /bin/bash
- 
-#! /bin/bash
 
 # ------------------------------------------------------------------------------
 # Name    : history
@@ -13,9 +11,9 @@
 alias h="history"
 
 # export
-export HISTSIZE=100000                            # History file size
-export HISTFILESIZE=$HISTSIZE                     # History limit
-export HISTCONTROL=ignoredups:erasedups           # Ignore lead-space & dupes
-export HISTTIMEFORMAT="[%F %T] "                  # Custom time format
-export HISTIGNORE="ls:cd::pwd:exit:history:clear" # Ignore recording commands
+export HISTSIZE=100000                               # History file size
+export HISTFILESIZE=$HISTSIZE                        # History limit
+export HISTCONTROL="ignoredups:erasedups"              # Ignore lead-space & dupes
+export HISTTIMEFORMAT="[%F %T] "                     # Custom time format
+export HISTIGNORE="ls:cd:exa:pwd:exit:history:clear" # Ignore recording commands
 

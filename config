@@ -35,7 +35,6 @@ export CLICOLOR=1
 eval "$(hub alias -s)"
 
 # FZF
-# FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Colored Man pages
@@ -49,7 +48,7 @@ man() {
     man "$@"
 }
 
-# Completins
+# Completions
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 if [ -d /usr/local/etc/bash_completion.d ]; then
   for file in /usr/local/etc/bash_completion.d/*; do
