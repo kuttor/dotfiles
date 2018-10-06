@@ -5,6 +5,12 @@
 # About   : Extended usercode/configurations for Bash
 # Author  : Andrew Kuttor
 # Contact : andrew.kuttor@gmail.com
+#
+# Reference:
+#   - https://github.com/ogham/exa
+#   - https://github.com/magicmonty/bash-git-prompt
+#   - https://github.com/github/hub
+#   - https://github.com/junegunn/fzf
 # ------------------------------------------------------------------------------
 
 # Vars
