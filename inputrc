@@ -35,7 +35,7 @@ set expand-tilde on
 set convert-meta off
 set input-meta on
 set output-meta on
-set show-all-if-ambiguous on
+set show-all-if-ambiguous off
 set mark-symlinked-directories on
 set page-completions off
 set match-hidden-files on
