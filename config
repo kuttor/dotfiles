@@ -23,6 +23,9 @@ export EDITOR="vim"
 # For Windows Molecule testing
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
+# z
+[ -f $HOME/Code/z/z.sh ] && source $HOME/Code/z/z.sh
+
 # fzf
 [ -f $HOME/.fzf.bash ] && source $HOME/.fzf.bash
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
