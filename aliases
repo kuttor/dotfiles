@@ -7,7 +7,7 @@
 # Contact : andrew.kuttor@gmail.com
 # ------------------------------------------------------------------------------
 #alias vi="nim"
-alias ansible-create="nsible-galaxy init  --offline --force "
+alias ansible-create="ansible-galaxy init  --offline --force "
 alias ak="tree -C"
 alias cp="cp -ri"
 alias df="df -hi"
@@ -24,6 +24,7 @@ alias l="exa -a1 --group-directories-first "
 alias ld="gls -d "
 alias ll="exa -mFhlai --git --group-directories-first "
 alias mkdir="mkdir -pv"
+alias molecule-create="molecule init scenario -r "
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias nv="nvim"
 alias path='echo $PATH | tr -s ":" "\n"'
