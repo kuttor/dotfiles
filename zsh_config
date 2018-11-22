@@ -1,0 +1,72 @@
+#! /usr/bin/env zsh
+
+# Name: Andrew Kuttor
+# Mail: andrew.kuttor@gmail.com
+
+# One-Liner install for Oh My Zsh:
+    # sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+# Sourcing thw Oh My Zshell goodness
+source $ZSH/oh-my-zsh.sh
+
+# Path additions
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export ZSH="/Users/yeti/.oh-my-zsh"
+export PATH="/usr/local/opt/binutils/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export MANPATH="/usr/local/man:$MANPATH"
+
+# Shell Theme
+ZSH_THEME="robbyrussell"
+
+# Little extras
+COMPLETION_WAITING_DOTS="true"
+
+# History
+HIST_STAMPS="11/19/2018"
+
+# Plugins
+# Standard plugins: ~/.oh-my-zsh/plugins/*
+# Custom plugins:  ~/.oh-my-zsh/custom/plugins/
+plugins=(
+  z
+  fz
+  git
+  osx
+  bash
+  brew
+  python
+  gnu-utils
+  zsh-autosuggestions
+  fast-syntax-highlighting
+  ansiblee
+  vagrant
+  vim
+  zsh-syntax-highlighting
+  async
+
+)
+
+# FASD
+eval "$(fasd --init auto)"
+
+
+
+# Language setting
+export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='mvim'
+fi
+
+# ssh
+export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Custom Aliases
+source $HOME/.dotfiles/aliases
+
+# Custom Functions
+source $HOME/.dotfiles/functions
