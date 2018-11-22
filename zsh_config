@@ -16,14 +16,21 @@ export PATH="/usr/local/opt/binutils/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
 
-# Shell Theme
+# Shell Theme 
 ZSH_THEME="robbyrussell"
 
 # Little extras
 COMPLETION_WAITING_DOTS="true"
 
-# History
+# History Junk
+setopt hist_ignore_all_dups # remove older duplicate entries from history
+setopt hist_reduce_blanks   # remove superfluous blanks from history items
+setopt inc_append_history   # save history entries as soon as they are entered
+setopt share_history        # Share the same history file between sessions
 HIST_STAMPS="11/19/2018"
+HISTFILE=~/.zhistory
+HISTSIZE=4096
+SAVEHIST=4096
 
 # Plugins
 # Standard plugins: ~/.oh-my-zsh/plugins/*
@@ -70,3 +77,22 @@ source $HOME/.dotfiles/aliases
 
 # Custom Functions
 source $HOME/.dotfiles/functions
+
+# From http://dotfiles.org/~_why/.zshrc
+# Sets the window title nicely no matter where you are
+function title() {
+  # escape '%' chars in $1, make nonprintables visible
+  a=${(V)1//\%/\%\%}
+
+  # Truncate command, and join lines.
+  a=$(print -Pn "%40>...>$a" | tr -d "\n")
+
+  case $TERM in
+  screen)
+    print -Pn "\ek$a:$3\e\\" # screen title (in ^A")
+    ;;
+  xterm*|rxvt)
+    print -Pn "\e]2;$2\a" # plain xterm title ($3 for pwd)
+    ;;
+  esac
+}
