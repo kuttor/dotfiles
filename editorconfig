@@ -2,6 +2,23 @@
 # E-mail: andrew.kuttor@gmail.com
 
 root = true
+# EditorConfig
+# https://editorconfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*.{zsh,sh,bash}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{js,json}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true
 
 [*]
 end_of_line = lf
@@ -15,7 +32,7 @@ indent_size = 2
 indent_style = space
 indent_size = 4
 
-[*{.glsl,.go,.sh,.sql}]
+[*{.glsl,.go,.sql}]
 indent_style = tab
 
 [*.md]
