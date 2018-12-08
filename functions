@@ -109,6 +109,16 @@ az() {
 }
 
 # Cd to Git repository root folder
-gr() {
-  cd "./$(git rev-parse --show-cdup 2>/dev/null)" 2>/dev/null
+#gr() {
+#  cd "./$(git rev-parse --show-cdup 2>/dev/null)" 2>/dev/null
+#}
+
+
+# show newest files
+newest() {
+  find . -type f -printf '%TY-%Tm-%Td %TT %p\n' |\
+    grep -v cache |\
+    grep -v ".hg" |\
+    grep -v ".git" |\
+    sort -r | less
 }

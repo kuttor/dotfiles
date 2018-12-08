@@ -20,9 +20,10 @@ export DEFAULT_USER="yeti"
 # -----------------------------------------------------------------------------
 
 # Path additions
-export PATH="$HOME/bin:/usr/local/bin:$PATH"
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/usr/local/opt/binutils/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export PATH="/Users/yeti/Library/Python/2.7/bin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
 
 # -----------------------------------------------------------------------------
@@ -72,25 +73,34 @@ zplug load --verbose && zplug install
 
 
 # -----------------------------------------------------------------------------
-# Options
-# -----------------------------------------------------------------------------
-
-setopt complete_aliases # Completion for Aliases
-
-
-# -----------------------------------------------------------------------------
 # fzf
 # -----------------------------------------------------------------------------
 
 if [[ -f $HOME/.fzf.zsh ]]; then
     # echo "[zshrc] loading fzf..."
     source ~/.fzf.zsh
+fi
+
+# Set Options
+setopt prompt_subst
+setopt complete_in_word
+setopt always_to_end
+setopt notify
+setopt local_options
+setopt complete_aliases
+setopt nohup
+
+
+# FASD
+eval "$(fasd --init auto)"
+
+# Language setting
+export LANG=en_US.UTF-8
 
     # Add <TAB> completion handlers for fzf
-    function _fzf_complete_z(){
-        _fzf_complete '--multi --reverse' "$@" < <(raw_z)
-    }
-fi
+_fzf_complete_z(){
+    _fzf_complete '--multi --reverse' "$@" < <(raw_z)
+}
 
 # -----------------------------------------------------------------------------
 # History
@@ -119,11 +129,9 @@ SAVEHIST=4096
 # FASD
 eval "$(fasd --init auto)"
 
-
 # Custom Aliases
 source "$HOME/.dotfiles/aliases"
 
 # Custom Functions
 source "$HOME/.dotfiles/functions"
-
 
