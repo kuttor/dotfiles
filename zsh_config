@@ -1,98 +1,129 @@
-#! /usr/bin/env zsh
-
+#!/bin/zsh
+# -----------------------------------------------------------------------------
 # Name: Andrew Kuttor
 # Mail: andrew.kuttor@gmail.com
+# -----------------------------------------------------------------------------
 
-# One-Liner install for Oh My Zsh:
-    # sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# -----------------------------------------------------------------------------
+# Exports
+# -----------------------------------------------------------------------------
 
-# Sourcing thw Oh My Zshell goodness
-source $ZSH/oh-my-zsh.sh
+export ZPLUG_HOME="$HOME/.zplug"
+export ZPLUG_ROOT="$HOME/.zplug"
+export DOTS="$HOME/.dotfiles"
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export DEFAULT_USER="yeti"
+
+# -----------------------------------------------------------------------------
+# Sources
+# -----------------------------------------------------------------------------
 
 # Path additions
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export ZSH="/Users/yeti/.oh-my-zsh"
+export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="/usr/local/opt/binutils/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export MANPATH="/usr/local/man:$MANPATH"
 
-# Shell Theme 
-ZSH_THEME="robbyrussell"
+# -----------------------------------------------------------------------------
+# Plugins
+# -----------------------------------------------------------------------------
 
-# Little extras
-COMPLETION_WAITING_DOTS="true"
+# Install Zplug, if missing,
+#[[ ! -d $ZPLUG_HOME ]] &&\
+#  git clone https://github.com/zplug/zplug $ZPLUG_HOME &&\
 
-# History Junk
-setopt hist_ignore_all_dups # remove older duplicate entries from history
-setopt hist_reduce_blanks   # remove superfluous blanks from history items
-setopt inc_append_history   # save history entries as soon as they are entered
-setopt share_history        # Share the same history file between sessions
-HIST_STAMPS="11/19/2018"
-HISTFILE=~/.zhistory
+source $ZPLUG_HOME/init.zsh && zplug update
+# Zplug created plugin, set to self-manage itself
+#zplug "zplug/zplug", hook-build:"zplug --self-manage"
+
+# Oh-My-Zsh created plugins. 
+zplug "plugins/brew",              from:oh-my-zsh
+zplug "plugins/brew-cask",         from:oh-my-zsh
+zplug "lib/clipboard",             from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "lib/completion",            from:oh-my-zsh
+zplug "plugins/pip",               from:oh-my-zsh, if:"(( $+commands[pip] ))"
+zplug "plugins/urltools",          from:oh-my-zsh
+zplug "plugins/command-not-found", from:oh-my-zsh
+zplug "dracula/zsh", as:theme
+zplug "lib/history",               from:oh-my-zsh
+zplug "plugins/colored-man-pages", from:oh-my-zsh
+zplug "mafredri/zsh-async",  defer:0
+zplug "modules/osx",         from:prezto, if:"[[ $OSTYPE == *darwin* ]]"
+#zplug "zsh-users/zsh-syntax-highlighting", defer:3
+zplug "zdharma/fast-syntax-highlighting", defer:2
+
+# ZSHUsers created plugins. 
+zplug "zsh-users/zsh-autosuggestions",           from:github, defer:2
+zplug "zsh-users/zsh-completions",               from:github, use:'src/_*', lazy:true
+zplug "zsh-users/zsh-history-substring-search",  from:github, defer:3
+
+# Binaries
+zplug "changyuheng/fz", defer:1
+zplug "rupa/z", use:z.sh
+
+# Install missings plugins.
+if ! zplug check --verbose
+then
+    plug install
+fi
+
+zplug load --verbose && zplug install
+
+
+# -----------------------------------------------------------------------------
+# Options
+# -----------------------------------------------------------------------------
+
+setopt complete_aliases # Completion for Aliases
+
+
+# -----------------------------------------------------------------------------
+# fzf
+# -----------------------------------------------------------------------------
+
+if [[ -f $HOME/.fzf.zsh ]]; then
+    # echo "[zshrc] loading fzf..."
+    source ~/.fzf.zsh
+
+    # Add <TAB> completion handlers for fzf
+    function _fzf_complete_z(){
+        _fzf_complete '--multi --reverse' "$@" < <(raw_z)
+    }
+fi
+
+# -----------------------------------------------------------------------------
+# History
+# -----------------------------------------------------------------------------
+
+# Set options
+setopt BANG_HIST                 # Treat '!' special during expansion.
+setopt EXTENDED_HISTORY          # Record show start:elapsed;command" format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately.
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire dupes entries first when trimming.
+setopt HIST_IGNORE_DUPS          # Don't record an existing entries.
+setopt HIST_IGNORE_ALL_DUPS      # Delete old record upon a new dupes.
+setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE         # Don't record entries starting with a space.
+setopt HIST_SAVE_NO_DUPS         # No dupes entries in the history file.
+setopt HIST_REDUCE_BLANKS        # Remove blanks before recording entry.
+setopt HIST_VERIFY               # Don't execute expasion immediately
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+
+# Set history vars
+HISTFILE="$HOME/.zsh_history"
 HISTSIZE=4096
 SAVEHIST=4096
-
-# Plugins
-# Standard plugins: ~/.oh-my-zsh/plugins/*
-# Custom plugins:  ~/.oh-my-zsh/custom/plugins/
-plugins=(
-  z
-  fz
-  git
-  osx
-  bash
-  brew
-  python
-  gnu-utils
-  zsh-autosuggestions
-  fast-syntax-highlighting
-  ansiblee
-  vagrant
-  vim
-  zsh-syntax-highlighting
-  async
-
-)
 
 # FASD
 eval "$(fasd --init auto)"
 
 
-
-# Language setting
-export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='mvim'
-fi
-
-# ssh
-export SSH_KEY_PATH="~/.ssh/rsa_id"
-
 # Custom Aliases
-source $HOME/.dotfiles/aliases
+source "$HOME/.dotfiles/aliases"
 
 # Custom Functions
-source $HOME/.dotfiles/functions
+source "$HOME/.dotfiles/functions"
 
-# From http://dotfiles.org/~_why/.zshrc
-# Sets the window title nicely no matter where you are
-function title() {
-  # escape '%' chars in $1, make nonprintables visible
-  a=${(V)1//\%/\%\%}
 
-  # Truncate command, and join lines.
-  a=$(print -Pn "%40>...>$a" | tr -d "\n")
-
-  case $TERM in
-  screen)
-    print -Pn "\ek$a:$3\e\\" # screen title (in ^A")
-    ;;
-  xterm*|rxvt)
-    print -Pn "\e]2;$2\a" # plain xterm title ($3 for pwd)
-    ;;
-  esac
-}
