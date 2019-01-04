@@ -50,21 +50,21 @@ export skip_global_compinit=1
 
 # Files created by root can be +RX by owners who are users or groups.
 umask 027
+
+# Initialize the $PATH ARRAY
 PATHDIRS=(
-    "$HOME"
+  "$HOME/bin"
+  "$HOME/bin"
+  "$LOCAL/sbin"
+  "$LOCAL/bin"
+  "$LOCAL/Cellar"
+  "$PYTHON/2.7/bin"
+  "$HOME/.fzf/bin"
 )
-# Add our directories.
-path=("$HOME/bin" $path)
-path=("$LOCAL/sbin" $path)
-path=("$LOCAL/bin" $path)
-path=("$LOCAL/Cellar" $path)
-path=("$PYTHON/2.7/bin" $path)
-path=("$HOME/.fzf/bin" $path)
 
-export MANPATH="$LOCAL/man:$MANPATH"
+# FIRE AWAY!
+path=($path $dir)
 
-# Using the (N-/) glob qualifier we can remove paths that do not exist.
-path=($^path(N-/))
 
 # -----------------------------------------------------------------------------
 # Sources
@@ -77,31 +77,32 @@ source "$DOTS/functions"
 # Plugins
 # -----------------------------------------------------------------------------
 
+# Initialize ZPlug
 [[ -f "$ZPLUG_INIT" ]] && source "$ZPLUG_INIT" && zplug update
 
- zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "MikeDacre/careful_rm"
 zplug "eendroroy/zed-zsh"
 zplug "rapgenic/zsh-git-complete-urls"
 zplug "zpm-zsh/colors"
-zplug "plugins/brew",                            from:oh-my-zsh
-zplug "plugins/brew-cask",                       from:oh-my-zsh
-zplug "plugins/sudo",                            from:oh-my-zsh
-zplug "plugins/pip",                             from:oh-my-zsh, if:"(( $+commands[pip] ))"
-zplug "plugins/urltools",                        from:oh-my-zsh
-zplug "plugins/colored-man-pages",               from:oh-my-zsh
-zplug "lib/clipboard",                           from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-zplug "lib/completion",                          from:oh-my-zsh
-zplug "lib/history",                             from:oh-my-zsh
-zplug "zsh-users/zsh-autosuggestions",           from:github, defer:2
-zplug "zsh-users/zsh-completions",               from:github, use:'src/_*', lazy:true
-zplug "zsh-users/zsh-history-substring-search",  from:github, defer:3
+zplug "plugins/brew",                            from:"oh-my-zsh"]
+zplug "plugins/brew-cask",                       from:"oh-my-zsh"
+zplug "plugins/sudo",                            from:"oh-my-zsh"
+zplug "plugins/pip",                             from:"oh-my-zsh", if:"(( $+commands[pip] ))"
+zplug "plugins/urltools",                        from:"oh-my-zsh"
+zplug "plugins/colored-man-pages",               from:"oh-my-zsh"
+zplug "lib/clipboard",                           from:"oh-my-zsh", if:"[[ $OSTYPE == *darwin* ]]"
+zplug "lib/completion",                          from:"oh-my-zsh"
+zplug "lib/history",                             from:"oh-my-zsh"
+zplug "zsh-users/zsh-autosuggestions",           from:"github", defer:2
+zplug "zsh-users/zsh-completions",               from:"github", use:'src/_*', lazy:true
+zplug "zsh-users/zsh-history-substring-search",  from:"github", defer:3
 zplug "changyuheng/fz", defer:1
 zplug "andrewferrier/fzf-z"
 zplug "hlissner/zsh-autopair"
 zplug "rupa/z", use:"z.sh"
-zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
-zplug "sindresorhus/pure", from:"github", use:"pure.zsh", as:theme
+zplug "mafredri/zsh-async",                       from:"github", use:"async.zsh"
+zplug "sindresorhus/pure",                        from:"github", use:"pure.zsh", as:theme
 
 
 # Install missings plugins
@@ -156,7 +157,7 @@ SAVEHIST=5000
 # Extras like FASD, FZF,
 # -----------------------------------------------------------------------------
 
-export COMPLETIONS="$FZF_SHELL/key-bindings.zsh"
+export COMPLETIONS="$FZF_SHELL/completions.zsh"
 export KEYBINDINGS="$FZF_SHELL/key-bindings.zsh"
 
 _has() { which $1>/dev/null 2>&1 }
