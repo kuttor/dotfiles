@@ -1,115 +1,140 @@
 #!/bin/zsh
-# -----------------------------------------------------------------------------
 # Name: Andrew Kuttor
 # Mail: andrew.kuttor@gmail.com
+
 # -----------------------------------------------------------------------------
+# Keybindings
+# -----------------------------------------------------------------------------
+
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
+bindkey "^R" history-incremental-search-backward
+bindkey "^P" history-search-backward
+bindkey "^Y" accept-and-hold
+bindkey "^N" insert-last-word
+bindkey "^B" backward-word
+bindkey "^F" forward-word
+
+# -----------------------------------------------------------------------------
+# autoloads
+# -----------------------------------------------------------------------------
+
+stty start undef                      # disable C-s stopping receiving keyboard signals.
+stty stop undef
+autoload -U zargs                     # Similar to Xargs
+autoload -U zmv                       # ZSH file renamer
+autoload -U add-zsh-hook
+autoload -U url-quote-magic && zle -N self-insert url-quote-magic
+autoload -Uz colors && colors
+autoload -U +X compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+autoload -z edit-command-line && zle -N edit-command-line
 
 # -----------------------------------------------------------------------------
 # Exports
 # -----------------------------------------------------------------------------
 
 export ZPLUG_HOME="$HOME/.zplug"
-export ZPLUG_ROOT="$HOME/.zplug"
+export ZPLUG_INIT="$ZPLUG_INIT"
+export L0CAL="/usr/local"
 export DOTS="$HOME/.dotfiles"
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
-export DEFAULT_USER="yeti"
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export EDITOR=`which vim`
+export VISUAL="$EDITOR"
+export skip_global_compinit=1
+
+# -----------------------------------------------------------------------------
+# Paths
+# -----------------------------------------------------------------------------
+
+# Files created by root can be +RX by owners who are users or groups.
+umask 027
+PATHDIRS=(
+    "$HOME"
+)
+# Add our directories.
+path=("$HOME/bin" $path)
+path=("$LOCAL/sbin" $path)
+path=("$LOCAL/bin" $path)
+path=("$LOCAL/Cellar" $path)
+path=("$PYTHON/2.7/bin" $path)
+path=("$HOME/.fzf/bin" $path)
+
+export MANPATH="$LOCAL/man:$MANPATH"
+
+# Using the (N-/) glob qualifier we can remove paths that do not exist.
+path=($^path(N-/))
 
 # -----------------------------------------------------------------------------
 # Sources
 # -----------------------------------------------------------------------------
 
-# Path additions
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/usr/local/opt/binutils/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/Users/yeti/Library/Python/2.7/bin:$PATH"
-export MANPATH="/usr/local/man:$MANPATH"
+source "$DOTS/aliases"
+source "$DOTS/functions"
 
 # -----------------------------------------------------------------------------
 # Plugins
 # -----------------------------------------------------------------------------
 
-# Install Zplug, if missing,
-#[[ ! -d $ZPLUG_HOME ]] &&\
-#  git clone https://github.com/zplug/zplug $ZPLUG_HOME &&\
+[[ -f "$ZPLUG_INIT" ]] && source "$ZPLUG_INIT" && zplug update
 
-source $ZPLUG_HOME/init.zsh && zplug update
-# Zplug created plugin, set to self-manage itself
-#zplug "zplug/zplug", hook-build:"zplug --self-manage"
-
-# Oh-My-Zsh created plugins. 
-zplug "plugins/brew",              from:oh-my-zsh
-zplug "plugins/brew-cask",         from:oh-my-zsh
-zplug "lib/clipboard",             from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-zplug "lib/completion",            from:oh-my-zsh
-zplug "plugins/pip",               from:oh-my-zsh, if:"(( $+commands[pip] ))"
-zplug "plugins/urltools",          from:oh-my-zsh
-zplug "plugins/command-not-found", from:oh-my-zsh
-zplug "dracula/zsh", as:theme
-zplug "lib/history",               from:oh-my-zsh
-zplug "plugins/colored-man-pages", from:oh-my-zsh
-zplug "mafredri/zsh-async",  defer:0
-zplug "modules/osx",         from:prezto, if:"[[ $OSTYPE == *darwin* ]]"
-#zplug "zsh-users/zsh-syntax-highlighting", defer:3
-zplug "zdharma/fast-syntax-highlighting", defer:2
-
-# ZSHUsers created plugins. 
+ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+zplug "MikeDacre/careful_rm"
+zplug "eendroroy/zed-zsh"
+zplug "rapgenic/zsh-git-complete-urls"
+zplug "zpm-zsh/colors"
+zplug "plugins/brew",                            from:oh-my-zsh
+zplug "plugins/brew-cask",                       from:oh-my-zsh
+zplug "plugins/sudo",                            from:oh-my-zsh
+zplug "plugins/pip",                             from:oh-my-zsh, if:"(( $+commands[pip] ))"
+zplug "plugins/urltools",                        from:oh-my-zsh
+zplug "plugins/colored-man-pages",               from:oh-my-zsh
+zplug "lib/clipboard",                           from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "lib/completion",                          from:oh-my-zsh
+zplug "lib/history",                             from:oh-my-zsh
 zplug "zsh-users/zsh-autosuggestions",           from:github, defer:2
 zplug "zsh-users/zsh-completions",               from:github, use:'src/_*', lazy:true
 zplug "zsh-users/zsh-history-substring-search",  from:github, defer:3
-
-# Binaries
 zplug "changyuheng/fz", defer:1
-zplug "rupa/z", use:z.sh
+zplug "andrewferrier/fzf-z"
+zplug "hlissner/zsh-autopair"
+zplug "rupa/z", use:"z.sh"
+zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
+zplug "sindresorhus/pure", from:"github", use:"pure.zsh", as:theme
 
-# Install missings plugins.
-if ! zplug check --verbose
-then
-    plug install
-fi
 
-zplug load --verbose && zplug install
-
+# Install missings plugins
+[[ ! zplug check --verbose ]] && zplug install && zplug load
 
 # -----------------------------------------------------------------------------
-# fzf
-# -----------------------------------------------------------------------------
-
-if [[ -f $HOME/.fzf.zsh ]]; then
-    # echo "[zshrc] loading fzf..."
-    source ~/.fzf.zsh
-fi
-
 # Set Options
-setopt prompt_subst
-setopt complete_in_word
-setopt always_to_end
-setopt notify
-setopt local_options
-setopt complete_aliases
-setopt nohup
+# -----------------------------------------------------------------------------
 
+setopt                  \
+ prompt_subst           \
+ shwordsplit            \
+ list_ambiguous         \            # complete as much of word before ambigious
+ hash_list_all          \            # hash everything before completion
+ complete_in_word       \            # allow completion from within a word
+ always_to_end          \            # move curser to end or line on completion
+ notify                 \
+ local_options          \
+ complete_aliases       \
+ nohup                  \
+ correct                \             # spelling correction for commands
+ extendedglob           \
+ NOFLOWCONTROL          \              # Flow control is archaic.
+ NONOMATCH              \             # Avoid 'zsh: no matches found...'
 
-# FASD
-eval "$(fasd --init auto)"
-
-# Language setting
-export LANG=en_US.UTF-8
-
-    # Add <TAB> completion handlers for fzf
-_fzf_complete_z(){
-    _fzf_complete '--multi --reverse' "$@" < <(raw_z)
-}
 
 # -----------------------------------------------------------------------------
 # History
 # -----------------------------------------------------------------------------
 
-# Set options
+# Set history options
 setopt BANG_HIST                 # Treat '!' special during expansion.
-setopt EXTENDED_HISTORY          # Record show start:elapsed;command" format.
+setopt EXTENDED_HISTORY          # Record show start:elapsed;command format.
 setopt INC_APPEND_HISTORY        # Write to the history file immediately.
 setopt SHARE_HISTORY             # Share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire dupes entries first when trimming.
@@ -119,20 +144,86 @@ setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
 setopt HIST_IGNORE_SPACE         # Don't record entries starting with a space.
 setopt HIST_SAVE_NO_DUPS         # No dupes entries in the history file.
 setopt HIST_REDUCE_BLANKS        # Remove blanks before recording entry.
-setopt HIST_VERIFY               # Don't execute expasion immediately
+setopt HIST_VERIFY               # Don't execute expasion immediately.
 setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 
 # Set history vars
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE=4096
-SAVEHIST=4096
+HISTSIZE=5000
+SAVEHIST=5000
 
-# FASD
-eval "$(fasd --init auto)"
+# -----------------------------------------------------------------------------
+# Extras like FASD, FZF,
+# -----------------------------------------------------------------------------
 
-# Custom Aliases
-source "$HOME/.dotfiles/aliases"
+export COMPLETIONS="$FZF_SHELL/key-bindings.zsh"
+export KEYBINDINGS="$FZF_SHELL/key-bindings.zsh"
 
-# Custom Functions
-source "$HOME/.dotfiles/functions"
+_has() { which $1>/dev/null 2>&1 }
+export FZF_SHELL="/usr/local/Cellar/fzf/0.17.5/shell"
+
+[[ -e `which fzf` ]] &&\
+  source fzf.zsh && source $KEYBINDING && source $COMPLETION &&
+
+if _has fasd
+then
+  fasd_cache="$HOME/.fasd-init-cache"
+  if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+    fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install >| "$fasd_cache"
+  fi
+  source "$fasd_cache"
+  unset fasd_cache
+fi
+
+if _has fzf && _has ag
+then
+    export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_DEFAULT_OPTS='
+    --color fg:242,bg:236,hl:65
+    --color fg+:15,bg+:239,hl+:108
+    --color info:108,prompt:109
+    --color spinner:108,pointer:168,marker:168
+    '
+fi
+
+if _has fzf && _has rg
+then
+    export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!{.git}" 2>/dev/null'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_DEFAULT_OPTS=''
+fi
+
+# FZF Git searching
+fshow() {
+  local out shas sha q k
+  while out=$(
+      git log --graph --color=always \
+          --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+      fzf --ansi --multi --no-sort --reverse --query="$q" \
+          --print-query --expect=ctrl-d --toggle-sort=\`
+          ); do
+    q=$(head -1 <<< "$out")
+    k=$(head -2 <<< "$out" | tail -1)
+    shas=$(sed '1,2d;s/^[^a-z0-9]*//;/^$/d' <<< "$out" | awk '{print $1}')
+    [ -z "$shas" ] && continue
+    if [ "$k" = ctrl-d ]; then
+      git diff --color=always $shas | less -R
+    else
+      for sha in $shas; do
+        git show --color=always $sha | less -R
+      done
+    fi
+  done
+}
+
+# only init if installed.
+if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+  eval "$(fasd --init posix-alias zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)" >| "$fasd_cache"
+fi
+source "$fasd_cache"
+unset fasd_cache
+
+
 

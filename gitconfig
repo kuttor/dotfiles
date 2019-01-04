@@ -1,0 +1,21 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = Andrew Kuttor
+	email = andrew.kuttor@gmail.com
+[color]
+	ui = auto
+[advice]
+	pushNonFastForward = false
+	statusHints = false
+[core]
+	whitespace = trailing-space,space-before-tab
+[diff]
+	renames = copies
+	mnemonicprefix = true
+[push]
+	default = tracking
+[merge]
+	stat = true
+[rerere]
+	enabled = true
