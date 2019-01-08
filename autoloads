@@ -1,0 +1,20 @@
+#!/usr/local/bin/zsh
+# Name: Andrew Kuttor
+# Mail: andrew.kuttor@gmail.com
+
+# -----------------------------------------------------------------------------
+# autoloads
+# -----------------------------------------------------------------------------
+
+autoload -Uz terminfo
+autoload -Uz vcs_info
+autoload -U zargs                     # Similar to Xargs
+autoload -U zmv                       # ZSH file renamer
+autoload -Uz run-help-git
+autoload -U add-zsh-hook
+autoload -U url-quote-magic && zle -N self-insert url-quote-magic
+autoload -Uz colors && colors
+autoload -U +X compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+autoload -z edit-command-line && zle -N edit-command-line
+autoload -Uz smart-insert-last-word

@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 
 # Initialize ZPlug
-export "$HOME/.zplug"
+export zplug_home="$HOME/.zplug"
 source $(brew --prefix zplug)/init.zsh
 
 # Self Manage
@@ -18,16 +18,25 @@ zplug "rupa/z", from:"github", use:"z.sh"
 zplug "changyuheng/fz", from:"github", defer:1
 zplug "andrewferrier/fzf-z", from:"github"
 
+# ZAW/CDR
+zplug "zsh-users/zaw", from:"github"
+zplug "willghatch/zsh-cdr", from:"github"
+
 # Readline improvements
 zplug "hlissner/zsh-autopair", from:"github", as:"plugin"
 zplug "zsh-users/zsh-autosuggestions", from:"github", defer:2
 zplug "zsh-users/zsh-completions", from:"github"
+zplug "hchbaw/auto-fu.zsh", from:"github"
+zplug "b4b4r07/enhancd", use:init.sh
 
 # History
 zplug "zsh-users/zsh-history-substring-search",  from:"github", defer:3
 
 # Colors
 zplug 'zdharma/fast-syntax-highlighting', hook-load:'FAST_HIGHLIGHT=()'
+
+# Theme
+zplug "agkozak/agkozak-zsh-prompt"
 
 # Check and Install for added plugins
 zplug check || zplug install
