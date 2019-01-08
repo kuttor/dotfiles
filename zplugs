@@ -22,6 +22,10 @@ zplug "andrewferrier/fzf-z", from:"github"
 zplug "zsh-users/zaw", from:"github"
 zplug "willghatch/zsh-cdr", from:"github"
 
+# Percol
+zplug "mooz/percol", from:github
+
+
 # Readline improvements
 zplug "hlissner/zsh-autopair", from:"github", as:"plugin"
 zplug "zsh-users/zsh-autosuggestions", from:"github", defer:2
