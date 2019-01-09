@@ -9,13 +9,14 @@ export DOTFILES="$HOME/.dotfiles"
 
 # Functions Path
 fpath=( $fpath $DOTFILES/functions )
+autoload -U $DOTFILES/functions
 
 # Language
 export LANGUAG="en_US.UTF-8"
 export LANG="${LANGUAGE}"
 export LC_ALL="${LANGUAGE}"
 export LC_CTYPE="${LANGUAGE}"
-]
+
 # Prompt tweaks
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=243'
 
@@ -68,6 +69,9 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 # Powertool configs, i.e. FZ, FZF
 # -----------------------------------------------------------------------------
 
+# Source FZF
+[ -f "$HOME/.local/.fzf.zsh" ] && source "$HOME/.local/.fzf.zsh"
+\
 # Use ~~ as the trigger sequence instead of the default **
 export FZF_COMPLETION_TRIGGER='~~'
 
@@ -99,7 +103,3 @@ source "$DOTS/history"
 source "$DOTS/keybindings"
 source "$DOTS/autoloads"
 source "$DOTS/completions"
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
