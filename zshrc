@@ -76,7 +76,8 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export FZF_COMPLETION_TRIGGER='~~'
 
 # Options to fzf command
-export FZF_COMPLETION_OPTS='+c -x'
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
+
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
