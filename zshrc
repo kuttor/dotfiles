@@ -21,7 +21,7 @@ export LC_CTYPE="${LANGUAGE}"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=243'
 
 # Editor
-export EDITOR=`which vim`
+export EDITOR=`which nvim`
 export VISUAL="${EDITOR}"
 export CVSEDITOR="${EDITOR}"
 export SVN_EDITOR="${EDITOR}"
