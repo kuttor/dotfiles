@@ -10,7 +10,7 @@ if [ "x$CASE_SENSITIVE" = "xtrue" ]; then
   unset CASE_SENSITIVE
 else
   zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-f
+fi
 
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path $HOME/.zplug/cache
@@ -42,4 +42,3 @@ zstyle ':completion:*:*:xdvi:*' file-sort time
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:kill:*'   force-list always
 zstyle ':completion:*' squeeze-slashes true
-

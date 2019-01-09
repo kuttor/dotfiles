@@ -5,11 +5,11 @@
 # -----------------------------------------------------------------------------
 
 # Dotfiles location
-export DOTFILES="$HOME/.dotfiles"
+export DOTFILES="${HOME}/.dotfiles"
 
 # Functions Path
-fpath=( $fpath $DOTFILES/functions )
-autoload -U $DOTFILES/functions
+fpath=( $fpath "${DOTFILES}/functions" )
+autoload -U "${DOTFILES}/functions"
 
 # Language
 export LANGUAG="en_US.UTF-8"
@@ -36,7 +36,7 @@ export BAT_THEME="TwoDark"
 export BAT_STYLE="numbers,changes,header"
 
 # Use italic text on the terminal (not supported on all terminals)
-#iexport bat-italic-text=always
+#export bat-italic-text=always
 
 # Add mouse scrolling support in less
 export bat_pager="less -FR"
@@ -44,14 +44,15 @@ export bat_pager="less -FR"
 # Use C++ syntax (instead of C) for .h header files
 #export bat-map-syntax h:cpp
 
+# Auto-Fu-map-syntax .ignore:.gitignore
+[[ -f "${ZPLUG}/HOME/repos/hchbaw/auto-fu.zsh" ]]&&\
+source "${ZPLUG}/HOME/repos/hchbaw/auto-fu.zsh/auto-fu.zsh"
 
-# Auro-FUt-map-syntax .ignore:.gitignore
 autoload -Uz compinit && compinit
 zstyle ':completion:*' menu select
 
-function zle-line-init() {
-  auto-fu-init
-}
+#zle-line-init () {auto-fu-init;}; zle -N zle-line-init
+
 zle -N zle-line-init
 zle -N zle-keymap-select auto-fu-zle-keymap-select
 zstyle ':completion:*' completer _oldlist _complete
@@ -65,42 +66,38 @@ export LESS_TERMCAP_so=$'\E[00;44;37m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-# ----------------------------------------------------------------------------eeq
+# ----------------------------------------------------------------------------
 # Powertool configs, i.e. FZ, FZF
 # -----------------------------------------------------------------------------
 
 # Source FZF
-[ -f "$HOME/.local/.fzf.zsh" ] && source "$HOME/.local/.fzf.zsh"
-\
+[[ -f "${HOME}/.local/.fzf.zsh" ]] && source "${HOME}/.local/.fzf.zsh"
+
 # Use ~~ as the trigger sequence instead of the default **
 export FZF_COMPLETION_TRIGGER='~~'
 
 # Options to fzf command
-export FZF_DEFAULT_OPTS='--height 40% --reverse --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
-
+#export FZF_DEFAULT_OPTS='--height 40% --reverse --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 function _fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
+    fd --hidden --follow --exclude ".git" . "$1"
 }
 
 # Use fd to generate the list for directory completion
 function _fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
+    fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-# -----------------------------------------------------------------------------
 # Sources
-# -----------------------------------------------------------------------------
-
-source "$DOTS/aliases"
-source "$DOTS/functions"
-source "$DOTS/zplugs"
-source "$DOTS/setoptions"
-source "$DOTS/history"
-source "$DOTS/keybindings"
-source "$DOTS/autoloads"
-source "$DOTS/completions"
+source "${DOTFILES}/aliases"
+source "${DOTFILES}/functions"
+source "${DOTFILES}/zplugs"
+source "${DOTFILES}/setoptions"
+source "${DOTFILES}/history"
+source "${DOTFILES}/keybindings"
+source "${DOTFILES}/autoloads"
+source "${DOTFILES}/completions"
