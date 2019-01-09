@@ -7,6 +7,9 @@
 # Contact : andrew.kuttor@gmail.com
 # ------------------------------------------------------------------------------
 
+# Creating a History variable.
+export ZSH_HISTORY_FILE="$HISTFILE"
+
 # alias
 alias h="history"
 
@@ -17,9 +20,7 @@ export HISTCONTROL="ignoredups:erasedups"              # Ignore lead-space & dup
 export HISTTIMEFORMAT="[%F %T] "                     # Custom time format
 export HISTIGNORE="ls:cd:exa:pwd:exit:history:clear" # Ignore recording commands
 
-
 #  zsh-history-enhanced settings
-ZSH_HISTORY_FILE="$HISTFILE"
 ZSH_HISTORY_FILTER="fzf:percol"
 ZSH_HISTORY_KEYBIND_GET_BY_DIR="^r"
 ZSH_HISTORY_KEYBIND_GET_ALL="^r^a"
