@@ -1,6 +1,6 @@
 #!/usr/local/bin/zsh
-
-# info: Zsh configuration file for setopt directives
+# File: setoptions
+# Info: Zsh configuration file for setopt directives
 # -----------------------------------------------------------------------------
 
 setopt always_last_prompt

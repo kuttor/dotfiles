@@ -1,9 +1,6 @@
 #!/usr/local/bin/zsh
 # Name: Andrew Kuttor
 # Mail: andrew.kuttor@gmail.com
-
-# -----------------------------------------------------------------------------
-# Keybindings
 # -----------------------------------------------------------------------------
 
 bindkey "^A" beginning-of-line
