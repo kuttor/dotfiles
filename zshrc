@@ -4,15 +4,18 @@
 
 # -----------------------------------------------------------------------------
 
+# Dotfiles location
+export DOTFILES="$HOME/.dotfiles"
 
-export DOTS="$HOME/.dotfiles"
+# Functions Path
+fpath=( $fpath $DOTFILES/functions )
 
 # Language
 export LANGUAG="en_US.UTF-8"
 export LANG="${LANGUAGE}"
 export LC_ALL="${LANGUAGE}"
 export LC_CTYPE="${LANGUAGE}"
-
+]
 # Prompt tweaks
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=243'
 
@@ -25,7 +28,6 @@ export GIT_EDITOR="${EDITOR}"
 
 # EnhancedCD
 export ENHANCD_DOT_SHOW_FULLPATH=1
-export ENHANCD_FILTER="/usr/local/bin/peco:fzf:non-existing-filter"
 export ENHANCD_FILTER="/usr/local/bin/fzf:fzf-tmux:fzf:percol"
 
 # Bat configuration
@@ -41,11 +43,17 @@ export bat_pager="less -FR"
 # Use C++ syntax (instead of C) for .h header files
 #export bat-map-syntax h:cpp
 
-# Use "gitignore" highlighting for ".ignore" files
-#export bat-map-syntax .ignore:.gitignore
 
-# Pager
-export PAGER=less
+# Auro-FUt-map-syntax .ignore:.gitignore
+autoload -Uz compinit && compinit
+zstyle ':completion:*' menu select
+
+function zle-line-init() {
+  auto-fu-init
+}
+zle -N zle-line-init
+zle -N zle-keymap-select auto-fu-zle-keymap-select
+zstyle ':completion:*' completer _oldlist _complete
 
 # LESS man page colors (makes Man pages more readable).
 export LESS_TERMCAP_mb=$'\E[01;31m'
@@ -94,6 +102,4 @@ source "$DOTS/completions"
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
