@@ -7,21 +7,18 @@
 # Dotfiles location
 export DOTFILES="${HOME}/.dotfiles"
 
-# Functions Path
+# Functions
 fpath=( $fpath "${DOTFILES}/functions" )
 autoload -U "${DOTFILES}/functions"
 
-# Java
-export JAVA_HOME=$("/usr/libexec/java_home") 
-
 # Language
-export LANGUAG="en_US.UTF-8"
+export LANGUAGE="en_US.UTF-8"
 export LANG="${LANGUAGE}"
 export LC_ALL="${LANGUAGE}"
 export LC_CTYPE="${LANGUAGE}"
 
 # Prompt
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=243'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=143'
 
 # Editor
 export EDITOR=`which nvim`
@@ -33,23 +30,11 @@ export GIT_EDITOR="${EDITOR}"
 # Pager
 export PAGER='bat'
 export MANPAGER='bat'
+export BAT_CONFIG_PATH="${DOTFILES}/bat.conf"
 
 # EnhancedCD
 export ENHANCD_DOT_SHOW_FULLPATH=1
 export ENHANCD_FILTER="/usr/local/bin/fzf:fzf-tmux:fzf:percol"
-
-# Bat configuration
-export BAT_THEME="TwoDark"
-export BAT_STYLE="numbers,changes,header"
-
-# Use italic text on the terminal (not supported on all terminals)
-#export bat-italic-text=always
-
-# Add mouse scrolling support in less
-export bat_pager="less -FR"
-
-# Use C++ syntax (instead of C) for .h header files
-#export bat-map-syntax h:cpp
 
 # Auto-Fu-map-syntax .ignore:.gitignore
 [[ -f "${ZPLUG}/HOME/repos/hchbaw/auto-fu.zsh" ]]&&\
