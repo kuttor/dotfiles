@@ -87,12 +87,12 @@ function _fzf_compgen_dir() {
 # Sources
 source "${DOTFILES}/aliases"
 source "${DOTFILES}/functions"
-source "${DOTFILES}/zplugs"
-source "${DOTFILES}/setoptions"
-source "${DOTFILES}/history"
 source "${DOTFILES}/keybindings"
-source "${DOTFILES}/autoloads"
-source "${DOTFILES}/completions"
+source "${DOTFILES}/zplugs"
+source "${DOTFILES}/zsh_autoloads"
+source "${DOTFILES}/zsh_completions"
+source "${DOTFILES}/zsh_history"
+source "${DOTFILES}/zsh_setopts"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
