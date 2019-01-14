@@ -1,27 +1,25 @@
-#!/usr/local/bin/zsh
-# Name: Andrew Kuttor
-# Mail: andrew.kuttor@gmail.com
+#! /bin/bash
 
-# -----------------------------------------------------------------------------
-# History
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# Name    : history
+# About   : Extended history configurations for dotfiles
+# Author  : Andrew Kuttor
+# Contact : andrew.kuttor@gmail.com
+# ------------------------------------------------------------------------------
 
-# Set history options
-setopt BANG_HIST                 # Treat '!' special during expansion.
-setopt EXTENDED_HISTORY          # Record show start:elapsed;command format.
-setopt INC_APPEND_HISTORY        # Write to the history file immediately.
-setopt SHARE_HISTORY             # Share history between all sessions.
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire dupes entries first when trimming.
-setopt HIST_IGNORE_DUPS          # Don't record an existing entries.
-setopt HIST_IGNORE_ALL_DUPS      # Delete old record upon a new dupes.
-setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
-setopt HIST_IGNORE_SPACE         # Don't record entries starting with a space.
-setopt HIST_SAVE_NO_DUPS         # No dupes entries in the history file.
-setopt HIST_REDUCE_BLANKS        # Remove blanks before recording entry.
-setopt HIST_VERIFY               # Don't execute expasion immediately.
-setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+# alias
+alias h="history"
 
-# Set history vars
-HISTFILE="$HOME/.zsh_history"
-HISTSIZE=5000
-SAVEHIST=5000
+# export
+export HISTFILE="$HOME/.zsh_history"                 # History file name
+export HISTSIZE=100000                               # History file size
+export HISTFILESIZE=$HISTSIZE                        # History limit
+export HISTCONTROL="ignoredups:erasedups"            # Ignore lead-space & dupes
+export HISTTIMEFORMAT="[%F %T] "                     # Custom time format
+export HISTIGNORE="ls:cd:exa:pwd:exit:history:clear" # Ignore recording commands
+
+#  zsh-history-enhanced settings
+ZSH_HISTORY_FILTER="fzf:percol"
+ZSH_HISTORY_KEYBIND_GET_BY_DIR="^r"
+ZSH_HISTORY_KEYBIND_GET_ALL="^r^a"
+

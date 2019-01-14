@@ -84,7 +84,7 @@
 
 [rerere]
 
-  enabled = truei
+  enabled = true
 
 [credential]
   
