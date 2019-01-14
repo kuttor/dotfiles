@@ -7,16 +7,14 @@
 # Contact : andrew.kuttor@gmail.com
 # ------------------------------------------------------------------------------
 
-# Creating a History variable.
-export ZSH_HISTORY_FILE="$HISTFILE"
-
 # alias
 alias h="history"
 
 # export
+export HISTFILE="$HOME/.zsh_history"                 # History file name
 export HISTSIZE=100000                               # History file size
 export HISTFILESIZE=$HISTSIZE                        # History limit
-export HISTCONTROL="ignoredups:erasedups"              # Ignore lead-space & dupes
+export HISTCONTROL="ignoredups:erasedups"            # Ignore lead-space & dupes
 export HISTTIMEFORMAT="[%F %T] "                     # Custom time format
 export HISTIGNORE="ls:cd:exa:pwd:exit:history:clear" # Ignore recording commands
 

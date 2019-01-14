@@ -31,9 +31,10 @@ zplug "zsh-users/zsh-autosuggestions", from:"github", defer:2
 zplug "zsh-users/zsh-completions", from:"github"
 zplug "hchbaw/auto-fu.zsh", from:"github"
 zplug "b4b4r07/enhancd", use:init.sh
+zplug "kutsan/zsh-system-clipboard", from:"github"
 
 # History
-zplug check "b4b4r07/zsh-history-enhanced", from:"github"
+zplug "b4b4r07/zsh-history-enhanced", from:"github"
 zplug "zsh-users/zsh-history-substring-search", from:"github", defer:3
 
 # Colors

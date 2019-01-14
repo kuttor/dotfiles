@@ -11,13 +11,16 @@ export DOTFILES="${HOME}/.dotfiles"
 fpath=( $fpath "${DOTFILES}/functions" )
 autoload -U "${DOTFILES}/functions"
 
+# Java
+export JAVA_HOME=$("/usr/libexec/java_home") 
+
 # Language
 export LANGUAG="en_US.UTF-8"
 export LANG="${LANGUAGE}"
 export LC_ALL="${LANGUAGE}"
 export LC_CTYPE="${LANGUAGE}"
 
-# Prompt tweaks
+# Prompt
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=243'
 
 # Editor
@@ -26,6 +29,10 @@ export VISUAL="${EDITOR}"
 export CVSEDITOR="${EDITOR}"
 export SVN_EDITOR="${EDITOR}"
 export GIT_EDITOR="${EDITOR}"
+
+# Pager
+export PAGER='bat'
+export MANPAGER='bat'
 
 # EnhancedCD
 export ENHANCD_DOT_SHOW_FULLPATH=1
@@ -77,7 +84,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export FZF_COMPLETION_TRIGGER='~~'
 
 # Options to fzf command
-#export FZF_DEFAULT_OPTS='--height 40% --reverse --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --color dark,hl:33,hl+:37,fg+:235,bg+:136,fg+:254'
 
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
 # command for listing path candidates.
@@ -101,3 +108,6 @@ source "${DOTFILES}/history"
 source "${DOTFILES}/keybindings"
 source "${DOTFILES}/autoloads"
 source "${DOTFILES}/completions"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
