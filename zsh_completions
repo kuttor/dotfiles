@@ -1,5 +1,0 @@
-#!/usr/local/bin/zsh
-
-autoload -U compinit && compinit
-#skip_global_compinit=true
-#zmodload -i zsh/complist

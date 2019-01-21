@@ -23,15 +23,15 @@ zplug "zsh-users/zaw", from:"github"
 zplug "willghatch/zsh-cdr", from:"github"
 
 # Percol
-zplug "mooz/percol", from:github
+zplug "mooz/percol", from:"github"
 
 # Readline improvements
+zplug "b4b4r07/enhancd", use:init.sh
 zplug "hlissner/zsh-autopair", from:"github", as:"plugin"
+zplug "knu/zsh-manydots-magic", from:"github" 
+zplug "kutsan/zsh-system-clipboard", from:"github"
 zplug "zsh-users/zsh-autosuggestions", from:"github", defer:2
 zplug "zsh-users/zsh-completions", from:"github"
-zplug "hchbaw/auto-fu.zsh", from:"github"
-zplug "b4b4r07/enhancd", use:init.sh
-zplug "kutsan/zsh-system-clipboard", from:"github"
 
 # History
 zplug "b4b4r07/zsh-history-enhanced", from:"github"

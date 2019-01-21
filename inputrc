@@ -5,40 +5,18 @@
 # Keybindings
 #-------------------------------------------------------------------------------
 
-# "\e[1;5D": beginning-of-line
-# "\e[1;5C": end-of-line
-# "\e[A": history-search-backward
-# "\e[B": history-search-forward
-# "\e[3~": delete-char
-# "\e[2~": quoted-insert
-# "\e[1;3D": forward-word
-# "\e[1;3C": backward-word
-
-# Run "ls -x" on target folder of last command 
-#"\ex": 'cd !$ \015ls\015'
-
-# Undo a directory change
-# "\ez": 'cd -\015'
-
-# Wrap the current line as an inline command substitution
-# "\e\C-m": '\C-a "$(\C-e)"\C-a'
-
-# Wrap for loop for current line
-# "\ef": '\C-a for i in $(\C-e) ; do \C-a \C-m'
-
-#-------------------------------------------------------------------------------
-# 
-#-------------------------------------------------------------------------------
-set completion-ignore-case On
-set expand-tilde on
-set convert-meta off
+# Allow UTF-8 input and output. Should hide ANSI code when outputting
 set input-meta on
 set output-meta on
+set convert-meta off
+
+set completion-ignore-case On
+set expand-tilde on
 set show-all-if-ambiguous off
 set mark-symlinked-directories on
 set page-completions off
 set match-hidden-files on
-set completion-query-items 200
+set completionu-qery-items 200
 set visible-stats on
 set colored-stats on
 set skip-completed-text on

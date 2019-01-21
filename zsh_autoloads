@@ -17,4 +17,4 @@ autoload -Uz colors && colors
 autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 autoload -z edit-command-line && zle -N edit-command-line
-autoload -Uz smart-insert-last-word
+#autoload -Uz smart-insert-last-word
