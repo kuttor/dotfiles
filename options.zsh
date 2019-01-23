@@ -1,78 +1,73 @@
 #!/usr/local/bin/zsh
 # File: setoptions
 # Info: Zsh configuration file for setopt directives
-# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------\
 
-# General
-setopt AUTO_CONTINUE          # send CONT to disowned processes
-setopt AUTO_RESUME            # running a suspended program
-setopt CHECK_JOBS             # check jobs before exiting
-setopt FUNCTION_ARGZERO       # $0 contains the function name
-setopt INTERACTIVE_COMMENTS   # shell comments (for presenting)
-setopt LIST_AMBIGUOUS
-setopt MAGIC_EQUAL_SUBST
-setopt NOFLOWCONTROL
-setopt NOTIFY                 # report status of bg jobs pronto
-setopt NO_BEEP                # beep is annoying
-setopt PATH_DIRS              # add commands with slashes to path search
-setopt RM_STAR_WAIT           # are you REALLY sure?
-setopt SUN_KEYBOARD_HACK      # ignore rogue backquote
-setopt ZLE                    # magic stuff
+# Navigation
+setopt   AUTO_CD                # Change to a directory without typing cd
+setopt   AUTO_NAME_DIRS         # Auto add variable-stored paths to ~ list
+setopt   AUTO_PUSHD             # Push the old directory onto the stack on cd
+setopt   CDABLE_VARS            # Change directory to a path stored in a variable
+setopt   EXTENDED_GLOB          # Use extended globbing syntax
+setopt   MULTIOS                # Write to multiple descriptors
+setopt   PUSHD_IGNORE_DUPS      # Do not store duplicates in the stack
+setopt   PUSHD_SILENT           # Do not print the directory stack after pushd or popd
+setopt   PUSHD_TO_HOME          # Push to home directory when no argument is given
+unsetopt CLOBBER                # Don't overwrite existing files with > and >>
 
-# Correction and Completion
-setopt AUTO_LIST              # list if multiple matches
-setopt AUTO_PARAM_KEYS        # smart insert spaces " "
-setopt AUTO_MENU              # Second tab for menu behavior
-setopt AUTO_PARAM_SLASH       # completed directory ends in /
-setopt AUTO_REMOVE_SLASH      # remove extra slashes if needed
-setopt COMPLETE_ALIASES
-setopt ALWAYS_TO_END          # curser goes to end after complete
-setopt COMPLETE_IN_WORD       # complete at cursor
-setopt CORRECT                # autocorrect spelling errors of commands
-setopt NOMATCH                # if no matches print error
-setopt CORRECT_ALL            # autocorrect spelling errors of arguments
-setopt AUTO_MENU              # show complete menu on multi tab press
-unsetopt MENU_COMPLETE        # add first of multiple
+# Files and Commands
+setopt   BRACE_CCL              # Allow brace character class list expansion
+setopt   CDABLE_VARS            # in p, cd x ==> ~/x if x not p
+setopt   CHASE_LINKS            # resolve links to their location
+setopt   COMBINING_CHARS        # Combine zero-length punctuation characters (accents) with the base character
+setopt   CORRECT                # Correct mis-typed commands
+setopt   HASH_CMDS              # don't search for commands
+setopt   HASH_LIST_ALL          # more accurate correction
+setopt   LIST_ROWS_FIRST        # rows are way better
+setopt   LIST_TYPES             # Append type chars to files
+setopt   MULTIBYTE              # Unicode!
+setopt   MULTIOS                # redirect to globs!
+setopt   RC_QUOTES              # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'
+setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
+setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
+unsetopt MAIL_WARNING           # Don't print a warning message if a mail file has been accessed
 
-# Globbing
-setopt BARE_GLOB_QUAL         # can use qualifirs by themselves
-setopt BRACE_CCL              # extended brace expansion
-setopt EXTENDED_GLOB          # awesome globs
-setopt LIST_TYPES             # append type chars to files
-setopt MARK_DIRS              # glob directories end in "/"
-setopt NO_CASE_GLOB           # lazy case
-setopt NULL_GLOB              # don't err on null globs
-setopt NUMERIC_GLOB_SORT      # sort globs numerically
-setopt RC_EXPAND_PARAM        # globbing arrays
+# Jobs
+setopt   AUTO_RESUME            # Attempt to resume existing job before creating a new process
+setopt   LONG_LIST_JOBS         # List jobs in the long format by default
+setopt   NOTIFY                 # Report status of background jobs immediately
+unsetopt BG_NICE                # Don't run all background jobs at a lower priority
+unsetopt CHECK_JOBS             # Don't report on jobs when shell exit
+unsetopt HUP                    # Don't kill jobs on shell exit
 
 # History
-setopt APPEND_HISTORY         # append is good, append!
-setopt HIST_EXPIRE_DUPS_FIRST # kill the dups! kill the dups!
-setopt HIST_FIND_NO_DUPS      # ignore all search duplicates
-setopt HIST_IGNORE_DUPS       # ignore immediate duplicates
-setopt HIST_IGNORE_SPACE      # ignore lines starting with " "
-setopt HIST_NO_STORE          # don't store history commands
-setopt HIST_REDUCE_BLANKS     # collapse extra whitespace
-setopt INC_APPEND_HISTORY     # append in real time
-setopt SHARE_HISTORY          # share history between terminals
+setopt   APPEND_HISTORY         # append is good, append!
+setopt   BANG_HIST              # Treat the '!' character specially during expansion
+setopt   HIST_BEEP              # Beep when accessing non-existent history
+setopt   HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history
+setopt   HIST_FIND_NO_DUPS      # Do not display a previously found event
+setopt   HIST_IGNORE_ALL_DUPS   # Delete an old recorded event if a new event is a duplicate
+setopt   HIST_IGNORE_DUPS       # Do not record an event that was just recorded again
+setopt   HIST_IGNORE_SPACE      # Do not record an event starting with a space
+setopt   HIST_REDUCE_BLANKS     # collapse extra whitespace
+setopt   HIST_SAVE_NO_DUPS      # Do not write a duplicate event to the history file
+setopt   HIST_VERIFY            # Do not execute immediately upon history expansion
+setopt   INC_APPEND_HISTORY     # append in real time
+setopt   SHARE_HISTORY          # Share history between all sessions
 
-# I/O and Syntax
-setopt CDABLE_VARS            # in p, cd x ==> ~/x if x not p
-setopt CHASE_LINKS            # resolve links to their location
-setopt EQUALS                 # "=ps" ==> "/usr/bin/ps"
-setopt HASH_CMDS              # don't search for commands
-setopt HASH_LIST_ALL          # more accurate correction
-setopt LIST_ROWS_FIRST        # rows are way better
-setopt MULTIBYTE              # Unicode!
-setopt MULTIOS                # redirect to globs!
-setopt NOCLOBBER              # don't overwrite with > use !>
-setopt SHORT_LOOPS            # sooo lazy: for x in y do cmd
-
-# navigation
-setopt AUTO_CD                # just "dir" instead of "cd dir"
-setopt AUTO_NAME_DIRS         # if I set a=/usr/bin, cd a works
-setopt AUTO_PUSHD             # push everything to the dirstack
-setopt PUSHD_IGNORE_DUPS      # duplicates are redundant (duh)
-setopt PUSHD_MINUS            # invert pushd behavior
-setopt PUSHD_SILENT           # don't tell me though, I know.
-setopt PUSHD_TO_HOME          # pushd == pushd ~
+# Completion
+setopt   ALWAYS_TO_END          # curser goes to end after complete
+setopt   AUTO_LIST              # Automatically list choices on ambiguous completion
+setopt   AUTO_MENU              # Second tab for menu behavior
+setopt   AUTO_PARAM_KEYS        # smart insert spaces " "
+setopt   AUTO_PARAM_SLASH       # If completed parameter is a directory, add a trailing slash
+setopt   AUTO_REMOVE_SLASH      # remove extra slashes if needed
+setopt   COMPLETE_ALIASES
+setopt   COMPLETE_IN_WORD       # Complete from both ends of a word
+setopt   CORRECT                # autocorrect spelling errors of commands
+setopt   CORRECT_ALL            # autocorrect spelling errors of arguments
+setopt   NOMATCH                # if no matches print error
+setopt   PATH_DIRS              # Perform path search even on command names with slashes
+unsetopt MENU_COMPLETE          # add first of multiple
+unsetopt CASE_GLOB              # Make globbing case insensitive
+unsetopt FLOW_CONTROL           # Disable start/stop characters in shell editor

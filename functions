@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/local/bin/zsh
+
 # ------------------------------------------------------------------------------
 # Name    : functions
 # About   : Extended function for dotfiles
@@ -37,7 +38,11 @@ extract(){
   else
       echo "Incompatible archive: $1"
   fi
-}
+:}
+
+
+
+
 
 fzf-down() {
   fzf --height 50% "$@" --border

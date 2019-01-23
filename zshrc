@@ -1,4 +1,5 @@
 #!/usr/local/bin/zsh
+# -----------------------------------------------------------------------------
 # Name: Andrew Kuttor
 # Mail: andrew.kuttor@gmail.com
 # -----------------------------------------------------------------------------
@@ -18,14 +19,11 @@ export LC_CTYPE="${LANGUAGE}"
 
 # Coloring
 autoload -Uz colors && colors
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-ZSH_HIGHLIGHT_PATTERNS+=('rm*-rf*' 'fg=15,bg=red')
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='underline'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=default,fg=9'
-export WORDCHARS='*?_-[]~=&;!#$%^(){}<>'
-# export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
+export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
 
 # Editor
 export EDITOR=`which nvim`
@@ -46,12 +44,24 @@ export ENHANCD_FILTER="fzf-tmux"
 # Molecule
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
+# FSH
+FAST_WORK_DIR="$HOME/.config/fsh"
+
+# z.lua
+_ZL_CMD="z"                             # command alias
+_ZL_DATA="$HOME/.config/zdatafile.lua"  # datafile location
+_ZL_CD="cdz"                            # Custom CD command.
+_ZL_ECHO=1                              # Echo dirname after CD.
+_ZL_MATCH_MODE=1                        # Enable enhanced matching.
+
 # Sources
 source "${DOTFILES}/aliases"
 source "${DOTFILES}/functions"
 source "${DOTFILES}/keybinds.zsh"
-source "${DOTFILES}/zplugs"
+source "${DOTFILES}/zplug.zsh"
 source "${DOTFILES}/zsh_autoloads"
 source "${DOTFILES}/completes.zsh"
 source "${DOTFILES}/zsh_history"
 source "${DOTFILES}/options.zsh"
+source "${HOME}/.iterm2_shell_integration.zsh"
+

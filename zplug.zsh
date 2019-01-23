@@ -13,9 +13,16 @@ source $(brew --prefix zplug)/init.zsh
 # Self Manage
 zplug 'zplug/zplug', hook-build:"zplug --self-manage"
 
+# Prompt
+zplug "mafredri/zsh-async", from:"github"
+zplug "sindresorhus/pure", use:pure.zsh, from:"github", as:theme
+
+# Git
+zplug "plugins/git", from:oh-my-zsh, if:"(( $+commands[git] ))"
+
 # Z/FZF
-zplug "rupa/z", from:"github", use:"z.sh"
-zplug "changyuheng/fz", from:"github", defer:1
+zplug "skywind3000/z.lua", from:"github", use:"z.lua"
+zplug "changyuheng/fz", from:"github", defer:"1"
 zplug "andrewferrier/fzf-z", from:"github"
 
 # ZAW/CDR
@@ -39,9 +46,6 @@ zplug "zsh-users/zsh-history-substring-search", from:"github", defer:3
 
 # Colors
 zplug 'zdharma/fast-syntax-highlighting', hook-load:'FAST_HIGHLIGHT=()'
-
-# Theme
-zplug "agkozak/agkozak-zsh-prompt"
 
 # Check and Install for added plugins
 zplug check || zplug install
