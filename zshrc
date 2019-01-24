@@ -8,8 +8,7 @@
 export DOTFILES="${HOME}/.dotfiles"
 
 # Functions
-fpath=( $fpath "${DOTFILES}/functions" )
-autoload -U "${DOTFILES}/functions"
+fpath=( "${DOTFILES}/functions" "${fpath[@]}" ) 
 
 # Language
 export LANGUAGE="en_US.UTF-8"

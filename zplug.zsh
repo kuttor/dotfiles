@@ -39,6 +39,14 @@ zplug "knu/zsh-manydots-magic", from:"github"
 zplug "kutsan/zsh-system-clipboard", from:"github"
 zplug "zsh-users/zsh-autosuggestions", from:"github", defer:2
 zplug "zsh-users/zsh-completions", from:"github"
+o
+
+
+zplug "plugins/urltools"
+zplug "tomplex/jenkins-zsh"
+
+
+
 
 # History
 zplug "b4b4r07/zsh-history-enhanced", from:"github"

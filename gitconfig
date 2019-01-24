@@ -1,5 +1,6 @@
-# vim:syntax=gitconfig
-# File: .gitconfig
+# vim: syntax=gitconfig
+# -----------------------------------------------------------------------------
+# File: gitconfig
 # Info: This is Git's per-user configuration file
 # -----------------------------------------------------------------------------
 
