@@ -1,1 +1,92 @@
-.gitconfig
+# vim: syntax=gitconfig
+# -----------------------------------------------------------------------------
+# File: gitconfig
+# Info: This is Git's per-user configuration file
+# -----------------------------------------------------------------------------
+
+[alias]
+  st = status -sb
+  do = commit -am
+  up = pull
+  br = branch
+  co = checkout
+  who = shortlog -s --
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+  aliases = config --get-regexp alias
+  showtool = "!f() { git difftool ${1:-HEAD}^ ${1:-HEAD};}; f"
+  added = difftool --cached
+
+[diff]
+  tool = icdiff
+
+[difftool]
+  prompt = false
+
+[difftool "icdiff"]
+  cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+
+[pager]
+  difftool = true
+
+[user]
+  name = "Andrew Kuttor"
+  email = "andrew.kuttor@gmail.com"
+
+[advice]
+  pushNonFastForward = false
+  statusHints = false
+
+[apply]
+
+  whitespace = fix
+
+[core]
+
+  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+  excludesfile = $HOME/.gitignore
+  attributesfile = $HOME/.gitattributes
+  trustctime = false
+  untrackedCache = true
+
+[help]
+
+  autocorrect = 1
+
+[diff]
+
+  renames = copies
+  mnemonicprefix = true
+
+[push]
+  default = matching
+
+[merge]
+  stat = true
+  merge = true
+
+[rerere]
+  enabled = true
+  autoupdate = 1
+
+[credential]
+  helper = osxkeychain
+
+[color]
+  ui = auto
+
+# -----------------------------------------------------------------------------
+# Git Repo Servers
+# -----------------------------------------------------------------------------
+
+# GitHub
+[url "https://github.com/"]
+  insteadOf = gh:
+
+# BitBucket
+[url "ssh://git@bitbucket.mcp-services.net:7999/"]
+    insteadOf = bb:
+
+[url "https://gist.github.com/"]
+    insteadOf = gist:
