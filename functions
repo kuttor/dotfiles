@@ -1,5 +1,4 @@
-#!/usr/local/bin/zsh
-
+#!/bin/bash
 # ------------------------------------------------------------------------------
 # Name    : functions
 # About   : Extended function for dotfiles
@@ -10,13 +9,23 @@
 mcd(){ mkdir -p $1 && cd $1; }                            # make/cd to folder
 rsed(){ find . -type f -exec sed "$@" {} \+ ;}            # recursive sed
 dug(){ dig +nocmd $1 any +multiline +noall +answer ;}     # better dig
-backup(){ cp -p $@{,.backup$(date '+%Y%m%dx')} ;}         # easy backup
+backup(){ cp -p $@{,.backup$(date '+%Y%mv%dx')} ;}         # easy backup
 httpHeaders() { curl -I -L $@ ;}                          # get HTTP headers
 ak1(){ tree -L 1 -Ccfhau --du --dirsfirst $@ ;}           # better ls
 ak2(){ tree -L 2 -Ccfhau --du --dirsfirst $@ ;}           # better ls
 ak3(){ tree -L 3 -Ccfhau --du --dirsfirst $@ ;}           # better ls
 trash() { mv $@ "$HOME/.Trash" ;}                         # easy backup
 zed(){ sed -i -e "s/$1/$2/g" $3 ;}                        # easy send
+
+rationalise-dot() {
+  if [[ $LBUFFER = *.. ]]; then
+    LBUFFER+=/..
+  else
+    LBUFFER+=.
+  fi
+}
+zle -N rationalise-dot
+bindkey . rationalise-dot
 
 # Multi-format unarchiver
 extract(){
@@ -38,11 +47,7 @@ extract(){
   else
       echo "Incompatible archive: $1"
   fi
-:}
-
-
-
-
+}
 
 fzf-down() {
   fzf --height 50% "$@" --border
@@ -127,7 +132,7 @@ newest() {
 }
 
 # Integrates Z to FZF
-function z() {
+zy() {
   [ $# -gt 0 ] && _z "$*" && return
   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }

@@ -1,11 +1,10 @@
 #!/usr/local/bin/zsh
 # File: setoptions
 # Info: Zsh configuration file for setopt directives
-# ---------------------------------------------------------------------------\
+# ---------------------------------------------------------------------------
 
 # Navigation
 setopt   AUTO_CD                # Change to a directory without typing cd
-setopt   AUTO_NAME_DIRS         # Auto add variable-stored paths to ~ list
 setopt   AUTO_PUSHD             # Push the old directory onto the stack on cd
 setopt   CDABLE_VARS            # Change directory to a path stored in a variable
 setopt   EXTENDED_GLOB          # Use extended globbing syntax
@@ -13,7 +12,7 @@ setopt   MULTIOS                # Write to multiple descriptors
 setopt   PUSHD_IGNORE_DUPS      # Do not store duplicates in the stack
 setopt   PUSHD_SILENT           # Do not print the directory stack after pushd or popd
 setopt   PUSHD_TO_HOME          # Push to home directory when no argument is given
-unsetopt CLOBBER                # Don't overwrite existing files with > and >>
+unsetopt CLOBBER                # Dont overwrite existing files with > and >>
 
 # Files and Commands
 setopt   BRACE_CCL              # Allow brace character class list expansion
@@ -21,7 +20,7 @@ setopt   CDABLE_VARS            # in p, cd x ==> ~/x if x not p
 setopt   CHASE_LINKS            # resolve links to their location
 setopt   COMBINING_CHARS        # Combine zero-length punctuation characters (accents) with the base character
 setopt   CORRECT                # Correct mis-typed commands
-setopt   HASH_CMDS              # don't search for commands
+setopt   HASH_CMDS              # dont search for commands
 setopt   HASH_LIST_ALL          # more accurate correction
 setopt   LIST_ROWS_FIRST        # rows are way better
 setopt   LIST_TYPES             # Append type chars to files
@@ -30,15 +29,15 @@ setopt   MULTIOS                # redirect to globs!
 setopt   RC_QUOTES              # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'
 setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
 setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
-unsetopt MAIL_WARNING           # Don't print a warning message if a mail file has been accessed
+unsetopt MAIL_WARNING           # Dont print a warning message if a mail file has been accessed
 
 # Jobs
 setopt   AUTO_RESUME            # Attempt to resume existing job before creating a new process
 setopt   LONG_LIST_JOBS         # List jobs in the long format by default
 setopt   NOTIFY                 # Report status of background jobs immediately
-unsetopt BG_NICE                # Don't run all background jobs at a lower priority
-unsetopt CHECK_JOBS             # Don't report on jobs when shell exit
-unsetopt HUP                    # Don't kill jobs on shell exit
+unsetopt BG_NICE                # Dont run all background jobs at a lower priority
+unsetopt CHECK_JOBS             # Dont report on jobs when shell exit
+unsetopt HUP                    # Dont kill jobs on shell exit
 
 # History
 setopt   APPEND_HISTORY         # append is good, append!
@@ -65,7 +64,7 @@ setopt   AUTO_REMOVE_SLASH      # remove extra slashes if needed
 setopt   COMPLETE_ALIASES
 setopt   COMPLETE_IN_WORD       # Complete from both ends of a word
 setopt   CORRECT                # autocorrect spelling errors of commands
-setopt   CORRECT_ALL            # autocorrect spelling errors of arguments
+unsetopt   CORRECT_ALL            # autocorrect spelling errors of arguments
 setopt   NOMATCH                # if no matches print error
 setopt   PATH_DIRS              # Perform path search even on command names with slashes
 unsetopt MENU_COMPLETE          # add first of multiple

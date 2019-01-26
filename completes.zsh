@@ -2,42 +2,48 @@
 
 autoload -U compinit && compinit -i
 
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-fi
+# Don't complete uninteresting users
+zstyle ':completion:*:*:*:users' ignored-patterns \
+  adm amanda apache at avahi avahi-autoipd beaglidx bin cacti canna \
+  clamav daemon dbus distcache dnsmasq dovecot fax ftp games gdm \
+  gkrellmd gopher hacluster haldaemon halt hsqldb ident junkbust kdm \
+  ldap lp mail mailman mailnull man messagebus mldonkey mysql nagios \
+  named netdump news nfsnobody nobody nscd ntp nut nx obsrun openvpn \
+  operator pcap polkitd postfix postgres privoxy pulse pvm quagga radvd \
+  rpc rpcuser rpm rtkit scard shutdown squid sshd statd svn sync tftp \
+  usbmux uucp vcsa wwwrun xfs '_*'
 
-zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
-zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}"r":|[._-]=* r:|=*" "l:|=* r:|=*"
-zstyle ":completion:*" accept-exact "*(N)"
-zstyle ":completion:*" use-cache on
-zstyle ":completion:*" cache-path "${HOME}/.zsh/cache"
-zstyle "completion:*" squeeze-slashes true
-zstyle ":completion:*:functions" ignored-patterns "_*"
-zstyle ":completion:*"completer _complete _match _approximate
-zstyle ":completion:*:match:*" original only
-zstyle ":completion:*:approximate:*" max-errors "reply=($((($#PREFIX+$#SUFFIX)/3))numeric)"
-zstyle ":completion:*:cd:*" ignore-parents parent pwd
-zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
-zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
-zstyle ":completion:*" rehash true
-zstyle ":completion:*" special-dirs true
-zstyle ":completion:*:*:*:*:*" menu select
-zstyle ':completion:*:processes' command 'ps -au$USER'
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*' force-list always
-zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=29=34"
-zstyle ':completion:*:*:killall:*' menu yes select
-zstyle ':completion:*:killall:*' force-list always
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ":completion:*" completer _oldlist _complete
-zstyle ":completion:*" insert-tab pending
-zstyle ":completion:*" matcher-list "m:{[:lower:]}={[:upper:]}"
-zstyle ":completion:*:warnings" format "%BAint found sheeeit...%d%b"
-zstyle ":completion:*" auto-description "specify: %d"
-zstyle ":completion:*" completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
+# Use caching so that commands like apt and dpkg complete are useable
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' cache-path "$HOME/.zsh/cache"  
 
-# Generic completion with --help
-compdef _gnu_generic gcc
-compdef _gnu_generic gdb
+# ZSH Completion config
+zstyle '*' single-ignored show
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion::complete:*' cache-path # Fixes oh-my-zsh/lib/completion zcompcache
+
+# Process completion
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+
+# disable named-directories autocompletion
+zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+
+# list of completers to use
+zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' menu select=1 _complete _ignored _approximate
 
