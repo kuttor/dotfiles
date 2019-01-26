@@ -43,10 +43,26 @@ zplug "willghatch/zsh-cdr", from:github
 
 # Readline improvements
 zplug "b4b4r07/enhancd", use:init.sh
+<<<<<<< HEAD
 zplug "hlissner/zsh-autopair", from:github, as:"plugin"
 zplug "knu/zsh-manydots-magic", from:github 
 zplug "zsh-users/zsh-autosuggestions", from:github, defer:2
 zplug "zsh-users/zsh-completions", from:github
+=======
+zplug "hlissner/zsh-autopair", from:"github", as:"plugin"
+zplug "knu/zsh-manydots-magic", from:"github" 
+zplug "kutsan/zsh-system-clipboard", from:"github"
+zplug "zsh-users/zsh-autosuggestions", from:"github", defer:2
+zplug "zsh-users/zsh-completions", from:"github"
+o
+
+
+zplug "plugins/urltools"
+zplug "tomplex/jenkins-zsh"
+
+
+
+>>>>>>> 8fec38a421f646766d2277e6b7c2469edf818aac
 
 # History
 zplug "b4b4r07/zsh-history-enhanced", from:github

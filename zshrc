@@ -12,8 +12,7 @@ export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
 # Functions
-fpath=( $fpath "${DOTFILES}/functions" )
-autoload -U "${DOTFILES}/functions"
+fpath=( "${DOTFILES}/functions" "${fpath[@]}" ) 
 
 # PATH
 export PATH="/Users/yeti/Library/Python/2.7/bin":$PATH
