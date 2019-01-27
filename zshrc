@@ -11,11 +11,15 @@ export DOTFILES="${HOME}/.dotfiles"
 export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
+# Homebrew
+export HOMEBREW_GITHUB_API_TOKEN='0177e419e517b0774f197556d6657c64770898c7' 
+
 # Functions
 fpath=( "${DOTFILES}/functions" "${fpath[@]}" ) 
 
 # PATH
 export PATH="/Users/yeti/Library/Python/2.7/bin":$PATH
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 # Language
 export LANGUAGE="en_US.UTF-8"
@@ -65,7 +69,6 @@ source "$DOTFILES/aliases"
 source "$DOTFILES/functions"
 source "$DOTFILES/keybinds.zsh"
 source "$DOTFILES/zplug.zsh"
-source "$DOTFILES/zsh_autoloads"
 source "$DOTFILES/completes.zsh"
 source "$DOTFILES/history.zsh"
 source "$DOTFILES/options.zsh"
