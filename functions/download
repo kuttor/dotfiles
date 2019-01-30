@@ -1,0 +1,3 @@
+#!/usr/local/bin/zsh
+
+curl -O "$1"

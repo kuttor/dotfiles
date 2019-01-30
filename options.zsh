@@ -29,7 +29,9 @@ setopt   MULTIOS                # redirect to globs!
 setopt   RC_QUOTES              # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'
 setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
 setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
+setopt INTERACTIVE_COMMENTS
 unsetopt MAIL_WARNING           # Dont print a warning message if a mail file has been accessed
+
 
 # Jobs
 setopt   AUTO_RESUME            # Attempt to resume existing job before creating a new process

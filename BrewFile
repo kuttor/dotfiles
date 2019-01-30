@@ -50,11 +50,11 @@ brew "the_silver_searcher"
 brew "tmux"
 brew "tree"
 brew "vim"
-brew "vim"
 brew "wget"
 brew "zplug"
 brew "zsh-completions"
 brew "zsh"
+brew "pass"
 
 # -----------------------------------------------------------------------------
 # Cask Packages

@@ -1,49 +1,53 @@
 #!/usr/local/bin/zsh
+# The context tells the completion system under what circumstances your
+# value will be used.  It has this form:
+#  :completion:<function-name>:<completer>:<command>:<argument>:<tag>
 
-autoload -U compinit && compinit -i
+# The following lines were added by compinstall
 
-# Don't complete uninteresting users
-zstyle ':completion:*:*:*:users' ignored-patterns \
-  adm amanda apache at avahi avahi-autoipd beaglidx bin cacti canna \
-  clamav daemon dbus distcache dnsmasq dovecot fax ftp games gdm \
-  gkrellmd gopher hacluster haldaemon halt hsqldb ident junkbust kdm \
-  ldap lp mail mailman mailnull man messagebus mldonkey mysql nagios \
-  named netdump news nfsnobody nobody nscd ntp nut nx obsrun openvpn \
-  operator pcap polkitd postfix postgres privoxy pulse pvm quagga radvd \
-  rpc rpcuser rpm rtkit scard shutdown squid sshd statd svn sync tftp \
-  usbmux uucp vcsa wwwrun xfs '_*'
-
-# Use caching so that commands like apt and dpkg complete are useable
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path "$HOME/.zsh/cache"  
-
-# ZSH Completion config
-zstyle '*' single-ignored show
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' add-space true
+zstyle ':completion:*' auto-description 'Specify %d'
+zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
+zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' verbose yes
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:options' auto-description '%d'
-zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
-zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
-zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
-zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion::complete:*' cache-path # Fixes oh-my-zsh/lib/completion zcompcache
+zstyle ':completion:*' insert-unambiguous true
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
+zstyle ':completion:*' menu select=1
+zstyle ':completion:*' old-list always
+zstyle ':completion:*' old-menu false
+zstyle ':completion:*' original true
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' verbose true
+zstyle :compinstall filename '$HOME/.dotfiles/complete.zsh'
 
-# Process completion
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+# End of lines added by compinstall
 
-# disable named-directories autocompletion
-zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+# make autocompletion faster by caching and prefix-only matching
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
 
-# list of completers to use
-zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
-zstyle ':completion:*' menu select=1 _complete _ignored _approximate
+# fuzzy matching of completions for when you mistype them
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
 
+# get better autocompletion accuracy by typing longer words
+zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+
+# ignore completion functions for commands you don't have
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
+# completing process IDs with menu selection
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*'   force-list always
+
+zstyle ':filter-select:highlight' matched fg=red
+zstyle ':filter-select' max-lines 10
+zstyle ':filter-select' rotate-list yes
+zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
+
+autoload -Uz compinit
+compinit
