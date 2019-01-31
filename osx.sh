@@ -4,7 +4,13 @@
 sudo scutil --set ComputerName "yeti"
 sudo scutil --set HostName "yeti"
 sudo scutil --set LocalHostName "yeti"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "yeti"
+
+
+# Set root user
+dsenableroot
+
+
+
 
 # Set standby delay to 24 hours (default is 1 hour)
 sudo pmset -a standbydelay 86400

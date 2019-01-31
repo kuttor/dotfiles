@@ -1,5 +1,4 @@
 #!/usr/local/bin/zsh
-
 # ------------------------------------------------------------------------------
 # file  : history.zsh
 # info  : Extended history configurations for dotfiles
@@ -29,4 +28,4 @@ ZSH_HISTORY_KEYBIND_GET_ALL="^r^a"
 export ZSH_EXTEND_HISTORY_FILE="$HOME/.zsh_history"
 
 # print history collected on stdout instead of file
-export ZSH_EXTEND_HISTORY_DEBUG="true"
+#export ZSH_EXTEND_HISTORY_DEBUG="true"
