@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 
 # SELF MANAGE
-.,zplug "zplug/zplug", hook-build:"zplug --self-manage"
+zplug "zplug/zplug", hook-build:"zplug --self-manage"
 
 # PROMPT
 zplug "mafredri/zsh-async", from:github
@@ -41,7 +41,7 @@ zplug "plugins/git-extras", from:oh-my-zsh
 zplug "plugins/git_remote_branch", from:oh-my-zsh
 zplug "plugins/gitfast", from:oh-my-zsh
 
-# TOOLS
+# 
 zplug "skywind3000/z.lua"
 zplug "aperezdc/zsh-fzy"
 zplug "changyuheng/fz", from:github, defer:"1"
@@ -56,6 +56,11 @@ zplug "xav-b/zsh-extend-history"
 # COLORS
 zplug "zdharma/fast-syntax-highlighting", hook-load:'FAST_HIGHLIGHT=()'
 
-# ZPLUG LOADING
-zplug install && zplug load
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose
+then
+  zplug install
+fi
 
+# Then, source plugins and add commands to $PATH
+zplug load --verbose

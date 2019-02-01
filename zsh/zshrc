@@ -1,0 +1,123 @@
+#!/usr/local/bin/zsh
+# vim:set ft=zsh ts=4 sw=4 sts=0
+# -----------------------------------------------------------------------------
+# file: zshrc
+# info: main configuration file
+# name: andrew kuttor
+# mail: andrew.kuttor@gmail.com
+# -----------------------------------------------------------------------------
+limit coredumpsize 0
+skip_global_compinit=1
+
+# ENV VAR
+export DOTFILES="$HOME/.dotfiles"
+export ZDOTDIR="$DOTFILES/zsh"
+export ZPLUG_HOME="/usr/local/opt/zplug"
+source "$ZPLUG_HOME/init.zsh"
+
+# fpath
+typeset -U fpath
+fpath=(
+  ${ZSH_HOME}/site-functions
+  ${DOTFILES}/functions
+  ${fpath}
+)
+
+# SYSTEM PATHS
+typeset -U path
+path=(
+  /usr/local/{bin,sbin}(N-/)
+  /usr/{bin,sbin}(N-/)
+  /{bin,sbin}(N-/)
+  /usr/local/lib/python2.7/site-packages(N-/)
+  /usr/local/lib/python3.7/site-packages(N-/)
+  $path
+)
+
+# TERMINAL
+export KEYTIMEOUT=1
+export TERMINAL_DARK=1
+export CLICOLOR=1
+export LSCOLORS=exgxcxdxcxegedabagacad
+export _Z_DATA="$HOME/.config/z-data"
+export ITERM_24BIT=1
+export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
+
+# EDITOR
+export EDITOR=`which vim`
+export VISUAL="${EDITOR}"
+export CVSEDITOR="${EDITOR}"
+export SVN_EDITOR="${EDITOR}"
+export GIT_EDITOR="${EDITOR}"
+
+# FZF
+export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS='
+--color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108
+--color info:108,prompt:109,spinner:108,pointer:168,marker:168
+'
+
+# use .localrc for SUPER SECRET CRAP
+[[ -a $HOME/.localrc ]] && source $HOME/.localrc
+
+# Initialize autocomplete here, otherwise functions won't be loaded
+autoload -U compinit
+compinit
+
+# Quote pasted URLs
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
+
+# Use ZMV, which is amazing
+autoload -U zmv
+alias zmv="noglob zmv -W"
+
+# HOMEBREW
+export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
+
+# Pager
+export PAGER='bat'
+export MANPAGER='bat'
+export BAT_CONFIG_PATH="${DOTFILES}/bat.conf"
+
+# LANGUAGE
+export LANGUAGE="en_US.UTF-8"
+export LANG="${LANGUAGE}"
+export LC_ALL="${LANGUAGE}"
+export LC_CTYPE="${LANGUAGE}"
+
+# Coloring
+autoload -Uz colors && colors
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='underline'
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=default,fg=9'=
+
+# FSH
+FAST_WORK_DIR="$HOME/.config/fsh"
+
+# z.lua
+eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
+_ZL_CMD="y"                               # command alias
+_ZL_DATA="$HOME/.config/zdatafile.lua"    # datafile location
+_ZL_ECHO=1                                # Echo dirname after CD.
+_ZL_MATCH_MODE=1                          # Enable enhanced matching.
+
+# Manage SSH keys with keychain
+if $(command -v keychain > /dev/null)
+then
+  keychain id_rsa
+  source "$HOME/.keychain/$(hostname)-sh"
+fi
+
+# Sources
+source "$DOTFILES/aliases"
+source "$ZDOTDIR/keybinds.zsh"
+source "$ZDOTDIR/zplug.zsh"
+source "$ZDOTDIR/completes.zsh"
+source "$ZDOTDIR/history.zsh"
+source "$ZDOTDIR/options.zsh"
+source "$HOME/.iterm2_shell_integration.zsh"
+

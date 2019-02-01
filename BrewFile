@@ -8,11 +8,8 @@ tap 'buo/cask-upgrade'
 tap 'caskroom/cask'
 tap 'caskroom/fonts'
 tap 'homebrew/bundle'
-tap 'homebrew/completions'
 tap 'homebrew/core'
-tap 'homebrew/dupes'
 tap 'homebrew/services'
-tap 'homebrew/versions'
 tap 'railwaycat/emacsmacport'
 tap "homebrew/bundle"
 tap "homebrew/cask"

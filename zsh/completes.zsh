@@ -19,6 +19,7 @@ zstyle ':completion:*' old-menu false
 zstyle ':completion:*' original true
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
 zstyle ':completion:*' special-dirs true
+zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*' verbose true
 zstyle :compinstall filename '$HOME/.dotfiles/complete.zsh'
 
@@ -49,5 +50,4 @@ zstyle ':filter-select' max-lines 10
 zstyle ':filter-select' rotate-list yes
 zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
 
-autoload -Uz compinit
-compinit
+autoload -Uz compinit && compinit
