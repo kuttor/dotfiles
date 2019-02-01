@@ -16,7 +16,7 @@ zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 # MISC
 zplug "b4b4r07/enhancd", use:init.sh
 zplug "hlissner/zsh-autopair", from:github, as:"plugin"
-zplug "knu/zsh-manydots-magic", from:github 
+zplug "knu/zsh-manydots-magic", from:github
 zplug "plugins/brew", from:oh-my-zsh
 zplug "plugins/chucknorris", from:oh-my-zsh
 zplug "plugins/dircycle", from:oh-my-zsh
@@ -26,10 +26,12 @@ zplug "plugins/osx", from:oh-my-zsh
 zplug "plugins/pip", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "plugins/virtualenvwrapper", from:oh-my-zsh
-zplug "zsh-users/zsh-autosuggestions", from:github, defer:2
 zplug "zsh-users/zsh-completions", from:github
+zplug "lib/completion", from:oh-my-zsh, defer:0
+zplug "plugins/colored-man-pages", from:oh-my-zsh
+zplug "djui/alias-tips"
 
-# COMPLETION 
+# COMPLETION
 zplug "plugins/compleat", from:oh-my-zsh
 zplug "plugins/completion", from:oh-my-zsh
 zplug "glidenote/hub-zsh-completion"
@@ -51,10 +53,10 @@ zplug "andrewferrier/fzf-z", from:github
 zplug "plugins/history", from:oh-my-zsh
 zplug "b4b4r07/zsh-history-enhanced", from:github
 zplug "zsh-users/zsh-history-substring-search", from:github, defer:3
-zplug "xav-b/zsh-extend-history"
 
 # COLORS
 zplug "zdharma/fast-syntax-highlighting", hook-load:'FAST_HIGHLIGHT=()'
+zplug "zsh-users/zsh-autosuggestions", from:github, defer:2
 
 # ZPLUG LOADING
 zplug install
