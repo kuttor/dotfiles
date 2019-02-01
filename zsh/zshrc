@@ -9,6 +9,15 @@
 limit coredumpsize 0
 skip_global_compinit=1
 
+if [[ ! -d ~/.zplug ]]; then
+  echo "Installing zplug"
+  curl -sL https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+fi
+
+if [[ ! -d ~/.SpaceVim ]]; then
+  curl -sLf https://spacevim.org/install.sh | bash
+fi
+
 # ENV VAR
 export DOTFILES="$HOME/.dotfiles"
 export ZDOTDIR="$DOTFILES/zsh"
@@ -31,7 +40,7 @@ path=(
   /{bin,sbin}(N-/)
   /usr/local/lib/python2.7/site-packages(N-/)
   /usr/local/lib/python3.7/site-packages(N-/)
-  $path
+  ${path}
 )
 
 # TERMINAL
@@ -44,6 +53,7 @@ export ITERM_24BIT=1
 export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
 
 # EDITOR
+# ==============================================================================
 export EDITOR=`which vim`
 export VISUAL="${EDITOR}"
 export CVSEDITOR="${EDITOR}"
@@ -51,10 +61,14 @@ export SVN_EDITOR="${EDITOR}"
 export GIT_EDITOR="${EDITOR}"
 
 # FZF
+# ==============================================================================
 export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='
+--extended
+--ansi
+--multi
 --color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108
 --color info:108,prompt:109,spinner:108,pointer:168,marker:168
 '
@@ -73,6 +87,11 @@ zle -N self-insert url-quote-magic
 # Use ZMV, which is amazing
 autoload -U zmv
 alias zmv="noglob zmv -W"
+
+# run-help
+autoload -Uz run-help-git
+autoload -Uz run-help-svk
+autoload -Uz run-help-svn
 
 # HOMEBREW
 export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
@@ -94,6 +113,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='underline'
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=default,fg=9'=
+export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=52;30'
 
 # FSH
 FAST_WORK_DIR="$HOME/.config/fsh"
@@ -114,7 +134,7 @@ fi
 
 # Sources
 source "$DOTFILES/aliases"
-source "$ZDOTDIR/keybinds.zsh"
+#source "$ZDOTDIR/keybinds.zsh"
 source "$ZDOTDIR/zplug.zsh"
 source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"

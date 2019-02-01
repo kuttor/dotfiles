@@ -5,12 +5,11 @@ sudo scutil --set ComputerName "yeti"
 sudo scutil --set HostName "yeti"
 sudo scutil --set LocalHostName "yeti"
 
-
 # Set root user
 dsenableroot
 
-
-
+alias sleepoff='sudo pmset -b sleep 0; sudo pmset -b disablesleep 1'
+alias sleepon='sudo pmset -b sleep 5; sudo pmset -b disablesleep 0'
 
 # Set standby delay to 24 hours (default is 1 hour)
 sudo pmset -a standbydelay 86400

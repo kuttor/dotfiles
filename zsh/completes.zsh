@@ -4,7 +4,6 @@
 #  :completion:<function-name>:<completer>:<command>:<argument>:<tag>
 
 # The following lines were added by compinstall
-
 zstyle ':completion:*' add-space true
 zstyle ':completion:*' auto-description 'Specify %d'
 zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix

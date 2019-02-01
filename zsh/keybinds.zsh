@@ -1,98 +1,170 @@
-#!/usr/local/bin/zsh
-# Name: Andrew Kuttor
-# Mail: andrew.kuttor@gmail.com
-# -----------------------------------------------------------------------------
+#!/bin/zsh
 
-# http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html
-# http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html#Zle-Builtins
-# http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html#Standard-Widgets
+# Add binding for insert && and go to start?
 
-# Make sure that the terminal is in application mode when zle is active, since
-# only then values from $terminfo are valid
-if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
-  function zle-line-init() {
-    echoti smkx
-  }
-  function zle-line-finish() {
-    echoti rmkx
-  }
-  zle -N zle-line-init
-  zle -N zle-line-finish
-fi
+# Don't use the flow control bindings for C-q and C-s (stop/resume output,
+# for use with ancient typewriter style outputs).
+setopt noflowcontrol
 
-bindkey -e                                            # Use emacs key bindings
+# Bashword operations
+# =============================================================================
 
-bindkey '\ew' kill-region                             # [Esc-w] - Kill from the cursor to the mark
-bindkey -s '\el' 'ls\n'                               # [Esc-l] - run command: ls
-bindkey '^r' history-incremental-search-backward      # [Ctrl-r] - Search backward incrementally for a specified string. The string may begin with ^ to anchor the search to the beginning of the line.
-if [[ "${terminfo[kpp]}" != "" ]]; then
-  bindkey "${terminfo[kpp]}" up-line-or-history       # [PageUp] - Up a line of history
-fi
-if [[ "${terminfo[knp]}" != "" ]]; then
-  bindkey "${terminfo[knp]}" down-line-or-history     # [PageDown] - Down a line of history
-fi
+# shellword movement/deletes
+autoload -U select-word-style
 
-# start typing + [Up-Arrow] - fuzzy find history forward
-if [[ "${terminfo[kcuu1]}" != "" ]]; then
-  autoload -U up-line-or-beginning-search
-  zle -N up-line-or-beginning-search
-  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
-fi
-# start typing + [Down-Arrow] - fuzzy find history backward
-if [[ "${terminfo[kcud1]}" != "" ]]; then
-  autoload -U down-line-or-beginning-search
-  zle -N down-line-or-beginning-search
-  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
-fi
+backward-kill-bashword () {select-word-style bash; zle backward-kill-word}
+zle -N backward-kill-bashword
 
-if [[ "${terminfo[khome]}" != "" ]]; then
-  bindkey "${terminfo[khome]}" beginning-of-line      # [Home] - Go to beginning of line
-fi
-if [[ "${terminfo[kend]}" != "" ]]; then
-  bindkey "${terminfo[kend]}"  end-of-line            # [End] - Go to end of line
-fi
+kill-bashword () {select-word-style bash; zle kill-word}
+zle -N kill-bashword
 
-bindkey ' ' magic-space                               # [Space] - do history expansion
+backward-bashword () {select-word-style bash; zle backward-word}
+zle -N backward-bashword
 
-bindkey '^[[1;5C' forward-word                        # [Ctrl-RightArrow] - move forward one word
-bindkey '^[[1;5D' backward-word                       # [Ctrl-LeftArrow] - move backward one word
+forward-bashword () {select-word-style bash; zle forward-word}
+zle -N forward-bashword
 
-if [[ "${terminfo[kcbt]}" != "" ]]; then
-  bindkey "${terminfo[kcbt]}" reverse-menu-complete   # [Shift-Tab] - move through the completion menu backwards
-fi
+# Kill to/paste from x selection
+# =============================================================================
 
-bindkey '^?' backward-delete-char                     # [Backspace] - delete backward
-if [[ "${terminfo[kdch1]}" != "" ]]; then
-  bindkey "${terminfo[kdch1]}" delete-char            # [Delete] - delete forward
-else
-  bindkey "^[[3~" delete-char
-  bindkey "^[3;5~" delete-char
-  bindkey "\e[3~" delete-char
-fi
+send-kill-to-xclip ()
+{
+    print -rn "$CUTBUFFER" | xclip -i
+}
+zle -N send-kill-to-xclip
 
-# Edit the current command line in $EDITOR
-autoload -U edit-command-line
-zle -N edit-command-line
-bindkey '\C-x\C-e' edit-command-line
+get-from-xclip ()
+{
+    CUTBUFFER=$(xclip -o)
+}
 
-# file rename magick
-bindkey "^[m" copy-prev-shell-word
+yank-xclip ()
+{
+    CUTBUFFER=$(xclip -o)
+    zle yank
+}
+zle -N yank-xclip
 
-# consider emacs keybindings:
 
-#bindkey -e  ## emacs key bindings
-#
-#bindkey '^[[A' up-line-or-search
-#bindkey '^[[B' down-line-or-search
-#bindkey '^[^[[C' emacs-forward-word
-#bindkey '^[^[[D' emacs-backward-word
-#
-#bindkey -s '^X^Z' '%-^M'
-#bindkey '^[e' expand-cmd-path
-#bindkey '^[^I' reverse-menu-complete
-#bindkey '^X^N' accept-and-infer-next-history
-#bindkey '^W' kill-region
-#bindkey '^I' complete-word
-## Fix weird sequence that rxvt produces
-#bindkey -s '^[[Z' '\t'
-#
+# Bindings
+# ==================================================================
+
+forward="e"
+back="n"
+up="i"
+down="h"
+
+# movement
+bindkey "\C-${back}" emacs-backward-word
+bindkey "\C-${forward}" emacs-forward-word
+bindkey "\e^${back}" backward-bashword
+bindkey "\e^${forward}" forward-bashword
+
+bindkey "\e${back}" backward-char
+bindkey "\e${forward}" forward-char
+
+bindkey "\C-b" beginning-of-line
+bindkey "\C-l" end-of-line
+
+# bind vi-find-next-char vi-first-non-blank ??ds
+
+# undo on its normal key!
+bindkey "\C-z" undo
+
+# history
+bindkey "\e${up}" up-line-or-history
+bindkey "\e${down}" down-line-or-history
+bindkey "\e." insert-last-word # use numeric arguments (e.g. M-2) to get
+                                # 2nd to last etc.
+
+
+# delete words and characters
+bindkey "\C-y" backward-kill-word
+bindkey "\C-d" kill-word
+
+bindkey "\ed" delete-char
+bindkey "\ey" backward-delete-char
+
+bindkey "\e^y" backward-kill-bashword
+bindkey "\e^d" kill-bashword
+
+
+# delete lines
+bindkey "\C-x" kill-line
+# bindkey "\C-X" backward-kill-line # doesn't work, overwrites \C-x
+bindkey "\ex" kill-whole-line
+
+# paste
+bindkey "\C-v" yank
+bindkey "\ev" yank-pop
+bindkey "\ec" send-kill-to-xclip
+
+# misc emacs-like things
+bindkey "\C-q" quoted-insert
+bindkey "\C-u" universal-argument
+bindkey "\et" transpose-words
+
+# misc shell things
+bindkey "\C-p" quote-line
+bindkey "\C-j" accept-line
+bindkey "\e[11~" run-help # f1 key
+
+bindkey "\C-h" push-line-or-edit
+
+# Change case. Theses are C-/ and C-M-/ but there's something odd going on with
+# binding anything containing C-/.
+bindkey  capitalize-word
+bindkey  up-case-word
+bindkey "\e/" down-case-word
+
+# Alt-q inserts "sudo " at the start of line
+function prepend-sudo {
+  if [[ $BUFFER != "sudo "* ]]; then
+      BUFFER="sudo $BUFFER"
+      CURSOR+=5
+  fi
+}
+zle -N prepend-sudo
+bindkey "\eq" prepend-sudo
+
+
+function prepend-watch {
+    if [[ $BUFFER != "watch "* ]]; then
+        BUFFER="watch -n 0.1 $BUFFER"
+        CURSOR+=13
+    fi
+}
+zle -N prepend-watch
+bindkey "\ew" prepend-watch
+
+function prepend-man {
+    if [[ $BUFFER != "man "* ]]; then
+        BUFFER="man $BUFFER"
+        CURSOR+=4
+    fi
+}
+zle -N prepend-man
+bindkey "\em" prepend-man
+
+function append-refresh {
+  if [[ $BUFFER != *"refresh-browser.sh" ]]; then
+    BUFFER="$BUFFER && refresh-browser.sh"
+  fi
+}
+zle -N append-refresh
+bindkey "\er" append-refresh
+
+# Skip forward/back a word with opt-arrow
+bindkey '[C' forward-word
+bindkey '[D' backward-wordh
+
+# Skip to start/end of line with cmd-arrow
+bindkey '[E' beginning-of-line
+bindkey '[F' end-of-line
+
+# Delete word with opt-backspace/opt-delete
+bindkey '[G' backward-kill-word
+bindkey '[H' kill-word
+
+# Delete line with cmd-backspace
+bindkey '[I' kill-whole-line

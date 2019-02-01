@@ -43,7 +43,7 @@ zplug "plugins/git-extras", from:oh-my-zsh
 zplug "plugins/git_remote_branch", from:oh-my-zsh
 zplug "plugins/gitfast", from:oh-my-zsh
 
-# TOOLS
+# 
 zplug "skywind3000/z.lua"
 zplug "aperezdc/zsh-fzy"
 zplug "changyuheng/fz", from:github, defer:"1"
@@ -58,7 +58,11 @@ zplug "zsh-users/zsh-history-substring-search", from:github, defer:3
 zplug "zdharma/fast-syntax-highlighting", hook-load:'FAST_HIGHLIGHT=()'
 zplug "zsh-users/zsh-autosuggestions", from:github, defer:2
 
-# ZPLUG LOADING
-zplug install
-zplug load
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose
+then
+  zplug install
+fi
 
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
