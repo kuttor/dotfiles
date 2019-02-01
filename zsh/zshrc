@@ -134,7 +134,7 @@ fi
 
 # Sources
 source "$DOTFILES/aliases"
-#source "$ZDOTDIR/keybinds.zsh"
+source "$ZDOTDIR/keybinds.zsh"
 source "$ZDOTDIR/zplug.zsh"
 source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"
