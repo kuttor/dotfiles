@@ -23,6 +23,3 @@ export HISTIGNORE="ls:cd:exa:pwd:exit:history:clear" # Ignore recording commands
 ZSH_HISTORY_FILTER="fzf:percol"
 ZSH_HISTORY_KEYBIND_GET_BY_DIR="^r"
 ZSH_HISTORY_KEYBIND_GET_ALL="^r^a"
-
-# default to `$HOME/.zsh_history`
-export ZSH_EXTEND_HISTORY_FILE="$HOME/.zsh_history"

@@ -1944,7 +1944,7 @@ bindkey '^[,' _history-complete-newer
 bindkey '^[/' _history-complete-older
 bindkey '^[~' _bash_complete-word
 
-autoload -Uz _curl _git _fast-theme _pip _git \
+autoload -Uz _fast-theme _curl _git _pip _git \
             _zplug _bat _brew _brew_cask _exa \
             _hub _legit _pass _rg _the_silver_searcher \
             _SUSEconfig _a2ps _a2utils _aap _absolute_command_paths \
