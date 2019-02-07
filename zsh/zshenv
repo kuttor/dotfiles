@@ -2,10 +2,11 @@
 # vim:set ft=zsh ts=4 sw=4 sts=0 foldmethod=marker:
 # -----------------------------------------------------------------------------
 # file: zshenv
-# info: Main config file for env variables 
+# info: Main config file for env variables
 # name: Andrew Kuttor
 # mail: andrew.kuttor@gmail.com
 # -----------------------------------------------------------------------------
+skip_global_compinit=1
 
 # ENV VAR
 ZDOTDIR="$HOME/.zsh"
@@ -54,7 +55,7 @@ export CVSEDITOR="${EDITOR}"
 export SVN_EDITOR="${EDITOR}"
 export GIT_EDITOR="${EDITOR}"
 
-# FZF 
+# FZF
 export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -72,6 +73,3 @@ export ENHANCD_DOT_SHOW_FULLPATH=1
 
 # MOLECULE
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
-skip_global_compinit=1
-# vim:set ft=zsh ts=4 sw=4 sts=0
