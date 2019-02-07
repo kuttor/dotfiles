@@ -3,6 +3,15 @@
 # value will be used.  It has this form:
 #  :completion:<function-name>:<completer>:<command>:<argument>:<tag>
 
+# enable completion
+autoload -Uz compinit
+compinit
+
+autoload bashcompinit
+bashcompinit
+
+zmodload -i zsh/complist
+
 # The following lines were added by compinstall
 zstyle ':completion:*' add-space true
 zstyle ':completion:*' auto-description 'Specify %d'
