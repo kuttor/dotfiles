@@ -25,6 +25,7 @@ export ZDOTDIR="$DOTFILES/zsh"
 export ZPLUG_HOME="/usr/local/opt/zplug"
 export VIM_SWAP="$HOME/.cache/SpaceVim/swap"
 export ZSH="$DOTFILES/zsh"
+export ZSH_FUNCTIONS="$DOTFILES/functions"
 export CACHE="$HOME/.cache/"
 source "$ZPLUG_HOME/init.zsh"
 
