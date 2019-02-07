@@ -5,18 +5,19 @@
 # -----------------------------------------------------------------------------
 
 [alias]
-  st = status -sb
-  do = commit -am
-  up = pull
-  br = branch
-  co = checkout
-  who = shortlog -s --
-  tags = tag -l
-  branches = branch -a
-  remotes = remote -v
-  aliases = config --get-regexp alias
-  showtool = "!f() { git difftool ${1:-HEAD}^ ${1:-HEAD};}; f"
   added = difftool --cached
+  aliases = config --get-regexp alias
+  br = branch
+  branches = branch -a
+  co = checkout
+  create = !git init && git add -a && git commit -m \"Initial Commit\"
+  do = "!f() { git add $1 && git commit -m \"$2\" && git push; }; f"
+  remotes = remote -v
+  showtool = "!f() { git difftool ${1:-HEAD}^ ${1:-HEAD};}; f"
+  st = status -sb
+  tags = tag -l
+  up = pull
+  who = shortlog -s --
 
 [diff]
   tool = icdiff
