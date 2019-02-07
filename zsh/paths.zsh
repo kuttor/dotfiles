@@ -12,6 +12,16 @@ fpath=(
   ${fpath}
 )
 
+if [[ -d $ZSH_FUNCTIONS ]]; then
+   # Autoload shell functions from $ZDIR/code with the executable bit on.
+   for func in $ZSH_FUNCTIONS/*; do
+      unhash -f $func 2>/dev/null
+      autoload +X $func
+   done
+fi
+
+
+
 # SYSTEM PATHS
 # ==============================================================================
 typeset -U path
