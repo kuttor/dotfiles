@@ -118,6 +118,6 @@ source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"
 source "$ZDOTDIR/keybinds.zsh"
 source "$ZDOTDIR/options.zsh"
-source "$ZDOTDIR/path.zsh"
+source "$ZDOTDIR/paths.zsh"
 source "$ZDOTDIR/zplug.zsh"
 

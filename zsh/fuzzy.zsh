@@ -1,7 +1,8 @@
 #!/usr/local/bin/zsh
 #
 ## fzf + ag configuration
-if _has fzf && _has ag; then
+if _has fzf && _has ag
+then
     export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -14,8 +15,9 @@ if _has fzf && _has ag; then
 fi
 
 # fzf + ripgrep configuration
-if _has fzf && _has rg; then
+if _has fzf && _has rg
+then
     export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!{.git}" 2>/dev/null'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     export FZF_DEFAULT_OPTS=''
-  fi
+fi
