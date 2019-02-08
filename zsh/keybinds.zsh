@@ -10,3 +10,7 @@ bindkey '\C-x\C-e' edit-command-line
 
 # Space does history expansion
 bindkey ' ' magic-space
+
+# FN + Arrow keys
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line

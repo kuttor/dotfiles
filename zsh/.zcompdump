@@ -1079,7 +1079,7 @@ _comps=(
 'nohup' '_precommand'
 'notmuch' '_notmuch'
 'nova' '_openstack'
-'npm' '_npm'
+'npm' '_bash_complete -o default -F _npm_completion'
 'ns' '_hosts'
 'nslookup' '_nslookup'
 'ntalk' '_other_accounts'

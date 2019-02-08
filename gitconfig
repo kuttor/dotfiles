@@ -1,23 +1,9 @@
 # vim: syntax=gitconfig
 # -----------------------------------------------------------------------------
 # File: gitconfig
-# Info: This is Git's per-user configuration file
+
 # -----------------------------------------------------------------------------
 
-[alias]
-  added = difftool --cached
-  aliases = config --get-regexp alias
-  br = branch
-  branches = branch -a
-  co = checkout
-  create = !git init && git add -a && git commit -m \"Initial Commit\"
-  do = "!f() { git add $1 && git commit -m \"$2\" && git push; }; f"
-  remotes = remote -v
-  showtool = "!f() { git difftool ${1:-HEAD}^ ${1:-HEAD};}; f"
-  st = status -sb
-  tags = tag -l
-  up = pull
-  who = shortlog -s --
 
 [diff]
   tool = icdiff
@@ -40,23 +26,20 @@
   statusHints = false
 
 [apply]
-
   whitespace = fix
 
 [core]
-
-  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+  editor = vim
+  whitespace = fix,space-before-tab,-indent-with-non-tab,trailing-space
   excludesfile = $HOME/.gitignore
   attributesfile = $HOME/.gitattributes
   trustctime = false
   untrackedCache = true
 
 [help]
-
   autocorrect = 1
 
 [diff]
-
   renames = copies
   mnemonicprefix = true
 
@@ -71,11 +54,17 @@
   enabled = true
   autoupdate = 1
 
+[github]
+  user = kuttor
+
 [credential]
   helper = osxkeychain
 
 [color]
   ui = auto
+
+[web]
+  browser = google-chrome
 
 # -----------------------------------------------------------------------------
 # Git Repo Servers
@@ -86,8 +75,33 @@
   insteadOf = gh:
 
 # BitBucket
-[url "ssh://git@bitbucket.mcp-services.net:7999/"]
+[url "ssh://git@bitbucket.mcp-services.net:7999/ar"]
     insteadOf = bb:
 
+# GitHub
 [url "https://gist.github.com/"]
     insteadOf = gist:
+
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
+
+[alias]
+  added = difftool --cached
+  aliases = config --get-regexp alias
+  br = branch
+  branches = branch -a
+  co = checkout
+  create = !git init && git add -a && git commit -m \"Initial Commit\"
+  do = "!f() { git add $1 && git commit -m \"$2\" && git push; }; f"
+  remotes = remote -v
+  showtool = "!f() { git difftool ${1:-HEAD}^ ${1:-HEAD};}; f"
+  st = status -sb
+  tags = tag -l
+  up = pull
+  who = shortlog -s -
+  
+  # submodules 
+  submodule-add = !sh -c 'git submodule add ssh://git@bitbucket.mcp-services.net:7999/ar/$1.git $1' -
+  submodule-update = submodule update --init --recursive
+  submodule-pull = !git submodule foreach git pull --tags origin master
