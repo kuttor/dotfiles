@@ -9,47 +9,13 @@
 limit coredumpsize 0
 skip_global_compinit=1
 
+export DOTFILES="$HOME/.dotfiles"
+export ZDOTDIR="$DOTFILES/zsh"
+
 #if [[ ! -d $ZPLUG/.zplug ]]; then
 #  echo "Installing zplug"
 #  curl -sL https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 #fi
-
-# ENV VAR
-# ==============================================================================
-export DOTFILES="$HOME/.dotfiles"
-export ZDOTDIR="$DOTFILES/zsh"
-export ZPLUG_HOME="/usr/local/opt/zplug"
-export VIM_SWAP="$HOME/.cache/SpaceVim/swap"
-export ZSH="$DOTFILES/zsh"
-export ZSH_FUNCTIONS="$DOTFILES/functions"
-export CACHE="$HOME/.cache/"
-source "$ZPLUG_HOME/init.zsh"
-
-# TERMINAL
-# ==============================================================================
-export KEYTIMEOUT=1
-export TERMINAL_DARK=1
-export _Z_DATA="$HOME/.config/z-data"
-export ITERM_24BIT=1
-export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
-
-# EDITOR
-# ==============================================================================
-export EDITOR=$(which vim)
-export VISUAL="$EDITOR"
-export CVSEDITOR="$EDITOR"
-export SVN_EDITOR="$EDITOR"
-export GIT_EDITOR="$EDITOR"
-
-# FZF
-# ==============================================================================\
-source /usr/local/opt/fzf/shell/key-bindings.zsh
-source /usr/local/opt/fzf/shell/completion.zsh
-FZF_DEFAULT_OPTS="--extended-exact --height 100% --cycle --no-reverse --bind ctrl-a:select-all "
-FZF_DEFAULT_OPTS+="--bind pgup:preview-up --bind pgdn:preview-down --bind ctrl-f:jump --bind ctrl-k:kill-line --bind ctrl-p:toggle-preview"
-
-# use .localrc for SUPER SECRET CRAP
-[[ -a $HOME/.localrc ]] && source $HOME/.localrc
 
 # Quote pasted URLs
 autoload -U url-quote-magic
@@ -63,27 +29,6 @@ alias zmv="noglob zmv -W"
 autoload -Uz run-help-git
 autoload -Uz run-help-svk
 autoload -Uz run-help-svn
-
-# HOMEBREW
-export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
-
-# Pager
-export PAGER='bat'
-export MANPAGER='bat'
-export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
-
-# LANGUAGE
-export LANGUAGE="en_US.UTF-8"
-export LANG="$LANGUAGE"
-export LC_ALL="$LANGUAGE"
-export LC_CTYPE="$LANGUAGE"
-
-# z.lua
-eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
-_ZL_CMD="y"                               # command alias
-_ZL_DATA="$HOME/.config/zdatafile.lua"    # datafile location
-_ZL_ECHO=1                                # Echo dirname after CD.
-_ZL_MATCH_MODE=1                          # Enable enhanced master.
 
 # ENHANCD
 ENHANCD_COMMAND="cdd"
@@ -100,6 +45,7 @@ fi
 
 # Sources
 # ==============================================================================
+source "$ZDOTDIR/env.zsh"
 source "$DOTFILES/aliases"
 source "$HOME/.iterm2_shell_integration.zsh"
 source "$ZDOTDIR/colors.zsh"

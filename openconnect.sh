@@ -39,10 +39,10 @@ VPN_EXECUTABLE=/usr/local/bin/openconnect
 
 
 # 3.) Update your AnyConnect VPN host
-VPN_HOST="vpn.domain.tld"
+VPN_HOST="https://na1.cloud-vpn.net/opsource-mfa"
 
 # 4.) Update your AnyConnect username + tunnel
-VPN_USERNAME="vpn_username@domain.tld#VPN_TUNNEL_OPTIONALLY"
+VPN_USERNAME="akuttor@staging.local#VPN_TUNNEL_OPTIONALLY"
 
 # 5.) Push 2FA (ex: Duo), or Pin/Token (ex: Yubikey, Google Authenticator, TOTP)
 PUSH_OR_PIN="push"
