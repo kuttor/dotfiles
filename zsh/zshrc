@@ -8,9 +8,7 @@
 # -----------------------------------------------------------------------------
 limit coredumpsize 0
 skip_global_compinit=1
-
-export DOTFILES="$HOME/.dotfiles"
-export ZDOTDIR="$DOTFILES/zsh"
+local SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 #if [[ ! -d $ZPLUG/.zplug ]]; then
 #  echo "Installing zplug"
@@ -45,14 +43,14 @@ fi
 
 # Sources
 # ==============================================================================
-source "$ZDOTDIR/env.zsh"
-source "$DOTFILES/aliases"
+source "$SCRIPTPATH/env.zsh"
+source "$SCRIPTPATH/paths.zsh"
+source "$SCRIPTPATH/aliases.zsh"
+source "$SCRIPTPATH/colors.zsh"
+source "$SCRIPTPATH/completes.zsh"
+source "$SCRIPTPATH/history.zsh"
+source "$SCRIPTPATH/keybinds.zsh"
+source "$SCRIPTPATH/options.zsh"
+source "$SCRIPTPATH/zplug.zsh"
 source "$HOME/.iterm2_shell_integration.zsh"
-source "$ZDOTDIR/colors.zsh"
-source "$ZDOTDIR/completes.zsh"
-source "$ZDOTDIR/history.zsh"
-source "$ZDOTDIR/keybinds.zsh"
-source "$ZDOTDIR/options.zsh"
-source "$ZDOTDIR/paths.zsh"
-source "$ZDOTDIR/zplug.zsh"
 
