@@ -23,6 +23,7 @@ setopt   CORRECT                # Correct mis-typed commands
 setopt   HASH_CMDS              # dont search for commands
 setopt   HASH_LIST_ALL          # more accurate correction
 setopt   LIST_ROWS_FIRST        # rows are way better
+setopt   LOCAL_OPTIONS
 setopt   LIST_TYPES             # Append type chars to files
 setopt   MULTIBYTE              # Unicode!
 setopt   MULTIOS                # redirect to globs!
@@ -40,21 +41,6 @@ setopt   NOTIFY                 # Report status of background jobs immediately
 unsetopt BG_NICE                # Dont run all background jobs at a lower priority
 unsetopt CHECK_JOBS             # Dont report on jobs when shell exit
 unsetopt HUP                    # Dont kill jobs on shell exit
-
-# History
-setopt   APPEND_HISTORY         # append is good, append!
-setopt   BANG_HIST              # Treat the '!' character specially during expansion
-setopt   HIST_BEEP              # Beep when accessing non-existent history
-setopt   HIST_EXPIRE_DUPS_FIRST # Expire a duplicate event first when trimming history
-setopt   HIST_FIND_NO_DUPS      # Do not display a previously found event
-setopt   HIST_IGNORE_ALL_DUPS   # Delete an old recorded event if a new event is a duplicate
-setopt   HIST_IGNORE_DUPS       # Do not record an event that was just recorded again
-setopt   HIST_IGNORE_SPACE      # Do not record an event starting with a space
-setopt   HIST_REDUCE_BLANKS     # collapse extra whitespace
-setopt   HIST_SAVE_NO_DUPS      # Do not write a duplicate event to the history file
-setopt   HIST_VERIFY            # Do not execute immediately upon history expansion
-setopt   INC_APPEND_HISTORY     # append in real time
-setopt   SHARE_HISTORY          # Share history between all sessions
 
 # Completion
 setopt   ALWAYS_TO_END          # curser goes to end after complete
