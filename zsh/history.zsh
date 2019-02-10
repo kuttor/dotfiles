@@ -19,18 +19,23 @@ setopt inc_append_history
 setopt share_history
 setopt interactivecomments
 
-# Aliases ----------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
 alias h="history"
 
+# backward/forward search
 # -----------------------------------------------------------------------------
-# Environmet Variables
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^N" history-beginning-search-forward-end
+
+# Env Vars
 # -----------------------------------------------------------------------------
 
-# Filename
-[[ -z "$HISTFILE" ]] && HISTFILE=$CACHE/.zsh_history
-
-# Limits
-HISTSIZE=10000                               # History file size
+HISTFILE=$CACHE/.zsh_history
+HISTSIZE=10000
 SAVEHIST=10000
 
 # Add timestamps
