@@ -40,7 +40,7 @@ zstyle ':completion:*:manuals' separate-sections true
 # make autocompletion faster by caching and prefix-only matching
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':completion:*' cache-path ${ZSH_CACHE}
 
 # fuzzy matching of completions for when you mistype them
 zstyle ':completion:*' completer _complete _match _approximate
