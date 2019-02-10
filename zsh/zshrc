@@ -8,18 +8,18 @@
 # -----------------------------------------------------------------------------
 limit coredumpsize 0
 skip_global_compinit=1
-local SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+local SCRIPTPATH="$HOME/.dotfiles/zsh"
 
-#if [[ ! -d $ZPLUG/.zplug ]]; then
-#  echo "Installing zplug"
-#  curl -sL https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-#fi
+# Ubuntu's Command-Not-Found functionality
+if brew command command-not-found-init >/dev/null 2>&1; then
+  eval "$(brew command-not-found-init)"
+fi
 
 # Quote pasted URLs
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
 
-# Use ZMV, which is amazing
+# Use ZMV
 autoload -U zmv
 alias zmv="noglob zmv -W"
 
@@ -35,8 +35,7 @@ ENHANCD_FILTER="z"
 ENHANCD_DOT_SHOW_FULLPATH=1
 
 # Manage SSH keys with keychain
-if $(command -v keychain > /dev/null)
-then
+if $(command -v keychain >/dev/null); then
   keychain id_rsa
   source "$HOME/.keychain/$(hostname)-sh"
 fi
@@ -49,8 +48,7 @@ source "$SCRIPTPATH/aliases.zsh"
 source "$SCRIPTPATH/colors.zsh"
 source "$SCRIPTPATH/completes.zsh"
 source "$SCRIPTPATH/history.zsh"
-source "$SCRIPTPATH/keybinds.zsh"
+source "$SCRIPTPATH/zkbd.zsh"
 source "$SCRIPTPATH/options.zsh"
 source "$SCRIPTPATH/zplug.zsh"
 source "$HOME/.iterm2_shell_integration.zsh"
-
