@@ -6,17 +6,15 @@
 # name: Andrew Kuttor
 # mail: andrew.kuttor@gmail.com
 # -----------------------------------------------------------------------------
-skip_global_compinit=1
-mypath="$( cd "$(dirname "$0")" ; pwd -P )"
-echo $mypath
 
 # ENV VAR
 # ==============================================================================
-export ZDOTDIR="/zsh"
+export ZDOTDIR="$HOME"
 export ZPLUG_HOME="/usr/local/opt/zplug"
-export VIM_SWAP="$HOME/.vimswap"
 export ZSH="$DOTFILES/zsh"
+export ZSH_CACHE=$ZPLUG_CACHE_DIR/zsh
 export ZSH_FUNCTIONS="$DOTFILES/functions"
+export VIM_SWAP="$HOME/.vimswap"
 export CACHE="$HOME/.cache/"
 
 # LANGUAGE
