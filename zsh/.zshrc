@@ -41,13 +41,13 @@ fi
 
 # Sources
 # ==============================================================================
-source "env.zsh"
-source "paths.zsh"
-source "aliases.zsh"
-source "colors.zsh"
-source "completes.zsh"
-source "history.zsh"
-source "zkbd.zsh"
-source "options.zsh"
-source "zplug.zsh"
+source "$ZDOTDIR/env.zsh"
+source "$ZDOTDIR/paths.zsh"
+source "$ZDOTDIR/aliases.zsh"
+source "$ZDOTDIR/colors.zsh"
+source "$ZDOTDIR/completes.zsh"
+source "$ZDOTDIR/history.zsh"
+source "$ZDOTDIR/zkbd.zsh"
+source "$ZDOTDIR/options.zsh"
+source "$ZDOTDIR/zplug.zsh"
 source "$HOME/.iterm2_shell_integration.zsh"
