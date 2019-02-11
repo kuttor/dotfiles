@@ -1,5 +1,5 @@
 #!/usr/local/bin/zsh
-# vim:set ft=zsh ts=4 sw=4 sts=0 foldmethod=marker:
+# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
 # -----------------------------------------------------------------------------
 # file: env.zshv
 # info: Main config file for env variables
@@ -9,13 +9,11 @@
 
 # ENV VAR
 # ==============================================================================
-export ZDOTDIR="$HOME"
+export DOTFILES="$HOME/.dotfiles"
 export ZPLUG_HOME="/usr/local/opt/zplug"
-export ZSH="$DOTFILES/zsh"
-export ZSH_CACHE=$ZPLUG_CACHE_DIR/zsh
 export ZSH_FUNCTIONS="$DOTFILES/functions"
 export VIM_SWAP="$HOME/.vimswap"
-export CACHE="$HOME/.cache/"
+export CACHE_DIR="$HOME/.cache"
 
 # LANGUAGE
 # ==============================================================================
@@ -50,6 +48,12 @@ export CVSEDITOR="$EDITOR"
 export SVN_EDITOR="$EDITOR"
 export GIT_EDITOR="$EDITOR"
 
+# ENV
+# ==============================================================================
+export RBENV_ROOT="$(brew --prefix rbenv)"
+export GEM_HOME="$(brew --prefix)/opt/gems"
+export GEM_PATH="$(brew --prefix)/opt/gems"
+
 # FZF
 # ==============================================================================
 source /usr/local/opt/fzf/shell/key-bindings.zsh
@@ -61,7 +65,7 @@ FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # z.lua
 # ==============================================================================
-eval "$(lua ${ZPLUG_REPOS}/skywind3000/z.lua/z.lua --init zsh)"
+#eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
 _ZL_CMD="y"                               # command alias
 _ZL_DATA="$HOME/.config/zdatafile.lua"    # datafile location
 _ZL_ECHO=1                                # Echo dirname after CD.

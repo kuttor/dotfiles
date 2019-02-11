@@ -31,5 +31,6 @@ path=(
   /{bin,sbin}(N-/)
   /usr/local/lib/python2.7/site-packages(N-/)
   /usr/local/lib/python3.7/site-packages(N-/)
+  /usr/local/opt/gems/bin
   ${path}
 )

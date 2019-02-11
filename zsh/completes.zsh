@@ -3,6 +3,11 @@
 # value will be used.  It has this form:
 #  :completion:<function-name>:<completer>:<command>:<argument>:<tag>
 
+# Completion Options
+
+
+
+
 # enable completion
 autoload -Uz compinit
 compinit
@@ -40,7 +45,7 @@ zstyle ':completion:*:manuals' separate-sections true
 # make autocompletion faster by caching and prefix-only matching
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ${ZSH_CACHE}
+zstyle ':completion:*' cache-path ${CACHE_DIR}
 
 # fuzzy matching of completions for when you mistype them
 zstyle ':completion:*' completer _complete _match _approximate

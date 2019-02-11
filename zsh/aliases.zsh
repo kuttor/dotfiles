@@ -19,6 +19,7 @@ alias git-new-repo="git init && git add --all && git commit -m 'Initial Commit'"
 alias mkdir="mkdir -pv"
 alias molecule-create="molecule init scenario -r "
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias vimswap_clean="rm -rf $VIM_SWAP/*"
 alias mtop="htop --sort-key=PERCENT_MEM"
 alias path='echo $PATH | tr -s ":" "\n"'
 alias pcat="pygmentize -f terminal256 -O style=monokai -g"

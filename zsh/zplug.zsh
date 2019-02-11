@@ -40,9 +40,12 @@ zplug "andrewferrier/fzf-z", from:github
 # Pure
 # -----------------------------------------------------------------------------
 zplug "mafredri/zsh-async", from:github, on:"sindresorhus/pure"
-zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme, \
-      if:"[[ $TERM != 'dumb' ]]", \
-      hook-load:"PURE_GIT_PULL=1"
+zplug "sindresorhus/pure",\
+    use:pure.zsh,\
+    from:github,\
+    as:theme:\
+    if:"[[ $TERM != 'dumb' ]]",\
+    hook-load:"PURE_GIT_PULL=1"
 
 # Zsh-Autosuggestions
 # -----------------------------------------------------------------------------
