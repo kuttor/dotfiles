@@ -8,7 +8,7 @@
 # -----------------------------------------------------------------------------
 limit coredumpsize 0
 skip_global_compinit=1
-local SCRIPTPATH="$HOME/.dotfiles/zsh"
+export ZDOTDIR="$HOME/.dotfiles/.config/zsh"
 
 # Ubuntu's Command-Not-Found functionality
 if brew command command-not-found-init >/dev/null 2>&1; then
@@ -42,13 +42,13 @@ fi
 
 # Sources
 # ==============================================================================
-source "$SCRIPTPATH/env.zsh"
-source "$SCRIPTPATH/paths.zsh"
-source "$SCRIPTPATH/aliases.zsh"
-source "$SCRIPTPATH/colors.zsh"
-source "$SCRIPTPATH/completes.zsh"
-source "$SCRIPTPATH/history.zsh"
-source "$SCRIPTPATH/zkbd.zsh"
-source "$SCRIPTPATH/options.zsh"
-source "$SCRIPTPATH/zplug.zsh"
+source "$ZDOTDIR/env.zsh"
+source "$ZDOTDIR/paths.zsh"
+source "$ZDOTDIR/aliases.zsh"
+source "$ZDOTDIR/colors.zsh"
+source "$ZDOTDIR/completes.zsh"
+source "$ZDOTDIR/history.zsh"
+source "$ZDOTDIR/zkbd.zsh"
+source "$ZDOTDIR/options.zsh"
+source "$ZDOTDIR/zplug.zsh"
 source "$HOME/.iterm2_shell_integration.zsh"
