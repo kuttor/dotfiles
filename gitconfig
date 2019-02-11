@@ -21,6 +21,9 @@
   name = "Andrew Kuttor"
   email = "andrew.kuttor@gmail.com"
 
+[pull]
+  rebase = true
+
 [advice]
   pushNonFastForward = false
   statusHints = false
