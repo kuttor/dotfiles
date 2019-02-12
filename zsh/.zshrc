@@ -9,6 +9,10 @@
 limit coredumpsize 0
 skip_global_compinit=1
 
+# Theme
+export ALIEN_THEME="green"
+export USE_NERD_FONT=1
+
 # Ubuntu's Command-Not-Found functionality
 if brew command command-not-found-init >/dev/null 2>&1; then
   eval "$(brew command-not-found-init)"
