@@ -8,6 +8,7 @@
 alias ansible-create="ansible-galaxy init  --offline --force "
 alias ak="tree -C"
 alias cp="cp -ri"
+alias cat="bat"
 alias df="df -hi"
 alias diff="colordiff -ru"
 alias dog="pygmentize -O style=monokai -f console256 -g"
