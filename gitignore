@@ -14,6 +14,9 @@
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
+# ZSH
+.zcompdump
+
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
