@@ -13,7 +13,7 @@ export DOTFILES="$HOME/.dotfiles"
 export ZPLUG_HOME="/usr/local/opt/zplug"
 export ZSH_FUNCTIONS="$DOTFILES/functions"
 export VIM_SWAP="$HOME/.vimswap"
-export CACHE_DIR="$HOME/.cache"
+export CACHE="$HOME/.cache"
 
 # LANGUAGE
 # ==============================================================================
