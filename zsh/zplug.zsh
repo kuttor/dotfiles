@@ -6,59 +6,44 @@
 # Mail: andrew.kuttor@gmail.com
 # -----------------------------------------------------------------------------
 
-# Essential
-# -----------------------------------------------------------------------------
+# Load Zplug
 source $ZPLUG_HOME/init.zsh
 
-# MISC
-# -----------------------------------------------------------------------------
-zplug "b4b4r07/enhancd", use:init.sh
+# App Enhancing
 zplug "plugins/osx", from:oh-my-zsh
 zplug "plugins/pip", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
-zplug "plugins/colored-man-pages", from:oh-my-zsh
-zplug "hlissner/zsh-autopair"
-zplug "knu/zsh-manydots-magic"
 
-# COMPLETION
-# -----------------------------------------------------------------------------
+# Completion
 zplug "plugins/completion", from:oh-my-zsh
 zplug "zsh-users/zsh-completions", from:github
 
-# GIT
-# -----------------------------------------------------------------------------
+# Git
 zplug "plugins/git-extras", from:oh-my-zsh
 
 # Fuzzy
-# -----------------------------------------------------------------------------
+zplug y"b4b4r07/enhancd", use:init.sh
 zplug "rupa/z", use:z.sh
 zplug "skywind3000/z.lua"
 zplug "aperezdc/zsh-fzy"
 zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
 zplug "andrewferrier/fzf-z", from:github
 
-# Pure
-# -----------------------------------------------------------------------------
-zplug "mafredri/zsh-async", from:github, on:"sindresorhus/pure"
-zplug "eendroroy/alien", hook-build:"export ALIEN_THEME='green'"
-#zplug "sindresorhus/pure",\
-#    use:pure.zsh,\
-#    from:github,\
-#    as:theme:\
-#    if:"[[ $TERM != 'dumb' ]]",\
-#    hook-load:"PURE_GIT_PULL=1"
+# Theme
+zplug "agkozak/agkozak-zsh-prompt"
 
-# Zsh-Autosuggestions
-# -----------------------------------------------------------------------------
-zplug "zsh-users/zsh-autosuggestions", from:github
-
-# COLORS
-# -----------------------------------------------------------------------------
+# Colors
+zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:3
 
-# Install packages that have not been installed yet
-# -----------------------------------------------------------------------------
-if ! zplug check --verbose; then
+# Terminal Magic
+zplug "hlissner/zsh-autopair"
+zplug "knu/zsh-manydots-magic"
+zplug "zsh-users/zsh-autosuggestions", defer:2
+
+# Check and install packages
+if ! zplug check --verbose
+then
   zplug install
 fi
 
