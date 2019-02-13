@@ -14,6 +14,7 @@ setopt   complete_aliases
 setopt   complete_in_word       # complete from both ends of a word
 setopt   correct                # autocorrect spelling errors of commands
 setopt   correct_all            # autocorrect spelling errors of arguments
+setopt   equals                 # perform equals = expansion
 setopt   glob_star_short        # **.c == **/*.c
 setopt   dotglob                # include . filenames in expansions
 setopt   extended_glob          # include #, ~, and ^ in expansion
@@ -24,13 +25,16 @@ unsetopt menu_complete          # add first of multiple
 # enable completion
 autoload -Uz compinit
 compinit
-typeset -i updated_at=$(date +'%j' -r $CACHE/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' $CACHE/.zcompdump 2>/dev/null)
-if [ $(date +'%j') != $updated_at ]; then
-  compinit -i
-else
-  compinit -C -i
-functions
 
+# Add hidden files/folders together in completion
+_comp_options+=(globdots)
+
+#typeset -i updated_at=$(date +'%j' -r $CACHE/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' $CACHE/.zcompdump 2>/dev/null)
+#if [ $(date +'%j') != $updated_at ]; then
+#  compinit -i
+#else
+#  compinit -C -i
+#functions
 
 autoload -Uz bashcompinit
 bashcompinit
@@ -65,7 +69,7 @@ zstyle ':completion:*:manuals' separate-sections true
 # make autocompletion faster by caching and prefix-only matching
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ${CACHE_DIR}
+zstyle ':completion:*' cache-path $CACHE
 
 # fuzzy matching of completions for when you mistype them
 zstyle ':completion:*' completer _complete _match _approximate
