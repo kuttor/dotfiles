@@ -9,6 +9,7 @@
 
 limit coredumpsize 0
 skip_global_compinit=1
+_comp_options+=(globdots)
 
 # Ubuntu's Command-Not-Found functionality
 if brew command command-not-found-init >/dev/null 2>&1; then
