@@ -77,10 +77,13 @@ export PAGER='bat'
 export MANPAGER='bat'
 export BAT_CONFIG_PATH="${DOTFILES}/bat.conf"
 
-# ENHANCD
+# Enhancd
 # ==============================================================================
-export ENHANCD_FILTER="fzf --height 50% --reverse --ansi"
-export ENHANCD_DOT_SHOW_FULLPATH=1
+ENHANCD_FILTER="fzf --height 50% --reverse --ansi"
+ENHANCD_DOT_SHOW_FULLPATH=1
+ENHANCD_COMMAND="cdd"
+ENHANCD_DIR="$HOME/.config/enhancd/"
+ENHANCD_DOT_SHOW_FULLPATH=1
 
 # MOLECULE
 # ==============================================================================
