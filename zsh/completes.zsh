@@ -24,12 +24,12 @@ unsetopt menu_complete          # add first of multiple
 # enable completion
 autoload -Uz compinit
 compinit
-#typeset -i updated_at=$(date +'%j' -r $CACHE_DIR/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' $CACHE_DIR/.zcompdump 2>/dev/null)
-#if [ $(date +'%j') != $updated_at ]; then
-#  compinit -i
-#else
-#  compinit -C -i
-#functions
+typeset -i updated_at=$(date +'%j' -r $CACHE/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' $CACHE/.zcompdump 2>/dev/null)
+if [ $(date +'%j') != $updated_at ]; then
+  compinit -i
+else
+  compinit -C -i
+functions
 
 
 autoload -Uz bashcompinit
