@@ -22,7 +22,7 @@ zplug "zsh-users/zsh-completions", from:github
 zplug "plugins/git-extras", from:oh-my-zsh
 
 # Fuzzy
-zplug y"b4b4r07/enhancd", use:init.sh
+zplug "b4b4r07/enhancd", use:init.sh
 zplug "rupa/z", use:z.sh
 zplug "skywind3000/z.lua"
 zplug "aperezdc/zsh-fzy"
@@ -37,6 +37,7 @@ zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:3
 
 # Terminal Magic
+zplug "psprint/zsh-navigation-tools"
 zplug "hlissner/zsh-autopair"
 zplug "knu/zsh-manydots-magic"
 zplug "zsh-users/zsh-autosuggestions", defer:2
