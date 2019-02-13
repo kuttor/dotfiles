@@ -14,3 +14,8 @@ bindkey ' ' magic-space
 # FN + Arrow keys
 bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
+
+# Bind UP and DOWN arrow keys for subsstring search.
+zmodload zsh/terminfo
+bindkey "^[^[[a" history-substring-search-up
+bindkey "^[^[[b" history-substring-search-down
