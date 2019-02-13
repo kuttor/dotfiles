@@ -16,25 +16,15 @@ setopt   correct                # autocorrect spelling errors of commands
 setopt   correct_all            # autocorrect spelling errors of arguments
 setopt   equals                 # perform equals = expansion
 setopt   glob_star_short        # **.c == **/*.c
-setopt   dotglob                # include . filenames in expansions
+setopt   globdots               # include . filenames in expansions
 setopt   extended_glob          # include #, ~, and ^ in expansion
 setopt   path_dirs              # perform path search even on command names with slashes
 unsetopt case_glob              # make globbing case insensitive
 unsetopt menu_complete          # add first of multiple
-
 # enable completion
+
 autoload -Uz compinit
 compinit
-
-# Add hidden files/folders together in completion
-_comp_options+=(globdots)
-
-#typeset -i updated_at=$(date +'%j' -r $CACHE/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' $CACHE/.zcompdump 2>/dev/null)
-#if [ $(date +'%j') != $updated_at ]; then
-#  compinit -i
-#else
-#  compinit -C -i
-#functions
 
 autoload -Uz bashcompinit
 bashcompinit
