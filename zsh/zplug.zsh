@@ -9,17 +9,19 @@
 # Load Zplug
 source $ZPLUG_HOME/init.zsh
 
-# App Enhancing
+# Theme
+zplug "agkozak/agkozak-zsh-prompt"
+
+# Misc
+zplug "hlissner/zsh-autopair"
+zplug "knu/zsh-manydots-magic"
+zplug "plugins/colored-man-pages", from:oh-my-zsh
+zplug "plugins/completion", from:oh-my-zsh
+zplug "plugins/git-extras", from:oh-my-zsh
 zplug "plugins/osx", from:oh-my-zsh
 zplug "plugins/pip", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
-
-# Completion
-zplug "plugins/completion", from:oh-my-zsh
 zplug "zsh-users/zsh-completions", from:github
-
-# Git
-zplug "plugins/git-extras", from:oh-my-zsh
 
 # Fuzzy
 zplug "b4b4r07/enhancd", use:init.sh
@@ -29,18 +31,10 @@ zplug "aperezdc/zsh-fzy"
 zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
 zplug "andrewferrier/fzf-z", from:github
 
-# Theme
-zplug "agkozak/agkozak-zsh-prompt"
-
-# Colors
-zplug "plugins/colored-man-pages", from:oh-my-zsh
-zplug "zsh-users/zsh-syntax-highlighting", defer:3
-
-# Terminal Magic
-zplug "psprint/zsh-navigation-tools"
-zplug "hlissner/zsh-autopair"
-zplug "knu/zsh-manydots-magic"
+# Magic
 zplug "zsh-users/zsh-autosuggestions", defer:2
+zplug "zsh-users/zsh-history-substring-search", defer:3
+zplug "zsh-users/zsh-syntax-highlighting", defer:3
 
 # Check and install packages
 if ! zplug check --verbose
