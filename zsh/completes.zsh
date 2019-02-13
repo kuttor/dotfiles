@@ -24,17 +24,24 @@ unsetopt menu_complete          # add first of multiple
 # enable completion
 autoload -Uz compinit
 compinit
+#typeset -i updated_at=$(date +'%j' -r $CACHE_DIR/.zcompdump 2>/dev/null || stat -f '%Sm' -t '%j' $CACHE_DIR/.zcompdump 2>/dev/null)
+#if [ $(date +'%j') != $updated_at ]; then
+#  compinit -i
+#else
+#  compinit -C -i
+#functions
+
 
 autoload -Uz bashcompinit
 bashcompinit
 
 zmodload -i zsh/complist
 
-zstyle ':compinstall' filename '$HOME/.dotfiles/complete.zsh'
+zstyle ':compinstall' filename "$HOME/.dotfiles/complete.zsh"
 zstyle ':completion:*' add-space true
 zstyle ':completion:*' auto-description 'Specify %d'
 zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
-zstyle ':completion:*' format 'Completing %d'
+#zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
