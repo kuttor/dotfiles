@@ -1,7 +1,7 @@
 #!/usr/local/bin/zsh
-# vim:set ft=zsh ts=4 sw=4 sts=0
+# vim:set ft=zsh ts=2 sw=2 sts=0
 # -----------------------------------------------------------------------------
-# file: zshrc
+# file: .zshrc
 # info: main configuration file
 # name: andrew kuttor
 # mail: andrew.kuttor@gmail.com
@@ -10,7 +10,7 @@ limit coredumpsize 0
 skip_global_compinit=1
 
 # Theme
-export ALIEN_THEME="green"
+export ALIEN_THEME="gruvbox"
 export USE_NERD_FONT=1
 
 # Ubuntu's Command-Not-Found functionality
@@ -36,6 +36,9 @@ ENHANCD_COMMAND="cdd"
 ENHANCD_DIR="$HOME/.config/enhancd/"
 ENHANCD_FILTER="z"
 ENHANCD_DOT_SHOW_FULLPATH=1
+
+# Reclaim ctrl-s and ctrl-q
+stty -ixon -ixoff
 
 # Manage SSH keys with keychain
 if $(command -v keychain >/dev/null); then

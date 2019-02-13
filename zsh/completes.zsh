@@ -4,15 +4,28 @@
 #  :completion:<function-name>:<completer>:<command>:<argument>:<tag>
 
 # Completion Options
-
-
-
+setopt   always_to_end          # curser goes to end after complete
+setopt   auto_list              # automatically list choices on ambiguous completion
+setopt   auto_menu              # second tab for menu behavior
+setopt   auto_param_keys        # smart insert spaces " "
+setopt   auto_param_slash       # if completed parameter is a directory, add a trailing slash
+setopt   auto_remove_slash      # remove extra slashes if needed
+setopt   complete_aliases
+setopt   complete_in_word       # complete from both ends of a word
+setopt   correct                # autocorrect spelling errors of commands
+setopt   correct_all            # autocorrect spelling errors of arguments
+setopt   glob_star_short        # **.c == **/*.c
+setopt   dotglob                # include . filenames in expansions
+setopt   extended_glob          # include #, ~, and ^ in expansion
+setopt   path_dirs              # perform path search even on command names with slashes
+unsetopt case_glob              # make globbing case insensitive
+unsetopt menu_complete          # add first of multiple
 
 # enable completion
 autoload -Uz compinit
 compinit
 
-autoload bashcompinit
+autoload -Uz bashcompinit
 bashcompinit
 
 zmodload -i zsh/complist
@@ -66,9 +79,3 @@ zstyle ':filter-select:highlight' matched fg=red
 zstyle ':filter-select' max-lines 10
 zstyle ':filter-select' rotate-list yes
 zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
-
-
-
-
-
-autoload -Uz compinit && compinit
