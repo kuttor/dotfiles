@@ -17,7 +17,6 @@ zplug "hlissner/zsh-autopair"
 zplug "knu/zsh-manydots-magic"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "plugins/completion", from:oh-my-zsh
-zplug "plugins/git-extras", from:oh-my-zsh
 zplug "plugins/osx", from:oh-my-zsh
 zplug "plugins/pip", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
