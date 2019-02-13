@@ -6,12 +6,9 @@
 # name: andrew kuttor
 # mail: andrew.kuttor@gmail.com
 # -----------------------------------------------------------------------------
+
 limit coredumpsize 0
 skip_global_compinit=1
-
-# Theme
-export ALIEN_THEME="gruvbox"
-export USE_NERD_FONT=1
 
 # Ubuntu's Command-Not-Found functionality
 if brew command command-not-found-init >/dev/null 2>&1; then
@@ -31,12 +28,6 @@ autoload -Uz run-help-git
 autoload -Uz run-help-svk
 autoload -Uz run-help-svn
 
-# ENHANCD
-ENHANCD_COMMAND="cdd"
-ENHANCD_DIR="$HOME/.config/enhancd/"
-ENHANCD_FILTER="z"
-ENHANCD_DOT_SHOW_FULLPATH=1
-
 # Reclaim ctrl-s and ctrl-q
 stty -ixon -ixoff
 
@@ -46,8 +37,9 @@ if $(command -v keychain >/dev/null); then
   source "$HOME/.keychain/$(hostname)-sh"
 fi
 
+# -----------------------------------------------------------------------------
 # Sources
-# ==============================================================================
+# -----------------------------------------------------------------------------
 source "$ZDOTDIR/env.zsh"
 source "$ZDOTDIR/paths.zsh"
 source "$ZDOTDIR/aliases.zsh"
