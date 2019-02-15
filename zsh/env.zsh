@@ -1,6 +1,5 @@
 #!/usr/local/bin/zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
-# -----------------------------------------------------------------------------
 # file: env.zshv
 # info: Main config file for env variables
 # name: Andrew Kuttor
@@ -10,10 +9,11 @@
 # ENV VAR
 # -----------------------------------------------------------------------------
 export DOTFILES="$HOME/.dotfiles"
+export CACHE="$HOME/.cache"
+export CONFIG="$HOME/.config"
 export ZPLUG_HOME="/usr/local/opt/zplug"
 export ZSH_FUNCTIONS="$DOTFILES/functions"
 export VIM_SWAP="$HOME/.vimswap"
-export CACHE="$HOME/.cache"
 export TMUX="$HOME/.config/tmux"
 export TMUX_PLUGINS="$HOME/.config/tmux/plugins"
 
@@ -39,7 +39,7 @@ export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 # -----------------------------------------------------------------------------
 export KEYTIMEOUT=1
 export TERMINAL_DARK=1
-export _Z_DATA="$HOME/.config/z-data"
+export _Z_DATA="$CONFIG/z-data"
 export ITERM_24BIT=1
 export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
 
@@ -63,14 +63,14 @@ source /usr/local/opt/fzf/shell/key-bindings.zsh
 source /usr/local/opt/fzf/shell/completion.zsh
 FZF_DEFAULT_OPTS="--extended-exact --height 100% --cycle --no-reverse --bind ctrl-a:select-all "
 FZF_DEFAULT_OPTS+="--bind pgup:preview-up --bind pgdn:preview-down --bind ctrl-f:jump --bind ctrl-k:kill-line --bind ctrl-p:toggle-preview"
-FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+#FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
 FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   
 # z.lua
 # -----------------------------------------------------------------------------
 #eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
 _ZL_CMD="y"                               # command alias
-_ZL_DATA="$HOME/.config/zdatafile.lua"    # datafile location
+_ZL_DATA="$CONFIG/zdatafile.lua"    # datafile location
 _ZL_ECHO=1                                # Echo dirname after CD.
 _ZL_MATCH_MODE=1                          # Enable enhanced master.
 
@@ -78,7 +78,7 @@ _ZL_MATCH_MODE=1                          # Enable enhanced master.
 # -----------------------------------------------------------------------------
 export PAGER='bat'
 export MANPAGER='bat'
-export BAT_CONFIG_PATH="${DOTFILES}/bat.conf"
+export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 
 # Enhancd
 # -----------------------------------------------------------------------------
