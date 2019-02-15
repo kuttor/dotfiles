@@ -4,6 +4,12 @@
 # -----------------------------------------------------------------------------
 # Pre-configuration for brew sources
 # -----------------------------------------------------------------------------
+#
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
 tap 'buo/cask-upgrade'
 tap 'caskroom/cask'
 tap 'caskroom/fonts'
@@ -12,14 +18,11 @@ tap 'homebrew/command-not-found'
 tap 'homebrew/core'
 tap 'homebrew/services'
 tap 'railwaycat/emacsmacport'
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/core"
 
-""# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Brew Packages
 # -----------------------------------------------------------------------------
+
 brew "ack"
 brew "aircrack-ng"
 brew "ansible"
@@ -30,10 +33,10 @@ brew "brew-pip"
 brew "cabal-install"
 brew "cask"
 brew "cmake"
+brew "coreutils"
 brew "cscope"
 brew "ctags"
 brew "curl"
-brew "openconnect"
 brew "exa"
 brew "fd"
 brew "fontconfig"
@@ -54,12 +57,13 @@ brew "lua"
 brew "luarocks"
 brew "node"
 brew "npm"
-brew "coreutils"
 brew "nvm"
+brew "openconnect"
 brew "p7zip"
 brew "pandoc"
 brew "pass"
 brew "perl"
+brew "pyenv"
 brew "python"
 brew "python@2"
 brew "reattach-to-user-namespace"
@@ -76,15 +80,15 @@ brew "zplug"
 brew "zsh"
 brew "zsh-completions"
 brew "zsh-navigation-tools"
-brew "pyenv"
 
 # -----------------------------------------------------------------------------
 # Cask Packages
 # -----------------------------------------------------------------------------
+
+brew "font-ibm-plex"
 cask "caffeine"
 cask "cyberduck"
 cask "discord"
-cask "bitbar"
 cask "firefox"
 cask "slack"
 cask "the-unarchiver"
@@ -93,4 +97,3 @@ cask "vagrant"
 cask "vagrant-manager"
 cask "virtualbox"
 cask "visual-studio-code"
-brew "font-ibm-plex"
