@@ -16,6 +16,31 @@ if brew command command-not-found-init >/dev/null 2>&1; then
   eval "$(brew command-not-found-init)"
 fi
 
+# Returns whether the given command is executable or aliased.
+_has() { return $( whence $1 >/dev/null ) }
+
+# Returns whether the given statement executed cleanly. Try to avoid this
+# because this slows down shell loading.
+_try() { return $( eval $* >/dev/null 2>&1 ) }
+
+# Returns whether the current host type is what we think it is. (HOSTTYPE is
+# set later.)
+_is() { return $( [ "$HOSTTYPE" = "$1" ] ) }
+
+# Interactive/verbose commands.
+alias mv='mv -i'
+for c in cp rm chmod chown rename
+do
+  alias $c="$c -v"
+done
+
+alias v='vim -R -'
+for i in /usr/share/vim/vim*/macros/less.sh(N)
+do
+  alias v="$i"
+done
+
+
 # Quote pasted URLs
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
