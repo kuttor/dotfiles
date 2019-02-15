@@ -18,6 +18,7 @@ zplug "knu/zsh-manydots-magic"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "plugins/completion", from:oh-my-zsh
 zplug "plugins/osx", from:oh-my-zsh
+zplug "github/hub", from:github
 zplug "plugins/pip", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "zsh-users/zsh-completions", from:github
