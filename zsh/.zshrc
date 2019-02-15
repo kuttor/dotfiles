@@ -40,6 +40,15 @@ do
   alias v="$i"
 done
 
+# Show dots while waiting to complete. Useful for systems with slow net access,
+# like those places where they use giant, slow NFS solutions. (Hint.)
+expand-or-complete-with-dots() {
+echo -n "\e[31m......\e[0m"
+zle expand-or-complete
+zle redisplay
+}
+zle -N expand-or-complete-with-dots
+bindkey "^I" expand-or-complete-with-dots
 
 # Quote pasted URLs
 autoload -U url-quote-magic
