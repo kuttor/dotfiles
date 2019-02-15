@@ -69,10 +69,10 @@ FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # z.lua
 # -----------------------------------------------------------------------------
 #eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
-_ZL_CMD="y"                               # command alias
-_ZL_DATA="$CONFIG/zdatafile.lua"    # datafile location
-_ZL_ECHO=1                                # Echo dirname after CD.
-_ZL_MATCH_MODE=1                          # Enable enhanced master.
+_ZL_CMD="y" # command alias
+_ZL_DATA="$CONFIG/zdatafile.lua" # datafile location
+_ZL_ECHO=1 # Echo dirname after CD
+_ZL_MATCH_MODE=1 # Enable enhanced master
 
 # Pager
 # -----------------------------------------------------------------------------
