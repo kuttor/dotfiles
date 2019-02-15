@@ -59,8 +59,7 @@ export GEM_PATH="$(brew --prefix)/opt/gems"
 
 # FZF
 # -----------------------------------------------------------------------------
-source /usr/local/opt/fzf/shell/key-bindings.zsh
-source /usr/local/opt/fzf/shell/completion.zsh
+agardsource /usr/local/opt/fzf/shell/completion.zsh
 FZF_DEFAULT_OPTS="--extended-exact --height 100% --cycle --no-reverse --bind ctrl-a:select-all "
 FZF_DEFAULT_OPTS+="--bind pgup:preview-up --bind pgdn:preview-down --bind ctrl-f:jump --bind ctrl-k:kill-line --bind ctrl-p:toggle-preview"
 #FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
@@ -85,7 +84,7 @@ export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 ENHANCD_FILTER="fzf --height 50% --reverse --ansi"
 ENHANCD_DOT_SHOW_FULLPATH=1
 ENHANCD_COMMAND="cdd"
-ENHANCD_DIR="$HOME/.config/enhancd/"
+ENHANCD_DIR="$CONFIG/enhancd/"
 ENHANCD_DOT_SHOW_FULLPATH=1
 
 # MOLECULE
