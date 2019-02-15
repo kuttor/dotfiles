@@ -14,6 +14,7 @@ export ZPLUG_HOME="/usr/local/opt/zplug"
 export ZSH_FUNCTIONS="$DOTFILES/functions"
 export VIM_SWAP="$HOME/.vimswap"
 export CACHE="$HOME/.cache"
+export TMUX_PLUGINS="$HOME/.config/tmux/plugins"
 
 # LANGUAGE
 # ==============================================================================
