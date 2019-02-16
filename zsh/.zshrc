@@ -7,6 +7,7 @@
 # mail: andrew.kuttor@gmail.com
 # -----------------------------------------------------------------------------
 
+export ZDOTDIR="${${(%):-%N}:A:h}"
 limit coredumpsize 0
 skip_global_compinit=1
 _comp_options+=(globdots)
@@ -64,6 +65,8 @@ expand-or-complete-with-dots() {
 }
 zle -N expand-or-complete-with-dots
 bindkey "^I" expand-or-complete-with-dots
+
+
 
 # Quote pasted URLs
 autoload -U url-quote-magic
