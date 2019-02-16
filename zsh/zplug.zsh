@@ -21,11 +21,17 @@ source $ZPLUG_HOME/init.zsh
 zplug "agkozak/agkozak-zsh-prompt"
 
 # Misc
+zplug "mafredri/zsh-async", \
+    from:"github",          \
+    use:"async.zsh",        \
+    hook-load:"async_init"
+
 zplug "hlissner/zsh-autopair"
 zplug "knu/zsh-manydots-magic"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "plugins/completion", from:oh-my-zsh
 zplug "tysonwolker/iterm-tab-colors"
+zplug "chrissicool/zsh-bash", from:oh-my-zsh
 zplug "plugins/osx", from:oh-my-zsh
 zplug "github/hub", from:github
 zplug 'tevren/gitfast-zsh-plugin'
