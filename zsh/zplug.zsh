@@ -8,8 +8,9 @@
 
 # Check if zplug is installed
 if [[ ! -d "$(brew --prefix)/opt/zplug" ]]
+then
   brew install zplug
-  source $ZPLUG_HOME/init.zsh
+  source "$ZPLUG_HOME/init.zsh"
   zplug update --self
 fi
 
@@ -40,6 +41,7 @@ zplug "aperezdc/zsh-fzy"
 zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
 zplug "andrewferrier/fzf-z", from:github
 zplug 'ytet5uy4/fzf-widgets'
+zplug "changyuheng/zsh-interactive-cd"
 
 # Magic
 zplug "zsh-users/zsh-autosuggestions", defer:2

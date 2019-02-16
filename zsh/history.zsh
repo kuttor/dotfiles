@@ -45,6 +45,10 @@ case $HIST_STAMPS in
   *) alias history='fc -l 1' ;;
 esac
 
-
-
+# Power History command with FZF integration
+fh() {
+  eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) |\
+      fzf +s --tac |\
+      sed 's/ *[0-9]* *//')
+}
 

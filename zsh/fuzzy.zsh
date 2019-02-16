@@ -1,4 +1,7 @@
 #!/usr/local/bin/zsh
+
+
+
 #
 ## fzf + ag configuration
 if _has fzf && _has ag
@@ -21,3 +24,9 @@ then
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     export FZF_DEFAULT_OPTS=''
 fi
+
+# Add <TAB> completion handlers for fzf *after* fzf is loaded
+_fzf_complete_z() {
+    _fzf_complete '--multi --reverse' "$@" < <(raw_z)
+}
+
