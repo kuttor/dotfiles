@@ -16,7 +16,5 @@ bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
 
 # FZF and TMUX
-if zplug check 'ytet5uy4/fzf-widgets'
-then
-    bindkey "^r" fzf-insert-history
-fi
+bindkey "^r" fzf-insert-history
+
