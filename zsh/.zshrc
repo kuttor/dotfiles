@@ -38,17 +38,6 @@ source "$HOME/.iterm2_shell_integration.zsh"
       zcompile "$zcompdump"
 } &!
 
-# -----------------------------------------------------------------------------
-# SSH - Try to use OSX Keychain ssh-add -K /path/to/key 
-# -----------------------------------------------------------------------------
-#[[ $(ssh-add -l | grep -c "The agent has no identities." ) -eq 1 ]] &&\
-#  [[ "$(uname -s)" == "Darwin" ]] && ssh-add -k#
-#
-#for key in $(find ~/.ssh -type  -a \( -name id_rsa -o -name id_dsa -name id_ecdsa \))
-#do
-#  [[ -f ${key} -a $(ssh-add -l | grep -c "${key//$HOME\//}" ) -eq 0 ]] && ssh-add ${key}
-#done
-
 # Quote pasted URLs
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
