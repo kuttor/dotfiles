@@ -6,6 +6,7 @@
 # Mail: andrew.kuttor@gmail.com
 # -----------------------------------------------------------------------------
 
+
 # Check if zplug is installed
 if [[ ! -d "$(brew --prefix)/opt/zplug" ]]
 then
@@ -17,20 +18,19 @@ fi
 # Load Zplug
 source $ZPLUG_HOME/init.zsh
 
-# Theme
 zplug "agkozak/agkozak-zsh-prompt"
+zplug "hlissner/zsh-autopair"
+zplug "knu/zsh-manydots-magic"
+zplug "tysonwolker/iterm-tab-colors"
+zplug "changyuheng/zsh-interactive-cd"
 
-# Misc
 zplug "mafredri/zsh-async", \
     from:"github",          \
     use:"async.zsh",        \
     hook-load:"async_init"
 
-zplug "hlissner/zsh-autopair"
-zplug "knu/zsh-manydots-magic"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "plugins/completion", from:oh-my-zsh
-zplug "tysonwolker/iterm-tab-colors"
 zplug "chrissicool/zsh-bash", from:oh-my-zsh
 zplug "plugins/osx", from:oh-my-zsh
 zplug "github/hub", from:github
@@ -38,16 +38,19 @@ zplug 'tevren/gitfast-zsh-plugin'
 zplug "plugins/pip", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "zsh-users/zsh-completions", from:github
-
-# Fuzzy
-zplug "b4b4r07/enhancd", use:init.sh
+zplug "jimeh/zsh-peco-history", defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
 zplug "rupa/z", use:z.sh
 zplug "skywind3000/z.lua"
 zplug "aperezdc/zsh-fzy"
-zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
-zplug "andrewferrier/fzf-z", from:github
-zplug 'ytet5uy4/fzf-widgets'
-zplug "changyuheng/zsh-interactive-cd"
+
+zplug "junegunn/fzf",             \
+    as:command,                   \
+    hook-build:"./install --bin", \
+    use:"bin/{fzf-tmux,fzf}"
+
+zplug "andrewferrier/fzf-z"
+
+zplug "ytet5uy4/fzf-widgets", hook-load:'FZF_WIDGET_TMUX=1'
 
 # Magic
 zplug "zsh-users/zsh-autosuggestions", defer:2
@@ -60,15 +63,4 @@ then
     zplug install
 fi
 
-zplug load --verbose
-
-# -----------------------------------------------------------------------------
-# Plugin Options
-# -----------------------------------------------------------------------------
-
-# FZF and TMUX
-if zplug check 'ytet5uy4/fzf-widgets'
-then
-    bindkey '^r'  fzf-insert-history
-    FZF_WIDGET_TMUX=1
-fi
+zplug load

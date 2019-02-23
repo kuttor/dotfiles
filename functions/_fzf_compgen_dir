@@ -1,0 +1,2 @@
+# Use fd to generate the list for directory completion
+fd --type d --hidden --follow --exclude ".git" . "$1"

@@ -1,9 +1,26 @@
 #!/usr/local/bin/zsh
+# -----------------------------------------------------------------------------
 
+source $(brew --prefix)/opt/fzf/shell/completion.zsh
 
+FZF_DEFAULT_OPTS="
+  --extended-exact
+  --height 100%
+  --cycle
+  --reverse"
 
-#
-## fzf + ag configuration
+FZF_DEFAULT_OPTS+="
+  --bind pgup:preview-up
+  --bind pgdn:preview-down
+  --bind ctrl-f:jump
+  --bind ctrl-k:kill-line
+  --bind ctrl-p:toggle-preview
+  --bind ctrl-a:select-all"
+
+#FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# fzf + ag configuration
 if _has fzf && _has ag
 then
     export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
@@ -29,4 +46,12 @@ fi
 _fzf_complete_z() {
     _fzf_complete '--multi --reverse' "$@" < <(raw_z)
 }
+
+# z.lua
+# -----------------------------------------------------------------------------
+#eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
+_ZL_CMD="y" # command alias
+_ZL_DATA="$CONFIG/zdatafile.lua" # datafile location
+_ZL_ECHO=1 # Echo dirname after CD
+_ZL_MATCH_MODE=1 # Enable enhanced master
 

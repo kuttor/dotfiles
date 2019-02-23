@@ -1,4 +1,4 @@
-#files: 1053	version: 5.7.1
+#files: 1058	version: 5.7.1
 
 _comps=(
 '-' '_precommand'
@@ -1932,7 +1932,8 @@ autoload -Uz _afew _android _archlinux-java _artisan _atach \
             _tmuxinator _tmuxp _tox _trash-empty _trash-list \
             _trash-put _trash-restore _udisksctl _ufw _vagrant \
             _virtualbox _vnstat _wemux _wg-quick _xinput \
-            _xsel _yaourt _yarn _zcash-cli _brew \
+            _xsel _yaourt _yarn _zcash-cli _fzf_compgen_dir \
+            _fzf_compgen_path _has _is _try _brew \
             _brew_cask _brew_services _exa _fd _hub \
             _legit _lpass _pass _rg _the_silver_searcher \
             _SUSEconfig _a2ps _a2utils _aap _absolute_command_paths \

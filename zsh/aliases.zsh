@@ -40,3 +40,17 @@ if command -v exa >/dev/null 2>&1; then
     alias la="exa --all --binary --group --header --long --git --color=always --group-directories-first"
     alias l="exa --git --color=always --group-directories-first"
 fi
+
+# Interactive/verbose commands.
+alias mv='mv -i'
+for c in cp rm chmod chown rename
+do
+  alias $c="$c -v"
+done
+
+alias v='vim -R -'
+for i in /usr/share/vim/vim*/macros/less.sh(N)
+do
+  alias v="$i"
+done
+
