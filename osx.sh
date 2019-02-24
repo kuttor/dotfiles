@@ -1,30 +1,13 @@
 #!/usr/bin/env bash
 
-# Set computer name (as done via System Preferences → Sharing)
-sudo scutil --set ComputerName "yeti"
-sudo scutil --set HostName "yeti"
-sudo scutil --set LocalHostName "yeti"
-
-# Set root user
-dsenableroot
-
 alias sleepoff='sudo pmset -b sleep 0; sudo pmset -b disablesleep 1'
 alias sleepon='sudo pmset -b sleep 5; sudo pmset -b disablesleep 0'
-
-# Set standby delay to 24 hours (default is 1 hour)
-sudo pmset -a standbydelay 86400
-
-# Disable the sound effects on boot
-sudo nvram SystemAudioVolume=" "
 
 # Hidden scroll gesture for Dock
 defaults write com.apple.dock scroll-to-open -bool TRUE; killall Dock
 
 # Hidden suck animation instead of genie
 defaults write com.apple.dock mineffect suck; killall Dock
-
-# Menu bar: hide the useless Time Machine and Volume icons
-defaults write com.apple.systemuiserver menuExtras -array "/System/Library/CoreServices/Menu Extras/Bluetooth.menu" "/System/Library/CoreServices/Menu Extras/AirPort.menu" "/System/Library/CoreServices/Menu Extras/Battery.menu" "/System/Library/CoreServices/Menu Extras/Clock.menu"
 
 # Set highlight color to green
 defaults write NSGlobalDomain AppleHighlightColor -string "0.764700 0.976500 0.568600"
@@ -101,9 +84,6 @@ defaults write NSGlobalDomain AppleLanguages -array "en" "nl"
 defaults write NSGlobalDomain AppleLocale -string "en_US@currency=USD"
 defaults write NSGlobalDomain AppleMeasurementUnits -string "Inches"
 defaults write NSGlobalDomain AppleMetricUnits -bool false
-
-# Set the timezone; see `systemsetup -listtimezones` for other values
-systemsetup -settimezone "America/New_York" > /dev/null
 
 # Save screenshots to the desktop
 defaults write com.apple.screencapture location -string "${HOME}/Desktop"
@@ -194,15 +174,8 @@ defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
 # Empty Trash securely by default
 defaults write com.apple.finder EmptyTrashSecurely -bool true
 
-# Enable AirDrop over Ethernet and on unsupported Macs running Lion
-defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
-
 # Show the ~/Library folder
 chflags nohidden ~/Library
-
-# Remove Dropbox’s green checkmark icons in Finder
-file=/Applications/Dropbox.app/Contents/Resources/emblem-dropbox-uptodate.icns
-[ -e "${file}" ] && mv -f "${file}" "${file}.bak"
 
 # Enable highlight hover effect for the grid view of a stack (Dock)
 defaults write com.apple.dock mouse-over-hilite-stack -bool true
@@ -239,9 +212,6 @@ defaults write com.apple.dock autohide-time-modifier -float 0
 
 # Enable the 2D Dock
 defaults write com.apple.dock no-glass -bool true
-
-# Automatically hide and show the Dock
-# defaults write com.apple.dock autohide -bool true
 
 # Make Dock icons of hidden applications translucent
 defaults write com.apple.dock showhidden -bool true
@@ -337,10 +307,6 @@ defaults write com.apple.appstore ShowDebugMenu -bool true
 # Allow installing user scripts via GitHub or Userscripts.org
 defaults write com.google.Chrome ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
 defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
-
-###############################################################################
-# Kill affected applications                                                  #
-###############################################################################
 
 for app in "Address Book" "Calendar" "Contacts" "Dashboard" "Dock" "Finder" \
   "Mail" "Messages" "Safari" "SystemUIServer" "Terminal" \

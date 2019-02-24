@@ -1,9 +1,7 @@
 # vim: syntax=gitconfig
 # -----------------------------------------------------------------------------
 # File: gitconfig
-
 # -----------------------------------------------------------------------------
-
 
 [diff]
   tool = icdiff
@@ -61,7 +59,7 @@
   user = kuttor
 
 [credential]
-  helper = osxkeychain
+  helper = osxkeychai
 
 [color]
   ui = auto
@@ -70,41 +68,29 @@
   browser = google-chrome
 
 # -----------------------------------------------------------------------------
-# Git Repo Servers
-# -----------------------------------------------------------------------------
-
-# GitHub
-[url "https://github.com/"]
-  insteadOf = gh:
-
-# BitBucket
-[url "ssh://git@bitbucket.mcp-services.net:7999/ar"]
-    insteadOf = bb:
-
-# GitHub
-[url "https://gist.github.com/"]
-    insteadOf = gist:
-
-# -----------------------------------------------------------------------------
 # Aliases
 # -----------------------------------------------------------------------------
 
 [alias]
-  added = difftool --cached
-  aliases = config --get-regexp alias
   br = branch
-  branches = branch -a
-  co = checkout
-  create = !git init && git add -a && git commit -m \"Initial Commit\"
   do = "!f() { git add $1 && git commit -m \"$2\" && git push; }; f"
-  remotes = remote -v
-  showtool = "!f() { git difftool ${1:-HEAD}^ ${1:-HEAD};}; f"
   st = status -sb
   tags = tag -l
   up = pull
   who = shortlog -s -
-  
-  # submodules 
+  co = checkout
+  added = difftool --cached
+  branches = branch -a
+  aliases = config --get-regexp alias
+  create = !git init && git add -a && git commit -m \"Initial Commit\"
+  remotes = remote -v
+  showtool = "!f() { git difftool ${1:-HEAD}^ ${1:-HEAD};}; f"
+
+  # instead of URL use username/repo
+  clone-github = "!git clone https://github.com/${1}.git"
+  clone-bitbucket ="!git clone ssh://git@bitbucket.mcp-services.net:7999/${1}.git"
+
+  # submodules
   submodule-add = !sh -c 'git submodule add ssh://git@bitbucket.mcp-services.net:7999/ar/$1.git $1' -
   submodule-update = submodule update --init --recursive
-  submodule-pull = !git submodule foreach git pull --tags origin master
+  submodule-pull = !git submodule foreach git pull--tags origin master
