@@ -62,6 +62,7 @@ zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path $CACHE
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
 
 # fuzzy matching of completions for when you mistype them
 zstyle ':completion:*' completer _complete _match _approximate

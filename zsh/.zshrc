@@ -13,6 +13,9 @@ skip_global_compinit=1
 stty -ixon -ixoff # Reclaim ctrl-s and ctrl-q
 _comp_options+=(globdots)
 
+# OS describing logic
+[[ "$(uname -s)" == "Darwin" ]] && echo "You're using OSX"
+
 # -----------------------------------------------------------------------------
 # Sources
 # -----------------------------------------------------------------------------
@@ -26,6 +29,8 @@ source "$ZDOTDIR/zkbd.zsh"
 source "$ZDOTDIR/options.zsh"
 source "$ZDOTDIR/zplug.zsh"
 source "$HOME/.iterm2_shell_integration.zsh"
+dedupe_path # Remove any duplicate paths
+
 
 # Ubuntu's Command-Not-Found functionality
 [ brew command command-not-found-init >/dev/null 2>&1 ] &&\

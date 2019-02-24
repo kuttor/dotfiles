@@ -8,6 +8,10 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey "^E" edit-command-line
 
+# Expand aliases inline
+zle -N globalias
+bindkey " " globalias
+
 # Space does history expansion
 bindkey " " magic-space
 

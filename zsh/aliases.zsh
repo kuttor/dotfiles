@@ -32,6 +32,8 @@ alias reload="exec $SHELL -l"
 alias sudo="sudo "
 alias g="git"
 alias top-ten="print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10"
+alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
+alias myip='ifconfig -a | perl -nle"/(\d+\.\d+\.\d+\.\d+)/ && print $1"'
 
 # Replace 'ls' with exa if it is available.
 if command -v exa >/dev/null 2>&1; then

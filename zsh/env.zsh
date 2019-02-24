@@ -6,18 +6,23 @@
 # mail: andrew.kuttor@gmail.com
 # -----------------------------------------------------------------------------
 
-# ENV VAR
+# VIP Folders
 # -----------------------------------------------------------------------------
-export DOTFILES="$HOME/.dotfiles"
-export CACHE="$HOME/.cache"
-export CONFIG="$HOME/.config"
-export ZPLUG_HOME="/usr/local/opt/zplug"
-export ZSH_FUNCTIONS="$DOTFILES/functions"
-export VIM_SWAP="$HOME/.vimswap"
-export TMUX="$HOME/.config/tmux"
-export TMUX_PLUGINS="$HOME/.config/tmux/plugins"
+DOTFILES="$HOME/.dotfiles"
+CACHE="$HOME/.cache"
+CONFIG="$HOME/.config"
+ZPLUG_HOME="/usr/local/opt/zplug"
+ZSH_FUNCTIONS="$DOTFILES/functions"
+VIM_SWAP="$HOME/.vimswap"
+TMUX="$HOME/.config/tmux"
+TMUX_PLUGINS="$HOME/.config/tmux/plugins"
 
-# LANGUAGE
+# Report time of running processes
+# -----------------------------------------------------------------------------
+REPORTTIME=2
+TIMEFMT="%U user %S system %P cpu %*Es total"
+
+# Language
 # -----------------------------------------------------------------------------
 export LANGUAGE="en_US.UTF-8"
 export LANG="$LANGUAGE"

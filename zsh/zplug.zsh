@@ -29,6 +29,7 @@ zplug "mafredri/zsh-async", \
     use:"async.zsh",        \
     hook-load:"async_init"
 
+zplug "unixorn/warhol.plugin.zsh"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "plugins/completion", from:oh-my-zsh
 zplug "chrissicool/zsh-bash", from:oh-my-zsh

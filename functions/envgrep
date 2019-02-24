@@ -1,0 +1,3 @@
+#!/usr/local/zsh
+# grep env vars
+printenv | grep -i "$@"
