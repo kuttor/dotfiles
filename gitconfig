@@ -59,7 +59,7 @@
   user = kuttor
 
 [credential]
-  helper = osxkeychai
+  helper = osxkeychain
 
 [color]
   ui = auto
