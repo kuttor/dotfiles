@@ -13,7 +13,7 @@ CACHE="$HOME/.cache"
 CONFIG="$HOME/.config"
 ZPLUG_HOME="/usr/local/opt/zplug"
 ZSH_FUNCTIONS="$DOTFILES/functions"
-VIM_SWAP="$HOME/.vimswap"
+VIM_SWAP="$HOME/.vimvimswap"
 TMUX="$HOME/.config/tmux"
 TMUX_PLUGINS="$HOME/.config/tmux/plugins"
 
