@@ -29,6 +29,7 @@ alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs 
 alias ports="netstat -lantip"
 alias quit="exit"
 alias reload="exec $SHELL -l"
+alias rg="grep"
 alias sudo="sudo "
 alias g="git"
 alias top-ten="print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10"
