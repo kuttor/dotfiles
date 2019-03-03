@@ -11,7 +11,8 @@
 DOTFILES="$HOME/.dotfiles"
 CACHE="$HOME/.cache"
 CONFIG="$HOME/.config"
-ZPLUG_HOME="/usr/local/opt/zplug"
+#ZPLUG_HOME="/usr/local/opt/zplug"
+ZPLUG_HOME="/home/akuttor/.zplug"
 ZSH_FUNCTIONS="$DOTFILES/functions"
 VIM_SWAP="$HOME/.vimvimswap"
 TMUX="$HOME/.config/tmux"
@@ -58,9 +59,9 @@ export GIT_EDITOR="$EDITOR"
 
 # ENV
 # -----------------------------------------------------------------------------
-export RBENV_ROOT="$(brew --prefix rbenv)"
-export GEM_HOME="$(brew --prefix)/opt/gems"
-export GEM_PATH="$(brew --prefix)/opt/gems"
+#export RBENV_ROOT="$(brew --prefix rbenv)"
+#export GEM_HOME="$(brew --prefix)/opt/gems"
+#export GEM_PATH="$(brew --prefix)/opt/gems"
 
 # Pager
 # -----------------------------------------------------------------------------
@@ -68,14 +69,6 @@ export PAGER='bat'
 export MANPAGER='bat'
 export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 
-# Enhancd
-# -----------------------------------------------------------------------------
-ENHANCD_FILTER="fzf --height 50% --reverse --ansi"
-ENHANCD_DOT_SHOW_FULLPATH=1
-ENHANCD_COMMAND="cdd"
-ENHANCD_DIR="$CONFIG/enhancd/"
-ENHANCD_DOT_SHOW_FULLPATH=1
-
 # MOLECULE
 # -----------------------------------------------------------------------------
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+#export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES

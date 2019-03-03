@@ -6,17 +6,8 @@
 # Mail: andrew.kuttor@gmail.com
 # -----------------------------------------------------------------------------
 
-
-# Check if zplug is installed
-if [[ ! -d "$(brew --prefix)/opt/zplug" ]]
-then
-  brew install zplug
-  source "$ZPLUG_HOME/init.zsh"
-  zplug update --self
-fi
-
-# Load Zplug
-source $ZPLUG_HOME/init.zsh
+source "$ZPLUG_HOME/init.zsh"
+zplug update
 
 zplug "agkozak/agkozak-zsh-prompt"
 zplug "hlissner/zsh-autopair"
