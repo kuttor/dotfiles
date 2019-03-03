@@ -4,13 +4,15 @@
 # info: creates necessary links/files to setup dotfiles
 # -----------------------------------------------------------------------------
 
-ln -s "/Users/$(whoami)/.dotfiles/gitconfig" "/Users/$(whoami)/.gitconfig"
-ln -s "/Users/$(whoami)/.dotfiles/gitignore" "/Users/$(whoami)/.gitignore"
-ln -s "/Users/$(whoami)/.dotfiles/vimrc.local" "/Users/$(whoami)/.vimrc.local"
+ln -s "/home/$(whoami)/.dotfiles/gitconfig" "/home/$(whoami)/.gitconfig"
+ln -s "/home/$(whoami)/.dotfiles/gitignore" "/home/$(whoami)/.gitignore"
 
 # Setup TMUX
 mkdir "$HOME/.config/tmux"
-ln -s "/Users/$(whoami)/.dotfiles/tmux/tmux.conf" "/Users/$(whoami)/.config/tmux/tmux.config"
+ln -s "/home/$(whoami)/.dotfiles/tmux/tmux.conf" "/home/$(whoami)/.config/tmux/tmux.config"
+
+# Coding
+mkdir "$HOME/Code"
 
 # Download Jenkins-clii
 #jenkings_staging_address=172.16.167.190:8443
