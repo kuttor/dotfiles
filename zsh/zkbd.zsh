@@ -19,8 +19,18 @@ bindkey " " magic-space
 zle -N expand-or-complete-with-dots
 bindkey "^I" expand-or-complete-with-dots
 
-# FN + Arrow keys
-bindkey "^[[H"    beginning-of-line
-bindkey "^[[F"    end-of-line
-bindkey "^[[1;2H" backward-word
-bindkey "^[[1;2F" forward-word
+# Navigation
+bindkey "^[[1;5D" beginning-of-line
+bindkey "^[[1;5C" end-of-line
+bindkey "^[[1;7D" backward-word
+bindkey "^[[1;7C" forward-word
+bindkey '^[[2~'   overwrite-mode                      
+bindkey '^[[3~'   delete-char                        
+bindkey '^[[C'    forward-char                      
+bindkey '^[[D'    backward-char                    
+bindkey '^[[5~'   history-beginning-search-backward 
+bindkey '^[[6~'   history-beginning-search-forward 
+bindkey '^[[A'    up-line-or-history
+bindkey '^[[B'    down-line-or-history
+bindkey '^W'      backward-kill-word 
+bindkey '^Z'      undo 	
