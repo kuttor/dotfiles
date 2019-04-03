@@ -31,7 +31,7 @@ path=(
   /{bin,sbin}(N-/)
   /usr/local/lib/python2.7/site-packages(N-/)
   /usr/local/lib/python3.7/site-packages(N-/)
-  /Library/Frameworks/Python.framework/Versions/3.7/bin
+  /Users/akuttor/Library/Python/3.7/bin(N-/)
   /usr/local/opt/gems/bin
   ${path}
 )

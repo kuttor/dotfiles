@@ -1,11 +1,10 @@
 #!/usr/local/bin/zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0
-# -----------------------------------------------------------------------------
+
 # file: .zshrc
 # info: main configuration file
 # name: andrew kuttor
 # mail: andrew.kuttor@gmail.com
-# -----------------------------------------------------------------------------
 
 export ZDOTDIR="${${(%):-%N}:A:h}"
 limit coredumpsize 0
@@ -15,10 +14,10 @@ _comp_options+=(globdots)
 
 # OS describing logic
 [[ "$(uname -s)" == "Darwin" ]] && echo "You're using OSX"
+  msys*)    echo "WINDOWS"          ;;
+   OS=$(cat /etc/*release | grep ^NAME | tr -d 'NAME="')'"')
 
-# -----------------------------------------------------------------------------
 # Sources
-# -----------------------------------------------------------------------------
 source "$ZDOTDIR/env.zsh"
 source "$ZDOTDIR/paths.zsh"
 source "$ZDOTDIR/aliases.zsh"
@@ -31,12 +30,15 @@ source "$ZDOTDIR/zplug.zsh"
 source "$HOME/.iterm2_shell_integration.zsh"
 dedupe_path # Remove any duplicate paths
 
+# PyEnv
+eval "$(pyenv virtualenv-init -)"
+eval "$(pyenv init -)"
 
 # Ubuntu's Command-Not-Found functionality
 [ brew command command-not-found-init >/dev/null 2>&1 ] &&\
     eval "$(brew command-not-found-init)"
 
-# Zompdump recompile: Added zcompile command to hasten startup time. 
+# Zompdump recompile: Added zcompile command to hasten startup time.
 {
   zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
   [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]] &&\

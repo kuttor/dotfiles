@@ -1,0 +1,103 @@
+{
+    // Editor
+    "editor.formatOnPaste": true,
+    "editor.renderWhitespace": "all",
+    "editor.tabSize": 4,
+    "editor.fontFamily": "Fira Code iScript",
+    "editor.fontSize": 16,
+    "editor.fontLigatures": true,
+
+    // Git Integration
+    "diffEditor.renderSideBySide": false,
+
+    // UI
+    "window.zoomLevel": 0,
+    "workbench.colorTheme": "Material Theme Darker High Contrast",
+
+    // Terminal Integration
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.lineHeight": 1,
+
+    // python
+    "python.pythonPath": "/usr/local/bin/python3",
+
+    // Bash-IDE
+    "bashIde.explainshellEndpoint": "http://localhost:5000",
+
+    // Auto Close Tag
+    "auto-close-tag.SublimeText3Mode": true,
+    "auto-close-tag.activationOnLanguage": ["*"],
+    
+    // Json validator
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "/bower.json"
+            ],
+            "url": "http://json.schemastore.org/bower"
+        }
+    ],
+
+    // Ansible File Associations
+    "files.associations": {
+        "**/defaults/**/*": "ansible",
+        "**/tasks/**/*.yml": "ansible",
+        "**/handler/*.yml": "ansible",
+        "**/*_vars/**/*.yml": "ansible",
+        "**/roles/**/*.yml": "ansible",
+        "**/playbooks/**/*.yml": "ansible",
+        "**/*ansible*/**/*.yml": "ansible",
+        "**/vars/**/*.yml": "ansible",
+        "**/inventory/*/*": "ansible"
+    },
+    // Path Intellisense
+    "path-intellisense.showHiddenFiles": true,
+    "path-intellisense.absolutePathToWorkspace": true,
+
+    // Get italics to work
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [{
+                "scope": [
+                    //following will be in italic (=FlottFlott)
+                    "comment",
+                    "entity.name.type.class", //class names
+                    "keyword", //import, export, return…
+                    "constant", //String, Number, Boolean…, this, super
+                    "storage.modifier", //static keyword
+                    "storage.type.class.js", //class keyword
+                ],
+                "settings": {
+                    "fontStyle": "italic"
+                }
+            },
+            {
+                "scope": [
+                    //following will be excluded from italics (VSCode has some defaults for italics)
+                    "invalid",
+                    "keyword.operator",
+                    "constant.numeric.css",
+                    "keyword.other.unit.px.css",
+                    "constant.numeric.decimal.js",
+                    "constant.numeric.json"
+                ],
+                "settings": {
+                    "fontStyle": ""
+                }
+            }
+        ]
+    },
+    "indentRainbow.includedLanguages": [],
+    "vsicons.dontShowNewVersionMessage": true,
+    "python.jediEnabled": false,
+    "python.autoComplete.addBrackets": true,
+    "git.autofetch": true,
+    "explorer.confirmDragAndDrop": false,
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.statusBar.feedback.visible": false,
+    "editor.minimap.enabled": false,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "kite.showWelcomeNotificationOnStartup": false,
+    "workbench.startupEditor": "newUntitledFile"
+}
+

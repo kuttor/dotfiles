@@ -10,7 +10,7 @@
 # Check if zplug is installed
 if [[ ! -d "$(brew --prefix)/opt/zplug" ]]
 then
-  brew install zplug
+brew install zplug
   source "$ZPLUG_HOME/init.zsh"
   zplug update --self
 fi
