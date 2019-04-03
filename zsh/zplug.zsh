@@ -1,11 +1,10 @@
-#!/usr/local/bin/zsh
-# -----------------------------------------------------------------------------
+#!/usr/bin/env zsh
+# -*- coding: utf-8 -*-
+
 # file: zplug.zsh
 # info: Zplug config file to init, load, and install Zsh/Zplug plugins
-# Name: Andrew Kuttor
-# Mail: andrew.kuttor@gmail.com
-# -----------------------------------------------------------------------------
-
+# name: Andrew Kuttor
+# mail: andrew.kuttor@gmail.com
 
 # Check if zplug is installed
 if [[ ! -d "$(brew --prefix)/opt/zplug" ]]
