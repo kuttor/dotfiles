@@ -50,6 +50,7 @@
 [merge]
   stat = true
   merge = true
+	tool = code-insiders
 
 [rerere]
   enabled = true
