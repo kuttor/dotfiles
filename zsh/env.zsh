@@ -35,8 +35,6 @@ export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
 
 # Pager
 # -----------------------------------------------------------------------------
-export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
-export PAGER='bat'
 export MANPAGER='bat'
 export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 

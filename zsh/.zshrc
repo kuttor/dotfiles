@@ -12,11 +12,6 @@ skip_global_compinit=1
 stty -ixon -ixoff # Reclaim ctrl-s and ctrl-q
 _comp_options+=(globdots)
 
-# OS describing logic
-[[ "$(uname -s)" == "Darwin" ]] && echo "You're using OSX"
-  msys*)    echo "WINDOWS"          ;;
-   OS=$(cat /etc/*release | grep ^NAME | tr -d 'NAME="')'"')
-
 # Sources
 source "$ZDOTDIR/env.zsh"
 source "$ZDOTDIR/paths.zsh"
@@ -53,9 +48,7 @@ zle -N self-insert url-quote-magic
 autoload -U zmv
 alias zmv="noglob zmv -W"
 
-# -----------------------------------------------------------------------------
 # run-help
-# -----------------------------------------------------------------------------
 autoload -Uz run-help-git
 autoload -Uz run-help-ip
 autoload -Uz run-help-openssl
@@ -63,4 +56,3 @@ autoload -Uz run-help-p4
 autoload -Uz run-help-sudo
 autoload -Uz run-help-svk
 autoload -Uz run-help-svn
-
