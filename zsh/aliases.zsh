@@ -28,6 +28,7 @@ alias path='echo $PATH | tr -s ":" "\n"'
 alias pcat="pygmentize -f terminal256 -O style=monokai -g"
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
 alias ports="netstat -lantip"
+alias pip-update="pip install -U $(pip freeze | cut -d"=" -f1)"
 alias quit="exit"
 alias reload="exec $SHELL -l"
 alias rg="grep"
