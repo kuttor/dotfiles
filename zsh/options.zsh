@@ -27,3 +27,9 @@ setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
 setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
 unsetopt FLOW_CONTROL           # Disable start/stop characters in shell editor
 unsetopt HUP                    # Dont kill jobs on shell exit
+
+# Redo Tree
+command -v tree > /dev/null &&\
+  export FZF_ALT_C_OPTS="$FZF_DEFAULT_OPTS --preview 'tree -C {} |\
+  head -$LINES'"
+
