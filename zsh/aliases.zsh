@@ -15,30 +15,32 @@ alias diff="colordiff -ru"
 alias dog="pygmentize -O style=monokai -f console256 -g"
 alias du="du -csh"
 alias free="free -mt"
+alias g="git"
+alias git-new-repo="git init && git add --all && git commit -m 'Initial Commit'"
 alias h="history"
 alias historysummary="history | awk '{a[\$2]++} END{for(i in a){printf \"%5d\t%s\n\",a[i],i}}' | sort -rn | head"
 alias hu="h|rg "
-alias git-new-repo="git init && git add --all && git commit -m 'Initial Commit'"
 alias mkdir="mkdir -pv"
 alias molecule-create="molecule init scenario -r "
-alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias vimswap_clean="rm -rf $VIM_SWAP/*"
 alias mtop="htop --sort-key=PERCENT_MEM"
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias myip='ifconfig -a | perl -nle"/(\d+\.\d+\.\d+\.\d+)/ && print $1"'
 alias path='echo $PATH | tr -s ":" "\n"'
 alias pcat="pygmentize -f terminal256 -O style=monokai -g"
 alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
 alias ports="netstat -lantip"
-alias pip-update="pip install -U $(pip freeze | cut -d"=" -f1)"
+alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
 alias quit="exit"
 alias reload="exec $SHELL -l"
 alias rg="grep"
-alias sudo="sudo "
-alias g="git"
-alias top-ten="print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10"
-alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
-alias myip='ifconfig -a | perl -nle"/(\d+\.\d+\.\d+\.\d+)/ && print $1"'
 alias set_bitbucket_user="git config user.name 'Andy Kuttor' && git config user.email 'akuttor@cis.ntt.com'"
+alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
+alias sudo="sudo "
+alias top-ten="print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10"
+alias vim="nvim"
+alias vimswap_clean="rm -rf $VIM_SWAP/*"
 alias vscode_settings="$HOME/Library/Application\ Support/Code/User/settings.json"
+
 
 if command -v exa >/dev/null 2>&1; then
     alias ls="exa --git --color=always --group-directories-first"
@@ -54,10 +56,10 @@ do
   alias $c="$c -v"
 done
 
-alias v='vim -R -'
-for i in /usr/share/vim/vim*/macros/less.sh(N)
-do
-  alias v="$i"
-done
+#alias v='vim -R -'
+#for i in /usr/share/vim/vim*/macros/less.sh(N)
+#do
+#  alias v="$i"
+#done
 
 
