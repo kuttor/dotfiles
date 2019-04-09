@@ -6,12 +6,6 @@
 # name: Andrew Kuttor
 # mail: andrew.kuttor@gmail.com
 
-# Check if zplug is installed
-if [[ ! -d "$(brew --prefix)/opt/zplug" ]]; then
-    brew install zplug
-    zplug update --self
-fi
-
 # Load Zplug
 source $ZPLUG_HOME/init.zsh
 
@@ -33,14 +27,18 @@ zplug "jimeh/zsh-peco-history", defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
 zplug "rupa/z", use:z.sh
 zplug "skywind3000/z.lua"
 zplug "aperezdc/zsh-fzy"
-
-zplug "junegunn/fzf",             \
-as:command,                   \
-hook-build:"./install --bin", \
-use:"bin/{fzf-tmux,fzf}"
-
+zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
 zplug "andrewferrier/fzf-z"
 zplug "ytet5uy4/fzf-widgets", hook-load:'FZF_WIDGET_TMUX=1'
+
+if zplug check "b4b4r07/zsh-history-enhanced"; then
+    ZSH_HISTORY_FILE="$HISTFILE"
+    ZSH_HISTORY_FILTER="fzf:peco:percol"
+    ZSH_HISTORY_KEYBIND_GET_BY_DIR="^r"
+    ZSH_HISTORY_KEYBIND_GET_ALL="^r^a"
+fi
+
+
 
 # zsh users
 zplug "zsh-users/zsh-completions",              defer:0
