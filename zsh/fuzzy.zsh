@@ -47,6 +47,15 @@ _fzf_complete_z() {
     _fzf_complete '--multi --reverse' "$@" < <(raw_z)
 }
 
+# Use rg to generate file completions
+_fzf_compgen_path() {
+    rg --files "$1" | with-dir "$1"
+}
+
+# Use rg to generate the list for directory completion
+_fzf_compgen_dir() {
+    rg --files "$1" | only-dir "$1"
+
 # z.lua
 # -----------------------------------------------------------------------------
 #eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
