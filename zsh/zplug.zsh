@@ -15,25 +15,19 @@ fi
 # Load Zplug
 source $ZPLUG_HOME/init.zsh
 
-zplug "agkozak/agkozak-zsh-prompt"
 zplug "hlissner/zsh-autopair"
 zplug "knu/zsh-manydots-magic"
 zplug "tysonwolker/iterm-tab-colors"
 zplug "changyuheng/zsh-interactive-cd"
 
-zplug "mafredri/zsh-async", \
-from:"github",          \
-use:"async.zsh",        \
-hook-load:"async_init"
+zplug "mafredri/zsh-async", from:github
+zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
-zplug "unixorn/warhol.plugin.zsh"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "plugins/completion", from:oh-my-zsh
 zplug "chrissicool/zsh-bash", from:oh-my-zsh
 zplug "plugins/osx", from:oh-my-zsh
 zplug "github/hub", from:github
-zplug 'tevren/gitfast-zsh-plugin'
-zplug "plugins/pip", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
 zplug "jimeh/zsh-peco-history", defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
 zplug "rupa/z", use:z.sh

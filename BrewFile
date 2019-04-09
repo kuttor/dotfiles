@@ -64,8 +64,6 @@ brew "pass"
 brew "peco"
 brew "perl"
 brew "pyenv"
-brew "python"
-brew "python@2"
 brew "reattach-to-user-namespace"
 brew "ripgrep"
 brew "ruby"
@@ -77,12 +75,8 @@ brew "tmux"
 brew "tree"
 brew "vim"
 brew "wget"
-brew "zplug"
 brew "zsh"
-brew "zsh-completions"
-brew "zsh-navigation-tools"
 
-# -----------------------------------------------------------------------------
 # Cask Packages
 # -----------------------------------------------------------------------------
 
@@ -95,6 +89,5 @@ cask "slack"
 cask "the-unarchiver"
 cask "transmission"
 cask "vagrant"
-cask "vagrant-manager"
 cask "virtualbox"
 cask "visual-studio-code"

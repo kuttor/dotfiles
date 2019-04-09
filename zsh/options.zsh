@@ -3,6 +3,12 @@
 # Info: Zsh configuration file for setopt directives
 # ---------------------------------------------------------------------------
 
+autoload -U parseopts
+autoload -U zargs
+autoload -U zcalc
+autoload -U zed
+autoload -U zmv
+
 setopt   AUTO_CD                # Change to a directory without typing cd
 setopt   AUTO_PUSHD             # Push the old directory onto the stack on cd
 setopt   CDABLE_VARS            # Change directory to a path stored in a variable

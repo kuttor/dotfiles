@@ -31,7 +31,9 @@ export LC_CTYPE="$LANGUAGE"
 
 # HOMEBREW
 # -----------------------------------------------------------------------------
-export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
+#export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
+export GITHUB_ACCESS_TOKEN=$(pass github/access)
+export HOMEBREW_GITHUB_API_TOKEN=$(pass github/homebrew)
 
 # Pager
 # -----------------------------------------------------------------------------
