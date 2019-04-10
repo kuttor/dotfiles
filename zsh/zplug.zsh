@@ -6,11 +6,11 @@
 # name: Andrew Kuttor
 # mail: andrew.kuttor@gmail.com
 
-# Check if zplug is installed
-[ -d "$HOME/.zplug" ] && hub clone "zplug/zplug" "$HOME/.zplug"
-
 # Load Zplug
-source "$ZPLUG_HOME/init.zsh"
+source "$HOME/.zplug/init.zsh"
+
+# Let Zplug manage itself
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 zplug "mafredri/zsh-async"
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
@@ -22,42 +22,37 @@ zplug "chrissicool/zsh-bash", from:oh-my-zsh
 zplug "github/hub", from:github
 zplug "hlissner/zsh-autopair"
 zplug "peco/peco",          as:command, from:gh-r
-zplug "rupa/z", use:z.sh
-zplug "skywind3000/z.lua"
-zplug "junegunn/fzf", as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
-zplug "andrewferrier/fzf-z"
-zplug "aperezdc/zsh-fzy"
-zplug "jimeh/zsh-peco-history", defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
-zplug "ytet5uy4/fzf-widgets", hook-load:'FZF_WIDGET_TMUX=1'
-
-# Let Zplug manage itself
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+zplug "rupa/z", from:github, use:z.sh
+zplug "skywind3000/z.lua", from:github
+zplug "junegunn/fzf", from:github, as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
+zplug "andrewferrier/fzf-z", from:github
+zplug "aperezdc/zsh-fzy", from:github
+zplug "jimeh/zsh-peco-history", from:github, defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
+zplug "ytet5uy4/fzf-widgets", from:github, hook-load:'FZF_WIDGET_TMUX=1'
 
 # From Oh-My-ZSH
-zstyle ":zplug:tag" from oh-my-zsh
-zplug "lib/clipboard",            if:"[[ $OSTYPE == *darwin* ]]"
-zplug "plugins/osx"               if:"[[ $OSTYPE == *darwin* ]]"
-zplug "plugins/colored-man-pages"
-zplug "plugins/virtualenv"
-zplug "plugins/zsh_reload"
-zplug "plugins/completion"
-zplug "plugins/sudo"
-zplug "plugins/git",              if:"(( $+commands[git] ))"
-zplug "plugins/gitignore",        if:"(( $+commands[git] ))"
-zplug "plugins/git-prompt",       if:"(( $+commands[git] ))"
-zplug "plugins/nmap",             if:"(( $+commands[nmap] ))"
-zplug "plugins/pip",              if:"(( $+commands[pip] ))"
-zplug "plugins/pyenv",            if:"(( $+commands[pyenv] ))"
-zplug "plugins/pylint",           if:"(( $+commands[pylint] ))"
-zplug "plugins/python",           if:"(( $+commands[python] ))"
-zplug "plugins/sudo",             if:"(( $+commands[sudo] ))"
-zplug "plugins/thefuck",          if:"(( $+commands[thefuck] ))"
+zplug "lib/clipboard", from:oh-my-zsh,            if:"[[ $OSTYPE == *darwin* ]]"
+zplug "plugins/colored-man-pages", from:oh-my-zsh
+zplug "plugins/virtualenv", from:oh-my-zsh
+zplug "plugins/zsh_reload", from:oh-my-zsh
+zplug "plugins/completion", from:oh-my-zsh
+zplug "plugins/sudo", from:oh-my-zsh
+zplug "plugins/git", from:oh-my-zsh,             if:"(( $+commands[git] ))"
+zplug "plugins/gitignore", from:oh-my-zsh,        if:"(( $+commands[git] ))"
+zplug "plugins/git-prompt", from:oh-my-zsh,       if:"(( $+commands[git] ))"
+zplug "plugins/nmap", from:oh-my-zsh,             if:"(( $+commands[nmap] ))"
+zplug "plugins/pip", from:oh-my-zsh,              if:"(( $+commands[pip] ))"
+zplug "plugins/pyenv", from:oh-my-zsh,            if:"(( $+commands[pyenv] ))"
+zplug "plugins/pylint", from:oh-my-zsh,           if:"(( $+commands[pylint] ))"
+zplug "plugins/python", from:oh-my-zsh,           if:"(( $+commands[python] ))"
+zplug "plugins/sudo", from:oh-my-zsh,             if:"(( $+commands[sudo] ))"
+zplug "plugins/thefuck", from:oh-my-zsh,          if:"(( $+commands[thefuck] ))"
 
 # zsh users
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-syntax-highlighting"
-zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-completions", from:github
+zplug "zsh-users/zsh-autosuggestions", from:github, as:plugin
+zplug "zsh-users/zsh-syntax-highlighting", from:github
+zplug "zsh-users/zsh-history-substring-search", from:github
 
 # -----------------------------------------------------------------------------
 
@@ -102,7 +97,7 @@ fi
 
 # Autosuggestion
 if zplug check "zsh-users/zsh-autosuggestions"; then
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=212'
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
     ZSH_AUTOSUGGEST_USE_ASYNC=1
 fi
 
