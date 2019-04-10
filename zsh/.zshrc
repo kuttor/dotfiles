@@ -14,7 +14,6 @@ _comp_options+=(globdots)
 
 # Sources
 source "$ZDOTDIR/env.zsh"
-source "$ZDOTDIR/paths.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"
@@ -23,10 +22,10 @@ source "$ZDOTDIR/zplug.zsh"
 source "$HOME/.iterm2_shell_integration.zsh"
 dedupe_path # Remove any duplicate paths
 
-# Ubuntu's Command-Not-Found functionality
-if brew command command-not-found-init > /dev/null 2>&1; then
-    eval "$(brew command-not-found-init)"
-fi
+# # UBuntu-like command suggestions for Brew`
+# if brew command command-not-found-init > /dev/null 2>&1; then
+#     eval "$(brew command-not-found-init)"t
+# fi
 
 # Quote pasted URLs
 autoload -U url-quote-magic
@@ -56,4 +55,3 @@ autoload -U zargs
 autoload -U zcalc
 autoload -U zed
 autoload -U zmv
-
