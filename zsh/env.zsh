@@ -9,7 +9,7 @@ DOTFILES="$HOME/.dotfiles"
 BREW_HOME="$(brew --prefix)"
 CACHE="$HOME/.cache"
 CONFIG="$HOME/.config"
-ZPLUG_HOME="/usr/local/opt/zplug"
+ZPLUG_HOME="$HOME/.zplug"
 ZFUNCTIONS="$DOTFILES/functions"
 
 # Colors
