@@ -19,15 +19,10 @@ source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/colors.zsh"
 source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"
-source "$ZDOTDIR/zkbd.zsh"
 source "$ZDOTDIR/options.zsh"
 source "$ZDOTDIR/zplug.zsh"
 source "$HOME/.iterm2_shell_integration.zsh"
 dedupe_path # Remove any duplicate paths
-
-# PyEnv
-eval "$(pyenv virtualenv-init -)"
-eval "$(pyenv init -)"
 
 # Ubuntu's Command-Not-Found functionality
 [ brew command command-not-found-init >/dev/null 2>&1 ] &&\
@@ -56,3 +51,15 @@ autoload -Uz run-help-p4
 autoload -Uz run-help-sudo
 autoload -Uz run-help-svk
 autoload -Uz run-help-svn
+
+# / . - , mark separate words when deleting
+autoload -U select-word-style
+select-word-style bash
+
+# Add coloring
+autoload -Uz colors && colors
+autoload -U parseopts
+autoload -U zargs
+autoload -U zcalc
+autoload -U zed
+autoload -U zmv

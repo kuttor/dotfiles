@@ -1,81 +1,90 @@
 #!/usr/local/bin/zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
+
 # file: env.zshv
 # info: Main config file for env variables
-# name: Andrew Kuttor
-# mail: andrew.kuttor@gmail.com
-# -----------------------------------------------------------------------------
 
 # VIP Folders
-# -----------------------------------------------------------------------------
 DOTFILES="$HOME/.dotfiles"
+BREW_HOME="$(brew --prefix)"
 CACHE="$HOME/.cache"
 CONFIG="$HOME/.config"
 ZPLUG_HOME="/usr/local/opt/zplug"
-ZSH_FUNCTIONS="$DOTFILES/functions"
-VIM_SWAP="$HOME/.vimvimswap"
-TMUX="$HOME/.config/tmux"
-TMUX_PLUGINS="$HOME/.config/tmux/plugins"
+ZFUNCTIONS="$DOTFILES/functions"
 
-# Report time of running processes
-# -----------------------------------------------------------------------------
-REPORTTIME=2
-TIMEFMT="%U user %S system %P cpu %*Es total"
+# Automatically remove duplicates from these arrays
+typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
-# Language
-# -----------------------------------------------------------------------------
-export LANGUAGE="en_US.UTF-8"
-export LANG="$LANGUAGE"
-export LC_ALL="$LANGUAGE"
-export LC_CTYPE="$LANGUAGE"
+# Autoload all function files
+for f in $ZFUNCTIONS/*; do
+  unhash -f $f 2>/dev/null
+  autoload +X $f
+done
 
-# HOMEBREW
-# -----------------------------------------------------------------------------
-#export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
+# Function Paths
+fpath=(
+  ${BREW_HOME}/share/zsh-completions
+  ${DOTFILES}/functions
+  ${fpath}
+)
+
+# System Paths
+path=(
+  ${HOME}/Library/Python/3.7/bin(N-/)
+  ${BREW_HOME}/lib/python{2.7,3.7}/site-packages(N-/)
+  ${BREW_HOME}/opt/gems/bin(N-/)
+  ${BREW_HOME}/{bin,sbin}(N-/)
+  /usr/{bin,sbin}(N-/)
+  /{bin,sbin}(N-/)
+  ${path}
+)
+
+# Terminal
+export REPORTTIME=2
+export TIMEFMT="%U user %S system %P cpu %*Es total"
+export KEYTIMEOUT=1
+export TERMINAL_DARK=1
+export ITERM_24BIT=1
+export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export _Z_DATA="$CONFIG/z-data"
+
+# Homebrew
+# export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
 export GITHUB_ACCESS_TOKEN=$(pass github/access)
 export HOMEBREW_GITHUB_API_TOKEN=$(pass github/homebrew)
 
-# Pager
-# -----------------------------------------------------------------------------
-export MANPAGER='bat'
-export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
-
-# TERMINAL
-# -----------------------------------------------------------------------------
-export KEYTIMEOUT=1
-export TERMINAL_DARK=1
-export _Z_DATA="$CONFIG/z-data"
-export ITERM_24BIT=1
-export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
-
-# EDITOR
-# -----------------------------------------------------------------------------
-export EDITOR=$(which vim)
+# Editor
+export EDITOR=$(which nvim)
 export VISUAL="$EDITOR"
-export CVSEDITOR="$EDITOR"
-export SVN_EDITOR="$EDITOR"
-export GIT_EDITOR="$EDITOR"
-
-# ENV
-# -----------------------------------------------------------------------------
-export RBENV_ROOT="$(brew --prefix rbenv)"
-export GEM_HOME="$(brew --prefix)/opt/gems"
-export GEM_PATH="$(brew --prefix)/opt/gems"
 
 # Pager
-# -----------------------------------------------------------------------------
-export PAGER='bat'
-export MANPAGER='bat'
+export PAGER=$(which bat)
+export MANPAGER=$PAGER
 export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 
-# Enhancd
-# -----------------------------------------------------------------------------
-ENHANCD_FILTER="fzf --height 50% --reverse --ansi"
-ENHANCD_DOT_SHOW_FULLPATH=1
-ENHANCD_COMMAND="cdd"
-ENHANCD_DIR="$CONFIG/enhancd/"
-ENHANCD_DOT_SHOW_FULLPATH=1
+# Tree
+command -v tree > /dev/null &&\
+  export FZF_ALT_C_OPTS="$FZF_DEFAULT_OPTS --preview 'tree -C {} |\
+  head -$LINES'"
 
-# MOLECULE
-# -----------------------------------------------------------------------------
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+# Emacs
+bindkey -e
+
+# Readline $EDITOR
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey "^E" edit-command-line
+
+# Space does history expansion
+bindkey " " magic-space
+
+# Expand waiting to complete dots
+zle -N expand-or-complete-with-dots
+bindkey "^I" expand-or-complete-with-dots
+
+# FN + Arrow keys
+bindkey "^[[H"    beginning-of-line
+bindkey "^[[F"    end-of-line
+bindkey "^[[1;2H" backward-word
+bindkey "^[[1;2F" forward-word

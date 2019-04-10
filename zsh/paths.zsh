@@ -9,6 +9,7 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 # Function paths
 fpath=(
   $(brew --prefix)/share/zsh-completions
+  /usr/local/share/zsh-completions
   ${DOTFILES}/functions
   ${fpath}
 )

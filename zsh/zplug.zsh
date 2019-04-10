@@ -15,15 +15,13 @@ source $ZPLUG_HOME/init.zsh
 
 zplug "mafredri/zsh-async"
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
-
+zplug "djui/alias-tips"
 zplug "tysonwolker/iterm-tab-colors"
 zplug "changyuheng/zsh-interactive-cd"
 zplug "knu/zsh-manydots-magic"
 zplug "chrissicool/zsh-bash", from:oh-my-zsh
 zplug "github/hub", from:github
 zplug "hlissner/zsh-autopair"
-
-
 zplug "peco/peco",          as:command, from:gh-r
 zplug "rupa/z", use:z.sh
 zplug "skywind3000/z.lua"
@@ -41,6 +39,8 @@ zstyle ":zplug:tag" from oh-my-zsh
 zplug "lib/clipboard",            if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/osx"               if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/colored-man-pages"
+zplug "plugins/virtualenv"
+zplug "plugins/zsh_reload"
 zplug "plugins/completion"
 zplug "plugins/sudo"
 zplug "plugins/git",              if:"(( $+commands[git] ))"
@@ -55,10 +55,10 @@ zplug "plugins/sudo",             if:"(( $+commands[sudo] ))"
 zplug "plugins/thefuck",          if:"(( $+commands[thefuck] ))"
 
 # zsh users
-zplug "zsh-users/zsh-completions",              defer:0
-zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
-zplug "zsh-users/zsh-syntax-highlighting",      defer:3, on:"zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-syntax-highlighting"
+zplug "zsh-users/zsh-history-substring-search"
 
 # -----------------------------------------------------------------------------
 
@@ -73,7 +73,6 @@ fi
 # Spaceship Prompt
 if zplug check "denysdovhan/spaceship-prompt"; then
     SPACESHIP_PROMPT_ORDER=(
-    # time        # Time stampts section (Disabled)
     user          # Username section
     dir           # Current directory section
     host          # Hostname section
@@ -86,29 +85,37 @@ if zplug check "denysdovhan/spaceship-prompt"; then
     )
 
     SPACESHIP_RPROMPT_ORDER=(
-    exit_code     # Exit code section
+    exit_code
     time
     )
 
     SPACESHIP_TIME_SHOW=true
     SPACESHIP_EXIT_CODE_SHOW=true
-
     SPACESHIP_PROMPT_SEPARATE_LINE=false
     SPACESHIP_PROMPT_ADD_NEWLINE=true
+fi
 
-    #SPACESHIP_PROMPT_SEPARATE_LINE=false
-    #SPACESHIP_PROMPT_FIRST_PREFIX_SHOW=true
-
-    #PROMPT='%F{red}%n%f@%F{blue}%m%f %F{yellow}%1~%f %# '
-    #RPROMPT='[%F{yellow}%?%f]'
+# History Substring Search
+if zplug check "zsh-users/zsh-history-substring-search"; then
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='underline'
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=default,fg=9'
 fi
 
 # Autosuggestion
 if zplug check "zsh-users/zsh-autosuggestions"; then
-    #ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=075'
-    #ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=162'
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=212'
+    ZSH_AUTOSUGGEST_USE_ASYNC=1
 fi
+
+#if zplug check "zsh-users/zsh-syntax-highlighting"; then
+#    #ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=red'
+#    ZSH_HIGHLIGHT_STYLES[globbing]='fg=green'
+#    ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=green'
+#    ZSH_HIGHLIGHT_STYLES[path_approx]='fg=yellow'
+#    ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=magenta'
+#fi
+
+
 
 # -----------------------------------------------------------------------------
 

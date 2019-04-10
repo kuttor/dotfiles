@@ -23,11 +23,9 @@ unsetopt case_glob              # make globbing case insensitive
 unsetopt menu_complete          # add first of multiple
 # enable completion
 
-autoload -Uz compinit
-compinit
+autoload -Uz +X compinit && compinit
 
-autoload -Uz bashcompinit
-bashcompinit
+autoload -Uz +X bashcompinit && bashcompinit
 
 zmodload -i zsh/complist
 
