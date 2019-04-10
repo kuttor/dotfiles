@@ -7,11 +7,10 @@
 # mail: andrew.kuttor@gmail.com
 
 # Check if zplug is installed
-[ ! -d ~/.zplug ] &&\
-    git clone "https://github.com/zplug/zplug ~/.zplug"
+[ -d "$HOME/.zplug" ] && hub clone "zplug/zplug" "$HOME/.zplug"
 
 # Load Zplug
-source $ZPLUG_HOME/init.zsh
+source "$ZPLUG_HOME/init.zsh"
 
 zplug "mafredri/zsh-async"
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
