@@ -10,7 +10,7 @@
 source "$HOME/.zplug/init.zsh"
 
 # Let Zplug manage itself
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+#zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 zplug "mafredri/zsh-async"
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
@@ -27,7 +27,7 @@ zplug "skywind3000/z.lua", from:github
 zplug "junegunn/fzf", from:github, as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
 zplug "andrewferrier/fzf-z", from:github
 zplug "aperezdc/zsh-fzy", from:github
-zplug "jimeh/zsh-peco-history", from:github, defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
+#zplug "jimeh/zsh-peco-history", from:github, defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
 zplug "ytet5uy4/fzf-widgets", from:github, hook-load:'FZF_WIDGET_TMUX=1'
 
 # From Oh-My-ZSH

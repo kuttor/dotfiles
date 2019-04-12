@@ -22,10 +22,10 @@ source "$ZDOTDIR/zplug.zsh"
 source "$HOME/.iterm2_shell_integration.zsh"
 dedupe_path # Remove any duplicate paths
 
-# # UBuntu-like command suggestions for Brew`
-# if brew command command-not-found-init > /dev/null 2>&1; then
-#     eval "$(brew command-not-found-init)"t
-# fi
+ # UBuntu-like command suggestions for Brew`
+if brew command command-not-found-init > /dev/null 2>&1; then
+    eval "$(brew command-not-found-init)"
+fi
 
 # Quote pasted URLs
 autoload -U url-quote-magic
