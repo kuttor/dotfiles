@@ -12,24 +12,31 @@ source "$HOME/.zplug/init.zsh"
 # Let Zplug manage itself
 #zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-zplug "mafredri/zsh-async"
+zplug "mafredri/zsh-async",  from:github
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 zplug "djui/alias-tips"
-zplug "tysonwolker/iterm-tab-colors"
+zplug "tysonwolker/iterm-tab-colors", from:github
+zplug "zpm-zsh/tmux", from:github
+zplug "jsahlen/tmux-vim-integration.plugin.zsh", from:github
 zplug "changyuheng/zsh-interactive-cd"
 zplug "knu/zsh-manydots-magic"
 zplug "chrissicool/zsh-bash", from:oh-my-zsh
 zplug "github/hub", from:github
 zplug "hlissner/zsh-autopair"
-zplug "peco/peco",          as:command, from:gh-r
+zplug "unixorn/git-extra-commands", from:github
+zplug "seletskiy/zsh-git-smart-commands",  from:github
+zplug "rapgenic/zsh-git-complete-urls", from:github
+zplug "peco/peco", from:gh-r, as:command
+zplug "zpm-zsh/colors", from:github
 zplug "rupa/z", from:github, use:z.sh
 zplug "skywind3000/z.lua", from:github
 zplug "junegunn/fzf", from:github, as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
-zplug "andrewferrier/fzf-z", from:github
+plug "andrewferrier/fzf-z", from:github
 zplug "aperezdc/zsh-fzy", from:github
 #zplug "jimeh/zsh-peco-history", from:github, defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
 zplug "ytet5uy4/fzf-widgets", from:github, hook-load:'FZF_WIDGET_TMUX=1'
-
+zplug "timothyrowan/betterbrew-zsh-plugin", from:github
+zplug "oldratlee/hacker-quotes", from:github
 # From Oh-My-ZSH
 zplug "lib/clipboard", from:oh-my-zsh,            if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/colored-man-pages", from:oh-my-zsh

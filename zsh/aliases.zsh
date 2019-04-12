@@ -27,7 +27,7 @@ alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias myip='ifconfig -a | perl -nle"/(\d+\.\d+\.\d+\.\d+)/ && print $1"'
 alias path='echo $PATH | tr -s ":" "\n"'
 alias pcat="pygmentize -f terminal256 -O style=monokai -g"
-alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
+#alias pip-upgrade="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
 alias ports="netstat -lantip"
 alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
 alias quit="exit"
