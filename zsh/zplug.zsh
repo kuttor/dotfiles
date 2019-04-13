@@ -120,8 +120,6 @@ fi
 
 # -----------------------------------------------------------------------------
 
-# zplug check returns true if all packages are installed
-zplug check || zplug install
-
-# source plugins and add commands to the PATH
-zplug load
+# Load up the fuckin' goods.
+zplug install || ret=1
+zplug load --verbose || ret=1
