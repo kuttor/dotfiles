@@ -32,7 +32,6 @@ alias ports="netstat -lantip"
 alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
 alias quit="exit"
 alias reload="exec $SHELL -l"
-alias rg="grep"
 alias set_bitbucket_user="git config user.name 'Andy Kuttor' && git config user.email 'akuttor@cis.ntt.com'"
 alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 alias sudo="sudo "
