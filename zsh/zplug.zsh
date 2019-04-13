@@ -123,3 +123,15 @@ fi
 # Load up the fuckin' goods.
 zplug install || ret=1
 zplug load --verbose || ret=1
+
+ret=0
+for test in "$tests[@]"
+do
+    eval "$test"
+    if (( $status != 0 )); then
+        printf "$fg[red]FAIL: $test$reset_color\n" >&2
+        ret=1
+    fi
+done
+exit $ret
+
