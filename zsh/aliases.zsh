@@ -7,6 +7,7 @@
 # ------------------------------------------------------------------------------
 alias ansible-create="ansible-galaxy init  --offline --force "
 alias ak="tree -C"
+alias cl="clear"
 alias cp="cp -ri"
 alias c="clear"
 alias cat="bat"
