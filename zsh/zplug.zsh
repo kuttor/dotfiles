@@ -14,6 +14,7 @@ source "$HOME/.zplug/init.zsh"
 
 zplug "mafredri/zsh-async",  from:github
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
+
 zplug "djui/alias-tips"
 zplug "tysonwolker/iterm-tab-colors", from:github
 zplug "zpm-zsh/tmux", from:github
@@ -31,7 +32,7 @@ zplug "zpm-zsh/colors", from:github
 zplug "rupa/z", from:github, use:z.sh
 zplug "skywind3000/z.lua", from:github
 zplug "junegunn/fzf", from:github, as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
-plug "andrewferrier/fzf-z", from:github
+zplug "andrewferrier/fzf-z", from:github
 zplug "aperezdc/zsh-fzy", from:github
 #zplug "jimeh/zsh-peco-history", from:github, defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
 zplug "ytet5uy4/fzf-widgets", from:github, hook-load:'FZF_WIDGET_TMUX=1'
@@ -121,17 +122,19 @@ fi
 # -----------------------------------------------------------------------------
 
 # Load up the fuckin' goods.
-zplug install || ret=1
-zplug load --verbose || ret=1
+# zplug install || ret=1
+# zplug load --verbose || ret=1
 
-ret=0
-for test in "$tests[@]"
-do
-    eval "$test"
-    if (( $status != 0 )); then
-        printf "$fg[red]FAIL: $test$reset_color\n" >&2
-        ret=1
-    fi
-done
-exit $ret
+zplug check --verbose || zplug install
+zplug load --verbose
 
+# ret=0
+# for test in "$tests[@]"
+# do
+#     eval "$test"
+#     if (( $status != 0 )); then
+#         printf "$fg[red]FAIL: $test$reset_color\n" >&2
+#         ret=1
+#     fi
+# done
+# exit $ret`
