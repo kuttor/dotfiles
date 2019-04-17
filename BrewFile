@@ -1,35 +1,24 @@
 # -*- mode: ruby -*-
 # Minimal Brewfile
 
-# -----------------------------------------------------------------------------
-# Pre-configuration for brew sources
-# -----------------------------------------------------------------------------
-#
+tap "buo/cask-upgrade"
+tap "caskroom/cask"
+tap "caskroom/fonts"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
+tap "homebrew/command-not-found"
 tap "homebrew/core"
-tap 'buo/cask-upgrade'
-tap 'caskroom/cask'
-tap 'caskroom/fonts'
-tap 'homebrew/bundle'
-tap 'homebrew/command-not-found'
-tap 'homebrew/core'
-tap 'homebrew/services'
-tap 'railwaycat/emacsmacport'
+tap "homebrew/services"
+tap "railwaycat/emacsmacport"
 
-# -----------------------------------------------------------------------------
-# Brew Packages
-# -----------------------------------------------------------------------------
 
 brew "ack"
 brew "aircrack-ng"
-brew "ansible"
 brew "bash"
 brew "bat"
 brew "bind"
-brew "brew-pip"
 brew "cabal-install"
 brew "cask"
 brew "cmake"
@@ -37,25 +26,31 @@ brew "coreutils"
 brew "cscope"
 brew "ctags"
 brew "curl"
+brew "ed"
 brew "exa"
 brew "fd"
 brew "fontconfig"
 brew "fortune"
 brew "fzf"
 brew "fzy"
+brew "gawk"
 brew "glide"
 brew "go"
+brew "grc"
 brew "grv"
 brew "haskell-stack"
 brew "htop"
 brew "hub"
+brew "iproute2mac"
 brew "jq"
+brew "keychain"
 brew "lastpass-cli"
 brew "legit"
 brew "lua"
 brew "luarocks"
+brew "neovim", args: ["HEAD"]
+brew "nmap"
 brew "node"
-brew "npm"
 brew "nvm"
 brew "openconnect"
 brew "p7zip"
@@ -64,30 +59,45 @@ brew "pass"
 brew "peco"
 brew "perl"
 brew "pyenv"
+brew "pyenv-virtualenv"
+brew "pyenv-virtualenvwrapper"
 brew "reattach-to-user-namespace"
 brew "ripgrep"
 brew "ruby"
-brew "keychain"
 brew "shellcheck"
 brew "shfmt"
+brew "the_platinum_searcher"
 brew "the_silver_searcher"
+brew "thefuck"
+brew "tidy-html5"
 brew "tmux"
 brew "tree"
 brew "vim"
 brew "wget"
-brew "zsh"
+brew "zip"
+brew "zsh-completions"
 
+# -----------------------------------------------------------------------------
 # Cask Packages
 # -----------------------------------------------------------------------------
 
-brew "font-ibm-plex"
 cask "caffeine"
 cask "cyberduck"
 cask "discord"
 cask "firefox"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlmarkdown"
+cask "qlstephen"
+cask "qlvideo"
+cask "quicklook-json"
+cask "quicklookase"
 cask "slack"
+cask "suspicious-package"
 cask "the-unarchiver"
+cask "therm"
 cask "transmission"
 cask "vagrant"
 cask "virtualbox"
 cask "visual-studio-code"
+cask "webpquicklook"
