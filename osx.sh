@@ -3,6 +3,12 @@
 alias sleepoff='sudo pmset -b sleep 0; sudo pmset -b disablesleep 1'
 alias sleepon='sudo pmset -b sleep 5; sudo pmset -b disablesleep 0'
 
+# Delete unused apps
+rm -rf \
+  /Applications/Chess.app \
+  /Applications/Stocks.app \
+  /Applications/Home.app
+
 # Hidden scroll gesture for Dock
 defaults write com.apple.dock scroll-to-open -bool TRUE; killall Dock
 
