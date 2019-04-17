@@ -7,7 +7,10 @@ alias sleepon='sudo pmset -b sleep 5; sudo pmset -b disablesleep 0'
 rm -rf \
   /Applications/Chess.app \
   /Applications/Stocks.app \
-  /Applications/Home.app
+  /Applications/Home.app \
+  $HOME/Library/Containers/com.apple.Chess \
+  $HOME/Library/Containers/com.apple.Stocks \
+  $HOME/Library/Containers/com.apple.Home
 
 # Hidden scroll gesture for Dock
 defaults write com.apple.dock scroll-to-open -bool TRUE; killall Dock
