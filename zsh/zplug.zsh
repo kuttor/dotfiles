@@ -126,7 +126,7 @@ fi
 # zplug load --verbose || ret=1
 
 zplug check --verbose || zplug install
-zplug load --verbose
+zplug load
 
 # ret=0
 # for test in "$tests[@]"
