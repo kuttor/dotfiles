@@ -61,9 +61,9 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export _Z_DATA="$CONFIG/z-data"
 
 # Homebrew
-# export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
-export GITHUB_ACCESS_TOKEN=$(pass github/access)
-export HOMEBREW_GITHUB_API_TOKEN=$(pass github/homebrew)
+export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
+#export GITHUB_ACCESS_TOKEN=$(pass github/access)
+#export HOMEBREW_GITHUB_API_TOKEN=$(pass github/homebrew)
 
 # Editor
 export EDITOR=$(which nvim)
