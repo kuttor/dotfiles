@@ -22,5 +22,3 @@ setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
 unsetopt FLOW_CONTROL           # Disable start/stop characters in shell editor
 unsetopt HUP                    # Dont kill jobs on shell exit
 
-
-

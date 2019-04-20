@@ -29,7 +29,7 @@ brew "curl"
 brew "ed"
 brew "exa"
 brew "fd"
-brew "fontconfig
+brew "fontconfig"
 brew "fontforge"
 brew "fortune"
 brew "fzf"

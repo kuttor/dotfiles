@@ -41,8 +41,10 @@ fpath=(
 
 # System Paths
 path=(
-  ${HOME}/Library/Python/3.7/bin(N-/)
-  ${BREW_HOME}/lib/python{2.7,3.7}/site-packages(N-/)
+  # ${HOME}/Library/Python/2.7/bin(N-/)
+  # ${HOME}/Library/Python/3.7/bin(N-/)
+  /usr/local/lib/python3.7/site-packages
+  /usr/local/lib/python2.7/site-packages
   ${BREW_HOME}/opt/gems/bin(N-/)
   ${BREW_HOME}/{bin,sbin}(N-/)
   /usr/{bin,sbin}(N-/)

@@ -18,9 +18,6 @@ defaults write com.apple.dock scroll-to-open -bool TRUE; killall Dock
 # Hidden suck animation instead of genie
 defaults write com.apple.dock mineffect suck; killall Dock
 
-# Set highlight color to green
-defaults write NSGlobalDomain AppleHighlightColor -string "0.764700 0.976500 0.568600"
-
 # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 
