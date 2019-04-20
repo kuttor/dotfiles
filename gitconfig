@@ -16,8 +16,8 @@
   difftool = true
 
 [user]
-  name = "Andrew Kuttor"
-  email = "andrew.kuttor@gmail.com"
+	name = Andrew Kuttor
+	email = andrew.kuttor@cis.ntt.com
 
 [pull]
   rebase = true

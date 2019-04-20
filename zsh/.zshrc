@@ -19,7 +19,6 @@ source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"
 source "$ZDOTDIR/options.zsh"
 source "$ZDOTDIR/zplug.zsh"
-source "$HOME/.iterm2_shell_integration.zsh"
 dedupe_path # Remove any duplicate paths
 
  # UBuntu-like command suggestions for Brew`

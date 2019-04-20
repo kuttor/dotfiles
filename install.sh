@@ -1,20 +1,34 @@
 #!/bin/bash
-# -----------------------------------------------------------------------------
+
 # file: install.sh
 # info: creates necessary links/files to setup dotfiles
+
 # -----------------------------------------------------------------------------
 
-ln -s "/Users/$(whoami)/.dotfiles/gitconfig" "/Users/$(whoami)/.gitconfig"
-ln -s "/Users/$(whoami)/.dotfiles/gitignore" "/Users/$(whoami)/.gitignore"
-ln -s "/Users/$(whoami)/.dotfiles/vimrc.local" "/Users/$(whoami)/.vimrc.local"
-
-# Setup TMUX
-mkdir "$HOME/.config/tmux"
-ln -s "/Users/$(whoami)/.dotfiles/tmux/tmux.conf" "/Users/$(whoami)/.config/tmux/tmux.config"
-
-# Download Jenkins-clii
-#jenkings_staging_address=172.16.167.190:8443
-#http://<jenkings_staging_address>/jnlpJars/jenkins-cli.jar 
+ln -fs "$HOME/.dotfiles/gitconfig"    "$HOME/.gitconfig"
+ln -fs "$HOME/.dotfiles/gitignore"    "$HOME/.gitignore"
+ln -fs "$HOME/.dotfiles/editorconfig" "$HOME/.editorconfig"
 
 touch "$HOME/.hushlogin"
 
+# Install Homebrew
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew bundle $HOME/.dotfiles/BrewFile
+
+# Set ZSH
+chsh -s /usr/local/bin/zsh
+dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
+
+# Reset Security changes
+chown -R $(whoami):admin /usr/local
+
+# Install Font
+wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Bold.ttf /Users/akuttor/Library/Font/
+wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Italic.ttf /Users/akuttor/Library/Font/
+wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Bold.ttf /Users/akuttor/Library/Font/
+
+# Install Zplug
+curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+
+# Custom ZSH Config
+ln -fs $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc
