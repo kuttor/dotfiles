@@ -12,6 +12,23 @@ CONFIG="$HOME/.config"
 ZPLUG_HOME="$HOME/.zplug"
 ZFUNCTIONS="$DOTFILES/functions"
 
+# Set Opts
+setopt   AUTO_CD                # Change to a directory without typing cd
+setopt   CDABLE_VARS            # Change directory to a path stored in a variable
+setopt   CHASE_LINKS            # resolve links to their location
+setopt   HASH_CMDS              # dont search for commands
+setopt   HASH_LIST_ALL          # more accurate correction
+setopt   INTERACTIVE_COMMENTS   # Allow comments in readlin
+setopt   LIST_ROWS_FIRST        # rows are way better
+setopt   LIST_TYPES             # Append type chars to files
+setopt   MULTIOS                # Write to multiple descriptors
+setopt   NOTIFY                 # Report status of background jobs immediately
+setopt   PROMPT_SUBST           # Enable param/arithmetic expansion, cmd substitution
+setopt   RC_QUOTES              # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'
+setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
+setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
+unsetopt FLOW_CONTROL           # Disable start/stop characters in shell editor
+
 # Colors
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=52;30'
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
@@ -101,3 +118,70 @@ bindkey "^[[H"    beginning-of-line
 bindkey "^[[F"    end-of-line
 bindkey "^[[1;2H" backward-word
 bindkey "^[[1;2F" forward-word
+
+
+# -----------------------------------------------------------------------------
+
+source $(brew --prefix)/opt/fzf/shell/completion.zsh
+
+FZF_DEFAULT_OPTS="
+  --extended-exact
+  --height 100%
+  --cycle
+  --reverse"
+
+FZF_DEFAULT_OPTS+="
+  --bind pgup:preview-up
+  --bind pgdn:preview-down
+  --bind ctrl-f:jump
+  --bind ctrl-k:kill-line
+  --bind ctrl-p:toggle-preview
+  --bind ctrl-a:select-all"
+
+#FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# fzf + ag configuration
+if _has fzf && _has ag
+then
+    export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_DEFAULT_OPTS='
+    --color fg:242,bg:236,hl:65
+    --color fg+:15,bg+:239,hl+:108
+    --color info:108,prompt:109
+    --color spinner:108,pointer:168,marker:168
+    '
+fi
+
+# fzf + ripgrep configuration
+if _has fzf && _has rg
+then
+    export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!{.git}" 2>/dev/null'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_DEFAULT_OPTS=''
+fi
+
+# Add <TAB> completion handlers for fzf *after* fzf is loaded
+_fzf_complete_z() {
+    _fzf_complete '--multi --reverse' "$@" < <(raw_z)
+}
+
+# Use rg to generate file completions
+_fzf_compgen_path() {
+    rg --files "$1" | with-dir "$1"
+}
+
+# Use rg to generate the list for directory completion
+_fzf_compgen_dir() {
+    rg --files "$1" | only-dir "$1"
+
+# z.lua
+# -----------------------------------------------------------------------------
+#eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
+_ZL_CMD="y" # command alias
+_ZL_DATA="$CONFIG/zdatafile.lua" # datafile location
+_ZL_ECHO=1 # Echo dirname after CD
+_ZL_MATCH_MODE=1 # Enable enhanced master
+
