@@ -1,7 +1,7 @@
 #!/usr/local/bin/zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0
 
-# file: .zshrc
+# file: zshrc
 # info: main configuration file
 # name: andrew kuttor
 # mail: andrew.kuttor@gmail.com
