@@ -18,8 +18,3 @@ source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"
 source "$ZDOTDIR/zplug.zsh"
 dedupe_path # Remove any duplicate paths
-
- # UBuntu-like command suggestions for Brew`
-if brew command command-not-found-init > /dev/null 2>&1; then
-    eval "$(brew command-not-found-init)"
-fi

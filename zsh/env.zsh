@@ -52,6 +52,9 @@ export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export _Z_DATA="$CONFIG/z-data"
 
+# Command-Not-Found
+eval "$(brew command-not-found-init)"
+
 # Homebrew
 export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
 
