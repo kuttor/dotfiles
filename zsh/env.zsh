@@ -33,12 +33,33 @@ unsetopt FLOW_CONTROL           # Disable start/stop characters editor
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=52;30'
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
 export CLICOLOR=1
+source $(brew --prefix)/etc/grc.bashrc
 
-# GRC colorizes nifty unix tools all over the place
-if (( $+commands[grc] )) && (( $+commands[brew] ))
-then
-  source `brew --prefix`/etc/grc.bashrc
-fi
+# Terminal
+export REPORTTIME=2
+export TIMEFMT="%U user %S system %P cpu %*Es total"
+export KEYTIMEOUT=1
+export TERMINAL_DARK=1
+export ITERM_24BIT=1
+export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export _Z_DATA="$CONFIG/z-data"
+
+# Homebrew
+export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
+
+# Editor
+export EDITOR=$(which nvim)
+export VISUAL="$EDITOR"
+
+# Pager
+export PAGER=$(which bat)
+export MANPAGER=$PAGER
+export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
+
+# -----------------------------------------------------------------------------
+# Paths
+# -----------------------------------------------------------------------------
 
 # Automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
@@ -58,10 +79,8 @@ fpath=(
 
 # System Paths
 path=(
-  # ${HOME}/Library/Python/2.7/bin(N-/)
-  # ${HOME}/Library/Python/3.7/bin(N-/)
-  /usr/local/lib/python3.7/site-packages
-  /usr/local/lib/python2.7/site-packages
+  ${BREW_HOME}/lib/python3.7/site-packages
+  ${BREW_HOME}/lib/python2.7/site-packages
   ${BREW_HOME}/opt/gems/bin(N-/)
   ${BREW_HOME}/{bin,sbin}(N-/)
   /usr/{bin,sbin}(N-/)
@@ -69,34 +88,9 @@ path=(
   ${path}
 )
 
-# Terminal
-export REPORTTIME=2
-export TIMEFMT="%U user %S system %P cpu %*Es total"
-export KEYTIMEOUT=1
-export TERMINAL_DARK=1
-export ITERM_24BIT=1
-export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export _Z_DATA="$CONFIG/z-data"
-
-# Homebrew
-export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
-#export GITHUB_ACCESS_TOKEN=$(pass github/access)
-#export HOMEBREW_GITHUB_API_TOKEN=$(pass github/homebrew)
-
-# Editor
-export EDITOR=$(which nvim)
-export VISUAL="$EDITOR"
-
-# Pager
-export PAGER=$(which bat)
-export MANPAGER=$PAGER
-export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
-
-# Tree
-command -v tree > /dev/null &&\
-  export FZF_ALT_C_OPTS="$FZF_DEFAULT_OPTS --preview 'tree -C {} |\
-  head -$LINES'"
+# -----------------------------------------------------------------------------
+# Keybinds
+# -----------------------------------------------------------------------------
 
 # Emacs
 bindkey -e
@@ -119,28 +113,9 @@ bindkey "^[[F"    end-of-line
 bindkey "^[[1;2H" backward-word
 bindkey "^[[1;2F" forward-word
 
-
 # -----------------------------------------------------------------------------
-
-source $(brew --prefix)/opt/fzf/shell/completion.zsh
-
-FZF_DEFAULT_OPTS="
-  --extended-exact
-  --cycle
-  --reverse"
-
-FZF_DEFAULT_OPTS+="
-  --bind pgup:preview-up
-  --bind pgdn:preview-down
-  --bind ctrl-f:jump
-  --bind ctrl-k:kill-line
-  --bind ctrl-p:toggle-preview
-  --bind ctrl-a:select-all"
-
-FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+# Fzf
+# -----------------------------------------------------------------------------
 
 # Add <TAB> completion handlers for fzf *after* fzf is loaded
 _fzf_complete_z() { _fzf_complete '--multi --reverse' "$@" < <(raw_z) }
