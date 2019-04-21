@@ -35,6 +35,7 @@ alias reload="exec $SHELL -l"
 alias set_bitbucket_user="git config user.name 'Andy Kuttor' && git config user.email 'akuttor@cis.ntt.com'"
 alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 alias sudo="sudo "
+alias zmv="noglob zmv -W"
 alias top-ten="print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10"
 alias vim="nvim"
 alias vimswap_clean="rm -rf $VIM_SWAP/*"

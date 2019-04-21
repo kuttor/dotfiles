@@ -35,6 +35,13 @@ export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
 export CLICOLOR=1
 source $(brew --prefix)/etc/grc.bashrc
 
+# z.lua
+#eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
+_ZL_CMD="y"                      # command alias
+_ZL_DATA="$CONFIG/zdatafile.lua" # datafile location
+_ZL_ECHO=1                       # Echo dirname after CD
+_ZL_MATCH_MODE=1                 # Enable enhanced master
+
 # Terminal
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
@@ -95,19 +102,32 @@ path=(
 # Emacs
 bindkey -e
 
-# Readline $EDITOR
+# Quote pasted URLs
+autoload -Uz run-help-git
+autoload -Uz run-help-ip
+autoload -Uz run-help-openssl
+autoload -Uz run-help-p4
+autoload -Uz run-help-sudo
+autoload -Uz run-help-svk
+autoload -Uz run-help-svn
+autoload -U url-quote-magic
+autoload -U select-word-style
 autoload -U edit-command-line
+autoload -Uz colors && colors
+autoload -U parseopts
+autoload -U zargs
+autoload -U zcalc
+autoload -U zed
+autoload -U zmv
+
+zle -N select-word-style bash
 zle -N edit-command-line
-bindkey "^E" edit-command-line
-
-# Space does history expansion
-bindkey " " magic-space
-
-# Expand waiting to complete dots
 zle -N expand-or-complete-with-dots
-bindkey "^I" expand-or-complete-with-dots
+zle -N self-insert url-quote-magic
 
-# FN + Arrow keys
+bindkey "^E"      edit-command-line
+bindkey "^I"      expand-or-complete-with-dots
+bindkey " "       magic-space
 bindkey "^[[H"    beginning-of-line
 bindkey "^[[F"    end-of-line
 bindkey "^[[1;2H" backward-word
@@ -124,12 +144,4 @@ _fzf_complete_z() { _fzf_complete '--multi --reverse' "$@" < <(raw_z) }
 _fzf_compgen_path() { rg --files "$1" | with-dir "$1" }
 
 # Use rg to generate the list for directory completion
-_fzf_compgen_dir() { rg --files "$1" | only-dir "$1"i }
-
-# z.lua
-# -----------------------------------------------------------------------------
-#eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
-_ZL_CMD="y"                      # command alias
-_ZL_DATA="$CONFIG/zdatafile.lua" # datafile location
-_ZL_ECHO=1                       # Echo dirname after CD
-_ZL_MATCH_MODE=1                 # Enable enhanced master
+_fzf_compgen_dir() { rg --files "$1" | only-dir "$1" }
