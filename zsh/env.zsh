@@ -13,8 +13,8 @@ ZPLUG_HOME="$HOME/.zplug"
 ZFUNCTIONS="$DOTFILES/functions"
 
 # Set Opts
-setopt   AUTO_CD                # Change to a directory without typing cd
-setopt   CDABLE_VARS            # Change directory to a path stored in a variable
+setopt   AUTO_CD                # Navigate without typing cd
+setopt   CDABLE_VARS            # path stored in a variable
 setopt   CHASE_LINKS            # resolve links to their location
 setopt   HASH_CMDS              # dont search for commands
 setopt   HASH_LIST_ALL          # more accurate correction
@@ -22,12 +22,12 @@ setopt   INTERACTIVE_COMMENTS   # Allow comments in readlin
 setopt   LIST_ROWS_FIRST        # rows are way better
 setopt   LIST_TYPES             # Append type chars to files
 setopt   MULTIOS                # Write to multiple descriptors
-setopt   NOTIFY                 # Report status of background jobs immediately
-setopt   PROMPT_SUBST           # Enable param/arithmetic expansion, cmd substitution
-setopt   RC_QUOTES              # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'
+setopt   NOTIFY                 # Report status of bkground jobs right now
+setopt   PROMPT_SUBST           # Enable param and arithmetic substitution
+setopt   RC_QUOTES              # Allow 'Henry''s Garage'
 setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
 setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
-unsetopt FLOW_CONTROL           # Disable start/stop characters in shell editor
+unsetopt FLOW_CONTROL           # Disable start/stop characters editor
 
 # Colors
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=52;30'
