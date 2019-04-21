@@ -108,6 +108,28 @@ if zplug check "zsh-users/zsh-autosuggestions"; then
     ZSH_AUTOSUGGEST_USE_ASYNC=1
 fi
 
+if zplug check "junegunn/fzf"; then
+    source $(brew --prefix)/opt/fzf/shell/completion.zsh
+
+    FZF_DEFAULT_OPTS="
+        --extended-exact
+        --cycle
+        --reverse"
+
+    FZF_DEFAULT_OPTS+="
+       --bind pgup:preview-up
+       --bind pgdn:preview-down
+       --bind ctrl-f:jump
+       --bind ctrl-k:kill-line
+       --bind ctrl-p:toggle-preview
+       --bind ctrl-a:select-all"
+
+    FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
+
 #if zplug check "zsh-users/zsh-syntax-highlighting"; then
 #    #ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=red'
 #    ZSH_HIGHLIGHT_STYLES[globbing]='fg=green'
@@ -116,24 +138,6 @@ fi
 #    ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=magenta'
 #fi
 
-
-
-# -----------------------------------------------------------------------------
-
-# Load up the fuckin' goods.
-# zplug install || ret=1
-# zplug load --verbose || ret=1
-
 zplug check --verbose || zplug install
 zplug load
 
-# ret=0
-# for test in "$tests[@]"
-# do
-#     eval "$test"
-#     if (( $status != 0 )); then
-#         printf "$fg[red]FAIL: $test$reset_color\n" >&2
-#         ret=1
-#     fi
-# done
-# exit $ret`
