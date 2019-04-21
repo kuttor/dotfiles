@@ -10,7 +10,6 @@ export ZDOTDIR="${${(%):-%N}:A:h}"
 limit coredumpsize 0
 skip_global_compinit=1
 stty -ixon -ixoff
-_comp_options+=(globdots)
 
 # Sources
 source "$ZDOTDIR/env.zsh"

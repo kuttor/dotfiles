@@ -33,7 +33,7 @@ unsetopt FLOW_CONTROL           # Disable start/stop characters editor
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=52;30'
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
 export CLICOLOR=1
-source $(brew --prefix)/etc/grc.bashrc
+source $BREW_HOME/etc/grc.bashrc
 
 # z.lua
 #eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"

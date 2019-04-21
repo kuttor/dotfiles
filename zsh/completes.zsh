@@ -81,3 +81,6 @@ zstyle ':filter-select:highlight' matched fg=red
 zstyle ':filter-select' max-lines 10
 zstyle ':filter-select' rotate-list yes
 zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
+
+# Add . hidden files to menu completion
+_comp_options+=(globdots)
