@@ -17,7 +17,6 @@ source "$ZDOTDIR/env.zsh"
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"
-source "$ZDOTDIR/options.zsh"
 source "$ZDOTDIR/zplug.zsh"
 dedupe_path # Remove any duplicate paths
 
