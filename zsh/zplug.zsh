@@ -109,7 +109,7 @@ if zplug check "zsh-users/zsh-autosuggestions"; then
 fi
 
 if zplug check "junegunn/fzf"; then
-    source $(brew --prefix)/opt/fzf/shell/completion.zsh
+    #source $(brew --prefix)/opt/fzf/shell/completion.zsh
 
     FZF_DEFAULT_OPTS="
         --extended-exact

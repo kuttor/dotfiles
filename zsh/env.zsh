@@ -6,11 +6,13 @@
 
 # VIP Folders
 DOTFILES="$HOME/.dotfiles"
-BREW_HOME="$(brew --prefix)"
 CACHE="$HOME/.cache"
 CONFIG="$HOME/.config"
 ZPLUG_HOME="$HOME/.zplug"
 ZFUNCTIONS="$DOTFILES/functions"
+
+# Source NIX
+source /home/andrewkuttor/.nix-profile/etc/profile.d/nix.sh
 
 # Set Opts
 setopt   AUTO_CD                # Navigate without typing cd
@@ -33,7 +35,7 @@ unsetopt FLOW_CONTROL           # Disable start/stop characters editor
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=52;30'
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
 export CLICOLOR=1
-source $BREW_HOME/etc/grc.bashrc
+#source $BREW_HOME/etc/grc.bashrc
 
 # z.lua
 #eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
@@ -50,12 +52,6 @@ export ITERM_24BIT=1
 export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export _Z_DATA="$CONFIG/z-data"
-
-# Command-Not-Found
-eval "$(brew command-not-found-init)"
-
-# Homebrew
-export HOMEBREW_GITHUB_API_TOKEN=aed27538de34dd4e7df7d5672c538f693f1109a0
 
 # Editor
 export EDITOR=$(which nvim)
@@ -74,24 +70,26 @@ export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
 # Autoload all function files
-for f in $ZFUNCTIONS/*; do
-  unhash -f $f 2>/dev/null
-  autoload +X $f
-done
+#/for f in $ZFUNCTIONS/*; do
+#  unhash -f $f 2>/dev/null
+#  autoload +X $f
+#done
+
+autoload $(ls $ZFUNCTIONS)  
 
 # Function Paths
 fpath=(
-  ${BREW_HOME}/share/zsh-completions
+  #/usr/share/zsh-completions
   ${DOTFILES}/functions
   ${fpath}
 )
 
 # System Paths
 path=(
-  ${BREW_HOME}/lib/python3.7/site-packages
-  ${BREW_HOME}/lib/python2.7/site-packages
-  ${BREW_HOME}/opt/gems/bin(N-/)
-  ${BREW_HOME}/{bin,sbin}(N-/)
+  /usr/lib/python3.7/site-packages
+  /usr/lib/python2.7/site-packages
+  /usr/opt/gems/bin(N-/)
+  /usr/{bin,sbin}(N-/)
   /usr/{bin,sbin}(N-/)
   /{bin,sbin}(N-/)
   ${path}

@@ -6,6 +6,10 @@
 # name: andrew kuttor
 # mail: andrew.kuttor@gmail.com
 
+TRAPWINCH() {
+  zle && { zle reset-prompt; zle -R }
+}
+
 export ZDOTDIR="${${(%):-%N}:A:h}"
 limit coredumpsize 0
 skip_global_compinit=1
