@@ -1,22 +1,31 @@
-#!/bin/bash
-# -----------------------------------------------------------------------------
-# file: install.sh
-# info: creates necessary links/files to setup dotfiles
 # -----------------------------------------------------------------------------
 
-ln -s "/home/$(whoami)/.dotfiles/gitconfig" "/home/$(whoami)/.gitconfig"
-ln -s "/home/$(whoami)/.dotfiles/gitignore" "/home/$(whoami)/.gitignore"
+# Vars
+FONTS=/usr/share/fonts
 
-# Setup TMUX
-mkdir "$HOME/.config/tmux"
-ln -s "/home/$(whoami)/.dotfiles/tmux/tmux.conf" "/home/$(whoami)/.config/tmux/tmux.config"
-
-# Coding
-mkdir "$HOME/Code"
-
-# Download Jenkins-clii
-#jenkings_staging_address=172.16.167.190:8443
-#http://<jenkings_staging_address>/jnlpJars/jenkins-cli.jar 
+ln -fs "$HOME/.dotfiles/gitconfig"    "$HOME/.gitconfig"
+ln -fs "$HOME/.dotfiles/gitignore"    "$HOME/.gitignore"
+ln -fs "$HOME/.dotfiles/editorconfig" "$HOME/.editorconfig"
 
 touch "$HOME/.hushlogin"
 
+# Set ZSH
+chsh -s `which zsh`
+dscl . -create /Users/$USER UserShell `which zsh`
+
+# Reset Security changes
+chown -R $(whoami):admin /usr/local
+
+# Install Font
+wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Bold.ttf $FONTS
+wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Italic.ttf $FONTS
+wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Bold.ttf $FONTS
+
+# Install fzy
+curl -s https://packagecloud.io/install/repositories/jhawthorn/fzy/script.deb.sh | sudo bash
+
+# Install Zplug
+curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+
+# Custom ZSH Config
+ln -fs $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc

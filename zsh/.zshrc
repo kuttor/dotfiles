@@ -20,14 +20,6 @@ _comp_options+=(globdots)
   [[ -s "$zcd" && (! -s "${zcd}.zwc" || "$zcd" -nt "${zcd}.zwc") ]] && zcompile "$zcd"
 } &!
 
-# OS describing logic
-[[ "$(uname -s)" == "Darwin" ]] &&\
-    echo "You're using OSX";\
-    source "$HOME/.iterm2_shell_integration.zsh";\
-
-    # Ubuntu's Command-Not-Found functionality
-    [ brew command command-not-found-init >/dev/null 2>&1 ] && eval "$(brew command-not-found-init)"
-
 # -----------------------------------------------------------------------------
 # Sources
 # -----------------------------------------------------------------------------

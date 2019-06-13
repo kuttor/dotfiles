@@ -13,13 +13,36 @@ fpath=(
   ${fpath}
 )
 
-# Autoload all function files
-if [[ -d $ZSH_FUNCTIONS ]]; then
-   for func in $ZSH_FUNCTIONS/*; do
-      unhash -f $func 2>/dev/null
-      autoload +X $func
-   done
-fi
+autoload ak
+autoload bd
+autoload clean
+autoload color
+autoload dedupe_path
+autoload do
+autoload download
+autoload envgrep
+autoload expand-or-complete-with-dots
+autoload functions.zsh
+autoload _fzf_compgen_dir
+autoload _fzf_compgen_path
+autoload globalias
+autoload _has
+autoload _is
+autoload lastpass
+autoload line
+autoload lpass
+autoload pjson
+autoload rule
+autoload showoptions
+autoload _try
+
+## Autoload all function files
+#if [[ -d $ZSH_FUNCTIONS ]]; then
+#   for func in $ZSH_FUNCTIONS/*; do
+#      unhash -f $func 2>/dev/null
+#      autoload +X $func
+#   done
+#fi
 
 # SYSTEM PATHS
 # ==============================================================================
