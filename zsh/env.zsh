@@ -86,11 +86,11 @@ fpath=(
 
 # System Paths
 path=(
-  /usr/lib/python3.7/site-packages
-  /usr/lib/python2.7/site-packages
+	/Users/andrew.kuttor/Library/Python/2.7/lib/python/site-packages
+	/Users/andrew.kuttor/Library/Python/3.7/lib/python/site-packages
   /usr/opt/gems/bin(N-/)
   /usr/{bin,sbin}(N-/)
-  /usr/{bin,sbin}(N-/)
+  /usr/local/{bin,sbin}(N-/)
   /{bin,sbin}(N-/)
   ${path}
 )
