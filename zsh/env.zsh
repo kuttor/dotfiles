@@ -11,9 +11,6 @@ CONFIG="$HOME/.config"
 ZPLUG_HOME="$HOME/.zplug"
 ZFUNCTIONS="$DOTFILES/functions"
 
-# Source NIX
-source /home/andrewkuttor/.nix-profile/etc/profile.d/nix.sh
-
 # Set Opts
 setopt   AUTO_CD                # Navigate without typing cd
 setopt   CDABLE_VARS            # path stored in a variable
@@ -86,8 +83,7 @@ fpath=(
 
 # System Paths
 path=(
-	/Users/andrew.kuttor/Library/Python/2.7/lib/python/site-packages
-	/Users/andrew.kuttor/Library/Python/3.7/lib/python/site-packages
+/Users/andrew.kuttor/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
   /usr/opt/gems/bin(N-/)
   /usr/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
