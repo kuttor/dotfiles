@@ -13,12 +13,12 @@ TRAPWINCH() {
 export ZDOTDIR="${${(%):-%N}:A:h}"
 limit coredumpsize 0
 skip_global_compinit=1
-stty -ixon -ixoff
+#stty -ixon -ixoff
 
 # Sources
 source "$ZDOTDIR/env.zsh"
 source "$ZDOTDIR/aliases.zsh"
-source "$ZDOTDIR/completes.zsh"
+#source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"
 source "$ZDOTDIR/zplug.zsh"
 dedupe_path # Remove any duplicate paths

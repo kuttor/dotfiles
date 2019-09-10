@@ -72,7 +72,7 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 #  autoload +X $f
 #done
 
-autoload $(ls $ZFUNCTIONS)  
+autoload $(ls $ZFUNCTIONS)
 
 # Function Paths
 fpath=(
@@ -83,7 +83,7 @@ fpath=(
 
 # System Paths
 path=(
-/Users/andrew.kuttor/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
+  /Users/${USER}/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
   /usr/opt/gems/bin(N-/)
   /usr/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)

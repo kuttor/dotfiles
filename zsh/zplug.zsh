@@ -49,11 +49,9 @@ zplug "plugins/git", from:oh-my-zsh,             if:"(( $+commands[git] ))"
 zplug "plugins/gitignore", from:oh-my-zsh,        if:"(( $+commands[git] ))"
 zplug "plugins/git-prompt", from:oh-my-zsh,       if:"(( $+commands[git] ))"
 zplug "plugins/nmap", from:oh-my-zsh,             if:"(( $+commands[nmap] ))"
-zplug "plugins/pyenv", from:oh-my-zsh,            if:"(( $+commands[pyenv] ))"
 zplug "plugins/pylint", from:oh-my-zsh,           if:"(( $+commands[pylint] ))"
 zplug "plugins/python", from:oh-my-zsh,           if:"(( $+commands[python] ))"
 zplug "plugins/sudo", from:oh-my-zsh,             if:"(( $+commands[sudo] ))"
-zplug "plugins/thefuck", from:oh-my-zsh,          if:"(( $+commands[thefuck] ))"
 
 # zsh users
 zplug "zsh-users/zsh-completions", from:github
