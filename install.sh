@@ -27,4 +27,4 @@ wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-B
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 
 # Custom ZSH Config
-ln -fs $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc
+ln -fs $HOME/.dotfiles/zsh/zshrc.zsh $HOME/.zshrc
