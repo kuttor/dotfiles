@@ -10,7 +10,8 @@ TRAPWINCH() {
   zle && { zle reset-prompt; zle -R }
 }
 
-export ZDOTDIR="${${(%):-%N}:A:h}"
+#export ZDOTDIR="${${(%):-%N}:A:h}"
+export ZDOTDIR="$HOME/.dotfiles/zsh"
 limit coredumpsize 0
 skip_global_compinit=1
 #stty -ixon -ixoff
@@ -18,7 +19,7 @@ skip_global_compinit=1
 # Sources
 source "$ZDOTDIR/env.zsh"
 source "$ZDOTDIR/aliases.zsh"
-#source "$ZDOTDIR/completes.zsh"
+source "$ZDOTDIR/completes.zsh"
 source "$ZDOTDIR/history.zsh"
 source "$ZDOTDIR/zplug.zsh"
 dedupe_path # Remove any duplicate paths

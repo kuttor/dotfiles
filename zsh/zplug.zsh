@@ -14,7 +14,6 @@ source "$HOME/.zplug/init.zsh"
 
 zplug "mafredri/zsh-async",  from:github
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
-
 zplug "djui/alias-tips"
 zplug "tysonwolker/iterm-tab-colors", from:github
 zplug "zpm-zsh/tmux", from:github
@@ -30,14 +29,10 @@ zplug "rapgenic/zsh-git-complete-urls", from:github
 zplug "peco/peco", from:gh-r, as:command
 zplug "zpm-zsh/colors", from:github
 zplug "rupa/z", from:github, use:z.sh
-zplug "skywind3000/z.lua", from:github
 zplug "junegunn/fzf", from:github, as:command, hook-build:"./install --bin", use:"bin/{fzf-tmux,fzf}"
 zplug "andrewferrier/fzf-z", from:github
 zplug "aperezdc/zsh-fzy", from:github
-#zplug "jimeh/zsh-peco-history", from:github, defer:2, hook-build:'ZSH_PECO_HISTORY_DEDUP=1'
 zplug "ytet5uy4/fzf-widgets", from:github, hook-load:'FZF_WIDGET_TMUX=1'
-zplug "timothyrowan/betterbrew-zsh-plugin", from:github
-zplug "oldratlee/hacker-quotes", from:github
 # From Oh-My-ZSH
 zplug "lib/clipboard", from:oh-my-zsh,            if:"[[ $OSTYPE == *darwin* ]]"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
@@ -45,7 +40,7 @@ zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "plugins/zsh_reload", from:oh-my-zsh
 zplug "plugins/completion", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
-zplug "plugins/git", from:oh-my-zsh,             if:"(( $+commands[git] ))"
+zplug "plugins/git", from:oh-my-zsh,              if:"(( $+commands[git] ))"
 zplug "plugins/gitignore", from:oh-my-zsh,        if:"(( $+commands[git] ))"
 zplug "plugins/git-prompt", from:oh-my-zsh,       if:"(( $+commands[git] ))"
 zplug "plugins/nmap", from:oh-my-zsh,             if:"(( $+commands[nmap] ))"
@@ -64,7 +59,7 @@ zplug "zsh-users/zsh-history-substring-search", from:github
 # History EnhanCD
 if zplug check "b4b4r07/zsh-history-enhanced"; then
     ZSH_HISTORY_FILE="$HISTFILE"
-    ZSH_HISTORY_FILTER="fzf:peco:percol"
+    ZSH_HISTORY_FILTER="fzf"
     ZSH_HISTORY_KEYBIND_GET_BY_DIR="^r"
     ZSH_HISTORY_KEYBIND_GET_ALL="^r^a"
 fi
