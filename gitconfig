@@ -1,26 +1,42 @@
 # vim: syntax=gitconfig
-# -----------------------------------------------------------------------------
 # File: gitconfig
-# -----------------------------------------------------------------------------
+
+[alias]
+  check = "status --short --branch"
+  tags = "tag --list"
+  users = "shortlog --summary -"
+  branches = "branch --all"
+  aliases = "!git config --get-regexp alias | cut -c 7-"
+  remotes = "remote -v"
+  uncommit = "reset --soft HEAD~1"
+
+[user]
+  name = "Andrew Kuttor"
+  email = "andrew.kuttor@gmail.com"
+
+[branch]
+  autosetupmerge = true
+
+[merge]
+  tool = vscode
+
+[mergetool "vscode"]
+  cmd = code --wait $MERGED
 
 [diff]
-  tool = icdiff
+  tool = vscode
+  renames = copies
+  mnemonicprefix = true
 
-[difftool]
-  prompt = false
-
-[difftool "icdiff"]
-  cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+[difftool "vscode"]
+  cmd = code --wait --diff $LOCAL $REMOTE
 
 [pager]
   difftool = true
 
-[user]
-	name = Andrew Kuttor
-	email = andrew.kuttor@cis.ntt.com
-
-[pull]
-  rebase = true
+[rerere]
+  enabled = true
+  autoupdate = 1
 
 [advice]
   pushNonFastForward = false
@@ -30,8 +46,8 @@
   whitespace = fix
 
 [core]
-  editor = vim
-  whitespace = fix,space-before-tab,-indent-with-non-tab,trailing-space
+  editor = nvim
+  whitespace = trailing-space,space-before-tab
   excludesfile = $HOME/.gitignore
   attributesfile = $HOME/.gitattributes
   trustctime = false
@@ -40,22 +56,6 @@
 [help]
   autocorrect = 1
 
-[diff]
-  renames = copies
-  mnemonicprefix = true
-
-[push]
-  default = matching
-
-[merge]
-  stat = true
-  merge = true
-	tool = code-insiders
-
-[rerere]
-  enabled = true
-  autoupdate = 1
-
 [github]
   user = kuttor
 
@@ -63,38 +63,14 @@
   helper = osxkeychain
 
 [color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  pager = true
+  status = auto
   ui = auto
 
 [web]
   browser = google-chrome
 
-# -----------------------------------------------------------------------------
-# Aliases
-# -----------------------------------------------------------------------------
 
-[alias]
-  br = branch
-  do = "!f() { git add $1 && git commit -m \"$2\" && git push; }; f"
-  st = status -sb
-  tags = tag -l
-  up = pull
-  who = shortlog -s -
-  co = checkout
-  added = difftool --cached
-  branches = branch -a
-  aliases = config --get-regexp alias
-  create = !git init && git add -a && git commit -m \"Initial Commit\"
-  remotes = remote -v
-  showtool = "!f() { git difftool ${1:-HEAD}^ ${1:-HEAD};}; f"
-  attic = "!f() {git log --raw --no-renames --date=short --format="%h %cd" "$@" |\
-    awk '/^[0-9a-f]/ { commit=$1; date=$2 } /^:/ &&\
-    $5 == "D" { print date, commit "^:" $6 }' |\
-    git -p column }"
-  # instead of URL use username/repo
-  clone-github = "!git clone https://github.com/${1}.git"
-  clone-bitbucket ="!git clone ssh://git@bitbucket.mcp-services.net:7999/${1}.git"
-
-  # submodules
-  submodule-add = !sh -c 'git submodule add ssh://git@bitbucket.mcp-services.net:7999/ar/$1.git $1' -
-  submodule-update = submodule update --init --recursive
-  submodule-pull = !git submodule foreach git pull--tags origin master
