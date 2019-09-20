@@ -11,9 +11,6 @@ CONFIG="$HOME/.config"
 ZPLUG_HOME="$HOME/.zplug"
 ZFUNCTIONS="$DOTFILES/functions"
 
-# Source NIX
-source /home/andrewkuttor/.nix-profile/etc/profile.d/nix.sh
-
 # Set Opts
 setopt   AUTO_CD                # Navigate without typing cd
 setopt   CDABLE_VARS            # path stored in a variable
@@ -36,13 +33,6 @@ export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
 export CLICOLOR=1
 #source $BREW_HOME/etc/grc.bashrc
-
-# z.lua
-#eval "$(lua $ZPLUG_REPOS/skywind3000/z.lua/z.lua --init zsh)"
-_ZL_CMD="y"                      # command alias
-_ZL_DATA="$CONFIG/zdatafile.lua" # datafile location
-_ZL_ECHO=1                       # Echo dirname after CD
-_ZL_MATCH_MODE=1                 # Enable enhanced master
 
 # Terminal
 export REPORTTIME=2
@@ -75,7 +65,7 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 #  autoload +X $f
 #done
 
-autoload $(ls $ZFUNCTIONS)  
+autoload $(ls $ZFUNCTIONS)
 
 # Function Paths
 fpath=(
@@ -86,8 +76,7 @@ fpath=(
 
 # System Paths
 path=(
-	/Users/andrew.kuttor/Library/Python/2.7/lib/python/site-packages
-	/Users/andrew.kuttor/Library/Python/3.7/lib/python/site-packages
+  /Users/${USER}/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
   /usr/opt/gems/bin(N-/)
   /usr/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)

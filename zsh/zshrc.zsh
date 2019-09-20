@@ -10,10 +10,11 @@ TRAPWINCH() {
   zle && { zle reset-prompt; zle -R }
 }
 
-export ZDOTDIR="${${(%):-%N}:A:h}"
+#export ZDOTDIR="${${(%):-%N}:A:h}"
+export ZDOTDIR="$HOME/.dotfiles/zsh"
 limit coredumpsize 0
 skip_global_compinit=1
-stty -ixon -ixoff
+#stty -ixon -ixoff
 
 # Sources
 source "$ZDOTDIR/env.zsh"
