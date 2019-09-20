@@ -14,6 +14,9 @@
   name = "Andrew Kuttor"
   email = "andrew.kuttor@gmail.com"
 
+[github]
+  user = kuttor
+
 [branch]
   autosetupmerge = true
 
@@ -55,9 +58,6 @@
 
 [help]
   autocorrect = 1
-
-[github]
-  user = kuttor
 
 [color]
   branch = auto
