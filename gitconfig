@@ -59,9 +59,6 @@
 [github]
   user = kuttor
 
-[credential]
-  helper = osxkeychain
-
 [color]
   branch = auto
   diff = auto
