@@ -21,18 +21,22 @@ setopt   extended_glob          # include #, ~, and ^ in expansion
 setopt   path_dirs              # perform path search even on command names with slashes
 unsetopt case_glob              # make globbing case insensitive
 unsetopt menu_complete          # add first of multiple
+
 # enable completion
-
-autoload -Uz +X compinit && compinit
-
-autoload -Uz +X bashcompinit && bashcompinit
+# autoload -Uz +X bashcompinit && bashcompinit
 
 zmodload -i zsh/complist
+
+# Better SSH/Rsync/SCP Autocomplete
+zstyle ':completion:*:(scp|rsync):*' tag-order ' hosts:-ipaddr:ip\ address hosts:-host:host files'
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
 
 zstyle ':compinstall' filename "$HOME/.dotfiles/complete.zsh"
 zstyle ':completion:*' add-space true
 zstyle ':completion:*' auto-description 'Specify %d'
 zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
+
 #zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
@@ -41,7 +45,6 @@ zstyle ':completion:*' list-colors ''
 zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
 zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=1
 zstyle ':completion:*' old-list always
 zstyle ':completion:*' old-menu false
@@ -81,6 +84,12 @@ zstyle ':filter-select:highlight' matched fg=red
 zstyle ':filter-select' max-lines 10
 zstyle ':filter-select' rotate-list yes
 zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
+
+# Allow for autocomplete to be case insensitive
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|?=** r:|?=**'
+
+# Initialize the autocompletion
+autoload -Uz compinit && compinit -i
 
 # Add . hidden files to menu completion
 _comp_options+=(globdots)
