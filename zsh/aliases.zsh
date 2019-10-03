@@ -31,6 +31,7 @@ alias fpath='echo $fpath | tr -s " " "\n"'
 alias pcat="pygmentize -f terminal256 -O style=monokai -g"
 alias ports="netstat -lantip"
 alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
+alias pip3-unsafe-install="pip install <package name> --trusted-host pypi.org --trusted-host files.pythonhosted.org"
 alias quit="exit"
 alias reload="exec $SHELL -l"
 alias set_bitbucket_user="git config user.name 'Andy Kuttor' && git config user.email 'akuttor@cis.ntt.com'"

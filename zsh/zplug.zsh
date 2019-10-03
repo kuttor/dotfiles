@@ -67,20 +67,15 @@ fi
 # Spaceship Prompt
 if zplug check "denysdovhan/spaceship-prompt"; then
     SPACESHIP_PROMPT_ORDER=(
-    user          # Username section
-    dir           # Current directory section
-    host          # Hostname section
-    git           # Git section (git_branch + git_status)
-    exec_time     # Execution time
-    line_sep      # Line break
-    battery       # Battery level and status
-    jobs          # Background jobs indicator
-    char          # Prompt character
-    )
-
-    SPACESHIP_RPROMPT_ORDER=(
-    exit_code
-    time
+      user          # Username section
+      dir           # Current directory section
+      host          # Hostname section
+      git           # Git section (git_branch + git_status)
+      exec_time     # Execution time
+      line_sep      # Line break
+      battery       # Battery level and status
+      jobs          # Background jobs indicator
+      char          # Prompt character
     )
 
     SPACESHIP_TIME_SHOW=true
