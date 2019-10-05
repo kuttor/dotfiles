@@ -2,6 +2,7 @@
 
 # file: install.sh
 # info: creates necessary links/files to setup dotfiles
+# Deps: wget, curl, exa, fzf, git,
 
 # -----------------------------------------------------------------------------
 
@@ -27,3 +28,4 @@ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/instal
 
 # Custom ZSH Config
 ln -fs $HOME/.dotfiles/zsh/zshrc.zsh $HOME/.zshrc
+
