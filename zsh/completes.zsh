@@ -10,7 +10,7 @@ setopt   auto_menu              # second tab for menu behavior
 setopt   auto_param_keys        # smart insert spaces " "
 setopt   auto_param_slash       # if completed parameter is a directory, add a trailing slash
 setopt   auto_remove_slash      # remove extra slashes if needed
-setopt   complete_aliases
+setopt   nicomplete_aliases
 setopt   complete_in_word       # complete from both ends of a word
 setopt   correct                # autocorrect spelling errors of commands
 setopt   correct_all            # autocorrect spelling errors of arguments
@@ -89,7 +89,14 @@ zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|?=** r:|?=**'
 
 # Initialize the autocompletion
-autoload -Uz compinit && compinit -i
+autoload -Uz compinit
+
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]
+then
+  compinit
+else
+  compinit -C
+fi
 
 # Add . hidden files to menu completion
 _comp_options+=(globdots)
