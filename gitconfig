@@ -9,6 +9,7 @@
   aliases = "!git config --get-regexp alias | cut -c 7-"
   remotes = "remote -v"
   uncommit = "reset --soft HEAD~1"
+  status-select = "!git-status-select"
 
 [user]
   name = "Andrew Kuttor"
