@@ -122,15 +122,3 @@ bindkey "^[[F"    end-of-line
 bindkey "^[[1;2H" backward-word
 bindkey "^[[1;2F" forward-word
 
-# -----------------------------------------------------------------------------
-# Fzf
-# -----------------------------------------------------------------------------
-
-# Add <TAB> completion handlers for fzf *after* fzf is loaded
-_fzf_complete_z() { _fzf_complete '--multi --reverse' "$@" < <(raw_z) }
-
-# Use rg to generate file completions
-_fzf_compgen_path() { rg --files "$1" | with-dir "$1" }
-
-# Use rg to generate the list for directory completion
-_fzf_compgen_dir() { rg --files "$1" | only-dir "$1" }
