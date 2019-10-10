@@ -78,8 +78,8 @@ fpath=(
 path=(
   /Users/${USER}/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
   /Users/${USER}/Library/Python/{2.7,3.7}/bin
-  /usr/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
+  /usr/{bin,sbin}(N-/)
   /{bin,sbin}(N-/)
   ${path}
 )

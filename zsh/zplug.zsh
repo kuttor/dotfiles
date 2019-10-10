@@ -41,12 +41,10 @@ zplug "plugins/completion", from:oh-my-zsh
 zplug "zsh-users/zsh-completions"
 
 # readline
-zplug "plugins/zsh_reload", from:oh-my-zsh
 zplug "zpm-zsh/ssh"
 zplug "lib/clipboard", from:oh-my-zsh
 zplug "chrissicool/zsh-bash", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
-zplug "djui/alias-tips"
 zplug "hlissner/zsh-autopair"
 zplug "knu/zsh-manydots-magic"
 zplug "zsh-users/zsh-autosuggestions"
@@ -54,7 +52,7 @@ zplug "zsh-users/zsh-autosuggestions"
 # colors
 zplug "tysonwolker/iterm-tab-colors"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
-zplug "zpm-zsh/colors" 
+zplug "zpm-zsh/colors"
 zplug "zsh-users/zsh-syntax-highlighting"
 
 # history

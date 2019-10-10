@@ -10,7 +10,7 @@ setopt   auto_menu              # second tab for menu behavior
 setopt   auto_param_keys        # smart insert spaces " "
 setopt   auto_param_slash       # if completed parameter is a directory, add a trailing slash
 setopt   auto_remove_slash      # remove extra slashes if needed
-setopt   nicomplete_aliases
+setopt   complete_aliases
 setopt   complete_in_word       # complete from both ends of a word
 setopt   correct                # autocorrect spelling errors of commands
 setopt   correct_all            # autocorrect spelling errors of arguments
