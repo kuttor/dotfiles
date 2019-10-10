@@ -2,74 +2,72 @@
 # File: gitconfig
 
 [alias]
-  info = "status --short --branch"
-  tags = "tag --list"
-  users = "shortlog --summary -"
-  branches = "branch --all"
-  tracked = "!git ls-tree -r master --name-only"
-  aliases = "!git config --get-regexp alias | cut -c 7-"
-  remotes = "remote -v"
-  uncommit = "reset --soft HEAD~1"
-  status-select = "!git-status-select"
+    info = "status --short --branch"
+    tags = "tag --list"
+    users = "shortlog --summary -"
+    branches = "branch --all"
+    tracked = "!git ls-tree -r master --name-only"
+    aliases = "!git config --get-regexp alias | cut -c 7-"
+    remotes = "remote -v"
+    uncommit = "reset --soft HEAD~1"
+    status-select = "!git-status-select"
 
 [user]
-  name = "Andrew Kuttor"
-  email = "andrew.kuttor@gmail.com"
+    name = "Andrew Kuttor"
+    email = "andrew.kuttor@gmail.com"
 
 [github]
-  user = kuttor
+    user = kuttor
 
 [branch]
-  autosetupmerge = true
+    autosetupmerge = true
 
 [merge]
-  tool = vscode
+    tool = vscode
 
 [mergetool "vscode"]
-  cmd = code --wait $MERGED
+    cmd = code --wait $MERGED
 
 [diff]
-  tool = vscode
-  renames = copies
-  mnemonicprefix = true
+    tool = vscode
+    renames = copies
+    mnemonicprefix = true
 
 [difftool "vscode"]
-  cmd = code --wait --diff $LOCAL $REMOTE
+    cmd = code --wait --diff $LOCAL $REMOTE
 
 [pager]
-  difftool = true
+    difftool = true
 
 [rerere]
-  enabled = true
-  autoupdate = 1
+    enabled = true
+    autoupdate = 1
 
 [advice]
-  pushNonFastForward = false
-  statusHints = false
+    pushNonFastForward = false
+    statusHints = false
 
 [apply]
-  whitespace = fix
+    whitespace = fix
 
 [core]
-  editor = nvim
-  whitespace = trailing-space,space-before-tab
-  excludesfile = $HOME/.gitignore
-  attributesfile = $HOME/.gitattributes
-  trustctime = false
-  untrackedCache = true
+    editor = nvim
+    whitespace = trailing-space,space-before-tab
+    excludesfile = /Users/akuttor/.gitignore
+    attributesfile = /Users/akuttor/.gitattributes
+    trustctime = false
+    untrackedCache = true
 
 [help]
-  autocorrect = 1
+    autocorrect = 1
 
 [color]
-  branch = auto
-  diff = auto
-  interactive = auto
-  pager = true
-  status = auto
-  ui = auto
+    branch = auto
+    diff = auto
+    interactive = auto
+    pager = true
+    status = auto
+    ui = auto
 
 [web]
-  browser = google-chrome
-
-
+    browser = google-chrome
