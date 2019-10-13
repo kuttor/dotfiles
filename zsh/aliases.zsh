@@ -64,7 +64,3 @@ done
 #  alias v="$i"
 #done
 
-# Vagrant commands
-alias vagrant-destroy-all="for vb in `vagrant global-status | grep virtualbox | awk '{ print $1 }'` ; do vagrant destroy $vb ; done"
-
-
