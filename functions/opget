@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+opon
+
+op get item "$1" |\
+   jq -r '.details.fields[] |\
+   select(.designation=="password").value'
+opoff

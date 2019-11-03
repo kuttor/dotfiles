@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+if [[ -z $OP_SESSION_accountname ]]
+then
+    eval $(op signin accountname)
+fi
