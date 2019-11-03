@@ -9,7 +9,6 @@ tap "homebrew/core" # Core forumulaa for homebrew
 # Brew
 # -----------------------------------------------------------------------------
 brew "ack"
-brew "aircrack-ng"
 brew "bash"
 brew "bat"
 brew "bind"
