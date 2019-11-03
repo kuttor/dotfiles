@@ -47,7 +47,7 @@ brew "ruby"
 brew "shellcheck"
 brew "shfmt"
 brew "telnet"
-brew "terraform", link: false
+brew "terraform"
 brew "tfenv"
 brew "the_platinum_searcher"
 brew "the_silver_searcher"
