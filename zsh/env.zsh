@@ -30,8 +30,28 @@ unsetopt FLOW_CONTROL           # Disable start/stop characters editor
 
 # Colors
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=52;30'
+export EXA_COLORS="README*=90"
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
-export CLICOLOR=1
+export CLICOLOR=
+
+# 30 Black
+# 31 Red
+# 32 Green
+# 33 Yellow
+# 34 Blue
+# 35 Purple
+# 36 Cyan
+# 37 White
+# BACKGROUND
+# 40 On black
+# 41 On red
+# 42 On green
+# 43 On yellow
+# 44 On blue
+# 45 On purple
+# 46 On cyan
+# 47 On white
+
 #source $BREW_HOME/etc/grc.bashrc
 
 # Terminal
