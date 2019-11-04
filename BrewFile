@@ -69,6 +69,12 @@ brew "vim"
 brew "wget"
 brew "zip"
 brew "zsh"
+cask "caffeine"
+cask "slack"
+cask "the-unarchiver"
+cask "vagrant"
+cask "virtualbox"
+cask "visual-studio-code"
 
 # -----------------------------------------------------------------------------
 # quicklook
@@ -81,6 +87,7 @@ cask "qlstephen"
 cask "qlvideo"
 cask "quicklook-csv"
 cask "quicklook-json"
+cask "popclip"
 
 # -----------------------------------------------------------------------------
 # Completions
@@ -91,13 +98,3 @@ brew 'docker-completion'
 brew 'open-completion'
 brew 'ruby-completion'
 brew "zsh-completions"
-
-# -----------------------------------------------------------------------------
-# cask
-# -----------------------------------------------------------------------------
-cask "caffeine"
-cask "slack"
-cask "the-unarchiver"
-cask "vagrant"
-cask "virtualbox"
-cask "visual-studio-code"
