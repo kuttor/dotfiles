@@ -30,8 +30,5 @@ curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/instal
 # Custom ZSH Config
 ln -fs $HOME/.dotfiles/zsh/zshrc.zsh $HOME/.zshrc
 
-# Install up-to-date terminfo
-curl -sSL http://invisible-island.net/datafiles/current/terminfo.src.gz | >/tmp/terminfo.src gunzip
-tic /tmp/terminfo.src
-infocmp tmux-256color
-
+# Enable italics via terminfo
+tic -o $HOME/.terminfo $HOME/.dotfiles/iterm/xterm-256color.terminfo
