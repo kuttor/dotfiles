@@ -68,7 +68,6 @@ brew "vault"
 brew "vim"
 brew "wget"
 brew "zip"
-
 brew "zsh"
 
 # -----------------------------------------------------------------------------
@@ -79,6 +78,7 @@ cask "qlcolorcode"
 cask "qlimagesize"
 cask "qlprettypatch"
 cask "qlstephen"
+cask "qlvideo"
 cask "quicklook-csv"
 cask "quicklook-json"
 
@@ -96,12 +96,6 @@ brew "zsh-completions"
 # cask
 # -----------------------------------------------------------------------------
 cask "caffeine"
-cask "qlcolorcode"
-cask "qlimagesize"
-cask "qlmarkdown"
-cask "qlstephen"
-cask "qlvideo"
-cask "quicklook-json"
 cask "slack"
 cask "the-unarchiver"
 cask "vagrant"
