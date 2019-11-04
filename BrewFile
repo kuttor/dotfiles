@@ -1,11 +1,21 @@
+# vim: syntax=ruby filetype=ruby
+# -*- mode: ruby -*-
 # Minimal Brewfile
 
+# file: BrewFile
+# info: Automagically and programatically installs Brew hosted packages
+# hero: Andrew Kuttor
+# mail: andrew.kuttor@gmail.com
+# repo: http://github.com/kuttor/dotfiles
+
+# -----------------------------------------------------------------------------
 # Tap
 # -----------------------------------------------------------------------------
 tap "buo/cask-upgrade" # 3rd party brew package updater
 tap "homebrew/command-not-found" # Missing package suggestor
-tap "homebrew/core" # Core forumulaa for homebrew
+tap "homebrew/services"
 
+# -----------------------------------------------------------------------------
 # Brew
 # -----------------------------------------------------------------------------
 brew "ack"
@@ -58,9 +68,31 @@ brew "vault"
 brew "vim"
 brew "wget"
 brew "zip"
-brew "zsh-completions"
+
 brew "zsh"
 
+# -----------------------------------------------------------------------------
+# quicklook
+# -----------------------------------------------------------------------------
+cask "betterzipql"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlprettypatch"
+cask "qlstephen"
+cask "quicklook-csv"
+cask "quicklook-json"
+
+# -----------------------------------------------------------------------------
+# Completions
+# -----------------------------------------------------------------------------
+brew 'brew-cask-completion'
+brew 'cargo-completion'
+brew 'docker-completion'
+brew 'open-completion'
+brew 'ruby-completion'
+brew "zsh-completions"
+
+# -----------------------------------------------------------------------------
 # cask
 # -----------------------------------------------------------------------------
 cask "caffeine"

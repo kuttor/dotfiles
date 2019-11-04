@@ -1,40 +1,19 @@
 #!/usr/bin/env bash
 
-alias sleepoff='sudo pmset -b sleep 0; sudo pmset -b disablesleep 1'
-alias sleepon='sudo pmset -b sleep 5; sudo pmset -b disablesleep 0'
-
-# Hidden scroll gesture for Dock
-defaults write com.apple.dock scroll-to-open -bool TRUE; killall Dock
-
-# Hidden suck animation instead of genie
-defaults write com.apple.dock mineffect suck; killall Dock
-
-# Expand save panel by default
-defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-
-# Expand print panel by default
-defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
-
-# Automatically quit printer app once the print jobs complete
-defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
-
-# Disable the “Are you sure you want to open this application?” dialog
-defaults write com.apple.LaunchServices LSQuarantine -bool false
-
-# Disable Resume for Preview
-defaults write com.apple.Preview NSQuitAlwaysKeepsWindows -bool false
-
 # Disable the crash reporter
 defaults write com.apple.CrashReporter DialogType -string "none"
 
-# Set Help Viewer windows to non-floating mode
-defaults write com.apple.helpviewer DevMode -bool true
-
-# Reveal IP address, hostname, OS version, etc in login window clock
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
-
 # Restart automatically if the computer freezes
 systemsetup -setrestartfreeze on
+
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true # Dont create ds_store files on net drives
+defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true # Auto-open window when volume mounted
+defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true # Auto-open window when volume mounted
+defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true  # Auto-open window when volume mounted
+defaults write com.apple.frameworks.diskimages skip-verify YES # Disable disk image verifications
+
+defaults write NSGlobalDomain com.apple.springing.delay -float 0             # Remove spring loading delay for folders
+defaults write NSGlobalDomain com.apple.springing.enabled -bool true         # Spring loading for folders
 
 # Enable tap to click for this user and for the login screen
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
@@ -49,97 +28,75 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeF
 # Increase sound quality for Bluetooth headphones/headsets
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
-# Enable full keyboard access for all controls
-defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
-
-# Disable press-and-hold for keys in favor of key repeat
-defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
-
-# Set a blazingly fast keyboard repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 0
-
-# Automatically illuminate built-in MacBook keyboard in low light
-defaults write com.apple.BezelServices kDim -bool true
-
-# Turn off keyboard illumination when computer is not used for 5 minutes
-defaults write com.apple.BezelServices kDimTime -int 300
-
 # Set language and text formats
 defaults write NSGlobalDomain AppleLanguages -array "en" "nl"
 defaults write NSGlobalDomain AppleLocale -string "en_US@currency=USD"
 defaults write NSGlobalDomain AppleMeasurementUnits -string "Inches"
 defaults write NSGlobalDomain AppleMetricUnits -bool false
 
-# Save screenshots to the desktop
-defaults write com.apple.screencapture location -string "${HOME}/Desktop"
+# -----------------------------------------------------------------------------
+# Dialogs
+# -----------------------------------------------------------------------------
+defaults write NSGlobalDomain NSWindowResizeTime .1 # Increasae speed of dialog boxes
+defaults write com.apple.helpviewer DevMode -bool true # Non-floating mode for help-viewer windows
 
-# Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
-defaults write com.apple.screencapture type -string "png"
+# -----------------------------------------------------------------------------
+# Login Window
+# -----------------------------------------------------------------------------
+defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName # Reveal IP address, hostname, OS version, etc in login window clock
 
-# Disable shadow in screenshots
-defaults write com.apple.screencapture disable-shadow -bool true
+# -----------------------------------------------------------------------------
+# Display
+# -----------------------------------------------------------------------------
+defaults write NSGlobalDomain AppleFontSmoothing -int 2 # Enable subpixal font rendering in non-apple lcds
+defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true # Enable HiDPI display modes (requires restart)
+defaults write NSGlobalDomain NSWindowResizeTime -float 0.001 # Accelerated playback when adjusting the window size (Cocoa applications).
 
-# Enable subpixel font rendering on non-Apple LCDs
-defaults write NSGlobalDomain AppleFontSmoothing -int 2
+# -----------------------------------------------------------------------------
+# Keyboard
+# -----------------------------------------------------------------------------
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false # Disable press-and-hold for keys in favor of key repeat
+defaults write com.apple.BezelServices kDimTime -int 300 # Disable keyboard backlight after 5 minutes
+defaults write NSGlobalDomain KeyRepeat -int 3 # increase keyboard repeat rate
+defaults write com.apple.BezelServices kDim -bool true # enable keyboard backlight in low light
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3 # Enable full keyboard access for all controls
 
-# Enable HiDPI display modes (requires restart)
-sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
+# -----------------------------------------------------------------------------
+# Screenshots
+# -----------------------------------------------------------------------------
+defaults write com.apple.screencapture location -string "${HOME}/Desktop" # Save screenshots to desktop
+defaults write com.apple.screencapture type -string "png" # Save screenshots in PNG format
+defaults write com.apple.screencapture disable-shadow -bool true # Disable shadows in screenshots
 
-# Allow quitting via ⌘ + Q; doing so will also hide desktop icons
-defaults write com.apple.finder QuitMenuItem -bool true
+# -----------------------------------------------------------------------------
+# Mission Control
+# -----------------------------------------------------------------------------
+defaults write com.apple.dock expose-animation-duration -float 0.1 # Make animations faster
 
-# Disable window animations and Get Info animations
-defaults write com.apple.finder DisableAllAnimations -bool true
+# -----------------------------------------------------------------------------
+# Finder
+# -----------------------------------------------------------------------------
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true # Display full path in finder window
+defaults write com.apple.finder AppleShowAllFiles -bool true # Show hidden files
+defaults write com.apple.finder DisableAllAnimations -bool true # Disable animations info window
+defaults write com.apple.finder EmptyTrashSecurely -bool true # Empty Trash Securely
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf" # Search current folder first
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false # Disable warning win changing file ext
+defaults write com.apple.finder FXPreferredViewStyle -string "clmv" # Four letter view codes for Finder
+defaults write com.apple.finder ShowPathbar -bool true                      # Show path bar
+defaults write com.apple.finder ShowStatusBar -bool true                    # Show status bar
+defaults write com.apple.LaunchServices LSQuarantine -bool false            # Disable verify opening app dialog
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true             # Show Extension
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true # Expand save panel
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true    # Expand print panel
 
-# Show icons for hard drives, servers, and removable media on the desktop
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+# -----------------------------------------------------------------------------
+# Quick Look
+# -----------------------------------------------------------------------------
+defaults write -g QLPanelAnimationDuration -float 0 # Disable quick look animations
+defaults write com.apple.finder QLEnableTextSelection -bool true # Allow text selection in quick look
 
-# Show hidden files by default
-defaults write com.apple.finder AppleShowAllFiles -bool true
-
-# Show all filename extensions
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-
-# Show status bar
-defaults write com.apple.finder ShowStatusBar -bool true
-
-# Show path bar
-defaults write com.apple.finder ShowPathbar -bool true
-
-# Allow text selection in Quick Look
-defaults write com.apple.finder QLEnableTextSelection -bool true
-
-# Display full path as Finder window title
-defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
-
-# When performing a search, search the current folder by default
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-
-# Disable the warning when changing a file extension
-defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
-
-# Enable spring loading for directories
-defaults write NSGlobalDomain com.apple.springing.enabled -bool true
-
-# Remove the spring loading delay for directories
-defaults write NSGlobalDomain com.apple.springing.delay -float 0
-
-# Avoid creating .DS_Store files on network volumes
-defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-
-# Disable disk image verification
-defaults write com.apple.frameworks.diskimages skip-verify -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
-
-# Automatically open a new Finder window when a volume is mounted
-defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
-defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
-defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
-
+# Show extra item info next to desktop icons and other icon views
 finder_path="$HOME/Library/Preferences/com.apple.finder.plist"
 
 # Show item info near icons on the desktop and in other icon views
@@ -156,114 +113,69 @@ finder_path="$HOME/Library/Preferences/com.apple.finder.plist"
 /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" $finder_path
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" $finder_path
 
-# Four-letter codes for the Finder view modes: `icnv`, `clmv`, `Flwv`, 'Nlsv'
-defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
+chflags nohidden $HOME/Library # Show user Libaray folder
 
-# Empty Trash securely by default
-defaults write com.apple.finder EmptyTrashSecurely -bool true
+# -----------------------------------------------------------------------------
+# Launchpad
+# -----------------------------------------------------------------------------
+find ~/Library/Application\ Support/Dock -name "*.db" -maxdepth 1 -delete # Reset Launchpad
 
-# Show the ~/Library folder
-chflags nohidden ~/Library
+# -----------------------------------------------------------------------------
+# Desktop
+# -----------------------------------------------------------------------------
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true # Show External HD on desktop
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true # Show HD on desktop
+defaults write com.apple.finder ShowMountedServersOnDesktop -bool true # Show mounted server on desktop
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool # Show removal media on desktop
 
-# Enable highlight hover effect for the grid view of a stack (Dock)
-defaults write com.apple.dock mouse-over-hilite-stack -bool true
+# -----------------------------------------------------------------------------
+# Dashboard
+# -----------------------------------------------------------------------------
+defaults write com.apple.dashboard mcx-disabled -bool true # Disable dashboard
+defaults write com.apple.dashboard devmode -bool true # Enable Dashboard dev mode (allows keeping widgets on the desktop)
 
-# Set the icon size of Dock items to 36 pixels
-defaults write com.apple.dock tilesize -int 36
+# -----------------------------------------------------------------------------
+# Dock
+# -----------------------------------------------------------------------------
+defaults write com.apple.Dock autohide-delay -float 0 # Disable delay when hiding dock
+defaults write com.apple.dock autohide-time-modifier -float 0 # Remove animations when hide/show dock
+defaults write com.apple.dock dashboard-in-overlay -bool true # Dont show dashboard as a space
+defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true # Spring loading for all dock items
+defaults write com.apple.dock expose-animation-duration -float 0.1 # Speed up Mission Control animations
+defaults write com.apple.dock mineffect suck # Use suck animation
+defaults write com.apple.dock minimize-to-application -bool true # Min windows into app icon
+defaults write com.apple.dock mouse-over-hilite-stack -bool true # Highlight hover effect for stack grid-view
+defaults write com.apple.dock mru-spaces -bool false # Don't auto-arrange spaces by most recent
+defaults write com.apple.dock no-glass -bool true # Enable 2d dock
+defaults write com.apple.dock persistent-others -array-add '{ "tile-data" = { "list-type" = 1; }; "tile-type" = "recents-tile"; }' # Recents
+defaults write com.apple.dock scroll-to-open -bool true # Hidden scroll gesture for dock
+defaults write com.apple.dock show-process-indicators -bool true # Indicator lights for open apps
+defaults write com.apple.dock showhidden -bool true # Hidden dock items translucent
+defaults write com.apple.dock tilesize -int 36 # Dock icon size 36 pixals
+defaults write com.apple.dock use-new-list-stack -bool YES # Enable hidden stacks list
 
-# Minimize windows into their application’s icon
-defaults write com.apple.dock minimize-to-application -bool true
+# -----------------------------------------------------------------------------
+# Email
+# -----------------------------------------------------------------------------
+defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false # Copy addresses as `foo@example.com`
+defaults write com.apple.mail DisableReplyAnimations -bool true # Disable send/receive animations
+defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" -string "@\\U21a9" # ⌘ + Enter to send an email
+defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreadedMode" -string "yes" # Enable threaded mode
+defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortedDescending" -string "yes" # Set descending order
+defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortOrder" -string "received-date" # Set old to new date
 
-# Enable spring loading for all Dock items
-defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
+# -----------------------------------------------------------------------------
+# Safari
+# -----------------------------------------------------------------------------
+defaults write com.apple.Safari WebKitInitialTimedLayoutDelay 0.25 # Disable standard rengering delay
+defaults write com.apple.Safari HomePage -string "about:blank" # Use about:blank as homepage
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false # Dont auto-open safe downloading files
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled -bool true # Backspace key to go back
+defaults write com.apple.Safari ProxiesInBookmarksBar "()" # Remove useless icons from bookmark bar
+defaults write com.apple.Safari IncludeDevelopMenu -bool true # Enable develop menu
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true # Enable webkit extras
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true # Enable webkit extras
 
-# Show indicator lights for open applications in the Dock
-defaults write com.apple.dock show-process-indicators -bool true
-
-# Speed up Mission Control animations
-defaults write com.apple.dock expose-animation-duration -float 0.1
-
-# Disable Dashboard
-defaults write com.apple.dashboard mcx-disabled -bool true
-
-# Don’t show Dashboard as a Space
-defaults write com.apple.dock dashboard-in-overlay -bool true
-
-# Don’t automatically rearrange Spaces based on most recent use
-defaults write com.apple.dock mru-spaces -bool false
-
-# Remove the auto-hiding Dock delay
-defaults write com.apple.dock autohide-delay -float 0
-
-# Remove the animation when hiding/showing the Dock
-defaults write com.apple.dock autohide-time-modifier -float 0
-
-# Enable the 2D Dock
-defaults write com.apple.dock no-glass -bool true
-
-# Make Dock icons of hidden applications translucent
-defaults write com.apple.dock showhidden -bool true
-
-# Reset Launchpad
-find ~/Library/Application\ Support/Dock -name "*.db" -maxdepth 1 -delete
-
-# Set Safari’s home page to `about:blank` for faster loading
-defaults write com.apple.Safari HomePage -string "about:blank"
-
-# Prevent Safari from opening ‘safe’ files automatically after downloading
-defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
-
-# Allow hitting the Backspace key to go to the previous page in history
-defaults write com.apple.Safari \
-    com.apple.Safari.ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled -bool true
-
-# Remove useless icons from Safari’s bookmarks bar
-defaults write com.apple.Safari ProxiesInBookmarksBar "()"
-
-# Enable the Develop menu and the Web Inspector in Safari
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari \
-    com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
-
-# Copy email addresses as `foo@example.com` instead of `Foo Bar <foo@example.com>` in Mail.app
-defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
-
-# Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app
-defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" -string "@\\U21a9"
-
-# Display emails in threaded mode, sorted by date (oldest at the top)
-defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreadedMode" -string "yes"
-defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortedDescending" -string "yes"
-defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortOrder" -string "received-date"
-
-# Change indexing order and disable some file types
-defaults write com.apple.spotlight orderedItems -array \
-  '{"enabled" = 1;"name" = "APPLICATIONS";}' \
-  '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
-  '{"enabled" = 1;"name" = "DIRECTORIES";}' \
-  '{"enabled" = 1;"name" = "PDF";}' \
-  '{"enabled" = 1;"name" = "FONTS";}' \
-  '{"enabled" = 0;"name" = "DOCUMENTS";}' \
-  '{"enabled" = 0;"name" = "MESSAGES";}' \
-  '{"enabled" = 0;"name" = "CONTACT";}' \
-  '{"enabled" = 0;"name" = "EVENT_TODO";}' \
-  '{"enabled" = 0;"name" = "IMAGES";}' \
-  '{"enabled" = 0;"name" = "BOOKMARKS";}' \
-  '{"enabled" = 0;"name" = "MUSIC";}' \
-  '{"enabled" = 0;"name" = "MOVIES";}' \
-  '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
-  '{"enabled" = 0;"name" = "SPREADSHEETS";}' \
-  '{"enabled" = 0;"name" = "SOURCE";}'
-
-# Load new settings before rebuilding the index
-killall mds > /dev/null 2>&1
-
-# Make sure indexing is enabled for the main volume
-sudo mdutil -i on / > /dev/null
-
-# Rebuild the index from scratch
-sudo mdutil -E / > /dev/null
 
 # Prevent Time Machine from prompting to use new hard drives as backup volume
 defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
@@ -271,38 +183,22 @@ defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 # Enable the debug menu in Address Book
 defaults write com.apple.addressbook ABShowDebugMenu -bool true
 
-# Enable Dashboard dev mode (allows keeping widgets on the desktop)
-defaults write com.apple.dashboard devmode -bool true
-
 # Enable the debug menu in iCal (pre-10.8)
 defaults write com.apple.iCal IncludeDebugMenu -bool true
 
-# Use plain text mode for new TextEdit documents
-defaults write com.apple.TextEdit RichText -int 0
-
-# Open and save files as UTF-8 in TextEdit
-defaults write com.apple.TextEdit PlainTextEncoding -int 4
-defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
-
-# Enable the debug menu in Disk Utility
+# Disk Utility
 defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
 defaults write com.apple.DiskUtility advanced-image-options -bool true
 
-# Enable the WebKit Developer Tools in the Mac App Store
-defaults write com.apple.appstore WebKitDeveloperExtras -bool true
+# Mac App Store
+defaults write com.apple.appstore WebKitDeveloperExtras -bool true # Enable Webkit Dev toolts
+defaults write com.apple.appstore ShowDebugMenu -bool true # Enable Debug Mode
 
-# Enable Debug Menu in the Mac App Store
-defaults write com.apple.appstore ShowDebugMenu -bool true
+# Text Edit
+defaults write com.apple.TextEdit RichText -int 0 # Use Plain text for documents
+defaults write com.apple.TextEdit ShowRuler 0 # Show ruler
+defaults write com.apple.TextEdit PlainTextEncoding -int 4 # Open and save files as UTF-8 in TextEdit
+defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4 # Open and save files as UTF-8 in TextEdit
 
-# Allow installing user scripts via GitHub or Userscripts.org
-# defaults write com.google.Chrome \
-#     ExtensionInstallSources -array "https://*.github.com/*" "http://userscripts.org/*"
 
-for app in \
-  "Address Book" "Calendar" "Contacts" "Dashboard" "Dock" "Finder" \
-  "Mail" "Messages" "Safari" "SystemUIServer" "Terminal" \
-  "Transmission" "Twitter" "iCal"
-do
-  killall "${app}" > /dev/null 2>&1
-done
-  echo "Done. Note that some of these changes require a logout/restart to take effect."
+
