@@ -40,6 +40,7 @@ alias sleepon='sudo pmset -b sleep 5; sudo pmset -b disablesleep 0'
 alias ssh="TERM=xterm-256color ssh"
 alias stripcolors='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 alias sudo="sudo "
+alias tf="terraform"
 alias top-ten="print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10"
 alias vim="nvim"
 alias zmv="noglob zmv -W"
