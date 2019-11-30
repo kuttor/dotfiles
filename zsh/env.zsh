@@ -129,7 +129,3 @@ bindkey "^[[F"    end-of-line
 bindkey "^[[Z"    autosuggest-accept
 bindkey "^[[1;2D" backward-word
 bindkey "^[[1;2C" forward-word
-
-# Make capslocks an escape
-setxkbmap -option caps:backspace
-
