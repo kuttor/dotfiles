@@ -14,7 +14,7 @@ source "$HOME/.zplug/init.zsh"
 
 # Purity Theme
 zplug "mafredri/zsh-async"
-zplug "therealklanni/purity", use:purity.zsh, as:theme
+zplug "joshjon/bliss-zsh", use:bliss.zsh-theme, from:github, as:theme
 
 # tmux
 zplug "zpm-zsh/tmux"
@@ -23,7 +23,6 @@ zplug "jsahlen/tmux-vim-integration.plugin.zsh"
 # git
 zplug "github/hub"
 zplug "plugins/git", from:oh-my-zsh
-zplug "plugins/git-prompt", from:oh-my-zsh
 zplug "plugins/gitignore", from:oh-my-zsh
 zplug "rapgenic/zsh-git-complete-urls"
 zplug "seletskiy/zsh-git-smart-commands"

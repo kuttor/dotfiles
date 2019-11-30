@@ -28,31 +28,7 @@ setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
 setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
 unsetopt FLOW_CONTROL           # Disable start/stop characters editor
 
-# Colors
-export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=52;30'
-export EXA_COLORS="README*=90"
-export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
-export CLICOLOR=
 
-# 30 Black
-# 31 Red
-# 32 Green
-# 33 Yellow
-# 34 Blue
-# 35 Purple
-# 36 Cyan
-# 37 White
-# BACKGROUND
-# 40 On black
-# 41 On red
-# 42 On green
-# 43 On yellow
-# 44 On blue
-# 45 On purple
-# 46 On cyan
-# 47 On white
-
-#source $BREW_HOME/etc/grc.bashrc
 
 # Terminal
 export REPORTTIME=2
@@ -64,11 +40,11 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export _Z_DATA="$CONFIG/z-data"
 
 # Editor
-export EDITOR=$(which nvim)
+export EDITOR="/usr/local/bin/nvim"
 export VISUAL="$EDITOR"
 
 # Pager
-export PAGER=$(which bat)
+export PAGER="/usr/local/bin/bat"
 export MANPAGER=$PAGER
 export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 
@@ -98,11 +74,22 @@ fpath=(
 path=(
   /Users/${USER}/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
   /Users/${USER}/Library/Python/{2.7,3.7}/bin
+  /usr/local/Cellar/coreutils/8.31/libexec/gnubin
   /usr/local/{bin,sbin}(N-/)
   /usr/{bin,sbin}(N-/)
   /{bin,sbin}(N-/)
   ${path}
 )
+
+# -----------------------------------------------------------------------------
+# Colors
+# -----------------------------------------------------------------------------
+
+export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=52;30'
+export EXA_COLORS="README*=38;5;208:Makefile=33"
+export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
+export CLICOLOR=1
+eval `dircolors ~/Code/bliss-dircolors/bliss.dircolors`
 
 # -----------------------------------------------------------------------------
 # Keybinds
@@ -139,6 +126,10 @@ bindkey "^I"      expand-or-complete-with-dots
 bindkey " "       magic-space
 bindkey "^[[H"    beginning-of-line
 bindkey "^[[F"    end-of-line
-bindkey "^[[1;2H" backward-word
-bindkey "^[[1;2F" forward-word
+bindkey "^[[Z"    autosuggest-accept
+bindkey "^[[1;2D" backward-word
+bindkey "^[[1;2C" forward-word
+
+# Make capslocks an escape
+setxkbmap -option caps:backspace
 

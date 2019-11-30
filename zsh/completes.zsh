@@ -1,102 +1,69 @@
-#!/usr/local/bin/zsh
-# The context tells the completion system under what circumstances your
-# value will be used.  It has this form:
-#  :completion:<function-name>:<completer>:<command>:<argument>:<tag>
-
-# Completion Options
-setopt   always_to_end          # curser goes to end after complete
-setopt   auto_list              # automatically list choices on ambiguous completion
-setopt   auto_menu              # second tab for menu behavior
-setopt   auto_param_keys        # smart insert spaces " "
-setopt   auto_param_slash       # if completed parameter is a directory, add a trailing slash
-setopt   auto_remove_slash      # remove extra slashes if needed
-setopt   complete_aliases
-setopt   complete_in_word       # complete from both ends of a word
-setopt   correct                # autocorrect spelling errors of commands
-setopt   correct_all            # autocorrect spelling errors of arguments
-setopt   equals                 # perform equals = expansion
-setopt   glob_star_short        # **.c == **/*.c
-setopt   globdots               # include . filenames in expansions
-setopt   extended_glob          # include #, ~, and ^ in expansion
-setopt   path_dirs              # perform path search even on command names with slashes
-unsetopt case_glob              # make globbing case insensitive
-unsetopt menu_complete          # add first of multiple
-
-# enable completion
-# autoload -Uz +X bashcompinit && bashcompinit
-
 zmodload -i zsh/complist
 
-# Better SSH/Rsync/SCP Autocomplete
-zstyle ':completion:*:(scp|rsync):*' tag-order ' hosts:-ipaddr:ip\ address hosts:-host:host files'
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
-
-zstyle ':compinstall' filename "$HOME/.dotfiles/complete.zsh"
-zstyle ':completion:*' add-space true
-zstyle ':completion:*' auto-description 'Specify %d'
-zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
-
-#zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' insert-unambiguous true
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
-zstyle ':completion:*' list-dirs-first true
-zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-zstyle ':completion:*' menu select=1
-zstyle ':completion:*' old-list always
-zstyle ':completion:*' old-menu false
-zstyle ':completion:*' original true
-zstyle ':completion:*' rehash true
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*' special-dirs true
-zstyle ':completion:*' verbose true
-zstyle ':completion:*' extra-verbose ys
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
-zstyle ':completion:*:manuals' separate-sections true
-
-# make autocompletion faster by caching and prefix-only matching
-zstyle ':completion:*' accept-exact '*(N)'
+# Enable completion caching, use rehash to clear
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path $CACHE
-zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)*==34=34}:${(s.:.)LS_COLORS}")';
+zstyle ':completion:*' cache-path ~/.zshcache
 
-# fuzzy matching of completions for when you mistype them
-zstyle ':completion:*' completer _complete _match _approximate
-zstyle ':completion:*:match:*' original only
+# The name of the tag for the matches will be used as the name of the group
+zstyle ':completion:*' group-name ''
+
+# Menu friendly
+zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
+
+# When there are a lot of choices
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+
+# Completion menu
+# ‘select=num’, menu selection will only be started if there are at least num matches.
+zstyle ':completion:*' menu select=2 _complete _ignored _approximate
+zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
 
-# get better autocompletion accuracy by typing longer words
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+# Colors
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*:original' list-colors "=*=$color[red];$color[bold]"
+zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
+zstyle ':completion:*:aliases' list-colors "=*=$color[green]"
 
-# ignore completion functions for commands you don't have
-zstyle ':completion:*:functions' ignored-patterns '_*'
+# All messages not formatted in bold prefixed with ----
+zstyle ':completion:*' format '%B---- %d%b'
 
-# completing process IDs with menu selection
-zstyle ':completion:*:*:kill:*' menu yes select
-zstyle ':completion:*:kill:*'   force-list always
+# format descriptions (notice the vt100 escapes)
+zstyle ':completion:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
 
-zstyle ':filter-select:highlight' matched fg=red
-zstyle ':filter-select' max-lines 10
-zstyle ':filter-select' rotate-list yes
-zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
+# Normal messages
+zstyle ':completion:*:messages' format '%B---- %d%b'
 
-# Allow for autocomplete to be case insensitive
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|?=** r:|?=**'
+# Error messages
+zstyle ':completion:*:warnings' format "%B$fg[red]%}---- no match for: $fg[white]%d%b"
 
-# Initialize the autocompletion
-autoload -Uz compinit
+# cd will never select the parent directory (e.g.: cd ../<TAB>)
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
 
-if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]
-then
-  compinit
-else
-  compinit -C
-fi
+# Case and hyphen insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
 
-# Add . hidden files to menu completion
-_comp_options+=(globdots)
+# Separate directories and files
+# Example:
+#     $ ls
+#     ---- directory
+#     coverage/         deploy/
+#     ---- files
+#     deploy.yaml           http-client.env.json
+zstyle ':completion:*' list-dirs-first true
+
+
+# Kill completion
+zstyle ':completion:*:processes' command 'ps -au $USER'
+zstyle ':completion:*:processes-names' command 'ps -u $USER -o comm='
+zstyle ':completion:*:processes' list-colors '=(#b)( #[0-9]#)[^[/0-9a-zA-Z]#(*)=34=37;1=30;1'
+zstyle ':completion:*:*:killall:*:processes-names' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:(killall|pkill|kill):*' menu yes select
+zstyle ':completion:*:(killall|pkill|kill):*' force-list always
+
+# Avoid twice the same element on rm
+zstyle ':completion:*:rm:*' ignore-line yes
+
+# Completion for sudo when the command is not in the current path
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
