@@ -1,19 +1,12 @@
-zmodload -i zsh/complist
+# load the complete system
+autoload -Uz compinit
 
-# Enable completion caching, use rehash to clear
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zshcache
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
 
-# The name of the tag for the matches will be used as the name of the group
-zstyle ':completion:*' group-name ''
 
-# Menu friendly
-zstyle ':completion:*' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
-
-# When there are a lot of choices
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-
-# Completion menu
 # ‘select=num’, menu selection will only be started if there are at least num matches.
 zstyle ':completion:*' menu select=2 _complete _ignored _approximate
 zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
@@ -33,7 +26,7 @@ zstyle ':completion:*' format '%B---- %d%b'
 zstyle ':completion:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
 
 # Normal messages
-zstyle ':completion:*:messages' format '%B---- %d%b'
+zstyle ':completion:*:messages' format '%B---- %d%b'$$
 
 # Error messages
 zstyle ':completion:*:warnings' format "%B$fg[red]%}---- no match for: $fg[white]%d%b"
@@ -43,15 +36,6 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 
 # Case and hyphen insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
-
-# Separate directories and files
-# Example:
-#     $ ls
-#     ---- directory
-#     coverage/         deploy/
-#     ---- files
-#     deploy.yaml           http-client.env.json
-zstyle ':completion:*' list-dirs-first true
 
 
 # Kill completion
@@ -67,3 +51,6 @@ zstyle ':completion:*:rm:*' ignore-line yes
 
 # Completion for sudo when the command is not in the current path
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+
+zmodload -i zsh
+

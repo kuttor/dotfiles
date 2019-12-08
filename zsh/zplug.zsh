@@ -31,7 +31,7 @@ zplug "ytet5uy4/fzf-widgets", hook-load:'FZF_WIDGET_TMUX=1'
 zplug "rupa/z", use:z.sh
 
 # completions
-zplug "plugins/completion", from:oh-my-zsh
+#zplug "plugins/completion", from:oh-my-zsh
 zplug "zsh-users/zsh-completions"
 
 # readline
@@ -39,62 +39,45 @@ zplug "zpm-zsh/ssh"
 zplug "lib/clipboard", from:oh-my-zsh
 zplug "chrissicool/zsh-bash", from:oh-my-zsh
 zplug "plugins/sudo", from:oh-my-zsh
-zplug "hlissner/zsh-autopair"
-zplug "knu/zsh-manydots-magic"
-zplug "zsh-users/zsh-autosuggestions"
+zplug "knu/zsh-manydots-magic", from:github
+zplug "zsh-users/zsh-autosuggestions", from:github
 
 # colors
-zplug "tysonwolker/iterm-tab-colors"
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "zpm-zsh/colors"
-zplug "zsh-users/zsh-syntax-highlighting"
+zplug "zsh-users/zsh-syntax-highlighting", from:github
 
 # history
-zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-history-substring-search", from:github
 
 # -----------------------------------------------------------------------------
 
 # History Substring Search
-if zplug check "zsh-users/zsh-history-substring-search"; then
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='underline'
-    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=default,fg=9'
-fi
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='underline'
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=default,fg=9'
 
 # Autosuggestion
-if zplug check "zsh-users/zsh-autosuggestions"; then
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-    ZSH_AUTOSUGGEST_USE_ASYNC=1
-fi
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+ZSH_AUTOSUGGEST_USE_ASYNC=1
 
-if zplug check "junegunn/fzf"; then
-    #source $(brew --prefix)/opt/fzf/shell/completion.zsh
+# fzf
+FZF_DEFAULT_OPTS="
+     --extended-exact
+     --cycle
+     --reverse"
 
-    FZF_DEFAULT_OPTS="
-        --extended-exact
-        --cycle
-        --reverse"
+FZF_DEFAULT_OPTS+="
+    --bind pgup:preview-up
+    --bind pgdn:preview-down
+    --bind ctrl-f:jump
+    --bind ctrl-k:kill-line
+    --bind ctrl-p:toggle-preview
+    --bind ctrl-a:select-all"
 
-    FZF_DEFAULT_OPTS+="
-       --bind pgup:preview-up
-       --bind pgdn:preview-down
-       --bind ctrl-f:jump
-       --bind ctrl-k:kill-line
-       --bind ctrl-p:toggle-preview
-       --bind ctrl-a:select-all"
-
-    FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
-fi
-
-#if zplug check "zsh-users/zsh-syntax-highlighting"; then
-#    #ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=red'
-#    ZSH_HIGHLIGHT_STYLES[globbing]='fg=green'
-#    ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=green'
-#    ZSH_HIGHLIGHT_STYLES[path_approx]='fg=yellow'
-#    ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=magenta'
-#fi
+FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 
 zplug check --verbose || zplug install
 zplug load

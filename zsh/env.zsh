@@ -28,8 +28,6 @@ setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
 setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
 unsetopt FLOW_CONTROL           # Disable start/stop characters editor
 
-
-
 # Terminal
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
@@ -48,20 +46,17 @@ export PAGER="/usr/local/bin/bat"
 export MANPAGER=$PAGER
 export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 
+# Ruby
+export LDFLAGS="-L/usr/local/opt/ruby/lib"
+export CPPFLAGS="-I/usr/local/opt/ruby/include"
+export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
+
 # -----------------------------------------------------------------------------
 # Paths
 # -----------------------------------------------------------------------------
 
 # Automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
-
-# Autoload all function files
-#/for f in $ZFUNCTIONS/*; do
-#  unhash -f $f 2>/dev/null
-#  autoload +X $f
-#done
-
-autoload $(ls $ZFUNCTIONS)
 
 # Function Paths
 fpath=(
@@ -70,10 +65,14 @@ fpath=(
   ${fpath}
 )
 
+#autoload $(ls $ZFUNCTIONS)
+autoload $DOTFILES/functions/*
+
 # System Paths
 path=(
   /Users/${USER}/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
   /Users/${USER}/Library/Python/{2.7,3.7}/bin
+  /usr/local/opt/ruby/bin
   /usr/local/Cellar/coreutils/8.31/libexec/gnubin
   /usr/local/{bin,sbin}(N-/)
   /usr/{bin,sbin}(N-/)
@@ -89,7 +88,7 @@ export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46
 export EXA_COLORS="README*=38;5;208:Makefile=33"
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
 export CLICOLOR=1
-eval `dircolors ~/Code/bliss-dircolors/bliss.dircolors`
+#eval `dircolors ~/Code/bliss-dircolors/bliss.dircolors`
 
 # -----------------------------------------------------------------------------
 # Keybinds

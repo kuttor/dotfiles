@@ -428,7 +428,7 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>530 476 620 392 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>618 500 810 527 0 0 1680 1050 </string>
+	<string>1112 544 890 577 0 0 1680 1050 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>120 163 810 527 0 0 1680 1050 </string>
 	<key>New Bookmarks</key>
@@ -1204,14 +1204,16 @@
 		<key>screenFrame</key>
 		<string>{{0, 0}, {1680, 1050}}</string>
 		<key>topLeft</key>
-		<string>{471, 758}</string>
+		<string>{93, 890}</string>
 	</dict>
+	<key>NoSyncHaveUsedCopyMode</key>
+	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>B73FC7A9-0065-4895-ACA3-ED0A099CC2B4</string>
 	<key>NoSyncLastTipTime</key>
 	<real>590516510.32889795</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>77</integer>
+	<integer>79</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -2006,7 +2008,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-11-30T09:21:42Z</date>
+	<date>2019-12-08T01:01:32Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateRelaunchingMarker</key>
@@ -2034,5 +2036,9 @@
 	<integer>0</integer>
 	<key>iTerm Version</key>
 	<string>3.3.8beta1</string>
+	<key>kCPKSelectionViewPreferredModeKey</key>
+	<integer>0</integer>
+	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
+	<false/>
 </dict>
 </plist>

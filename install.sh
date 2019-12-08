@@ -25,7 +25,12 @@ wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-I
 mv $HOME/.dotfiles/fonts/* /usr/share/fonts/
 
 # Install Zplug
-curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+# curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+
+# Install Zplugin
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zplugin/master/doc/install.sh)"
+
+
 
 # Custom ZSH Config
 ln -fs $HOME/.dotfiles/zsh/zshrc.zsh $HOME/.zshrc
