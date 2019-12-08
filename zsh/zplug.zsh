@@ -16,16 +16,11 @@ source "$HOME/.zplug/init.zsh"
 zplug "mafredri/zsh-async"
 zplug "joshjon/bliss-zsh", use:bliss.zsh-theme, from:github, as:theme
 
-# tmux
-zplug "zpm-zsh/tmux"
-zplug "jsahlen/tmux-vim-integration.plugin.zsh"
-
 # git
 zplug "github/hub"
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/gitignore", from:oh-my-zsh
 zplug "rapgenic/zsh-git-complete-urls"
-zplug "seletskiy/zsh-git-smart-commands"
 zplug "unixorn/git-extra-commands"
 
 # fzf/z
@@ -58,14 +53,6 @@ zplug "zsh-users/zsh-syntax-highlighting"
 zplug "zsh-users/zsh-history-substring-search"
 
 # -----------------------------------------------------------------------------
-
-# History EnhanCD
-if zplug check "b4b4r07/zsh-history-enhanced"; then
-    ZSH_HISTORY_FILE="$HISTFILE"
-    ZSH_HISTORY_FILTER="fzf"
-    ZSH_HISTORY_KEYBIND_GET_BY_DIR="^r"
-    ZSH_HISTORY_KEYBIND_GET_ALL="^r^a"
-fi
 
 # History Substring Search
 if zplug check "zsh-users/zsh-history-substring-search"; then
