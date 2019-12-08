@@ -1,23 +1,15 @@
-# load the complete system
-autoload -Uz compinit
-
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
-
+for dump in ~/.zcompdump(N.mh+24); do compinit; done && compinit -C
 
 # ‘select=num’, menu selection will only be started if there are at least num matches.
 zstyle ':completion:*' menu select=2 _complete _ignored _approximate
 zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
+zstyle ':completion:*:approximate:'    max-errors 'reply=( $((($#PREFIX+$#SUFFIX)/3 )) numeric )'
 
 # Colors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*:original' list-colors "=*=$color[red];$color[bold]"
-zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
-zstyle ':completion:*:aliases' list-colors "=*=$color[green]"
+#zstyle ':completion:*:original' list-colors "=*=$color[red];$color[bold]"
+#zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
+#zstyle ':completion:*:aliases' list-colors "=*=$color[green]"
 
 # All messages not formatted in bold prefixed with ----
 zstyle ':completion:*' format '%B---- %d%b'
@@ -37,7 +29,6 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 # Case and hyphen insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
 
-
 # Kill completion
 zstyle ':completion:*:processes' command 'ps -au $USER'
 zstyle ':completion:*:processes-names' command 'ps -u $USER -o comm='
@@ -52,5 +43,19 @@ zstyle ':completion:*:rm:*' ignore-line yes
 # Completion for sudo when the command is not in the current path
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 
-zmodload -i zsh
+# Insert all expansions for expand completer
+zstyle ':completion:*:expand:*'        tag-order all-expansions
+zstyle ':completion:*:history-words'   list false
 
+# Activate menu
+zstyle ':completion:*:history-words'   menu yes
+
+# Ignore duplicate entries
+zstyle ':completion:*:history-words'   remove-all-dups yes
+zstyle ':completion:*:history-words'   stop yes
+
+# Match uppercase from lowercase and complete from the middle of filename
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
+
+# Offer indexes before parameters in subscripts
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
