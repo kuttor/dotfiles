@@ -362,6 +362,10 @@
 	</dict>
 	<key>Default Bookmark Guid</key>
 	<string>DEE6E5D1-C9C9-4F23-827A-9AE02AE10380</string>
+	<key>DimInactiveSplitPanes</key>
+	<true/>
+	<key>DimOnlyText</key>
+	<true/>
 	<key>DoubleClickPerformsSmartSelection</key>
 	<true/>
 	<key>EnableAPIServer</key>
@@ -428,7 +432,7 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>530 476 620 392 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1112 544 890 577 0 0 1680 1050 </string>
+	<string>0 0 1680 1027 0 0 1680 1050 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>120 163 810 527 0 0 1680 1050 </string>
 	<key>New Bookmarks</key>
@@ -781,6 +785,8 @@
 			<integer>0</integer>
 			<key>Initial Text</key>
 			<string></string>
+			<key>Initial Use Transparency</key>
+			<false/>
 			<key>Jobs to Ignore</key>
 			<array>
 				<string>rlogin</string>
@@ -1213,7 +1219,7 @@
 	<key>NoSyncLastTipTime</key>
 	<real>590516510.32889795</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>79</integer>
+	<integer>81</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -2019,6 +2025,8 @@
 	<true/>
 	<key>SoundForEsc</key>
 	<false/>
+	<key>SplitPaneDimmingAmount</key>
+	<real>0.58315602836879432</real>
 	<key>SuppressRestartAnnouncement</key>
 	<true/>
 	<key>TabStyleWithAutomaticOption</key>
@@ -2028,7 +2036,6 @@
 	<key>ToolbeltTools</key>
 	<array>
 		<string>Profiles</string>
-		<string>Paste History</string>
 	</array>
 	<key>VisualIndicatorForEsc</key>
 	<false/>

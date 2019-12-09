@@ -6,8 +6,7 @@
 # name: Andrew Kuttor
 # mail: andrew.kuttor@gmail.com
 
-# ZPlugin Initiate
-source "$HOME/.zplugin/bin/zplugin.zsh"
+source "${HOME}/.zplugin/bin/zplugin.zsh"
 autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin
 
@@ -67,16 +66,16 @@ zplugin light trapd00r/LS_COLORS
 zplugin ice lucid wait"0"
 zplugin light agkozak/zsh-z
 
+# Z Replacement
+zplugin ice wait"0b" lucid
+zplugin light skywind3000/z.lua
+
 # FZF: Fuzzy Finder
 zplugin ice from"gh-r" as"program"
-zplugin lad junegunn/fzf-bin
-
-# FZF-Z: FZF Powered Z Completions
-zplugin ice wait lucid
-zplugin light andrewferrier/fzf-z
+zplugin light junegunn/fzf-bin
 
 # FZ: Z Tab-Completions
-zplugin ice wait"!0"
+zplugin ice wait"0" lucid
 zplugin light changyuheng/fz
 
 # Pip Completion: Oh-My-Zsh Version

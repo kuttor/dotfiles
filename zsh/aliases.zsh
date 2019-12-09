@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # ------------------------------------------------------------------------------
 # Name    : aliases
 # About   : Contains user aliases and functions
@@ -22,9 +22,13 @@ alias git-new-repo="git init && git add --all && git commit -m 'Initial Commit'"
 alias h="fc -lf"
 alias historysummary="history | awk '{a[\$2]++} END{for(i in a){printf \"%5d\t%s\n\",a[i],i}}' | sort -rn | head"
 alias hu="h|rg "
+alias l="exa -1 --color=always --group-directories-first --all"
+alias ll="exa --binary --group --header --all --long --links --inode --classify --blocks --group-directories-first"
+alias ls="exa --git --color=always --group-directories-first"
 alias mkdir="mkdir -pv"
 alias molecule-create="molecule init scenario -r "
 alias mtop="htop --sort-key=PERCENT_MEM"
+alias mv='mv -ip'
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias myip='ifconfig -a | perl -nle"/(\d+\.\d+\.\d+\.\d+)/ && print $1"'
 alias path='echo $PATH | tr -s ":" "\n"'
@@ -43,27 +47,10 @@ alias sudo="sudo "
 alias tf="terraform"
 alias top-ten="print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10"
 alias vim="nvim"
-alias zmv="noglob zmv -W"
 alias vimswap_clean="rm -rf $VIM_SWAP/*"
 alias vscode_settings="$HOME/Library/Application\ Support/Code/User/settings.json"
-
-
-if command -v exa >/dev/null 2>&1; then
-    alias ls="exa --git --color=always --group-directories-first"
-    alias ll="exa --binary --group --header --all --extended --long --links --inode --classify --blocks --group-directories-first"
-    alias l="exa --git --color=always --group-directories-first"
-fi
-
-# Interactive/verbose commands.
-alias mv='mv -i'
-for c in cp rm chmod chown rename
-do
-  alias $c="$c -v"
-done
-
-#alias v='vim -R -'
-#for i in /usr/share/vim/vim*/macros/less.sh(N)
-#do
-#  alias v="$i"
-#done
-
+alias zmv="noglob zmv -W"
+alias zz="z -c"
+alias zi="z -i"
+alias zf="z -I"
+alias zb="z -b"
