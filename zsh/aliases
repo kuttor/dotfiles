@@ -28,7 +28,6 @@ alias ls="exa --git --color=always --group-directories-first"
 alias mkdir="mkdir -pv"
 alias molecule-create="molecule init scenario -r "
 alias mtop="htop --sort-key=PERCENT_MEM"
-alias mv='mv -ip'
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias myip='ifconfig -a | perl -nle"/(\d+\.\d+\.\d+\.\d+)/ && print $1"'
 alias path='echo $PATH | tr -s ":" "\n"'

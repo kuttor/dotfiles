@@ -17,10 +17,8 @@ skip_global_compinit=1
 #stty -ixon -ixoff
 
 # Sources
-source "$ZDOTDIR/zplugin.zsh"
-source "$ZDOTDIR/env.zsh"
-source "$ZDOTDIR/aliases.zsh"
-source "$ZDOTDIR/completes.zsh"
-source "$ZDOTDIR/history.zsh"
-
-dedupe_path # Remove any duplicate paths
+source "$ZDOTDIR/zplugin"
+source "$ZDOTDIR/env"
+source "$ZDOTDIR/aliases"
+source "$ZDOTDIR/completes"
+source "$ZDOTDIR/history"
