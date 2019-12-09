@@ -22,3 +22,9 @@ source "$ZDOTDIR/env"
 source "$ZDOTDIR/aliases"
 source "$ZDOTDIR/completes"
 source "$ZDOTDIR/history"
+source "$ZDOTDIR/keybind"
+
+
+
+
+

@@ -1,0 +1,44 @@
+#!/usr/bin/env zsh
+# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
+
+# file: bindkey.zsh
+# info: Main config file for keybindings
+
+# -----------------------------------------------------------------------------
+# Keybinds
+# -----------------------------------------------------------------------------
+
+# Emacs
+bindkey -e
+
+# Quote pasted URLs
+autoload -Uz run-help-git
+autoload -Uz run-help-ip
+autoload -Uz run-help-openssl
+autoload -Uz run-help-p4
+autoload -Uz run-help-sudo
+autoload -Uz run-help-svk
+autoload -Uz run-help-svn
+autoload -U url-quote-magic
+autoload -U select-word-style
+autoload -U edit-command-line
+autoload -Uz colors && colors
+autoload -U parseopts
+autoload -U zargs
+autoload -U zcalc
+autoload -U zed
+autoload -U zmv
+
+zle -N select-word-style bash
+zle -N edit-command-line
+zle -N expand-or-complete-with-dots
+zle -N self-insert url-quote-magic
+
+bindkey "^E"      edit-command-line
+bindkey "^I"      expand-or-complete-with-dots
+bindkey " "       magic-space
+bindkey "^[[H"    beginning-of-line
+bindkey "^[[F"    end-of-line
+bindkey "^[[Z"    autosuggest-accept
+bindkey "^[[1;2D" backward-word
+bindkey "^[[1;2C" forward-word
