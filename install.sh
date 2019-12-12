@@ -24,16 +24,11 @@ wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-B
 wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Italic.ttf /Users/akuttor/Library/Font/
 mv $HOME/.dotfiles/fonts/* /usr/share/fonts/
 
-# Install Zplug
-# curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-
 # Install Zplugin
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zplugin/master/doc/install.sh)"
 
-
-
 # Custom ZSH Config
-ln -fs $HOME/.dotfiles/zsh/zshrc.zsh $HOME/.zshrc
+ln -fs $HOME/.dotfiles/zsh/zshrc $HOME/.zshrc
 
 # Enable italics via terminfo
 tic -o $HOME/.terminfo $HOME/.dotfiles/iterm/xterm-256color.terminfo
