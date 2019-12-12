@@ -37,7 +37,7 @@ export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Zlua
-export _ZL_DATA="$CONFIG/z.cache"
+export _ZL_DATA="$CACHE/z.cache"
 export _ZL_MATCH_MODE=1
 
 # Editor

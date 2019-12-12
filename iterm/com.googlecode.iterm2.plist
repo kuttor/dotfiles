@@ -1101,7 +1101,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>FiraMonoForPowerline-Regular 18</string>
+			<string>HackNerdFontComplete-Regular 18</string>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -1182,19 +1182,16 @@
 	<array>
 		<string>3.3.6</string>
 		<string>3.3.7beta4</string>
-		<string>3.3.4</string>
+		<string>3.3.8beta1</string>
 		<string>3.3.7beta3</string>
 		<string>3.3.7beta2</string>
 		<string>3.3.5</string>
 		<string>3.3.3</string>
-		<string>3.3.8beta1</string>
+		<string>3.3.4</string>
 	</array>
 	<key>NoSyncBFPRecents</key>
 	<array>
-		<string>Fira Mono for Powerline</string>
-		<string>Monaco</string>
-		<string>FiraFlott</string>
-		<string>Fira Code iScript</string>
+		<string>Hack Nerd Font</string>
 	</array>
 	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
 	<true/>
@@ -1223,7 +1220,7 @@
 	<key>NoSyncLastTipTime</key>
 	<real>590516510.32889795</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>90</integer>
+	<integer>91</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
