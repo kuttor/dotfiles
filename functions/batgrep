@@ -1,0 +1,340 @@
+#!/usr/bin/env bash
+BAT=bat
+printc(){
+printf "$(sed "$_PRINTC_PATTERN" <<<"$1")" "${@:2}"
+}
+printc_init(){
+case "$1" in
+true)_PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI";;
+false)_PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN";;
+""){
+_PRINTC_PATTERN_ANSI=""
+_PRINTC_PATTERN_PLAIN=""
+local name
+local ansi
+while read -r name ansi;do
+if [[ -z $name && -z $ansi ]]||[[ ${name:0:1} == "#" ]];then
+continue
+fi
+ansi="$(sed 's/\\/\\\\/' <<<"$ansi")"
+_PRINTC_PATTERN_PLAIN="${_PRINTC_PATTERN_PLAIN}s/%{$name}//g;"
+_PRINTC_PATTERN_ANSI="${_PRINTC_PATTERN_ANSI}s/%{$name}/$ansi/g;"
+done
+if [ -t 1 ];then
+_PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI"
+else
+_PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN"
+fi
+}
+esac
+}
+print_warning(){
+printc "%{YELLOW}[%s warning]%{CLEAR}: $1%{CLEAR}\n" "$PROGRAM" "${@:2}" 1>&2
+}
+print_error(){
+printc "%{RED}[%s error]%{CLEAR}: $1%{CLEAR}\n" "$PROGRAM" "${@:2}" 1>&2
+}
+printc_init <<END
+	CLEAR	\x1B[0m
+	RED		\x1B[31m
+	GREEN	\x1B[32m
+	YELLOW	\x1B[33m
+	BLUE	\x1B[34m
+	MAGENTA	\x1B[35m
+	CYAN	\x1B[36m
+
+	DIM		\x1B[2m
+END
+SCRIPT_PAGER_CMD=("$PAGER")
+SCRIPT_PAGER_ARGS=()
+if [[ "$(basename "${SCRIPT_PAGER_CMD[0]}")" == "less" ]];then
+SCRIPT_PAGER_ARGS=(-R)
+fi
+if [[ -n ${BAT_PAGER+x} ]];then
+SCRIPT_PAGER_CMD=($BAT_PAGER)
+SCRIPT_PAGER_ARGS=()
+fi
+if ! [[ -t 1 ]];then
+SCRIPT_PAGER_CMD=()
+SCRIPT_PAGER_ARGS=()
+fi
+pager_exec(){
+if [[ -n $1 ]];then
+if [[ -n $SCRIPT_PAGER_CMD ]];then
+"$@"|"${SCRIPT_PAGER_CMD[@]}" "${SCRIPT_PAGER_ARGS[@]}"
+return $?
+else
+"$@"
+return $?
+fi
+fi
+}
+pager_display(){
+if [[ -n $SCRIPT_PAGER_CMD ]];then
+"${SCRIPT_PAGER_CMD[@]}" "${SCRIPT_PAGER_ARGS[@]}"
+else
+cat
+fi
+}
+PROGRAM="$(basename "$0" .sh)"
+SHIFTOPT_HOOKS=()
+setargs(){
+_ARGV=("$@")
+_ARGV_LAST="$((${#_ARGV[@]}-1))"
+_ARGV_INDEX=0
+}
+shiftopt(){
+[[ $_ARGV_INDEX -gt $_ARGV_LAST ]]&&return 1
+OPT="${_ARGV[$_ARGV_INDEX]}"
+unset OPT_VAL
+if [[ $OPT =~ ^--[a-zA-Z0-9_-]+=.* ]];then
+OPT_VAL="${OPT#*=}"
+OPT="${OPT%%=*}"
+fi
+((_ARGV_INDEX++))
+local hook
+for hook in "${SHIFTOPT_HOOKS[@]}";do
+if "$hook";then
+shiftopt
+return $?
+fi
+done
+return 0
+}
+shiftval(){
+if [[ -n ${OPT_VAL+x} ]];then
+return 0
+fi
+OPT_VAL="${_ARGV[$_ARGV_INDEX]}"
+((_ARGV_INDEX++))
+if [[ $OPT_VAL =~ -.* ]];then
+printc "%{RED}%s: '%s' requires a value%{CLEAR}\n" "$PROGRAM" "$ARG"
+exit 1
+fi
+}
+setargs "$@"
+hook_color(){
+SHIFTOPT_HOOKS+=("__shiftopt_hook__color")
+__shiftopt_hook__color(){
+case "$OPT" in
+--no-color)OPT_COLOR=false
+printc_init "$OPT_COLOR"
+;;
+--color){
+case "$OPT_VAL" in
+auto):;;
+always|true)OPT_COLOR=true
+printc_init "$OPT_COLOR"
+;;
+never|false)OPT_COLOR=false
+printc_init "$OPT_COLOR"
+esac
+};;
+*)return 1
+esac
+}
+if [[ -z $OPT_COLOR ]];then
+if [[ -t 1 ]];then
+OPT_COLOR=true
+else
+OPT_COLOR=false
+fi
+printc_init "$OPT_COLOR"
+fi
+}
+hook_pager(){
+SHIFTOPT_HOOKS+=("__shiftopt_hook__pager")
+__shiftopt_hook__pager(){
+case "$OPT" in
+--no-pager)shiftval
+SCRIPT_PAGER_CMD=''
+;;
+--paging)shiftval
+{
+case "$OPT_VAL" in
+auto):;;
+never)SCRIPT_PAGER_CMD='';;
+always):
+esac
+}
+;;
+--pager){
+shiftval
+SCRIPT_PAGER_CMD=($OPT_VAL)
+PAGER_ARGS=()
+};;
+*)return 1
+esac
+}
+}
+bat_version(){
+"$BAT" --version|cut -d ' ' -f 2
+return
+}
+version_compare(){
+local version="$1"
+local compare="$3"
+if ! [[ $version =~ \.$ ]];then
+version="$version."
+fi
+if ! [[ $compare =~ \.$ ]];then
+compare="$compare."
+fi
+version_compare__recurse "$version" "$2" "$compare"
+return $?
+}
+version_compare__recurse(){
+local version="$1"
+local operator="$2"
+local compare="$3"
+local v_major="${version%%.*}"
+local c_major="${compare%%.*}"
+local v_minor="${version#*.}"
+local c_minor="${compare#*.}"
+if [[ -z $v_minor && -z $c_minor ]];then
+[ "$v_major" $operator "$c_major" ]
+return $?
+fi
+if [[ -z $v_minor ]];then
+v_minor="0."
+fi
+if [[ -z $c_minor ]];then
+c_minor="0."
+fi
+case "$operator" in
+-eq)[[ $v_major -ne $c_major ]]&&return 1;;
+-ne)[[ $v_major -ne $c_major ]]&&return 0;;
+-ge|-gt)[[ $v_major -lt $c_major ]]&&return 1
+[[ $v_major -gt $c_major ]]&&return 0
+;;
+-le|-lt)[[ $v_major -gt $c_major ]]&&return 1
+[[ $v_major -lt $c_major ]]&&return 0
+esac
+version_compare__recurse "$v_minor" "$operator" "$c_minor"
+}
+hook_color
+hook_pager
+RG_ARGS=()
+BAT_ARGS=()
+PATTERN=""
+FILES=()
+OPT_CONTEXT_BEFORE=2
+OPT_CONTEXT_AFTER=2
+OPT_FOLLOW=true
+OPT_SNIP=""
+OPT_HIGHLIGHT=true
+BAT_STYLE="header,numbers"
+if version_compare "$(bat_version)" -gt "0.12";then
+OPT_SNIP=",snip"
+fi
+while shiftopt;do
+case "$OPT" in
+\
+-i|--ignore-case)RG_ARGS+=("--ignore-case");;
+-A|--after-context)shiftval
+OPT_CONTEXT_AFTER="$OPT_VAL"
+;;
+-B|--before-context)shiftval
+OPT_CONTEXT_BEFORE="$OPT_VAL"
+;;
+-C|--context)shiftval
+OPT_CONTEXT_BEFORE="$OPT_VAL"
+OPT_CONTEXT_AFTER="$OPT_VAL"
+;;
+-F|--fixed-strings|\
+-U|--multiline|\
+-P|--pcre2|\
+-z|--search-zip|\
+-w|--word-regexp|\
+--one-file-system|\
+--multiline-dotall|\
+--ignore|--no-ignore|\
+--crlf|--no-crlf|\
+--hidden|--no-hidden)RG_ARGS+=("$OPT");;
+-E|--encoding|\
+-g|--glob|\
+-t|--type|\
+-T|--type-not|\
+-m|--max-count|\
+--max-depth|\
+--iglob|\
+--ignore-file)shiftval
+RG_ARGS+=("$OPT" "$OPT_VAL")
+;;
+\
+--no-follow)OPT_FOLLOW=false
+;;
+--no-snip)OPT_SNIP="";;
+--no-highlight)OPT_HIGHLIGHT=false;;
+\
+-*){
+printc "%{RED}%s: unknown option '%s'%{CLEAR}\n" "$PROGRAM" "$OPT" 1>&2
+exit 1
+};;
+\
+*){
+if [ -z "$PATTERN" ];then
+PATTERN="$OPT"
+else
+FILES+=("$OPT")
+fi
+}
+esac
+done
+if [[ -z $PATTERN ]];then
+print_error "no pattern provided"
+exit 1
+fi
+SEP="$(printc "%{DIM}%$(tput cols)s%{CLEAR}"|sed "s/ /─/g")"
+if "$OPT_FOLLOW";then
+RG_ARGS+=("--follow")
+fi
+if "$OPT_COLOR";then
+BAT_ARGS+=("--color=always")
+else
+BAT_ARGS+=("--color=never")
+fi
+if [[ $OPT_CONTEXT_BEFORE -eq 0 && $OPT_CONTEXT_AFTER -eq 0 ]];then
+OPT_SNIP=""
+OPT_HIGHLIGHT=false
+fi
+main(){
+FOUND_FILES=()
+FOUND=0
+FIRST_PRINT=true
+LAST_LR=()
+LAST_LH=()
+LAST_FILE=''
+do_print(){
+[[ -z $LAST_FILE ]]&&return 0
+"$FIRST_PRINT"&&echo "$SEP"
+FIRST_PRINT=false
+"$BAT" "${BAT_ARGS[@]}" \
+"${LAST_LR[@]}" \
+"${LAST_LH[@]}" \
+--style="$BAT_STYLE$OPT_SNIP" \
+--paging=never \
+"$LAST_FILE"
+echo "$SEP"
+}
+while IFS=':' read -r file line column;do
+((FOUND++))
+if [[ $LAST_FILE != "$file" ]];then
+do_print
+LAST_FILE="$file"
+LAST_LR=()
+LAST_LH=()
+fi
+line_start=$((line-OPT_CONTEXT_BEFORE))
+line_end=$((line+OPT_CONTEXT_AFTER))
+[[ $line_start -gt 0 ]]||line_start=''
+LAST_LR+=("--line-range=$line_start:$line_end")
+[[ $OPT_HIGHLIGHT == "true" ]]&&LAST_LH+=("--highlight-line=$line")
+done < <(rg --with-filename --vimgrep "${RG_ARGS[@]}" --sort path "$PATTERN" "${FILES[@]}")
+do_print
+if [[ $FOUND -eq 0 ]];then
+exit 2
+fi
+}
+pager_exec main
+exit $?
