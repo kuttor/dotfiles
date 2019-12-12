@@ -24,7 +24,5 @@ source "$ZDOTDIR/completes"
 source "$ZDOTDIR/history"
 source "$ZDOTDIR/keybind"
 
-
-
-
-
+# Theme
+eval "$(starship init zsh)"
