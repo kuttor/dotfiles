@@ -35,7 +35,10 @@ export KEYTIMEOUT=1
 export ITERM_24BIT=1
 export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export _Z_DATA="$CONFIG/z.cache"
+
+# Zlua
+export _ZL_DATA="$CONFIG/z.cache"
+export _ZL_MATCH_MODE=1
 
 # Editor
 export EDITOR="/usr/local/bin/nvim"
