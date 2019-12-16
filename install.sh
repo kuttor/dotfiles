@@ -15,6 +15,9 @@ touch "$HOME/.hushlogin"
 # Install Homebrew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
+# Install the Homebrew packages
+$HOME/.dotfiles/brew bundle
+
 # Set ZSH
 chsh -s /usr/local/bin/zsh
 dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
