@@ -29,6 +29,7 @@ setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
 unsetopt FLOW_CONTROL           # Disable start/stop characters editor
 
 # Terminal
+source $DOTFILES/iterm/.iterm2_shell_integration.zsh
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export KEYTIMEOUT=1
