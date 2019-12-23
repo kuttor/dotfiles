@@ -25,4 +25,4 @@ source "$ZDOTDIR/history"
 source "$ZDOTDIR/keybind"
 
 # Theme
-eval "$(starship init zsh)"
+# eval "$(starship init zsh)"
