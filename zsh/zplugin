@@ -47,8 +47,8 @@ zplugin ice from"gh-r" as"program" bpick"*linux-x86_64*" mv"exa* -> exa" pick"ex
 zplugin light ogham/exa
 
 # Fd: Find Replacement
-zplugin ice from"gh-r" as"program" mv"fd* -> fd" pick"fd/fd"; zplugin light sharkdp/fd
-zplg ice depth'1' blockf
+zplugin ice from"gh-r" as"program" mv"fd* -> fd" pick"fd/fd"
+zplugin light sharkdp/fd
 
 # Syntax highlighter: Speed Enhanced
 zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
