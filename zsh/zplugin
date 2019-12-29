@@ -58,11 +58,7 @@ zplugin light zdharma/fast-syntax-highlighting
 zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
 zplugin light trapd00r/LS_COLORS
 
-# Z: Directory Jumper
-zplugin ice lucid wait"0"
-zplugin light agkozak/zsh-z
-
-# Z Replacement
+# Zlua: Z Replacement
 zplugin ice wait"0b" lucid
 zplugin light skywind3000/z.lua
 

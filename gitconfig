@@ -13,7 +13,7 @@
     status-select = "!git-status-select"
 
 [user]
-    name = "Andrew Kuttor"
+	name = Andrew Kuttor
 	email = Andrew.Kuttor@usanainc.com
 
 [github]
