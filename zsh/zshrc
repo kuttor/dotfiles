@@ -11,18 +11,18 @@ TRAPWINCH() {
 }
 
 #export ZDOTDIR="${${(%):-%N}:A:h}"
-export ZDOTDIR="$HOME/.dotfiles/zsh"
+export ZSH="$HOME/.dotfiles/zsh"
 limit coredumpsize 0
 skip_global_compinit=1
 #stty -ixon -ixoff
 
 # Sources
-source "$ZDOTDIR/zplugin"
-source "$ZDOTDIR/env"
-source "$ZDOTDIR/aliases"
-source "$ZDOTDIR/completes"
-source "$ZDOTDIR/history"
-source "$ZDOTDIR/keybind"
+source "$ZSH/zplugin"
+source "$ZSH/env"
+source "$ZSH/aliases"
+source "$ZSH/completes"
+source "$ZSH/history"
+source "$ZSH/keybind"
 
 # Theme
- eval "$(starship init zsh)"
+# eval "$(starship init zsh)"

@@ -18,6 +18,10 @@ autoload -Uz compinit && compinit
 zplugin cdreplay -q
 zplugin cdlist
 
+# Theme: 
+zplugin ice pick"async.zsh" src"pure.zsh"
+zplugin light sindresorhus/pure
+
 # Zsh-Completions: Various Command Completions
 zplugin ice wait"0" lucid blockf
 zplugin light zsh-users/zsh-completions
