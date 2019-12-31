@@ -119,7 +119,7 @@ zplugin ice svn pick"completion.zsh" src"git.zsh"
 zplugin snippet OMZ::lib
 
 # Turbo-enabled CompDefs
-#autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit
 #zplugin cdreplay -q
 #zplugin cdlist
 
