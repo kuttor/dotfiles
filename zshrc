@@ -5,16 +5,11 @@
 # info: main configuration file
 # name: andrew kuttor
 # mail: andrew.kuttor@gmail.com
-
-TRAPWINCH() {
-  zle && { zle reset-prompt; zle -R }
-}
-
-#export ZDOTDIR="${${(%):-%N}:A:h}"
+#TRAPWINCH() { zle && { zle reset-prompt; zle -R }}
 export ZSH="$HOME/.dotfiles/zsh"
 limit coredumpsize 0
 skip_global_compinit=1
-#stty -ixon -ixoff
+stty -ixon -ixoff
 
 # Sources
 source "$ZSH/zplugin"
@@ -23,6 +18,3 @@ source "$ZSH/aliases"
 source "$ZSH/completes"
 source "$ZSH/history"
 source "$ZSH/keybind"
-
-# Theme
-# eval "$(starship init zsh)"

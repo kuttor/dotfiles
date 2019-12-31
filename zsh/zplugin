@@ -1,3 +1,4 @@
+
 #! /usr/bin/env zsh
 # -*- coding: utf-8 -*-
 
@@ -13,18 +14,29 @@ autoload -Uz _zplugin
 # Compinit speed up loading
 ZPLGM[COMPINIT_OPTS]=-C
 
-# Turbo-enabled CompDefs
-autoload -Uz compinit && compinit
-zplugin cdreplay -q
-zplugin cdlist
-
-# Theme: 
+# Theme: Pure
 zplugin ice pick"async.zsh" src"pure.zsh"
 zplugin light sindresorhus/pure
+
+# Archey-OSX: Provides Archey like stuff for OSX
+zplugin ice as"program" pick"bin/archey" atload"/usr/local/bin/archey -c"
+zplugin load obihann/archey-osx
+
+# Git-Extras: Adds Git Extras
+zplugin ice as"program" pick"$ZPFX/bin/git-*" make"PREFIX=$ZPFX" nocompile
+zplugin light tj/git-extras
+
+# ZSH-Startify: load with Turbo-Mode being in use
+zplugin ice wait'0' lucid atload'zsh-startify'
+zplugin load zdharma/zsh-startify
 
 # Zsh-Completions: Various Command Completions
 zplugin ice wait"0" lucid blockf
 zplugin light zsh-users/zsh-completions
+
+# You Should Use: Shows unused aliases
+zplugin ice wait"0" lucid blockf
+zplugin light MichaelAquilina/zsh-you-should-use
 
 # Zsh-Autosuggestions: Because They're Damn Cool
 zplugin ice wait"0" lucid atload"_zsh_autosuggest_start"
@@ -33,6 +45,10 @@ zplugin light zsh-users/zsh-autosuggestions
 # TheFuck: Typo Correction for misspelled commands
 zplugin ice wait'1' lucid
 zplugin light laggardkernel/zsh-thefuck
+
+# SSH-Connect: SSH Manager
+zplugin ice wait"0" lucid blockf
+zplugin light gko/ssh-connect
 
 # Git: Oh-My-Zsh Version
 zplugin ice svn pick"completion.zsh" src"git.zsh"
@@ -51,7 +67,7 @@ zplugin ice from"gh-r" as"program" bpick"*appimage*" mv"nvim* -> nvim" pick"nvim
 zplugin light neovim/neovim
 
 # Exa: LS Replacement
-zplugin ice from"gh-r" as"program" bpick"*linux-x86_64*" mv"exa* -> exa" pick"exa"
+zplugin ice wait"2" lucid from"gh-r" as"program" mv"exa* -> exa"
 zplugin light ogham/exa
 
 # Fd: Find Replacement
@@ -63,8 +79,32 @@ zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
 zplugin light zdharma/fast-syntax-highlighting
 
 # LS_Colors: Trapd00r-Style Shell Coloring
-zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
+#zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
+#zplugin light trapd00r/LS_COLORS
+zplugin ice wait"0c" lucid reset \
+    atclone"local P=${${(M)OSTYPE:#*darwin*}:+g}
+            \${P}sed -i \
+            '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
+            \${P}dircolors -b LS_COLORS > c.zsh" \
+    atpull'%atclone' pick"c.zsh" nocompile'!' \
+    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
 zplugin light trapd00r/LS_COLORS
+
+# declare-zsh
+zplugin ice wait"2" lucid
+zplugin load zdharma/declare-zsh
+
+# fzf-marks
+zplugin ice wait lucid
+zplugin load urbainvaes/fzf-marks
+
+# Forgit: Add FZF to Git commands
+zplugin ice wait lucid
+zplugin load 'wfxr/forgit'
+
+# Zsh-Autopair: Autoclosing them quotes
+zplugin ice wait lucid
+zplugin load hlissner/zsh-autopair
 
 # Zlua: Z Replacement
 zplugin ice wait"0b" lucid
@@ -81,3 +121,9 @@ zplugin light changyuheng/fz
 # Pip Completion: Oh-My-Zsh Version
 zplugin ice svn pick"completion.zsh" src"git.zsh"
 zplugin snippet OMZ::lib
+
+# Turbo-enabled CompDefs
+#autoload -Uz compinit && compinit
+#zplugin cdreplay -q
+#zplugin cdlist
+

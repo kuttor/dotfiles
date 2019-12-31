@@ -33,6 +33,7 @@ autoload -U zmv
 zle -N select-word-style bash
 zle -N edit-command-line
 zle -N expand-or-complete-with-dots
+zle -N insert-last-command-output
 zle -N self-insert url-quote-magic
 
 bindkey "^E"      edit-command-line
@@ -43,3 +44,4 @@ bindkey "^[[F"    end-of-line
 bindkey "^[[Z"    autosuggest-accept
 bindkey "^[[1;2D" backward-word
 bindkey "^[[1;2C" forward-word
+bindkey "^X^L" insert-last-command-output
