@@ -59,3 +59,6 @@ zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower
 
 # Offer indexes before parameters in subscripts
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+
+# TheFuck Cache
+zstyle ":prezto:runcom" zpreztorc "$CACHE/.thefuck"
