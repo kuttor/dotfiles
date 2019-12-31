@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # file: install.sh
 # info: creates necessary links/files to setup dotfiles and install packages
