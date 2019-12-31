@@ -11,11 +11,39 @@
 # -----------------------------------------------------------------------------
 # Tap
 # -----------------------------------------------------------------------------
+
 tap "buo/cask-upgrade" # 3rd party brew package updater
+tap "buo/cask-upgrade"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/command-not-found"
+tap "homebrew/core"
+tap "homebrew/services"
+
+# -----------------------------------------------------------------------------
+# Casks
+# -----------------------------------------------------------------------------
+
+cask "font-firacode-nerd-font-mono"
+cask "popclip"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlprettypatch"
+cask "qlstephen"
+cask "qlvideo"
+cask "quicklook-csv"
+cask "quicklook-json"
+cask "slack"
+cask "vagrant"
+cask "virtualbox"
+cask "visual-studio-code-insiders"
 
 # -----------------------------------------------------------------------------
 # Brew
 # -----------------------------------------------------------------------------
+
 brew "ack"
 brew "bat"
 brew "bind"
@@ -41,30 +69,9 @@ brew "shellcheck"
 brew "shfmt"
 brew "terraform"
 brew "tfenv"
+brew "tflint"
 brew "the_platinum_searcher"
 brew "tmux"
 brew "tree"
 brew "zip"
 brew "zsh"
-
-# -----------------------------------------------------------------------------
-# Casks
-# -----------------------------------------------------------------------------
-cask "slack"
-cask "vagrant"
-cask "virtualbox"
-cask "visual-studio-code"
-cask "powershell"
-
-# -----------------------------------------------------------------------------
-# quicklook
-# -----------------------------------------------------------------------------
-cask "qlcolorcode"
-cask "qlimagesize"
-cask "qlprettypatch"
-cask "qlstephen"
-cask "qlvideo"
-cask "quicklook-csv"
-cask "quicklook-json"
-cask "popclip"
-
