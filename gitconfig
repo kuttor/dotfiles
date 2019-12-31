@@ -39,6 +39,12 @@
 [pager]
     difftool = true
 
+[pull]
+    rebase = true
+
+[push]
+    followTags = true
+
 [rerere]
     enabled = true
     autoupdate = 1
