@@ -34,6 +34,10 @@ setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
 setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
 unsetopt FLOW_CONTROL           # Disable start/stop characters editor
 
+# -----------------------------------------------------------------------------
+# Exports and Package Config
+# -----------------------------------------------------------------------------
+
 # Terminal
 source $DOTFILES/iterm/.iterm2_shell_integration.zsh
 export REPORTTIME=2
