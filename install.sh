@@ -6,12 +6,6 @@
 
 # -----------------------------------------------------------------------------
 
-ln -fs "$HOME/.dotfiles/gitconfig"    "$HOME/.gitconfig"
-ln -fs "$HOME/.dotfiles/gitignore"    "$HOME/.gitignore"
-ln -fs "$HOME/.dotfiles/editorconfig" "$HOME/.editorconfig"
-
-touch "$HOME/.hushlogin"
-
 # Install Homebrew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -30,8 +24,17 @@ mv $HOME/.dotfiles/fonts/* /usr/share/fonts/
 # Install Zplugin
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zplugin/master/doc/install.sh)"
 
-# Custom ZSH Config
-ln -fs $HOME/.dotfiles/zsh/zshrc $HOME/.zshrc
-
 # Enable italics via terminfo
 tic -o $HOME/.terminfo $HOME/.dotfiles/iterm/xterm-256color.terminfo
+
+# Setting up symlinks
+echo "Setting up simlinks..."
+ln -fs "$HOME/.dotfiles/gitconfig"    "$HOME/.gitconfig"
+ln -fs "$HOME/.dotfiles/gitignore"    "$HOME/.gitignore"
+ln -fs "$HOME/.dotfiles/editorconfig" "$HOME/.editorconfig"
+ln -fs "$HOME/.dotfiles/zshrc"        "$HOME/.zshrc"
+
+# Creating hushlogin
+echo "Creating hushlogin in HOME"
+touch "$HOME/.hushlogin"
+
