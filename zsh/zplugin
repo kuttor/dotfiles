@@ -1,12 +1,12 @@
 
-#! /usr/bin/env zsh
+#!/usr/bin/env zsh
 # -*- coding: utf-8 -*-
+# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker
 
-# file: zplugin.zsh
-# info: Zplugin config file to init, load, and install Zsh/Zplugin plugins
-# name: Andrew Kuttor
-# mail: andrew.kuttor@gmail.com
+# file: zplugin
+# info: Zplugin configuration
 
+# Zplugin init
 source "${HOME}/.zplugin/bin/zplugin.zsh"
 autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin

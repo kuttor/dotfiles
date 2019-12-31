@@ -1,9 +1,9 @@
-#!/usr/local/bin/zsh
-#
-# file  : history.zsh
-# info  : Extended history configurations for dotfiles
-# name  : Andrew Kuttor
-# mail  : andrew.kuttor@gmail.com
+#!/usr/bin/env zsh
+# -*- coding: utf-8 -*-
+# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker
+
+# file: history
+# info: History configuration
 
 # -----------------------------------------------------------------------------
 # Options

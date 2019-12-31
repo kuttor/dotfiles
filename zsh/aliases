@@ -1,10 +1,14 @@
-#!/usr/bin/env bash
-# ------------------------------------------------------------------------------
-# Name    : aliases
-# About   : Contains user aliases and functions
-# Author  : Andrew Kuttor
-# Contact : andrew.kuttor@gmail.com
-# ------------------------------------------------------------------------------
+#!/usr/bin/env zsh
+# -*- coding: utf-8 -*-
+# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker
+
+# file: aliases
+# info: Zsh shell aliases
+
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
+
 alias ak="tree -C"
 alias ansible-create="ansible-galaxy init  --offline --force "
 alias c="clear"
