@@ -26,10 +26,6 @@ zplugin load obihann/archey-osx
 zplugin ice as"program" pick"$ZPFX/bin/git-*" make"PREFIX=$ZPFX" nocompile
 zplugin light tj/git-extras
 
-# ZSH-Startify: load with Turbo-Mode being in use
-zplugin ice wait'0' lucid atload'zsh-startify'
-zplugin load zdharma/zsh-startify
-
 # Zsh-Completions: Various Command Completions
 zplugin ice wait"0" lucid blockf
 zplugin light zsh-users/zsh-completions
