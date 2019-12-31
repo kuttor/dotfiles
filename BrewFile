@@ -8,7 +8,6 @@
 # Tap
 # -----------------------------------------------------------------------------
 
-tap "buo/cask-upgrade" # 3rd party brew package updater
 tap "buo/cask-upgrade"
 tap "homebrew/bundle"
 tap "homebrew/cask"
