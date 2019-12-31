@@ -90,10 +90,6 @@ zplugin light trapd00r/LS_COLORS
 zplugin ice wait"2" lucid
 zplugin load zdharma/declare-zsh
 
-# fzf-marks
-zplugin ice wait lucid
-zplugin load urbainvaes/fzf-marks
-
 # Forgit: Add FZF to Git commands
 zplugin ice wait lucid
 zplugin load 'wfxr/forgit'
@@ -117,6 +113,12 @@ zplugin light changyuheng/fz
 # Pip Completion: Oh-My-Zsh Version
 zplugin ice svn pick"completion.zsh" src"git.zsh"
 zplugin snippet OMZ::lib
+
+# Github-Issue-Tracker: The notifier thread
+zplugin ice lucid id-as"GitHub-notify" \
+        on-update-of'~/.cache/zsh-github-issues/new_titles.log' \
+        notify'New issue: $NOTIFY_MESSAGE'
+zplugin light zdharma/zsh-github-issues
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
