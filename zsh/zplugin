@@ -86,10 +86,6 @@ zplugin ice wait"0c" lucid reset \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
 zplugin light trapd00r/LS_COLORS
 
-# declare-zsh
-zplugin ice wait"2" lucid
-zplugin load zdharma/declare-zsh
-
 # Forgit: Add FZF to Git commands
 zplugin ice wait lucid
 zplugin load 'wfxr/forgit'
