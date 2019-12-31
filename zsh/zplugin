@@ -33,6 +33,11 @@ zplugin light zsh-users/zsh-completions
 zplugin ice wait"0" lucid blockf
 zplugin light MichaelAquilina/zsh-you-should-use
 
+# History-Search-Multi-Word: Search multi words in history
+zstyle ":history-search-multi-word" page-size "11"
+zplugin ice wait"1" lucid
+zplugin load zdharma/history-search-multi-word
+
 # Zsh-Autosuggestions: Because They're Damn Cool
 zplugin ice wait"0" lucid atload"_zsh_autosuggest_start"
 zplugin light zsh-users/zsh-autosuggestions
