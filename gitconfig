@@ -71,3 +71,7 @@
 
 [web]
     browser = google-chrome
+
+[url "git@atlassian.usanainc.com/git:"]
+    insteadOf = bb:
+
