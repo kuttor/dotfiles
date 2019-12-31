@@ -1,12 +1,8 @@
 # vim: syntax=ruby filetype=ruby
 # -*- mode: ruby -*-
-# Minimal Brewfile
 
 # file: BrewFile
 # info: Automagically and programatically installs Brew hosted packages
-# hero: Andrew Kuttor
-# mail: andrew.kuttor@gmail.com
-# repo: http://github.com/kuttor/dotfiles
 
 # -----------------------------------------------------------------------------
 # Tap
