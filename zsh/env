@@ -5,12 +5,19 @@
 # file: env
 # info: Env vars, shell optionds, exports
 
+# -----------------------------------------------------------------------------
+# Env Vars
+# -----------------------------------------------------------------------------
+
 # VIP Folders
 DOTFILES="$HOME/.dotfiles"
 CACHE="$HOME/.cache"
 CONFIG="$HOME/.config"
 
-# Set Opts
+# -----------------------------------------------------------------------------
+# ZShell Options
+# -----------------------------------------------------------------------------
+
 setopt   AUTO_CD                # Navigate without typing cd
 setopt   CDABLE_VARS            # path stored in a variable
 setopt   CHASE_LINKS            # resolve links to their location
