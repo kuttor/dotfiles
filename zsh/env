@@ -32,7 +32,7 @@ setopt   PROMPT_SUBST           # Enable param and arithmetic substitution
 setopt   RC_QUOTES              # Allow 'Henry''s Garage'
 setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
 setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
-unsetopt FLOW_CONTROL           # Disable start/stop characters editor
+unsetopt FLOW_CONTROL           # Disable /stop characters editor
 
 # -----------------------------------------------------------------------------
 # Exports and Package Config
