@@ -8,8 +8,6 @@
 DOTFILES="$HOME/.dotfiles"
 CACHE="$HOME/.cache"
 CONFIG="$HOME/.config"
-ZPLUG_HOME="$HOME/.zplug"
-ZFUNCTIONS="$DOTFILES/functions"
 
 # Set Opts
 setopt   AUTO_CD                # Navigate without typing cd
@@ -70,7 +68,6 @@ fpath=(
   ${fpath}
 )
 
-#autoload $(ls $ZFUNCTIONS)
 autoload $DOTFILES/functions/*
 
 # System Paths
