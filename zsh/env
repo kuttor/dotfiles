@@ -18,21 +18,33 @@ CONFIG="$HOME/.config"
 # ZShell Options
 # -----------------------------------------------------------------------------
 
-setopt   AUTO_CD                # Navigate without typing cd
-setopt   CDABLE_VARS            # path stored in a variable
-setopt   CHASE_LINKS            # resolve links to their location
-setopt   HASH_CMDS              # dont search for commands
-setopt   HASH_LIST_ALL          # more accurate correction
-setopt   INTERACTIVE_COMMENTS   # Allow comments in readlin
-setopt   LIST_ROWS_FIRST        # rows are way better
-setopt   LIST_TYPES             # Append type chars to files
-setopt   MULTIOS                # Write to multiple descriptors
-setopt   NOTIFY                 # Report status of bkground jobs right now
-setopt   PROMPT_SUBST           # Enable param and arithmetic substitution
-setopt   RC_QUOTES              # Allow 'Henry''s Garage'
-setopt   SHORT_LOOPS            # Sooo lazy: for x in y do cmd
-setopt   SUN_KEYBOARD_HACK      # ignore rogue backquote
-unsetopt FLOW_CONTROL           # Disable /stop characters editor
+setopt AUTO_CD                               # Navigate without typing cd
+setopt CHASE_LINKS                       # resolve links to their location
+setopt HASH_CMDS                         # dont search for commands
+setopt HASH_LIST_ALL                   # more accurate correction
+setopt INTERACTIVE_COMMENTS # Allow comments in readlin
+setopt LIST_ROWS_FIRST               # rows are way better
+setopt LIST_TYPES                          # Append type chars to files
+setopt MULTIOS                              # Write to multiple descriptors
+setopt NOTIFY                                # Report status of bkground jobs right now
+setopt PROMPT_SUBST                  # Enable param and arithmetic substitution
+setopt RC_QUOTES                        # Allow 'Henry''s Garage'
+setopt SHORT_LOOPS                    # Sooo lazy: for x in y do cmd
+setopt SUN_KEYBOARD_HACK    # ignore rogue backquote
+setopt BANG_HIST                          # Treat '!' char specially during expansion.
+setopt EXTENDED_HISTORY          # Use history ":start:elapsed;command" format.
+setopt HIST_BEEP                            # Beep when accessing nonexistent history.
+setopt HIST_EXPIRE_DUPS_FIRST  # Remove dupes first when trimming history.
+setopt HIST_FIND_NO_DUPS           # Do not display a line previously found.
+setopt HIST_IGNORE_ALL_DUPS    # Delete old entry if new entry is a dupe.
+setopt HIST_IGNORE_DUPS             # Don't record what was just recorded again.
+setopt HIST_IGNORE_SPACE           # Don't record starting with a space.
+setopt HIST_REDUCE_BLANKS       # Remove superfluous blanks before recording.
+setopt HIST_SAVE_NO_DUPS          # Don't write dupes in the history file.
+setopt HIST_VERIFY                        # Don't execute immediately upon expansion.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately.
+setopt SHARE_HISTORY                  # Share history between all sessions.
+unsetopt FLOW_CONTROL              # Disable /stop characters editor
 
 # -----------------------------------------------------------------------------
 # Exports and Package Config
@@ -65,6 +77,23 @@ export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 export LDFLAGS="-L/usr/local/opt/ruby/lib"
 export CPPFLAGS="-I/usr/local/opt/ruby/include"
 export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
+
+# -----------------------------------------------------------------------------
+# History
+# -----------------------------------------------------------------------------
+
+HISTFILE=$CACHE/.zsh_history
+HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+HISTSIZE=10000
+SAVEHIST=10000
+
+# Add timestamps
+case $HIST_STAMPS in
+  "mm/dd/yyyy") alias history='fc -fl 1' ;;
+  "dd.mm.yyyy") alias history='fc -El 1' ;;
+  "yyyy-mm-dd") alias history='fc -il 1' ;;
+  *) alias history='fc -l 1' ;;
+esac
 
 # -----------------------------------------------------------------------------
 # Paths
