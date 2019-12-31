@@ -47,7 +47,7 @@ export VISUAL="$EDITOR"
 
 # Pager
 export PAGER="/usr/local/bin/bat"
-export MANPAGER=$PAGER
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 
 # Ruby

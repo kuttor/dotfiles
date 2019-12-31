@@ -28,7 +28,7 @@ alias molecule-create="molecule init scenario -r "
 alias mtop="htop --sort-key=PERCENT_MEM"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias path='echo $PATH | tr -s ":" "\n"'
-alias ports="netstat -lantip"
+alias ports="netstat -lanti"
 alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
 alias quit="exit"
 alias ssh="TERM=xterm-256color ssh"
