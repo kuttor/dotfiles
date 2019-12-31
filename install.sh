@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # file: install.sh
-# info: creates necessary links/files to setup dotfiles
-# Deps: wget, curl, exa, fzf, git, ripgrep
+# info: creates necessary links/files to setup dotfiles and install packages
 
 # -----------------------------------------------------------------------------
 
