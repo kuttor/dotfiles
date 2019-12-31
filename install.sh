@@ -16,8 +16,8 @@ chsh -s /usr/local/bin/zsh
 dscl . -create /Users/$USER UserShell /usr/local/bin/zsh
 
 # Install Font
-wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Bold.ttf /Users/akuttor/Library/Font/
-wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Italic.ttf /Users/akuttor/Library/Font/
+wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Bold.ttf $HOME/Library/Font/
+wget https://github.com/kencrocken/FiraCodeiScript/blob/master/FiraCodeiScript-Italic.ttf $HOME/Library/Font/
 mv $HOME/.dotfiles/fonts/* /usr/share/fonts/
 
 # Install Zplugin
