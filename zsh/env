@@ -38,7 +38,7 @@ export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Zlua
-[[ ! -f "${HOME}/.cache/z.cache" ]] || touch "${HOME}/.cache/z.cache"
+[[ ! -f "${CACHE}/z.cache" ]] || touch "${CACHE}/z.cache"
 export _ZL_DATA="$CACHE/z.cache"
 export _ZL_MATCH_MODE=1
 
