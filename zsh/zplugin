@@ -110,12 +110,6 @@ zplugin light changyuheng/fz
 zplugin ice svn pick"completion.zsh" src"git.zsh"
 zplugin snippet OMZ::lib
 
-# Github-Issue-Tracker: The notifier thread
-zplugin ice lucid id-as"GitHub-notify" \
-        on-update-of'~/.cache/zsh-github-issues/new_titles.log' \
-        notify'New issue: $NOTIFY_MESSAGE'
-zplugin light zdharma/zsh-github-issues
-
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
 #zplugin cdreplay -q
