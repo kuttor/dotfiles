@@ -11,7 +11,6 @@ alias c="clear"
 alias cat="bat"
 alias cp="cp -ri"
 alias df="df -hi"
-alias diff="colordiff -ru"
 alias du="du -csh"
 alias fpath='echo $fpath | tr -s " " "\n"'
 alias free="free -mt"
