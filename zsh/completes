@@ -15,6 +15,8 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 #zstyle ':completion:*:original' list-colors "=*=$color[red];$color[bold]"
 #zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
 #zstyle ':completion:*:aliases' list-colors "=*=$color[green]"
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==90=01}:${(s.:.)LS_COLORS}")'
+
 
 # All messages not formatted in bold prefixed with ----
 zstyle ':completion:*' format '%B---- %d%b'
