@@ -5,6 +5,7 @@
     info = "status --short --branch"
     tags = "tag --list"
     users = "shortlog --summary -"
+    doit = "!git-doit" 
     branches = "branch --all"
     tracked = "!git ls-tree -r master --name-only"
     aliases = "!git config --get-regexp alias | cut -c 7-"
