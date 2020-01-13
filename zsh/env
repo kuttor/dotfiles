@@ -99,3 +99,27 @@ export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46
 export EXA_COLORS="README*=38;5;208:Makefile=33"
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
 export CLICOLOR=1
+
+
+# -----------------------------------------------------------------------------
+# Spaceship Prompt Theme
+# -----------------------------------------------------------------------------
+
+# SPACESHIP_CHAR_SUFFIX=' '
+# SPACESHIP_CHAR_SYMBOL='\uf04b'
+# SPACESHIP_GIT_STATUS_SHOW=false
+# SPACESHIP_GIT_SYMBOL='\uf418 '
+# SPACESHIP_CHAR_SYMBOL='🚧'
+# SPACESHIP_CHAR_COLOR_SUCCESS=''
+# SPACESHIP_CHAR_COLOR_FAILURE=''
+SPACESHIP_PROMPT_ORDER=(
+  #battery       # Battery level and status
+  dir           # Current directory section
+  git           # Git section (git_branch + git_status)
+  package       # Package version
+  aws           # Amazon Web Services section
+  line_sep      # Line break
+  time          # Time stamp
+  exit_code     # Exit code section
+  char          # Prompt character
+)

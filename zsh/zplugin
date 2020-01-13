@@ -13,13 +13,12 @@ autoload -Uz _zplugin
 # Compinit speed up loading
 ZPLGM[COMPINIT_OPTS]=-C
 
-# Theme: Pure
-zplugin ice pick"async.zsh" src"pure.zsh"
-zplugin light sindresorhus/pure
+# Theme: Geometry
+zplugin light denysdovhan/spaceship-prompt
 
-# Archey-OSX: Provides Archey like stuff for OSX
-zplugin ice as"program" pick"bin/archey" atload"/usr/local/bin/archey -c"
-zplugin load obihann/archey-osx
+#Archey-OSX: Provides Archey like stuff for OSX
+#zplugin ice as"program" pick"bin/archey" atload"/usr/local/bin/archey -c"
+#zplugin load obihann/archey-osx
 
 # Git-Extras: Adds Git Extras
 zplugin ice as"program" pick"$ZPFX/bin/git-*" make"PREFIX=$ZPFX" nocompile
@@ -45,10 +44,6 @@ zplugin light zsh-users/zsh-autosuggestions
 # TheFuck: Typo Correction for misspelled commands
 zplugin ice wait'1' lucid
 zplugin light laggardkernel/zsh-thefuck
-
-# SSH-Connect: SSH Manager
-zplugin ice wait"0" lucid blockf
-zplugin light gko/ssh-connect
 
 # Git: Oh-My-Zsh Version
 zplugin ice svn pick"completion.zsh" src"git.zsh"
@@ -84,18 +79,9 @@ zplugin ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
 zplugin light trapd00r/LS_COLORS
 
-# Forgit: Add FZF to Git commands
-zplugin ice wait lucid
-zplugin load 'wfxr/forgit'
-
 # Yank: Copy a selected output portion
 zplugin ice as"program" pick"yank" make
 zplugin light mptre/yank
-
-# Vramsteg-Zsh: Providers status bar for scripts
-zplugin ice wait"2" lucid as'command' pick'src/vramsteg' \
-    atclone'cmake .' atpull'%atclone' make  # use Turbo mode
-zplugin light psprint/vramsteg-zsh
 
 # Zsh-Autopair: Autoclosing them quotes
 zplugin ice wait lucid
@@ -108,6 +94,10 @@ zplugin light skywind3000/z.lua
 # FZF: Fuzzy Finder
 zplugin ice from"gh-r" as"program"
 zplugin light junegunn/fzf-bin
+
+# Git-Start-Commit: Git smart commits
+zplugin ice wait"0b" lucid
+zplugin light seletskiy/zsh-git-smart-commands
 
 # FZ: Z Tab-Completions
 zplugin ice wait"0" lucid
