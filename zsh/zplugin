@@ -83,6 +83,10 @@ zplugin light trapd00r/LS_COLORS
 zplugin ice as"program" pick"yank" make
 zplugin light mptre/yank
 
+# Git-Fast: Increase that speed
+zplugin ice wait"0"
+zplugin load tevren/gitfast-zsh-plugin
+
 # Zsh-Autopair: Autoclosing them quotes
 zplugin ice wait lucid
 zplugin load hlissner/zsh-autopair

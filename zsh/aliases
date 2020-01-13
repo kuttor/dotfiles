@@ -1,0 +1,46 @@
+i#!/usr/bin/env bash
+# ------------------------------------------------------------------------------
+# Name    : aliases
+# About   : Contains user aliases and functions
+# Author  : Andrew Kuttor
+# Contact : andrew.kuttor@gmail.com
+# ------------------------------------------------------------------------------
+
+alias ak="tree -C"
+alias ansible-create="ansible-galaxy init  --offline --force "
+alias c="clear"
+alias cat="bat"
+alias cp="cp -ri"
+alias df="df -hi"
+alias diff="colordiff -ru"
+alias du="du -csh"
+alias fpath='echo $fpath | tr -s " " "\n"'
+alias free="free -mt"
+alias g="git"
+alias h="fc -lf"
+alias historysummary="history | awk '{a[\$2]++} END{for(i in a){printf \"%5d\t%s\n\",a[i],i}}' | sort -rn | head"
+alias hu="history | rg -i $"
+alias hu="h|rg "
+alias lg="lazygit"
+alias l="exa -1 --color=always --group-directories-first --all"
+alias ll="exa --binary --group --header --all --long --links --inode --classify --blocks --group-directories-first"
+alias ls="exa --git --color=always --group-directories-first"
+alias mkdir="mkdir -pv"
+alias molecule-create="molecule init scenario -r "
+alias mtop="htop --sort-key=PERCENT_MEM"
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias path='echo $PATH | tr -s ":" "\n"'
+alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
+alias quit="exit"
+alias ssh="TERM=xterm-256color ssh"
+alias sudo="sudo "
+alias tf="terraform"
+alias top-ten="print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10"
+alias vim="nvim"
+alias vimswap_clean="rm -rf $VIM_SWAP/*"
+alias vscode_settings="$HOME/Library/Application\ Support/Code/User/settings.json"
+alias zb="z -b"
+alias zf="z -I"
+alias zi="z -i"
+alias zz="z -c"
+alias zmv="noglob zmv -W"
