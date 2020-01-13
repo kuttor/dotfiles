@@ -1,4 +1,4 @@
-i#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ------------------------------------------------------------------------------
 # Name    : aliases
 # About   : Contains user aliases and functions
@@ -44,3 +44,4 @@ alias zf="z -I"
 alias zi="z -i"
 alias zz="z -c"
 alias zmv="noglob zmv -W"
+alias zp="zplugin"
