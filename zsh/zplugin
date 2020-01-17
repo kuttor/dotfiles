@@ -32,11 +32,6 @@ zplugin light zsh-users/zsh-completions
 zplugin ice wait"0" lucid blockf
 zplugin light MichaelAquilina/zsh-you-should-use
 
-# History-Search-Multi-Word: Search multi words in history
-zstyle ":history-search-multi-word" page-size "11"
-zplugin ice wait"1" lucid
-zplugin load zdharma/history-search-multi-word
-
 # Zsh-Autosuggestions: Because They're Damn Cool
 zplugin ice wait"0" lucid atload"_zsh_autosuggest_start"
 zplugin light zsh-users/zsh-autosuggestions
@@ -44,30 +39,6 @@ zplugin light zsh-users/zsh-autosuggestions
 # TheFuck: Typo Correction for misspelled commands
 zplugin ice wait'1' lucid
 zplugin light laggardkernel/zsh-thefuck
-
-# Git: Oh-My-Zsh Version
-zplugin ice svn pick"completion.zsh" src"git.zsh"
-zplugin snippet OMZ::lib
-
-# Bat: Syntax-Highlighted Cat Replacement
-zplugin ice from"gh-r" as"program" mv"bat* -> bat" pick"bat/bat"
-zplugin light sharkdp/bat
-
-# RipGrep: Supercharged Grep Replacement
-zplugin ice from"gh-r" as"program" mv"ripgrep* -> ripgrep" pick"ripgrep/rg"
-zplugin light BurntSushi/ripgrep
-
-# Neovim: Vim Replacement
-zplugin ice from"gh-r" as"program" bpick"*appimage*" mv"nvim* -> nvim" pick"nvim"
-zplugin light neovim/neovim
-
-# Exa: LS Replacement
-zplugin ice wait"2" lucid from"gh-r" as"program" mv"exa* -> exa"
-zplugin light ogham/exa
-
-# Fd: Find Replacement
-zplugin ice from"gh-r" as"program" mv"fd* -> fd" pick"fd/fd"
-zplugin light sharkdp/fd
 
 # Syntax highlighter: Speed Enhanced
 zplugin ice wait"0" lucid atinit"zpcompinit; zpcdreplay"
@@ -78,14 +49,6 @@ zplugin ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
     atpull'%atclone' pick"clrs.zsh" nocompile'!' \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
 zplugin light trapd00r/LS_COLORS
-
-# Yank: Copy a selected output portion
-zplugin ice as"program" pick"yank" make
-zplugin light mptre/yank
-
-# Git-Fast: Increase that speed
-zplugin ice wait"0"
-zplugin load tevren/gitfast-zsh-plugin
 
 # Zsh-Autopair: Autoclosing them quotes
 zplugin ice wait lucid
@@ -107,9 +70,15 @@ zplugin light seletskiy/zsh-git-smart-commands
 zplugin ice wait"0" lucid
 zplugin light changyuheng/fz
 
-# Pip Completion: Oh-My-Zsh Version
-zplugin ice svn pick"completion.zsh" src"git.zsh"
-zplugin snippet OMZ::lib
+# OMZ's
+zplugin snippet OMZ::lib/git.zsh
+zplugin snippet OMZ::plugins/asdf/asdf.plugin.zsh
+zplugin snippet OMZ::plugins/dotenv/dotenv.plugin.zsh
+zplugin snippet OMZ::plugins/fzf/fzf.plugin.zsh
+zplugin snippet OMZ::plugins/git/git.plugin.zsh
+zplugin snippet OMZ::plugins/heroku/heroku.plugin.zsh
+zplugin snippet OMZ::plugins/safe-paste/safe-paste.plugin.zsh
+zplugin snippet OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
