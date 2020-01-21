@@ -13,12 +13,8 @@ autoload -Uz _zplugin
 # Compinit speed up loading
 ZPLGM[COMPINIT_OPTS]=-C
 
-# Theme: Geometry
+# Theme: Spaceship
 zplugin light denysdovhan/spaceship-prompt
-
-#Archey-OSX: Provides Archey like stuff for OSX
-#zplugin ice as"program" pick"bin/archey" atload"/usr/local/bin/archey -c"
-#zplugin load obihann/archey-osx
 
 # Git-Extras: Adds Git Extras
 zplugin ice as"program" pick"$ZPFX/bin/git-*" make"PREFIX=$ZPFX" nocompile
