@@ -12,9 +12,10 @@ skip_global_compinit=1
 stty -ixon -ixoff
 
 # Sources
-source "$ZSH/zplugin"
+source "$ZSH/zinit"
 source "$ZSH/setopts"
 source "$ZSH/env"
 source "$ZSH/aliases"
 source "$ZSH/completes"
 source "$ZSH/keybind"
+
