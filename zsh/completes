@@ -71,3 +71,15 @@ zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
 # TheFuck Cache
 zstyle ":prezto:runcom" zpreztorc "$CACHE/.thefuck"
+
+# https://www.topbug.net/blog/2017/08/08/enable-auto-completion-for-pip-in-zsh/
+# eval "$(pip3 completion --zsh)"  # <-- slow af. soo:
+function _pip_completion {
+  local words cword
+  read -Ac words
+  read -cn cword
+  reply=( $( COMP_WORDS="$words[*]" \
+             COMP_CWORD=$(( cword-1 )) \
+             PIP_AUTO_COMPLETE=1 $words[1] ) )
+}
+compctl -K _pip_completion pip3

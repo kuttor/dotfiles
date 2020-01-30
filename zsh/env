@@ -19,6 +19,11 @@ CONFIG="$HOME/.config"
 # Exports and Package Config
 # -----------------------------------------------------------------------------
 
+# Autosuggest
+export ZSH_AUTOSUGGEST_USE_ASYNC=1
+export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=10
+
 # Terminal
 source $DOTFILES/iterm/.iterm2_shell_integration.zsh
 export REPORTTIME=2
@@ -105,20 +110,11 @@ export EXA_COLORS="README*=38;5;208:Makefile=33"
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
 export CLICOLOR=1
 
-
 # -----------------------------------------------------------------------------
 # Spaceship Prompt Theme
 # -----------------------------------------------------------------------------
 
-# SPACESHIP_CHAR_SUFFIX=' '
-# SPACESHIP_CHAR_SYMBOL='\uf04b'
-# SPACESHIP_GIT_STATUS_SHOW=false
-# SPACESHIP_GIT_SYMBOL='\uf418 '
-# SPACESHIP_CHAR_SYMBOL='🚧'
-# SPACESHIP_CHAR_COLOR_SUCCESS=''
-# SPACESHIP_CHAR_COLOR_FAILURE=''
 SPACESHIP_PROMPT_ORDER=(
-  #battery       # Battery level and status
   dir           # Current directory section
   git           # Git section (git_branch + git_status)
   package       # Package version
