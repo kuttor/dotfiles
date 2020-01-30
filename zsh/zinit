@@ -82,5 +82,3 @@ zinit light zsh-users/zsh-autosuggestions
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
 zinit cdreplay -q
-#zinit cdlist
-

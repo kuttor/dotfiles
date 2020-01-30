@@ -18,4 +18,3 @@ source "$ZSH/env"
 source "$ZSH/aliases"
 source "$ZSH/completes"
 source "$ZSH/keybind"
-
