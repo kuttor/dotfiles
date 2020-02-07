@@ -48,7 +48,7 @@ bindkey "^[[1;2C" forward-word
 bindkey "^[[1;2D" backward-word
 bindkey "^[[F" end-of-line
 bindkey "^[[H" beginning-of-line
-bindkey "^[[Z" autosuggest-accept
+#bindkey "^[[Z" autosuggest-accept
 bindkey "^E" edit-command-line
 bindkey "^I" expand-or-complete-with-dots
 bindkey "^N" history-beginning-search-forward-end

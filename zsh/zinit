@@ -42,10 +42,17 @@ zinit ice wait lucid
 zinit light laggardkernel/zsh-thefuck
 
 # LS_Color
-zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
-    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-zinit light trapd00r/LS_COLORS
+#zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
+#    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+#    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+#zinit light trapd00r/LS_COLORS
+
+zinit lucid reset \
+ atclone"[[ -z ${commands[dircolors]} ]] && local P=g
+    \${P}sed -i '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
+    \${P}dircolors -b LS_COLORS > c.zsh" \
+ atpull'%atclone' pick"c.zsh" nocompile'!' for \
+    trapd00r/LS_COLORS
 
 # Zsh-Autopair
 zinit ice wait lucid

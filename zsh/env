@@ -53,7 +53,7 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include"
 export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
 
 # FZF
-export FZF_BASE="/home/linuxbrew/.linuxbrew/opt/fzf" 
+export FZF_BASE="/usr/bin/fzf" 
 
 # -----------------------------------------------------------------------------
 # History
