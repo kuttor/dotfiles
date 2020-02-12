@@ -15,15 +15,14 @@ ZINIT[COMPINIT_OPTS]=-C
 
 # OMZ's
 zinit snippet OMZ::lib/git.zsh
-zinit snippet OMZ::plugins/asdf/asdf.plugin.zsh
 zinit snippet OMZ::plugins/dotenv/dotenv.plugin.zsh
 zinit snippet OMZ::plugins/fzf/fzf.plugin.zsh
 zinit snippet OMZ::plugins/git/git.plugin.zsh
 zinit snippet OMZ::plugins/heroku/heroku.plugin.zsh
 zinit snippet OMZ::plugins/safe-paste/safe-paste.plugin.zsh
 
-# Spaceship
-zinit light denysdovhan/spaceship-prompt
+# Powerlevel1ok
+zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Diff-So-Fancy
 zinit ice as"program" pick"bin/git-dsf"
@@ -41,50 +40,59 @@ zinit light MichaelAquilina/zsh-you-should-use
 zinit ice wait lucid
 zinit light laggardkernel/zsh-thefuck
 
-# LS_Color
-#zinit ice atclone"dircolors -b LS_COLORS > clrs.zsh" \
-#    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-#    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-#zinit light trapd00r/LS_COLORS
-
-zinit lucid reset \
- atclone"[[ -z ${commands[dircolors]} ]] && local P=g
-    \${P}sed -i '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
-    \${P}dircolors -b LS_COLORS > c.zsh" \
- atpull'%atclone' pick"c.zsh" nocompile'!' for \
-    trapd00r/LS_COLORS
+# trapd00r/LS_COLORS
+zinit ice wait"0c" lucid reset \
+    atclone"local P=${${(M)OSTYPE:#*darwin*}:+g}
+            \${P}sed -i \
+            '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
+            \${P}dircolors -b LS_COLORS > c.zsh" \
+    atpull'%atclone' pick"c.zsh" nocompile'!' \
+    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
+zinit light trapd00r/LS_COLORS
 
 # Zsh-Autopair
 zinit ice wait lucid
 zinit load hlissner/zsh-autopair
 
-# Zlua
-zinit ice wait lucid
-zinit light skywind3000/z.lua
+# sharkdp/fd
+zinit ice as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
+zinit light sharkdp/fd
+
+# sharkdp/bat
+zinit ice as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
+zinit light sharkdp/bat
+
+# ogham/exa
+zinit ice wait"2" lucid from"gh-r" as"program" mv"exa* -> exa"
+zinit light ogham/exa
 
 # FZF
 zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf-bin
 
+# FZ
+zinit ice wait lucid from"gh-r" cp"fz.sh -> /usr/local/bin/fz" pick"fz"
+zinit light changyuheng/fz
+
+# Zlua
+zinit ice wait lucid from"gh-r" as"program" cp"z.lua -> /usr/local/bin/z" pick"z"
+zinit light skywind3000/z.lua
+
 # Git-Start-Commit
 zinit ice wait lucid
 zinit light seletskiy/zsh-git-smart-commands
 
-# FZ
-zinit ice wait lucid
-zinit light changyuheng/fz
-
-# Zsh-Completions
+# Zsh-Users/Zsh-Completionss
 zinit ice wait lucid blockf atpull"zinit creinstall -q ."
 zinit light zsh-users/zsh-completions
 
-# Zsh-Autosuggestions
-zinit ice wait lucid atload'_zsh_autosuggest_start'
-zinit light zsh-users/zsh-autosuggestions
-
-# Syntax highlighter
-zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay"
+# Zdharma/fast-Syntax-Highlighting
+zinit ice wait lucid atinit"ZPLGM[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay"
 zinit light zdharma/fast-syntax-highlighting
+
+# Zsh-Users/Zsh-Autosuggestions
+zinit ice wait lucid atload"_zsh_autosuggest_start"
+zinit light zsh-users/zsh-autosuggestions
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit

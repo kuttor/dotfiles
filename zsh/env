@@ -1,7 +1,6 @@
-#
 #!/usr/bin/env zsh
 # -*- coding: utf-8 -*-
-# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
+# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marke
 
 # file: env
 # info: Env vars, shell optionds, exports
@@ -19,10 +18,10 @@ CONFIG="$HOME/.config"
 # Exports and Package Config
 # -----------------------------------------------------------------------------
 
-# Autosuggest
+# Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=10
+export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=1
 
 # Terminal
 source $DOTFILES/iterm/.iterm2_shell_integration.zsh
@@ -37,6 +36,11 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 [[ ! -f "${CACHE}/z.cache" ]] || touch "${CACHE}/z.cache"
 export _ZL_DATA="$CACHE/z.cache"
 export _ZL_MATCH_MODE=1
+export _ZL_HYPHEN=1
+
+# FZ
+FZ_HISTORY_CD_CMD="_zlua"
+source /usr/local/bin/fz
 
 # Editor
 export EDITOR="/usr/local/bin/nvim"
@@ -53,7 +57,7 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include"
 export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
 
 # FZF
-export FZF_BASE="/usr/bin/fzf" 
+export FZF_BASE="/usr/local/bin/fzf"
 
 # -----------------------------------------------------------------------------
 # History
