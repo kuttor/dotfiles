@@ -96,9 +96,8 @@ autoload $DOTFILES/functions/*
 path=(
   ${USER}/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
   ${USER}/Library/Python/{2.7,3.7}/bin
-	/home/linuxbrew/.linuxbrew/bin
   /usr/local/opt/ruby/bin
-  /usr/local/Cellar/coreutils/8.31/libexec/gnubin
+  /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/{bin,sbin}(N-/)
   /usr/{bin,sbin}(N-/)
   /{bin,sbin}(N-/)

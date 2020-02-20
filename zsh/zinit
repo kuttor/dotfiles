@@ -16,13 +16,13 @@ ZINIT[COMPINIT_OPTS]=-C
 # OMZ's
 zinit snippet OMZ::lib/git.zsh
 zinit snippet OMZ::plugins/dotenv/dotenv.plugin.zsh
-zinit snippet OMZ::plugins/fzf/fzf.plugin.zsh
 zinit snippet OMZ::plugins/git/git.plugin.zsh
 zinit snippet OMZ::plugins/heroku/heroku.plugin.zsh
 zinit snippet OMZ::plugins/safe-paste/safe-paste.plugin.zsh
 
 # Powerlevel1ok
-zinit ice depth=1; zinit light romkatv/powerlevel10k
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
 
 # Diff-So-Fancy
 zinit ice as"program" pick"bin/git-dsf"
@@ -43,8 +43,7 @@ zinit light laggardkernel/zsh-thefuck
 # trapd00r/LS_COLORS
 zinit ice wait"0c" lucid reset \
     atclone"local P=${${(M)OSTYPE:#*darwin*}:+g}
-            \${P}sed -i \
-            '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
+            \${P}sed -i '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
             \${P}dircolors -b LS_COLORS > c.zsh" \
     atpull'%atclone' pick"c.zsh" nocompile'!' \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
@@ -67,15 +66,15 @@ zinit ice wait"2" lucid from"gh-r" as"program" mv"exa* -> exa"
 zinit light ogham/exa
 
 # FZF
-zinit ice from"gh-r" as"program"
+zinit ice wait from"gh-r" as"program"
 zinit light junegunn/fzf-bin
 
 # FZ
-zinit ice wait lucid from"gh-r" cp"fz.sh -> /usr/local/bin/fz" pick"fz"
-zinit light changyuheng/fz
+zinit ice wait 
+zinit load changyuheng/fz
 
 # Zlua
-zinit ice wait lucid from"gh-r" as"program" cp"z.lua -> /usr/local/bin/z" pick"z"
+zinit ice wait
 zinit light skywind3000/z.lua
 
 # Git-Start-Commit
@@ -87,7 +86,7 @@ zinit ice wait lucid blockf atpull"zinit creinstall -q ."
 zinit light zsh-users/zsh-completions
 
 # Zdharma/fast-Syntax-Highlighting
-zinit ice wait lucid atinit"ZPLGM[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay"
+zinit ice wait lucid atinit"zpcompinit; zpcdreplay"
 zinit light zdharma/fast-syntax-highlighting
 
 # Zsh-Users/Zsh-Autosuggestions
