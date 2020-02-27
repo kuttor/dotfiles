@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# file: install.sh
+# info: creates necessary links/files to setup dotfiles and install packages
+
+# -----------------------------------------------------------------------------
+
+# Variables
+HOMEBASE="/home/yeti"
+
+# Homebrew
+#/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# Zinit
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
+
+# HBrew Bundle
+#$HOMEBASE/.dotfiles/BrewFile 
+
+# /bin/ZSH
+chsh -s `whereis zsh`
+
+# Fonts
+mv $HOMEBASE/.dotfiles/fonts/* /usr/share/fonts/
+
+echo "Setting up simlinks..."
+ln -fs "$HOMEBASE/.dotfiles/zshrc"         "$HOMEBASE/.zshrc"I
+ln -fs "$HOMEBASE/.dotfiles/editorconfig"  "$HOMEBASE/.editorconfig"
+ln -fs "$HOMEBASE/.dotfiles/gitconfig"     "$HOMEBASE/.gitconfig"
+ln -fs "$HOMEBASE/.dotfiles/bat.conf "     "$HOMEBASE/.bat.conf"
+ln -fs "$HOMEBASE/.dotfiles/gitignore"     "$HOMEBASE/.gitignore"
+ln -fs "$HOMEBASE/.dotfiles/inputrc"       "$HOMEBASE/.inputrc"
+ln -fs "$HOMEBASE/.dotfiles/ripgreprc"     "$HOMEBASE/.ripgreprc"
+ln -fs "$HOMEBASE/.dotfiles/curlrc"        "$HOMEBASE/.curlrc"
+
+touch "$HOMEBASE/.config/z.cache"
+touch "$HOMEBASE/.hushlogin"
+

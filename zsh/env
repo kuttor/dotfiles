@@ -100,6 +100,7 @@ path=(
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/{bin,sbin}(N-/)
   /usr/{bin,sbin}(N-/)
+  $(brew --prefix)
   /{bin,sbin}(N-/)
   ${path}
 )

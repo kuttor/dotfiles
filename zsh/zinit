@@ -70,7 +70,7 @@ zinit ice wait from"gh-r" as"program"
 zinit light junegunn/fzf-bin
 
 # FZ
-zinit ice wait 
+zinit ice wait from"gh-r" as"program" mv"fz* -> fz" pick"fz" 
 zinit load changyuheng/fz
 
 # Zlua
