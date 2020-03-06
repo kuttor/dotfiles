@@ -40,7 +40,7 @@ export _ZL_HYPHEN=1
 
 # FZ
 FZ_HISTORY_CD_CMD="_zlua"
-source /usr/local/bin/fz
+#source /usr/local/bin/fz
 
 # Editor
 export EDITOR="/usr/local/bin/nvim"
@@ -100,7 +100,7 @@ path=(
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/{bin,sbin}(N-/)
   /usr/{bin,sbin}(N-/)
-  $(brew --prefix)
+  $(brew --prefix)/bin
   /{bin,sbin}(N-/)
   ${path}
 )

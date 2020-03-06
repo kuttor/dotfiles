@@ -15,9 +15,8 @@ ZINIT[COMPINIT_OPTS]=-C
 
 # OMZ's
 zinit snippet OMZ::lib/git.zsh
-zinit snippet OMZ::plugins/dotenv/dotenv.plugin.zsh
 zinit snippet OMZ::plugins/git/git.plugin.zsh
-zinit snippet OMZ::plugins/heroku/heroku.plugin.zsh
+zinit snippet OMZ::lib/clipboard.zsh
 zinit snippet OMZ::plugins/safe-paste/safe-paste.plugin.zsh
 
 # Powerlevel1ok
@@ -70,11 +69,12 @@ zinit ice wait from"gh-r" as"program"
 zinit light junegunn/fzf-bin
 
 # FZ
-zinit ice wait from"gh-r" as"program" mv"fz* -> fz" pick"fz" 
-zinit load changyuheng/fz
+zplugin ice load'![[ -x z && -x fzf ]]'
+zplugin ice from"gh" as"program" mv"fz.sh -> fz" pick"fz"
+zplugin load changyuheng/fz
 
 # Zlua
-zinit ice wait
+zplugin ice from"gh" as"program" mv"z.sh -> z" pick"z"
 zinit light skywind3000/z.lua
 
 # Git-Start-Commit
