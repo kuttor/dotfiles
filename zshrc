@@ -14,7 +14,6 @@ TRAPWINCH() { zle && { zle reset-prompt; zle -R }}
 export ZSH="$HOME/.dotfiles/zsh"
 limit coredumpsize 0
 skip_global_compinit=1
-stty -ixon -ixoff
 
 # Sources
 source "$ZSH/zinit"
