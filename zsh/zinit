@@ -74,7 +74,7 @@ zplugin ice from"gh" as"program" mv"fz.sh -> fz" pick"fz"
 zplugin load changyuheng/fz
 
 # Zlua
-zplugin ice from"gh" as"program" mv"z.sh -> z" pick"z"
+zplugin ice from"gh" as"program" mv"z.lua -> z" pick"z"
 zinit light skywind3000/z.lua
 
 # Git-Start-Commit
