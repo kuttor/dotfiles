@@ -40,8 +40,7 @@ export _ZL_HYPHEN=1
 
 # FZ
 FZ_HISTORY_CD_CMD="_zlua"
-#source /usr/local/bin/fz
-
+source $(which fz)
 # Editor
 export EDITOR="/usr/local/bin/nvim"
 export VISUAL="$EDITOR"
