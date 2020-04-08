@@ -1,0 +1,28 @@
+# vim: syntax=ruby filetype=ruby
+# -*- mode: ruby -*-
+
+# file: CaskFile
+# info: Automagically and programatically installs Brew hosted packages
+
+tap "buo/cask-upgrade"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/command-not-found"
+tap "homebrew/core"
+tap "homebrew/services"
+
+cask "font-firacode-nerd-font-mono"
+cask "popclip"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlprettypatch"
+cask "qlstephen"
+cask "qlvideo"
+cask "quicklook-csv"
+cask "quicklook-json"
+cask "slack"
+cask "vagrant"
+cask "virtualbox"
+cask "visual-studio-code-insiders"
