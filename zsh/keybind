@@ -18,13 +18,6 @@ bindkey "^N" history-beginning-search-forward-end
 # Quote pasted URLs#
 autoload -Uz history-search-end
 autoload -Uz is-at-least
-autoload -Uz run-help-git
-autoload -Uz run-help-ip
-autoload -Uz run-help-openssl
-autoload -Uz run-help-p4
-autoload -Uz run-help-sudo
-autoload -Uz run-help-svk
-autoload -Uz run-help-svn
 autoload -U url-quote-magic
 autoload -U select-word-style
 autoload -U edit-command-line

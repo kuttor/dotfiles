@@ -23,6 +23,8 @@ source "$ZSH/aliases"
 source "$ZSH/completes"
 source "$ZSH/keybind"
 
-# Activate Power10k 
+# Prompt
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -3,7 +3,7 @@
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker
 
 # file: zinit
-# info: Zinit configuration
+# info: zinit configuration
 
 # Zplugin init
 source "${HOME}/.zinit/bin/zinit.zsh"
@@ -24,11 +24,11 @@ zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
 # Diff-So-Fancy
-zinit ice as"program" pick"bin/git-dsf"
+zinit ice wait lucid as"program" pick"bin/git-dsf"
 zinit light zdharma/zsh-diff-so-fancy
 
 # Git-Extras
-zinit ice as"program" pick"$ZPFX/bin/git-*" make"PREFIX=$ZPFX" nocompile
+zinit ice wait lucid as"program" pick"$ZPFX/bin/git-*" make"PREFIX=$ZPFX" nocompile
 zinit light tj/git-extras
 
 # You Should Use
@@ -53,28 +53,32 @@ zinit ice wait lucid
 zinit load hlissner/zsh-autopair
 
 # sharkdp/fd
-zinit ice as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
+zinit ice wait lucid as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
 zinit light sharkdp/fd
 
 # sharkdp/bat
-zinit ice as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
+zinit ice wait lucid as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
 zinit light sharkdp/bat
 
 # ogham/exa
-zinit ice wait"2" lucid from"gh-r" as"program" mv"exa* -> exa"
+zinit ice wait lucid from"gh-r" as"program" mv"exa* -> exa"
 zinit light ogham/exa
 
 # FZF
-zinit ice wait from"gh-r" as"program"
+zinit ice wait lucid from"gh-r" as"program"
 zinit light junegunn/fzf-bin
 
 # FZ
 zplugin ice load'![[ -x z && -x fzf ]]'
-zplugin ice from"gh" as"program" mv"fz.sh -> fz" pick"fz"
+zplugin ice wait lucid from"gh" as"program" mv"fz.sh -> fz" pick"fz"
 zplugin load changyuheng/fz
 
 # Zlua
+<<<<<<< HEAD
 zplugin ice from"gh" as"program" mv"z.lua -> z" pick"z"
+=======
+zplugin ice wait lucid from"gh" as"program" mv"z.lua -> z" pick"z"
+>>>>>>> db06f38e... removed man-page keybindings
 zinit light skywind3000/z.lua
 
 # Git-Start-Commit
