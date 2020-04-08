@@ -1,7 +1,3 @@
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 #!/usr/bin/env zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0
 
@@ -26,5 +22,3 @@ source "$ZSH/keybind"
 # Prompt
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

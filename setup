@@ -8,33 +8,17 @@
 # Zinit
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
 
-# HBrew Bundle
-#$HOME/.dotfiles/BrewFile
-
-# /bin/ZSH
-chsh -s `whereis zsh`
+# Brew
+brew bundle --file "$HOME/.dotfiles/BrewFile"
 
 # Fonts
-cp -r $HOME/.dotfiles/fonts/* /usr/share/fonts/
+cp -R "$HOME/.dotfiles/fonts" "$HOME/Library/Fonts/"
 
-echo "Setting up simlinks..."
-ln -fs "$HOME/.dotfiles/zshrc"         "$HOME/.zshrc"I
+ln -fs "$HOME/.dotfiles/zshrc"     "$HOME/.zshrc"I
 
-for config in configs
-do
-
-
-
-ln -fs "$HOME/.dotfiles/editorconfig"  "$HOME/.editorconfig"
-ln -fs "$HOME/.dotfiles/gitconfig"     "$HOME/.gitconfig"
-ln -fs "$HOME/.dotfiles/bat.conf "     "$HOME/.bat.conf"
-ln -fs "$HOME/.dotfiles/gitignore"     "$HOME/.gitignore"
-ln -fs "$HOME/.dotfiles/inputrc"       "$HOME/.inputrc"
-ln -fs "$HOME/.dotfiles/ripgreprc"     "$HOME/.ripgreprc"
-ln -fs "$HOME/.dotfiles/curlrc"        "$HOME/.curlrc"
-
-# Cache file for Z.Lua
-touch "$HOME/.config/z.cache"
+for config in `ls $HOME/.dotfiles/configs`; do
+    ln -fs $config $HOME/.$config
+done
 
 # Hushes initial terminal session messages
 touch "$HOME/.hushlogin"

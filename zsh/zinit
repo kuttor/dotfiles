@@ -13,94 +13,45 @@ autoload -Uz _zinit
 # Compinit speed up loading
 ZINIT[COMPINIT_OPTS]=-C
 
-# Annexes
-zinit light-mode for           \
-    zinit-zsh/z-a-bin-gem-node \
-    zinit-zsh/z-a-test         \
-    zinit-zsh/z-a-patch-dl     \
-    zinit-zsh/z-a-rust         \
-    zinit-zsh/z-a-submods      \
+# Simplifying plugin init syntax
+plug() { zinit ice wait lucid "$@"; }
+load() { zinit light "$@"; }
 
-# OMZ's
-zinit snippit for                   \
-    OMZ::lib/git.zsh                \
-    OMZ::plugins/git/git.plugin.zsh \
-    OMZ::lib/clipboard.zsh          \
+# Theme Powerlevel1ok
+zinit ice; load "romkatv/powerlevel10k"
 
-zinit as"null" wait"1" lucid for \
-    sbin    Fakerr/git-recall \
-    sbin    paulirish/git-open \
-    sbin    paulirish/git-recent \
-    sbin    davidosomething/git-my \
-    sbin    atload"export _MENU_THEME=legacy" arzzen/git-quick-stats \
-    sbin    iwata/git-now \
-    make"PREFIX=$ZPFX install" tj/git-extras \
-    sbin"bin/git-dsf;bin/diff-so-fancy" zdharma/zsh-diff-so-fancy \
-    sbin"git-url;git-guclone" make"GITURL_NO_CGITURL=1" zdharma/git-url
-
-# Powerlevel1ok
-zinit ice depth=1
-zinit light romkatv/powerlevel10k
-
-# Diff-So-Fancy
-zinit ice wait lucid as"program" pick"bin/git-dsf"
-zinit light zdharma/zsh-diff-so-fancy
-
-# You Should Use
-zinit ice wait lucid blockf
-zinit light MichaelAquilina/zsh-you-should-use
-
-# TheFuck
-zinit ice wait lucid
-zinit light laggardkernel/zsh-thefuck
-
-# trapd00r/LS_COLORS
-zinit ice wait"0c" lucid reset \
+# LS_COLORS
+plug reset \
     atclone"local P=${${(M)OSTYPE:#*darwin*}:+g}
-            \${P}sed -i '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
-            \${P}dircolors -b LS_COLORS > c.zsh" \
+        \${P}sed -i '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
+        \${P}dircolors -b LS_COLORS > c.zsh" \
     atpull'%atclone' pick"c.zsh" nocompile'!' \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-zinit light trapd00r/LS_COLORS
+load "trapd00r/LS_COLORS"
+
+# You-Should-Use
+plug blockf; load "MichaelAquilina/zsh-you-should-use"
 
 # Zsh-Autopair
-zinit ice wait lucid
-zinit load hlissner/zsh-autopair
+plug; load "hlissner/zsh-autopair"
 
-# sharkdp/fd
-zinit ice wait lucid as"command" from"gh-r" mv"fd* -> fd" pick"fd/fd"
-zinit light sharkdp/fd
+# FZ
+plug as"program" mv"fz.* -> fz" pick"fz"; load "changyuheng/fz"
 
-# sharkdp/bat
-zinit ice wait lucid as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
-zinit light sharkdp/bat
-
-# ogham/exa
-zinit ice wait lucid from"gh-r" as"program" mv"exa* -> exa"
-zinit light ogham/exa
-
-# Fuzz'nators
-zinit ice wait"1" lucid from"gh-r" for \
-    as"program" mv"fzf.* -> fz" pick"fzf" "junegunn/fzf-bin" \
-    as"program" mv"fz.* -> fz" pick"fz" "changyuheng/fz"
-    zinit light "Aloxaf/fzf-tab"
-    as"program" mv"z.* -> z" pick"z" "skywind3000/z.lua"
+# Z.Lua
+plug as"program" mv"z.* -> z" pick"z"; load "skywind3000/z.lua"
 
 # Git-Start-Commit
-zinit ice wait lucid
-zinit light seletskiy/zsh-git-smart-commands
+plug; load "seletskiy/zsh-git-smart-commands"
 
-# Zsh-Users/Zsh-Completionss
-zinit ice wait lucid blockf atpull"zinit creinstall -q ."
-zinit light zsh-users/zsh-completions
+# Zsh-Completionss
+plug blockf atpull"zinit creinstall -q ."; load "zsh-users/zsh-completions"
 
-# Zdharma/fast-Syntax-Highlighting
-zinit ice wait lucid atinit"zpcompinit; zpcdreplay"
-zinit light zdharma/fast-syntax-highlighting
+# Fast-Syntax-Highlighting
+plug atinit"zpcompinit; zpcdreplay"; load "zdharma/fast-syntax-highlighting"
 
-# Zsh-Users/Zsh-Autosuggestions
-zinit ice wait lucid atload"_zsh_autosuggest_start"
-zinit light zsh-users/zsh-autosuggestions
+# Zsh-Autosuggestions
+plug atload"_zsh_autosuggest_start"; load "zsh-users/zsh-autosuggestions"
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
