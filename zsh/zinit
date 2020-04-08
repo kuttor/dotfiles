@@ -74,11 +74,7 @@ zplugin ice wait lucid from"gh" as"program" mv"fz.sh -> fz" pick"fz"
 zplugin load changyuheng/fz
 
 # Zlua
-<<<<<<< HEAD
-zplugin ice from"gh" as"program" mv"z.lua -> z" pick"z"
-=======
 zplugin ice wait lucid from"gh" as"program" mv"z.lua -> z" pick"z"
->>>>>>> db06f38e... removed man-page keybindings
 zinit light skywind3000/z.lua
 
 # Git-Start-Commit
