@@ -14,14 +14,18 @@ autoload -Uz _zinit
 ZINIT[COMPINIT_OPTS]=-C
 
 # Annexes
-zinit light zinit-zsh/z-a-bin-gem-node
+zinit light-mode for           \
+    zinit-zsh/z-a-bin-gem-node \
+    zinit-zsh/z-a-test         \
+    zinit-zsh/z-a-patch-dl     \
+    zinit-zsh/z-a-rust         \
+    zinit-zsh/z-a-submods      \
 
 # OMZ's
-zinit snippit for \
-    OMZ::lib/git.zsh \
+zinit snippit for                   \
+    OMZ::lib/git.zsh                \
     OMZ::plugins/git/git.plugin.zsh \
-    OMZ::lib/clipboard.zsh \
-    OMZ::plugins/safe-paste/safe-paste.plugin.zsh
+    OMZ::lib/clipboard.zsh          \
 
 zinit as"null" wait"1" lucid for \
     sbin    Fakerr/git-recall \
@@ -75,18 +79,12 @@ zinit light sharkdp/bat
 zinit ice wait lucid from"gh-r" as"program" mv"exa* -> exa"
 zinit light ogham/exa
 
-# FZF
-zinit ice wait lucid from"gh-r" as"program"
-zinit light junegunn/fzf-bin
-
-# FZ
-zplugin ice load'![[ -x z && -x fzf ]]'
-zplugin ice wait lucid from"gh" as"program" mv"fz.sh -> fz" pick"fz"
-zplugin load changyuheng/fz
-
-# Zlua
-zplugin ice wait lucid from"gh" as"program" mv"z.lua -> z" pick"z"
-zinit light skywind3000/z.lua
+# Fuzz'nators
+zinit ice wait"1" lucid from"gh-r" for \
+    as"program" mv"fzf.* -> fz" pick"fzf" "junegunn/fzf-bin" \
+    as"program" mv"fz.* -> fz" pick"fz" "changyuheng/fz"
+    zinit light "Aloxaf/fzf-tab"
+    as"program" mv"z.* -> z" pick"z" "skywind3000/z.lua"
 
 # Git-Start-Commit
 zinit ice wait lucid

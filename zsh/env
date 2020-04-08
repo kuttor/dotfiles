@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash`
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marke
 
@@ -24,7 +24,6 @@ export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=1
 
 # Terminal
-source $DOTFILES/iterm/.iterm2_shell_integration.zsh
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export KEYTIMEOUT=1
