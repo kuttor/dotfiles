@@ -1,4 +1,4 @@
-#!/usr/bin/env bash`
+#!/usr/bin/env zsh
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marke
 
@@ -24,6 +24,7 @@ export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=1
 
 # Terminal
+source $DOTFILES/iterm/.iterm2_shell_integration.zsh
 export REPORTTIME=2
 export TIMEFMT="%U user %S system %P cpu %*Es total"
 export KEYTIMEOUT=1
@@ -39,7 +40,8 @@ export _ZL_HYPHEN=1
 
 # FZ
 FZ_HISTORY_CD_CMD="_zlua"
-#source $(which fz)
+source /usr/local/bin/fz
+
 # Editor
 export EDITOR="/usr/local/bin/nvim"
 export VISUAL="$EDITOR"
@@ -56,6 +58,13 @@ export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
 
 # FZF
 export FZF_BASE="/usr/local/bin/fzf"
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_CTRL_T_COMMAND='rg --files --hidden'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
+
+# Z.Lua
+
+
 
 # -----------------------------------------------------------------------------
 # History

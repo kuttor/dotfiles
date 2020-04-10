@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# file: install.sh
+# file: setup
 # info: creates necessary links/files to setup dotfiles and install packages
 
 # Homebrew
@@ -9,16 +9,40 @@
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
 
 # Brew
-brew bundle --file "$HOME/.dotfiles/BrewFile"
+#/home/linuxbrew/.linuxbrew/bin/brew bundle --force --file "$HOME/.dotfiles/Brewfile"
 
 # Fonts
-cp -R "$HOME/.dotfiles/fonts" "$HOME/Library/Fonts/"
-
-ln -fs "$HOME/.dotfiles/zshrc"     "$HOME/.zshrc"I
-
-for config in `ls $HOME/.dotfiles/configs`; do
-    ln -fs $config $HOME/.$config
-done
+nix_fonts="/usr/share/fonts"
+mac_fonts="$HOME/Library/Fonts"
+cp -R "$HOME/.dotfiles/fonts" $nix_fonts 
 
 # Hushes initial terminal session messages
 touch "$HOME/.hushlogin"
+
+# Simlink misc confs
+export CONFIGS="$HOME/.dotfiles/configs"
+for FILE in `ls $CONFIGS`; do
+    CONFIG=.$FILE
+    ln -frs $CONFIGS/$FILE $HOME/$CONFIG
+done
+
+# Append into .zshrc
+export ZSH="$HOME/.dotfiles/zsh"
+cat << 'EOF' >> $HOME/.zshrc
+
+# Sources 
+source "$ZSH/env"
+source "$ZSH/setopts"
+source "$ZSH/zinit"
+source "$ZSH/aliases"
+source "$ZSH/completes"
+source "$ZSH/keybind"
+
+# Prompt
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+EOF
+
+
+
+

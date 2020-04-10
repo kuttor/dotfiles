@@ -20,7 +20,7 @@ load() { zinit light "$@"; }
 # Theme Powerlevel1ok
 zinit ice; load "romkatv/powerlevel10k"
 
-# LS_COLORS
+# Ls Colors
 plug reset \
     atclone"local P=${${(M)OSTYPE:#*darwin*}:+g}
         \${P}sed -i '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
@@ -29,10 +29,10 @@ plug reset \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
 load "trapd00r/LS_COLORS"
 
-# You-Should-Use
+# You Should Use
 plug blockf; load "MichaelAquilina/zsh-you-should-use"
 
-# Zsh-Autopair
+# Zsh Autopair
 plug; load "hlissner/zsh-autopair"
 
 # FZ
@@ -41,16 +41,16 @@ plug as"program" mv"fz.* -> fz" pick"fz"; load "changyuheng/fz"
 # Z.Lua
 plug as"program" mv"z.* -> z" pick"z"; load "skywind3000/z.lua"
 
-# Git-Start-Commit
+# Git Start Commit
 plug; load "seletskiy/zsh-git-smart-commands"
 
-# Zsh-Completionss
+# Zsh Completions
 plug blockf atpull"zinit creinstall -q ."; load "zsh-users/zsh-completions"
 
-# Fast-Syntax-Highlighting
+# Fast Syntax Highlighting
 plug atinit"zpcompinit; zpcdreplay"; load "zdharma/fast-syntax-highlighting"
 
-# Zsh-Autosuggestions
+# Zsh Autosuggestions
 plug atload"_zsh_autosuggest_start"; load "zsh-users/zsh-autosuggestions"
 
 # Turbo-enabled CompDefs
