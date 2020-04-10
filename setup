@@ -31,12 +31,12 @@ export ZSH="$HOME/.dotfiles/zsh"
 cat << 'EOF' >> $HOME/.zshrc
 
 # Sources 
-source "$ZSH/env"
-source "$ZSH/setopts"
-source "$ZSH/zinit"
-source "$ZSH/aliases"
-source "$ZSH/completes"
-source "$ZSH/keybind"
+source "$HOME/.dotfiles/zsh/env"
+source "$HOME/.dotfiles/zsh/setopts"
+source "$HOME/.dotfiles/zsh/zinit"
+source "$HOME/.dotfiles/zsh/aliases"
+source "$HOME/.dotfiles/zsh/completes"
+source "$HOME/.dotfiles/zsh/keybind"
 
 # Prompt
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
