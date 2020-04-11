@@ -39,7 +39,7 @@ export _ZL_HYPHEN=1
 
 # FZ
 FZ_HISTORY_CD_CMD="_zlua"
-source `which fz`
+source $HOME"/.zinit/plugins/changyuheng---fz/fz"
 
 # Editor
 export EDITOR="/usr/local/bin/nvim"
