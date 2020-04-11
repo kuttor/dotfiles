@@ -2,12 +2,6 @@
 # file: setup
 # info: creates necessary links/files to setup dotfiles and install packages
 
-# Variables
-export DOTFILES=${HOME}"/.dotfiles"
-export ZSH=${DOTFILES}"/zsh"
-export CONFIGS="${DOTFILES}/configs"
-
-
 # Homebrew
 #/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -18,11 +12,11 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/i
 #/home/linuxbrew/.linuxbrew/bin/brew bundle --force --file "$HOME/.dotfiles/Brewfile"
 
 # Fonts
-nix_fonts="/usr/share/fonts"
-mac_fonts="$HOME/Library/Fonts"
-cp -R "$DOTFILES/fonts" $nix_fonts
+#nix_fonts="/usr/share/fonts"
+#mac_fonts="$HOME/Library/Fonts"
+#cp -R "$fonts" $nix_fonts
 
-# Hushes initial terminal session messages
+# disable welcome messages and disable : 
 touch "$HOME/.hushlogin"
 
 # Simlink misc confs
@@ -31,18 +25,19 @@ for FILE in `ls $CONFIGS`; do
     ln -frs $CONFIGS/$FILE $HOME/$CONFIG
 done
 
+# Add main shell sources to zshrc file
 cat << EOF >> $HOME/.zshrc
 
 # Sources
-source "/home/yeti/.dotfiles/zsh/env"
-source "/home/yeti/.dotfiles/zsh/setopts"
-source "/home/yeti/.dotfiles/zsh/zinit"
-source "/home/yeti/.dotfiles/zsh/aliases"
-source "/home/yeti/.dotfiles/zsh/completes"
-source "/home/yeti/.dotfiles/zsh/keybind"
+source "$HOME/.dotfiles/zsh/env"
+source "$HOME/.dotfiles/zsh/setopts"
+source "$HOME/.dotfiles/zsh/zinit"
+source "$HOME/.dotfiles/zsh/aliases"
+source "$HOME/.dotfiles/zsh/completes"
+source "$HOME/.dotfiles/zsh/keybind"
 
 # Prompt
-[[ ! -f $DOTFILES/.p10k.zsh ]] || source /.p10k.zsh
+source "$HOME/.dotfiles/.p10k.zsh"
 
 EOF
 

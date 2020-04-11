@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/sh
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marke
 
@@ -37,16 +37,12 @@ export _ZL_DATA="$CACHE/z.cache"
 export _ZL_MATCH_MODE=1
 export _ZL_HYPHEN=1
 
-# FZ
-FZ_HISTORY_CD_CMD="_zlua"
-source $HOME"/.zinit/plugins/changyuheng---fz/fz"
-
 # Editor
-export EDITOR="/usr/local/bin/nvim"
+export EDITOR="$(which nvim)"
 export VISUAL="$EDITOR"
 
 # Pager
-export PAGER="/usr/local/bin/bat"
+export PAGER="$(which bat)"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 
@@ -55,8 +51,12 @@ export LDFLAGS="-L/usr/local/opt/ruby/lib"
 export CPPFLAGS="-I/usr/local/opt/ruby/include"
 export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
 
+# FZ
+FZ_HISTORY_CD_CMD="_zlua"
+source "$(which fz)"
+
 # FZF
-export FZF_BASE="/usr/local/bin/fzf"
+export FZF_BASE=$(which fzf)
 
 # Z.Lua
 
@@ -117,17 +117,3 @@ export EXA_COLORS="README*=38;5;208:Makefile=33"
 export LSCOLORS=cxBxhxDxfxhxhxhxhxcxcx
 export CLICOLOR=1
 
-# -----------------------------------------------------------------------------
-# Spaceship Prompt Theme
-# -----------------------------------------------------------------------------
-
-SPACESHIP_PROMPT_ORDER=(
-  dir           # Current directory section
-  git           # Git section (git_branch + git_status)
-  package       # Package version
-  aws           # Amazon Web Services section
-  line_sep      # Line break
-  time          # Time stamp
-  exit_code     # Exit code section
-  char          # Prompt character
-)
