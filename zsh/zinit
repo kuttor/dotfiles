@@ -6,55 +6,51 @@
 # info: zinit configuration
 
 # Zplugin init
-source "${HOME}/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
+#source "${HOME}/.zinit/bin/zinit.zsh"
+#autoload -Uz _zinit
+#(( ${+_comps} )) && _comps[zinit]=_zinit
 
 # Compinit speed up loading
 ZINIT[COMPINIT_OPTS]=-C
 
-# Simplifying plugin init syntax
+# Simplifying plugin syntax
 plug() { zinit ice wait lucid "$@"; }
-load() { zinit light "$@"; }
+release="from'gh-r' as'program'"
+lite="zinit light"
+load="zinit load"
 
-# Theme Powerlevel1ok
-zinit ice; load "romkatv/powerlevel10k"
+# Annexes
+zinit light zinit-zsh/z-a-bin-gem-node
+zinit light zinit-zsh/z-a-patch-dl
+zinit light zinit-zsh/z-a-as-monitor
 
-# Ls Colors
-plug reset \
-    atclone"local P=${${(M)OSTYPE:#*darwin*}:+g}
-        \${P}sed -i '/DIR/c\DIR 38;5;63;1' LS_COLORS; \
-        \${P}dircolors -b LS_COLORS > c.zsh" \
-    atpull'%atclone' pick"c.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”'
-load "trapd00r/LS_COLORS"
+# Prompt
+zi atload"!source ${DOTFILES}/theme.zsh" nocd for "romkatv/powerlevel10k"
 
-# You Should Use
-plug blockf; load "MichaelAquilina/zsh-you-should-use"
+# FZF
+zinit pack for ls_colors
 
-# Zsh Autopair
-plug; load "hlissner/zsh-autopair"
+# Install fzf
+zinit ice from"gh-r" as"command"
+zinit load junegunn/fzf-bin
 
-# FZ
-plug; load "changyuheng/fz"
+# Fast Alias Tips
+plug $release for \
+	gsei40kr/fast-alias-tips-bin \
+	gsei40kr/zsh-fast-alias-tips
 
-# Z.Lua
-plug; load "skywind3000/z.lua"
+# Misc 
+plug for \
+    hlissner/zsh-autopair \
+    wfxr/forgit \
+    ajeetdsouza/zoxide \
+    seletskiy/zsh-git-smart-commands
 
-# FZF-Z
-plug; load "andrewferrier/fzf-z"
-
-# Git Start Commit
-plug; load "seletskiy/zsh-git-smart-commands"
-
-# Zsh Completions
-plug blockf atpull"zinit creinstall -q ."; load "zsh-users/zsh-completions"
-
-# Fast Syntax Highlighting
-plug atinit"zpcompinit; zpcdreplay"; load "zdharma/fast-syntax-highlighting"
-
-# Zsh Autosuggestions
-plug atload"_zsh_autosuggest_start"; load "zsh-users/zsh-autosuggestions"
+# The Magic Three
+plug for \
+  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
+  atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
+  blockf atpull"zinit creinstall -q ." $lite zsh-users/zsh-completions
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit

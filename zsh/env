@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marke
 
@@ -10,12 +10,12 @@
 # -----------------------------------------------------------------------------
 
 # VIP Folders
-DOTFILES="$HOME/.dotfiles"
-CACHE="$HOME/.cache"
-CONFIG="$HOME/.config"
+export DOTFILES=$HOME/.dotfiles
+export CACHE="$HOME/.cache"
+export CONFIG="$HOME/.config"
 
 # Prompt
-source $DOTFILES/.p10k.zsh
+source $HOME/.dotfiles/theme.zsh
 
 # Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
@@ -44,10 +44,6 @@ export LDFLAGS="-L/usr/local/opt/ruby/lib"
 export CPPFLAGS="-I/usr/local/opt/ruby/include"
 export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
 
-# FZ
-FZ_HISTORY_CD_CMD="_zlua"
-source "/home/yeti/.zinit/plugins/changyuheng---fz/fz" 
-
 # FZF
 export FZF_BASE=$(which fzf)
 
@@ -57,6 +53,10 @@ export _ZL_DATA="$CACHE/z.cache"
 export _ZL_MATCH_MODE=1
 export _ZL_HYPHEN=1
 export _ZL_ECHO=1
+
+# FZ
+FZ_HISTORY_CD_CMD="_zlua"
+#source $(brew --prefix)/Cellar/fzf/0.21.1/bin/fzf 
 
 # -----------------------------------------------------------------------------
 # History
