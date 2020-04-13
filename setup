@@ -22,7 +22,7 @@ touch "$HOME/.hushlogin"
 # Simlink misc confs
 for FILE in `ls $CONFIGS`; do
     CONFIG=.$FILE
-    ln -frs $CONFIGS/$FILE $HOME/$CONFIG
+    ln -fs $CONFIGS/$FILE $HOME/$CONFIG
 done
 
 # Add main shell sources to zshrc file

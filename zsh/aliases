@@ -30,6 +30,7 @@ alias mkdir="mkdir -pv"
 alias molecule-create="molecule init scenario -r "
 alias mtop="htop --sort-key=PERCENT_MEM"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias restart="reset; exec sudo --login --user $USER"
 alias path='echo $PATH | tr -s ":" "\n"'
 alias pip='pip3'
 alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
