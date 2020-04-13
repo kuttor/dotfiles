@@ -39,7 +39,7 @@ plug; load "hlissner/zsh-autopair"
 plug as"program" mv"fz.* -> fz" pick"fz"; load "changyuheng/fz"
 
 # Z.Lua
-plug as"program" mv"z.* -> z" pick"z"; load "skywind3000/z.lua"
+plug as"program" mv"z.lua -> z" pick"z"; load "skywind3000/z.lua"
 
 # Git Start Commit
 plug; load "seletskiy/zsh-git-smart-commands"
