@@ -31,17 +31,6 @@ export ITERM_24BIT=1
 export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
-# Zlua
-export _ZL_MATCH_MODE=1
-export _ZL_DATA=$CACHE/zlua.cache
-export _ZL_ECHO=1
-export _ZL_HYPHEN=1
-
-[[ ! -f "${CACHE}/z.cache" ]] || touch "${CACHE}/z.cache"
-export _ZL_DATA="$CACHE/z.cache"
-export _ZL_MATCH_MODE=1
-export _ZL_HYPHEN=1
-
 # Editor
 export EDITOR="$(which nvim)"
 export VISUAL="$EDITOR"
@@ -58,14 +47,17 @@ export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
 
 # FZ
 FZ_HISTORY_CD_CMD="_zlua"
-source "$(which fz)"
+source "/home/yeti/.zinit/plugins/changyuheng---fz/fz" 
 
 # FZF
 export FZF_BASE=$(which fzf)
 
-# Z.Lua
-
-
+# Zlua
+[[ ! -f "${CACHE}/z.cache" ]] || touch "${CACHE}/z.cache"
+export _ZL_DATA="$CACHE/z.cache"
+export _ZL_MATCH_MODE=1
+export _ZL_HYPHEN=1
+export _ZL_ECHO=1
 
 # -----------------------------------------------------------------------------
 # History
@@ -102,13 +94,14 @@ autoload $DOTFILES/functions/*
 
 # System Paths
 path=(
+  $(brew --prefix)/{sbin,bin}
+  $(brew --prefix)/bin
   ${USER}/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
   ${USER}/Library/Python/{2.7,3.7}/bin
   /usr/local/opt/ruby/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/{bin,sbin}(N-/)
   /usr/{bin,sbin}(N-/)
-  $(brew --prefix)/bin
   /{bin,sbin}(N-/)
   ${path}
 )

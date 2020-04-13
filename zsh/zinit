@@ -36,10 +36,13 @@ plug blockf; load "MichaelAquilina/zsh-you-should-use"
 plug; load "hlissner/zsh-autopair"
 
 # FZ
-plug as"program" mv"fz.* -> fz" pick"fz"; load "changyuheng/fz"
+plug; load "changyuheng/fz"
 
 # Z.Lua
-plug as"program" mv"z.lua -> z" pick"z"; load "skywind3000/z.lua"
+plug; load "skywind3000/z.lua"
+
+# FZF-Z
+plug; load "andrewferrier/fzf-z"
 
 # Git Start Commit
 plug; load "seletskiy/zsh-git-smart-commands"
