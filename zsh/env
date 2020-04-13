@@ -14,9 +14,8 @@ DOTFILES="$HOME/.dotfiles"
 CACHE="$HOME/.cache"
 CONFIG="$HOME/.config"
 
-# -----------------------------------------------------------------------------
-# Exports and Package Config
-# -----------------------------------------------------------------------------
+# Prompt
+source $DOTFILES/.p10k.zsh
 
 # Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
