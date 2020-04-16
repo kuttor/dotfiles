@@ -1,14 +1,5 @@
 #!/usr/bin/env zsh
 # -*- coding: utf-8 -*-
-# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker
-
-# file: zinit
-# info: zinit configuration
-
-# Zplugin init
-#source "${HOME}/.zinit/bin/zinit.zsh"
-#autoload -Uz _zinit
-#(( ${+_comps} )) && _comps[zinit]=_zinit
 
 # Compinit speed up loading
 ZINIT[COMPINIT_OPTS]=-C
@@ -25,7 +16,7 @@ zinit light zinit-zsh/z-a-patch-dl
 zinit light zinit-zsh/z-a-as-monitor
 
 # Prompt
-zi atload"!source ${DOTFILES}/theme.zsh" nocd for "romkatv/powerlevel10k"
+zi atload"!source $DOTFILES/theme.zsh" nocd for "romkatv/powerlevel10k"
 
 # FZF
 zinit pack for ls_colors
@@ -36,8 +27,8 @@ zinit load junegunn/fzf-bin
 
 # Fast Alias Tips
 plug $release for \
-	gsei40kr/fast-alias-tips-bin \
-	gsei40kr/zsh-fast-alias-tips
+    gsei40kr/fast-alias-tips-bin \
+    gsei40kr/zsh-fast-alias-tips
 
 # Misc 
 plug for \
@@ -48,9 +39,9 @@ plug for \
 
 # The Magic Three
 plug for \
-  atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
-  atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
-  blockf atpull"zinit creinstall -q ." $lite zsh-users/zsh-completions
+    atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
+    atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
+    blockf atpull"zinit creinstall -q ." $lite zsh-users/zsh-completions
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit

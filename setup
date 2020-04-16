@@ -2,24 +2,22 @@
 # file: setup
 # info: creates necessary links/files to setup dotfiles and install packages
 
-# Homebrew
-#/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# Install Homebrew for Linux or Mac
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
-# Zinit
+# Install Zinit fpr Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
-
-# Brew
-#/home/linuxbrew/.linuxbrew/bin/brew bundle --force --file "$HOME/.dotfiles/Brewfile"
 
 # Fonts
 #nix_fonts="/usr/share/fonts"
 #mac_fonts="$HOME/Library/Fonts"
 #cp -R "$fonts" $nix_fonts
 
-# disable welcome messages and disable : 
+# Disable welcome messages and disable :
 touch "$HOME/.hushlogin"
 
-# Simlink misc confs
+# Simlink confing files
+CONFIGS=$HOME/.dotfiles/configs
 for FILE in `ls $CONFIGS`; do
     CONFIG=.$FILE
     ln -fs $CONFIGS/$FILE $HOME/$CONFIG
@@ -35,8 +33,5 @@ source "$HOME/.dotfiles/zsh/setopts"
 source "$HOME/.dotfiles/zsh/aliases"
 source "$HOME/.dotfiles/zsh/completes"
 source "$HOME/.dotfiles/zsh/keybind"
-
-# Prompt
-source "$HOME/.dotfiles/.p10k.zsh"
 
 EOF

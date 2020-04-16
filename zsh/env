@@ -2,20 +2,10 @@
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marke
 
-# file: env
-# info: Env vars, shell optionds, exports
-
-# -----------------------------------------------------------------------------
-# Env Vars
-# -----------------------------------------------------------------------------
-
-# VIP Folders
+# Folders
 export DOTFILES=$HOME/.dotfiles
 export CACHE="$HOME/.cache"
 export CONFIG="$HOME/.config"
-
-# Prompt
-source $HOME/.dotfiles/theme.zsh
 
 # Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
@@ -48,7 +38,7 @@ export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
 export FZF_BASE=$(which fzf)
 
 # Zlua
-[[ ! -f "${CACHE}/z.cache" ]] || touch "${CACHE}/z.cache"
+[[ ! -f "$CACHE/z.cache" ]] || touch "$CACHE/z.cache"
 export _ZL_DATA="$CACHE/z.cache"
 export _ZL_MATCH_MODE=1
 export _ZL_HYPHEN=1
@@ -85,8 +75,8 @@ typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 # Function Paths
 fpath=(
   #/usr/share/zsh-completions
-  ${DOTFILES}/functions
-  ${fpath}
+  $DOTFILES/functions
+  $fpath
 )
 
 autoload $DOTFILES/functions/*
@@ -94,15 +84,12 @@ autoload $DOTFILES/functions/*
 # System Paths
 path=(
   $(brew --prefix)/{sbin,bin}
-  $(brew --prefix)/bin
-  #${USER}/Library/Python/{2.7,3.7}/lib/python/site-packages(N-/)
-  #${USER}/Library/Python/{2.7,3.7}/bin
-  #/usr/lib/python3.8/dist-packages
+  #$USER/Library/Python/{2.7,3.7}/{lib/python/site-packages,bin)}
   /usr/local/opt/ruby/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/{bin,sbin}(N-/)
-  ${USER}/.local/bin
+  $USER/.local/bin
   /usr/{bin,sbin}(N-/)
   /{bin,sbin}(N-/)
-  ${path}
+  $path
 )

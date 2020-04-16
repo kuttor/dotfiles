@@ -2,20 +2,12 @@
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
 
-# file: bindkey
-# info: Main config file for keybindings
-
-# -----------------------------------------------------------------------------
-# Keybinds
-# -----------------------------------------------------------------------------
-
 # Emacs
 bindkey -e
 
 bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
-# Quote pasted URLs#
 autoload -Uz history-search-end
 autoload -Uz is-at-least
 autoload -U url-quote-magic
