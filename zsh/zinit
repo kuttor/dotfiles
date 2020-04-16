@@ -14,22 +14,38 @@ load() {"zinit load"  "$@"; }
 zinit light-mode for \
     zinit-zsh/z-a-patch-dl \
     zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-bin-gem-node
+    zinit-zsh/z-a-bin-gem-node \
+    zinit-zsh/z-a-submods
 
-zinit wait lucid for \
+# Lib Git
+zinit wait lucid light-mode for \
 	OMZ::lib/git.zsh \
 	atload"unalias grv" OMZ::plugins/git/git.plugin.zsh
 
-zinit ice pick"completion.zsh" src"git.zsh" for OMZ::lib
+# Lib Completions
+zinit ice pick"completion.zsh" src"git.zsh"
+zinit snippit OMZ::lib
+
+# Autopair
+zinit ice wait'1' lucid
+zinit light hlissner/zsh-autopair
+
+# TheFuck
+zinit ice wait'1' lucid
+zinit light laggardkernel/zsh-thefuck
+
+# FZ
+zinit ice wait'1b' lucid blockf
+zinit light changyuheng/fz
 
 # Prompt
 zinit atload"!source $HOME/.p10k.zsh" nocd for "romkatv/powerlevel10k"
 
-# FZF
+# LS Colors
 zinit pack for ls_colors
 
 # Install fzf
-zinit ice wait from"gh-r" as"command" for junegunn/fzf-bin
+zinit ice wait light-mode from"gh-r" as"command" for junegunn/fzf-bin
 
 # Fast Alias Tip
 zinit ice from'gh-r' as'program'
@@ -45,17 +61,37 @@ zinit as"null" wait"3" for \
 	make"PREFIX=$ZPFX"          tj/git-extras
 
 # Misc 
-zinit ice wait for \
-    hlissner/zsh-autopair \
+zinit depth'3' light-mode for \
+    pick'autopair.zsh' nocompletions atload'bindkey "^H" backward-kill-word' \
+        hlissner/zsh-autopair
     wfxr/forgit \
-    ajeetdsouza/zoxide \
-    seletskiy/zsh-git-smart-commands
 
-# The Magic Three
-zinit ice wait for \
-    atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
-    atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
-    blockf atpull"zinit creinstall -q ." zsh-users/zsh-completions
+zinit depth'3' lucid ight-mode for \
+    trigger-load'!x' \
+        OMZ::plugins/extract/extract.plugin.zsh \
+    trigger-load'!man' \
+        ael-code/zsh-colored-man-pages \
+    trigger-load'!ga;!gcf;!gclean;!gd;!glo;!grh;!gss' \
+        wfxr/forgit \
+    trigger-load'!zshz' blockf \
+        agkozak/zsh-z \
+    trigger-load'!updatelocal' blockf \
+        NICHOLAS85/updatelocal
+
+zinit depth'3' light-mode as'null' for \
+    sbin"bin/git-dsf;bin/diff-so-fancy" zdharma/zsh-diff-so-fancy 
+
+# Zsh Completions
+zinit ice wait'1' lucid blockf
+zinit light zsh-users/zsh-completions
+
+# Fast Syntax Highlighting
+zinit ice wait'2b' atinit"ZPLGM[COMPINIT_OPTS]=-C; _zpcompinit_fast; zpcdreplay" lucid
+zinit light zdharma/fast-syntax-highlighting
+
+# Auto Suggestions
+zinit ice wait'2c' atload"!_zsh_autosuggest_start" lucid
+zinit light zsh-users/zsh-autosuggestions
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
