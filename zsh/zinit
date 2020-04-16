@@ -1,47 +1,61 @@
 #!/usr/bin/env zsh
 # -*- coding: utf-8 -*-
 
-# Compinit speed up loading
-ZINIT[COMPINIT_OPTS]=-C
+# Skip the not really helping global compinits
+skip_global_compinit=1
 
 # Simplifying plugin syntax
 plug() { zinit ice wait lucid "$@"; }
 release="from'gh-r' as'program'"
-lite="zinit light"
-load="zinit load"
+lite() {"zinit light" "$@"; } 
+load() {"zinit load"  "$@"; }
 
 # Annexes
-zinit light zinit-zsh/z-a-bin-gem-node
-zinit light zinit-zsh/z-a-patch-dl
-zinit light zinit-zsh/z-a-as-monitor
+zinit light-mode for \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-bin-gem-node
+
+zinit wait lucid for \
+	OMZ::lib/git.zsh \
+	atload"unalias grv" OMZ::plugins/git/git.plugin.zsh
+
+zinit ice pick"completion.zsh" src"git.zsh" for OMZ::lib
 
 # Prompt
-zi atload"!source $HOME/.p10k.zsh" nocd for "romkatv/powerlevel10k"
+zinit atload"!source $HOME/.p10k.zsh" nocd for "romkatv/powerlevel10k"
 
 # FZF
 zinit pack for ls_colors
 
 # Install fzf
-zinit ice from"gh-r" as"command"
-zinit load junegunn/fzf-bin
+zinit ice wait from"gh-r" as"command" for junegunn/fzf-bin
 
-# Fast Alias Tips
-plug $release for \
-    gsei40kr/fast-alias-tips-bin \
-    gsei40kr/zsh-fast-alias-tips
+# Fast Alias Tip
+zinit ice from'gh-r' as'program'
+zinit light sei40kr/fast-alias-tips-bin
+zinit light sei40kr/zsh-fast-alias-tips
+
+zinit as"null" wait"3" for \
+	sbin  Fakerr/git-recall \
+	sbin  paulirish/git-open \
+	sbin  paulirish/git-recent \
+	sbin  davidosomething/git-my \
+	make"PREFIX=$ZPFX install"  iwata/git-now \
+	make"PREFIX=$ZPFX"          tj/git-extras
 
 # Misc 
-plug for \
+zinit ice wait for \
     hlissner/zsh-autopair \
     wfxr/forgit \
     ajeetdsouza/zoxide \
     seletskiy/zsh-git-smart-commands
 
 # The Magic Three
-plug for \
+zinit ice wait for \
     atinit"zicompinit; zicdreplay" zdharma/fast-syntax-highlighting \
     atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
-    blockf atpull"zinit creinstall -q ." $lite zsh-users/zsh-completions
+    blockf atpull"zinit creinstall -q ." zsh-users/zsh-completions
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
