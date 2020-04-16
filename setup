@@ -16,6 +16,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/i
 # Disable welcome messages and disable :
 touch "$HOME/.hushlogin"
 
+# Copy p10k theme file into Home root
+cp "$HOME/.dotfiles/theme.zsh" "$HOME/.p10k.zsh"
+
 # Simlink confing files
 CONFIGS=$HOME/.dotfiles/configs
 for FILE in `ls $CONFIGS`; do
@@ -26,12 +29,13 @@ done
 # Add main shell sources to zshrc file
 cat << EOF >> $HOME/.zshrc
 
-# Sources
+# Source main Dotfiles
 source "$HOME/.dotfiles/zsh/zinit"
 source "$HOME/.dotfiles/zsh/env"
 source "$HOME/.dotfiles/zsh/setopts"
 source "$HOME/.dotfiles/zsh/aliases"
 source "$HOME/.dotfiles/zsh/completes"
 source "$HOME/.dotfiles/zsh/keybind"
-
 EOF
+
+

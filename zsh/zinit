@@ -16,7 +16,7 @@ zinit light zinit-zsh/z-a-patch-dl
 zinit light zinit-zsh/z-a-as-monitor
 
 # Prompt
-zi atload"!source $DOTFILES/theme.zsh" nocd for "romkatv/powerlevel10k"
+zi atload"!source $HOME/.p10k.zsh" nocd for "romkatv/powerlevel10k"
 
 # FZF
 zinit pack for ls_colors
