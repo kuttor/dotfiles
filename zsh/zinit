@@ -20,11 +20,7 @@ zinit light-mode for \
 # Lib Git
 zinit wait lucid light-mode for \
 	OMZ::lib/git.zsh \
-	atload"unalias grv" OMZ::plugins/git/git.plugin.zsh
-
-# Lib Completions
-zinit ice pick"completion.zsh" src"git.zsh"
-zinit snippit OMZ::lib
+	atload"unalias grv" OMZ::plugins/git/git.plugin.zsh \
 
 # Autopair
 zinit ice wait'1' lucid
