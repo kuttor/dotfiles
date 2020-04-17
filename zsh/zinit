@@ -62,11 +62,10 @@ zinit as"null" wait"3" for \
 
 # Misc 
 zinit depth'3' light-mode for \
-    pick'autopair.zsh' nocompletions atload'bindkey "^H" backward-kill-word' \
-        hlissner/zsh-autopair
-    wfxr/forgit \
+    pick'autopair.zsh' nocompletions atload'bindkey "^H" backward-kill-word' hlissner/zsh-autopair /
+    wfxr/forgit
 
-zinit depth'3' lucid ight-mode for \
+zinit depth'3' lucid l`ight-mode for \
     trigger-load'!x' \
         OMZ::plugins/extract/extract.plugin.zsh \
     trigger-load'!man' \
