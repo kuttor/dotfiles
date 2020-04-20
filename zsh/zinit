@@ -88,8 +88,8 @@ zinit ice wait'1' lucid blockf
 zinit light zsh-users/zsh-completions
 
 # Fast Syntax Highlighting
-zinit ice wait'2b' atinit"ZPLGM[COMPINIT_OPTS]=-C; _zpcompinit_fast; zpcdreplay" lucid
-zinit light zdharma/fast-syntax-highlighting
+zinit wait lucid for \
+    atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" "zdharma/fast-syntax-highlighting"
 
 # Auto Suggestions
 zinit ice wait'2c' atload"!_zsh_autosuggest_start" lucid
