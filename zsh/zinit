@@ -7,7 +7,7 @@ skip_global_compinit=1
 # Simplifying plugin syntax
 plug() { zinit ice wait lucid "$@"; }
 release="from'gh-r' as'program'"
-lite() {"zinit light" "$@"; } 
+lite() {"zinit light" "$@"; }
 load() {"zinit load"  "$@"; }
 
 # Annexes
@@ -30,18 +30,24 @@ zinit light hlissner/zsh-autopair
 zinit ice wait'1' lucid
 zinit light laggardkernel/zsh-thefuck
 
-# FZ
-zinit ice wait'1b' lucid blockf
-zinit light changyuheng/fz
-
 # Prompt
-zinit atload"!source $HOME/.p10k.zsh" nocd for "romkatv/powerlevel10k"
+#zinit atload"!source $HOME/.dotfiles/.p10k.zsh" nocd for "romkatv/powerlevel10k"
+zinit ice depth=1
+zinit light "romkatv/powerlevel10k"
 
 # LS Colors
 zinit pack for ls_colors
 
-# Install fzf
+# FZF
 zinit ice wait light-mode from"gh-r" as"command" for junegunn/fzf-bin
+
+# FZF-Tab
+zinit ice wait"1" lucid
+zinit light "Aloxaf/fzf-tab"
+
+# FZ
+zinit ice wait'1b' lucid blockf
+zinit light "changyuheng/fz"
 
 # Fast Alias Tip
 zinit ice from'gh-r' as'program'
@@ -56,7 +62,7 @@ zinit as"null" wait"3" for \
 	make"PREFIX=$ZPFX install"  iwata/git-now \
 	make"PREFIX=$ZPFX"          tj/git-extras
 
-# Misc 
+# Misc
 zinit depth'3' light-mode for \
     pick'autopair.zsh' nocompletions atload'bindkey "^H" backward-kill-word' hlissner/zsh-autopair \
     wfxr/forgit
@@ -71,11 +77,11 @@ zinit depth'3' lucid light-mode for \
     trigger-load'!updatelocal' blockf \
         NICHOLAS85/updatelocal
     # trigger-load'!ga;!gcf;!gclean;!gd;!glo;!grh;!gss' \
-     #   wfxr/forgit 
+     #   wfxr/forgit
 
 
 zinit depth'3' light-mode as'null' for \
-    sbin"bin/git-dsf;bin/diff-so-fancy" zdharma/zsh-diff-so-fancy 
+    sbin"bin/git-dsf;bin/diff-so-fancy" zdharma/zsh-diff-so-fancy
 
 # Zsh Completions
 zinit ice wait'1' lucid blockf

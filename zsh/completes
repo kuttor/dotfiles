@@ -49,6 +49,20 @@ zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
 # Array completion element sorting.
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
+# Process Kill
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
+
+# FZF
+zstyle ':fzf-tab:complete:_zlua:*' query-string input
+zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
+zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
+
+# Zlua
+zstyle ':fzf-tab:complete:_zlua:*' query-string input
+
+# Exa
+zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
+
 # Automatically find new executables in path
 zstyle ':completion:*' rehash true
 
