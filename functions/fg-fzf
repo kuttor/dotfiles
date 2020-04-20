@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+function fg-fzf() {
+    job="$(jobs | fzf -0 -1 | sed -E 's/\[(.+)\].*/\1/')" &&\
+        echo '' &&\
+        fg %$job
+}

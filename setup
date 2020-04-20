@@ -32,7 +32,6 @@ cat << EOF >> $HOME/.zshrc
 # Source main Dotfiles
 source "$HOME/.dotfiles/zsh/zinit"
 source "$HOME/.dotfiles/zsh/env"
-source "$HOME/.dotfiles/zsh/setopts"
 source "$HOME/.dotfiles/zsh/aliases"
 source "$HOME/.dotfiles/zsh/completes"
 source "$HOME/.dotfiles/zsh/keybind"
