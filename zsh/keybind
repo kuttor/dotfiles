@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/en sh
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
 
@@ -29,14 +29,14 @@ zle -N select-word-style bash
 zle -N self-insert url-quote-magic
 zle -N autosuggest-accept
 
-bindkey " "       magic-space
+bindkey " " magic-space
 bindkey "^[[1;2C" forward-word
 bindkey "^[[1;2D" backward-word
-bindkey "^[[F"    end-of-line
-bindkey "^[[H"    beginning-of-line
-bindkey '^ '      autosuggest-accept
-bindkey "^E"      edit-command-line
-bindkey "^I"      expand-or-complete-with-dots
-bindkey "^N"      history-beginning-search-forward-end
-bindkey "^P"      history-beginning-search-backward-end
-bindkey "^X^L"    insert-last-command-output
+bindkey "^[[F" end-of-line
+bindkey "^[[H" beginning-of-line
+bindkey '^ ' autosuggest-accept
+bindkey "^E" edit-command-line
+bindkey "^I" expand-or-complete-with-dots
+bindkey "^N" history-beginning-search-forward-end
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^X^L" insert-last-command-output

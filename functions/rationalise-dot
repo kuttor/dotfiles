@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+if [[ $LBUFFER = *.. ]]
+then
+    LBUFFER+=/..
+else
+    LBUFFER+=.
+fi
+zle -N rationalise-dot
+bindkey . rationalise-dot

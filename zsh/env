@@ -3,46 +3,48 @@
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marke
 
 # Set Options
-setopt AUTO_CD                    # Navigate without typing cd
-setopt CHASE_LINKS                # Resolve links to their location
-setopt HASH_CMDS                  # Dont search for commands
-setopt HASH_LIST_ALL              # More accurate correction
-setopt INTERACTIVE_COMMENTS       # Allow comments in readlin
-setopt LIST_ROWS_FIRST            # Rows are way better
-setopt LIST_TYPES                 # Append type chars to files
-setopt MULTIOS                    # Write to multiple descriptors
-setopt PROMPT_SUBST               # Enable param and arithmetic substitution
-setopt RC_QUOTES                  # Allow 'Henry''s Garage'
-setopt SHORT_LOOPS                # Sooo lazy: for x in y do cmd
-setopt SUN_KEYBOARD_HACK          # Ignore rogue backquote
-setopt BANG_HIST                  # Treat '!' char specially during expansion.
-setopt EXTENDED_HISTORY           # Use history ":start:elapsed;command" format.
-setopt HIST_EXPIRE_DUPS_FIRST     # Remove dupes first when trimming history.
-setopt HIST_IGNORE_SPACE          # Don't record starting with a space.
-setopt HIST_REDUCE_BLANKS         # Remove superfluous blanks before recording.
-setopt HIST_SAVE_NO_DUPS          # Don't write dupes in the history file.
-setopt HIST_VERIFY                # Don't execute immediately upon expansion.
-setopt INC_APPEND_HISTORY         # Write to the history file immediately.
-setopt SHARE_HISTORY              # Share history between all sessions.
-unsetopt FLOW_CONTROL             # Disable /stop characters editor
+setopt AUTO_CD                # Navigate without typing cd
+setopt BANG_HIST              # Treat '!' char specially during expansion.
+setopt CHASE_LINKS            # Resolve links to their location
+setopt EXTENDED_HISTORY       # Use history ":start:elapsed;command" format.
+setopt HASH_CMDS              # Dont search for commands
+setopt HASH_LIST_ALL          # More accurate correction
+setopt HIST_EXPIRE_DUPS_FIRST # Remove dupes first when trimming history.
+setopt HIST_IGNORE_SPACE      # Don't record starting with a space.
+setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks before recording.
+setopt HIST_SAVE_NO_DUPS      # Don't write dupes in the history file.
+setopt HIST_VERIFY            # Don't execute immediately upon expansion.
+setopt INC_APPEND_HISTORY     # Write to the history file immediately.
+setopt INTERACTIVE_COMMENTS   # Allow comments in readlin
+setopt LIST_ROWS_FIRST        # Rows are way better
+setopt LIST_TYPES             # Append type chars to files
+setopt MULTIOS                # Write to multiple descriptors
+setopt PROMPT_SUBST           # Enable param and arithmetic substitution
+setopt RC_QUOTES              # Allow 'Henry''s Garage'
+setopt SHARE_HISTORY          # Share history between all sessions.
+setopt shwordsplit            # Word splits like Bash
+setopt SHORT_LOOPS            # Sooo lazy: for x in y do cmd
+setopt SUN_KEYBOARD_HACK      # Ignore rogue backquote
+unsetopt FLOW_CONTROL         # Disable /stop characters editor
 
 # Folders
-export DOTFILES=$HOME/.dotfiles
+export DOTFILES="$HOME/.dotfiles"
 export CACHE="$HOME/.cache"
 export CONFIG="$HOME/.config"
 
 # Zsh-Autosuggest
-export ZSH_AUTOSUGGEST_USE_ASYNC=1
-export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=1
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
+export ZSH_AUTOSUGGEST_USE_ASYNC="1"
+export ZSH_AUTOSUGGEST_MANUAL_REBIND="1"
+export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="1"
 
 # Terminal
-export REPORTTIME=2
+export REPORTTIME="2"
 export TIMEFMT="%U user %S system %P cpu %*Es total"
-export KEYTIMEOUT=1
-export ITERM_24BIT=1
+export KEYTIMEOUT="1"
+export ITERM_24BIT="1"
 export WORDCHARS='*?-[]~\!#%^(){}<>|`@#%^*()+:?'
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY="YES"
 
 # Editor
 export EDITOR="$(which nvim)"
@@ -52,6 +54,7 @@ export VISUAL="$EDITOR"
 export PAGER="$(which bat)"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
+
 # Ruby
 export LDFLAGS="-L/usr/local/opt/ruby/lib"
 export CPPFLAGS="-I/usr/local/opt/ruby/include"
@@ -59,37 +62,34 @@ export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
 
 # FZF
 export FZF_BASE=$(which fzf)
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS='--preview="cat {}" --preview-window=right:60%:wrap'
-export FZF_ALT_C_OPTS='--preview="ls {}" --preview-window=right:60%:wrap'
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
---height=50%
---color=fg:#e5e9f0,bg:#2e3440,hl:#81a1c1
---color=fg+:#e5e9f0,bg+:#2e3440,hl+:#81a1c1
---color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
---color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
+export FZF_COMPLETION_TRIGGER='~~'
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_CTRL_T_COMMAND='rg --files --hidden'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
 
+# FZF Helper Function
+_fzf_setup_completion path ag git kubectl
+_fzf_setup_completion dir tree
 
 # Zlua
-[[ ! -f "$CACHE/z.cache" ]] && touch "$CACHE/z.cache"
-export _ZL_DATA="$CACHE/z.cache"
-export _ZL_MATCH_MODE=1
-export _ZL_HYPHEN=1
-export _ZL_ECHO=1
+[[ ! -f "$CACHE/z.lua" ]] || touch "$CACHE/z.lua"
+export _ZL_DATA="$CACHE/z.lua"
+export _ZL_MATCH_MODE="1"
+export _ZL_HYPHEN="1"
+export _ZL_ECHO="1"
 
 # FZ
-export FZ_HISTORY_CD_CMD="_zlua"
+FZ_HISTORY_CD_CMD="_zlua"
 #source $(brew --prefix)/Cellar/fzf/0.21.1/bin/fzf
 
 # -----------------------------------------------------------------------------
 # History
 # -----------------------------------------------------------------------------
 
-exportHISTFILE=$CACHE/.zsh_history
-exportHISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
-exportHISTSIZE=10000
-exportSAVEHIST=10000
+HISTFILE=$CACHE/.zsh_history
+HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+HISTSIZE=10000
+SAVEHIST=10000
 
 # Add timestamps
 case $HIST_STAMPS in

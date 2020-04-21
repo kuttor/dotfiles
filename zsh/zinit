@@ -12,34 +12,21 @@ load() {"zinit load"  "$@"; }
 
 # Annexes
 zinit light-mode for \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-bin-gem-node \
-    zinit-zsh/z-a-submods
-
-# Lib Git
-zinit wait lucid light-mode for \
-	OMZ::lib/git.zsh \
-	atload"unalias grv" OMZ::plugins/git/git.plugin.zsh \
-
-# Autopair
-zinit ice wait'1' lucid
-zinit light hlissner/zsh-autopair
-
-# TheFuck
-zinit ice wait'1' lucid
-zinit light laggardkernel/zsh-thefuck
+"zinit-zsh/z-a-patch-dl" \
+"zinit-zsh/z-a-as-monitor" \
+"zinit-zsh/z-a-bin-gem-node" \
+"zinit-zsh/z-a-submods"
 
 # Prompt
 #zinit atload"!source $HOME/.dotfiles/.p10k.zsh" nocd for "romkatv/powerlevel10k"
-zinit ice depth=1
+zinit ice depth="1"
 zinit light "romkatv/powerlevel10k"
 
 # LS Colors
 zinit pack for ls_colors
 
 # FZF
-zinit ice wait light-mode from"gh-r" as"command" for junegunn/fzf-bin
+zinit ice wait light-mode from"gh-r" as"command" for "junegunn/fzf-bin"
 
 # FZF-Tab
 zinit ice wait"1" lucid
@@ -49,39 +36,54 @@ zinit light "Aloxaf/fzf-tab"
 zinit ice wait'1b' lucid blockf
 zinit light "changyuheng/fz"
 
+# Z.Lua
+zinit ice wait='1' lucid
+zinit light "skywind3000/z.lua"
+
+# Zsh-Zed
+zinit ice wait lucid
+zinit light "eendroroy/zed-zsh"
+
 # Fast Alias Tip
 zinit ice from'gh-r' as'program'
 zinit light sei40kr/fast-alias-tips-bin
 zinit light sei40kr/zsh-fast-alias-tips
 
+# Git Stuff
 zinit as"null" wait"3" for \
-	sbin  Fakerr/git-recall \
-	sbin  paulirish/git-open \
-	sbin  paulirish/git-recent \
-	sbin  davidosomething/git-my \
-	make"PREFIX=$ZPFX install"  iwata/git-now \
-	make"PREFIX=$ZPFX"          tj/git-extras
+sbin  Fakerr/git-recall \
+sbin  paulirish/git-open \
+sbin  paulirish/git-recent \
+sbin  davidosomething/git-my \
+make"PREFIX=$ZPFX install"  iwata/git-now \
+make"PREFIX=$ZPFX"          tj/git-extras \
+atload"unalias grv" OMZ::plugins/git/git.plugin.zsh
 
-# Misc
+# Autopair
 zinit depth'3' light-mode for \
-    pick'autopair.zsh' nocompletions atload'bindkey "^H" backward-kill-word' hlissner/zsh-autopair \
-    wfxr/forgit
+pick'autopair.zsh' nocompletions atload'bindkey "^H" backward-kill-word' \
+hlissner/zsh-autopair
 
 zinit depth'3' lucid light-mode for \
-    trigger-load'!x' \
-        OMZ::plugins/extract/extract.plugin.zsh \
-    trigger-load'!man' \
-        ael-code/zsh-colored-man-pages \
-    trigger-load'!zshz' blockf \
-        agkozak/zsh-z \
-    trigger-load'!updatelocal' blockf \
-        NICHOLAS85/updatelocal
-    # trigger-load'!ga;!gcf;!gclean;!gd;!glo;!grh;!gss' \
-     #   wfxr/forgit
+trigger-load'!x' \
+OMZ::plugins/extract/extract.plugin.zsh \
+trigger-load'!man' \
+ael-code/zsh-colored-man-pages \
+trigger-load'!zshz' blockf \
+agkozak/zsh-z \
+trigger-load'!ga;!gcf;!gclean;!gd;!glo;!grh;!gss' \
+wfxr/forgit \
+trackbinds bindmap'\e[1\;6D -> ^[[1\;5A; \e[1\;6C -> ^[[1\;5B' pick'dircycle.zsh'\
+michaelxmcbride/zsh-dircycle
 
 
+# Diff-So-Fancy
 zinit depth'3' light-mode as'null' for \
-    sbin"bin/git-dsf;bin/diff-so-fancy" zdharma/zsh-diff-so-fancy
+sbin"bin/git-dsf;bin/diff-so-fancy" zdharma/zsh-diff-so-fancy
+
+# TheFuck
+zinit ice wait'1' lucid
+zinit light "laggardkernel/zsh-thefuck"
 
 # Zsh Completions
 zinit ice wait'1' lucid blockf
@@ -89,7 +91,7 @@ zinit light zsh-users/zsh-completions
 
 # Fast Syntax Highlighting
 zinit wait lucid for \
-    atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" "zdharma/fast-syntax-highlighting"
+atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" "zdharma/fast-syntax-highlighting"
 
 # Auto Suggestions
 zinit ice wait'2c' atload"!_zsh_autosuggest_start" lucid
