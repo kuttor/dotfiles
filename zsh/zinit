@@ -73,7 +73,7 @@ trigger-load'!zshz' blockf \
 agkozak/zsh-z \
 trigger-load'!ga;!gcf;!gclean;!gd;!glo;!grh;!gss' \
 wfxr/forgit \
-trackbinds bindmap'\e[1\;6D -> ^[[1\;5A; \e[1\;6C -> ^[[1\;5B' pick'dircycle.zsh'\
+trackbinds bindmap'\e[1\;6D -> ^[[1\;5A; \e[1\;6C -> ^[[1\;5B' pick'dircycle.zsh' \
 michaelxmcbride/zsh-dircycle
 
 
