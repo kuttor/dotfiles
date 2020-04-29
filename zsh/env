@@ -68,8 +68,8 @@ export FZF_CTRL_T_COMMAND='rg --files --hidden'
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
 
 # FZF Helper Function
-_fzf_setup_completion path ag git kubectl
-_fzf_setup_completion dir tree
+#_fzf_setup_completion path ag git kubectl
+#_fzf_setup_completion dir tree
 
 # Zlua
 [[ ! -f "$CACHE/z.lua" ]] || touch "$CACHE/z.lua"

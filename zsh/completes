@@ -2,9 +2,6 @@
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
 
-# file: completes
-# info: Completion rules
-
 # ‘select=num’, menu selection will only be started if there are at least num matches.
 zstyle ':completion:*' menu select=2 _complete _ignored _approximate
 zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
@@ -30,9 +27,6 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<-
 
 # Colors
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-#zstyle ':completion:*:original' list-colors "=*=$color[red];$color[bold]"
-#zstyle ':completion:*:parameters' list-colors "=[^a-zA-Z]*=$color[red]"
-#zstyle ':completion:*:aliases' list-colors "=*=$color[green]"
 zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==90=01}:${(s.:.)LS_COLORS}")'
 
 # Fuzzy match mistyped completions.
@@ -52,52 +46,27 @@ zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 # Process Kill
 zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
 
-# FZF
-zstyle ':fzf-tab:complete:_zlua:*' query-string input
+# FZF-Tab
+zstyle ':fzf-tab:*' insert-space true
+zstyle ':fzf-tab:*' continuous-trigger '/'
 zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
-zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
-
-# Zlua
 zstyle ':fzf-tab:complete:_zlua:*' query-string input
-
-# Exa
 zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
 
 # Automatically find new executables in path
 zstyle ':completion:*' rehash true
 
-# format descriptions (notice the vt100 escapes)
-zstyle ':completion:*:descriptions' format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
-
 # Man
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:manuals.(^1*)' insert-sections true
 
-# Group matches and describe.
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:options' auto-description '%d'
-zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
-zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
-zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
-zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' verbose yes
-
 # Directories
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:cd:*' ignore-parents parent pwd
 zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
 zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
 zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
 zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*' special-dirs true
-
-# cd will never select the parent directory (e.g.: cd ../<TAB>)
-zstyle ':completion:*:cd:*' ignore-parents parent pwd
 
 # Case-insensitive (all), partial-word, and then substring completion.
 zstyle ':completion:*' matcher-list '' \
@@ -121,20 +90,15 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/s
 
 # Insert all expansions for expand completer
 zstyle ':completion:*:expand:*'        tag-order all-expansions
+
+# History
 zstyle ':completion:*:history-words'   list false
-
-# Activate menu
 zstyle ':completion:*:history-words'   menu yes
-
-# Ignore duplicate entries
 zstyle ':completion:*:history-words'   remove-all-dups yes
 zstyle ':completion:*:history-words'   stop yes
 
 # Match uppercase from lowercase and complete from the middle of filename
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
-
-# Offer indexes before parameters in subscripts
-zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
 # TheFuck Cache
 zstyle ":prezto:runcom" zpreztorc "$CACHE/.thefuck"

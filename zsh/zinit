@@ -56,8 +56,7 @@ sbin  paulirish/git-open \
 sbin  paulirish/git-recent \
 sbin  davidosomething/git-my \
 make"PREFIX=$ZPFX install"  iwata/git-now \
-make"PREFIX=$ZPFX"          tj/git-extras \
-atload"unalias grv" OMZ::plugins/git/git.plugin.zsh
+make"PREFIX=$ZPFX"          tj/git-extras
 
 # Autopair
 zinit depth'3' light-mode for \
