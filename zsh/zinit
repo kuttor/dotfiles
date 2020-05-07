@@ -22,6 +22,15 @@ zinit light-mode for \
 zinit ice depth="1"
 zinit light "romkatv/powerlevel10k"
 
+# Git
+zinit wait lucid light-mode for \
+sbin "OMZ::lib/git.zsh" \
+sbin "romkatv/gitstatus" \
+sbin  Fakerr/git-recall \
+atload"unalias grv" "OMZ::plugins/git/git.plugin.zsh" \
+make"PREFIX=$ZPFX install" "iwata/git-now" \
+make"PREFIX=$ZPFX" "tj/git-extras"
+
 # LS Colors
 zinit pack for ls_colors
 
@@ -40,23 +49,12 @@ zinit light "changyuheng/fz"
 zinit ice wait='1' lucid
 zinit light "skywind3000/z.lua"
 
-# Zsh-Zed
-zinit ice wait lucid
-zinit light "eendroroy/zed-zsh"
-
 # Fast Alias Tip
 zinit ice from'gh-r' as'program'
 zinit light sei40kr/fast-alias-tips-bin
 zinit light sei40kr/zsh-fast-alias-tips
 
-# Git Stuff
-zinit as"null" wait"3" for \
-sbin  Fakerr/git-recall \
-sbin  paulirish/git-open \
-sbin  paulirish/git-recent \
-sbin  davidosomething/git-my \
-make"PREFIX=$ZPFX install"  iwata/git-now \
-make"PREFIX=$ZPFX"          tj/git-extras
+
 
 # Autopair
 zinit depth'3' light-mode for \

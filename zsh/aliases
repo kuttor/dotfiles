@@ -6,10 +6,15 @@
 # Contact : andrew.kuttor@gmail.com
 # ------------------------------------------------------------------------------
 
+# List files
+alias ak="tree -C"
 alias ak1="tree -L 1 -Ccfhau --du --dirsfirst "
 alias ak2="tree -L 2 -Ccfhau --du --dirsfirst "
 alias ak3="tree -L 3 -Ccfhau --du --dirsfirst "
-alias ak="tree -C"
+
+# Git
+alias gs="git status"
+
 alias ansible-create="ansible-galaxy init  --offline --force "
 alias c="clear"
 alias cat="bat"
@@ -24,7 +29,7 @@ alias free="free -mt"
 alias fzf-preview="fzf --preview bat --style=numbers --color=always {} | head -500"
 alias g="git"
 alias grep="rg"
-alias h="fc -lf"
+alias h="fc -dl 1"
 alias how="howdoi --color --all"
 alias httpHeaders="curl -I -L"
 alias hu="history | rg -i $"
@@ -40,7 +45,6 @@ alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias path='echo $PATH | tr -s ":" "\n"'
 alias pip='pip3'
 alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
-alias pwsh="powershell"
 alias quit="exit"
 alias restart='reset; exec sudo --login --user $USER'
 alias ssh="TERM=xterm-256color ssh"
