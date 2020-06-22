@@ -2,22 +2,41 @@
 # file: setup
 # info: creates necessary links/files to setup dotfiles and install packages
 
-# Install Homebrew for Linux or Mac
-#/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+# Android Tasks
+function android(){
+  echo "Installing pkg based dependencies..."
+  pkg install -y git ruby curl clang proot make exa fd exa ripgrep 
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+  echo "Assigning Meslo as default Termux font"
+  mkdir $HOME"/.termux"
+  cp "fonts/MesloLGS NF Regular.ttf" $HOME"/.termux/font.tff"
+}
+
+# MacOS Tasks
+function macos(){
+  echo "Installing Homebrew for MacOS"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  brew bundle Brewfile
+  brew bundle Caskfile
+
+  echo "Copying fonts to $HOME/Library/Fonts"
+  cp "fonts" $HOME"/Library/Fonts"
+}
+
+# Determine Platform
+[[ "$OSTYPE" == "linux-android" ]] && android
+[[ "$OSTYPE" == "linux-gnu*" ]]    && linux
+[[ "$OSTYPE" == "darwin*" ]]       && macos
 
 # Install Zinit fpr Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
-
-# Fonts
-#nix_fonts="/usr/share/fonts"
-#mac_fonts="$HOME/Library/Fonts"
-#cp -R "$fonts" $nix_fonts
 
 # Disable welcome messages and disable :
 touch "$HOME/.hushlogin"
 
 # Copy p10k theme file into Home root
-cp "$HOME/.dotfiles/theme.zsh" "$HOME/.p10k.zsh"
+#cp "$HOME/.dotfiles/theme.zsh" "$HOME/.p10k.zsh"
 
 # Simlink confing files
 CONFIGS=$HOME/.dotfiles/configs
@@ -36,5 +55,3 @@ source "$HOME/.dotfiles/zsh/aliases"
 source "$HOME/.dotfiles/zsh/completes"
 source "$HOME/.dotfiles/zsh/keybind"
 EOF
-
-
