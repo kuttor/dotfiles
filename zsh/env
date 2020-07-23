@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
-# -*- coding: utf-8 -*-
-# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marke
+#-*- coding: utf-8 -*-
+# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker
 
 # Set Options
 setopt AUTO_CD                # Navigate without typing cd
@@ -49,6 +49,10 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY="YES"
 # Editor
 export EDITOR="$(which nvim)"
 export VISUAL="$EDITOR"
+
+# Python
+export PYTHONDONTWRITEBYTECODE=true
+export PYTHONSTARTUP="$HOME/.python_startup.py"
 
 # Pager
 export PAGER="$(which bat)"
@@ -106,24 +110,21 @@ esac
 # Automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
-# Function Paths
-fpath=(
-  #/usr/share/zsh-completions
-  $DOTFILES/functions
-  $fpath
-)
-
-autoload $DOTFILES/functions/*
+fpath=($fpath $DOTFILES/functions)
+autoload -Uz $DOTFILES/functions/*
 
 # System Paths
 path=(
   $(brew --prefix)/{sbin,bin}
-  #$USER/Library/Python/{2.7,3.7}/{lib/python/site-packages,bin)}
-  /usr/local/opt/ruby/bin
+  $HOME/.local/bin
+  $HOME/.zinit/polaris/{bin,sbin}
+  $HOME/Library/Python/3.8/bin
   /usr/local/opt/coreutils/libexec/gnubin
-  /usr/local/{bin,sbin}(N-/)
-  $USER/.local/bin
-  /usr/{bin,sbin}(N-/)
-  /{bin,sbin}(N-/)
+  /usr/local/opt/ruby/bin
+  /usr/local/{bin,sbin}
+  /usr/{bin,sbin}
+  /{bin,sbin}
   $path
 )
+
+

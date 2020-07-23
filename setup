@@ -1,52 +1,32 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 # file: setup
 # info: creates necessary links/files to setup dotfiles and install packages
 
-# Android Tasks
-function android(){
-  echo "Installing pkg based dependencies..."
-  pkg install -y git ruby curl clang proot make exa fd exa ripgrep 
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+if [ "$OSTYPE" == "linux-android" ]; then
+    echo "Installing pkg based dependencies..."
+    pkg install -y git ruby curl clang proot make exa fd exa ripgrep
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+else [[ "$OSTYPE" == "dawrin*" ]]
+    echo "Installing Homebrew for MacOS"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    brew bundle Brewfile && brew bundle Caskfile
+    echo "Copying fonts to /Library/Fonts" && cp fonts /Library/Fonts
+fi
 
-  echo "Assigning Meslo as default Termux font"
-  mkdir $HOME"/.termux"
-  cp "fonts/MesloLGS NF Regular.ttf" $HOME"/.termux/font.tff"
-}
-
-# MacOS Tasks
-function macos(){
-  echo "Installing Homebrew for MacOS"
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-  brew bundle Brewfile
-  brew bundle Caskfile
-
-  echo "Copying fonts to $HOME/Library/Fonts"
-  cp "fonts" $HOME"/Library/Fonts"
-}
-
-# Determine Platform
-[[ "$OSTYPE" == "linux-android" ]] && android
-[[ "$OSTYPE" == "linux-gnu*" ]]    && linux
-[[ "$OSTYPE" == "darwin*" ]]       && macos
-
-# Install Zinit fpr Zsh
+echo "Installing Zinit for Zshell"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
 
-# Disable welcome messages and disable :
+echo "Making .hushlogin file in $HOME"
 touch "$HOME/.hushlogin"
 
-# Copy p10k theme file into Home root
-#cp "$HOME/.dotfiles/theme.zsh" "$HOME/.p10k.zsh"
-
-# Simlink confing files
-CONFIGS=$HOME/.dotfiles/configs
-for FILE in `ls $CONFIGS`; do
-    CONFIG=.$FILE
-    ln -fs $CONFIGS/$FILE $HOME/$CONFIG
+echo "Simlinking cpmfog rbfee"
+for FILE in "$HOME"/.dotiles/configs/*
+do
+    ln -fs "$HOME"/.dotfiles/configs/"$FILE" "$HOME"/."$FILE"
 done
 
-# Add main shell sources to zshrc file
-cat << EOF >> $HOME/.zshrc
+echo "main shell sources to zshrc file"
+cat << EOF >> "$HOME"/.zshrc
 
 # Source main Dotfiles
 source "$HOME/.dotfiles/zsh/zinit"
