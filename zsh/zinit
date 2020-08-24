@@ -2,63 +2,39 @@
 # -*- coding: utf-8 -*-
 # vim: set sts=2 sw=2 ts=2
 
-[[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] && \
-source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-
 skip_global_compinit="1"
 
-# terminal
-zinit ice light-mode for \
-"chrissicool/zsh-256color"
-"zpm-zsh/colorize"
-"hlissner/zsh-autopair"
+# powerlevel10k
+zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-# Load Oh-My-Zsh library plugins
-zinit ice wait lucid for                        \
-  snippit "OMZ::lib/cli.zsh"                    \
-  snippit "OMZ::lib/sudo.zsh"                   \
-  snippit "OMZ::lib/clipboard.zsh"              \
-  snippit "OMZ::lib/correction.zsh"             \
-  snippit "OMZ::lib/theme-and-appearance.zsh"   \
-  snippit "OMZ::lib/spectrum.zsh"
+# zsh-autopair
+zinit ice wait lucid; zinit load hlissner/zsh-autopair
 
-zinit ice depth=1 wait"1" lucid pick"manydots-magic" compile"manydots-magic" for \
-"knu/zsh-manydots-magic"
-
-# fzf
-zplugin pack"bgn+keys" for "fzf"
-
-# Utilize Turbo and initialize the completion system
-zinit wait pack atload=+"zicompinit; zicdreplay" for "system-completions"
-
-# Annexes
-zinit light-mode from"github" for \
-  "zinit-zsh/z-a-patch-dl"        \
-  "zinit-zsh/z-a-as-monitor"      \
-  "zinit-zsh/z-a-bin-gem-node"    \
-  "zinit-zsh/z-a-test"            \
-  "zinit-zsh/z-a-submods"
-
-# Git
-zinit light-mode for  \
-  "wfxr/forgit"       \
-  "OMZ::lib/git.zsh"  \
-  "romkatv/gitstatus" \
-  "Fakerr/git-recall"
+# Oh-My-zShell
+zplugin snippet OMZ::lib/clipboard.zsh
+zplugin snippet OMZ::lib/compfix.zsh
+zplugin snippet OMZ::lib/completion.zsh
+zplugin snippet OMZ::lib/correction.zsh
+zplugin snippet OMZ::lib/directories.zsh
+zplugin snippet OMZ::lib/functions.zsh
+zplugin snippet OMZ::lib/git.zsh
+zplugin snippet OMZ::lib/grep.zsh
+zplugin snippet OMZ::lib/history.zsh
+zplugin snippet OMZ::lib/key-bindings.zsh
+zplugin snippet OMZ::lib/spectrum.zsh
+zplugin snippet OMZ::lib/termsupport.zsh
 
 # FZF, FZ, Z
-zinit ice wait"1" light-mode from"github" for \
-  "Aloxaf/fzf-tab "                           \
-  "changyuheng/fz"                            \
-  "skywind3000/z.lua"                         \
-  "agkozak/zsh-z"                             \
+zinit ice wait lucid; zinit light Aloxaf/fzf-tab
 
+# z tab completion
+zinit ice wait lucid; zinit light changyuheng/fz
 
-zinit wait lucid blockf for                               \
-  atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
-"zdharma/fast-syntax-highlighting"                        \
-"zsh-users/zsh-completions"                               \
-"zsh-users/zsh-autosuggestions"
+# z / fzf (ctrl-g)
+zinit ice wait lucid; zinit light andrewferrier/fzf-z
+
+# z.lua
+zinit ice wait lucid; zinit light skywind3000/z.lua
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit

@@ -118,7 +118,7 @@ path=(
   $(brew --prefix)/{sbin,bin}
   $HOME/.local/bin
   $HOME/.zinit/polaris/{bin,sbin}
-  $HOME/Library/Python/3.8/bin
+  $HOME/Library/Python/{3.7,3.8}/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/opt/ruby/bin
   /usr/local/{bin,sbin}
