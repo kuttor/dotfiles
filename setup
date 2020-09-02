@@ -1,23 +1,18 @@
-#! /usr/bin/env bash
+#! /usr/bin/env zsh
 # file: setup
 # info: creates necessary links/files to setup dotfiles and install packages
 
-if [ "$OSTYPE" == "linux-android" ]; then
-    echo "Installing pkg based dependencies..."
-    pkg install -y git ruby curl clang proot make exa fd exa ripgrep
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-else [[ "$OSTYPE" == "dawrin*" ]]
-    echo "Installing Homebrew for MacOS"
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-    brew bundle Brewfile && brew bundle Caskfile
-    echo "Copying fonts to /Library/Fonts" && cp fonts /Library/Fonts
+DOTFILES="${0%/*}"
+
+if [[ ! -f $ZINIT_HOME/bin/zinit.zsh ]]; then
+	git clone https://github.com/psprint/zinit $ZINIT_HOME/bin
+	zcompile $ZINIT_HOME/bin/zinit.zsh
 fi
 
-echo "Installing Zinit for Zshell"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
 
 echo "Making .hushlogin file in $HOME"
 touch "$HOME/.hushlogin"
+
 
 echo "Simlinking cpmfog rbfee"
 for FILE in "$HOME"/.dotiles/configs/*

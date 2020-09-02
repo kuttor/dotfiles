@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!usr/bin/env zsh
 # -*- coding: utf-8 -*-
 # vim: set sts=2 sw=2 ts=2
 
@@ -7,44 +7,44 @@ skip_global_compinit="1"
 # powerlevel10k
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-# zsh-autopair
-zinit ice wait lucid; zinit load hlissner/zsh-autopair
-
 # Oh-My-zShell
-zplugin snippet OMZ::lib/clipboard.zsh
-zplugin snippet OMZ::lib/compfix.zsh
-zplugin snippet OMZ::lib/completion.zsh
-zplugin snippet OMZ::lib/correction.zsh
-zplugin snippet OMZ::lib/directories.zsh
-zplugin snippet OMZ::lib/functions.zsh
-zplugin snippet OMZ::lib/git.zsh
-zplugin snippet OMZ::lib/grep.zsh
-zplugin snippet OMZ::lib/history.zsh
-zplugin snippet OMZ::lib/key-bindings.zsh
-zplugin snippet OMZ::lib/spectrum.zsh
-zplugin snippet OMZ::lib/termsupport.zsh
+zinit wait lucid for \
+    OMZ::lib/clipboard.zsh \
+    OMZ::lib/compfix.zsh \
+    OMZ::lib/completion.zsh \
+    OMZ::lib/correction.zsh \
+    OMZ::lib/directories.zsh \
+    OMZ::lib/functions.zsh \
+    OMZ::lib/git.zsh \
+    OMZ::lib/grep.zsh \
+    OMZ::lib/history.zsh \
+    OMZ::lib/key-bindings.zsh \
+    OMZ::lib/spectrum.zsh \
+    OMZ::lib/termsupport.zsh
 
-# FZF, FZ, Z
-zinit ice wait lucid; zinit light Aloxaf/fzf-tab
+zinit wait lucid light-mode for \
+    hlissner/zsh-autopair \
+    Aloxaf/fzf-tab \
+    changyuheng/fz \
+    andrewferrier/fzf-z \
+    skywind3000/z.lua \
+    joshskidmore/zsh-fzf-history-search \
+    jimeh/zsh-peco-history
 
-# z tab completion
-zinit ice wait lucid; zinit light changyuheng/fz
-
-# z / fzf (ctrl-g)
-zinit ice wait lucid; zinit light andrewferrier/fzf-z
-
-# z.lua
-zinit ice wait lucid; zinit light skywind3000/z.lua
+zinit as"null" wait"3" lucid for \
+    Fakerr/git-recall \
+    paulirish/git-open \
+    paulirish/git-recent \
+    davidosomething/git-my
 
 # The big three
 zinit wait lucid light-mode for \
-  atinit"zicompinit; zicdreplay" \
-      zdharma/fast-syntax-highlighting \
-  atload"_zsh_autosuggest_start" \
-      zsh-users/zsh-autosuggestions \
-  blockf atpull'zinit creinstall -q .' \
-      zsh-users/zsh-completions
-
+    atinit"zicompinit; zicdreplay" \
+        zdharma/fast-syntax-highlighting \
+    atload"_zsh_autosuggest_start" \
+        zsh-users/zsh-autosuggestions \
+    blockf atpull'zinit creinstall -q .' \
+        zsh-users/zsh-completions
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
