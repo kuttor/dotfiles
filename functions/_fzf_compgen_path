@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-#fd --hidden --follow --exclude ".git" . "$1"
-
-# Use rg to generate file completions
-rg --files "$1" | with-dir "$1"

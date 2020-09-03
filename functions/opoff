@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-op signout
-unset OP_SESSION_marsdominion
-

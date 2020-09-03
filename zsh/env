@@ -1,6 +1,6 @@
-#!/usr/bin/env zsh
-#-*- coding: utf-8 -*-
-# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker
+#! /usr/bin/env zsh
+# -*- coding: utf-8 -*-
+# vim: set sts=2 sw=2 ts=
 
 # Set Options
 setopt AUTO_CD                # Navigate without typing cd
@@ -37,6 +37,8 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
 export ZSH_AUTOSUGGEST_USE_ASYNC="1"
 export ZSH_AUTOSUGGEST_MANUAL_REBIND="1"
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="1"
+export ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(vi-end-of-line)
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # Terminal
 export REPORTTIME="2"
@@ -56,7 +58,8 @@ export PYTHONSTARTUP="$HOME/.python_startup.py"
 
 # Pager
 export PAGER="$(which bat)"
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+#export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANPAGER="nvim -c 'set ft=man' -"
 export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
 
 # Ruby

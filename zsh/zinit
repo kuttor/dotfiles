@@ -1,8 +1,11 @@
-#!usr/bin/env zsh
+#! /usr/bin/env zsh
 # -*- coding: utf-8 -*-
 # vim: set sts=2 sw=2 ts=2
 
 skip_global_compinit="1"
+source "$ZINIT[BIN_DIR]/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
 # powerlevel10k
 zinit ice depth=1; zinit light romkatv/powerlevel10k
@@ -29,13 +32,16 @@ zinit wait lucid light-mode for \
     andrewferrier/fzf-z \
     skywind3000/z.lua \
     joshskidmore/zsh-fzf-history-search \
-    jimeh/zsh-peco-history
+    jimeh/zsh-peco-history \
+    nojanath/ansible-zsh-completion \
+    rupa/v
 
 zinit as"null" wait"3" lucid for \
     Fakerr/git-recall \
     paulirish/git-open \
     paulirish/git-recent \
-    davidosomething/git-my
+    davidosomething/git-my \
+    unixorn/git-extra-commands
 
 # The big three
 zinit wait lucid light-mode for \

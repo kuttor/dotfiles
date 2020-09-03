@@ -1,3 +1,0 @@
-#!/usr/local/bin/zsh
-
-printf "%$(tput cols)s\n"|tr " " "─"

@@ -1,4 +1,0 @@
-#!/usr/bin/env zsh
-
-# Add <TAB> completion handlers for fzf *after* fzf is loaded
-_fzf_complete '--multi --reverse' "$@" < <(raw_z)

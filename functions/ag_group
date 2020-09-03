@@ -1,7 +1,0 @@
-#!/usr/local/bin/zsh
-
-HOST=172.17.7.19
-BASEDN=dc=c4e-internal,dc=c4e,dc=ops
-USERID=akuttor@c4e-internal.c4e.ops
- 
-/usr/bin/ldapsearch -x -W -D  $USERID -h $HOST -b $BASEDN sAMAccountName=$1 memberOf

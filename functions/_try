@@ -1,4 +1,0 @@
-# Returns whether the given statement executed cleanly. Try to avoid this
-# because this slows down shell loading.
-return $( eval $* >/dev/null 2>&1 )
-

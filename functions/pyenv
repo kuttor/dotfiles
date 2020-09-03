@@ -1,9 +1,0 @@
-#!/usr/local/bin/zsh -f
-
-# pyenv
-# lazy load shims and autocompletion
-function pyenv() {
-    eval "$( command pyenv init -)"
-    eval "$( command pyenv virtualenv-init -)"
-    pyenv "$@"
-}

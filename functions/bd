@@ -1,8 +1,0 @@
-# Brew
-
-local inst=$(brew search | fzf --reverse -m)
-  if [[ $inst ]]; then
-    for prog in $(echo $inst);
-    do brew install $prog; done;
-  fi
-

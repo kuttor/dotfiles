@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-
-# Use fd to generate the list for directory completion
-#fd --type d --hidden --follow --exclude ".git" . "$1"
-
-# Use rg to generate the list for directory completion
-rg --files "$1" | only-dir "$1"
