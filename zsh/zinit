@@ -1,4 +1,4 @@
-#! /usr/bin/env zsh
+#! /usrDanielFGray---fzf-scripts/bin/env zsh
 # -*- coding: utf-8 -*-
 # vim: set sts=2 sw=2 ts=2
 
@@ -11,44 +11,40 @@ autoload -Uz _zinit
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Oh-My-zShell
-zinit wait lucid for \
-    OMZ::lib/clipboard.zsh \
-    OMZ::lib/compfix.zsh \
-    OMZ::lib/completion.zsh \
-    OMZ::lib/correction.zsh \
-    OMZ::lib/directories.zsh \
-    OMZ::lib/functions.zsh \
-    OMZ::lib/git.zsh \
-    OMZ::lib/grep.zsh \
-    OMZ::lib/history.zsh \
-    OMZ::lib/key-bindings.zsh \
-    OMZ::lib/spectrum.zsh \
+zinit wait light-mode lucid for     \
+    OMZ::lib/clipboard.zsh          \
+    OMZ::lib/compfix.zsh            \
+    OMZ::lib/completion.zsh         \
+    OMZ::lib/correction.zsh         \
+    OMZ::lib/directories.zsh        \
+    OMZ::lib/functions.zsh          \
+    OMZ::lib/git.zsh                \
+    OMZ::lib/history.zsh            \
+    OMZ::lib/key-bindings.zsh       \
+    OMZ::lib/spectrum.zsh           \
     OMZ::lib/termsupport.zsh
 
-zinit wait lucid light-mode for \
-    hlissner/zsh-autopair \
-    Aloxaf/fzf-tab \
-    changyuheng/fz \
-    andrewferrier/fzf-z \
-    skywind3000/z.lua \
-    joshskidmore/zsh-fzf-history-search \
-    jimeh/zsh-peco-history \
-    nojanath/ansible-zsh-completion \
-    rupa/v
-
-zinit as"null" wait"3" lucid for \
-    Fakerr/git-recall \
-    paulirish/git-open \
-    paulirish/git-recent \
-    davidosomething/git-my \
-    unixorn/git-extra-commands
-
-# The big three
-zinit wait lucid light-mode for \
-    atinit"zicompinit; zicdreplay" \
+zinit wait lucid light-mode for          \
+    Aloxaf/fzf-tab                       \
+    Fakerr/git-recall                    \
+    andrewferrier/fzf-z                  \
+    changyuheng/fz                       \
+    davidosomething/git-my               \
+    hlissner/zsh-autopair                \
+    jimeh/zsh-peco-history               \
+    joshskidmore/zsh-fzf-history-search  \
+    kutsan/zsh-system-clipboard          \
+    nojanath/ansible-zsh-completion      \
+    paulirish/git-open                   \
+    paulirish/git-recent                 \
+    rapgenic/zsh-git-complete-urls       \
+    rupa/v                               \
+    skywind3000/z.lua                    \
+    srijanshetty/zsh-pip-completion      \
+    atinit"zicompinit; zicdreplay"       \
         zdharma/fast-syntax-highlighting \
-    atload"_zsh_autosuggest_start" \
-        zsh-users/zsh-autosuggestions \
+    atload"_zsh_autosuggest_start"       \
+        zsh-users/zsh-autosuggestions    \
     blockf atpull'zinit creinstall -q .' \
         zsh-users/zsh-completions
 

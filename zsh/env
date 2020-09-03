@@ -87,7 +87,6 @@ export _ZL_ECHO="1"
 
 # FZ
 FZ_HISTORY_CD_CMD="_zlua"
-#source $(brew --prefix)/Cellar/fzf/0.21.1/bin/fzf
 
 # History
 export HISTFILE=$CACHE/.zsh_history
@@ -99,18 +98,15 @@ export SAVEHIST=10000
 # Automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
-# FPath
-fpath=($fpath $DOTFILES/functions)
-autoload -Uz $DOTFILES/functions/*
+fpath=( $DOTFILES/functions "${fpath[@]}" )
+autoload -Uz $fpath[1]/*(.:t)
 
 # System Paths
 path=(
   $(brew --prefix)/{sbin,bin}
   $HOME/.local/bin
-  $HOME/.zinit/polaris/{bin,sbin}
   $HOME/Library/Python/{3.7,3.8}/bin
   /usr/local/opt/coreutils/libexec/gnubin
-  /usr/local/opt/ruby/bin
   /usr/local/{bin,sbin}
   /usr/{bin,sbin}
   /{bin,sbin}

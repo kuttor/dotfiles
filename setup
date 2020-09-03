@@ -1,23 +1,22 @@
-#!/usr/bin/env zsh
+#! /usr/bin/env zsh
 
-test -e "$ZINIT[BIN_DIR]/zinit.zsh" &&\
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
+DOTFILES="${0%/*}"
 
-# Setting MOTD
-cat < EOF > "/etc/motd"
-#! /usr/bin/env bash
+[[ ! -f $ZINIT_HOME/bin/zinit.zsh ]] &&\
+    git clone https://github.com/psprint/zinit $ZINIT_HOME/bin
+	zcompile $ZINIT_HOME/bin/zinit.zsh
+fi
 
-fortune -aeso | cowsay -d | lolcat
-EOF
+touch "$HOME/.hushlogin"
 
-# Create ZSHRC
-cat < EOF > "$HOME/.zshrc"
-#! /usr/bin/env bash
 
-SOURCES="${0%/*}/ZSH"
-source "$SOURCES/zinit"
-source "$SOURCES/env"
-source "$SOURCES/aliases"
-source "$SOURCES/completes"
-source "$SOURCES/keybind"
+echo "main shell sources to zshrc file"
+cat << EOF >> "$HOME"/.zshrc
+
+# Source main Dotfiles
+source "$HOME/.dotfiles/zsh/zinit"
+source "$HOME/.dotfiles/zsh/env"
+source "$HOME/.dotfiles/zsh/aliases"
+source "$HOME/.dotfiles/zsh/completes"
+source "$HOME/.dotfiles/zsh/keybind"
 EOF

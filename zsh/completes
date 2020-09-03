@@ -2,91 +2,65 @@
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
 
-# ‘select=num’, menu selection will only be started if there are at least num matches.
-zstyle ':completion:*' menu select=2 _complete _ignored _approximate
-zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
-zstyle ':completion:*:approximate:'    max-errors 'reply=( $((($#PREFIX+$#SUFFIX)/3 )) numeric )'
+# bash completions
+autoload bashcompinit && bashcompinit
 
-# Environmental Variables
-zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+# Enable completions
+autoload -Uz compinit && compinit
 
-# Populate hostname completion.
-zstyle -e ':completion:*:hosts' hosts 'reply=(
-  ${=${=${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//\]:[0-9]*/ }//,/ }//\[/ }
-  ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
-)'
+# Menu-like autocompletion selection
+zmodload -i zsh/complist
 
-# SSH/SCP/RSYNC
-zstyle ':completion:*:(scp|rsync):*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
-zstyle ':completion:*:(scp|rsync):*' group-order users files all-files hosts-domain hosts-host hosts-ipaddr
-zstyle ':completion:*:ssh:*' tag-order 'hosts:-host:host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
-zstyle ':completion:*:ssh:*' group-order users hosts-domain hosts-host users hosts-ipaddr
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^[-[:alnum:]]##(.[-[:alnum:]]##)##' '*@*'
-zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
+# case insensitive path-completion
+zstyle ':completion:*' matcher-list                       \
+'m:{[:lower:][:upper:]}={[:upper:][:lower:]}'             \
+'m:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' \
+'m:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' \
+'m:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
 
-# Colors
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==90=01}:${(s.:.)LS_COLORS}")'
+# partial completion suggestions
+zstyle ':completion:*'                list-suffixes
+zstyle ':completion:*'                expand prefix suffix
+
+# speedup path completion
+zstyle ':completion:*'                accept-exact '*(N)'
+zstyle ':completion:*'                use-cache on
+zstyle ':completion:*'                cache-path ${CACHE}/zsh
+zstyle ':completion:*'                use-perl on
+
+# colors
+zstyle ':completion:*:default'        list-colors '${(s.:.)LS_COLORS}'
+
+# manuals
+zstyle ':completion:*:manuals'        separate-sections true
+zstyle ':completion:*:manuals.(^1*)'  insert-sections   true
+zstyle ':completion:*:man:*'          menu yes select
 
 # Fuzzy match mistyped completions.
-zstyle ':completion:*' completer _complete _list _match _approximate
-zstyle ':completion:*:match:*' original only
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
-
-# Increase the number of errors based on the length of the typed word.
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+zstyle ':completion:*'                completer _complete _list _match _approximate
+zstyle ':completion:*:match:*'        original only
+zstyle ':completion:*:approximate:*'  max-errors 1 numeric
 
 # Don't complete unavailable commands.
-zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+zstyle ':completion:*:functions'      ignored-patterns '(_*|pre(cmd|exec))'
 
 # Array completion element sorting.
 zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
-# Process Kill
-zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
-
-# FZF-Tab
-zstyle ':fzf-tab:*' insert-space true
-zstyle ':fzf-tab:*' continuous-trigger '/'
-zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
-zstyle ':fzf-tab:complete:_zlua:*' query-string input
-zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always ${~ctxt[hpre]}$in'
-
 # Automatically find new executables in path
-zstyle ':completion:*' rehash true
+zstyle ':completion:*'                 rehash true
 
 # Man
-zstyle ':completion:*:manuals' separate-sections true
-zstyle ':completion:*:manuals.(^1*)' insert-sections true
+zstyle ':completion:*:manuals'         separate-sections true
+zstyle ':completion:*:manuals.(^1*)'   insert-sections true
 
-# Directories
-zstyle ':completion:*:*:cd:*' ignore-parents parent pwd
-zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
-zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
-zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
-zstyle ':completion:*' squeeze-slashes true
-zstyle ':completion:*' special-dirs true
-
-# Case-insensitive (all), partial-word, and then substring completion.
-zstyle ':completion:*' matcher-list '' \
-      'm:{a-z\-}={A-Z\_}' \
-      'r:[^[:alpha:]]||[[:alpha:]]=** r:|=* m:{a-z\-}={A-Z\_}' \
-      'r:[[:ascii:]]||[[:ascii:]]=** r:|=* m:{a-z\-}={A-Z\_}'
-
-# Kill completion
-zstyle ':completion:*:processes' command 'ps -au $USER'
-zstyle ':completion:*:processes-names' command 'ps -u $USER -o comm='
-zstyle ':completion:*:processes' list-colors '=(#b)( #[0-9]#)[^[/0-9a-zA-Z]#(*)=34=37;1=30;1'
-zstyle ':completion:*:*:killall:*:processes-names' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:(killall|pkill|kill):*' menu yes select
-zstyle ':completion:*:(killall|pkill|kill):*' force-list always
+# Completion Style
+zstyle ':completion:*:*:cd:*'          ignore-parents parent pwd
+zstyle ':completion:*:*:cd:*'          tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:*:cd:*'          menu yes select
 
 # Avoid twice the same element on rm
-zstyle ':completion:*:rm:*' ignore-line yes
-
-# Completion for sudo when the command is not in the current path
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+zstyle ':completion:*:rm:*'            ignore-line yes
 
 # Insert all expansions for expand completer
 zstyle ':completion:*:expand:*'        tag-order all-expansions
@@ -96,47 +70,3 @@ zstyle ':completion:*:history-words'   list false
 zstyle ':completion:*:history-words'   menu yes
 zstyle ':completion:*:history-words'   remove-all-dups yes
 zstyle ':completion:*:history-words'   stop yes
-
-# Match uppercase from lowercase and complete from the middle of filename
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
-
-# TheFuck Cache
-zstyle ":prezto:runcom" zpreztorc "$CACHE/.thefuck"
-
-# Don't complete uninteresting users...
-zstyle ':completion:*:*:*:users' ignored-patterns \
-  adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
-  dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
-  hacluster haldaemon halt hsqldb ident junkbust ldap lp mail \
-  mailman mailnull mldonkey mysql nagios \
-  named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
-  operator pcap postfix postgres privoxy pulse pvm quagga radvd \
-  rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs '_*'
-
-# https://www.topbug.net/blog/2017/08/08/enable-auto-completion-for-pip-in-zsh/
-# eval "$(pip3 completion --zsh)"  # <-- slow af. soo:
-# disable sort when completing options of any command
-zstyle ':completion:complete:*:options' sort false
-
-# use input as query string when completing zlua
-zstyle ':fzf-tab:complete:_zlua:*' query-string input
-
-# (experimental, may change in the future)
-# some boilerplate code to define the variable `extract` which will be used later
-# please remember to copy them
-local extract="
-# trim input(what you select)
-local in=\${\${\"\$(<{f})\"%\$'\0'*}#*\$'\0'}
-# get ctxt for current completion(some thing before or after the current word)
-local -A ctxt=(\"\${(@ps:\2:)CTXT}\")
-# real path
-local realpath=\${ctxt[IPREFIX]}\${ctxt[hpre]}\$in
-realpath=\${(Qe)~realpath}
-"
-
-# give a preview of commandline arguments when completing `kill`
-zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
-zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
-
-# give a preview of directory by exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always $realpath'
