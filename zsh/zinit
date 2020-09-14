@@ -3,7 +3,7 @@
 # vim: set sts=2 sw=2 ts=2
 
 skip_global_compinit="1"
-source "$ZINIT[BIN_DIR]/zinit.zsh"
+source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
