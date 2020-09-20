@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
 
-for
-
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey "^E" edit-command-line

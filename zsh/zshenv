@@ -103,7 +103,7 @@ autoload -Uz $fpath[1]/*(.:t)
 
 # System Paths
 path=(
-  #$(brew --prefix)/{sbin,bin}
+  $(brew --prefix)/{sbin,bin}
   $HOME/.local/bin
   $HOME/Library/Python/{3.7,3.8}/bin
   /usr/local/opt/coreutils/libexec/gnubin
@@ -114,3 +114,53 @@ path=(
 )
 
 
+#!/usr/bin/env zsh
+# -*- coding: utf-8 -*-
+# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
+
+autoload -U edit-command-line && zle -N edit-command-line
+autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
+autoload -Uz bracketed-paste-magic && zle -N bracketed-paste bracketed-paste-magic
+autoload -U select-word-style && zle -N select-word-style bash
+
+autoload -U +X bashcompinit && bashcompinit
+autoload -Uz colors && colors
+
+zle -N expand-or-complete-with-dots &&\
+  zle -N history-beginning-search-backward-end history-search-end &&\
+  zle -N history-beginning-search-forward-end history-search-end
+
+
+
+autoload -Uz history-search-end
+autoload -Uz is-at-least
+zle -N autosuggest-accept
+
+autoload -U \
+    parseopts \
+    zargs \
+    zcalc \
+    zed \
+    zmv
+
+
+zle -N insert-last-command-output
+
+
+
+# Emacs
+bindkey -e
+
+bindkey "^I" expand-or-complete-with-dots
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^N" history-beginning-search-forward-end
+bindkey " " magic-space
+bindkey "^[[1;2C" forward-word
+bindkey "^[[1;2D" backward-word
+bindkey "^[[F" end-of-line
+bindkey "^[[H" beginning-of-line
+bindkey "^N" history-beginning-search-forward-end
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^X^L" insert-last-command-output
+bindkey "^E" edit-command-line
+bindkey '^ ' autosuggest-accept

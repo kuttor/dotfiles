@@ -5,11 +5,19 @@
 # bash completions
 autoload bashcompinit && bashcompinit
 
-# Enable completions
-autoload -Uz compinit && compinit
-
 # Menu-like autocompletion selection
 zmodload -i zsh/complist
+
+# Enable completion and other things.
+autoload -Uz run-help zargs zrecompile
+autoload -Uz compinit && compinit -d $ZDOTDIR/zcompdump && {
+    zstyle ':completion:*:descriptions' format '%B%d%b'
+    if [[ -n $zsh_has_prompt_F ]]; then
+        zstyle ':completion:*:warnings' format '%1F%BNo matches for %d%b%f'
+    else
+        zstyle ':completion:*:warnings' format '%BNo matches for %d%b'
+    fi
+}
 
 # case insensitive path-completion
 zstyle ':completion:*' matcher-list                       \
