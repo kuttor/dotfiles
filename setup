@@ -2,11 +2,6 @@
 
 DOTFILES="${0%/*}"
 
-[[ ! -f $ZINIT_HOME/bin/zinit.zsh ]] &&\
-    git clone https://github.com/psprint/zinit $ZINIT_HOME/bin
-	zcompile $ZINIT_HOME/bin/zinit.zsh
-fi
-
 touch "$HOME/.hushlogin"
 
 
