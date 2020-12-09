@@ -31,8 +31,6 @@ zinit wait lucid light-mode for          \
     changyuheng/fz                       \
     davidosomething/git-my               \
     hlissner/zsh-autopair                \
-    jimeh/zsh-peco-history               \
-    joshskidmore/zsh-fzf-history-search  \
     kutsan/zsh-system-clipboard          \
     nojanath/ansible-zsh-completion      \
     paulirish/git-open                   \
