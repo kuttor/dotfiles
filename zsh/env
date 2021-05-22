@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 # vim: set sts=2 sw=2 ts=
 
+# Power10k
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
 # Set Options
 setopt AUTO_CD                # Navigate without typing cd
 setopt BANG_HIST              # Treat '!' char specially during expansion.

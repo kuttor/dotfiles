@@ -11,7 +11,7 @@ autoload -Uz _zinit
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Oh-My-zShell
-zinit wait light-mode lucid for     \
+zinit light-mode lucid for     \
     OMZ::lib/clipboard.zsh          \
     OMZ::lib/compfix.zsh            \
     OMZ::lib/completion.zsh         \
@@ -24,7 +24,7 @@ zinit wait light-mode lucid for     \
     OMZ::lib/spectrum.zsh           \
     OMZ::lib/termsupport.zsh
 
-zinit wait lucid light-mode for          \
+zinit lucid light-mode for          \
     Aloxaf/fzf-tab                       \
     Fakerr/git-recall                    \
     andrewferrier/fzf-z                  \
