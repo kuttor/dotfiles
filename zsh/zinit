@@ -11,39 +11,47 @@ autoload -Uz _zinit
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Oh-My-zShell
-zinit light-mode lucid for     \
-    OMZ::lib/clipboard.zsh          \
-    OMZ::lib/compfix.zsh            \
-    OMZ::lib/completion.zsh         \
-    OMZ::lib/correction.zsh         \
-    OMZ::lib/directories.zsh        \
-    OMZ::lib/functions.zsh          \
-    OMZ::lib/git.zsh                \
-    OMZ::lib/history.zsh            \
-    OMZ::lib/key-bindings.zsh       \
-    OMZ::lib/spectrum.zsh           \
+zinit light-mode lucid for               \
+    OMZ::lib/clipboard.zsh               \
+    OMZ::lib/compfix.zsh            	 \
+    OMZ::lib/completion.zsh         	 \
+    OMZ::lib/correction.zsh         	 \
+    OMZ::lib/directories.zsh        	 \
+    OMZ::lib/functions.zsh          	 \
+    OMZ::lib/git.zsh                	 \
+    OMZ::lib/history.zsh            	 \
+    OMZ::lib/key-bindings.zsh       	 \
+    OMZ::lib/spectrum.zsh           	 \
     OMZ::lib/termsupport.zsh
 
-zinit lucid light-mode for          \
-    Aloxaf/fzf-tab                       \
-    Fakerr/git-recall                    \
-    andrewferrier/fzf-z                  \
-    changyuheng/fz                       \
-    davidosomething/git-my               \
-    hlissner/zsh-autopair                \
-    kutsan/zsh-system-clipboard          \
-    nojanath/ansible-zsh-completion      \
-    paulirish/git-open                   \
-    paulirish/git-recent                 \
-    rapgenic/zsh-git-complete-urls       \
-    rupa/v                               \
-    skywind3000/z.lua                    \
-    srijanshetty/zsh-pip-completion      \
-    atinit"zicompinit; zicdreplay"       \
-        zdharma/fast-syntax-highlighting \
-    atload"_zsh_autosuggest_start"       \
-        zsh-users/zsh-autosuggestions    \
-    blockf atpull'zinit creinstall -q .' \
+zinit lucid light-mode for          	   \
+    djui/alias-tips 			   \
+    zinit-zsh/z-a-bin-gem-node             \
+    Fakerr/git-recall                      \
+    davidosomething/git-my                 \
+    paulirish/git-recent                   \
+    rapgenic/zsh-git-complete-urls         \
+    sbin atload"export _MENU_THEME=legacy" \
+            arzzen/git-quick-stats         \
+    sbin"bin/git-dsf;bin/diff-so-fancy"    \
+        zdharma/zsh-diff-so-fancy          \
+    sbin"git-url;git-guclone"		   \
+        make"GITURL_NO_CGITURL=1"          \
+        zdharma/git-url                    \
+    Aloxaf/fzf-tab                         \
+    andrewferrier/fzf-z                    \
+    changyuheng/fz                         \
+    hlissner/zsh-autopair                  \
+    kutsan/zsh-system-clipboard            \
+    nojanath/ansible-zsh-completion        \
+    rupa/v                                 \
+    skywind3000/z.lua                      \
+    srijanshetty/zsh-pip-completion        \
+    atinit"zicompinit; zicdreplay"         \
+        zdharma/fast-syntax-highlighting   \
+    atload"_zsh_autosuggest_start"         \
+        zsh-users/zsh-autosuggestions      \
+    blockf atpull'zinit creinstall -q .'   \
         zsh-users/zsh-completions
 
 # Turbo-enabled CompDefs

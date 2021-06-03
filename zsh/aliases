@@ -13,9 +13,8 @@ alias ak2="tree -L 2 -Ccfhau --du --dirsfirst "
 alias ak3="tree -L 3 -Ccfhau --du --dirsfirst "
 
 # Git
-alias gs="git status"
-
 alias ansible-create="ansible-galaxy init  --offline --force"
+alias brew_full_upgrade="brew update; brew upgrade; brew cleanup"
 alias c="clear"
 alias cat="bat"
 alias clip="termux-clipboard-set"
@@ -29,7 +28,10 @@ alias fpath='echo $fpath | tr -s " " "\n"'
 alias free="free -mt"
 alias fzf-preview="fzf --preview bat --style=numbers --color=always {} | head -500"
 alias g="git"
+alias gc="git commit -am "
+alias gp="git push "
 alias grep="rg"
+alias gs="git status"
 alias h="history"
 alias how="howdoi --color --all"
 alias httpHeaders="curl -I -L"
@@ -44,11 +46,13 @@ alias mtop="htop --sort-key=PERCENT_MEM"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias path='echo $PATH | tr -s ":" "\n"'
 alias pip='pip3'
-alias python='python3'
 alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
+alias python='python3'
 alias quit="exit"
 alias restart='reset; exec sudo --login --user $USER'
 alias ssh="TERM=xterm-256color ssh"
+alias sublime="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias sudo="sudo "
 alias tf="terraform"
 alias top-ten='print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
@@ -62,3 +66,4 @@ alias zi="z -i"
 alias zi="zinit"
 alias zmv="noglob zmv -W"
 alias zz="z -c"
+alias ga="git add "
