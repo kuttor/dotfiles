@@ -52,6 +52,7 @@ alias quit="exit"
 alias restart='reset; exec sudo --login --user $USER'
 alias ssh="TERM=xterm-256color ssh"
 alias sublime="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+alias s="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias sudo="sudo "
 alias tf="terraform"
