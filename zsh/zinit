@@ -11,17 +11,17 @@ autoload -Uz _zinit
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Oh-My-zShell
-zinit light-mode lucid for               \
-    OMZ::lib/clipboard.zsh               \
-    OMZ::lib/compfix.zsh            	 \
-    OMZ::lib/completion.zsh         	 \
-    OMZ::lib/correction.zsh         	 \
-    OMZ::lib/directories.zsh        	 \
-    OMZ::lib/functions.zsh          	 \
-    OMZ::lib/git.zsh                	 \
-    OMZ::lib/history.zsh            	 \
-    OMZ::lib/key-bindings.zsh       	 \
-    OMZ::lib/spectrum.zsh           	 \
+zinit light-mode lucid for                 \
+    OMZ::lib/clipboard.zsh                 \
+    OMZ::lib/compfix.zsh            	   \
+    OMZ::lib/completion.zsh         	   \
+    OMZ::lib/correction.zsh         	   \
+    OMZ::lib/directories.zsh        	   \
+    OMZ::lib/functions.zsh          	   \
+    OMZ::lib/git.zsh                	   \
+    OMZ::lib/history.zsh            	   \
+    OMZ::lib/key-bindings.zsh       	   \
+    OMZ::lib/spectrum.zsh           	   \
     OMZ::lib/termsupport.zsh
 
 zinit lucid light-mode for          	   \
