@@ -4,6 +4,21 @@ DOTFILES="${0%/*}"
 
 touch "$HOME/.hushlogin"
 
+# Link for the homebrew installer
+#/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+dd
+#Link for ZINIT installer
+#sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
+
+# Install dependencies
+cd ~/.dotfiles && brew bundle
+
+mkdir ~/.config
+git clone git://github.com/rafi/vim-config.git ~/.config/nvim
+cd ~/.config/nvim
+ln -s ~/.config/nvim ~/.vim  # For "regular" Vim
+
 
 echo "main shell sources to zshrc file"
 cat << EOF >> "$HOME"/.zshrc
