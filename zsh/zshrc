@@ -1,0 +1,53 @@
+#! /bin/env zsh
+# -*- coding: utf-8 -*-
+# vim: set sts=2 sw=2 ts=2
+
+skip_global_compinit="1"
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# powerlevel10k
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# Oh-My-zShell
+zinit light-mode for                       \
+    OMZ::lib/clipboard.zsh                 \
+    OMZ::lib/compfix.zsh                   \
+    OMZ::lib/completion.zsh                \
+    OMZ::lib/correction.zsh                \
+    OMZ::lib/directories.zsh               \
+    OMZ::lib/functions.zsh                 \
+    OMZ::lib/git.zsh                       \
+    OMZ::lib/history.zsh                   \
+    OMZ::lib/key-bindings.zsh              \
+    OMZ::lib/spectrum.zsh                  \
+    OMZ::lib/termsupport.zsh               \
+    Aloxaf/fzf-tab                         \
+    andrewferrier/fzf-z                    \
+    changyuheng/fz                         \
+    devndive/zsh-saml2aws-auto             \
+    djui/alias-tips                        \
+    eastokes/aws-plugin-zsh                \
+    hlissner/zsh-autopair                  \
+    kutsan/zsh-system-clipboard            \
+    nojanath/ansible-zsh-completion        \
+    onyxraven/zsh-saml2aws                 \
+    rapgenic/zsh-git-complete-urls         \
+    rupa/v                                 \
+    skywind3000/z.lua                      \
+    sparsick/ansible-zsh                   \
+    srijanshetty/zsh-pip-completion        \
+    atinit"zicompinit; zicdreplay"         \
+        zdharma/fast-syntax-highlighting   \
+    atload"_zsh_autosuggest_start"         \
+        zsh-users/zsh-autosuggestions      \
+    blockf atpull'zinit creinstall -q .'   \
+        zsh-users/zsh-completions
+
+# Turbo-enabled CompDefs
+autoload -Uz compinit && compinit
+zinit cdreplay -q
+
+# Load Prompt
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

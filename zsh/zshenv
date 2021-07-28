@@ -19,7 +19,7 @@ setopt INTERACTIVE_COMMENTS   # Allow comments in readlin
 setopt LIST_ROWS_FIRST        # Rows are way better
 setopt LIST_TYPES             # Append type chars to files
 setopt MULTIOS                # Write to multiple descriptors
-setopt PROMPT_SUBST           # Enable param and arithmetic substitution
+setopt PROMPTSUBST            # Enable param and arithmetic substitution
 setopt RC_QUOTES              # Allow 'Henry''s Garage'
 setopt SHARE_HISTORY          # Share history between all sessions.
 setopt shwordsplit            # Word splits like Bash
@@ -37,7 +37,6 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
 export ZSH_AUTOSUGGEST_USE_ASYNC="1"
 export ZSH_AUTOSUGGEST_MANUAL_REBIND="1"
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="1"
-export ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(vi-end-of-line)
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # Terminal
@@ -60,7 +59,7 @@ export PYTHONSTARTUP="$HOME/.python_startup.py"
 export PAGER="$(which bat)"
 #export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANPAGER="nvim -c 'set ft=man' -"
-export BAT_CONFIG_PATH="$DOTFILES/bat.conf"
+export BAT_CONFIG_PATH="$DOTFILES/configs/bat.conf"
 
 # Ruby
 export LDFLAGS="-L/usr/local/opt/ruby/lib"
@@ -72,11 +71,8 @@ export FZF_BASE=$(which fzf)
 export FZF_COMPLETION_TRIGGER='~~'
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND='rg --files --hidden'
-export FZF_DEFAULT_OPTS='--cycle --no-reverse --no-height  --exit-0 --bind=ctrl-j:accept --color=dark --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7'
-
-# FZF Helper Function
-#_fzf_setup_completion path ag git kubectl
-#_fzf_setup_completion dir tree
+export FZF_DEFAULT_OPTS='--cycle --reverse --no-height  --exit-0 --bind=ctrl-j:accept --color=dark --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Zlua
 [[ ! -f "$CACHE/z.lua" ]] || touch "$CACHE/z.lua"
@@ -98,69 +94,93 @@ export SAVEHIST=10000
 # Automatically remove duplicates from these arrays
 typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
 
+# Load Custom Functions
 fpath=( $DOTFILES/functions "${fpath[@]}" )
 autoload -Uz $fpath[1]/*(.:t)
 
 # System Paths
 path=(
-  $(brew --prefix)/{sbin,bin}
   $HOME/.local/bin
   $HOME/Library/Python/{3.7,3.8}/bin
   /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/{bin,sbin}
   /usr/{bin,sbin}
-  /{bin,sbin}
   $path
 )
 
+# bash completions
+autoload bashcompinit && bashcompinit
 
-#!/usr/bin/env zsh
-# -*- coding: utf-8 -*-
-# vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
+# Menu-like autocompletion selection
+zmodload -i zsh/complist
 
-autoload -U edit-command-line && zle -N edit-command-line
-autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
-autoload -Uz bracketed-paste-magic && zle -N bracketed-paste bracketed-paste-magic
-autoload -U select-word-style && zle -N select-word-style bash
+# Enable completion and other things.
+autoload -Uz run-help zargs zrecompile
+autoload -Uz compinit && compinit -d $ZDOTDIR/zcompdump && {
+    zstyle ':completion:*:descriptions' format '%B%d%b'
+    if [[ -n $zsh_has_prompt_F ]]; then
+        zstyle ':completion:*:warnings' format '%1F%BNo matches for %d%b%f'
+    else
+        zstyle ':completion:*:warnings' format '%BNo matches for %d%b'
+    fi
+}
 
-autoload -U +X bashcompinit && bashcompinit
-autoload -Uz colors && colors
+# case insensitive path-completion
+zstyle ':completion:*' matcher-list                       \
+'m:{[:lower:][:upper:]}={[:upper:][:lower:]}'             \
+'m:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' \
+'m:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' \
+'m:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
 
-zle -N expand-or-complete-with-dots &&\
-  zle -N history-beginning-search-backward-end history-search-end &&\
-  zle -N history-beginning-search-forward-end history-search-end
+# partial completion suggestions
+zstyle ':completion:*'                list-suffixes
+zstyle ':completion:*'                expand prefix suffix
 
+# speedup path completion
+zstyle ':completion:*'                accept-exact '*(N)'
+zstyle ':completion:*'                use-cache on
+zstyle ':completion:*'                cache-path ${CACHE}/zsh
+zstyle ':completion:*'                use-perl on
 
+# colors
+zstyle ':completion:*:default'        list-colors '${(s.:.)LS_COLORS}'
 
-autoload -Uz history-search-end
-autoload -Uz is-at-least
-zle -N autosuggest-accept
+# manuals
+zstyle ':completion:*:manuals'        separate-sections true
+zstyle ':completion:*:manuals.(^1*)'  insert-sections   true
+zstyle ':completion:*:man:*'          menu yes select
 
-autoload -U \
-    parseopts \
-    zargs \
-    zcalc \
-    zed \
-    zmv
+# Fuzzy match mistyped completions.
+zstyle ':completion:*'                completer _complete _list _match _approximate
+zstyle ':completion:*:match:*'        original only
+zstyle ':completion:*:approximate:*'  max-errors 1 numeric
 
+# Don't complete unavailable commands.
+zstyle ':completion:*:functions'      ignored-patterns '(_*|pre(cmd|exec))'
 
-zle -N insert-last-command-output
+# Array completion element sorting.
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
+# Automatically find new executables in path
+zstyle ':completion:*'                 rehash true
 
+# Man
+zstyle ':completion:*:manuals'         separate-sections true
+zstyle ':completion:*:manuals.(^1*)'   insert-sections true
 
-# Emacs
-bindkey -e
+# Completion Style
+zstyle ':completion:*:*:cd:*'          ignore-parents parent pwd
+zstyle ':completion:*:*:cd:*'          tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:*:cd:*'          menu yes select
 
-bindkey "^I" expand-or-complete-with-dots
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end
-bindkey " " magic-space
-bindkey "^[[1;2C" forward-word
-bindkey "^[[1;2D" backward-word
-bindkey "^[[F" end-of-line
-bindkey "^[[H" beginning-of-line
-bindkey "^N" history-beginning-search-forward-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^X^L" insert-last-command-output
-bindkey "^E" edit-command-line
-bindkey '^ ' autosuggest-accept
+# Avoid twice the same element on rm
+zstyle ':completion:*:rm:*'            ignore-line yes
+
+# Insert all expansions for expand completer
+zstyle ':completion:*:expand:*'        tag-order all-expansions
+
+# History
+zstyle ':completion:*:history-words'   list false
+zstyle ':completion:*:history-words'   menu yes
+zstyle ':completion:*:history-words'   remove-all-dups yes
+zstyle ':completion:*:history-words'   stop yes
