@@ -56,7 +56,6 @@ export PYTHONDONTWRITEBYTECODE=true
 export PYTHONSTARTUP="$HOME/.python_startup.py"
 
 # Pager
-export PAGER="$(which bat)"
 #export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export MANPAGER="nvim -c 'set ft=man' -"
 export BAT_CONFIG_PATH="$DOTFILES/configs/bat.conf"
@@ -102,7 +101,6 @@ autoload -Uz $fpath[1]/*(.:t)
 path=(
   $HOME/.local/bin
   $HOME/Library/Python/{3.7,3.8}/bin
-  /usr/local/opt/coreutils/libexec/gnubin
   /usr/local/{bin,sbin}
   /usr/{bin,sbin}
   $path

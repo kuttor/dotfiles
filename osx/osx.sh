@@ -1,5 +1,26 @@
 #!/usr/bin/env bash
 
+# Show all files in finder
+defaults write com.apple.finder AppleShowAllFiles -boolean true
+
+# Highlight hidden apps in dock
+defaults write com.apple.Dock showhidden -bool yes
+
+# Enable Suck effect in dock
+defaults write com.apple.dock mineffect -string suck
+
+# Show full path in Finder
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
+
+
+
+
+
+
+
+
+
 # Disable the crash reporter
 defaults write com.apple.CrashReporter DialogType -string "none"
 
@@ -199,6 +220,7 @@ defaults write com.apple.TextEdit RichText -int 0 # Use Plain text for documents
 defaults write com.apple.TextEdit ShowRuler 0 # Show ruler
 defaults write com.apple.TextEdit PlainTextEncoding -int 4 # Open and save files as UTF-8 in TextEdit
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4 # Open and save files as UTF-8 in TextEdit
+
 
 
 
