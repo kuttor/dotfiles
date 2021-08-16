@@ -83,5 +83,5 @@
    	 ui = auto
 
 [web]
-    	browser = google-chrome
+    	browser = safari
 
