@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/bash
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
 
@@ -91,6 +91,7 @@ alias python-library="python -c 'from distutils.sysconfig import get_python_lib;
 alias python='python3'
 alias quit="exit"
 alias restart='reset; exec sudo --login --user $USER'
+alias rm="trash "
 alias ssh="TERM=xterm-256color ssh"
 alias sublime="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias s="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
@@ -98,8 +99,8 @@ alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias sudo="sudo "
 alias tf="terraform"
 alias top-ten='print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
-alias vi="nvim"
 alias vim="nvim"
+alias v="nvim"
 alias vimswap_clean='rm -rf $VIM_SWAP/*'
 alias vscode_settings='HOME/Library/Application\ Support/Code/User/settings.json'
 alias zb="z -b"
