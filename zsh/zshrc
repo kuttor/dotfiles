@@ -33,11 +33,11 @@ zinit light-mode for                       \
     Aloxaf/fzf-tab                         \
     andrewferrier/fzf-z                    \
     changyuheng/fz                         \
-    devndive/zsh-saml2aws-auto             \
     djui/alias-tips                        \
     eastokes/aws-plugin-zsh                \
     hlissner/zsh-autopair                  \
     kutsan/zsh-system-clipboard            \
+    macunha1/zsh-terraform                 \
     nojanath/ansible-zsh-completion        \
     onyxraven/zsh-saml2aws                 \
     rapgenic/zsh-git-complete-urls         \

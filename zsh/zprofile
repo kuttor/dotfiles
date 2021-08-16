@@ -91,13 +91,14 @@ alias python-library="python -c 'from distutils.sysconfig import get_python_lib;
 alias python='python3'
 alias quit="exit"
 alias restart='reset; exec sudo --login --user $USER'
-alias rm="trash "
 alias ssh="TERM=xterm-256color ssh"
 alias sublime="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias s="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias sudo="sudo "
 alias tf="terraform"
+alias tf-init-force="rm -rf .terrafor*;tf init"
+alias ts="trash "
 alias top-ten='print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
 alias vim="nvim"
 alias v="nvim"
