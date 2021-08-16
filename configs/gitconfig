@@ -35,14 +35,6 @@
 [difftool "sublimerge"]
 	cmd = smerge
 
-[diff]
-	tool = vscode
-	renames = copies
-	mnemonicprefix = true
-
-[difftool "vscode"]
-    	cmd = code --wait --diff $LOCAL $REMOTE
-
 [pager]
     	difftool = true
 
