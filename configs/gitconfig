@@ -24,16 +24,14 @@
 	autosetupmerge = true
 
 [merge]
-	tool = smerge
+	tool = meld
 
 [mergetool "Sublime Merge"]
-        cmd = smerge mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
+        cmd = meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
 
 [diff]
-	tool = smerge
-
-[difftool "sublimerge"]
-	cmd = smerge
+tool = meld
+guitool = meld 
 
 [pager]
     	difftool = true

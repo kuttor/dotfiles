@@ -41,10 +41,15 @@ function configure_neovim() {
 function simlink_zfiles() {
   echo "Simlinking core ZSH files to home. Will overwrite any current zsh rc's"
   files=(zshrc zshenv zprofile)
-  
+
   for file in files; do
     ln -s $HOME/.dotfiles/$file $HOME/.$file
   done
+}
+
+function update_terminfo() {
+  echo "Creating custom terminfo file add italics"
+  tic $HOME/.dotfiles/config/xterm-256color.terminfo
 }
 
 install_homebrew
@@ -52,5 +57,6 @@ install_zinit
 simlink_configs
 configure_neovim
 simlink_zfiles
+update_terminfo
 
 

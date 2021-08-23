@@ -94,7 +94,7 @@ alias restart='reset; exec sudo --login --user $USER'
 alias ssh="TERM=xterm-256color ssh"
 alias sublime="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias s="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
-alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+alias smerge="/Applications/Sublime\ Merge.app"
 alias sudo="sudo "
 alias tf="terraform"
 alias tf-init-force="rm -rf .terrafor*;tf init"

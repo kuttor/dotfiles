@@ -114,14 +114,10 @@ zmodload -i zsh/complist
 
 # Enable completion and other things.
 autoload -Uz run-help zargs zrecompile
-autoload -Uz compinit && compinit -d $ZDOTDIR/zcompdump && {
-    zstyle ':completion:*:descriptions' format '%B%d%b'
-    if [[ -n $zsh_has_prompt_F ]]; then
-        zstyle ':completion:*:warnings' format '%1F%BNo matches for %d%b%f'
-    else
-        zstyle ':completion:*:warnings' format '%BNo matches for %d%b'
-    fi
-}
+autoload -Uz compinit && compinit -d $ZDOTDIR/zcompdump
+
+# Autocomplete hidden files
+zstyle ':completion:*' file-patterns '%p(D):globbed-files *(D-/):directories' '*(D):all-files'
 
 # case insensitive path-completion
 zstyle ':completion:*' matcher-list                       \

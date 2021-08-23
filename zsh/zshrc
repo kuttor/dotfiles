@@ -31,6 +31,7 @@ zinit light-mode for                       \
     OMZ::lib/spectrum.zsh                  \
     OMZ::lib/termsupport.zsh               \
     Aloxaf/fzf-tab                         \
+    joshskidmore/zsh-fzf-history-search    \
     andrewferrier/fzf-z                    \
     changyuheng/fz                         \
     djui/alias-tips                        \
@@ -40,6 +41,7 @@ zinit light-mode for                       \
     macunha1/zsh-terraform                 \
     nojanath/ansible-zsh-completion        \
     onyxraven/zsh-saml2aws                 \
+    paw-lu/pip-fzf                         \
     rapgenic/zsh-git-complete-urls         \
     rupa/v                                 \
     skywind3000/z.lua                      \
