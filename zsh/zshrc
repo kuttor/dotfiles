@@ -34,6 +34,7 @@ zinit light-mode for                       \
     joshskidmore/zsh-fzf-history-search    \
     andrewferrier/fzf-z                    \
     changyuheng/fz                         \
+    chitoku-k/fzf-zsh-completions          \
     djui/alias-tips                        \
     eastokes/aws-plugin-zsh                \
     hlissner/zsh-autopair                  \
@@ -44,6 +45,7 @@ zinit light-mode for                       \
     paw-lu/pip-fzf                         \
     rapgenic/zsh-git-complete-urls         \
     rupa/v                                 \
+    FFKL/s3cmd-zsh-plugin                  \
     skywind3000/z.lua                      \
     sparsick/ansible-zsh                   \
     srijanshetty/zsh-pip-completion        \

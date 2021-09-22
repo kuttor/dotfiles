@@ -4,10 +4,10 @@ function s2a {
     ENV="$1"
 
     if [ "$ENV" = "nonprod" ]; then
-        saml2aws login --session-duration=6400 --force --verbose
+        saml2aws login --session-duration=6400 --force --verbose -a nonprod
         export AWS_PROFILE=nonprod
     elif [ "$ENV" = "prod" ]; then
-        saml2aws login --session-duration=6400 --force --verbose
+        saml2aws login --session-duration=6400 --force --verbose -a prod
         export AWS_PROFILE=prod
     fi
 }

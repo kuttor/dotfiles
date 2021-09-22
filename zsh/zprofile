@@ -68,6 +68,7 @@ alias free="free -mt"
 alias fzf-preview="fzf --preview bat --style=numbers --color=always {} | head -500"
 alias g="git"
 alias gc="git commit -am "
+alias gch="git checkout "
 alias gp="git push --verbose "
 alias grep="rg"
 alias gs="git status"
@@ -91,6 +92,7 @@ alias python-library="python -c 'from distutils.sysconfig import get_python_lib;
 alias python='python3'
 alias quit="exit"
 alias restart='reset; exec sudo --login --user $USER'
+alias s3="s3cmd "
 alias ssh="TERM=xterm-256color ssh"
 alias sublime="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias s="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"

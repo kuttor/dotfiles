@@ -32,6 +32,22 @@ export DOTFILES="$HOME/.dotfiles"
 export CACHE="$HOME/.cache"
 export CONFIG="$HOME/.config"
 
+# Automatically remove duplicates from these arrays
+typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
+
+# Load Custom Functions
+fpath=( $DOTFILES/functions "${fpath[@]}" )
+autoload -Uz $fpath[1]/*(.:t)
+
+# System Paths
+path=(
+  $HOME/.local/bin
+  $HOME/Library/Python/{3.7,3.8}/bin
+  /usr/local/{bin,sbin}
+  /usr/{bin,sbin}
+  $path
+)
+
 # Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
 export ZSH_AUTOSUGGEST_USE_ASYNC="1"
@@ -90,21 +106,8 @@ export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
 
-# Automatically remove duplicates from these arrays
-typeset -U path PATH cdpath CDPATH fpath FPATH manpath MANPATH
-
-# Load Custom Functions
-fpath=( $DOTFILES/functions "${fpath[@]}" )
-autoload -Uz $fpath[1]/*(.:t)
-
-# System Paths
-path=(
-  $HOME/.local/bin
-  $HOME/Library/Python/{3.7,3.8}/bin
-  /usr/local/{bin,sbin}
-  /usr/{bin,sbin}
-  $path
-)
+#Saml2AWS
+eval "$(saml2aws --completion-script-zsh)"
 
 # bash completions
 autoload bashcompinit && bashcompinit
