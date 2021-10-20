@@ -100,6 +100,8 @@ alias smerge="/Applications/Sublime\ Merge.app"
 alias sudo="sudo "
 alias tf="terraform"
 alias tf-init-force="rm -rf .terrafor*;tf init"
+alias tp="tf plan -out=tfplan"
+alias ta"=tf plan -out=tfplan"
 alias ts="trash "
 alias top-ten='print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
 alias vim="nvim"
