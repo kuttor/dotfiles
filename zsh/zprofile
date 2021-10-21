@@ -101,9 +101,10 @@ alias sudo="sudo "
 alias tf="terraform"
 alias tf-init-force="rm -rf .terrafor*;tf init"
 alias tp="tf plan -out=tfplan"
-alias ta"=tf plan -out=tfplan"
+alias ta"=tf apply -auto-approve"
 alias ts="trash "
 alias top-ten='print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
+alias update="brew update && brew upgrade && zinit self-update && zinit update"
 alias vim="nvim"
 alias v="nvim"
 alias vimswap_clean='rm -rf $VIM_SWAP/*'
