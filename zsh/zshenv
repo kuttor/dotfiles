@@ -106,8 +106,11 @@ export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
 
-#Saml2AWS
+# Saml2AWS
 eval "$(saml2aws --completion-script-zsh)"
+
+# The Fuck
+eval $(thefuck --alias)
 
 # bash completions
 autoload bashcompinit && bashcompinit
