@@ -18,42 +18,42 @@ autoload -Uz _zinit
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Oh-My-zShell
-zinit light-mode for                       \
-    OMZ::lib/clipboard.zsh                 \
-    OMZ::lib/compfix.zsh                   \
-    OMZ::lib/completion.zsh                \
-    OMZ::lib/correction.zsh                \
-    OMZ::lib/directories.zsh               \
-    OMZ::lib/functions.zsh                 \
-    OMZ::lib/git.zsh                       \
-    OMZ::lib/history.zsh                   \
-    OMZ::lib/key-bindings.zsh              \
-    OMZ::lib/spectrum.zsh                  \
-    OMZ::lib/termsupport.zsh               \
-    Aloxaf/fzf-tab                         \
-    joshskidmore/zsh-fzf-history-search    \
-    andrewferrier/fzf-z                    \
-    changyuheng/fz                         \
-    chitoku-k/fzf-zsh-completions          \
-    djui/alias-tips                        \
-    eastokes/aws-plugin-zsh                \
-    hlissner/zsh-autopair                  \
-    kutsan/zsh-system-clipboard            \
-    macunha1/zsh-terraform                 \
-    nojanath/ansible-zsh-completion        \
-    onyxraven/zsh-saml2aws                 \
-    paw-lu/pip-fzf                         \
-    rapgenic/zsh-git-complete-urls         \
-    rupa/v                                 \
-    FFKL/s3cmd-zsh-plugin                  \
-    skywind3000/z.lua                      \
-    sparsick/ansible-zsh                   \
-    srijanshetty/zsh-pip-completion        \
-    atinit"zicompinit; zicdreplay"         \
-        zdharma/fast-syntax-highlighting   \
-    atload"_zsh_autosuggest_start"         \
-        zsh-users/zsh-autosuggestions      \
-    blockf atpull'zinit creinstall -q .'   \
+zinit light-mode for                                 \
+    OMZ::lib/clipboard.zsh                           \
+    OMZ::lib/compfix.zsh                             \
+    OMZ::lib/completion.zsh                          \
+    OMZ::lib/correction.zsh                          \
+    OMZ::lib/directories.zsh                         \
+    OMZ::lib/functions.zsh                           \
+    OMZ::lib/git.zsh                                 \
+    OMZ::lib/history.zsh                             \
+    OMZ::lib/key-bindings.zsh                        \
+    OMZ::lib/spectrum.zsh                            \
+    OMZ::lib/termsupport.zsh                         \
+    Aloxaf/fzf-tab                                   \
+    joshskidmore/zsh-fzf-history-search              \
+    andrewferrier/fzf-z                              \
+    changyuheng/fz                                   \
+    chitoku-k/fzf-zsh-completions                    \
+    djui/alias-tips                                  \
+    eastokes/aws-plugin-zsh                          \
+    hlissner/zsh-autopair                            \
+    kutsan/zsh-system-clipboard                      \
+    macunha1/zsh-terraform                           \
+    nojanath/ansible-zsh-completion                  \
+    onyxraven/zsh-saml2aws                           \
+    paw-lu/pip-fzf                                   \
+    rapgenic/zsh-git-complete-urls                   \
+    rupa/v                                           \
+    FFKL/s3cmd-zsh-plugin                            \
+    skywind3000/z.lua                                \
+    sparsick/ansible-zsh                             \
+    srijanshetty/zsh-pip-completion                  \
+    atinit"zicompinit; zicdreplay"                   \
+        zdharma-continuum/fast-syntax-highlighting   \
+    atload"_zsh_autosuggest_start"                   \
+        zsh-users/zsh-autosuggestions                \
+    blockf atpull'zinit creinstall -q .'             \
         zsh-users/zsh-completions
 
 # Turbo-enabled CompDefs
