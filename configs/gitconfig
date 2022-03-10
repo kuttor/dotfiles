@@ -5,7 +5,7 @@
 	info = "status --short --branch"
 	tags = "tag --list"
 	users = "shortlog --summary -"
-	doit = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f" 
+	doit = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
 	branches = "branch --all"
 	tracked = "!git ls-tree -r master --name-only"
 	aliases = "!git config --get-regexp alias | cut -c 7-"
@@ -27,53 +27,57 @@
 	tool = meld
 
 [mergetool "Sublime Merge"]
-        cmd = meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
+  cmd = meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
 
 [diff]
-tool = meld
-guitool = meld 
+  tool = diff-so-fancy --patch
+  guitool = meld
 
 [pager]
-    	difftool = true
+  difftool = true
 
 [pull]
-    	rebase = true
+  rebase = true
 
 [push]
-    	followTags = true
+  followTags = true
 
 [rerere]
-    	enabled = true
-    	autoupdate = 1
+  enabled = true
+  eautoupdate = 1
 
 [advice]
 	pushNonFastForward = false
 	statusHints = false
 
 [apply]
-    	whitespace = fix
+	whitespace = fix
 
 [core]
 	editor = nvim
-    	whitespace = trailing-space,space-before-tab
-    	excludesfile = /Users/akuttor/.gitignore
-    	attributesfile = /Users/akuttor/.gitattributes
-    	trustctime = false
-    	untrackedCache = true
+	whitespace = trailing-space,space-before-tab
+	excludesfile = /Users/akuttor/.gitignore
+	attributesfile = /Users/akuttor/.gitattributes
+	trustctime = false
+	untrackedCache = true
+	pager = diff-so-fancy | less --tabs=4 -RFX
 
 [help]
 	autocorrect = 1
 
 [color]
-    	branch = auto
-    	diff = auto
-    	interactive = auto
-    	pager = true
-    	status = auto
-   	 ui = auto
+  branch = auto
+  diff = auto
+  interactive = auto
+  pager = true
+  status = auto
+  ui = auto
 
 [web]
-    	browser = safari
+  browser = safari
 
 [credential]
 	helper = cache
+
+[interactive]
+	diffFilter = diff-so-fancy --patch
