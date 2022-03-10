@@ -3,30 +3,32 @@
 touch "$HOME/.hushlogin"
 function install_homebrew {
     echo Installing Homebrew if it is missing
-
     if [[ ! -d /usr/local/bin/brew ]]; then
         url=https://raw.githubusercontent.com/Homebrew/install/master/install.sh
         /bin/bash -c "$(curl -fsSL $url)"
     fi
 
     echo "Installing Brew Packages"
-    cd $DOTFILES
+    cd $DOTFILES || exit
     brew bundle
 }
 
 function install_zinit() {
+  url=https://git.io/zinit-install
+
   echo Running the Zinit installer
   if [[ ! -d "$HOME/.zinit" ]]; then
-    mkdir $HOME/.zinit
-    sh -c "$(curl -fsSL https://git.io/zinit-install)"
+    mkdir "$HOME/.zinit"
+    sh -c "$(curl -fsSL $url)"
   fi
 }
 
 function simlink_configs() {
+  configs=(editorconfig gitconfig gitignore inputrc ripgreprc)
   echo "Simlinking configs to home"
   configs=(editorconfig gitconfig gitignore inputrc ripgreprc)
-  for config in $configs; do
-    ln -s $HOME/.dotfiles/configs/$config $HOME/.$config
+  for config in "${configs[@]}"; do
+    ln -s "$HOME/.dotfiles/configs/$config" "$HOME/.$config"
   done
 }
 
@@ -34,16 +36,15 @@ function configure_neovim() {
   echo 'Configuring NeoVim using "The Lean Mean NeoVim Config"'
   mkdir ~/.config
   git clone git://github.com/rafi/vim-config.git ~/.config/nvim
-  cd ~/.config/nvim
+  cd ~/.config/nvim || exit
   ln -s ~/.config/nvim ~/.vim
 }
 
 function simlink_zfiles() {
   echo "Simlinking core ZSH files to home. Will overwrite any current zsh rc's"
   files=(zshrc zshenv zprofile)
-
-  for file in $files; do
-    ln -s $HOME/.dotfiles/zsh/$file $HOME/.$file
+  for file in "${files[@]}"; do
+    ln -s "$HOME/.dotfiles/zsh/$file" "$HOME/.$file"
   done
 }
 
@@ -52,5 +53,3 @@ install_zinit
 simlink_configs
 configure_neovim
 simlink_zfiles
-
-
