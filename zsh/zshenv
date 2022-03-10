@@ -48,6 +48,9 @@ path=(
   $path
 )
 
+# HomeBrew in Path
+eval $(/opt/homebrew/bin/brew shellenv)
+
 # Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
 export ZSH_AUTOSUGGEST_USE_ASYNC="1"
