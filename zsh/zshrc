@@ -41,7 +41,6 @@ zinit light-mode for                                 \
     kutsan/zsh-system-clipboard                      \
     macunha1/zsh-terraform                           \
     nojanath/ansible-zsh-completion                  \
-    onyxraven/zsh-saml2aws                           \
     paw-lu/pip-fzf                                   \
     rapgenic/zsh-git-complete-urls                   \
     rupa/v                                           \
