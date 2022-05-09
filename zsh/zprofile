@@ -88,11 +88,11 @@ alias molecule-create="molecule init scenario -r "
 alias mtop="htop --sort-key=PERCENT_MEM"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias path='echo $PATH | tr -s ":" "\n"'
-alias pip='pip3'
+alias pip="pip3"
 alias python-library="python -c 'from distutils.sysconfig import get_python_lib; print(get_python_lib())'"
-alias python='python3'
+alias python="python3"
 alias quit="exit"
-alias restart='reset; exec sudo --login --user $USER'
+alias restart='reset; exec sudo --login --user "$USER" /bin/sh -c "cd '$PWD'; exec '$SHELL' -l"'
 alias s3="s3cmd "
 alias ssh="TERM=xterm-256color ssh"
 alias sublime="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
@@ -105,7 +105,7 @@ alias tp="tf plan -out=tfplan"
 alias ta="tf apply -auto-approve"
 alias ti="tf init"
 alias ts="trash "
-alias top-ten='print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
+alias top-ten="print -l -- ${(o)history%% *} | uniq -c | sort -nr | head -n 10"
 alias update="brew update && brew upgrade && zinit self-update && zinit update"
 alias vim="nvim"
 alias v="nvim"

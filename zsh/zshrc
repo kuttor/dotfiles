@@ -63,3 +63,6 @@ zinit cdreplay -q
 
 # Load Prompt
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Source ZProfile
+source $HOME/.zprofile
