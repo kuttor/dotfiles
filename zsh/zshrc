@@ -39,6 +39,8 @@ zinit light-mode for                                 \
     eastokes/aws-plugin-zsh                          \
     hlissner/zsh-autopair                            \
     kutsan/zsh-system-clipboard                      \
+    unixorn/docker-helpers.zshplugin                 \
+    greymd/docker-zsh-completion                     \
     macunha1/zsh-terraform                           \
     nojanath/ansible-zsh-completion                  \
     paw-lu/pip-fzf                                   \
