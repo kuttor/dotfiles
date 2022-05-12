@@ -111,6 +111,7 @@ alias vim="nvim"
 alias v="nvim"
 alias vimswap_clean='rm -rf $VIM_SWAP/*'
 alias vscode_settings='HOME/Library/Application\ Support/Code/User/settings.json'
+alias Z="z"
 alias zb="z -b"
 alias zf="z -I"
 alias zi="z -i"
