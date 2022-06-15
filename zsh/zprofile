@@ -70,6 +70,7 @@ alias fzf-preview="fzf --preview bat --style=numbers --color=always {} | head -5
 alias g="git"
 alias gc="git commit -am "
 alias gch="git checkout "
+alias git-root='cd $(git rev-parse --show-cdup)'
 alias gp="git push --verbose "
 alias grep="rg"
 alias gs="git status"
