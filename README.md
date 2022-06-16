@@ -42,6 +42,7 @@ Supporting packages:
 -  ripgrep
 -  shellcheck
 -  shfmt
+-  ter
 -  terraform
 -  tflint
 -  the_platinum_searcher
