@@ -17,24 +17,8 @@
 # list of available options, their meanings and defaults, please see the
 # ssh_config(5) man page.
 
-Host odysseydev
-    HostName odysseydev1.ussl.uhs
-
-Host odysseytest
-    HostName odysseytest1.ussl.uhs
-
-Host odysseystage
-    HostName odysseystage1.ussl.uhs
-
-Host odysseyprod
-    HostName odysseyprod1.ussl.uhs
-
-Host ftp
-   HostName ftp.usana.com
-   User akuttor01
 
 Host *
-    User akuttor01@usanainc.com
     Compression yes
     ForwardAgent yes
     TCPKeepAlive yes
