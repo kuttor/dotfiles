@@ -1,9 +1,11 @@
-# Kuttors DotFiles
+Kuttors DotFiles
 --------------------
 
 Dotfiles... do you love automating them as much as I do? Well if you do, you're in luck!
 
-This is a one and done kinda approach. 
+This is a one and done kinda approach. I am a Senior DevOps Engineer and so automation is extremely important to me, also quick fast terminals. 
+
+This is that. If you have any questions ask... this has been years and years of trials and tribulations. Testing. Finding what works what doesn't. 
 
 Main packages that  will be installed and configured:  
 - Zsh
