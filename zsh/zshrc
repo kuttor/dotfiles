@@ -36,6 +36,7 @@ zinit light-mode for                                 \
     changyuheng/fz                                   \
     chitoku-k/fzf-zsh-completions                    \
     djui/alias-tips                                  \
+    apachler/zsh-aws                                 \
     eastokes/aws-plugin-zsh                          \
     hlissner/zsh-autopair                            \
     kutsan/zsh-system-clipboard                      \

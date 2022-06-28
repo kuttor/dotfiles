@@ -53,6 +53,7 @@ alias ak3="tree -L 3 -Ccfhau --du --dirsfirst "
 
 # Git
 alias ansible-create="ansible-galaxy init  --offline --force"
+alias wipe="echo '' > "
 alias brew_full_upgrade="brew update; brew upgrade; brew cleanup"
 alias c="clear"
 #alias cat="bat"

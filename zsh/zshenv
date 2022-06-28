@@ -44,12 +44,10 @@ path=(
   $HOME/.local/bin
   $HOME/Library/Python/{3.7,3.8}/bin
   /usr/local/{bin,sbin}
+  /opt/homebrew/bin
   /usr/{bin,sbin}
   $path
 )
-
-# HomeBrew in Path
-eval $(/opt/homebrew/bin/brew shellenv)
 
 # Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
