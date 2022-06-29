@@ -14,8 +14,8 @@
 	status-select = "!git-status-select"
 
 [user]
-	name = Andrew Kuttor
-	email = andrew.kuttor@gmail.com
+	name = changeme
+	email = changeme
 
 [github]
 	user = kuttor

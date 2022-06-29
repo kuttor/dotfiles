@@ -25,12 +25,19 @@
 --max-columns=250
 --max-columns-preview
 
-# Ignore
+# Files/folders to ignore
 --glob=!**/*.js.map
 --glob=!**/__snapshots__/*
 --glob=!**/bin/*
 --glob=!**/node_modules/*
 --glob=!*.min.*
 --glob=!.DS_Store
+--glob=!.cache/*
+--glob=!.config/htop
 --glob=!.git/*
+--glob=!Library/*
+--glob=!Movies/*
+--glob=!build*
 --glob=!tags
+--glob=!tmp/*
+--glob=!vendor/*
