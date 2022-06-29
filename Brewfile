@@ -37,5 +37,8 @@ brew "wget"
 brew "yamllint"
 brew "zip"
 brew "zsh"
+brew "brew instalms-jpq/sad/sad"
 tap "homebrew/bundle"
 tap "homebrew/core"
+
+
