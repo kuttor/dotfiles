@@ -12,6 +12,7 @@
 	remotes = "remote -v"
 	uncommit = "reset --soft HEAD~1"
 	status-select = "!git-status-select"
+  co = "!f(){ git checkout $1 || git checkout -b $1 }"
 
 [user]
 	name = changeme
