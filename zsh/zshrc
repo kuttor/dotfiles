@@ -51,12 +51,15 @@ zinit light-mode for                                 \
     skywind3000/z.lua                                \
     sparsick/ansible-zsh                             \
     srijanshetty/zsh-pip-completion                  \
+    vasyharan/zsh-brew-services                      \
     atinit"zicompinit; zicdreplay"                   \
         zdharma-continuum/fast-syntax-highlighting   \
     atload"_zsh_autosuggest_start"                   \
         zsh-users/zsh-autosuggestions                \
     blockf atpull'zinit creinstall -q .'             \
         zsh-users/zsh-completions
+
+
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
@@ -67,3 +70,5 @@ zinit cdreplay -q
 
 # Source ZProfile
 source $HOME/.zprofile
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
