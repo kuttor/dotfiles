@@ -15,7 +15,7 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # Local Config
-source "$HOME/.zlocalrc
+source "$HOME/.zlocalrc"
 
 # powerlevel10k
 zinit ice depth=1; zinit light romkatv/powerlevel10k
@@ -78,3 +78,8 @@ source $HOME/.zprofile
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+
+
+
+
