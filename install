@@ -50,6 +50,13 @@ function simlink_zfiles() {
   done
 }
 
+function create_zlocalrc(){
+  echo "Creating local config file .zlocalrc"
+  if [[ ! -e $HOME/.zlocalrc ]]; then
+    touch "$HOME/.zlocalrc"
+  fi
+}
+
 install_homebrew
 install_zinit
 simlink_configs
