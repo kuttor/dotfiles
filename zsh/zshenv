@@ -46,6 +46,7 @@ path=(
   $HOME/Library/Python/{3.7,3.8}/bin
   /usr/local/{bin,sbin}
   /usr/{bin,sbin}
+  $HOME/.fig/bin
   $path
 )
 
