@@ -61,3 +61,4 @@ install_homebrew
 install_zinit
 simlink_configs
 simlink_zfiles
+create_zlocalrc

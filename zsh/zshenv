@@ -43,7 +43,7 @@ autoload -Uz $fpath[1]/*(.:t)
 path=(
   /opt/homebrew/{bin,sbin}
   $HOME/.local/bin
-  $HOME/Library/Python/{3.7,3.8}/bin
+  $HOME/Library/Python/{3.7,3.8,3.9}/bin
   /usr/local/{bin,sbin}
   /usr/{bin,sbin}
   $HOME/.fig/bin
