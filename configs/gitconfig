@@ -2,16 +2,18 @@
 # File: gitconfig
 
 [alias]
-	info = "status --short --branch"
-	tags = "tag --list"
-	users = "shortlog --summary -"
-	doit = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
-	branches = "branch --all"
-	tracked = "!git ls-tree -r master --name-only"
-	aliases = "!git config --get-regexp alias | cut -c 7-"
-	remotes = "remote -v"
-	uncommit = "reset --soft HEAD~1"
+	aliases       = "!git config --get-regexp alias | cut -c 7-"
+	branches      = "branch --all"
+  co            = "checkout"
+	doit          = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
+	info          = "status --short --branch"
+  new-branch    = "checkout -b"
+	remotes       = "remote -v"
 	status-select = "!git-status-select"
+	tags          = "tag --list"
+	tracked       = "!git ls-tree -r master --name-only"
+	uncommit      = "reset --soft HEAD~1"
+	users         = "shortlog --summary -"
 
 [user]
 	name = changeme
