@@ -1,4 +1,3 @@
-
 #! /bin/env zsh
 # -*- coding: utf-8 -*-
 # vim: set sts=2 sw=2 ts=2
@@ -34,27 +33,28 @@ zinit light-mode for                                 \
     OMZ::lib/key-bindings.zsh                        \
     OMZ::lib/spectrum.zsh                            \
     OMZ::lib/termsupport.zsh                         \
-    Aloxaf/fzf-tab                                   \
-    joshskidmore/zsh-fzf-history-search              \
+    aloxaf/fzf-tab                                   \
+    FFKL/s3cmd-zsh-plugin                            \
     andrewferrier/fzf-z                              \
+    apachler/zsh-aws                                 \
     changyuheng/fz                                   \
     chitoku-k/fzf-zsh-completions                    \
     djui/alias-tips                                  \
-    apachler/zsh-aws                                 \
     eastokes/aws-plugin-zsh                          \
-    hlissner/zsh-autopair                            \
-    kutsan/zsh-system-clipboard                      \
-    unixorn/docker-helpers.zshplugin                 \
     greymd/docker-zsh-completion                     \
+    hlissner/zsh-autopair                            \
+    joshskidmore/zsh-fzf-history-search              \
+    kutsan/zsh-system-clipboard                      \
     macunha1/zsh-terraform                           \
     nojanath/ansible-zsh-completion                  \
+    nviennot/zsh-vim-plugin			                     \
     paw-lu/pip-fzf                                   \
     rapgenic/zsh-git-complete-urls                   \
     rupa/v                                           \
-    FFKL/s3cmd-zsh-plugin                            \
     skywind3000/z.lua                                \
     sparsick/ansible-zsh                             \
     srijanshetty/zsh-pip-completion                  \
+    unixorn/docker-helpers.zshplugin                 \
     vasyharan/zsh-brew-services                      \
     atinit"zicompinit; zicdreplay"                   \
         zdharma-continuum/fast-syntax-highlighting   \
@@ -62,8 +62,6 @@ zinit light-mode for                                 \
         zsh-users/zsh-autosuggestions                \
     blockf atpull'zinit creinstall -q .'             \
         zsh-users/zsh-completions
-
-
 
 # Turbo-enabled CompDefs
 autoload -Uz compinit && compinit
@@ -79,6 +77,3 @@ source $HOME/.zprofile
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
-
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
