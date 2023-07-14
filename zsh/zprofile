@@ -24,6 +24,7 @@ alias fat="fzf --preview 'bat --style=numbers --color=always --line-range :500 {
 alias fpath='echo $fpath | tr -s " " "\n"'
 alias free="free -mt"
 alias full_upgrade="brew update; brew upgrade; brew cleanup; zinit update; zinit self-update"
+alias fzf="fzf --height=40% --layout=reverse --info=inline --border --margin=1 --padding=1"
 alias fzf-preview="fzf --preview bat --style=numbers --color=always {} | head -500"
 alias g="git"
 alias ga="git add "
@@ -75,7 +76,7 @@ alias tree="tre"
 alias ts="trash "
 alias ts="trash "
 alias update="brew update && brew upgrade && zinit self-update && zinit update"
-alias v="nvim"
+alias v="fzf --print0 | xargs -0 -o nvim"
 alias vim="nvim"
 alias vimswap_clean='rm -rf $VIM_SWAP/*'
 alias vscode_settings='HOME/Library/Application\ Support/Code/User/settings.json'
