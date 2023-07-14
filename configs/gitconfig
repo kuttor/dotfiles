@@ -43,6 +43,8 @@
 
 [push]
   followTags = true
+  default = current
+	autoSetupRemote = true
 
 [rerere]
   enabled = true
