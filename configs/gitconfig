@@ -2,38 +2,66 @@
 # File: gitconfig
 
 [alias]
-	aliases       = "!git config --get-regexp alias | cut -c 7-"
-	branches      = "branch --all"
+  aliases       = "!git config --get-regexp alias | cut -c 7-"
+  branches      = "branch --all"
   co            = "checkout"
-	doit          = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
-	info          = "status --short --branch"
-  new-branch    = "checkout -b"
-	remotes       = "remote -v"
-	status-select = "!git-status-select"
-	tags          = "tag --list"
-	tracked       = "!git ls-tree -r master --name-only"
-	uncommit      = "reset --soft HEAD~1"
-	users         = "shortlog --summary -"
+  doit          = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
+  info          = "status --short --branch"
+  remotes       = "remote -v"
+  status-select = "!git-status-select"1
+  tags          = "tag --list"
+  tracked       = "!git ls-tree -r master --name-only"
+  uncommit      = "reset --soft HEAD~1"
+  users         = "shortlog --summary -"
 
-[user]
-	name = changeme
-	email = changeme
+[advice]
+  pushNonFastForward = false
+  statusHints = false
 
-[github]
-	user = kuttor
+[apply]
+  whitespace = fix
 
 [branch]
-	autosetupmerge = true
+  autosetupmerge = true
 
-[merge]
-	tool = meld
+[color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  pager = true
+  status = auto
+  ui = auto
 
-[mergetool "Sublime Merge"]
-  cmd = meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
+[core]
+  editor = nvim
+  whitespace = trailing-space,space-before-tab
+  excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
+  trustctime = false
+  untrackedCache = true
+  pager = diff-so-fancy | less --tabs=4 -RFX
+
+[credential]
+  helper = cache
 
 [diff]
   tool = diff-so-fancy --patch
   guitool = meld
+
+[github]
+  user = kuttor
+
+[help]
+  autocorrect = 1
+
+[interactive]
+  diffFilter = diff-so-fancy --patch
+
+[merge]
+  tool = meld
+
+[mergetool "Sublime Merge"]
+  cmd = meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
 
 [pager]
   difftool = true
@@ -44,44 +72,16 @@
 [push]
   followTags = true
   default = current
-	autoSetupRemote = true
+  autoSetupRemote = true
 
 [rerere]
   enabled = true
   eautoupdate = 1
 
-[advice]
-	pushNonFastForward = false
-	statusHints = false
-
-[apply]
-	whitespace = fix
-
-[core]
-	editor = nvim
-	whitespace = trailing-space,space-before-tab
-	excludesfile = /Users/akuttor/.gitignore
-	attributesfile = /Users/akuttor/.gitattributes
-	trustctime = false
-	untrackedCache = true
-	pager = diff-so-fancy | less --tabs=4 -RFX
-
-[help]
-	autocorrect = 1
-
-[color]
-  branch = auto
-  diff = auto
-  interactive = auto
-  pager = true
-  status = auto
-  ui = auto
+[user]
+  name = changeme
+  email = changeme
 
 [web]
   browser = safari
 
-[credential]
-	helper = cache
-
-[interactive]
-	diffFilter = diff-so-fancy --patch
