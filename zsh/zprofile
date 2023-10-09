@@ -84,7 +84,6 @@ alias wipe="echo '' > "
 alias zb="z -b"
 alias zf="z -I"
 alias zi="z -i"
-alias zi="zinit"
 alias zmv="noglob zmv -W"
 alias zz="z -c"
 

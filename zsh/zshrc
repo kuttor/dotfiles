@@ -34,7 +34,7 @@ zinit light-mode for                                 \
     OMZ::lib/spectrum.zsh                            \
     OMZ::lib/termsupport.zsh                         \
     aloxaf/fzf-tab                                   \
-    andrewferrier/fzf-z                              \
+#    andrewferrier/fzf-z                              \
     apachler/zsh-aws                                 \
     changyuheng/fz                                   \
     chitoku-k/fzf-zsh-completions                    \
