@@ -1,4 +1,4 @@
-#! /bin/env zsh
+#! /bin/zsh
 # -*- coding: utf-8 -*-
 # vim: set sts=2 sw=2 ts=2
 
@@ -33,9 +33,6 @@ zinit light-mode for                                 \
     OMZ::lib/key-bindings.zsh                        \
     OMZ::lib/spectrum.zsh                            \
     OMZ::lib/termsupport.zsh                         \
-    aloxaf/fzf-tab                                   \
-#    andrewferrier/fzf-z                              \
-    apachler/zsh-aws                                 \
     changyuheng/fz                                   \
     chitoku-k/fzf-zsh-completions                    \
     djui/alias-tips                                  \
@@ -56,7 +53,6 @@ zinit light-mode for                                 \
     sparsick/ansible-zsh                             \
     srijanshetty/zsh-pip-completion                  \
     unixorn/docker-helpers.zshplugin                 \
-    unixorn/fzf-zsh-plugin                           \
     vasyharan/zsh-brew-services                      \
     atinit"zicompinit; zicdreplay"                   \
         zdharma-continuum/fast-syntax-highlighting   \

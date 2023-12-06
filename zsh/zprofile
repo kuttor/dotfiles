@@ -82,11 +82,11 @@ alias vim="nvim"
 alias vimswap_clean='rm -rf $VIM_SWAP/*'
 alias vscode_settings='HOME/Library/Application\ Support/Code/User/settings.json'
 alias wipe="echo '' > "
-alias zb="z -b"
-alias zf="z -I"
-alias zi="z -i"
+#alias zb="z -b"
+#alias zf="z -I"
+#alias zi="z -i"
 alias zmv="noglob zmv -W"
-alias zz="z -c"
+#alias zz="z -c"
 
 autoload -U edit-command-line
 autoload -U parseopts
