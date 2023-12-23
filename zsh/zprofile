@@ -32,7 +32,7 @@ alias git-co="git-checkout"
 alias git-root='cd $(git rev-parse --show-cdup)'
 alias gp="git push --verbose "
 alias grep="rg"
-alias gs="git status --show-stash --verbose --verbose "
+alias gs="git status --show-stash --verbose --verbose; git stash list --pretty="%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs""
 alias gsu="git status -uno"
 alias h="history"
 alias how="howdoi --color --all"
