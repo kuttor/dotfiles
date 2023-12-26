@@ -8,6 +8,7 @@
   doit          = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
   info          = "status --short --branch"
   remotes       = "remote -v"
+  state         = "!git status --show-stash --verbose --verbose; git stash list --color=always --pretty='%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%C'"
   status-select = "!git-status-select"1
   tags          = "tag --list"
   tracked       = "!git ls-tree -r master --name-only"
