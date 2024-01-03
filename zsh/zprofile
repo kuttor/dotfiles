@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 # vim:set ft=zsh ts=2 sw=2 sts=0 foldmethod=marker:
 
-alias CD="cd"
-alias Z="z"
 alias ak1="tree -L 1 -Ccfhau --du --dirsfirst "
 alias ak2="tree -L 2 -Ccfhau --du --dirsfirst "
 alias ak3="tree -L 3 -Ccfhau --du --dirsfirst "
@@ -11,6 +9,8 @@ alias ak="tree -C"
 alias ansible-create="ansible-galaxy init  --offline --force"
 alias b="bat"
 alias c="clear"
+alias CD="cd"
+alias cd..="cd .."
 alias clip="termux-clipboard-set"
 alias cp="cp -ri"
 alias df="df -hi"
@@ -85,6 +85,7 @@ alias wipe="echo '' > "
 #alias zi="z -i"
 alias zmv="noglob zmv -W"
 #alias zz="z -c"
+alias Z="z"
 
 autoload -U edit-command-line
 autoload -U parseopts
