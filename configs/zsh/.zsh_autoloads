@@ -8,6 +8,7 @@
 # autoloading native ZSH modules
 # ================================================================
 autoload -U edit-command-line && zle -N edit-command-line
+
 autoload -U parseopts
 autoload -U select-word-style && zle -n select-word-style bash
 autoload -U url-quote-magic
@@ -23,6 +24,7 @@ autoload -Uz manydots-magic && manydots-magic
 autoload bashcompinit && bashcompinit
 autoload -Uz bracketed-paste-url-magic && zle -N bracketed-paste bracketed-paste-url-magic
 
+zle -N edit-command-line
 # zle -N expand-or-complete-with-dots
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end

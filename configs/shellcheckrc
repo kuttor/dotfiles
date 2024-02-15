@@ -1,0 +1,20 @@
+
+
+# Suggest ${VAR} in place of $VAR
+enable=require-variable-braces
+
+# shellcheck disable=code[,code...]
+statement_where_warning_should_be_disabled
+
+# shellcheck source-path=SCRIPTDIR
+here="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+. "$here/config.sh"
+. "$here/utils.sh"
+
+# shellcheck shell=sh
+echo foo &> bar
+
+# This directive applies to the entire script
+# shellcheck disable=2086
+true
+

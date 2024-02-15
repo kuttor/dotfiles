@@ -1,8 +1,7 @@
 #! /usr/bin/env sh
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=4 sw=4 sts=0
-# vim:set autoindent shiftround smarttab
-# Vim:set nu clipboard+=unnamedplus foldmethsofttabstop=0
+# vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
 
 # =============================================================================
 # Set Options
