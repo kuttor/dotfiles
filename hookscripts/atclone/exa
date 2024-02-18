@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+
+mv -vf completions/exa.zsh _exa
+mv -vf man/exa.1 ${ZINIT[MAN_DIR]}/man1
+mv -vf man/exa_colors.5 ${ZINIT[MAN_DIR]}/man5

@@ -14,71 +14,96 @@ export COLUMNS ROW
 export PASSWORD_STORE_GPG_OPTS="--no-throw-keyids --use-agent"
 
 # =============================================================================
-# ENV-VARS: Zinit based configurations
-
-ZINIT_HOME="/opt/zinit/zinit.git"
-
-# =============================================================================
-# ENV VARS: DOTFILES Repo
+# ENV-VARS: kuttor/DOTFILES Repo Related
 # =============================================================================
 
-# Set DOTFILES environment variables
-typeset -gAHx DOTFILES
-DOTFILES[HOME]="${HOME}/.dotfiles"
-DOTFILES[CONFIG]="${DOTFILES[HOME]}/config"
-DOTFILES[FUNCTIONS]="${DOTFILES[HOME]}/functions"
-DOTFILES[HOOKSCRIPTS]="${DOTFILES[HOME]}/hookscripts"
+declare -A DOTFILES
+DOTFILES[HOME_DIR]="${HOME}/.dotfiles"
+DOTFILES[CONFIG]="${DOTFILES[HOME_DIR]}/configs"
+DOTFILES[FUNCTIONS]="${DOTFILES[HOME_DIR]}/functions"
+DOTFILES[AUTOLOADS]="${DOTFILES[HOME_DIR]}/autoloads"
+DOTFILES[HOOKSCRIPTS]="${DOTFILES[HOME_DIR]}/hookscripts"
 DOTFILES[ATINIT]="${DOTFILES[HOOKSCRIPTS]}/atini"
 DOTFILES[ATPULL]="${DOTFILES[HOOKSCRIPTS]}/atpull"
 DOTFILES[ATCLONE]="${DOTFILES[HOOKSCRIPTS]}/atclone"
 DOTFILES[ATLOAD]="${DOTFILES[HOOKSCRIPTS]}/atload"
 
 # =============================================================================
+# ENV-VARS: Zshell Customization
+# =============================================================================c
+
+# CONFIG. CACHE, LOCAL
+export LOCAL="${HOME}/.local" && mkdir -p "${LOCAL}"
+export CONFIG="${LOCAL}/.config" && mkdir -p "${CONFIG}"
+export CACHE="${LOCAL}/.cache" && mkdir -p "${CACHE}"
+export LIB="${LOCAL}/lib" && mkdir -p "${LIB}"
+export BIN="${LOCAL}/bin" && mkdir -p "${BIN}"
+
+# Specify custom Zsh dotfilez directory
+export ZDOTDIR="${DOTFILES[HOME_DIR]}/configs/zsh" && mkdir -p "${ZDOTDIR}"
+
+# Specify help files directory
+export HELPDIR="/opt/homebrew/share/zsh/help" && mkdir -p "${HELPDIR}"
+
+# =============================================================================
 # ENV VARS: XDG
 # =============================================================================
 
 # Config
-export XDG_CONFIG_HOME="${DOTFILES[HOME]}/config"
-export XDG_CONFIG_DIRS=${XDG_CONFIG_HOME}:${XDG_CONFIG_DIRS}
+export XDG_CONFIG_HOME="${DOTFILES[HOME_DIR]}/config"
+export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIG}":"${XDG_CONFIG_DIRS}"
 
 # Data
-export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_DATA_HOME="${SHARE}"
 export XDG_DATA_DIRS=${XDG_DATA_HOME}:${XDG_DATA_DIRS}
 
 # Misc
-export XDG_LIB_HOME="${HOME}/.local/lib" && mkdir -p "${XDG_LIB_HOME}"
-export XDG_CACHE_HOME="${HOME}/.local/.cache" && mkdir -p "${XDG_CACHE_HOME}"
-export XDG_STATE_HOME="${HOME}/.local/state" && mkdir -p "${XDG_STATE_HOME}"
+export XDG_LIB_HOME="${LIB}" && mkdir -p "${XDG_LIB_HOME}"
+export XDG_CACHE_HOME="${CACHE}" && mkdir -p "${XDG_CACHE_HOME}"
+export XDG_STATE_HOME="${STATE}" && mkdir -p "${XDG_STATE_HOME}"
 export XDG_RUNTIME_DIR="/tmp/zsh-${UID}"
 # Bin"
-export XDG_BIN_HOME="${HOME}/.local/bin/"
+export XDG_BIN_HOME="${BIN}"
 export XDG_BIN_DIRS="${XDG_BIN_HOME}:${XDG_BIN_DIRS}}"
 
 # =============================================================================
-# ENV-VARS: Zshell Customization
-# =============================================================================c
+# ENV VARS: ZINIT Related
+# =============================================================================
 
-# Specify custom Zsh dotfilez directory
-ZDOTDIR="${DOTFILES[HOME]}/config/zsh" && mkdir -p "${ZDOTDIR}"
+# Set DOTFILES environment variables
 
-# Specify help files directory
-HELPDIR="/opt/homebrew/share/zsh/help"
+export ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+export ZPFX="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/polaris"
+
+declare -A ZINIT
+ZINIT[BIN_DIR]="${ZINIT_HOME}"
+ZINIT[HOME_DIR]="${ZINIT_HOME:-}"
+ZINIT[MAN_DIR]="${ZINIT_HOME}/man"
+ZINIT[PLUGIN_DIR]="${ZINIT_HOME}/plugins"
+ZINIT[SNIPPETS_DIR]="${ZINIT_HOME}/snippets"
+ZINIT[COMPLETIONS_DIR]="${ZINIT_HOME}/completions"
+ZINIT[ZCOMPDUMP_PATH]="${ZINIT_HOME}/zcompdump"
+ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]='1'
+ZINIT[COMPINIT_OPTS]=' -C'
+ZINIT[NO_ALIASES]='0'
 
 # =============================================================================
 # ENV-VARS: Config Relocations
 # =============================================================================
 
+typeset POWERLEVEL9K_CONFIG_FILE="${XDG_CONFIG_HOME}/.p10k"
+typeset EDITORCONFIGRC="${XDG_CONFIG_HOME}/.editorconfigrc"
 typeset RPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgreprc"
 typeset FZF_CONFIG_PATH="${XDG_CONFIG_HOME}/fzf.conf"
 typeset EXA_CONFIG_PATH="${XDG_CONFIG_HOME}/exa.conf"
-typeset INPUTRC="${XDG_CONFIG_HOME}/inputrc"
-typeset EDITORCONFIGRC="${XDG_CONFIG_HOME}/.editorconfigrc"
-typeset CARGO_HOME="${XDG_DATA_HOME}/cargo"
 typeset BAT_CONFIG_PATH="${XDG_CONFIG_HOME}/bat.conf"
 typeset TMUX_TEMPDIR="$XDG_RUNTIME_DIR/tmux"
+typeset INPUTRC="${XDG_CONFIG_HOME}/inputrc"
+typeset _ZO_DATA_DIR="${XDG_DATA_HOME}/"
+typeset CARGO_HOME="${XDG_DATA_HOME}/cargo"
 typeset WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 
-# =============================================================================
+ # =============================================================================
 # ENV-VARS: Homebrew
 # =============================================================================
 
@@ -95,13 +120,11 @@ export H="/opt/homebrew/share/info:${INFOPATH:-}"
 #  Paths
 # =============================================================================
 
-typeset -Ux path PATH
-typeset -Ux fpath FPATH
-typeset -Ux cdpath CDPATH
-typeset -Ux manpath MANPAT H
-declare -a pkg_config_path PKG_CONFIG_PATH
+export PATH="\
+/opt/homebrew/{bin,sbin}
+${BIN}:/Users/${USER}/Library/Python/3.7/bin:/Users/${USER}/Library/Python/3.8/bin:/Users/${USER}/Library/Python/3.9/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:$PATH"
 
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/Users/${USER}/.local/bin:/Users/${USER}/Library/Python/3.7/bin:/Users/${USER}/Library/Python/3.8/bin:/Users/${USER}/Library/Python/3.9/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
 
 # Set PKG_CONFIG_PATH
 export PKG_CONFIG_PATH=(
@@ -109,14 +132,11 @@ export PKG_CONFIG_PATH=(
   $PKG_CONFIG_PATH
 )
 
-# Load Custom Functions
-fpath=(
-  "/opt/homebrew/share/zsh/site-functions"
-  "${DOTFILES[FUNCTIONS]}"
-  "$fpath"
-)
-autoload -Uz "${fpath[@]}"
+AUTOLOADS="${DOTFILES[AUTOLOADS]}"
+FPATH=("${AUTOLOADS}" "$FPATH")
+autoload -Uz "${AUTOLOADS}/*(:t)"
 
+fpath=${HOMEBREW_PREFIX}/share/zsh-completions:$fpath
 #  Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
 export ZSH_AUTOSUGGEST_USE_ASYNC="1"
@@ -142,7 +162,7 @@ export PYTHONSTARTUP="$HOME/.python_startup.py"
 
 # Pager
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-export BAT_CONFIG_PATH="${DOTFILES[CONFIG_DIR]}/bat.conf"
+export BAT_PAGER="less"
 
 # Ruby
 export LDFLAGS="-L/usr/local/opt/ruby/lib"
@@ -150,6 +170,10 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include"
 
 # Homebrew
 export HOMEBREW_CACHE="${CACHE}/homebrew"
+
+# GIT
+GITSTATUS_LOG_LEVEL=DEBUG
+
 
 # FZF
 export FZF_BASE="${XDG_CONFIG_HOME}/fzf.conf"
@@ -169,23 +193,8 @@ export _ZL_ECHO="1"
 FZ_HISTORY_CD_CMD="_zlua"
 
 # History
-[[ -z "$HISTFILE" ]] && HISTFILE="${CACHE}.zsh_history"
+[[ -z "$HISTFILE" ]] && HISTFILE="${CACHE}/.zsh_history"
 export ZSH_PECO_HISTORY_OPTS="--layout=bottom-up --initial-filter=Fuzzy"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
-
-bindkey " " magic-space
-bindkey "^E" edit-command-line
-bindkey "^I" unambigandmenu
-# bindkey "^I" expand-or-complete-with-dots
-bindkey "^N" history-beginning-search-forward-end
-bindkey "^N" history-beginning-search-forward-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^X^L" insert-last-command-output
-bindkey "^[[1;2C" forward-word
-bindkey "^[[1;2D" backward-word
-bindkey "^[[F" end-of-line
-bindkey "^[[H" beginning-of-line
-bindkey -e

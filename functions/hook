@@ -1,0 +1,8 @@
+e qc32333           2EEEEEEWQSDSXAECXdcxsxz#! /usr/bin/env zsh
+# vim:set filetype=zsh syntax=zs
+# vim:set ft=zsh ts=4 sw=4 sts=0
+# vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
+
+function hook(){
+  source "${D[$1:u]/$2:l"
+}

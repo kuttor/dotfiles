@@ -3,13 +3,11 @@
 # Suggest ${VAR} in place of $VAR
 enable=require-variable-braces
 
+# AlloW arbitary filepaths, e.g. source $some_filename
+external-sources=true
+
 # shellcheck disable=code[,code...]
 statement_where_warning_should_be_disabled
-
-# shellcheck source-path=SCRIPTDIR
-here="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-. "$here/config.sh"
-. "$here/utils.sh"
 
 # shellcheck shell=sh
 echo foo &> bar
@@ -18,3 +16,8 @@ echo foo &> bar
 # shellcheck disable=2086
 true
 
+# Confirms files exist befofre sourcing
+here="$( cd "$( dirname "${x )" &> /dev/null && pwd )"
+. "$here/config.sh"
+. "$here/utils.sh"
+w
