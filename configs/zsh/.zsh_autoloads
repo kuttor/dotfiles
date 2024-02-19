@@ -6,6 +6,8 @@
 # ================================================================
 
 autoload -Uz vcs_info
+zle -N vcs_info
+
 autoload -U zargs
 autoload -U zcalc
 autoload -U zed
@@ -25,16 +27,9 @@ autoload -Uz colors && colors
 autoload -Uz history-search-end
 
 autoload -Uz is-at-least
-
-autoload -Uz compinit && compinit
+zle -N is-at-least
 
 autoload -Uz manydots-magic && manydots-magic
-
-autoload bashcompinit && bashcompinit
-
-zle -N expand-or-complete-with-dots
-zmodload zsh/complist
-LISTMAX=9999
 
 autoload -Uz bracketed-paste-url-magic
 zle -N bracketed-paste bracketed-paste-url-magic
@@ -44,9 +39,10 @@ zle -N history-beginning-search-forward-end history-search-end
 zle -N insert-last-command-output
 
 #autoload -U add-zsh-hook
-#add-zsh-hook precmd  omz_termsupport_precmd
-#add-zsh-hook preexec omz_termsupport_preexec
+zle -N add-zsh-hook zsh-hook
+
 autoload -Uz zmv
+zle -N zmv
 
 # =============================================================================
 # Keybindings

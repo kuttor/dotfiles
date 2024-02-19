@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+LBUFFER+="$(eval $history[$((HISTCMD-1))])"

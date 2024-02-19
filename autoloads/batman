@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+BAT=bat
+printc(){
+printf "$(sed "$_PRINTC_PATTERN" <<<"$1")" "${@:2}"
+}
+printc_init(){
+case "$1" in
+true)_PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI";;
+false)_PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN";;
+""){
+_PRINTC_PATTERN_ANSI=""
+_PRINTC_PATTERN_PLAIN=""
+local name
+local ansi
+while read -r name ansi;do
+if [[ -z $name && -z $ansi ]]||[[ ${name:0:1} == "#" ]];then
+continue
+fi
+ansi="$(sed 's/\\/\\\\/' <<<"$ansi")"
+_PRINTC_PATTERN_PLAIN="${_PRINTC_PATTERN_PLAIN}s/%{$name}//g;"
+_PRINTC_PATTERN_ANSI="${_PRINTC_PATTERN_ANSI}s/%{$name}/$ansi/g;"
+done
+if [ -t 1 ];then
+_PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI"
+else
+_PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN"
+fi
+}
+esac
+}
+print_warning(){
+printc "%{YELLOW}[%s warning]%{CLEAR}: $1%{CLEAR}\n" "$PROGRAM" "${@:2}" 1>&2
+}
+print_error(){
+printc "%{RED}[%s error]%{CLEAR}: $1%{CLEAR}\n" "$PROGRAM" "${@:2}" 1>&2
+}
+printc_init <<END
+	CLEAR	\x1B[0m
+	RED		\x1B[31m
+	GREEN	\x1B[32m
+	YELLOW	\x1B[33m
+	BLUE	\x1B[34m
+	MAGENTA	\x1B[35m
+	CYAN	\x1B[36m
+
+	DIM		\x1B[2m
+END
+PROGRAM="$(basename "$0" .sh)"
+SHIFTOPT_HOOKS=()
+setargs(){
+_ARGV=("$@")
+_ARGV_LAST="$((${#_ARGV[@]}-1))"
+_ARGV_INDEX=0
+}
+shiftopt(){
+[[ $_ARGV_INDEX -gt $_ARGV_LAST ]]&&return 1
+OPT="${_ARGV[$_ARGV_INDEX]}"
+unset OPT_VAL
+if [[ $OPT =~ ^--[a-zA-Z0-9_-]+=.* ]];then
+OPT_VAL="${OPT#*=}"
+OPT="${OPT%%=*}"
+fi
+((_ARGV_INDEX++))
+local hook
+for hook in "${SHIFTOPT_HOOKS[@]}";do
+if "$hook";then
+shiftopt
+return $?
+fi
+done
+return 0
+}
+shiftval(){
+if [[ -n ${OPT_VAL+x} ]];then
+return 0
+fi
+OPT_VAL="${_ARGV[$_ARGV_INDEX]}"
+((_ARGV_INDEX++))
+if [[ $OPT_VAL =~ -.* ]];then
+printc "%{RED}%s: '%s' requires a value%{CLEAR}\n" "$PROGRAM" "$ARG"
+exit 1
+fi
+}
+setargs "$@"
+hook_color(){
+SHIFTOPT_HOOKS+=("__shiftopt_hook__color")
+__shiftopt_hook__color(){
+case "$OPT" in
+--no-color)OPT_COLOR=false
+printc_init "$OPT_COLOR"
+;;
+--color){
+case "$OPT_VAL" in
+auto):;;
+always|true)OPT_COLOR=true
+printc_init "$OPT_COLOR"
+;;
+never|false)OPT_COLOR=false
+printc_init "$OPT_COLOR"
+esac
+};;
+*)return 1
+esac
+}
+if [[ -z $OPT_COLOR ]];then
+if [[ -t 1 ]];then
+OPT_COLOR=true
+else
+OPT_COLOR=false
+fi
+printc_init "$OPT_COLOR"
+fi
+}
+hook_pager(){
+SHIFTOPT_HOOKS+=("__shiftopt_hook__pager")
+__shiftopt_hook__pager(){
+case "$OPT" in
+--no-pager)shiftval
+SCRIPT_PAGER_CMD=''
+;;
+--paging)shiftval
+{
+case "$OPT_VAL" in
+auto):;;
+never)SCRIPT_PAGER_CMD='';;
+always):
+esac
+}
+;;
+--pager){
+shiftval
+SCRIPT_PAGER_CMD=($OPT_VAL)
+PAGER_ARGS=()
+};;
+*)return 1
+esac
+}
+}
+hook_color
+MAN_ARGS=()
+BAT_ARGS=()
+while shiftopt;do MAN_ARGS+=("$OPT");done
+if "$OPT_COLOR";then
+BAT_ARGS="--color=always --decorations=always"
+else
+BAT_ARGS="--color=never --decorations=never"
+fi
+export MANPAGER='sh -c "col -bx | '"$(printf "%q" "$BAT")"' --language=man --style=grid '"${BAT_ARGS[@]}"'"'
+export MANROFFOPT='-c'
+export BAT_PAGER="$PAGER"
+command man "${MAN_ARGS[@]}"
+exit $?

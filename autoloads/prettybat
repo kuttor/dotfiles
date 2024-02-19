@@ -1,0 +1,252 @@
+#!/usr/bin/env bash
+BAT=bat
+PROGRAM="$(basename "$0" .sh)"
+SHIFTOPT_HOOKS=()
+setargs(){
+_ARGV=("$@")
+_ARGV_LAST="$((${#_ARGV[@]}-1))"
+_ARGV_INDEX=0
+}
+shiftopt(){
+[[ $_ARGV_INDEX -gt $_ARGV_LAST ]]&&return 1
+OPT="${_ARGV[$_ARGV_INDEX]}"
+unset OPT_VAL
+if [[ $OPT =~ ^--[a-zA-Z0-9_-]+=.* ]];then
+OPT_VAL="${OPT#*=}"
+OPT="${OPT%%=*}"
+fi
+((_ARGV_INDEX++))
+local hook
+for hook in "${SHIFTOPT_HOOKS[@]}";do
+if "$hook";then
+shiftopt
+return $?
+fi
+done
+return 0
+}
+shiftval(){
+if [[ -n ${OPT_VAL+x} ]];then
+return 0
+fi
+OPT_VAL="${_ARGV[$_ARGV_INDEX]}"
+((_ARGV_INDEX++))
+if [[ $OPT_VAL =~ -.* ]];then
+printc "%{RED}%s: '%s' requires a value%{CLEAR}\n" "$PROGRAM" "$ARG"
+exit 1
+fi
+}
+setargs "$@"
+tolower(){
+tr "[[:upper:]]" "[[:lower:]]" <<<"$1"
+}
+toupper(){
+tr "[[:lower:]]" "[[:upper:]]" <<<"$1"
+}
+printc(){
+printf "$(sed "$_PRINTC_PATTERN" <<<"$1")" "${@:2}"
+}
+printc_init(){
+case "$1" in
+true)_PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI";;
+false)_PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN";;
+""){
+_PRINTC_PATTERN_ANSI=""
+_PRINTC_PATTERN_PLAIN=""
+local name
+local ansi
+while read -r name ansi;do
+if [[ -z $name && -z $ansi ]]||[[ ${name:0:1} == "#" ]];then
+continue
+fi
+ansi="$(sed 's/\\/\\\\/' <<<"$ansi")"
+_PRINTC_PATTERN_PLAIN="${_PRINTC_PATTERN_PLAIN}s/%{$name}//g;"
+_PRINTC_PATTERN_ANSI="${_PRINTC_PATTERN_ANSI}s/%{$name}/$ansi/g;"
+done
+if [ -t 1 ];then
+_PRINTC_PATTERN="$_PRINTC_PATTERN_ANSI"
+else
+_PRINTC_PATTERN="$_PRINTC_PATTERN_PLAIN"
+fi
+}
+esac
+}
+print_warning(){
+printc "%{YELLOW}[%s warning]%{CLEAR}: $1%{CLEAR}\n" "$PROGRAM" "${@:2}" 1>&2
+}
+print_error(){
+printc "%{RED}[%s error]%{CLEAR}: $1%{CLEAR}\n" "$PROGRAM" "${@:2}" 1>&2
+}
+printc_init <<END
+	CLEAR	\x1B[0m
+	RED		\x1B[31m
+	GREEN	\x1B[32m
+	YELLOW	\x1B[33m
+	BLUE	\x1B[34m
+	MAGENTA	\x1B[35m
+	CYAN	\x1B[36m
+
+	DIM		\x1B[2m
+END
+FORMATTERS=("prettier" "rustfmt" "shfmt" "clangformat")
+formatter_prettier_supports(){
+case "$1" in
+.js|.jsx|\
+.ts|.tsx|\
+.css|.scss|.sass|\
+.html|\
+.json|\
+.md|\
+.yml)return 0
+esac
+return 1
+}
+formatter_prettier_process(){
+prettier --stdin --stdin-filepath "$1" 2>/dev/null
+return $?
+}
+formatter_clangformat_supports(){
+case "$1" in
+.c|.cpp|.cxx|\
+.h|.hpp|\
+.m)return 0
+esac
+return 1
+}
+formatter_clangformat_process(){
+clang-format "$1" 2>/dev/null
+return $?
+}
+formatter_rustfmt_supports(){
+[[ $1 == ".rs" ]]
+return $?
+}
+formatter_rustfmt_process(){
+rustfmt
+return $?
+}
+formatter_shfmt_supports(){
+[[ $1 == ".sh" ]]
+return $?
+}
+formatter_shfmt_process(){
+shfmt
+return $?
+}
+map_language_to_extension(){
+local ext=".txt"
+case "$1" in
+sh|bash)ext=".sh";;
+js|es6|es)ext=".js";;
+jsx)ext=".jsx";;
+ts)ext=".ts";;
+tsx)ext=".tsx";;
+css)ext=".css";;
+scss)ext=".scss";;
+sass)ext=".sass";;
+html|htm|shtml|xhtml)ext=".html";;
+json)ext=".json";;
+md|mdown|markdown)ext=".md";;
+yaml|yml)ext=".yml";;
+rust|rs)ext=".rs"
+esac
+echo "$ext"
+}
+map_extension_to_formatter(){
+local formatter
+for formatter in "${FORMATTERS[@]}";do
+if "formatter_${formatter}_supports" "$1";then
+echo "$formatter"
+return 0
+fi
+done
+echo "none"
+return 0
+}
+extname(){
+local file="$1"
+echo ".${file##*.}"
+}
+print_file(){
+if [[ ${#BAT_ARGS[@]} -eq 0 ]];then
+"$BAT" "$@"
+return $?
+else
+"$BAT" "${BAT_ARGS[@]}" "$@"
+return $?
+fi
+}
+process_file(){
+local file="$1"
+local ext="$2"
+local fext="$ext"
+local lang="${ext:1}"
+if [[ -n $OPT_LANGUAGE ]];then
+lang="$OPT_LANGUAGE"
+fext="$(map_language_to_extension "$lang")"
+fi
+local formatter="$(map_extension_to_formatter "$fext")"
+echo "FORMATTER >>> $formatter"
+if [[ $formatter == "none" ]];then
+if [[ -z $OPT_LANGUAGE ]];then
+print_file "$file"
+else
+print_file --language="$OPT_LANGUAGE" "$file"
+fi
+return $?
+fi
+local status
+local data_raw
+local data_formatted
+if [[ $file == "-" ]];then
+data_raw="$(cat -)"
+data_formatted="$("formatter_${formatter}_process" "$file" 2>/dev/null <<<"$data_raw")"
+if [[ $? -ne 0 ]];then
+print_warning "'STDIN': Unable to format with '%s'" "$formatter"
+print_file --language="$lang" - <<<"$data_raw"
+return 1
+fi
+else
+data_formatted="$("formatter_${formatter}_process" "$file" <"$file")"
+if [[ $? -ne 0 ]];then
+print_warning "'%s': Unable to format with '%s'" "$file" "$formatter"
+print_file --language="$lang" "$file"
+return 1
+fi
+fi
+print_file --language="$lang" - <<<"$data_formatted"
+return $?
+}
+BAT_ARGS=()
+OPT_LANGUAGE=
+FILES=()
+while shiftopt;do
+case "$OPT" in
+\
+-l)shiftval
+OPT_LANGUAGE="$OPT_VAL"
+;;
+-l*)OPT_LANGUAGE="${OPT:2}";;
+--language)shiftval
+OPT_LANGUAGE="$OPT_VAL"
+;;
+\
+-*){
+BAT_ARGS+=("$OPT=$OPT_VAL")
+};;
+\
+*){
+FILES+=("$OPT")
+}
+esac
+done
+if [[ ${#FILES[@]} -eq 0 ]];then
+FILES="-"
+fi
+FAIL=0
+for file in "${FILES[@]}";do
+if ! process_file "$file" "$(tolower "$(extname "$file")")";then
+FAIL=1
+fi
+done
+exit $EXIT

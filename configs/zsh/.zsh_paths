@@ -17,7 +17,7 @@ typeset -gxTU NODE_PATH nodepath
 
 # Set the list of directories that zsh searches for commands.
 path=(
-  ${HOME}f/.local/bin
+  $HOME/.local/bin
   /usr/local/bin
   /usr/{sbin,bin}
   /{sbin,bin}
@@ -25,19 +25,24 @@ path=(
 )
 path=($path)
 
-# Load Custom Functions
+# -- Functions --
 fpath=(
   /opt/homebrew/share/zsh/site-functions
+  /opt/homebrew/share/zsh/zsh-functions
   /opt/homebrew/share/zsh/functions
-  $HOME/.dotfiles/functions
-  $HOME/.dotfiles/autoloads
   $fpath
 )
 fpath=($^fpath(N-/))
-autoload -Uz "${fpath[@]}/*(:t))"
+fpath=( $HOME/.dotfiles/autoloads "${fpath[@]}" )
+autoload -Uz $fpath[1]/*(.:t)
 
-fpath=( $fpath);
-autoload -U $fpath[1]/*(.:t)
+
+# -- pkg config --
+export PKG_CONFIG_PATH=(
+  /opt/homebrew/lib/pkgconfig
+  $PKG_CONFIG_PATH
+)
+
 
 # Set the list of directories that cd searches for directories.
 setopt auto_cd

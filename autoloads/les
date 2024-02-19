@@ -1,0 +1,7 @@
+#!/bin/usr/env sh
+
+# Les, it's like less -- but in technicolor
+ftype=$(pygmentize -N "$1")
+pygmentize -l "$ftype"\
+-f terminal "$1" |\
+less -R

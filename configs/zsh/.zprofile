@@ -6,7 +6,7 @@
 
 # =============================================================================
 # ENV VARS: Terminal Setup
-# =============================================================================
+# ============================================================================\=
 
 export COLUMNS ROW
 
@@ -14,60 +14,75 @@ export COLUMNS ROW
 export PASSWORD_STORE_GPG_OPTS="--no-throw-keyids --use-agent"
 
 # =============================================================================
-# ENV-VARS: kuttor/DOTFILES Repo Related
+# VARS | Dotfiles
 # =============================================================================
 
 declare -A DOTFILES
 DOTFILES[HOME_DIR]="${HOME}/.dotfiles"
-DOTFILES[CONFIG]="${DOTFILES[HOME_DIR]}/configs"
+DOTFILES[CONFIG]="${HOME}/.dotfiles/configs"
+DOTFILES[HOOKS]="${DOTFILES[HOME_DIR]}/hooks"
 DOTFILES[FUNCTIONS]="${DOTFILES[HOME_DIR]}/functions"
 DOTFILES[AUTOLOADS]="${DOTFILES[HOME_DIR]}/autoloads"
-DOTFILES[HOOKSCRIPTS]="${DOTFILES[HOME_DIR]}/hookscripts"
-DOTFILES[ATINIT]="${DOTFILES[HOOKSCRIPTS]}/atini"
-DOTFILES[ATPULL]="${DOTFILES[HOOKSCRIPTS]}/atpull"
-DOTFILES[ATCLONE]="${DOTFILES[HOOKSCRIPTS]}/atclone"
-DOTFILES[ATLOAD]="${DOTFILES[HOOKSCRIPTS]}/atload"
 
 # =============================================================================
-# ENV-VARS: Zshell Customization
-# =============================================================================c
+# VARS | XDG Base Directory Specification
+# =============================================================================
+# https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 
-# CONFIG. CACHE, LOCAL
+# -- Conf --
+export XDG_CONFIG_HOME="{$XDG_CONFIG_HOME}:-${HOME}/config"
+export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIGS}":"${XDG_CONFIG_DIRS}"
+
+# -- Data -- Stores user-specific package
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_DATA_DIRS="${XDG_DATA_HOME}":"${XDG_DATA_DIRS}"
+
+# -- Lib, Cache, State, Runtime --
+export XDG_LIB_HOME="${HOME}/.local/libs" && mkdir -p "${XDG_LIB_HOME}"
+export XDG_CACHE_HOME="${HOME}/.local" && mkdir -p "${XDG_CACHE_HOME}"
+export XDG_STATE_HOME="${HOME}/.local" && mkdir -p "${XDG_STATE_HOME}"
+export XDG_RUNTIME_DIR="${HOME}/tmp/.local zsh-${UID}"
+
+# -- Bin --
+export XDG_BIN_HOME="${BIN}"
+export XDG_BIN_DIRS="${XDG_BIN_HOME}:${XDG_BIN_DIRS}}"
+
+# =============================================================================
+# VARS | Misc
+# =============================================================================
+
+# -- Commons Shorteners -- CONFIG. CACHE, LOCAL
 export LOCAL="${HOME}/.local" && mkdir -p "${LOCAL}"
 export CONFIG="${LOCAL}/.config" && mkdir -p "${CONFIG}"
 export CACHE="${LOCAL}/.cache" && mkdir -p "${CACHE}"
 export LIB="${LOCAL}/lib" && mkdir -p "${LIB}"
 export BIN="${LOCAL}/bin" && mkdir -p "${BIN}"
 
+
+# ==V===========================================================================
+# VARS | Homebrew
+# =============================================================================
+
+export HOMEBREW_PREFIX="/opt/homebrew"
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+export HOMEBREW_REPOSITORY="/opt/homebrew"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}"
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:"
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
+
+# ==V===========================================================================
+# VARS | Zsh
+# =============================================================================
+
 # Specify custom Zsh dotfilez directory
 export ZDOTDIR="${DOTFILES[HOME_DIR]}/configs/zsh" && mkdir -p "${ZDOTDIR}"
 
 # Specify help files directory
-export HELPDIR="/opt/homebrew/share/zsh/help" && mkdir -p "${HELPDIR}"
+export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help" && mkdir -p "${HELPDIR}"
+
 
 # =============================================================================
-# ENV VARS: XDG
-# =============================================================================
-
-# Config
-export XDG_CONFIG_HOME="${DOTFILES[HOME_DIR]}/config"
-export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIG}":"${XDG_CONFIG_DIRS}"
-
-# Data
-export XDG_DATA_HOME="${SHARE}"
-export XDG_DATA_DIRS=${XDG_DATA_HOME}:${XDG_DATA_DIRS}
-
-# Misc
-export XDG_LIB_HOME="${LIB}" && mkdir -p "${XDG_LIB_HOME}"
-export XDG_CACHE_HOME="${CACHE}" && mkdir -p "${XDG_CACHE_HOME}"
-export XDG_STATE_HOME="${STATE}" && mkdir -p "${XDG_STATE_HOME}"
-export XDG_RUNTIME_DIR="/tmp/zsh-${UID}"
-# Bin"
-export XDG_BIN_HOME="${BIN}"
-export XDG_BIN_DIRS="${XDG_BIN_HOME}:${XDG_BIN_DIRS}}"
-
-# =============================================================================
-# ENV VARS: ZINIT Related
+# VARS | Zinit
 # =============================================================================
 
 # Set DOTFILES environment variables
@@ -91,7 +106,7 @@ ZINIT[NO_ALIASES]='0'
 # ENV-VARS: Config Relocations
 # =============================================================================
 
-typeset POWERLEVEL9K_CONFIG_FILE="${XDG_CONFIG_HOME}/.p10k"
+typeset POWERLEVEL9K_CONFIG_FILE="$DOTFILES[CONFIG]/.p10k"
 typeset EDITORCONFIGRC="${XDG_CONFIG_HOME}/.editorconfigrc"
 typeset RPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgreprc"
 typeset FZF_CONFIG_PATH="${XDG_CONFIG_HOME}/fzf.conf"
@@ -103,46 +118,21 @@ typeset _ZO_DATA_DIR="${XDG_DATA_HOME}/"
 typeset CARGO_HOME="${XDG_DATA_HOME}/cargo"
 typeset WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 
- # =============================================================================
-# ENV-VARS: Homebrew
-# =============================================================================
-
-export HOMEBREW_PREFIX="/opt/homebrew"
-export LESSHISTFILE="${XDG_CONFIG_HOME}/less/history"
-export LESSKEY="${XDG_CONFIG_HOME}/less/keys"
-export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
-export HOMEBREW_REPOSITORY="/opt/homebrew"
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}"
-export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:"
-export H="/opt/homebrew/share/info:${INFOPATH:-}"
-
 # =============================================================================
 #  Paths
 # =============================================================================
-
-export PATH="\
-/opt/homebrew/{bin,sbin}
-${BIN}:/Users/${USER}/Library/Python/3.7/bin:/Users/${USER}/Library/Python/3.8/bin:/Users/${USER}/Library/Python/3.9/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:$PATH"
-
-export PATH="/opt/homebrew/bin:$PATH"
 
 # Set PKG_CONFIG_PATH
 export PKG_CONFIG_PATH=(
   /opt/homebrew/lib/pkgconfig
   $PKG_CONFIG_PATH
 )
-
-AUTOLOADS="${DOTFILES[AUTOLOADS]}"
-FPATH=("${AUTOLOADS}" "$FPATH")
-autoload -Uz "${AUTOLOADS}/*(:t)"
-
-fpath=${HOMEBREW_PREFIX}/share/zsh-completions:$fpath
 #  Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
 export ZSH_AUTOSUGGEST_USE_ASYNC="1"
 export ZSH_AUTOSUGGEST_MANUAL_REBIND="1"
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="1"
-export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion pre_)
 
 # Terminal
 export REPORTTIME="2"

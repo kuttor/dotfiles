@@ -1,6 +1,0 @@
-/bin/zsh
-
-alias ls='exa --color=auto -GF --icons --group-directories-first'
-alias ll='exa --color=auto -1laF --git --icons --group-directories-first --ignore-glob=\".DS_Store*|~*\"'
-alias lt='ll -T -L=2'
-

@@ -1,0 +1,2 @@
+  zinit default-ice --clear
+  zinit default-ice ${^@}
