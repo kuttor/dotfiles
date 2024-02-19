@@ -1,30 +1,34 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.dotfiles/configs/zsh/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 #!/usr/bin/env zsh
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=4 sw=4 sts=0
 # vim:set autoindent shiftround smarttab
 # vim:set num clipboard+=unnamedplus foldmethsofttabstop=0'
-# shellchecck source=null
-chmod -R 755 ~/.local
+
+# =============================================================================
+# PreConfig
+# =============================================================================
+
+# Instant Prompt
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Deprecating zshenv in favor for zprofile
+[[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
+
+# Zinit Autoinstaller
 if [[ ! -f "${ZINIT_HOME}/zinit.zsh" ]]; then
   print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
   mkdir -p "${ZINIT_HOME}" && chmod g-rwX "${ZINIT_HOME}"
   git clone https://github.com/zdharma-continuum/zinit.git ${ZINIT_HOME}t
 fi
 
+function hook {
+  source $HOME/.dotfiles/hooks/$1
+}
+
 # shellcheck source=/dev/null-
 source "${ZINIT_HOME}/zinit.zsh"
-
-# shellcheck source=/dev/null
-function hook {\
-  source "${ZINIT_HOME}/zinit.zsh"
-}
 
 # =============================================================================
 # THEME: powerlevel10k
@@ -40,18 +44,27 @@ zinit for \
 # ZSH Extensions
 # =============================================================================
 
-#depth"1"
-
 zinit light-mode for \
+  zdharma-continuum/zinit-annex-bin-gem-node \
   zdharma-continuum/zinit-annex-default-ice \
   zdharma-continuum/zinit-annex-patch-dl \
   zdharma-continuum/zinit-annex-readurl \
-  zdharma-continuum/zinit-annex-rust \
   zdharma-continuum/zinit-annex-submods \
-  zinit-zsh/z-a-man
+  zdharma-continuum/zinit-annex-rust \
+  zdharma-continuum/zinit-annex-man
 
 # =============================================================================
-# PLUGINS: Oh My Zsh
+# PKG-TYPE | ZSH Packages
+# =============================================================================
+
+zinit pack"bgn-binary+keys" for fzf
+zinit pack"bgn" for fzy
+zinit pack for ls_colors
+zinit pack for @github-issues
+zinit wait pack atload=+"zicompinit; zicdreplay" for system-completions
+
+# =============================================================================
+# PKG-TYPE | Oh My Zsh
 # =============================================================================
 
 zinit default-ice --clear
@@ -64,7 +77,6 @@ zinit snippet OMZ::lib/directories.zsh
 zinit snippet OMZ::lib/functions.zsh
 zinit snippet OMZ::lib/git.zsh
 zinit snippet OMZ::lib/history.zsh
-zinit snippet OMZ::lib/key-bindings.zsh
 zinit snippet OMZ::lib/misc.zsh
 zinit snippet OMZ::lib/termsupport.zsh
 zinit snippet OMZ::lib/theme-and-appearance.zsh
@@ -104,27 +116,33 @@ OMZ::plugins/fd/_fd \
 OMZ::plugins/ag/_ag \
 OMZ::plugins/pip/_pip
 
-# -- Improve Git  -
-zinit default-ice -c wait"1" as"completion" lucid-
+# =============================================================================
+# PKG-TYPE |  GIT Enhancers
+# =============================================================================
+zinit default-ice -c wait"1" light-mode lucid-
+
+# Zinc ~ Zinc is a Zsh INstallation Curator
 zinit for \
 nocompletions \
+as"completion" \
 compile"{zinc_functions/*,segments/*,zinc.zsh}" \
 atload"!prompt_zinc_setup; prompt_zinc_precmd" \
 robobenklein/zinc
 
-# ZINC git info is already async, but if you want it
+# Forgit ~ A utility that makes git status more readable
 zinit for \
-atload"zinc_optional_depenency_loaded" \
-romkatv/gitstatus
-
-zinit for voronkovich/gitignore.plugin.zsh
+  atload"zinc_optional_depenency_loaded" \
+romkatv/gitstatus \
+voronkovich/gitignore.plugin.zsh \
+wfxr/forgit
 
 # =============================================================================
-# PLUGINS: Bins
+# PKG-TYPE: Binaries
 # =============================================================================
+zinit default-ice -c wait"1" as"command" lucid
 
 # direnv ~ Unclutter your .zshrc
-zinit as"command" for \
+zinit for \
 mv"direnv* -> direnv" \
 atclone"./direnv hook zsh > zhook.zsh" \
 atpull'%atclone' \
@@ -134,7 +152,6 @@ src="zhook.zsh" \
 
 # exa ~ A modern replacement for ls
 zinit for \
-as"command" \
 mv"bin/exa* -> exa" \
 atpull"%a tclone" \
 atclone"hook c.exa" \
@@ -143,7 +160,6 @@ atload"hook l.exa" \
 
 # bat ~ A cat clone with wings
 zinit for \
-as"command" \
 mv"bat-*/bat -> bat" \
 atpull"%atclone" \
 atclone"hook c.bat" \
@@ -152,7 +168,6 @@ atload"hook l.bat" \
 
 # delta ~ a viewer for git and diff output
 zinit for \
-as"command" \
 mv"delta-*/delta -> delta" \
 dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
 atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
@@ -165,18 +180,7 @@ mv"fd-*/fd -> fd" \
 atpull"%atclone" \
 atclone"hook c.fd.zsh" \
 atload"hook l.fd.zsh" \
-as"command" \
 @sharkdp/fd
-
-# FZF ~ A command-line fuzzy finder
-zinit for \
-as"command" \
-dl"https://github.com/junegunn/fzf/raw/HEAD/shell/key-bindings.zsh -> key-bindings.zsh" \
-dl"https://github.com/junegunn/fzf/raw/HEAD/shell/completion.zsh -> _fzf" \
-dl"https://github.com/junegunn/fzf/raw/HEAD/man/man1/fzf.1 -> ${ZINIT[MAN_DIR]}/man1/fzf.1" \
-dl"https://github.com/junegunn/fzf/raw/HEAD/man/man1/fzf-tmux.1 -> ${ZINIT[MAN_DIR]}/man1/fzf-tmux.1" \
-src "key-bindings.zsh" \
-@junegunn/fzf
 
 # grab vivid binary (for all the colors)
 # shellcheck disable=SC2016
@@ -196,6 +200,10 @@ atclone"hook c.zoxide" \
 atload"hook l.zoxide" \
 @ajeetdsouza/zoxide
 
+# diff-so-fancy
+zinit ice wait"2" lucid as"command" pick"bin/git-dsf"
+zinit load zdharma-continuum/zsh-diff-so-fancy
+
 # =============================================================================
 # PKG-TYPE | Shell Enhancers
 # ============================================================================
@@ -207,7 +215,6 @@ ianthehenry/zsh-autoquoter \
 kutsan/zsh-system-clipboard \
 mattmc3/zsh-safe-rm
 
-
 # =============================================================================
 # Completions
 # =============================================================================
@@ -217,9 +224,6 @@ zinit default-ice -c wait"0" lucid light-mode
 zinit for \
 id-as"zsh-fancy-completions" \
 z-shell/zsh-fancy-completions
-
-
-
 
  #     changyuheng/fz \
       #     chitoku-k/fzf-zsh-completions \
@@ -252,8 +256,8 @@ zinit for \
   atload'hook l.fastsyntaxhighlighting.zsh' \
     @zdharma-continuum/fast-syntax-highlighting \
   id-as'zsh-autosuggestions' \
-  atinit'hook i.zsh-autosuggestions.zsh' \
-  atload'hook l.zsh-autosuggestions.zsh' \
+  atinit'hook i.autosuggests.zsh' \
+  atload'hook l.autosuggests.zsh' \
     @zsh-users/zsh-autosuggestions \
   blockf \
   atpull'hook p.completions.zsh' \
