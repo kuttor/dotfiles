@@ -1,5 +1,133 @@
-#! /usr/bin/env zsh
+alias ls='exa --color=auto -GF --icons --group-directories-first'
+alias ll='exa --color=auto -1laF --git --icons --group-directories-first --ignore-glob=\".DS_Store*|~*\"'
+alias lt='ll -T -L=2'
+
+response
+  let id = get(a:response, 'id', v:null)
+  if !has_key(a:agent.requests, id)
+    return
+  endif
+  let request = remove(a:agent.requests, id)
+  if request.status ==# 'canceled'
+    return
+  endif
+  let request.waiting = {}
+  let resolve = remove(request, 'resolve')
+  let reject = remove(request, 'reject')
+  if has_key(response, 'result')
+    let request.status = 'success'
+    let request.result = response.result
+    for Cb in resolve
+      let request.waiting[timer_start(0, function('s:Callback', [request, 'result', Cb]))] = 1
+    endfor
+  else
+    let request.status = 'error'
+    let request.error = response.error
+    for Cb in reject
+      let request.waiting[timer_start(0, function('s:Callback', [request, 'error', Cb]))] = 1
+    endfor
+  endif
+endfunction
+
+function! s:OnErr(agent, line, ...) abort
+  call copilot#logger#Debug('<-! ' . a:line)
+endfunction
+
+function! s:OnExit(agent, code, ...) abort
+  let a:agent.exit_status = a:code
+  if has_key(a:agent, 'job')
+    call remove(a:agent, 'job')
+  endif
+  if has_key(a:agent, 'client_id')
+    call remove(a:agent, 'client_id')
+  endif
+  let code = a:code < 0 || a:code > 255 ? 256 : a:code
+  for id in sort(keys(a:agent.requests), { a, b -> +a > +b })
+    call s:RejectRequest(remove(a:agent.requests, id), {'code': code, 'message': 'Agent exited', 'data': {'status': a:code}})
+  endfor
+  call timer_start(0, { _ -> get(s:instances, a:agent.id) is# a:agent ? remove(s:instances, a:agent.id) : {} })
+  call copilot#logger#Info('agent exited with status ' . a:code)
+endfunction
+
+function! copilot#agent#LspInit(agent_id, initialize_result) abort
+  if !has_key(s:instances, a:agent_id)
+    return
+  endif
+  let instance = s:instances[a:agent_id]
+  call timer_start(0, { _ -> s:GetCapabilitiesResult(a:initialize_result, instance)})
+endfunction
+
+function! copilot#agent#LspExit(agent_id, code, signal) abort
+  if !has_key(s:instances, a:agent_id)
+    return
+  endif
+  let instance = remove(s:instances, a:agent_id)
+  call s:OnExit(instance, a:code)
+endfunction
+
+function! copilot#agent#LspResponse(agent_id, opts, ...) abort
+  if !has_key(s:instances, a:agent_id)
+    return
+  endif
+  call s:OnResponse(s:instances[a:agent_id], a:opts)
+endfunction
+
+function! s:LspRequest(method, params, ...) dict abort
+  let id = v:lua.require'_copilot'.lsp_request(self.id, a:method, a:params)
+  if id isnot# v:null
+    return call('s:SetUpRequest', [self, id, a:method, a:params] + a:000)
+  endif
+  if has_key(self, 'client_id')
+    call copilot#agent#LspExit(self.client_id, -1, -1)
+  endif
+  throw 'copilot#agent: LSP client not available'
+endfunction
+
+function! s:LspClose() dict abort
+  if !has_key(self, 'client_id')
+    return
+  endif
+  return luaeval('vim.lsp.get_client_by_id(_A).stop()', self.client_id)
+endfunction
+
+function! s:LspNotify(method, params) dict abort
+  return v:lua.require'_copilot'.rpc_notify(self.id, a:method, a:params)
+endfunction
+
+function! copilot#agent#LspHandle(agent_id, request) abort
+  if !has_key(s:instances, a:agent_id)
+    return
+  endif
+  return s:OnMessage(s:instances[a:agent_id], a:request)
+endfunction
+
+function! s:GetNodeVersion(command) abort
+  let out = []
+  let err = []
+  let status = copilot#job#Stream(a:command + ['--version'], function('add', [out]), function('add', [err]))
+  let string = matchstr(join(out, ''), '^v\zs\d\+\.[^[:space:]]*')
+  if status != 0
+    let string = ''
+  endif
+  let major = str2nr(string)
+  let minor = str2nr(matchstr(string, '\.\zs\d\+'))
+  return {'status': status, 'string': string, 'major': major, 'minor': minor}
+endfunction
+
+function! s:Command() abort
+  if !has('nvim-0.6') && v:version < 900
+    return [v:null, '', 'Vim version too old']
+  endif
+  let node = get(g:, 'copilot_node_command', '')
+  if empty(node)
+    let node = ['node']
+  elseif type(node) == type('')
+    let node = [expand(node)]
+  endif
+  if !executable(get(node, 0, ''))
+    ifin/zsh
 
 alias ls='exa --color=auto -GF --icons --group-directories-first'
 alias ll='exa --color=auto -1laF --git --icons --group-directories-first --ignore-glob=\".DS_Store*|~*\"'
 alias lt='ll -T -L=2'
+
