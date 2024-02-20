@@ -28,7 +28,7 @@ setopt GLOB_STAR_SHORT        # "**/*" = "**"  and ***/* = ***.
 setopt KSH_TYPESET            # word splitting does not take place
 setopt PATH_DIRS              # the directory
 setopt INC_APPEND_HISTORY     # write to the history file immediately.
-setopt INTERACTIVE_COMMENTS   # allow comments in readlin
+setopt INTERACTIVE_COMMENTS   # allow comments in readline
 setopt LIST_ROWS_FIRST        # rows are way better
 setopt LIST_TYPES             # append type chars to files
 setopt MULTIOS                # write to multiple descriptors

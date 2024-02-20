@@ -19,7 +19,7 @@ export PASSWORD_STORE_GPG_OPTS="--no-throw-keyids --use-agent"
 
 declare -A DOTFILES
 DOTFILES[HOME_DIR]="${HOME}/.dotfiles"
-DOTFILES[CONFIG]="${HOME}/.dotfiles/configs"
+DOTFILES[CONFIGS]="${HOME}/.dotfiles/configs"
 DOTFILES[HOOKS]="${DOTFILES[HOME_DIR]}/hooks"
 DOTFILES[FUNCTIONS]="${DOTFILES[HOME_DIR]}/functions"
 DOTFILES[AUTOLOADS]="${DOTFILES[HOME_DIR]}/autoloads"
@@ -106,7 +106,7 @@ ZINIT[NO_ALIASES]='0'
 # ENV-VARS: Config Relocations
 # =============================================================================
 
-typeset POWERLEVEL9K_CONFIG_FILE="$DOTFILES[CONFIG]/.p10k"
+typeset POWERLEVEL9K_CONFIG_FILE="$DOTFILES[CONFIGS]/.p10k"
 typeset EDITORCONFIGRC="${XDG_CONFIG_HOME}/.editorconfigrc"
 typeset RPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgreprc"
 typeset FZF_CONFIG_PATH="${XDG_CONFIG_HOME}/fzf.conf"
@@ -188,3 +188,4 @@ export ZSH_PECO_HISTORY_OPTS="--layout=bottom-up --initial-filter=Fuzzy"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
+

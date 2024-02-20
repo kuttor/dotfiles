@@ -9,6 +9,3 @@ FZF_ALT_C_OPTS="--ansi --preview \"$FZF_PREVIEW_DIR_COMMAND {} 2>/dev/null\""
 FZF_ALT_C_COMMAND="fd --type d . $FZF_FD_OPTS"
 FZF_CTRL_T_OPTS="--ansi --bind \"ctrl-w:execute(\${EDITOR:-nano} {1} >/dev/tty </dev/tty)+refresh-preview\" --preview \"$FZF_PREVIEW_FILE_COMMAND {} 2>/dev/null\""
 FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-mv -vf fd-*/autocomplete/_fd _fd
-mv -vf fd-*/fd.1 ${ZINIT[MAN_DIR]}/man1

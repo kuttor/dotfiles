@@ -1,1 +1,4 @@
-_zsh_autosuggest_start
+#! /usr/bin/env bash
+
+zpcompinit
+zpcdreplay

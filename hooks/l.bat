@@ -1,4 +1,4 @@
-$! /usr/bin/env zsh
+#! /usr/bin/env zsh
 
 export BAT_THEME='base16'
 export BAT_PAGER='less -R -F -+X --mouse'
