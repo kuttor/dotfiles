@@ -56,8 +56,4 @@ Supporting packages:
 *** Compatible with MacOSX only ***
 *** Sudo access required ***
 
-1. Git clone https://github.com/kuttor/dotfiles ~/.dotfiles
-2. cd ~/.dotfiles
-3. ./install
-
 

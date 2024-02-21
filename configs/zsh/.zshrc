@@ -5,13 +5,11 @@
 # vim:set num clipboard+=unnamedplus foldmethsofttabstop=
 
 # =============================================================================
-#  STAGE: Verfiy Status & reinstall and reconfigure if needed 
+#  STAGE: Verfiy Status & reinstall and reconfigure if needed
 # =============================================================================
-
-# Instant Prompt
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+/
+# Activate P10k
+[[ -f "${CACHE}/p10k-instant-prompt-akuttor.zsh" ]] && source "${CACHE}/p10k-instant-prompt-akuttor.zsh"
 
 # Deprecating zshenv in favor for zprofile
 [[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
@@ -19,7 +17,6 @@ fi
 # Zinit Autoinstaller
 if [[ ! -f "${ZINIT_HOME}/zinit.zsh" ]]; then
   print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
-  mkdir -p "${ZINIT_HOME}" && chmod g-rwX "${ZINIT_HOME}"
   git clone https://github.com/zdharma-continuum/zinit.git ${ZINIT_HOME}t
 fi
 
@@ -35,10 +32,11 @@ source "${ZINIT_HOME}/zinit.zsh"
 # =============================================================================
 export ZSH_THEME="powerlevel10k/powerlevel10k"
 
-zinit for \
+zinit id-as for \
+"powerlevel10k" \
   depth"1" \
   atload"hook l.p10k.zsh" \
-  romkatv/powerlevel10k
+romkatv/powerlevel10k
 
 # =============================================================================
 # ZSH Extensions
@@ -69,7 +67,7 @@ zinit wait pack atload=+"zicompinit; zicdreplay" for system-completions
 # PKG-TYPE | Oh My Zsh
 # =============================================================================
 
-zinit default-ice --clear
+zinit default-ice -cq wait"0" lucid`
 
 # -- Libraries --
 zinit snippet OMZ::lib/completion.zsh
@@ -107,16 +105,16 @@ zinit snippet OMZ::plugins/vscode
 zinit snippet OMZ::plugins/web-search
 
 zinit for \
-atload"hook l.magic-enter.zsh" \
-OMZ::plugins/magic-enter  
+  atload"hook l.magic-enter.zsh" \
+    OMZ::plugins/magic-enter
 
 # -- Completion --
-zinit default-ice -cq wait"1" /s"completion" lucid
+zinit default-ice -cq wait"1" as"completion" lucid
 zinit for \
-OMZ::plugins/terraform \
-OMZ::plugins/fd/_fd \
-OMZ::plugins/ag/_ag \
-OMZ::plugins/pip/_pip
+  OMZ::plugins/terraform \
+  OMZ::plugins/fd/_fd \
+  OMZ::plugins/ag/_ag \
+  OMZ::plugins/pip/_pip
 
 
 # =============================================================================
@@ -125,7 +123,7 @@ OMZ::plugins/pip/_pip
 zinit default-ice -cq wait"1" as"command" lucid
 
 # direnv ~ Unclutter your .zshrc
-zinit for id\
+zinit id-as for \
 "direnv" \
   mv"direnv* -> direnv" \
   atclone"./direnv hook zsh > zhook.zsh" \
@@ -135,25 +133,32 @@ zinit for id\
 @direnv/direnv
 
 # exa ~ a modern replacement for ls
-zinit for id\
+zinit id-as for \
 "exa" \
-  atclone"hook c.exa" \
-  atload"hook l.exa" \
+  atclone"hook c.exa.zsh" \
+  atload"hook l.exa.zsh" \
   atpull"%a tclone" \
   mv"bin/exa* -> exa" \
 @ogham/exa
 
+zi id-as for \
+"eza"
+  atclone'hook c.eza.zsh' \
+  atload'hook l.eza.zsh' \
+  sbin'**/eza -> eza' \
+eza-community/eza
+
 # bat ~ a cat clone with wings
-zinit for id\
+zinit id-as for \
 "bat" \
-  atclone"hook c.bat" \
-  atload"hook l.bat" \
+  atclone"hook c.bat.zsh" \
+  atload"hook l.bat.zsh" \
   atpull"%atclone" \
   mv"bat-*/bat -> bat" \
 @sharkdp/bat
 
 # delta ~ a viewer for git and diff output
-zinit for id\
+zinit id-as for \
 "delta" \
   atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
   dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
@@ -162,7 +167,7 @@ zinit for id\
 
 # grab fd binary
 # shellcheck disable=SC2016
-zinit for id\
+zinit id-as for \
 "fd" \
   atclone"hook c.fd.zsh" \
   atload"hook l.fd.zsh" \
@@ -172,70 +177,66 @@ zinit for id\
 
 # grab vivid binary (for all the colors)
 # shellcheck disable=SC2016
-zinit for id\
-"vivid"
+zinit id-as for \
+"vivid" \
   atload'export LS_COLORS="$(vivid generate snazzy)"' \
   mv"vivid-*/vivid -> vivid" \
 @sharkdp/vivid
 
-# zoxide ~ 
-zinit for id\
+# zoxide ~
+zinit id-as for \
 "zoxide" \
   atclone"hook c.zoxide.zsh" \
   atload"hook l.zoxide.zsh" \
   atpull"%atclone" \
   mv"zoxide-*/zoxide -> zoxide" \
-@a``jeetdsouza/zoxide
+@jeetdsouza/zoxide
 
 # diff-so-fancy ~
-zinit for id\
+zinit id-as for \
 "diff-so-fancy" \
   pick"bin/git-dsf" \
 zdharma-continuum/zsh-diff-so-fancy
 
 # yank ~
-zinit for id\
+zinit id-as for \
 "yank" \
   pick"yank" \
   make \
 mptre/yank
 
 # =============================================================================
-# PKG-TYPE | Enhancements:  Zshell 
+# PKG-TYPE | Enhancements:  Zshell
 # ============================================================================
 zinit default-ice -cq wait"0" lucid
 
 zinit for \
-djui/alias-tips \
-ianthehenry/zsh-autoquoter \
-kutsan/zsh-system-clipboard \
-mattmc3/zsh-safe-rm
+  djui/alias-tips \
+  ianthehenry/zsh-autoquoter \
+  kutsan/zsh-system-clipboard \
+  @mattmc3/zsh-safe-rm
 
 # =============================================================================
 # PKG-TYPE | Enhancememnts: Git
 # =============================================================================
 zinit default-ice -cq wait"1" light-mode lucid-
 
-# zinc ~ zinc is a Zsh INstallation Curator
-zinit for id\
+zinit id-as for\
+"forgit" \
+    @wfxr/forgit \
 "zinc" \
   atload"!prompt_zinc_setup; prompt_zinc_precmd" \
   compile"{zinc_functions/*,segments/*,zinc.zsh}" \
   nocompletions \
-robobenklein/zinc
-
-# forgit ~ A utility that makes git status more readable
-zinit for id\
-"forgit" \
-wfxr/forgit
+    @robobenklein/zinc
 
 # =============================================================================
 # Completions
 # =============================================================================
 
 zinit default-ice -cq wait"0" lucid light-mode
-zinit for \
-id-as"zsh-fancy-completions" \
+zinit id-as for\
+"zsh-fancy-completions" \
 z-shell/zsh-fancy-completions
 
  #     changyuheng/fz \
@@ -264,35 +265,25 @@ z-shell/zsh-fancy-completions
 # =============================================================================
 # Zinit Commons
 # =============================================================================
-zinit for \
-  id-as'fast-syntax-highlighting' \
+zinit id-as for \
+"fast-syntax-highlighting" \
   atload'hook l.fastsyntaxhighlighting.zsh' \
     @zdharma-continuum/fast-syntax-highlighting \
-  id-as'zsh-autosuggestions' \
+"zsh-autosuggestions" \
   atinit'hook i.autosuggests.zsh' \
   atload'hook l.autosuggests.zsh' \
     @zsh-users/zsh-autosuggestions \
+"zsh-completions" \
   blockf \
   atpull'hook p.completions.zsh' \
-  id-as'zsh-completions' \
     @zsh-users/zsh-completions \
-  id-as'zsh-history-substring-search' \
+"zsh-history-substring-search" \
   atload'hook l.hss.zsh' \
     @zsh-users/zsh-history-substring-search
 
 # =============================================================================
 # compinit + cdreplay
 # =============================================================================
-# if [[ $ZINIT[ZCOMPDUMP_PATH](#qNmh-20) ]]; then
-#   compinit -C -d ${ZINIT[ZCOMPDUMP_PATH]:-${ZDOTDIR:-$HOME}/.zcompdump} "${(Q@)${(z@)ZINIT[COMPINIT_OPTS]}}"
-# else
-#   mkdir -p "$ZINIT[ZCOMPDUMP_PATH]:h"
-#   compinit -i -d ${ZINIT[ZCOMPDUMP_PATH]:-${ZDOTDIR:-$HOME}/.zcompdump} "${(Q@)${(z@)ZINIT[COMPINIT_OPTS]}}"
-#   touch "$ZINIT[ZCOMPDUMP_PATH] "
-# fi
-# ## Enable completion and other things.
-# autoload -Uz compinit && compinit -d "${ZDOTDIR}/zcompdump"
-# zinit drepl
 autoload -Uz compinit && compinit
 [[ $(date +'%j') != $(date -r ${ZDOTDIR:-$HOME}/.zcompdump +'%j') ]] \
 && compinit \
@@ -300,9 +291,9 @@ autoload -Uz compinit && compinit
 
 zinit cdreplay -q
 
-# To customize prompt, run p10k configurex or edit ~/.dotfiles/configs/zsh/.p10k.zsh
-# shellcheck source=/dev/null.
-hook l.p10k.zsh
+prompt, run p10k configurex or edit ~/.dotfiles/configs/zsh/.p10k.zsh
+urce=/dev/null.
+
 
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/configs/.p10k.
 [[ ! -f ~/.dotfiles/configs/.p10k ]] || source ~/.dotfiles/configs/.p10k
