@@ -2,10 +2,10 @@
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=4 sw=4 sts=0
 # vim:set autoindent shiftround smarttab
-# vim:set num clipboard+=unnamedplus foldmethsofttabstop=0'
+# vim:set num clipboard+=unnamedplus foldmethsofttabstop=
 
 # =============================================================================
-# PreConfig
+#  STAGE: Verfiy Status & reinstall and reconfigure if needed 
 # =============================================================================
 
 # Instant Prompt
@@ -57,6 +57,8 @@ zinit light-mode for \
 # PKG-TYPE | ZSH Packages
 # =============================================================================
 
+zinit pack for dircolors-material
+zinit pack for ls_colors
 zinit pack"bgn-binary+keys" for fzf
 zinit pack"bgn" for fzy
 zinit pack for ls_colors
@@ -105,109 +107,103 @@ zinit snippet OMZ::plugins/vscode
 zinit snippet OMZ::plugins/web-search
 
 zinit for \
-atload"hook l.magic-enter" \
-OMZ::plugins/magic-enter
+atload"hook l.magic-enter.zsh" \
+OMZ::plugins/magic-enter  
 
-# -- Completion -
-zinit default-ice -c wait"1" as"completion" lucid-
+# -- Completion --
+zinit default-ice -cq wait"1" /s"completion" lucid
 zinit for \
 OMZ::plugins/terraform \
 OMZ::plugins/fd/_fd \
 OMZ::plugins/ag/_ag \
 OMZ::plugins/pip/_pip
 
-# =============================================================================
-# PKG-TYPE |  GIT Enhancers
-# =============================================================================
-zinit default-ice -c wait"1" light-mode lucid-
-
-# Zinc ~ Zinc is a Zsh INstallation Curator
-zinit for \
-nocompletions \
-as"completion" \
-compile"{zinc_functions/*,segments/*,zinc.zsh}" \
-atload"!prompt_zinc_setup; prompt_zinc_precmd" \
-robobenklein/zinc
-
-# Forgit ~ A utility that makes git status more readable
-zinit for \
-  atload"zinc_optional_depenency_loaded" \
-romkatv/gitstatus \
-voronkovich/gitignore.plugin.zsh \
-wfxr/forgit
 
 # =============================================================================
 # PKG-TYPE: Binaries
 # =============================================================================
-zinit default-ice -c wait"1" as"command" lucid
+zinit default-ice -cq wait"1" as"command" lucid
 
 # direnv ~ Unclutter your .zshrc
-zinit for \
-mv"direnv* -> direnv" \
-atclone"./direnv hook zsh > zhook.zsh" \
-atpull'%atclone' \
-pick"direnv" \
-src="zhook.zsh" \
+zinit for id\
+"direnv" \
+  mv"direnv* -> direnv" \
+  atclone"./direnv hook zsh > zhook.zsh" \
+  atpull'%atclone' \
+  pick"direnv" \
+  src="zhook.zsh" \
 @direnv/direnv
 
-# exa ~ A modern replacement for ls
-zinit for \
-mv"bin/exa* -> exa" \
-atpull"%a tclone" \
-atclone"hook c.exa" \
-atload"hook l.exa" \
+# exa ~ a modern replacement for ls
+zinit for id\
+"exa" \
+  atclone"hook c.exa" \
+  atload"hook l.exa" \
+  atpull"%a tclone" \
+  mv"bin/exa* -> exa" \
 @ogham/exa
 
-# bat ~ A cat clone with wings
-zinit for \
-mv"bat-*/bat -> bat" \
-atpull"%atclone" \
-atclone"hook c.bat" \
-atload"hook l.bat" \
+# bat ~ a cat clone with wings
+zinit for id\
+"bat" \
+  atclone"hook c.bat" \
+  atload"hook l.bat" \
+  atpull"%atclone" \
+  mv"bat-*/bat -> bat" \
 @sharkdp/bat
 
 # delta ~ a viewer for git and diff output
-zinit for \
-mv"delta-*/delta -> delta" \
-dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
-atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
+zinit for id\
+"delta" \
+  atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
+  dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
+  mv"delta-*/delta -> delta" \
 @dandavison/delta
 
 # grab fd binary
 # shellcheck disable=SC2016
-zinit for \
-mv"fd-*/fd -> fd" \
-atpull"%atclone" \
-atclone"hook c.fd.zsh" \
-atload"hook l.fd.zsh" \
+zinit for id\
+"fd" \
+  atclone"hook c.fd.zsh" \
+  atload"hook l.fd.zsh" \
+  atpull"%atclone" \
+  mv"fd-*/fd -> fd" \
 @sharkdp/fd
 
 # grab vivid binary (for all the colors)
 # shellcheck disable=SC2016
-zinit for \
-as"command" \
-mv"vivid-*/vivid -> vivid" \
-atload'export LS_COLORS="$(vivid generate snazzy)"' \
+zinit for id\
+"vivid"
+  atload'export LS_COLORS="$(vivid generate snazzy)"' \
+  mv"vivid-*/vivid -> vivid" \
 @sharkdp/vivid
 
-# grab zoxide binary
-# shellcheck disable=SC201````6
-zinit for \
-as"command" \
-mv"zoxide-*/zoxide -> zoxide" \
-atpull"%atclone" \
-atclone"hook c.zoxide" \
-atload"hook l.zoxide" \
-@ajeetdsouza/zoxide
+# zoxide ~ 
+zinit for id\
+"zoxide" \
+  atclone"hook c.zoxide.zsh" \
+  atload"hook l.zoxide.zsh" \
+  atpull"%atclone" \
+  mv"zoxide-*/zoxide -> zoxide" \
+@a``jeetdsouza/zoxide
 
-# diff-so-fancy
-zinit ice wait"2" lucid as"command" pick"bin/git-dsf"
-zinit load zdharma-continuum/zsh-diff-so-fancy
+# diff-so-fancy ~
+zinit for id\
+"diff-so-fancy" \
+  pick"bin/git-dsf" \
+zdharma-continuum/zsh-diff-so-fancy
+
+# yank ~
+zinit for id\
+"yank" \
+  pick"yank" \
+  make \
+mptre/yank
 
 # =============================================================================
-# PKG-TYPE | Shell Enhancers
+# PKG-TYPE | Enhancements:  Zshell 
 # ============================================================================
-zinit default-ice -c wait"0" lucid
+zinit default-ice -cq wait"0" lucid
 
 zinit for \
 djui/alias-tips \
@@ -216,11 +212,28 @@ kutsan/zsh-system-clipboard \
 mattmc3/zsh-safe-rm
 
 # =============================================================================
+# PKG-TYPE | Enhancememnts: Git
+# =============================================================================
+zinit default-ice -cq wait"1" light-mode lucid-
+
+# zinc ~ zinc is a Zsh INstallation Curator
+zinit for id\
+"zinc" \
+  atload"!prompt_zinc_setup; prompt_zinc_precmd" \
+  compile"{zinc_functions/*,segments/*,zinc.zsh}" \
+  nocompletions \
+robobenklein/zinc
+
+# forgit ~ A utility that makes git status more readable
+zinit for id\
+"forgit" \
+wfxr/forgit
+
+# =============================================================================
 # Completions
 # =============================================================================
 
-zinit default-ice -c wait"0" lucid light-mode
-# -- xa
+zinit default-ice -cq wait"0" lucid light-mode
 zinit for \
 id-as"zsh-fancy-completions" \
 z-shell/zsh-fancy-completions

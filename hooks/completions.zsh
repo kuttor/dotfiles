@@ -1,0 +1,1 @@
+zinit creinstall -q .
