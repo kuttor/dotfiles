@@ -2,12 +2,12 @@
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=4 sw=4 sts=0
 # vim:set autoindent shiftround smarttab
-# vim:set num clipboard+=unnamedplus foldmethsofttabstop=
+# vim:set num clipboard+=unnamedplus foldmethsofttabstop=0
 
 # =============================================================================
 #  STAGE: Verfiy Status & reinstall and reconfigure if needed
 # =============================================================================
-/
+
 # Activate P10k
 [[ -f "${CACHE}/p10k-instant-prompt-akuttor.zsh" ]] && source "${CACHE}/p10k-instant-prompt-akuttor.zsh"
 
@@ -30,13 +30,19 @@ source "${ZINIT_HOME}/zinit.zsh"
 # =============================================================================
 # THEME: powerlevel10k
 # =============================================================================
-export ZSH_THEME="powerlevel10k/powerlevel10k"
+#export ZSH_THEME="powerlevel10k/powerlevel10k"
 
-zinit id-as for \
-"powerlevel10k" \
-  depth"1" \
-  atload"hook l.p10k.zsh" \
-romkatv/powerlevel10k
+#zinit id-as for \
+#"powerlevel10k" \
+#  depth"1" \
+#  atload"hook l.p10k.zsh" \
+#romkatv/powerlevel10k
+
+zinit for \
+depth=1 \
+lucid \
+nocd \
+@romkatv/powerlevel10k
 
 # =============================================================================
 # ZSH Extensions
@@ -54,22 +60,18 @@ zinit light-mode for \
 # =============================================================================
 # PKG-TYPE | ZSH Packages
 # =============================================================================
-
 zinit pack for dircolors-material
 zinit pack for ls_colors
 zinit pack"bgn-binary+keys" for fzf
 zinit pack"bgn" for fzy
-zinit pack for ls_colors
-zinit pack for @github-issues
-zinit wait pack atload=+"zicompinit; zicdreplay" for system-completions
+#zinit wait pack atload=+"zicompinit; zicdreplay" for system-completions
 
 # =============================================================================
 # PKG-TYPE | Oh My Zsh
 # =============================================================================
+zinit default-ice -cq wait"0" lucid
 
-zinit default-ice -cq wait"0" lucid`
-
-# -- Libraries --
+# -- Libraries -
 zinit snippet OMZ::lib/completion.zsh
 zinit snippet OMZ::lib/compfix.zsh
 zinit snippet OMZ::lib/correction.zsh
@@ -105,181 +107,155 @@ zinit snippet OMZ::plugins/vscode
 zinit snippet OMZ::plugins/web-search
 
 zinit for \
-  atload"hook l.magic-enter.zsh" \
-    OMZ::plugins/magic-enter
+atload"hook l.magic-enter.zsh" \
+OMZ::plugins/magic-enter
 
 # -- Completion --
 zinit default-ice -cq wait"1" as"completion" lucid
 zinit for \
-  OMZ::plugins/terraform \
-  OMZ::plugins/fd/_fd \
-  OMZ::plugins/ag/_ag \
-  OMZ::plugins/pip/_pip
-
+OMZ::plugins/terraform \
+OMZ::plugins/fd/_fd \
+OMZ::plugins/ag/_ag \
+OMZ::plugins/pip/_pip
 
 # =============================================================================
 # PKG-TYPE: Binaries
 # =============================================================================
 zinit default-ice -cq wait"1" as"command" lucid
 
-# direnv ~ Unclutter your .zshrc
-zinit id-as for \
-"direnv" \
-  mv"direnv* -> direnv" \
-  atclone"./direnv hook zsh > zhook.zsh" \
-  atpull'%atclone' \
-  pick"direnv" \
-  src="zhook.zsh" \
-@direnv/direnv
 
-# exa ~ a modern replacement for ls
-zinit id-as for \
-"exa" \
-  atclone"hook c.exa.zsh" \
-  atload"hook l.exa.zsh" \
-  atpull"%a tclone" \
-  mv"bin/exa* -> exa" \
-@ogham/exa
+# # exa ~ a modern replacement for ls
+# zinit id-as for \
+# "exa" \
+#   atclone"hook c.exa.zsh" \
+#   atload"hook l.exa.zsh" \
+#   atpull"%a tclone" \
+#   mv"bin/exa* -> exa" \
+# @ogham/exa
 
-zi id-as for \
-"eza"
-  atclone'hook c.eza.zsh' \
-  atload'hook l.eza.zsh' \
-  sbin'**/eza -> eza' \
+zinit for \
+atclone"hook c.eza.zsh" \
+atload"hook l.eza.zsh" \
+sbin'**/eza -> eza' \
 eza-community/eza
 
 # bat ~ a cat clone with wings
-zinit id-as for \
-"bat" \
-  atclone"hook c.bat.zsh" \
-  atload"hook l.bat.zsh" \
-  atpull"%atclone" \
-  mv"bat-*/bat -> bat" \
+zinit for \
+atclone"hook c.bat.zsh" \
+atload"hook l.bat.zsh" \
+atpull"%atclone" \
+mv"bat-*/bat -> bat" \
 @sharkdp/bat
 
 # delta ~ a viewer for git and diff output
-zinit id-as for \
-"delta" \
-  atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
-  dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
-  mv"delta-*/delta -> delta" \
+zinit for \
+atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
+dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
+mv"delta-*/delta -> delta" \
 @dandavison/delta
 
 # grab fd binary
 # shellcheck disable=SC2016
-zinit id-as for \
-"fd" \
-  atclone"hook c.fd.zsh" \
-  atload"hook l.fd.zsh" \
-  atpull"%atclone" \
-  mv"fd-*/fd -> fd" \
+zinit for \
+atclone"hook c.fd.zsh" \
+atload"hook l.fd.zsh" \
+atpull"%atclone" \
+mv"fd-*/fd -> fd" \
 @sharkdp/fd
 
-# grab vivid binary (for all the colors)
+# vivid
 # shellcheck disable=SC2016
-zinit id-as for \
-"vivid" \
-  atload'export LS_COLORS="$(vivid generate snazzy)"' \
-  mv"vivid-*/vivid -> vivid" \
+zinit for \
+atload'export LS_COLORS="$(vivid generate snazzy)"' \
+mv"vivid-*/vivid -> vivid" \
 @sharkdp/vivid
 
 # zoxide ~
-zinit id-as for \
-"zoxide" \
-  atclone"hook c.zoxide.zsh" \
-  atload"hook l.zoxide.zsh" \
-  atpull"%atclone" \
-  mv"zoxide-*/zoxide -> zoxide" \
-@jeetdsouza/zoxide
+zinit for \
+atclone"hook c.zoxide.zsh" \
+atload"hook l.zoxide.zsh" \
+atpull"%atclone" \
+mv"zoxide-*/zoxide -> zoxide" \
+@ajeetdsouza/zoxide
 
 # diff-so-fancy ~
-zinit id-as for \
-"diff-so-fancy" \
-  pick"bin/git-dsf" \
-zdharma-continuum/zsh-diff-so-fancy
+zinit for \
+pick"bin/git-dsf" \
+@zdharma-continuum/zsh-diff-so-fancy
 
 # yank ~
-zinit id-as for \
-"yank" \
-  pick"yank" \
-  make \
-mptre/yank
+zinit for \
+pick"yank" \
+make \
+@mptre/yank
 
 # =============================================================================
 # PKG-TYPE | Enhancements:  Zshell
 # ============================================================================
-zinit default-ice -cq wait"0" lucid
+zinit default-ice -cq wait"0" lucid light-mode
 
 zinit for \
-  djui/alias-tips \
-  ianthehenry/zsh-autoquoter \
-  kutsan/zsh-system-clipboard \
-  @mattmc3/zsh-safe-rm
+@djui/alias-tips \
+@ianthehenry/zsh-autoquoter \
+@kutsan/zsh-system-clipboard \
+@mattmc3/zsh-safe-rm
+
 
 # =============================================================================
 # PKG-TYPE | Enhancememnts: Git
 # =============================================================================
-zinit default-ice -cq wait"1" light-mode lucid-
+zinit default-ice -cq wait"1" light-mode lucid
 
-zinit id-as for\
-"forgit" \
-    @wfxr/forgit \
-"zinc" \
-  atload"!prompt_zinc_setup; prompt_zinc_precmd" \
-  compile"{zinc_functions/*,segments/*,zinc.zsh}" \
-  nocompletions \
-    @robobenklein/zinc
+zinit for \
+@wfxr/forgit \
+atload"!prompt_zinc_setup; prompt_zinc_precmd" \
+compile"{zinc_functions/*,segments/*,zinc.zsh}" \
+@robobenklein/zinc
 
 # =============================================================================
 # Completions
 # =============================================================================
-
 zinit default-ice -cq wait"0" lucid light-mode
-zinit id-as for\
-"zsh-fancy-completions" \
-z-shell/zsh-fancy-completions
 
- #     changyuheng/fz \
-      #     chitoku-k/fzf-zsh-completions \
-      #     djui/alias-tips \
-      #     eastokes/aws-plugin-zsh                          \
-      #     FFKL/s3cmd-zsh-plugin                            \
-      #     greymd/docker-zsh-completion                     \
-      #     hlissner/zsh-autçopair                            \
-      #     joshskidmore/zsh-fzf-history-search              \
-      #     kutsan/zsh-system-clipboard                      \
-      #     macunha1/zsh-terraform                           \
-      #     nojanath/ansible-zsh-completion                  \
-      #     paw-lu/pip-fzf                                   \
-      #     pierpo/fzf-docker                                \
-      #     rapgenic/zsh-git-complete-urls                   \
-      #     rupa/v                                           \
-      #     skywind3000/z.lua                                \
-      #     sparsick/ansible-zsh                             \
-      #     srijanshetty/zsh-pip-completion                  \
-      #     unixorn/docker-helpers.zshplugin                 \
-      #     vasyharan/zsh-brew-services                      \
-      #     mattmc3/zsh-safe-rm
+zinit for @z-shell/zsh-fancy-completions
+
+#     changyuheng/fz \
+#     chitoku-k/fzf-zsh-completions
+#      djui/alias-tips \
+#     eastokes/aws-plugin-zsh                          \
+#     FFKL/s3cmd-zsh-plugin                            \
+#     greymd/docker-zsh-completion                     \
+#     hlissner/zsh-autçopair                            \
+#     joshskidmore/zsh-fzf-history-search              \
+#     kutsan/zsh-system-clipboard                      \
+#     macunha1/zsh-terraform                           \
+#     nojanath/ansible-zsh-completion                  \
+#     paw-lu/pip-fzf                                   \
+#     pierpo/fzf-docker                                \
+#     rapgenic/zsh-git-complete-urls                   \
+#     rupa/v                                           \
+#     skywind3000/z.lua                                \
+#     sparsick/ansible-zsh                             \
+#     srijanshetty/zsh-pip-completion                  \
+#     unixorn/docker-helpers.zshplugin                 \
+#     vasyharan/zsh-brew-services                      \
+#     mattmc3/zsh-safe-rm
 
 
 # =============================================================================
 # Zinit Commons
 # =============================================================================
-zinit id-as for \
-"fast-syntax-highlighting" \
-  atload'hook l.fastsyntaxhighlighting.zsh' \
-    @zdharma-continuum/fast-syntax-highlighting \
-"zsh-autosuggestions" \
-  atinit'hook i.autosuggests.zsh' \
-  atload'hook l.autosuggests.zsh' \
-    @zsh-users/zsh-autosuggestions \
-"zsh-completions" \
-  blockf \
-  atpull'hook p.completions.zsh' \
-    @zsh-users/zsh-completions \
-"zsh-history-substring-search" \
-  atload'hook l.hss.zsh' \
-    @zsh-users/zsh-history-substring-search
+zinit default-ice -cq wait"0" lucid light-mode
+
+zinit for \
+atinit"hook i.fastsyntaxhighlighting.zsh" \
+atload"hook l.fastsyntaxhighlighting.zsh" \
+@zdharma-continuum/fast-syntax-highlighting \
+atinit"hook i.autosuggests.zsh" \
+@zsh-users/zsh-autosuggestions \
+blockf \
+atpull"hook p.completions.zsh" \
+@zsh-users/zsh-completions
 
 # =============================================================================
 # compinit + cdreplay
@@ -291,9 +267,8 @@ autoload -Uz compinit && compinit
 
 zinit cdreplay -q
 
-prompt, run p10k configurex or edit ~/.dotfiles/configs/zsh/.p10k.zsh
-urce=/dev/null.
-
+# To customize prompt, run p10k configure or edit ~/.dotfiles/configs/.p10k.
+# [[ ! -f ${DOTFILES[CONFIG]}/.p10k ]] || source ${DOTFILES[CONFIG]}/.p10k
 
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/configs/.p10k.
 [[ ! -f ~/.dotfiles/configs/.p10k ]] || source ~/.dotfiles/configs/.p10k
