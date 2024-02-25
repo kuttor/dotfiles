@@ -63,6 +63,8 @@ export BIN="${LOCAL}/bin" && mkdir -p "${BIN}"
 # VARS | Homebrew
 # =============================================================================
 
+HOMEBREW_NO_ENV_HINTS=1
+
 export HOMEBREW_PREFIX="/opt/homebrew"
 export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
 export HOMEBREW_REPOSITORY="/opt/homebrew"
@@ -106,7 +108,7 @@ ZINIT[NO_ALIASES]='0'
 # ENV-VARS: Config Relocations
 # =============================================================================
 
-typeset POWERLEVEL9K_CONFIG_FILE="$DOTFILES[CONFIGS]/.p10k"
+#typeset POWERLEVEL9K_CONFIG_FILE="$DOTFILES[CONFIGS]/.p10k"
 typeset EDITORCONFIGRC="${XDG_CONFIG_HOME}/.editorconfigrc"
 typeset RPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgreprc"
 typeset FZF_CONFIG_PATH="${XDG_CONFIG_HOME}/fzf.conf"
