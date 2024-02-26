@@ -5,7 +5,7 @@
 #  STAGE: Verfiy Status & reinstall and reconfigure if needed
 # =============================================================================
 ZSH_THEME="powerlevel10k/powerlevel10k"
-[[ ! -f ${DOTFILES[CONFIG]}/.p10k.zsh ]] || source ${DOTFILES[CONFIG]}/.p10k.zsh
+[[ ! -f ${DOTFILES[CONFIG]}/.p10.zsh ]] || source ${DOTFILES[CONFIG]}/.p10k.zsh
 # Deprecating zshenv in favor for zprofile
 [[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
 
@@ -22,15 +22,16 @@ function hook {
   source $HOME/.dotfiles/hooks/$1
 }
 
+
 # =============================================================================
 # Zsh Config Sourcing
 # =============================================================================
 
 source "${ZDOTDIR}/paths.zsh"
-#source "${ZDOTDIR}/autoloads.zsh"
-#source "${ZDOTDIR}/functions.zsh"
-#source "${ZDOTDIR}/options.zsh"
-#source "${ZDOTDIR}/aliases.zsh"
+source "${ZDOTDIR}/autoloads.zsh"
+source "${ZDOTDIR}/functions.zsh"
+source "${ZDOTDIR}/options.zsh"
+source "${ZDOTDIR}/aliases.zsh"
 source "${ZDOTDIR}/modules.zsh"
 source "${ZDOTDIR}/keybindings.zsh"
 
@@ -47,7 +48,7 @@ depth=1 \
 # ZSH Annexes Extensions
 # =============================================================================
 
-zinit light-mode lucid for \
+zinit light-mode for \
 zdharma-continuum/zinit-annex-bin-gem-node \
 zdharma-continuum/zinit-annex-default-ice \
 zdharma-continuum/zinit-annex-patch-dl \
@@ -56,15 +57,19 @@ zdharma-continuum/zinit-annex-submods \
 zdharma-continuum/zinit-annex-rust \
 zdharma-continuum/zinit-annex-pull \
 zdharma-continuum/zinit-annex-man
-# id-as"annexes" \
-# zdharma-continuum/zinit-annex-meta-plugins
 
-# zinit default-ice -cq light-mode lucid
-# zinit for \
-# annexes \
-# zsh-users+fast \
-# ext-git \
-# @sharkdp
+zinit default-ice -cq light-mode lucid
+
+zinit for \
+id-as"annexes" \
+zdharma-continuum/zinit-annex-meta-plugins
+
+zinit default-ice -cq
+zinit for annexes \
+annexes+con \
+zsh-users+fast \
+ext-git \
+sharkdp
 
 # =============================================================================
 # PKG-TYPE | ZSH Packages
@@ -73,14 +78,31 @@ zinit default-ice -cq
 zinit pack"bgn-binary+keys" for fzf
 zinit pack"bgn"             for fzy
 zinit pack                  for ls_colors
+#zinit pack                  for directory-colors
+zinit pack                  for @github-issues
 
 zinit for \
 zdharma-continuum/zzcomplete \
 zdharma-continuum/zsh-lint \
 zdharma-continuum/zsh-sweep \
-zdharma-continuum/git-url
-#zdharma-continuum/zui \
-#NICHOLAS85/z-a-eval
+zdharma-continuum/git-url \
+zdharma-continuum/zui \
+NICHOLAS85/z-a-eval
+
+zinit default-ice -cq light-mode lucid
+
+zinit for \
+id-as"annexes" \
+zdharma-continuum/zinit-annex-meta-plugins
+
+zinit default-ice -cq
+zinit for annexes
+zinit for zsh-users+fast
+zinit skip"fast-syntax-highlighting" for zdharma
+zinit for zdharma2
+zinit for ext-git
+zinit for molovo
+zinit skip"hexyl hyperfine" for sharkdp
 
 # =============================================================================
 # PKG-TYPE | Oh My Zsh
@@ -148,12 +170,12 @@ zinit default-ice -cq as"program" wait"1" lucid
 # eza-community/eza
 
 # bat ~ a cat clone with wings
-# zinit for \
-# atclone"hook c.bat.zsh" \
-# atload"hook l.bat.zsh" \
-# atpull"%atclone" \
-# mv"bat-*/bat -> bat" \
-# @sharkdp/bat
+zinit for \
+atclone"hook c.bat.zsh" \
+atload"hook l.bat.zsh" \
+atpull"%atclone" \
+mv"bat-*/bat -> bat" \
+@sharkdp/bat
 
 # delta ~ a viewer for git and diff output
 zinit for \
@@ -162,13 +184,13 @@ dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh ->
 mv"delta-*/delta -> delta" \
 @dandavison/delta
 
-# # fd ~ a simple, fast and user-friendly alternative to find
-# zinit for \
-# atclone"hook c.fd.zsh" \
-# atload"hook l.fd.zsh" \
-# atpull"%atclone" \
-# mv"fd-*/fd -> fd" \
-# @sharkdp/fd
+# fd ~ a simple, fast and user-friendly alternative to find
+zinit for \
+atclone"hook c.fd.zsh" \
+atload"hook l.fd.zsh" \
+atpull"%atclone" \
+mv"fd-*/fd -> fd" \
+@sharkdp/fd
 
 # zoxide ~  a simple, fast and user-friendly alternative to cd
 zinit for \
@@ -178,10 +200,10 @@ atpull"%atclone" \
 mv"zoxide-*/zoxide -> zoxide" \
 @ajeetdsouza/zoxide
 
-# # diff-so-fancy ~
-# zinit for \
-# pick"bin/git-dsf" \
-# @zdharma-continuum/zsh-diff-so-fancy
+# diff-so-fancy ~
+zinit for \
+pick"bin/git-dsf" \
+@zdharma-continuum/zsh-diff-so-fancy
 
 # # yank ~
 # zinit for \
@@ -189,15 +211,15 @@ mv"zoxide-*/zoxide -> zoxide" \
 # make \
 # @mptre/yank
 
-# # dbrgn/tealdeer
-# zinit for \
-# wait"2" \
-# as"command" \
-# from"gh-r" \
-# mv"tldr* -> tldr" \
-# atclone"./tldr --update" atpull"%atclone" \
-# eval'echo "complete -W \"$(./tldr 2>/dev/null --list)\" tldr"' \
-# @dbrgn/tealdeer
+# dbrgn/tealdeer
+zinit for \
+wait"2" \
+as"command" \
+from"gh-r" \
+mv"tldr* -> tldr" \
+atclone"./tldr --update" atpull"%atclone" \
+eval'echo "complete -W \"$(./tldr 2>/dev/null --list)\" tldr"' \
+@dbrgn/tealdeer
 
 # =============================================================================
 # PKG-TYPE | Enhancements:  Zshell
@@ -211,6 +233,18 @@ zinit for \
 @mattmc3/zsh-safe-rm \
 @psprint/zsh-navigation-tools
 
+
+# =============================================================================
+# PKG-TYPE | Enhancememnts: Git
+# =============================================================================
+zinit default-ice -cq wait"1" light-mode lucid
+
+zinit for \
+@wfxr/forgit \
+atload"!prompt_zinc_setup; prompt_zinc_precmd" \
+compile"{zinc_functions/*,segments/*,zinc.zsh}" \
+@robobenklein/zinc
+
 # =============================================================================
 # Completions
 # =============================================================================
@@ -218,12 +252,33 @@ zinit default-ice -cq wait"0" lucid light-mode
 
 zinit for \
 @z-shell/zsh-fancy-completions
-autoload -Uz compinit && compinit
-# zinit for \
-# nocd \
-# depth=1 \
-# atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
-# 3v1n0/zsh-bash-completions-fallback
+
+zinit for \
+nocd \
+depth=1 \
+atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
+3v1n0/zsh-bash-completions-fallback
+
+if (( $+commands[eza] )); then
+    alias ls='eza --colorauto --icons --group-directories-first'
+    alias l='ls -lhF'
+    alias la='ls -lhAF'
+    alias tree='ls --tree'
+elif (( $+commands[exa] )); then
+    alias ls='exa --color=auto --icons --group-directories-first'
+    alias la='ls -lahF'
+    alias tree='ls --tree'
+fi
+(( $+commands[bat] )) && alias cat='bat -p --wrap character'
+(( $+commands[fd] )) && alias find=fd
+(( $+commands[btm] )) && alias top=btm
+(( $+commands[rg] )) && alias grep=rg
+(( $+commands[tldr] )) && alias help=tldr
+(( $+commands[delta] )) && alias diff=delta
+(( $+commands[duf] )) && alias df=duf
+(( $+commands[dust] )) && alias du=dust
+(( $+commands[hyperfine] )) && alias benchmark=hyperfine
+(( $+commands[gping] )) && alias ping=gping
 
 
 #     changyuheng/fz \

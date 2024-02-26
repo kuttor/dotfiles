@@ -13,9 +13,8 @@ autoload -U zcalc
 autoload -U zed
 autoload -U zmv
 
-
-#autoload -U edit-command-line
-#zle -N edit-command-line
+autoload -U edit-command-line
+zle -N edit-command-line
 
 autoload -U select-word-style
 zle -N select-word-style bash
@@ -27,13 +26,17 @@ autoload -Uz colors && colors
 
 autoload -Uz history-search-end
 
-#autoload -Uz is-at-least
-#zle -N is-at-least
+autoload -Uz is-at-least
+zle -N is-at-least
 
 # autoload -Uz manydots-magic && manydots-magic
 
 autoload -Uz bracketed-paste-url-magic
 zle -N bracketed-paste bracketed-paste-url-magic
+
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+zle -N insert-last-command-output
 
 #autoload -U add-zsh-hook
 #zle -N add-zsh-hook zsh-hook
