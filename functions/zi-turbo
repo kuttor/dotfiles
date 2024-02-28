@@ -1,5 +1,0 @@
-#! /usr/bin/env zsh
-
-zi-turbo() {
-  zi depth'3' lucid ${1/#[0-9][a-c]/wait"${1}"} "${@:2}"
-}

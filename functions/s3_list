@@ -1,9 +1,0 @@
-#! /bin/bash
-
-function s3_list {
-	aws s3api list-objects-v2 \
-		--bucket $1 \
-		--prefix $2 \
-		--query 'Contents[?ends_with(Key, `/`)].[Key]' \
-		--output text
-}

@@ -1,6 +1,14 @@
 #!/usr/bin/env zsh
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=4 sw=4 sts=0x
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.dotfiles/configs/zsh/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # =============================================================================
 #  STAGE: Verfiy Status & reinstall and reconfigure if needed
 # =============================================================================
@@ -122,9 +130,7 @@ OMZ::plugins/ssh-agent \
 OMZ::plugins/urltools \
 OMZ::plugins/tmux \
 OMZ::plugins/vscode \
-OMZ::plugins/web-search
-
-zinit for \
+OMZ::plugins/web-search \
 atload"hook l.magic-enter.zsh" \
 OMZ::plugins/magic-enter
 
@@ -139,21 +145,28 @@ OMZ::plugins/pip/_pip
 # =============================================================================
 # PKG-TYPE: Binaries
 # =============================================================================
-zinit default-ice -cq as"program" wait"1" lucid
+zinit default-ice -cq as"program" wait"1" lucid light-mode
 
+# -- Eza --
 # zinit for \
 # #atclone"hook c.eza.zsh" \
 # #atload"hook l.eza.zsh" \
 # sbin'**/eza -> eza' \
 # eza-community/eza
 
-# bat ~ a cat clone with wings
-# zinit for \
-# atclone"hook c.bat.zsh" \
-# atload"hook l.bat.zsh" \
-# atpull"%atclone" \
-# mv"bat-*/bat -> bat" \
-# @sharkdp/bat
+# sharkdp/fd
+zinit for \
+from"gh-r" \
+mv"fd* -> fd" \
+pick"fd/fd" \
+@sharkdp/fd
+
+# sharkdp/bat
+zinit for \
+from"gh-r" \
+mv"bat* -> bat" \
+pick"bat/bat" \
+@sharkdp/bat
 
 # delta ~ a viewer for git and diff output
 zinit for \
@@ -161,14 +174,6 @@ atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
 dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
 mv"delta-*/delta -> delta" \
 @dandavison/delta
-
-# # fd ~ a simple, fast and user-friendly alternative to find
-# zinit for \
-# atclone"hook c.fd.zsh" \
-# atload"hook l.fd.zsh" \
-# atpull"%atclone" \
-# mv"fd-*/fd -> fd" \
-# @sharkdp/fd
 
 # zoxide ~  a simple, fast and user-friendly alternative to cd
 zinit for \
@@ -200,10 +205,9 @@ mv"zoxide-*/zoxide -> zoxide" \
 # @dbrgn/tealdeer
 
 # =============================================================================
-# PKG-TYPE | Enhancements:  Zshell
+# PKG-TYPE | Shell Enhancements
 # ============================================================================
 zinit default-ice -cq wait"0" lucid light-mode
-
 zinit for \
 @djui/alias-tips \
 @ianthehenry/zsh-autoquoter \
@@ -211,13 +215,30 @@ zinit for \
 @mattmc3/zsh-safe-rm \
 @psprint/zsh-navigation-tools
 
+
 # =============================================================================
-# Completions
+# PKG-Type | Fuzzy
+# =============================================================================
+zinit default-ice -cq lucid wait"0" light-mode
+zinit for \
+blockf \
+atload"source ${CONFIGS}/fzf-tab.zsh" \
+Aloxaf/fzf-tab
+
+# -- zsh-fzf-history-search --
+zinit for \
+joshskidmore/zsh-fzf-history-search
+
+# =============================================================================
+# PKG-Type | Completions
 # =============================================================================
 zinit default-ice -cq wait"0" lucid light-mode
-
 zinit for \
-@z-shell/zsh-fancy-completions
+z-shell/zsh-fancy-completions
+
+zinit default-ice -cq as"completions" wait"1"
+zinit snippet https://github.com/eza-community/eza/blob/main/completions/zsh/_eza
+
 autoload -Uz compinit && compinit
 # zinit for \
 # nocd \
@@ -275,5 +296,7 @@ autoload -Uz compinit && compinit
 zinit cdreplay -q
 
 # To customize prompt, run p10k configure or edit ~/.dotfiles/configs/.p10k.
-[[ ! -f ${DOTFILES[CONFIG]}/.p10.zsh ]] || source ${DOTFILES[CONFIG]}/.p10k.zsh
-POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+[[ ! -f ${DOTFILES[CONFIGS]}/.p10.zsh ]] || source ${DOTFILES[CONFIGS]}/.p10k.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/configs/zsh/.p10k.zsh.
+[[ ! -f ~/.dotfiles/configs/zsh/.p10k.zsh ]] || source ~/.dotfiles/configs/zsh/.p10k.zsh
