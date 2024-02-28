@@ -14,8 +14,8 @@ autoload -U zed
 autoload -U zmv
 
 
-#autoload -U edit-command-line
-#zle -N edit-command-line
+autoload -U edit-command-line
+zle -N edit-command-line
 
 autoload -U select-word-style
 zle -N select-word-style bash

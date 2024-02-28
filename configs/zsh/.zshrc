@@ -1,19 +1,20 @@
 #!/usr/bin/env zsh
-# vim:set filetype=zsh syntax=zsh
-# vim:set ft=zsh ts=4 sw=4 sts=0x
+# -*- coding: utf-8 -*-
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.dotfiles/configs/zsh/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+export POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# vim:set filetype=zsh syntax=zsh
+# vim:set ft=zsh ts=4 sw=4 sts=0x
+
 # =============================================================================
 #  STAGE: Verfiy Status & reinstall and reconfigure if needed
 # =============================================================================
-ZSH_THEME="powerlevel10k/powerlevel10k"
-[[ ! -f ${DOTFILES[CONFIG]}/.p10k.zsh ]] || source ${DOTFILES[CONFIG]}/.p10k.zsh
+#ZSH_THEME="powerlevel10k/powerlevel10k"
+#[[ ! -f ${DOTFILES[CONFIG]}/.p10k.zsh ]] || source ${DOTFILES[CONFIG]}/.p10k.zsh
 # Deprecating zshenv in favor for zprofile
 [[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
 
@@ -22,29 +23,13 @@ if [[ ! -f "${ZINIT_HOME}/zinit.zsh" ]]; then
   print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
   git clone https://github.com/zdharma-continuum/zinit.git ${ZINIT_HOME}
 fi
-
-# shellcheck source=/dev/null-
+# shellcheck source=/dev/null
 source "${ZINIT_HOME}/zinit.zsh"
-
-function hook {
-  source $HOME/.dotfiles/hooks/$1
-}
-
-# =============================================================================
-# Zsh Config Sourcing
-# =============================================================================
-
-source "${ZDOTDIR}/paths.zsh"
-#source "${ZDOTDIR}/autoloads.zsh"
-#source "${ZDOTDIR}/functions.zsh"
-#source "${ZDOTDIR}/options.zsh"
-#source "${ZDOTDIR}/aliases.zsh"
-source "${ZDOTDIR}/modules.zsh"
-source "${ZDOTDIR}/keybindings.zsh"
 
 # =============================================================================
 # THEME: powerlevel10k
 # =============================================================================
+
 zinit for \
 lucid \
 light-mode \
@@ -226,8 +211,8 @@ atload"source ${CONFIGS}/fzf-tab.zsh" \
 Aloxaf/fzf-tab
 
 # -- zsh-fzf-history-search --
-zinit for \
-joshskidmore/zsh-fzf-history-search
+# zinit for \
+# joshskidmore/zsh-fzf-history-search
 
 # =============================================================================
 # PKG-Type | Completions
@@ -266,8 +251,7 @@ autoload -Uz compinit && compinit
 #     sparsick/ansible-zsh                             \
 #     srijanshetty/zsh-pip-completion                  \
 #     unixorn/docker-helpers.zshplugin                 \
-#     vasyharan/zsh-brew-services                      \
-#     mattmc3/zsh-safe-rm
+#     vasyharan/zsh-brew-services
 
 
 # =============================================================================
@@ -288,7 +272,7 @@ atpull"hook p.completions.zsh" \
 # =============================================================================
 # compinit + cdreplay
 # =============================================================================
-autoload -Uz compinit && compinit
+#autoload -Uz compinit && compinit
 [[ $(date +'%j') != $(date -r ${ZDOTDIR:-$HOME}/.zcompdump +'%j') ]] \
 && compinit \
 || compinit -C
@@ -296,7 +280,7 @@ autoload -Uz compinit && compinit
 zinit cdreplay -q
 
 # To customize prompt, run p10k configure or edit ~/.dotfiles/configs/.p10k.
-[[ ! -f ${DOTFILES[CONFIGS]}/.p10.zsh ]] || source ${DOTFILES[CONFIGS]}/.p10k.zsh
+#[[ ! -f ${DOTFILES[CONFIGS]}/.p10.zsh ]] || source ${DOTFILES[CONFIGS]}/.p10k.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/configs/zsh/.p10k.zsh.
-[[ ! -f ~/.dotfiles/configs/zsh/.p10k.zsh ]] || source ~/.dotfiles/configs/zsh/.p10k.zsh
+#[[ ! -f ~/.dotfiles/configs/zsh/.p10k.zsh ]] || source ~/.dotfiles/configs/zsh/.p10k.zsh

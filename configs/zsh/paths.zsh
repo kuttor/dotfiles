@@ -12,3 +12,7 @@ path=(
   /{sbin,bin}
   $path
 )
+
+for function in $HOME/.dotfiles/autoloads/*; do
+  autoload $function
+done

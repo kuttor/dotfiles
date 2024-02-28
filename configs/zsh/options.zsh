@@ -26,7 +26,7 @@ setopt GLOB                   # Perform filename generation
 setopt GLOB_COMPLETE          # generate matches as for completion like MENU_COMPLETE.
 setopt GLOB_STAR_SHORT        # "**/*" = "**"  and ***/* = ***.
 setopt KSH_TYPESET            # word splitting does not take place
-setopt PATH_DIRS              # the directory
+#setopt PATH_DIRS              # the directory
 setopt INC_APPEND_HISTORY     # write to the history file immediately.
 setopt INTERACTIVE_COMMENTS   # allow comments in readline
 setopt LIST_ROWS_FIRST        # rows are way better

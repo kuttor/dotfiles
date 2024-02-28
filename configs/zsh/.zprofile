@@ -14,69 +14,55 @@ export COLUMNS ROW
 export PASSWORD_STORE_GPG_OPTS="--no-throw-keyids --use-agent"
 
 # =============================================================================
-# VARS | Dotfiles
+# Dotfiles | Envrionment Setup
 # =============================================================================
 
+# -- Dotfiles Array --
 declare -A DOTFILES
 DOTFILES[HOME_DIR]="${HOME}/.dotfiles"
+DOTFILES[AUTOLOADS]="${HOME}/.dotfiles/autoloads"
 DOTFILES[CONFIGS]="${HOME}/.dotfiles/configs"
 DOTFILES[HOOKS]="${HOME}/.dotfiles/hooks"
-DOTFILES[AUTOLOADS]="${HOME}/.dotfiles/autoloads"
 
-# =============================================================================
-# VARS | XDG Base Directory Specification
-# =============================================================================
-# https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
-
-# -- Local --
-export LOCAL="${HOME}/.local"; mkdir -p "${LOCAL}"
-
-# -- Configs --
-export XDG_CONFIG_HOME="${HOME}/.config"
+# -- Dotfiles Array Shorteners --
+export HOME_DIR="${DOTFILES[HOME_DIR]}"
+export AUTOLOADS="${DOTFILES[AUTOLOADS]}"
 export CONFIGS="${DOTFILES[CONFIGS]}"
-export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIGS}":"${XDG_CONFIG_DIRS}"
+export HOOKS="${DOTFILES[HOOKS]}"
 
-# -- Data --
-export XDG_DATA_HOME="${LOCAL}/share"
-export DATA="${XDG_DATA_HOME}"
-export XDG_DATA_DIRS="${DATA}":"${XDG_DATA_DIRS}"
-
-# -- Lib --
-export XDG_LIB_HOME="${LOCAL}/lib"; mkdir -p "${XDG_LIB_HOME}"
-export LIB="${XDG_LIB_HOME}"
-
-# -- Cache --
-export XDG_CACHE_HOME="${LOCAL}/cache"; mkdir -p "${XDG_CACHE_HOME}"
-export CACHE="${XDG_CACHE_HOME}"; mkdir -p "${CACHE}"
-
-
-export XDG_STATE_HOME="${HOME}/.local"; mkdir -p "${XDG_STATE_HOME}"
-export XDG_RUNTIME_DIR="${HOME}/tmp/zsh-${UID}"
-
-# -- Bin --
+# -- XDG Base Directories --
+export XDG_CONFIG_HOME="${HOME}/.local/config"; mkdir -p "${XDG_CONFIG_HOME}"
+export XDG_RUNTIME_DIR="/tmp/$USER"; mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
+export XDG_STATE_HOME="${HOME}/.local/state"; mkdir -p "${XDG_STATE_HOME}"
+export XDG_CACHE_HOME="${HOME}/.local/cache"; mkdir -p "${XDG_CACHE_HOME}"
+export XDG_DATA_HOME="${HOME}/.local/share"; mkdir -p "${XDG_DATA_HOME}"
+export XDG_LIB_HOME="${HOME}/.local/lib"; mkdir -p "${XDG_LIB_HOME}"
 export XDG_BIN_HOME="${LOCAL}/bin"; mkdir -p "${XDG_BIN_HOME}"
-export BIN="${XDG_BIN_HOME}"; mkdir -p "${BIN}"
+
+# -- XDG Base Arrays --
+export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIGS}":"${XDG_CONFIG_DIRS}"
+export XDG_DATA_DIRS="${DATA}":"${XDG_DATA_DIRS}"
 export XDG_BIN_DIRS="${XDG_BIN_HOME}:${XDG_BIN_DIRS}"
 
-# =============================================================================
-# VARS | Homebrew
-# =============================================================================
+# -- XDG Shorteners --
+export LOCAL_CONFIG="${XDG_CONFIG_HOME}"
+export LOCAL_CACHE="${XDG_CACHE_HOME}"
+export LOCAL_DATA="${XDG_DATA_HOME}"
+export LOCAL_LIB="${XDG_LIB_HOME}"
+export LOCAL_BIN="${XDG_BIN_HOME}"
 
+# -- Homebrew Environment --
 export HOMEBREW_PREFIX="/opt/homebrew"
-export HOMEBREW_CELLAR="${HOMEBREW_CACHE}/Cellar"
-export HOMEBREW_REPOSITORY="${HOMEBREW_CACHE}"
+export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
+export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
 
+# -- Homebrew Options --
+HOMEBREW_NO_ENV_HINT=1
+
+# -- Homebrew Paths Additions --
 export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:${PATH+:$PATH}"
 export MANPATH="${HOMEBREW_PREFIX}/share/man:${MANPATH+:$MANPATH}:"
 export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
-
-HOMEBREW_CACHE="${CACHE}/homebrew/cache"; mkdir -p "${HOMEBREW_CACHE}"
-HOMEBREW_LOGS="${CACHE}/homebrew/logs"; mkdir -p "${HOMEBREW_LOGS}"
-HOMEBREW_NO_ENV_HINT=1
-
-# =============================================================================
-# VARS | Zsh
-# =============================================================================
 
 # -- Zsh Configs Path --
 export ZDOTDIR="${CONFIGS}/zsh"
@@ -85,13 +71,9 @@ export ZDOTDIR="${CONFIGS}/zsh"
 export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"; mkdir -p "${HELPDIR}"
 alias help="run-help"
 
-# =============================================================================
-# VARS | Zinit
-# =============================================================================
-
 # -- Basic Zinit Location --
-export ZINIT_HOME="${DATA}/zinit/zinit.git"; mkdir -p "${ZINIT_HOME}"
-export ZPFX="${DATA}/zinit/polaris"; mkdir -p "${ZPFX}"
+export ZINIT_HOME="${LOCAL_DATA}/zinit/zinit.git"; mkdir -p "${ZINIT_HOME}"
+export ZPFX="${LOCAL_DATA}/zinit/polaris"; mkdir -p "${ZPFX}"
 
 #-- Env Vars --
 # declare -A ZINIT
@@ -108,21 +90,24 @@ export ZPFX="${DATA}/zinit/polaris"; mkdir -p "${ZPFX}"
 #ZINIT[COMPINIT_OPTS]=" -C"
 #ZINIT[NO_ALIASES]="0"
 
-# =============================================================================
-# ENV-VARS: Config Relocations
-# =============================================================================
 
-#typeset POWERLEVEL9K_CONFIG_FILE="$DOTFILES[CONFIGS]/.p10k"
-typeset _ZO_DATA_DIR="${DATA}"
-typeset BAT_CONFIG_PATH="${CONFIGS}/bat.conf"
-typeset CARGO_HOME="${DATA}/cargo"
-typeset EDITORCONFIGRC="${CONFIGS}/.editorconfigrc"
-typeset EXA_CONFIG_PATH="${CONFIGS}/exa.conf"
-typeset FZF_CONFIG_PATH="${CONFIGS}/fzf.conf"
+# -- Data Relocations --
+typeset _ZO_DATA_DIR="${LOCAL_DATA}"
+typeset CARGO_HOME="${LOCAL_DATA}/cargo"
+
+# -- Config Relocations --
 typeset INPUTRC="${CONFIGS}/inputrc"
-typeset RPGREP_CONFIG_PATH="${CONFIGS}/ripgreprc"
-typeset TMUX_TEMPDIR="$XDG_RUNTIME_DIR/tmux"
 typeset WGETRC="${CONFIGS}/wgetrc"
+typeset BAT_CONFIG_PATH="${CONFIGS}/bat.conf"
+typeset EXA_CONFIG_PATH="${CONFIGS}/exa.conf"
+typeset EZA_CONFIG_PATH="${CONFIGS}/exa.conf"
+typeset FZF_CONFIG_PATH="${CONFIGS}/fzf.conf"
+typeset RPGREP_CONFIG_PATH="${CONFIGS}/ripgreprc"
+typeset EDITORCONFIGRC="${CONFIGS}/.editorconfigrc"
+typeset POWERLEVEL9K_CONFIG_FILE="${CONFIGS}/.p10k.zsh"
+typeset POWERLEVEL10K_CONFIG_FILE="${CONFIGS}/.p10k.zsh"
+# Tmux
+typeset TMUX_TEMPDIR="${LOCAL_CACHE}/tmux"
 
 #  Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
@@ -149,7 +134,6 @@ export VISUAL="$EDITOR"
 export PYTHONDONTWRITEBYTECODE=true
 export PYTHONSTARTUP="$HOME/.python_startup.py"
 
-
 # Ruby
 export LDFLAGS="-L/usr/local/opt/ruby/lib"
 export CPPFLAGS="-I/usr/local/opt/ruby/include"
@@ -160,25 +144,28 @@ GITSTATUS_SHOW_UNTRACKED_FILES="all"
 
 
 # FZF
-export FZF_BASE="${XDG_CONFIG_HOME}/fzf.conf"
+export FZF_BASE="${CONFIGS}/fzf.conf"
 export FZF_COMPLETION_TRIGGER='~~'
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND='rg --files --hidden'
 export FZF_DEFAULT_OPTS='--cycle --reverse --no-height  --exit-0 --bind=ctrl-j:accept --color=dark --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7'
 
-# # Zlua
-# #[[ ! -f "${CACHE}/z.lua" ]]  touch "${CACHE}/z.lua"
-# export _ZL_DATA="$CACHE/z.lua"
-# export _ZL_MATCH_MODE="1"
-# export _ZL_HYPHEN="1"
-# export _ZL_ECHO="1"
-
 # FZ
-FZ_HISTORY_CD_CMD="_zlua"
+FZ_HISTORY_CD_CMD="z"
 
 # History
-[[ -z "$HISTFILE" ]] && HISTFILE="${CACHE}/.zsh_history"
-export ZSH_PECO_HISTORY_OPTS="--layout=bottom-up --initial-filter=Fuzzy"
+[[ -z "$HISTFILE" ]] && HISTFILE="${LOCAL_CACHE}/.zsh_history"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
+
+# =============================================================================
+# Zsh Config Sourcing
+# =============================================================================
+
+source "${ZDOTDIR}/paths.zsh"
+source "${ZDOTDIR}/autoloads.zsh"
+#source "${ZDOTDIR}/options.zsh"
+# source "${ZDOTDIR}/aliases.zsh"
+# source "${ZDOTDIR}/modules.zsh"
+# source "${ZDOTDIR}/keybindings.zsh"`

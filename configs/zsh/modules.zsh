@@ -11,7 +11,6 @@ zmodload zsh/parameter
 zmodload zsh/terminfo
 zmodload zsh/compctl
 zmodload zsh/complist
-#zmodload zsh/completion
 zmodload zsh/computil
 zmodload zsh/zle
 zmodload zsh/curses

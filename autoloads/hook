@@ -1,1 +1,1 @@
-source $HOME/.dotfiles/autoloads/$1
+source $HOME/.dotfiles/hooks/$1
