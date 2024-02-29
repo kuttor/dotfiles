@@ -37,7 +37,7 @@ export XDG_STATE_HOME="${HOME}/.local/state"; mkdir -p "${XDG_STATE_HOME}"
 export XDG_CACHE_HOME="${HOME}/.local/cache"; mkdir -p "${XDG_CACHE_HOME}"
 export XDG_DATA_HOME="${HOME}/.local/share"; mkdir -p "${XDG_DATA_HOME}"
 export XDG_LIB_HOME="${HOME}/.local/lib"; mkdir -p "${XDG_LIB_HOME}"
-export XDG_BIN_HOME="${LOCAL}/bin"; mkdir -p "${XDG_BIN_HOME}"
+export XDG_BIN_HOME="${HOME}/.local/bin"; mkdir -p "${XDG_BIN_HOME}"
 
 # -- XDG Base Arrays --
 export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIGS}":"${XDG_CONFIG_DIRS}"
@@ -148,7 +148,8 @@ export FZF_BASE="${CONFIGS}/fzf.conf"
 export FZF_COMPLETION_TRIGGER='~~'
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND='rg --files --hidden'
-export FZF_DEFAULT_OPTS='--cycle --reverse --no-height  --exit-0 --bind=ctrl-j:accept --color=dark --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7'
+export FZF_DEFAULT_OPTS=--cycle --reverse --no-height  \
+                        --exit-0 --bind=ctrl-j:accept --color=dark --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7'
 
 # FZ
 FZ_HISTORY_CD_CMD="z"
