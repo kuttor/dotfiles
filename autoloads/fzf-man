@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+function  fzf-man() {
+	local  selected_command
+	selected_command=$(
+		man  -k . \
+		|  awk '{print $1}' \
+		|  sort  \
+		|  uniq  \
+		|  fzf  --multi  --cycle  \
+			--preview='echo {}' \
+			--preview-window down:10%
+	)
+	if [[ -n  "$selected_command" ]]; then
+		man  "$selected_command"  \
+			|  fzf  --multi  --cycle  --tac  --no-sort  \
+				--preview='echo {}'  \
+				--preview-window  down:10%  \
+				--layout='reverse-list'  \
+				--color  bg:#222222,preview-bg:#333333
+	fi
+}

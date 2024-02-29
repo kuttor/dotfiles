@@ -1,0 +1,55 @@
+#!/usr/bin/env zsh
+
+function  fzf-command-widget() {
+	local  full_command=$BUFFER
+	case  "$full_command"  in
+		ls*)
+			BUFFER="$full_command | fzf --multi --cycle --no-sort \
+				--preview='echo {}' \
+				--preview-window down:10% \
+				--layout='reverse-list' \
+				--color bg:#222222,preview-bg:#333333"
+		;;
+		man*)
+			BUFFER="fzf-man $full_command"
+		;;
+		printenv* | env*)
+			BUFFER="$full_command | fzf --multi --cycle --no-sort \
+				--preview='echo {}' \
+				--preview-window down:10% \
+				--layout='reverse-list' \
+				--color bg:#222222,preview-bg:#333333"
+		;;
+		set)
+			BUFFER="$full_command | fzf --multi --cycle --no-sort \
+				--preview='echo {}' \
+				--preview-window down:10% \
+				--layout='reverse-list' \
+				--color bg:#222222,preview-bg:#333333"
+		;;
+		grep*)
+			BUFFER="$full_command | fzf -i --multi --cycle --no-sort \
+				--preview='echo {}' \
+				--preview-window down:10% \
+				--layout='reverse-list' \
+				--color bg:#222222,preview-bg:#333333"
+		;;
+		find*)
+			BUFFER="$full_command | fzf -i --multi --cycle --no-sort \
+				--preview='echo {}' \
+				--preview-window down:10% \
+				--layout='reverse-list' \
+				--color bg:#222222,preview-bg:#333333"
+		;;
+		'ps aux')
+			BUFFER="$full_command | fzf --multi --cycle --no-sort \
+				--preview='echo {}' \
+				--preview-window down:10% \
+				--layout='reverse-list' \
+				--color bg:#222222,preview-bg:#333333"
+		;;
+	esac
+	zle  accept-line
+	# Uncomment if the long command left over on the previous prompt bothers you.
+	# $(clear)
+}

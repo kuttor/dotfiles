@@ -198,17 +198,18 @@ zinit for \
 @ianthehenry/zsh-autoquoter \
 @kutsan/zsh-system-clipboard \
 @mattmc3/zsh-safe-rm \
-@psprint/zsh-navigation-tools
+@psprint/zsh-navigation-tools \
+chitoku-k/fzf-zsh-completions
 
-
-# =============================================================================
-# PKG-Type | Fuzzy
-# =============================================================================
-zinit default-ice -cq lucid wait"0" light-mode
 zinit for \
 blockf \
 atload"source ${CONFIGS}/fzf-tab.zsh" \
 Aloxaf/fzf-tab
+
+zinit for \
+atload"export FZSHELL_CONFIG=${CONFIGS}; export FZSHELL_BIND_KEY='^x'" \
+mnowotnik/fzshell
+
 
 # -- zsh-fzf-history-search --
 # zinit for \
@@ -217,14 +218,20 @@ Aloxaf/fzf-tab
 # =============================================================================
 # PKG-Type | Completions
 # =============================================================================
+zinit default-ice -cq as"completions" wait"0"
+zinit snippet https://github.com/eza-community/eza/blob/main/completions/zsh/_eza
+
+
 zinit default-ice -cq wait"0" lucid light-mode
 zinit for \
 z-shell/zsh-fancy-completions
+zinit ice wait'0' lucid depth=1 \
+    atload"autoload -Uz compinit && compinit -u" \
+    atpull"zinit cclear && zinit creinstall sainnhe/zsh-completions"
+zinit light sainnhe/zsh-completions
 
-zinit default-ice -cq as"completions" wait"1"
-zinit snippet https://github.com/eza-community/eza/blob/main/completions/zsh/_eza
 
-autoload -Uz compinit && compinit
+
 # zinit for \
 # nocd \
 # depth=1 \
@@ -234,11 +241,9 @@ autoload -Uz compinit && compinit
 
 #     changyuheng/fz \
 #     chitoku-k/fzf-zsh-completions
-#      djui/alias-tips \
 #     eastokes/aws-plugin-zsh                          \
 #     FFKL/s3cmd-zsh-plugin                            \
 #     greymd/docker-zsh-completion                     \
-#     hlissner/zsh-autçopair                            \
 #     joshskidmore/zsh-fzf-history-search              \
 #     kutsan/zsh-system-clipboard                      \
 #     macunha1/zsh-terraform                           \
@@ -247,7 +252,6 @@ autoload -Uz compinit && compinit
 #     pierpo/fzf-docker                                \
 #     rapgenic/zsh-git-complete-urls                   \
 #     rupa/v                                           \
-#     skywind3000/z.lua                                \
 #     sparsick/ansible-zsh                             \
 #     srijanshetty/zsh-pip-completion                  \
 #     unixorn/docker-helpers.zshplugin                 \

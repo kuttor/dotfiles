@@ -32,7 +32,7 @@ export HOOKS="${DOTFILES[HOOKS]}"
 
 # -- XDG Base Directories --
 export XDG_CONFIG_HOME="${HOME}/.local/config"; mkdir -p "${XDG_CONFIG_HOME}"
-export XDG_RUNTIME_DIR="/tmp/$USER"; mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
+export XDG_RUNTIME_DIR="${TMPPREFIX}/${3}"; mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
 export XDG_STATE_HOME="${HOME}/.local/state"; mkdir -p "${XDG_STATE_HOME}"
 export XDG_CACHE_HOME="${HOME}/.local/cache"; mkdir -p "${XDG_CACHE_HOME}"
 export XDG_DATA_HOME="${HOME}/.local/share"; mkdir -p "${XDG_DATA_HOME}"
@@ -57,7 +57,8 @@ export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
 export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
 
 # -- Homebrew Options --
-HOMEBREW_NO_ENV_HINT=1
+export HOMEBREW_NO_ENV_HINT=1
+export HOMEBREW_NO_ANALYTICS=1
 
 # -- Homebrew Paths Additions --
 export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:${PATH+:$PATH}"
@@ -143,13 +144,19 @@ GITSTATUS_LOG_LEVEL=DEBUG
 GITSTATUS_SHOW_UNTRACKED_FILES="all"
 
 
-# FZF
+# -- FZF --
 export FZF_BASE="${CONFIGS}/fzf.conf"
-export FZF_COMPLETION_TRIGGER='~~'
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
-export FZF_CTRL_T_COMMAND='rg --files --hidden'
-export FZF_DEFAULT_OPTS=--cycle --reverse --no-height  \
-                        --exit-0 --bind=ctrl-j:accept --color=dark --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7'
+export FZF_DEFAULT_OPTS_FILE="${CONFIGS}/.fzfrc"
+export FZF_COMPLETION_TRIGGER="~~"
+export FZF_DEFAULT_COMMAND="rg --files --hidden"
+export FZF_CTRL_T_COMMAND="rg --files --hidden"
+export FZF_DEFAULT_OPTS="\
+            --cycle --reverse --no-height  \
+            --exit-0 --bind=ctrl-j:accept \
+            --color=dark \
+            --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f \
+            --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7"
+
 
 # FZ
 FZ_HISTORY_CD_CMD="z"
@@ -159,6 +166,40 @@ FZ_HISTORY_CD_CMD="z"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
+
+# =============================================================================
+# Color Handling for the Uncolorized
+# =============================================================================
+
+# Use GRC for additionnal colorization
+GRC=$(command -v grc)
+if [ -n GRC ]; then
+    alias colourify='$GRC -es --colour=auto'
+    alias as='colourify as'
+    #cvs
+    alias configure='colourify ./configure'
+    alias diff='colourify diff'
+    alias dig='colourify dig'
+    alias g++='colourify g++'
+    alias gas='colourify gas'
+    alias gcc='colourify gcc'
+    alias head='colourify head'
+    alias ifconfig='colourify ifconfig'
+    #irclog
+    alias ld='colourify ld'
+    #ldap
+    #log
+    alias make='colourify make'
+    alias mount='colourify mount'
+    #mtr
+    alias netstat='colourify netstat'
+    alias ping='colourify ping'
+    #proftpd
+    alias ps='colourify ps'
+    alias tail='colourify tail'
+    alias traceroute='colourify traceroute'
+    #wdiff
+fi
 
 # =============================================================================
 # Zsh Config Sourcing
