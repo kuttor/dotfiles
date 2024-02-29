@@ -1,0 +1,17 @@
+{
+  "shfmt.executablePath": "/Users/akuttor/.local/bin/altshfmt",
+  "editor.formatOnSave": true,
+  "editor.find.autoFindInSelection": "always",
+  "editor.find.globalFindClipboard": true,
+  "editor.inlayHints.fontFamily": "Operator Mono",
+  "files.autoSave": "afterDelay",
+  "editor.fontFamily": "Operator Mono",
+  "editor.suggest.preview": true,
+  "search.showLineNumbers": true,
+  "better-comments.highlightPlainText": true,
+  "bashIde.enableSourceErrorDiagnostics": false,
+  "bashIde.explainshellEndpoint": "https://explainshell.com/",
+  "bashIde.shellcheckPath": "/opt/homebrew/bin/shellcheck",
+  "shell-syntax.defaultShell": "zsh",
+  "shellformat.useEditorConfig": true
+}

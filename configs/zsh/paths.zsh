@@ -16,3 +16,8 @@ path=(
 for function in $HOME/.dotfiles/autoloads/*; do
   autoload $function
 done
+
+
+# --  Path Related Aliases --
+alias path_list='echo "$PATH" | tr ":" "\n"'
+alias fpath_list='echo "$FPATH" | tr ":" "\n"'
