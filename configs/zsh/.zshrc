@@ -199,7 +199,8 @@ zinit for \
 @kutsan/zsh-system-clipboard \
 @mattmc3/zsh-safe-rm \
 @psprint/zsh-navigation-tools \
-chitoku-k/fzf-zsh-completions
+chitoku-k/fzf-zsh-completions \
+joshskidmore/zsh-fzf-history-search
 
 zinit for \
 blockf \
@@ -210,13 +211,8 @@ zinit for \
 atload"export FZSHELL_CONFIG=${CONFIGS}; export FZSHELL_BIND_KEY='^x'" \
 mnowotnik/fzshell
 
-
-# -- zsh-fzf-history-search --
-# zinit for \
-# joshskidmore/zsh-fzf-history-search
-
 # =============================================================================
-# PKG-Type | Completions
+# Completions
 # =============================================================================
 zinit default-ice -cq as"completions" wait"0"
 zinit snippet https://github.com/eza-community/eza/blob/main/completions/zsh/_eza

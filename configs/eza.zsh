@@ -1,14 +1,25 @@
 #! /usr/bin/env zsh
+EZA_DEFAULT_FLAGS=" \
+--all \
+--group-directories-first \
+--time-style=long-iso \
+--sort=name \
+--icons=always"
 
 # -- aliases --
 alias ll="\
-eza \
---all \
+eza "${EZA_DEFAULT_FLAGS}" \
 --binary \
+--classify \
 --context \
+--created \
 --git \
 --git-repos \
---group-directories-first \
 --header \
 --long \
+--modified \
 "
+
+alias ls="eza "${EZA_DEFAULT_FLAGS}" --across"
+alias l="ls"
+alias tree="ll --tree"
