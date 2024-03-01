@@ -1,14 +1,13 @@
 #!/usr/bin/env zsh
 # -*- coding: utf-8 -*-
+# vim:set filetype=zsh syntax=zsh
+# vim:set ft=zsh ts=4 sw=4 sts=0
 
 export POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
-# vim:set filetype=zsh syntax=zsh
-# vim:set ft=zsh ts=4 sw=4 sts=0x
 
 # =============================================================================
 #  STAGE: Verfiy Status & reinstall and reconfigure if needed
@@ -35,6 +34,8 @@ lucid \
 light-mode \
 depth=1 \
 @romkatv/powerlevel10k
+
+[[ ! -f ${CONFIGS}/.p10k.zsh ]] || source ${CONFIGS}/.p10k.zsh
 
 # =============================================================================
 # ZSH Annexes Extensions
@@ -215,24 +216,22 @@ mnowotnik/fzshell
 # Completions
 # =============================================================================
 zinit default-ice -cq as"completions" wait"0"
-zinit snippet https://github.com/eza-community/eza/blob/main/completions/zsh/_eza
+zinit for \
+atload"source ${CONFIGS}/eza.zsh" \
+https://github.com/eza-community/eza/blob/main/completions/zsh/_eza
 
 
 zinit default-ice -cq wait"0" lucid light-mode
 zinit for \
-z-shell/zsh-fancy-completions
-zinit ice wait'0' lucid depth=1 \
-    atload"autoload -Uz compinit && compinit -u" \
-    atpull"zinit cclear && zinit creinstall sainnhe/zsh-completions"
-zinit light sainnhe/zsh-completions
-
-
-
-# zinit for \
-# nocd \
-# depth=1 \
-# atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
-# 3v1n0/zsh-bash-completions-fallback
+z-shell/zsh-fancy-completions \
+depth=1 \
+atload"autoload -Uz compinit; compinit -u" \
+atpull"zinit cclear; zinit creinstall sainnhe/zsh-completions" \
+sainnhe/zsh-completions \
+nocd \
+depth=1 \
+atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
+3v1n0/zsh-bash-completions-fallback
 
 
 #     changyuheng/fz \
@@ -252,7 +251,6 @@ zinit light sainnhe/zsh-completions
 #     srijanshetty/zsh-pip-completion                  \
 #     unixorn/docker-helpers.zshplugin                 \
 #     vasyharan/zsh-brew-services
-
 
 # =============================================================================
 # Zinit Commons

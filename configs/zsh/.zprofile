@@ -85,12 +85,10 @@ export ZPFX="${LOCAL_DATA}/zinit/polaris"; mkdir -p "${ZPFX}"
 # ZINIT[SNIPPETS_DIR]="${DATA}/zinit/snippets"
 # ZINIT[COMPLETIONS_DIR]="${DATA}/zinit/completions"
 # ZINIT[ZCOMPDUMP_PATH]="${CACHE}/zcompdump"
-#
-#ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
-#ZINIT[MUTE_WARNINGS]="1"
-#ZINIT[COMPINIT_OPTS]=" -C"
-#ZINIT[NO_ALIASES]="0"
-
+# ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
+# ZINIT[MUTE_WARNINGS]="1"
+# ZINIT[COMPINIT_OPTS]=" -C"
+# ZINIT[NO_ALIASES]="0"
 
 # -- Data Relocations --
 typeset _ZO_DATA_DIR="${LOCAL_DATA}"
@@ -98,14 +96,14 @@ typeset CARGO_HOME="${LOCAL_DATA}/cargo"
 typeset GOPATH="${LOCAL_DATA}/go"
 typeset GEM_HOME="${LOCAL_DATA}/gem"
 
-# -- Config Relocations --
+# -- Config Relocations --eza
 typeset LESSKEY="${CONFIGS}/lesskey"
 typeset INPUTRC="${CONFIGS}/inputrc"
 typeset WGETRC="${CONFIGS}/wgetrc"
 typeset DOCKER_CONFIG="${CONFIGS}/docker"
 typeset BAT_CONFIG_PATH="${CONFIGS}/bat.conf"
 typeset EXA_CONFIG_PATH="${CONFIGS}/exa.conf"
-typeset EZA_CONFIG_PATH="${CONFIGS}/exa.conf"
+typeset EZA_CONFIG_PATH="${CONFIGS}/eza.conf"
 typeset FZF_CONFIG_PATH="${CONFIGS}/fzf.conf"
 typeset RPGREP_CONFIG_PATH="${CONFIGS}/ripgreprc"
 typeset EDITORCONFIGRC="${CONFIGS}/.editorconfigrc"
@@ -114,9 +112,10 @@ typeset POWERLEVEL10K_CONFIG_FILE="${CONFIGS}/.p10k.zsh"
 
 # -- Local Cache Relocations --
 typeset LESSHISTFILE="${LOCAL_CACHE}/less/history"
-typeset npm_config_cache="${LOCAL_CACHE}/npm"
+typeset NPM_CONFIG_CACHE="${LOCAL_CACHE}/npm"
 typeset TMUX_TEMPDIR="${LOCAL_CACHE}/tmux"
 typeset GEM_SPEC_CACHE="${LOCAL_CACHE}/gem"
+
 #  Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
 export ZSH_AUTOSUGGEST_USE_ASYNC="1"

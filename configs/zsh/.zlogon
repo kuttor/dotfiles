@@ -21,4 +21,4 @@
     do
         zrecompile -pq $f
     done
-) 
+)
