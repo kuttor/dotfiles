@@ -72,9 +72,9 @@ zinit for \
 zdharma-continuum/zzcomplete \
 zdharma-continuum/zsh-lint \
 zdharma-continuum/zsh-sweep \
-zdharma-continuum/git-url
-#zdharma-continuum/zui \
-#NICHOLAS85/z-a-eval
+zdharma-continuum/git-url \
+zdharma-continuum/zui \
+NICHOLAS85/z-a-eval \
 
 # =============================================================================
 # PKG-TYPE | Oh My Zsh
@@ -123,7 +123,7 @@ OMZ::plugins/magic-enter
 # -- Completions --
 zinit default-ice -cq as"completion" wait"1" lucid
 zinit for \
-OMZ::plugins/terraform \
+OMZ::plugins/terraform/_terraform \
 OMZ::plugins/fd/_fd \
 OMZ::plugins/ag/_ag \
 OMZ::plugins/pip/_pip
