@@ -1,0 +1,4 @@
+#! /usr/bin/env zsh
+# shellcheck shell=sh
+
+fd --type d --hidden --follow --exclude ".git" . "$1"

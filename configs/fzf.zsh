@@ -1,13 +1,59 @@
 
-export FZF_COMPLETION_OPTS='--border --info=inline'
+# -- BUILTIN Env-Vars ---------------------------------------------------------
+
+# Execute completion hotkey: Default="**"
 export FZF_COMPLETION_TRIGGER='~~'
+
+# Commons | Completion Output Options
+export FZF_COMPLETION_OPTS='\
+--border \
+--info=inline \
+'
+
+# Base Launcher Command
+export FZF_DEFAULT_COMMAND="\
+fd \
+--color=always \
+--hidden \
+--follow \
+--type=file \
+"
+
+# Base Output Defaults
 export FZF_DEFAULT_OPTS=" \
-      --cycle --reverse --no-height --exit-0 \
-      --bind=ctrl-j:accept \
-      --color=dark \
-      --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f \
-      --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7
-      "
+--bind='ctrl-j:accept' \
+--border='sharp' \
+--cycle \
+--exit-0 \
+--layout='reverse' \
+--margin='0' \
+--marker='✓ ', \
+--no-height \
+--pointer='▶ ' \
+--color=\
+dark,\
+gutter:-1,\
+bg:-1,\
+bg+:-1,\
+fg:-1,\
+fg+:-1,\
+hl:#5fff87,\
+hl+:#ffaf5f, \
+info:#af87ff,\
+prompt:#5fff87,\
+pointer:#ff87d7,\
+marker:#ff87d7,\
+spinner:#ff87d7\
+"
+
+export FZF_ALT_C_COMMAND='fd --hidden --follow --type=d'
+
+# Canvas setting
+export FZF_DEFAULT_HEIGHT='80%'
+export FZF_TMUX_HEIGHT='80%'
+
+
+# -- Functions ----------------------------------------------------------------
 
 # -- fd ~ list path candidates. "$1" is base path to start traversal
 _fzf_compgen_path() {
@@ -31,14 +77,13 @@ _fzf_comprun() {
   esac
 }
 
-# =================================================================
-# Completions
-# =================================================================
+_fzf_setup_completion path ag git
+
+_fzf_setup_completion dir tree
+
+# -- Completions --------------------------------------------------------------
 
 ENHANCD_COMPLETION_BEHAVIOR=list
-
-_fzf_setup_completion path ag git kubectl
-_fzf_setup_completion dir tree
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # cd (and enhancd) preview
