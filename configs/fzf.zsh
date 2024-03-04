@@ -55,16 +55,6 @@ export FZF_TMUX_HEIGHT='80%'
 
 # -- Functions ----------------------------------------------------------------
 
-# -- fd ~ list path candidates. "$1" is base path to start traversal
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
-
-# -- fd ~ list directory completion
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
-}
-
 _fzf_comprun() {
   local command=$1
   shift
