@@ -8,8 +8,6 @@
 # ENV VARS: Terminal Setup
 # ============================================================================\=
 
-export COLUMNS ROW
-
 # Fix for password store
 export PASSWORD_STORE_GPG_OPTS="--no-throw-keyids --use-agent"
 
@@ -31,13 +29,20 @@ export CONFIGS="${DOTFILES[CONFIGS]}"
 export HOOKS="${DOTFILES[HOOKS]}"
 
 # -- XDG Base Directories --
-export XDG_CONFIG_HOME="${HOME}/.local/config"; mkdir -p "${XDG_CONFIG_HOME}"
-export XDG_RUNTIME_DIR="${TMPPREFIX}/${3}"; mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
-export XDG_STATE_HOME="${HOME}/.local/state"; mkdir -p "${XDG_STATE_HOME}"
-export XDG_CACHE_HOME="${HOME}/.local/cache"; mkdir -p "${XDG_CACHE_HOME}"
-export XDG_DATA_HOME="${HOME}/.local/share"; mkdir -p "${XDG_DATA_HOME}"
-export XDG_LIB_HOME="${HOME}/.local/lib"; mkdir -p "${XDG_LIB_HOME}"
-export XDG_BIN_HOME="${HOME}/.local/bin"; mkdir -p "${XDG_BIN_HOME}"
+export XDG_CONFIG_HOME="${HOME}/.local/config"
+mkdir -p "${XDG_CONFIG_HOME}"
+export XDG_RUNTIME_DIR="${TMPPREFIX}/${3}"
+mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
+export XDG_STATE_HOME="${HOME}/.local/state"
+mkdir -p "${XDG_STATE_HOME}"
+export XDG_CACHE_HOME="${HOME}/.local/cache"
+mkdir -p "${XDG_CACHE_HOME}"
+export XDG_DATA_HOME="${HOME}/.local/share"
+mkdir -p "${XDG_DATA_HOME}"
+export XDG_LIB_HOME="${HOME}/.local/lib"
+mkdir -p "${XDG_LIB_HOME}"
+export XDG_BIN_HOME="${HOME}/.local/bin"
+mkdir -p "${XDG_BIN_HOME}"
 
 # -- XDG Base Arrays --
 export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIGS}":"${XDG_CONFIG_DIRS}"
@@ -67,14 +72,17 @@ export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
 
 # -- Zsh Configs Path --
 export ZDOTDIR="${CONFIGS}/zsh"
-
+export ZLIB="${ZDOTDIR}/lib"
 # -- Help Files --
-export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"; mkdir -p "${HELPDIR}"
+export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"
+mkdir -p "${HELPDIR}"
 alias help="run-help"
 
 # -- Basic Zinit Location --
-export ZINIT_HOME="${LOCAL_DATA}/zinit/zinit.git"; mkdir -p "${ZINIT_HOME}"
-export ZPFX="${LOCAL_DATA}/zinit/polaris"; mkdir -p "${ZPFX}"
+export ZINIT_HOME="${LOCAL_DATA}/zinit/zinit.git"
+mkdir -p "${ZINIT_HOME}"
+export ZPFX="${LOCAL_DATA}/zinit/polaris"
+mkdir -p "${ZPFX}"
 
 #-- Env Vars --
 # declare -A ZINIT
@@ -91,6 +99,8 @@ export ZPFX="${LOCAL_DATA}/zinit/polaris"; mkdir -p "${ZPFX}"
 # ZINIT[NO_ALIASES]="0"
 
 # -- Data Relocations --
+typeset TMUX_PLUGIN_MANAGER_PATH="${LOCAL_DATA}/tmux/plugins"
+typeset ZLIB="${ZDOTDIR}/lib"
 typeset _ZO_DATA_DIR="${LOCAL_DATA}"
 typeset CARGO_HOME="${LOCAL_DATA}/cargo"
 typeset GOPATH="${LOCAL_DATA}/go"
@@ -100,11 +110,15 @@ typeset GEM_HOME="${LOCAL_DATA}/gem"
 typeset LESSKEY="${CONFIGS}/lesskey"
 typeset INPUTRC="${CONFIGS}/inputrc"
 typeset WGETRC="${CONFIGS}/wgetrc"
+typeset CURL_HOME="${CONFIGS}/curl"
 typeset DOCKER_CONFIG="${CONFIGS}/docker"
 typeset BAT_CONFIG_PATH="${CONFIGS}/bat.conf"
 typeset EXA_CONFIG_PATH="${CONFIGS}/exa.conf"
 typeset EZA_CONFIG_PATH="${CONFIGS}/eza.conf"
 typeset FZF_CONFIG_PATH="${CONFIGS}/fzf.conf"
+typeset GIT_CONFIG="${CONFIGS}/git/.gitconfig"
+typeset PIP_CONFIG_FILE="${CONFIGS}/pip/pip.conf"
+typeset PIP_LOG_FILE="${LOCAL_CACHE}/pip/pip.log"
 typeset RPGREP_CONFIG_PATH="${CONFIGS}/ripgreprc"
 typeset EDITORCONFIGRC="${CONFIGS}/.editorconfigrc"
 typeset POWERLEVEL9K_CONFIG_FILE="${CONFIGS}/.p10k.zsh"
@@ -113,8 +127,8 @@ typeset POWERLEVEL10K_CONFIG_FILE="${CONFIGS}/.p10k.zsh"
 # -- Local Cache Relocations --
 typeset LESSHISTFILE="${LOCAL_CACHE}/less/history"
 typeset NPM_CONFIG_CACHE="${LOCAL_CACHE}/npm"
-typeset TMUX_TEMPDIR="${LOCAL_CACHE}/tmux"
 typeset GEM_SPEC_CACHE="${LOCAL_CACHE}/gem"
+typeset TMUX_TEMPDIR="${LOCAL_CACHE}/tmux"
 
 #  Zsh-Autosuggest
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
@@ -149,7 +163,6 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include"
 GITSTATUS_LOG_LEVEL=DEBUG
 GITSTATUS_SHOW_UNTRACKED_FILES="all"
 
-
 # -- FZF --
 export FZF_BASE="${CONFIGS}/fzf.conf"
 export FZF_DEFAULT_OPTS_FILE="${CONFIGS}/.fzfrc"
@@ -162,7 +175,6 @@ export FZF_DEFAULT_OPTS="\
             --color=dark \
             --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f \
             --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7"
-
 
 # FZ
 FZ_HISTORY_CD_CMD="z"
@@ -180,31 +192,31 @@ export SAVEHIST=10000
 # Use GRC for additionnal colorization
 GRC=$(command -v grc)
 if [ -n GRC ]; then
-    alias colourify='$GRC -es --colour=auto'
-    alias as='colourify as'
-    #cvs
-    alias configure='colourify ./configure'
-    alias diff='colourify diff'
-    alias dig='colourify dig'
-    alias g++='colourify g++'
-    alias gas='colourify gas'
-    alias gcc='colourify gcc'
-    alias head='colourify head'
-    alias ifconfig='colourify ifconfig'
-    #irclog
-    alias ld='colourify ld'
-    #ldap
-    #log
-    alias make='colourify make'
-    alias mount='colourify mount'
-    #mtr
-    alias netstat='colourify netstat'
-    alias ping='colourify ping'
-    #proftpd
-    alias ps='colourify ps'
-    alias tail='colourify tail'
-    alias traceroute='colourify traceroute'
-    #wdiff
+  alias colourify='$GRC -es --colour=auto'
+  alias as='colourify as'
+  #cvs
+  alias configure='colourify ./configure'
+  alias diff='colourify diff'
+  alias dig='colourify dig'
+  alias g++='colourify g++'
+  alias gas='colourify gas'
+  alias gcc='colourify gcc'
+  alias head='colourify head'
+  alias ifconfig='colourify ifconfig'
+  #irclog
+  alias ld='colourify ld'
+  #ldap
+  #log
+  alias make='colourify make'
+  alias mount='colourify mount'
+  #mtr
+  alias netstat='colourify netstat'
+  alias ping='colourify ping'
+  #proftpd
+  alias ps='colourify ps'
+  alias tail='colourify tail'
+  alias traceroute='colourify traceroute'
+  #wdiff
 fi
 
 # =============================================================================

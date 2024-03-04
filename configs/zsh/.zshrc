@@ -60,13 +60,16 @@ zdharma-continuum/zinit-annex-man
 # ext-git \
 # @sharkdp
 
-# =============================================================================
-# PKG-TYPE | ZSH Packages
-# =============================================================================
-zinit default-ice -cq
-zinit pack"bgn-binary+keys" for fzf
-zinit pack"bgn"             for fzy
-zinit pack                  for ls_colors
+# -- Zinit-Packages ------------------------------------------------------------
+
+# ~ fzf ~
+zinit for \
+pack"bgn-binary+keys" \
+atload"source ${CONFIGS}/fzf.zsh" \
+fzf
+
+zinit pack for ls_colors
+zinit pack for dircolors-material
 
 zinit for \
 zdharma-continuum/zzcomplete \
