@@ -12,3 +12,4 @@ ssh) fzf --preview 'dig {}' "$@" ;;
 esac
 
 unset command
+4
