@@ -226,6 +226,7 @@ fi
 source "${ZDOTDIR}/paths.zsh"
 source "${ZDOTDIR}/autoloads.zsh"
 source "${ZDOTDIR}/options.zsh"
+source "${ZDOTDIR}/completions.zsh"
 source "${ZDOTDIR}/aliases.zsh"
 source "${ZDOTDIR}/modules.zsh"
 source "${ZDOTDIR}/keybindings.zsh"
