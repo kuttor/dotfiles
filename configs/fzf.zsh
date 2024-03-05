@@ -2,21 +2,28 @@
 # -- BUILTIN Env-Vars ---------------------------------------------------------
 
 # Execute completion hotkey: Default="**"
-export FZF_COMPLETION_TRIGGER='~~'
+export FZF_COMPLETION_TRIGGER="~~"
 
 # Commons | Completion Output Options
-export FZF_COMPLETION_OPTS='\
+export FZF_COMPLETION_OPTS=" \
 --border \
 --info=inline \
-'
+"
 
 # Base Launcher Command
-export FZF_DEFAULT_COMMAND="\
+export FZF_DEFAULT_COMMAND=" \
 fd \
 --color=always \
 --hidden \
 --follow \
 --type=file \
+"
+
+export FZF_ALT_C_COMMAND=" \
+fd \
+--hidden \
+--follow \
+--type=d \
 "
 
 # Base Output Defaults
@@ -46,37 +53,18 @@ marker:#ff87d7,\
 spinner:#ff87d7\
 "
 
-export FZF_ALT_C_COMMAND='fd --hidden --follow --type=d'
-
 # Canvas setting
 export FZF_DEFAULT_HEIGHT='80%'
 export FZF_TMUX_HEIGHT='80%'
 
 
-# -- Functions ----------------------------------------------------------------
-
-_fzf_comprun() {
-  local command=$1
-  shift
-
-  case "$command" in
-    cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
-    export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
-    ssh)          fzf --preview 'dig {}'                   "$@" ;;
-    *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
-  esac
-}
-
-_fzf_setup_completion path ag git
-
-_fzf_setup_completion dir tree
-
 # -- Completions --------------------------------------------------------------
 
-ENHANCD_COMPLETION_BEHAVIOR=list
+export ENHANCD_FILTER=fzf
+export ENHANCD_COMPLETION_BEHAVIOR=list
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# cd (and enhancd) preview
+# cd (and enhancd) previe/Users/andrew.kuttor/.local/share/zinit/polaris/binw
 zstyle ':fzf-tab:complete:(\\|*)cd:*' fzf-preview 'exa -1 --color=always --icons $realpath'
 # systemd unit status preview
 zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
@@ -89,6 +77,7 @@ zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=do
 # preview file contents
 zstyle ':fzf-tab:complete:*:*' fzf-preview 'less ${(Q)realpath}'
 export LESSOPEN='|fzf_preview %s'
+
 # but don't preview options and subcommands
 zstyle ':fzf-tab:complete:*:options' fzf-preview
 zstyle ':fzf-tab:complete:*:argument-1' fzf-preview

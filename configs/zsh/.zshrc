@@ -143,21 +143,21 @@ zinit default-ice -cq as"program" wait"1" lucid light-mode
 # sbin'**/eza -> eza' \
 # eza-community/eza
 
-# sharkdp/fd
+# ~ sharkdp/fd ~
 zinit for \
 from"gh-r" \
 mv"fd* -> fd" \
 pick"fd/fd" \
 @sharkdp/fd
 
-# sharkdp/bat
+# ~ sharkdp/bat ~
 zinit for \
 from"gh-r" \
 mv"bat* -> bat" \
 pick"bat/bat" \
 @sharkdp/bat
 
-# delta ~ a viewer for git and diff output
+# ~ delta ~
 zinit for \
 atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
 dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
@@ -172,10 +172,10 @@ atpull"%atclone" \
 mv"zoxide-*/zoxide -> zoxide" \
 @ajeetdsouza/zoxide
 
-# # diff-so-fancy ~
-# zinit for \
-# pick"bin/git-dsf" \
-# @zdharma-continuum/zsh-diff-so-fancy
+# ~ diff-so-fancy ~
+zinit for \
+pick"bin/git-dsf" \
+zdharma-continuum/zsh-diff-so-fancy
 
 # # yank ~
 # zinit for \
@@ -183,19 +183,8 @@ mv"zoxide-*/zoxide -> zoxide" \
 # make \
 # @mptre/yank
 
-# # dbrgn/tealdeer
-# zinit for \
-# wait"2" \
-# as"command" \
-# from"gh-r" \
-# mv"tldr* -> tldr" \
-# atclone"./tldr --update" atpull"%atclone" \
-# eval'echo "complete -W \"$(./tldr 2>/dev/null --list)\" tldr"' \
-# @dbrgn/tealdeer
+# ~ Shell Enhancements ---------------------------------------------------------
 
-# =============================================================================
-# PKG-TYPE | Shell Enhancements
-# ============================================================================
 zinit default-ice -cq wait"0" lucid light-mode
 zinit for \
 @djui/alias-tips \
@@ -206,18 +195,29 @@ zinit for \
 chitoku-k/fzf-zsh-completions \
 joshskidmore/zsh-fzf-history-search
 
+# ~ iTerm2 integration ~
+zinit for \
+if'[[ "$TERM_PROGRAM" = "iTerm.app" ]]' \
+pick"shell_integration/zsh" \
+sbin"utilities/*" \
+gnachman/iTerm2-shell-integration
+
+# ~ fzf-tab ~
 zinit for \
 blockf \
 atload"source ${CONFIGS}/fzf-tab.zsh" \
 Aloxaf/fzf-tab
 
+# ~ fzshell ~
 zinit for \
-atload"export FZSHELL_CONFIG=${CONFIGS}; export FZSHELL_BIND_KEY='^x'" \
+atload"
+  export FZSHELL_CONFIG=${CONFIGS};
+  export FZSHELL_BIND_KEY='^x'
+" \
 mnowotnik/fzshell
 
-# =============================================================================
-# Completions
-# =============================================================================
+# ~ Completions ----------------------------------------------------------------
+
 zinit default-ice -cq as"completions" wait"0"
 zinit for \
 atload"source ${CONFIGS}/eza.zsh" \
@@ -228,17 +228,23 @@ zinit default-ice -cq wait"0" lucid light-mode
 zinit for \
 z-shell/zsh-fancy-completions \
 depth=1 \
-atload"autoload -Uz compinit; compinit -u" \
-atpull"zinit cclear; zinit creinstall sainnhe/zsh-completions" \
+atload"
+  autoload -Uz compinit;
+  compinit -u
+" \
+atpull"
+  zinit cclear;
+  zinit creinstall sainnhe/zsh-completions
+" \
 sainnhe/zsh-completions \
 nocd \
 depth=1 \
 atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
-3v1n0/zsh-bash-completions-fallback
-
+3v1n0/zsh-bash-completions-fallback \
+chitoku-k/fzf-zsh-completions \
+rapgenic/zsh-git-complete-urls
 
 #     changyuheng/fz \
-#     chitoku-k/fzf-zsh-completions
 #     eastokes/aws-plugin-zsh                          \
 #     FFKL/s3cmd-zsh-plugin                            \
 #     greymd/docker-zsh-completion                     \
@@ -248,7 +254,7 @@ atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
 #     nojanath/ansible-zsh-completion                  \
 #     paw-lu/pip-fzf                                   \
 #     pierpo/fzf-docker                                \
-#     rapgenic/zsh-git-complete-urls                   \
+
 #     rupa/v                                           \
 #     sparsick/ansible-zsh                             \
 #     srijanshetty/zsh-pip-completion                  \
