@@ -80,8 +80,7 @@ zdharma-continuum/zui \
 NICHOLAS85/z-a-eval \
 
 # =============================================================================
-# PKG-TYPE | Oh My Zsh
-# =============================================================================
+# ~ Oh My Zsh ~
 
 # -- Libraries --
 zinit default-ice -cq wait"0" lucid
@@ -131,30 +130,37 @@ OMZ::plugins/fd/_fd \
 OMZ::plugins/ag/_ag \
 OMZ::plugins/pip/_pip
 
-# =============================================================================
-# PKG-TYPE: Binaries
-# =============================================================================
-zinit default-ice -cq as"program" wait"1" lucid light-mode
-
-# -- Eza --
-# zinit for \
-# #atclone"hook c.eza.zsh" \
-# #atload"hook l.eza.zsh" \
-# sbin'**/eza -> eza' \
-# eza-community/eza
-
-# ~ sharkdp/fd ~
-zinit for \
+# ------------------------------------------------------------------------------
+# ~ Delayed GH-Release Programs ~
+zinit default-ice -cq \
+as"program" \
 from"gh-r" \
+wait"1" \
+lucid \
+light-mode
+
+# ~ eza ~
+zinit for \
+mv"*eza -> eza" \
+pick"eza" \
+atload"hook eza.atload.zsh" \
+dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza" \
+@eza-community/eza
+
+# ~ fd ~
+zinit for \
 mv"fd* -> fd" \
 pick"fd/fd" \
+atload"hook fd.atload.zsh" \
+atclone"hook fd.atclone.zsh" \
 @sharkdp/fd
 
-# ~ sharkdp/bat ~
+# ~ bat ~
 zinit for \
-from"gh-r" \
 mv"bat* -> bat" \
 pick"bat/bat" \
+atload"hook bat.atload.zsh" \
+atclone"hook bat.atclone.zsh" \
 @sharkdp/bat
 
 # ~ delta ~
@@ -164,18 +170,31 @@ dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh ->
 mv"delta-*/delta -> delta" \
 @dandavison/delta
 
-# zoxide ~  a simple, fast and user-friendly alternative to cd
+# ~ zoxide ~
 zinit for \
-atclone"hook c.zoxide.zsh" \
-atload"hook l.zoxide.zsh" \
-atpull"%atclone" \
-mv"zoxide-*/zoxide -> zoxide" \
+atload"hook zoxide.atload.zsh" \
+mv"zoxide* -> zoxide" \
 @ajeetdsouza/zoxide
+
+# ------------------------------------------------------------------------------
+# ~ Delayed Programs ~
+zinit default-ice -cq \
+as"program" \
+wait"1" \
+lucid \
+light-mode
 
 # ~ diff-so-fancy ~
 zinit for \
 pick"bin/git-dsf" \
 zdharma-continuum/zsh-diff-so-fancy
+
+# ~ zeno ~
+zinit for \
+depth"1" \
+blockf \
+atload"source ${CONFIGS}/zeno/zeno" \
+yuki-yano/zeno.zsh
 
 # # yank ~
 # zinit for \
@@ -183,9 +202,13 @@ zdharma-continuum/zsh-diff-so-fancy
 # make \
 # @mptre/yank
 
-# ~ Shell Enhancements ---------------------------------------------------------
+# ------------------------------------------------------------------------------
+# ~ Shell Enhancements ~
+zinit default-ice -cq \
+wait"0" \
+lucid \
+light-mode
 
-zinit default-ice -cq wait"0" lucid light-mode
 zinit for \
 @djui/alias-tips \
 @ianthehenry/zsh-autoquoter \
@@ -193,7 +216,9 @@ zinit for \
 @mattmc3/zsh-safe-rm \
 @psprint/zsh-navigation-tools \
 chitoku-k/fzf-zsh-completions \
-joshskidmore/zsh-fzf-history-search
+joshskidmore/zsh-fzf-history-search \
+paw-lu/pip-fzf \
+pierpo/fzf-docker 
 
 # ~ iTerm2 integration ~
 zinit for \
@@ -216,12 +241,13 @@ atload"
 " \
 mnowotnik/fzshell
 
-# ~ Completions ----------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# ~ Completions ~
+#zinit default-ice -cq as"completions" wait"0"
 
-zinit default-ice -cq as"completions" wait"0"
-zinit for \
-atload"source ${CONFIGS}/eza.zsh" \
-https://github.com/eza-community/eza/blob/main/completions/zsh/_eza
+# zinit for \
+# atload"source ${CONFIGS}/eza.zsh" \
+# https://github.com/eza-community/eza/blob/main/completions/zsh/_eza
 
 
 zinit default-ice -cq wait"0" lucid light-mode
@@ -242,52 +268,40 @@ depth=1 \
 atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
 3v1n0/zsh-bash-completions-fallback \
 chitoku-k/fzf-zsh-completions \
-rapgenic/zsh-git-complete-urls
+rapgenic/zsh-git-complete-urls \
+nojanath/ansible-zsh-completion \
+srijanshetty/zsh-pip-completion
+
 
 #     changyuheng/fz \
 #     eastokes/aws-plugin-zsh                          \
 #     FFKL/s3cmd-zsh-plugin                            \
-#     greymd/docker-zsh-completion                     \
-#     joshskidmore/zsh-fzf-history-search              \
-#     kutsan/zsh-system-clipboard                      \
 #     macunha1/zsh-terraform                           \
-#     nojanath/ansible-zsh-completion                  \
-#     paw-lu/pip-fzf                                   \
-#     pierpo/fzf-docker                                \
-
 #     rupa/v                                           \
 #     sparsick/ansible-zsh                             \
-#     srijanshetty/zsh-pip-completion                  \
 #     unixorn/docker-helpers.zshplugin                 \
 #     vasyharan/zsh-brew-services
 
-# =============================================================================
-# Zinit Commons
-# =============================================================================
+# ------------------------------------------------------------------------------
+# ~ Zinit Commons ~
 zinit default-ice -cq wait"0" lucid light-mode
 
 zinit for \
-atinit"hook i.fastsyntaxhighlighting.zsh" \
-atload"hook l.fastsyntaxhighlighting.zsh" \
+atinit"hook fast-syntax-highlighting.atinit.zsh" \
+atload"hook fast-syntax-highlighting.atload.zsh" \
 @zdharma-continuum/fast-syntax-highlighting \
-atinit"hook i.autosuggests.zsh" \
+atinit"hook zsh-autosuggestions.atinit.zsh" \
+atload"hook zsh-autosuggestions.atload.zsh" \
 @zsh-users/zsh-autosuggestions \
 blockf \
-atpull"hook p.completions.zsh" \
+atpull"hook zsh-completions.atpull.zsh" \
 @zsh-users/zsh-completions
 
-# =============================================================================
-# compinit + cdreplay
-# =============================================================================
+# ------------------------------------------------------------------------------
+# ~ compinit + cdreplay ~
+
 #autoload -Uz compinit && compinit
 [[ $(date +'%j') != $(date -r ${ZDOTDIR:-$HOME}/.zcompdump +'%j') ]] \
-&& compinit \
-|| compinit -C
+&& compinit || compinit -C
 
 zinit cdreplay -q
-
-# To customize prompt, run p10k configure or edit ~/.dotfiles/configs/.p10k.
-#[[ ! -f ${DOTFILES[CONFIGS]}/.p10.zsh ]] || source ${DOTFILES[CONFIGS]}/.p10k.zsh
-
-# To customize prompt, run `p10k configure` or edit ~/.dotfiles/configs/zsh/.p10k.zsh.
-#[[ ! -f ~/.dotfiles/configs/zsh/.p10k.zsh ]] || source ~/.dotfiles/configs/zsh/.p10k.zsh

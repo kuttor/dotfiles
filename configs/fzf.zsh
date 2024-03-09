@@ -1,32 +1,13 @@
 
-# -- BUILTIN Env-Vars ---------------------------------------------------------
+# ------------------------------------------------------------------------------
+# ~ Environment Variables ~
 
-# Execute completion hotkey: Default="**"
+export FZF_DEFAULT_OPTS_FILE="${CONFIGS}/.fzf.conf"
+export FZF_BASE="$(which fzf)"
 export FZF_COMPLETION_TRIGGER="~~"
+export FZF_DEFAULT_HEIGHT='80%'
+export FZF_TMUX_HEIGHT='80%'
 
-# Commons | Completion Output Options
-export FZF_COMPLETION_OPTS=" \
---border \
---info=inline \
-"
-
-# Base Launcher Command
-export FZF_DEFAULT_COMMAND=" \
-fd \
---color=always \
---hidden \
---follow \
---type=file \
-"
-
-export FZF_ALT_C_COMMAND=" \
-fd \
---hidden \
---follow \
---type=d \
-"
-
-# Base Output Defaults
 export FZF_DEFAULT_OPTS=" \
 --bind='ctrl-j:accept' \
 --border='sharp' \
@@ -52,13 +33,26 @@ pointer:#ff87d7,\
 marker:#ff87d7,\
 spinner:#ff87d7\
 "
+export FZF_COMPLETION_OPTS=" \
+--border \
+--info=inline \
+"
+export FZF_DEFAULT_COMMAND=" \
+fd \
+--color=always \
+--hidden \
+--follow \
+--type=file \
+"
+export FZF_ALT_C_COMMAND=" \
+fd \
+--hidden \
+--follow \
+--type=d \
+"
 
-# Canvas setting
-export FZF_DEFAULT_HEIGHT='80%'
-export FZF_TMUX_HEIGHT='80%'
-
-
-# -- Completions --------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# ~ Completions ~
 
 export ENHANCD_FILTER=fzf
 export ENHANCD_COMPLETION_BEHAVIOR=list

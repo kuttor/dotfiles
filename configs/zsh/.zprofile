@@ -11,38 +11,29 @@
 # Fix for password store
 export PASSWORD_STORE_GPG_OPTS="--no-throw-keyids --use-agent"
 
-# =============================================================================
-# Dotfiles | Envrionment Setup
-# =============================================================================
+# ~~ Env-Var Settings ----------------------------------------------------------
 
 # -- Dotfiles Array --
 declare -A DOTFILES
-DOTFILES[HOME_DIR]="${HOME}/.dotfiles"
 DOTFILES[AUTOLOADS]="${HOME}/.dotfiles/autoloads"
 DOTFILES[CONFIGS]="${HOME}/.dotfiles/configs"
 DOTFILES[HOOKS]="${HOME}/.dotfiles/hooks"
+DOTFILES[HOME_DIR]="${HOME}/.dotfiles"
 
 # -- Dotfiles Array Shorteners --
-export HOME_DIR="${DOTFILES[HOME_DIR]}"
 export AUTOLOADS="${DOTFILES[AUTOLOADS]}"
+export HOME_DIR="${DOTFILES[HOME_DIR]}"
 export CONFIGS="${DOTFILES[CONFIGS]}"
 export HOOKS="${DOTFILES[HOOKS]}"
 
 # -- XDG Base Directories --
-export XDG_CONFIG_HOME="${HOME}/.local/config"
-mkdir -p "${XDG_CONFIG_HOME}"
-export XDG_RUNTIME_DIR="${TMPPREFIX}/${3}"
-mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
-export XDG_STATE_HOME="${HOME}/.local/state"
-mkdir -p "${XDG_STATE_HOME}"
-export XDG_CACHE_HOME="${HOME}/.local/cache"
-mkdir -p "${XDG_CACHE_HOME}"
-export XDG_DATA_HOME="${HOME}/.local/share"
-mkdir -p "${XDG_DATA_HOME}"
-export XDG_LIB_HOME="${HOME}/.local/lib"
-mkdir -p "${XDG_LIB_HOME}"
-export XDG_BIN_HOME="${HOME}/.local/bin"
-mkdir -p "${XDG_BIN_HOME}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPPREFIX}}" && mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.local/config}" && mkdir -p "${XDG_CONFIG_HOME}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}" && mkdir -p "${XDG_STATE_HOME}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.local/cache}" && mkdir -p "${XDG_CACHE_HOME}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}" && mkdir -p "${XDG_DATA_HOME}"
+export XDG_LIB_HOME="${XDG_LIB_HOME:-${HOME}/.local/lib}" && mkdir -p "${XDG_LIB_HOME}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}" && mkdir -p "${XDG_BIN_HOME}"
 
 # -- XDG Base Arrays --
 export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIGS}":"${XDG_CONFIG_DIRS}"
@@ -56,19 +47,12 @@ export LOCAL_DATA="${XDG_DATA_HOME}"
 export LOCAL_LIB="${XDG_LIB_HOME}"
 export LOCAL_BIN="${XDG_BIN_HOME}"
 
-# -- Homebrew Environment --
+# -- Homebrew --
 export HOMEBREW_PREFIX="/opt/homebrew"
 export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
 export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
-
-# -- Homebrew Options --
 export HOMEBREW_NO_ENV_HINT=1
 export HOMEBREW_NO_ANALYTICS=1
-
-# -- Homebrew Paths Additions --
-export PATH="${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:${PATH+:$PATH}"
-export MANPATH="${HOMEBREW_PREFIX}/share/man:${MANPATH+:$MANPATH}:"
-export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
 
 # -- Zsh Configs Path --
 export ZDOTDIR="${CONFIGS}/zsh"
@@ -153,7 +137,7 @@ export VISUAL="$EDITOR"
 
 # Python
 export PYTHONDONTWRITEBYTECODE=true
-export PYTHONSTARTUP="$HOME/.python_startup.py"
+export PYTHONSTARTUP="${CONFIGS}/python/.python_startup.py" && mkdir -p "${CONFIGS}/python"
 
 # Ruby
 export LDFLAGS="-L/usr/local/opt/ruby/lib"
@@ -163,33 +147,14 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include"
 GITSTATUS_LOG_LEVEL=DEBUG
 GITSTATUS_SHOW_UNTRACKED_FILES="all"
 
-# -- FZF --
-export FZF_BASE="${CONFIGS}/fzf.conf"
-export FZF_DEFAULT_OPTS_FILE="${CONFIGS}/.fzfrc"
-export FZF_COMPLETION_TRIGGER="~~"
-export FZF_DEFAULT_COMMAND="rg --files --hidden"
-export FZF_CTRL_T_COMMAND="rg --files --hidden"
-export FZF_DEFAULT_OPTS="\
-            --cycle --reverse --no-height  \
-            --exit-0 --bind=ctrl-j:accept \
-            --color=dark \
-            --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f \
-            --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7"
-
-# FZ
-FZ_HISTORY_CD_CMD="z"
-
-# History
+# ~ History ~``
 [[ -z "$HISTFILE" ]] && HISTFILE="${LOCAL_CACHE}/.zsh_history"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
 
-# =============================================================================
-# Color Handling for the Uncolorized
-# =============================================================================
-
-# Use GRC for additionnal colorization
+# ------------------------------------------------------------------------------
+# ~ Color the Uncolorized ~
 GRC=$(command -v grc)
 if [ -n GRC ]; then
   alias colourify='$GRC -es --colour=auto'
@@ -219,10 +184,8 @@ if [ -n GRC ]; then
   #wdiff
 fi
 
-# =============================================================================
-# Zsh Config Sourcing
-# =============================================================================
-
+# ------------------------------------------------------------------------------
+# ~ Zsh-Config Sourcing ~
 source "${ZDOTDIR}/paths.zsh"
 source "${ZDOTDIR}/autoloads.zsh"
 source "${ZDOTDIR}/options.zsh"
@@ -230,3 +193,6 @@ source "${ZDOTDIR}/completions.zsh"
 source "${ZDOTDIR}/aliases.zsh"
 source "${ZDOTDIR}/modules.zsh"
 source "${ZDOTDIR}/keybindings.zsh"
+
+# ~ Source on MacOS only ~
+[[ ${OSTYPE} == "darwin"* ]] && source "${CONFIGS}/macos.zsh"

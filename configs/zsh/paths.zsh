@@ -1,23 +1,49 @@
-# Vim:Set filetype=zsh syntax=zsh
+#!/bin/bash
+# Vim: Set filetype=zsh syntax=zsh
+# File: ${HOME}/.dotfiles/configs/zsh/paths.zsh
+# Description: Configuration file for zsh paths and fpath settings.
+
+# ~~ Path Settings -------------------------------------------------------------
 
 # Export existing paths.
 typeset -gx path PATH
-typeset -gx fpath FPATH
 
-# Set the list of directories that zsh searches for commands.
 path=(
-  $HOME/.local/bin
+  ${HOME}/.local/bin
   /usr/local/bin
   /usr/{sbin,bin}
   /{sbin,bin}
-  $path
+  ${HOMEBREW_PREFIX}/{sbin,bin}
+  ${path}
 )
 
-for function in $HOME/.dotfiles/autoloads/*; do
+# -- Path Related Aliases --
+alias path_list='echo "$PATH" | tr ":" "\n"'
+
+# ~ ----------------------------------------------------------------------------
+# ~ FPath ~
+
+typeset -gx fpath FPATH
+
+fpath=(
+  ${HOME}/.local/share/zsh/site-functions
+  /usr/local/share/zsh/site-functions
+  /usr/share/zsh/site-functions
+  /usr/local/share/zsh/functions
+  /usr/share/zsh/functions
+  /usr/local/share/zsh/site-functions
+  ${fpath}
+)
+
+for function in ${HOME}/.dotfiles/autoloads/*; do
   autoload $function
 done
 
-
-# --  Path Related Aliases --
-alias path_list='echo "$PATH" | tr ":" "\n"'
+# --  FPath Related Aliases --
 alias fpath_list='echo "$FPATH" | tr ":" "\n"'
+
+# ~ ----------------------------------------------------------------------------
+# ~ MANPath, INFOPath ~
+
+export MANPATH="${HOMEBREW_PREFIX}/share/man:${MANPATH+:$MANPATH}:"
+export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
