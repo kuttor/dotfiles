@@ -74,20 +74,20 @@ export ENHANCD_COMPLETION_BEHAVIOR=list
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # cd (and enhancd) previe/Users/andrew.kuttor/.local/share/zinit/polaris/binw
-zstyle ':fzf-tab:complete:(\\|*)cd:*' fzf-preview 'exa -1 --color=always --icons $realpath'
+zstyle ':fzf-tab:complete:(\\|*)cd:*' fzf_preview 'exa -1 --color=always --icons $realpath'
 # systemd unit status preview
-zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf_preview 'SYSTEMD_COLORS=1 systemctl status $word'
 # environment variable preview
-zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf_preview 'echo ${(P)word}'
 # give a preview of commandline arguments when completing `kill`
 zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
-zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview '[[ $group == "[process ID]" ]] && ps --pid=$word -o cmd --no-headers -w -w'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf_preview '[[ $group == "[process ID]" ]] && ps --pid=$word -o cmd --no-headers -w -w'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
 # preview file contents
-zstyle ':fzf-tab:complete:*:*' fzf-preview 'less ${(Q)realpath}'
+zstyle ':fzf-tab:complete:*:*' fzf_preview 'less ${(Q)realpath}'
 export LESSOPEN='|fzf_preview %s'
 
 # but don't preview options and subcommands
-zstyle ':fzf-tab:complete:*:options' fzf-preview
-zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
-zstyle ':fzf-tab:complete:*:argument-2' fzf-preview
+zstyle ':fzf-tab:complete:*:options' fzf
+zstyle ':fzf-tab:complete:*:argument-1' fzf_preview
+zstyle ':fzf-tab:complete:*:argument-2' fzf_preview
