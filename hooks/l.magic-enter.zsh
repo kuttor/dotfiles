@@ -1,4 +1,0 @@
-#! /usr/bin/env zsh
-
-MAGIC_ENTER_GIT_COMMAND="g st"
-MAGIC_ENTER_OTHER_COMMAND="l"
