@@ -31,7 +31,24 @@
   interactive = auto
   pager = true
   status = auto
-  ui = auto
+	ui = true
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[diff-so-fancy]
+	first-run = false
 
 [core]
   editor = nvim
@@ -40,7 +57,7 @@
   attributesfile = ~/.gitattributes
   trustctime = false
   untrackedCache = true
-  pager = diff-so-fancy | less --tabs=4 -RFX
+	pager = diff-so-fancy | less --tabs=4 -RFX
 
 [credential]
   helper = cache
@@ -85,9 +102,10 @@
   eautoupdate = 1
 
 [user]
-  name = changeme
+  name = changme
   email = changeme
 
 [web]
   browser = safari
+
 
