@@ -119,7 +119,7 @@ OMZ::plugins/urltools \
 OMZ::plugins/tmux \
 OMZ::plugins/vscode \
 OMZ::plugins/web-search \
-atload"hook l.magic-enter.zsh" \
+atload"hook magic-enter.atload.zsh" \
 OMZ::plugins/magic-enter
 
 # -- Completions --
