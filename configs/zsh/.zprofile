@@ -56,6 +56,10 @@ export HOMEBREW_NO_ANALYTICS=1
 
 # -- Zsh Configs Path --
 export ZDOTDIR="${CONFIGS}/zsh"
+export ZHOMEDIR="${HOME}/.dotfiles/configs/zsh"
+export ZRCDIR="${ZHOMEDIR}"
+export ZDATADIR="${XDG_DATA_HOME}/zsh"
+export ZCACHEDIR="${XDG_CACHE_HOME}/zsh"
 export ZLIB="${ZDOTDIR}/lib"
 # -- Help Files --
 export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"
@@ -95,22 +99,23 @@ export INPUTRC="${CONFIGS}/inputrc"
 export WGETRC="${CONFIGS}/wgetrc"
 export CURL_HOME="${CONFIGS}/curl"
 export DOCKER_CONFIG="${CONFIGS}/docker"
+export GIT_CONFIG="${CONFIGS}/git/config"
 export BAT_CONFIG_PATH="${CONFIGS}/bat.conf"
 export EXA_CONFIG_PATH="${CONFIGS}/exa.conf"
 export EZA_CONFIG_PATH="${CONFIGS}/eza.conf"
 export FZF_CONFIG_PATH="${CONFIGS}/fzf.conf"
-export GIT_CONFIG="${CONFIGS}/git/config"
 export PIP_CONFIG_FILE="${CONFIGS}/pip/pip.conf"
-export PIP_LOG_FILE="${LOCAL_CACHE}/pip/pip.log"
 export RPGREP_CONFIG_PATH="${CONFIGS}/ripgreprc"
 export EDITORCONFIGRC="${CONFIGS}/.editorconfigrc"
 export POWERLEVEL9K_CONFIG_FILE="${CONFIGS}/.p10k.zsh"
 export POWERLEVEL10K_CONFIG_FILE="${CONFIGS}/.p10k.zsh"
 
 # -- Local Cache Relocations --
+export GEM_SPEC_CACHE="${LOCAL_CACHE}/gem"
+export GITSTATUS_CACHE_DIR="${LOCAL_CACHE}/gitstatus"
 export LESSHISTFILE="${LOCAL_CACHE}/less/history"
 export NPM_CONFIG_CACHE="${LOCAL_CACHE}/npm"
-export GEM_SPEC_CACHE="${LOCAL_CACHE}/gem"
+export PIP_LOG_FILE="${LOCAL_CACHE}/pip/pip.log"
 export TMUX_TEMPDIR="${LOCAL_CACHE}/tmux"
 
 #  Zsh-Autosuggest

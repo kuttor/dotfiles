@@ -1,8 +1,7 @@
 #! /usr/bin/env zsh
 
-FZF_FD_OPTS="--color always --hidden --follow --exclude .git --exclude node_modules"
-FZF_PREVIEW_FILE_COMMAND="bat --color=always --paging=never --style=plain"
-FZF_PREVIEW_DIR_COMMAND="exa -1a --color=always --icons --group-directories-first"
+FZF_FD_OPTS="--color='always' --hidden --follow --exclude='.git' --exclude='.vscode'"
+FZF_PREVIEW_FILE_COMMAND="bat --color=always --style=plain"
 FZF_DEFAULT_OPTS="--no-mouse --bind \"tab:accept,ctrl-y:preview-page-up,ctrl-v:preview-page-down,ctrl-e:execute-silent(\${VISUAL:-code} {+} >/dev/null 2>&1)\""
 FZF_DEFAULT_COMMAND="fd --type f $FZF_FD_OPTS"
 FZF_ALT_C_OPTS="--ansi --preview \"$FZF_PREVIEW_DIR_COMMAND {} 2>/dev/null\""
