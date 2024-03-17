@@ -14,7 +14,7 @@ export PASSWORD_STORE_GPG_OPTS="--no-throw-keyids --use-agent"
 # ~~ Env-Var Settings ----------------------------------------------------------
 
 # -- Dotfiles Array --
-declare -A DOTFILES
+typeset -A DOTFILES
 DOTFILES[AUTOLOADS]="${HOME}/.dotfiles/autoloads"
 DOTFILES[CONFIGS]="${HOME}/.dotfiles/configs"
 DOTFILES[HOOKS]="${HOME}/.dotfiles/hooks"
@@ -38,7 +38,7 @@ export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}" && mkdir -p "${XDG_BIN
 # -- XDG Base Arrays --
 export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIGS}":"${XDG_CONFIG_DIRS}"
 export XDG_DATA_DIRS="${DATA}":"${XDG_DATA_DIRS}"
-export XDG_BIN_DIRS="${XDG_BIN_HOME}:${XDG_BIN_DIRS}"
+export XDG_BIN_DIRS="${XDG_BIN_HOME}":"${XDG_BIN_DIRS}"
 
 # -- XDG Shorteners --
 export LOCAL_CONFIG="${XDG_CONFIG_HOME}"
@@ -56,35 +56,44 @@ export HOMEBREW_NO_ANALYTICS=1
 
 # -- Zsh Configs Path --
 export ZDOTDIR="${CONFIGS}/zsh"
-export ZHOMEDIR="${HOME}/.dotfiles/configs/zsh"
-export ZRCDIR="${ZHOMEDIR}"
-export ZDATADIR="${XDG_DATA_HOME}/zsh"
-export ZCACHEDIR="${XDG_CACHE_HOME}/zsh"
+export ZDATADIR="${LOCAL_DATA}/zsh"
+export ZCACHEDIR="${LOCAL_CACHE}/zsh"
+export ZHOMEDIR="${ZDOTDIR}"
+export ZRCDIR="${ZDOTDIR}"
 export ZLIB="${ZDOTDIR}/lib"
+
 # -- Help Files --
 export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"
 mkdir -p "${HELPDIR}"
 alias help="run-help"
 
-# -- Basic Zinit Location --
-export ZINIT_HOME="${LOCAL_DATA}/zinit/zinit.git"
-mkdir -p "${ZINIT_HOME}"
-export ZPFX="${LOCAL_DATA}/zinit/polaris"
-mkdir -p "${ZPFX}"
+# ------------------------------------------------------------------------------
+# ~ Zinit Env-vars ~
 
-#-- Env Vars --
-# declare -A ZINIT
+# Zinit Custom Vars
+export ZINIT_HOME="${LOCAL_DATA}/zinit/zinit.git" && mkdir -p "${ZINIT_HOME}"
+export ZPFX="${LOCAL_DATA}/zinit/polaris" && mkdir -p "${ZPFX}"
+
+# Zinit Builtins Vars
+typeset -A ZINIT
+ZINIT[ZCOMPDUMP_PATH]="${LOCAL_CACHE}/zcompdump"
+ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
 # ZINIT[BIN_DIR]="${ZINIT_HOME}"
 # ZINIT[HOME_DIR]="${DATA}/zinit"
 # ZINIT[MAN_DIR]="${ZPFX}/man"
 # ZINIT[PLUGIN_DIR]="${DATA}/zinit/plugins"
 # ZINIT[SNIPPETS_DIR]="${DATA}/zinit/snippets"
 # ZINIT[COMPLETIONS_DIR]="${DATA}/zinit/completions"
-# ZINIT[ZCOMPDUMP_PATH]="${CACHE}/zcompdump"
 # ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
 # ZINIT[MUTE_WARNINGS]="1"
 # ZINIT[COMPINIT_OPTS]=" -C"
 # ZINIT[NO_ALIASES]="0"
+
+# Skip the creation of global compinit
+export skip_global_compinit=1
+
+# ------------------------------------------------------------------------------
+# ~ CONFIG, DATA, CACHE, LIB, BIN Relocations ~
 
 # -- Data Relocations --
 export TMUX_PLUGIN_MANAGER_PATH="${LOCAL_DATA}/tmux/plugins"
@@ -104,6 +113,7 @@ export BAT_CONFIG_PATH="${CONFIGS}/bat.conf"
 export EXA_CONFIG_PATH="${CONFIGS}/exa.conf"
 export EZA_CONFIG_PATH="${CONFIGS}/eza.conf"
 export FZF_CONFIG_PATH="${CONFIGS}/fzf.conf"
+export ZSH_TMUX_CONFIG="${CONFIGS}/tmux.conf"
 export PIP_CONFIG_FILE="${CONFIGS}/pip/pip.conf"
 export RPGREP_CONFIG_PATH="${CONFIGS}/ripgreprc"
 export EDITORCONFIGRC="${CONFIGS}/.editorconfigrc"
@@ -118,13 +128,6 @@ export NPM_CONFIG_CACHE="${LOCAL_CACHE}/npm"
 export PIP_LOG_FILE="${LOCAL_CACHE}/pip/pip.log"
 export TMUX_TEMPDIR="${LOCAL_CACHE}/tmux"
 
-#  Zsh-Autosuggest
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
-export ZSH_AUTOSUGGEST_USE_ASYNC="1"
-export ZSH_AUTOSUGGEST_MANUAL_REBIND="1"
-export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="1"
-export ZSH_AUTOSUGGEST_STRATEGY=(history completion pre_)
-
 # Terminal
 export REPORTTIME="2"
 export TIMEFMT="%U user %S system %P cpu %*Es total"
@@ -138,6 +141,7 @@ export EDITOR="nvim"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PAGER="less"
 export VISUAL="$EDITOR"
+export LESSOPEN='| pygmentize -g %s'
 
 # Python
 export PYTHONDONTWRITEBYTECODE=true
@@ -199,4 +203,4 @@ source "${ZDOTDIR}/modules.zsh"
 source "${ZDOTDIR}/keybindings.zsh"
 
 # ~ Source on MacOS only ~
-[[ ${OSTYPE} == "darwin"* ]] && source "${CONFIGS}/macos.zsh"
+#[[ ${OSTYPE} == "darwin"* ]] && source "${CONFIGS}/macos.zsh"

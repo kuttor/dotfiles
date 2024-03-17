@@ -25,15 +25,6 @@ function install_zinit() {
   fi
 }
 
-function simlink_configs() {
-  configs=(editorconfig gitconfig gitignore inputrc ripgreprc)
-  echo "Simlinking configs to home"
-  configs=(editorconfig gitconfig gitignore inputrc ripgreprc)
-  for config in "${configs[@]}"; do
-    ln -fs "$HOME/.dotfiles/configs/$config" "$HOME/.$config"
-  done
-}
-
 function configure_neovim() {
   echo 'Configuring NeoVim using "The Lean Mean NeoVim Config"'
   mkdir ~/.config
@@ -42,15 +33,7 @@ function configure_neovim() {
   ln -fs ~/.config/nvim ~/.vim
 }
 
-function simlink_zfiles() {
-  echo "Simlinking core ZSH files to home. Will overwrite any current zsh rc's"
-  files=(zshrc zshenv zprofile)
-  for file in "${files[@]}"; do
-    ln -fs "$HOME/.dotfiles/zsh/$file" "$HOME/.$file"
-  done
-}
-
-function create_zlocalrc(){
+function create_zlocalrc() {
   echo "Creating local config file .zlocalrc"
   if [[ ! -e $HOME/.zlocalrc ]]; then
     touch "$HOME/.zlocalrc"
@@ -59,6 +42,4 @@ function create_zlocalrc(){
 
 install_homebrew
 install_zinit
-simlink_configs
-simlink_zfiles
 create_zlocalrc

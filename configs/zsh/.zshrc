@@ -3,19 +3,19 @@
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=4 sw=4 sts=0
 
-export POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+# Deprecating zshenv in favor for zprofile
+[[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
 
+# Instant Prompt
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# =============================================================================
-#  STAGE: Verfiy Status & reinstall and reconfigure if needed
-# =============================================================================
+# ------------------------------------------------------------------------------
+# ~ Zinit Setup
+
 #ZSH_THEME="powerlevel10k/powerlevel10k"
 #[[ ! -f ${DOTFILES[CONFIG]}/.p10k.zsh ]] || source ${DOTFILES[CONFIG]}/.p10k.zsh
-# Deprecating zshenv in favor for zprofile
-[[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
 
 # Zinit Autoinstaller
 if [[ ! -f "${ZINIT_HOME}/zinit.zsh" ]]; then
@@ -25,21 +25,20 @@ fi
 # shellcheck source=/dev/null
 source "${ZINIT_HOME}/zinit.zsh"
 
-# =============================================================================
-# THEME: powerlevel10k
-# =============================================================================
+# ------------------------------------------------------------------------------
+# ~ Powerlevel10k
 
 zinit for \
 lucid \
 light-mode \
 depth=1 \
+atload"hook p10k.atload" \
 @romkatv/powerlevel10k
 
 [[ ! -f ${CONFIGS}/.p10k.zsh ]] || source ${CONFIGS}/.p10k.zsh
 
-# =============================================================================
-# ZSH Annexes Extensions
-# =============================================================================
+# ------------------------------------------------------------------------------
+# ~ ZSH Annexes
 
 zinit light-mode lucid for \
 zdharma-continuum/zinit-annex-bin-gem-node \
@@ -61,11 +60,12 @@ zdharma-continuum/zinit-annex-man
 # @sharkdp
 
 # -- Zinit-Packages ------------------------------------------------------------
-
 # ~ fzf ~
+
 zinit for \
 pack"bgn-binary+keys" \
 atload"source ${CONFIGS}/fzf.zsh" \
+dl"https://github.com/junegunn/fzf/raw/master/shell/completion.zsh" \
 fzf
 
 zinit pack for ls_colors
@@ -91,6 +91,7 @@ OMZ::lib/correction.zsh \
 OMZ::lib/directories.zsh \
 OMZ::lib/functions.zsh \
 OMZ::lib/git.zsh \
+OMZ::lib/grep.zsh \
 OMZ::lib/history.zsh \
 OMZ::lib/misc.zsh \
 OMZ::lib/termsupport.zsh \
@@ -112,6 +113,7 @@ OMZ::plugins/fancy-ctrl-z \
 OMZ::plugins/git \
 OMZ::plugins/github \
 OMZ::plugins/gitignore \
+OMZ::plugins/grc \
 OMZ::plugins/pip \
 OMZ::plugins/sudo \
 OMZ::plugins/ssh-agent \
@@ -131,7 +133,8 @@ OMZ::plugins/ag/_ag \
 OMZ::plugins/pip/_pip
 
 # ------------------------------------------------------------------------------
-# ~ Delayed GH-Release Programs ~
+
+# ~ Turbo GH-Release Programs Delayed Start~
 zinit default-ice -cq \
 as"program" \
 from"gh-r" \
@@ -177,7 +180,7 @@ mv"zoxide* -> zoxide" \
 @ajeetdsouza/zoxide
 
 # ------------------------------------------------------------------------------
-# ~ Delayed Programs ~
+# ~ Turbo Programs with Delayed Start~
 zinit default-ice -cq \
 as"program" \
 wait"1" \
@@ -202,6 +205,14 @@ yuki-yano/zeno.zsh
 # make \
 # @mptre/yank
 
+# ~ tmux ~
+zinit for \
+configure'--disable-utf8proc' \
+make \
+@tmux/tmux
+
+
+
 # ------------------------------------------------------------------------------
 # ~ Shell Enhancements ~
 zinit default-ice -cq \
@@ -211,6 +222,7 @@ light-mode
 
 zinit for \
 @djui/alias-tips \
+unixorn/warhol.plugin.zsh \
 @ianthehenry/zsh-autoquoter \
 @kutsan/zsh-system-clipboard \
 @mattmc3/zsh-safe-rm \
