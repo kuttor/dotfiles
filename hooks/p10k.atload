@@ -3,4 +3,4 @@
 # vim:set filetype=zsh syntax=zsh
 # shellcheck shell=zsh
 
-export POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+#export POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true

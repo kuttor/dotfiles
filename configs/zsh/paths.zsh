@@ -26,7 +26,7 @@ typeset -U path PATH
 # ------------------------------------------------------------------------------
 # ~ FPATH ~
 
-typeset -U path PATH
+typeset -U fpath Fhist9PATH
 
 fpath=(
   ${HOME}/.local/share/zsh/site-functions
@@ -35,6 +35,7 @@ fpath=(
   ${HOMEBREW_PREFIX}/opt/zsh-completions/share/zsh-completions
   ${HOMEBREW_PREFIX}/completions/zsh
   ${HOMEBREW_PREFIX}/share/zsh-completions
+  ${HOMEBREW_PREFIX}/share/zsh-abbr
   ${fpath}
 )
 
