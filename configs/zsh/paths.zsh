@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 # Vim: Set filetype=zsh syntax=zsh
 # File: ${HOME}/.dotfiles/configs/zsh/paths.zsh
 # Description: Configuration file for zsh paths and fpath settings.
@@ -26,7 +26,7 @@ typeset -U path PATH
 # ------------------------------------------------------------------------------
 # ~ FPATH ~
 
-typeset -U fpath Fhist9PATH
+typeset -U fpath FPATH
 
 fpath=(
   ${HOME}/.local/share/zsh/site-functions
@@ -35,13 +35,22 @@ fpath=(
   ${HOMEBREW_PREFIX}/opt/zsh-completions/share/zsh-completions
   ${HOMEBREW_PREFIX}/completions/zsh
   ${HOMEBREW_PREFIX}/share/zsh-completions
-  ${HOMEBREW_PREFIX}/share/zsh-abbr
   ${fpath}
 )
 
-for function in ${HOME}/.dotfiles/autoloads/*; do
-  autoload $function
-done
+() {
+    # add our local functions dir to the fpath
+    local funcs=$HOME/.dotfiles/autoloads
+
+    # FPATH is already tied to fpath, but this adds
+    # a uniqueness constraint to prevent duplicate entries
+    typeset -TUg +x FPATH=$funcs:$FPATH fpath
+    
+    # Now autoload them
+    if [[ -d $funcs ]]; then
+        autoload ${=$(cd "$funcs" && echo *)}
+    fi
+}
 
 # -- FPATH Related Aliases --
 alias fpath_list='echo "$FPATH" | tr ":" "\n"'

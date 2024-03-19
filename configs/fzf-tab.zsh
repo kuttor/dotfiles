@@ -1,5 +1,5 @@
 # -*- mode: zsh; sh-indentation: 2; indent-tabs-mode: nil; sh-basic-offset: 2; -*-
-# vim: ft=zsh sw=2 ts=2 et
+# vim: ft=zsh syntax=zsh sw=2 ts=2 et
 
 # Disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
@@ -21,5 +21,5 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # switch group using `<` and `>`
 zstyle ':fzf-tab:*' switch-group '<' '>'
 
-# 
+# use fzf-tmux-popup to select a window when completing `tmux select-window`
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup

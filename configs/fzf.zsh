@@ -1,14 +1,23 @@
 # ------------------------------------------------------------------------------
 # ~ Environment Variables ~
-# export ENHANCD_FILTER=fzf
-# export ENHANCD_COMPLETION_BEHAVIOR=list
-# export FZF_DEFAULT_OPTS_FILE="${CONFIGS}/fzf.zsh"
-export FZF_BASE="$(which fzf)"
-export FZF_COMPLETION_TRIGGER="~~"
-# export FZF_DEFAULT_HEIGHT='80%'
-# export FZF_TMUX_HEIGHT='80%'
+export ENHANCD_FILTER=fzf
+export ENHANCD_COMPLETION_BEHAVIOR=list
 
-export FZF_DEFAULT_OPTS=" \
+export FZF_TMUX=1                  # Use tmux if available
+export FZF_BASE="$(which fzf)"     # Use fzf from PATH
+export FZF_COMPLETION_TRIGGER="~~" # Use fzf for completions
+
+export FZF_CTRL_T_OPTS=\
+" \
+--preview '(\
+  highlight -O ansi -l {} 2> /dev/null ||\
+  cat {} ||\
+  tree -C {}) 2> /dev/null |\
+  head -200'\
+"
+
+export FZF_DEFAULT_OPTS=\
+" \
 --bind='ctrl-j:accept' \
 --border='sharp' \
 --cycle \
@@ -19,19 +28,20 @@ export FZF_DEFAULT_OPTS=" \
 --no-height \
 --pointer='▶ '
 "
-# export FZF_COMPLETION_OPTS=" \
+# export FZF_COMPLETION_OPTS=\
+# " \
 # --border \
 # --info=inline \
 # "
-# export FZF_DEFAULT_COMMAND=" \
-# fd \
+# export FZF_DEFAULT_COMMAND=\
+# "fd \
 # --color=always \
 # --hidden \
 # --follow \
 # --type=file \
 # "
-# export FZF_ALT_C_COMMAND=" \
-# fd \
+# export FZF_ALT_C_COMMAND=\
+# "fd \
 # --hidden \
 # --follow \
 # --type=d \

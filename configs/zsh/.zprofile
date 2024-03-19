@@ -4,14 +4,11 @@
 # vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
 # Vim:set nu clipboard+=unnamedplus foldmethsofttabstop=0
 
-# =============================================================================
-# ENV VARS: Terminal Setup
-# ============================================================================\=
+# ------------------------------------------------------------------------------
+# ~ Env Vars
 
 # Fix for password store
 export PASSWORD_STORE_GPG_OPTS="--no-throw-keyids --use-agent"
-
-# ~~ Env-Var Settings ----------------------------------------------------------
 
 # -- Dotfiles Array --
 typeset -A DOTFILES
@@ -54,6 +51,11 @@ export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
 export HOMEBREW_NO_ENV_HINT=1
 export HOMEBREW_NO_ANALYTICS=1
 
+# -- Help Files --
+export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"
+mkdir -p "${HELPDIR}"
+alias help="run-help"
+
 # -- Zsh Configs Path --
 export ZDOTDIR="${CONFIGS}/zsh"
 export ZDATADIR="${LOCAL_DATA}/zsh"
@@ -61,11 +63,6 @@ export ZCACHEDIR="${LOCAL_CACHE}/zsh"
 export ZHOMEDIR="${ZDOTDIR}"
 export ZRCDIR="${ZDOTDIR}"
 export ZLIB="${ZDOTDIR}/lib"
-
-# -- Help Files --
-export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"
-mkdir -p "${HELPDIR}"
-alias help="run-help"
 
 # ------------------------------------------------------------------------------
 # ~ Zinit Env-vars ~
@@ -78,6 +75,7 @@ export ZPFX="${LOCAL_DATA}/zinit/polaris" && mkdir -p "${ZPFX}"
 typeset -A ZINIT
 ZINIT[ZCOMPDUMP_PATH]="${LOCAL_CACHE}/zcompdump"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
+ZINIT[COMPINIT_OPTS]=" -C"
 # ZINIT[BIN_DIR]="${ZINIT_HOME}"
 # ZINIT[HOME_DIR]="${DATA}/zinit"
 # ZINIT[MAN_DIR]="${ZPFX}/man"
@@ -86,7 +84,6 @@ ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
 # ZINIT[COMPLETIONS_DIR]="${DATA}/zinit/completions"
 # ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
 # ZINIT[MUTE_WARNINGS]="1"
-# ZINIT[COMPINIT_OPTS]=" -C"
 # ZINIT[NO_ALIASES]="0"
 
 # Skip the creation of global compinit

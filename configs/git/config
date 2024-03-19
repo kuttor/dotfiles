@@ -1,0 +1,111 @@
+#! /usr/bin/env gitconfig
+#vim:set syntax=gitconfig filetype=gitconfig 
+
+[alias]
+  aliases       = "!git config --get-regexp alias | cut -c 7-"
+  branches      = "branch --all"
+  co            = "checkout"
+  doit          = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
+  info          = "status --short --branch"
+  remotes       = "remote -v"
+  state         = "!git status --show-stash --verbose --verbose; git stash list --color=always --pretty='%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%C'"
+  status-select = "!git-status-select"1
+  tags          = "tag --list"
+  tracked       = "!git ls-tree -r master --name-only"
+  uncommit      = "reset --soft HEAD~1"
+  users         = "shortlog --summary -"
+
+[advice]
+  pushNonFastForward = false
+  statusHints = false
+
+[apply]
+  whitespace = fix
+
+[branch]
+  autosetupmerge = true
+
+[color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  pager = true
+  status = auto
+	ui = true
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[diff-so-fancy]
+	first-run = false
+
+[core]
+  editor = nvim
+  whitespace = trailing-space,space-before-tab
+  excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
+  trustctime = false
+  untrackedCache = true
+	pager = diff-so-fancy | less --tabs=4 -RFX
+
+[credential]
+  helper = cache
+
+[delta]
+  navigate = true # use n and N to move between diff sections
+  theme = One Half Dark
+
+[diff]
+  colorMoved = default
+  tool = diff-so-fancy --patch
+  guitool = meld
+
+[github]
+  user = kuttor
+
+[help]
+  autocorrect = 1
+
+[interactive]
+  diffFilter = diff-so-fancy --patch
+
+[merge]
+  tool = meld
+
+[mergetool "Sublime Merge"]
+  cmd = meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
+
+[pager]
+  difftool = true
+
+[pull]
+  rebase = true
+
+[push]
+  followTags = true
+  default = current
+  autoSetupRemote = true
+
+[rerere]
+  enabled = true
+  eautoupdate = 1
+
+[user]
+  name = changme
+  email = changeme
+
+[web]
+  browser = safari
+
+
