@@ -3,27 +3,22 @@
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0
 
-# Deprecating zshenv in favor for zprofile
-[[ -f /etc/zshenv && -f /etc/zprofile ]] &&
-  sudo mv /etc/zshenv /etc/zprofile
-
 # Zinit Autoinstaller
 [[ ! -f "${ZINIT_HOME}/zinit.zsh" ]] &&
   git clone https://github.com/zdharma-continuum/zinit.git ${ZINIT_HOME}
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Powerlevel10k
-zinit for \
+# Prompt: Powerlevel10k
+zi for \
 lucid \
 light-mode \
 depth="1" \
-atload"${CONFIGS}/p10k-instant.zsh" \
+atload"hook p10k-instant.atload.zsh" \
 @romkatv/powerlevel10k
 
-# ------------------------------------------------------------------------------
-# ~ ZSH Annexes ~
-
-zinit light-mode lucid for \
+# Zinit Annexes
+zi light-mode lucid for \
+zdharma-continuum/zinit-annex-binary-symlink \
 zdharma-continuum/zinit-annex-meta-plugins \
 zdharma-continuum/zinit-annex-default-ice \
 zdharma-continuum/zinit-annex-link-man \
@@ -31,143 +26,141 @@ zdharma-continuum/zinit-annex-pull \
 zdharma-continuum/zinit-annex-man \
 annexes \
 zsh-users+fast \
-ext-git
+zdharma2 \
+zdharma \
+ext-git \
+sharkdp \
+molovo \
+prezto
 
 # ------------------------------------------------------------------------------
+zi default-ice -cq \
+wait \
+lucid \
+light-mode
+# ------------------------------------------------------------------------------
+
 # ~ Zinit Plugins ~
-
-zinit pack for \
+zi pack for \
 ls_colors \
-dircolors-material
+dircolors-material \
+subversion
 
-zinit for \
+zi for \
+  atinit'hook history-search-multi-word.atinit.zsh' \
+zdharma-continuum/history-search-multi-word \
+  atload'hook zsh-startify.atload.zsh' \
+zdharma-continuum/zsh-startify \
 zdharma-continuum/zzcomplete \
 zdharma-continuum/zsh-lint \
 zdharma-continuum/zsh-sweep \
 zdharma-continuum/git-url \
-zdharma-continuum/zui \
 NICHOLAS85/z-a-linkbin \
 NICHOLAS85/z-a-eval
 
 # ------------------------------------------------------------------------------
-# ~ Turbo GH-Release Programs Delayed Start ~
-
-# Clearing and setting previous ICE defaults
-zinit default-ice -cq \
-as"program" \
+zi default-ice -cq \
 from"gh-r" \
 wait"1" \
 lucid \
 light-mode
+# ------------------------------------------------------------------------------
 
 # tealdeer ~ A very fast implementation of tldr in Rust
-zinit for \
+zi for \
 dl"https://github.com/dbrgn/tealdeer/blob/main/completion/zsh_tealdeer -> _tealdeer" \
-atpull"!git reset --hard" \
-lbin"tealdeer-* -> tldr" \
-pick"tldr" \
+sbin"tealdeer-* -> tldr" \
 @dbrgn/tealdeer
+#atpull"!git reset --hard" \
 
 # eza ~ A simple and fast Zsh plugin manager
-zinit for \
-lbin"*eza -> eza" \
-pick"eza" \
+zi for \
+sbin"eza -> eza" \
 atload"hook eza.atload.zsh" \
 dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza" \
-@eza-community/eza
-# zinit for \
-# atload"source ${CONFIGS}/eza.zsh" \
-# https://github.com/eza-community/eza/blob/main/completions/zsh/_eza
+eza-community/eza
 
 # fd ~ A simple, fast and user-friendly alternative to find
-zinit for \
-lbin"**fd -> fd" \
-pick"fd/fd" \
+zi for \
+sbin"fd* -> fd" \
 atload"hook fd.atload.zsh" \
 atclone"hook fd.atclone.zsh" \
 @sharkdp/fd
 
 # bat ~ A cat(1) clone with wings
-zinit for \
-lbin"**bat -> bat" \
-pick"bat/bat" \
+zi for \
+sbin"bat* -> bat" \
 atload"hook bat.atload.zsh" \
 atclone"hook bat.atclone.zsh" \
 @sharkdp/bat
 
 # delta ~ A viewer for git and diff output
-zinit for \
+zi for \
 atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
 dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
-lbin"delta-*/delta -> delta" \
+sbin"!delta-*/delta -> delta" \
 @dandavison/delta
 
 # zoxide ~ A smarter cd command
-zinit for \
+zi for \
 atload"hook zoxide.atload.zsh" \
-lbin"zoxide* -> zoxide" \
+sbin"zoxide -> zoxide" \
 @ajeetdsouza/zoxide
-# zinit for \
-# atload"hook zoxide.atload.zsh" \
-# mv"zoxide* -> zoxide" \
-# lman"zoxide" \
-# @ajeetdsouza/zoxide
-zinit for \
-lbin"zsh-alias-matcher* -> zsh-alias-matcher" \
+
+zi for \
+sbin"zsh-alias-matcher -> zsh-alias-matcher" \
 decayofmind/zsh-fast-alias-tips
 
 # ------------------------------------------------------------------------------
-# ~ Turbo Programs with Delayed Start ~
-
-# Clearing and setting previous ICE defaults
-zinit default-ice -cq \
+zi default-ice -cq \
 wait"1" \
 lucid \
 light-mode
+# ------------------------------------------------------------------------------
 
 # diff-so-fancy ~ Make git diff output more readable
-zinit for \
-lbin"bin/git-dsf -> git-dsf" \
+zi for \
+sbin"bin/git-dsf -> git-dsf" \
 zdharma-continuum/zsh-diff-so-fancy
 
 # zeno ~ A simple and powerful Zsh prompt
-zinit for \
+zi for \
 depth"1" \
 blockf \
 atload"source ${CONFIGS}/zeno/zeno" \
-lbin"zeno -> zeno" \
+sbin"bin/zeno -> zeno" \
 yuki-yano/zeno.zsh
 
 # yank ~ Yank terminal output to clipboard
-zinit for \
+zi for \
 make \
-lbin"yank -> yank" \
+sbin"yank -> yank" \
 @mptre/yank
 
 # tmux ~ Terminal multiplexer
-zinit for \
+zi for \
 configure'--disable-utf8proc' \
 make \
-lbin"!tmux*" \
+sbin"tmux.1 -> tmux" \
 @tmux/tmux
 
 # ------------------------------------------------------------------------------
-# ~ Shell Enhancements ~
-
 # Clearing and setting previous ICE defaults
-zinit default-ice -cq \
+zi default-ice -cq \
 wait"0" \
 lucid \
 light-mode
+# ------------------------------------------------------------------------------
 
 # Zsh-Safe-Rm ~ Prevents accidental deletion of files
-zinit for \
-lbin"**/* -> *" \
-unixorn/warhol.plugin.zsh \
-@mattmc3/zsh-safe-rm
+zi for \
+unixorn/warhol.plugin.zsh
+
+zi for \
+mattmc3/zsh-safe-rm
 
 # Zsh-Autopair ~ Auto-pairing quotes, brackets, etc in command line
-zinit for \
+zi for \
 compile"*.zsh" \
 nocompletions \
 atload"hook zsh-autopair.atload.zsh" \
@@ -175,52 +168,31 @@ atinit"hook zsh-autopair.atinit.zsh" \
 hlissner/zsh-autopair
 
 # iTerm2 integration ~ Shell integration for iTerm2
-zinit for \
+zi for \
 if'[[ "$TERM_PROGRAM" = "iTerm.app" ]]' \
 pick"shell_integration/zsh" \
 sbin"utilities/*" \
 gnachman/iTerm2-shell-integration
 
-# ------------------------------------------------------------------------------
-# ~ Completions ~
-
-zinit default-ice -cq \
-wait"0" \
-lucid \
-light-mode
+# glow ~ A markdown reader for the terminal
+zi for \
+sbin'glow_* -> glow' \
+charmbracelet/glow
 
 zinit for \
 chitoku-k/fzf-zsh-completions \
 z-shell/zsh-fancy-completions \
-depth=1 \
-atload"autoload -Uz compinit && compinit -u" \
-atpull"zinit cclear && zinit creinstall sainnhe/zsh-completions" \
+  depth"1" \
+  atpull"zinit cclear && zinit creinstall sainnhe/zsh-completions" \
+  atload"autoload -Uz compinit && compinit -u" \
 sainnhe/zsh-completions \
-nocd \
-depth=1 \
-atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
+  nocd \
+  depth"1" \
+  atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
 3v1n0/zsh-bash-completions-fallback
 
-# ------------------------------------------------------------------------------
-# # ~ Zinit Commons ~
-# zinit default-ice -cq wait"0" lucid light-mode
-
-# zinit for \
-# atinit"hook fast-syntax-highlighting.atinit.zsh" \
-# atload"hook fast-syntax-highlighting.atload.zsh" \
-# @zdharma-continuum/fast-syntax-highlighting \
-# atinit"hook zsh-autosuggestions.atinit.zsh" \
-# atload"hook zsh-autosuggestions.atload.zsh" \
-# @zsh-users/zsh-autosuggestions \
-# blockf \
-# atpull"hook zsh-completions.atpull.zsh" \
-# @zsh-users/zsh-completions
-
-# ------------------------------------------------------------------------------
-# ~ compinit + cdreplay ~
-
 #autoload -Uz compinit && compinit
-[[ $(date +'%j') != $(date -r ${ZDOTDIR:-$HOME}/.zcompdump +'%j') ]] &&
+[[ $(date +'%j') != $(date -r ${LOCAL_CACHE}/.zcompdump +'%j') ]] &&
 compinit || compinit -C
 
 zinit cdreplay -q

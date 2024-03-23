@@ -1,33 +1,44 @@
-#! /opt/homebrew/bin/zsh
+#! /usr/bin/env zsh
 # vim:set filetype=zsh syntax=zs
 # vim:set ft=zsh ts=4 sw=4 sts=0
 # vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
 # Vim:set nu clipboard+=unnamedplus foldmethsofttabstop=0
 
 # ------------------------------------------------------------------------------
-# ~ Env Vars
+# ~ Pre-Config ~
+# ------------------------------------------------------------------------------
+
+# Skip the creation of global compinit
+export skip_global_compinit=1
+
+# Deprecating zshenv in favor for zprofile
+[[ -f /etc/zshenv && -f /etc/zprofile ]] &&
+  sudo mv /etc/zshenv /etc/zprofile
+
+# ------------------------------------------------------------------------------
+# ~ Env-Vars ~
+# ------------------------------------------------------------------------------
 
 # Fix for password store
 export PASSWORD_STORE_GPG_OPTS="--no-throw-keyids --use-agent"
 
 # -- Dotfiles Array --
 typeset -A DOTFILES
-DOTFILES[AUTOLOADS]="${HOME}/.dotfiles/autoloads"
+DOTFILES[FUNCTIONS]="${HOME}/.dotfiles/functions"
 DOTFILES[CONFIGS]="${HOME}/.dotfiles/configs"
 DOTFILES[HOOKS]="${HOME}/.dotfiles/hooks"
-DOTFILES[HOME_DIR]="${HOME}/.dotfiles"
+DOTFILES[HOME]="${HOME}/.dotfiles"
 
 # -- Dotfiles Array Shorteners --
-export AUTOLOADS="${DOTFILES[AUTOLOADS]}"
-export HOME_DIR="${DOTFILES[HOME_DIR]}"
+export FUNCTIONS="${DOTFILES[FUNCTIONS]}"
 export CONFIGS="${DOTFILES[CONFIGS]}"
 export HOOKS="${DOTFILES[HOOKS]}"
 
 # -- XDG Base Directories --
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPPREFIX}}" && mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.local/config}" && mkdir -p "${XDG_CONFIG_HOME}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}" && mkdir -p "${XDG_STATE_HOME}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.local/cache}" && mkdir -p "${XDG_CACHE_HOME}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}" && mkdir -p "${XDG_CONFIG_HOME}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}" && mkdir -p "${XDG_DATA_HOME}"
 export XDG_LIB_HOME="${XDG_LIB_HOME:-${HOME}/.local/lib}" && mkdir -p "${XDG_LIB_HOME}"
 export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}" && mkdir -p "${XDG_BIN_HOME}"
@@ -64,9 +75,6 @@ export ZHOMEDIR="${ZDOTDIR}"
 export ZRCDIR="${ZDOTDIR}"
 export ZLIB="${ZDOTDIR}/lib"
 
-# ------------------------------------------------------------------------------
-# ~ Zinit Env-vars ~
-
 # Zinit Custom Vars
 export ZINIT_HOME="${LOCAL_DATA}/zinit/zinit.git" && mkdir -p "${ZINIT_HOME}"
 export ZPFX="${LOCAL_DATA}/zinit/polaris" && mkdir -p "${ZPFX}"
@@ -82,28 +90,19 @@ ZINIT[COMPINIT_OPTS]=" -C"
 # ZINIT[PLUGIN_DIR]="${DATA}/zinit/plugins"
 # ZINIT[SNIPPETS_DIR]="${DATA}/zinit/snippets"
 # ZINIT[COMPLETIONS_DIR]="${DATA}/zinit/completions"
-# ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
 # ZINIT[MUTE_WARNINGS]="1"
-# ZINIT[NO_ALIASES]="0"
-
-# Skip the creation of global compinit
-export skip_global_compinit=1
-
-# ------------------------------------------------------------------------------
-# ~ CONFIG, DATA, CACHE, LIB, BIN Relocations ~
 
 # -- Data Relocations --
 export TMUX_PLUGIN_MANAGER_PATH="${LOCAL_DATA}/tmux/plugins"
-export ZLIB="${ZDOTDIR}/lib"
 export CARGO_HOME="${LOCAL_DATA}/cargo"
-export GOPATH="${LOCAL_DATA}/go"
 export GEM_HOME="${LOCAL_DATA}/gem"
+export GOPATH="${LOCAL_DATA}/go"
 
 # -- Config Relocations --eza
-export LESSKEY="${CONFIGS}/lesskey"
-export INPUTRC="${CONFIGS}/inputrc"
-export WGETRC="${CONFIGS}/wgetrc"
 export CURL_HOME="${CONFIGS}/curl"
+export LESSKEY="${CONFIGS}/lesskey"
+export WGETRC="${CONFIGS}/wgetrc"
+export INPUTRC="${CONFIGS}/inputrc"
 export DOCKER_CONFIG="${CONFIGS}/docker"
 export GIT_CONFIG="${CONFIGS}/git/config"
 export BAT_CONFIG_PATH="${CONFIGS}/bat.conf"
@@ -152,45 +151,13 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include"
 GITSTATUS_LOG_LEVEL=DEBUG
 GITSTATUS_SHOW_UNTRACKED_FILES="all"
 
-# ~ History ~``
+# History
 [[ -z "$HISTFILE" ]] && HISTFILE="${LOCAL_CACHE}/.zsh_history"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
 
-# ------------------------------------------------------------------------------
-# ~ Color the Uncolorized ~
-GRC=$(command -v grc)
-if [ -n GRC ]; then
-  alias colourify='$GRC -es --colour=auto'
-  alias as='colourify as'
-  #cvs
-  alias configure='colourify ./configure'
-  alias diff='colourify diff'
-  alias dig='colourify dig'
-  alias g++='colourify g++'
-  alias gas='colourify gas'
-  alias gcc='colourify gcc'
-  alias head='colourify head'
-  alias ifconfig='colourify ifconfig'
-  #irclog
-  alias ld='colourify ld'
-  #ldap
-  #log
-  alias make='colourify make'
-  alias mount='colourify mount'
-  #mtr
-  alias netstat='colourify netstat'
-  alias ping='colourify ping'
-  #proftpd
-  alias ps='colourify ps'
-  alias tail='colourify tail'
-  alias traceroute='colourify traceroute'
-  #wdiff
-fi
-
-# ------------------------------------------------------------------------------
-# ~ Zsh-Config Sourcing ~
+# Add the Zsh-Configs
 source "${ZDOTDIR}/paths.zsh"
 source "${ZDOTDIR}/autoloads.zsh"
 source "${ZDOTDIR}/options.zsh"

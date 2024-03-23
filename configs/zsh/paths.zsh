@@ -3,9 +3,7 @@
 # File: ${HOME}/.dotfiles/configs/zsh/paths.zsh
 # Description: Configuration file for zsh paths and fpath settings.
 
-# ------------------------------------------------------------------------------
-# ~ Path ~
-
+# Add paths to PATH
 path=(
   ${HOME}/.local/share/zsh/zinit/polaris/bin
   ${HOME}/.local/bin
@@ -16,18 +14,7 @@ path=(
   ${path}
 )
 
-# -- Path Related Aliases --
-alias path_list='echo "$PATH" | tr ":" "\n"'
-
-# Export existing PATHs and remove duplicates
-typeset -gx path PATH
-typeset -U path PATH
-
-# ------------------------------------------------------------------------------
-# ~ FPATH ~
-
-typeset -U fpath FPATH
-
+# Add functions paths to fpath 
 fpath=(
   ${HOME}/.local/share/zsh/site-functions
   /usr/local/share/zsh/5.8/site-functions
@@ -38,29 +25,26 @@ fpath=(
   ${fpath}
 )
 
+# Load autoloaded Functions
 () {
-    # add our local functions dir to the fpath
-    local funcs=$HOME/.dotfiles/autoloads
+    local FUNCS="${HOME}/.dotfiles/functions"
 
-    # FPATH is already tied to fpath, but this adds
-    # a uniqueness constraint to prevent duplicate entries
-    typeset -TUg +x FPATH=$funcs:$FPATH fpath
-    
+    # Prevent duplicates
+    typeset -TUg +x FPATH=$FUNCS:$FPATH fpath
+    [[ -d $FUNCS ]] && for i in $FUNCS/*(:t); autoload -U $i
+
     # Now autoload them
-    if [[ -d $funcs ]]; then
-        autoload ${=$(cd "$funcs" && echo *)}
-    fi
+    # if [[ -d $funcs ]]; then
+    #     autoload ${=$(cd "$funcs" && echo *)}
+    # fi
+    
+    #[[ -d $FUNCS ]] && for i in $FUNCS/*(:t); autoload -U $i;
+
 }
 
-# -- FPATH Related Aliases --
-alias fpath_list='echo "$FPATH" | tr ":" "\n"'
-
 # -- Remove duplicates in FPATH --
-typeset -gx FPATH fpath
-typeset -U FPATH fpath
+typeset -Ugx FPATH fpath path PATH
 
-# ~ ----------------------------------------------------------------------------
-# ~ MANPath, INFOPath ~
-
+# Other paths
 export MANPATH="${HOMEBREW_PREFIX}/share/man:${MANPATH+:$MANPATH}:"
 export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
