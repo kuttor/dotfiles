@@ -21,6 +21,7 @@ zi light-mode lucid for \
 zdharma-continuum/zinit-annex-binary-symlink \
 zdharma-continuum/zinit-annex-meta-plugins \
 zdharma-continuum/zinit-annex-default-ice \
+zdharma-continuum/zinit-annex-as-monitor \
 zdharma-continuum/zinit-annex-link-man \
 zdharma-continuum/zinit-annex-pull \
 zdharma-continuum/zinit-annex-man \
@@ -30,8 +31,7 @@ zdharma2 \
 zdharma \
 ext-git \
 sharkdp \
-molovo \
-prezto
+molovo
 
 # ------------------------------------------------------------------------------
 zi default-ice -cq \
@@ -40,11 +40,17 @@ lucid \
 light-mode
 # ------------------------------------------------------------------------------
 
-# ~ Zinit Plugins ~
-zi pack for \
-ls_colors \
-dircolors-material \
-subversion
+# subversion ~ A version control system
+zi pack for subversion
+
+# ls_colors ~ A collection of LS_COLORS definitions
+zi pack for ls_colors
+
+# dircolors-material ~ A dircolors theme inspired by Material Design
+zi pack for dircolors-material
+
+# Warhol ~ A Zsh plugin for syntax highlighting
+zi for unixorn/warhol.plugin.zsh
 
 zi for \
   atinit'hook history-search-multi-word.atinit.zsh' \
@@ -57,6 +63,30 @@ zdharma-continuum/zsh-sweep \
 zdharma-continuum/git-url \
 NICHOLAS85/z-a-linkbin \
 NICHOLAS85/z-a-eval
+
+# zsh-safe-rm ~ prevent the accidental deletion of important files
+zi for \
+mattmc3/zsh-safe-rm
+
+# Zsh-Autopair ~ Auto-pairing quotes, brackets, etc in command line
+zi for \
+compile"*.zsh" \
+nocompletions \
+atload"hook zsh-autopair.atload.zsh" \
+atinit"hook zsh-autopair.atinit.zsh" \
+hlissner/zsh-autopair
+
+# iTerm2 integration ~ Shell integration for iTerm2
+zi for \
+if'[[ "$TERM_PROGRAM" = "iTerm.app" ]]' \
+pick"shell_integration/zsh" \
+sbin"utilities/*" \
+gnachman/iTerm2-shell-integration
+
+# glow ~ A markdown reader for the terminal
+zi for \
+sbin'glow_* -> glow' \
+charmbracelet/glow
 
 # ------------------------------------------------------------------------------
 zi default-ice -cq \
@@ -71,7 +101,6 @@ zi for \
 dl"https://github.com/dbrgn/tealdeer/blob/main/completion/zsh_tealdeer -> _tealdeer" \
 sbin"tealdeer-* -> tldr" \
 @dbrgn/tealdeer
-#atpull"!git reset --hard" \
 
 # eza ~ A simple and fast Zsh plugin manager
 zi for \
@@ -145,41 +174,13 @@ sbin"tmux.1 -> tmux" \
 @tmux/tmux
 
 # ------------------------------------------------------------------------------
-# Clearing and setting previous ICE defaults
 zi default-ice -cq \
-wait"0" \
+wait"2" \
 lucid \
 light-mode
 # ------------------------------------------------------------------------------
 
-# Zsh-Safe-Rm ~ Prevents accidental deletion of files
 zi for \
-unixorn/warhol.plugin.zsh
-
-zi for \
-mattmc3/zsh-safe-rm
-
-# Zsh-Autopair ~ Auto-pairing quotes, brackets, etc in command line
-zi for \
-compile"*.zsh" \
-nocompletions \
-atload"hook zsh-autopair.atload.zsh" \
-atinit"hook zsh-autopair.atinit.zsh" \
-hlissner/zsh-autopair
-
-# iTerm2 integration ~ Shell integration for iTerm2
-zi for \
-if'[[ "$TERM_PROGRAM" = "iTerm.app" ]]' \
-pick"shell_integration/zsh" \
-sbin"utilities/*" \
-gnachman/iTerm2-shell-integration
-
-# glow ~ A markdown reader for the terminal
-zi for \
-sbin'glow_* -> glow' \
-charmbracelet/glow
-
-zinit for \
 chitoku-k/fzf-zsh-completions \
 z-shell/zsh-fancy-completions \
   depth"1" \
