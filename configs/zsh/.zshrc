@@ -30,7 +30,6 @@ zsh-users+fast \
 zdharma2 \
 zdharma \
 ext-git \
-sharkdp \
 molovo
 
 # ------------------------------------------------------------------------------
@@ -39,9 +38,6 @@ wait \
 lucid \
 light-mode
 # ------------------------------------------------------------------------------
-
-# subversion ~ A version control system
-zi pack for subversion
 
 # ls_colors ~ A collection of LS_COLORS definitions
 zi pack for ls_colors
@@ -104,10 +100,17 @@ sbin"tealdeer-* -> tldr" \
 
 # eza ~ A simple and fast Zsh plugin manager
 zi for \
-sbin"eza -> eza" \
+as'program' \
+sbin'**/eza -> eza' \
 atload"hook eza.atload.zsh" \
 dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza" \
 eza-community/eza
+
+# zi for \
+# sbin"eza -> eza" \
+# atload"hook eza.atload.zsh" \
+# dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza" \
+# eza-community/eza
 
 # fd ~ A simple, fast and user-friendly alternative to find
 zi for \
@@ -116,11 +119,12 @@ atload"hook fd.atload.zsh" \
 atclone"hook fd.atclone.zsh" \
 @sharkdp/fd
 
-# bat ~ A cat(1) clone with wings
+# bat ~ a cat(1) clone with wings
 zi for \
-sbin"bat* -> bat" \
-atload"hook bat.atload.zsh" \
+mv"bat-*/bat -> bat" \
 atclone"hook bat.atclone.zsh" \
+atpull"%atclone" \
+atload"hook bat.atload.zsh" \
 @sharkdp/bat
 
 # delta ~ A viewer for git and diff output
@@ -163,7 +167,7 @@ yuki-yano/zeno.zsh
 # yank ~ Yank terminal output to clipboard
 zi for \
 make \
-sbin"yank -> yank" \
+sbin"yank.1 -> yank" \
 @mptre/yank
 
 # tmux ~ Terminal multiplexer
