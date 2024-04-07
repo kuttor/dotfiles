@@ -90,7 +90,8 @@
   difftool = true
 
 [pull]
-  rebase = true
+	rebase = false
+	ff = true
 
 [push]
   followTags = true

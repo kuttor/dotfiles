@@ -2,8 +2,11 @@
 # ~ Keybindings ~
 # ------------------------------------------------------------------------------
 
+stty intr '^C'        # Ctrl+C cancel
+stty susp '^Z'        # Ctrl+Z suspend
+stty stop undef
+
 bindkey " " magic-space
-bindkey "^E" edit-command-line
 bindkey "^I" expand-or-complete-with-dots
 bindkey "^N" history-beginning-search-forward-end
 bindkey "^P" history-beginning-search-backward-end
@@ -15,8 +18,5 @@ bindkey "^[[H" beginning-of-line
 bindkey "^[^[[C" end-of-line
 bindkey "^[^[[D" beginning-of-line
 bindkey -e
-
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
 
 source "${HOMEBREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"

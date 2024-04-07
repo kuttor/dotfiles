@@ -3,6 +3,9 @@
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0
 
+# Skip the creation of global compinit
+export skip_global_compinit=1
+
 # Zinit Autoinstaller
 [[ ! -f "${ZINIT_HOME}/zinit.zsh" ]] &&
   git clone https://github.com/zdharma-continuum/zinit.git ${ZINIT_HOME}
@@ -48,6 +51,15 @@ zi pack for dircolors-material
 # Warhol ~ A Zsh plugin for syntax highlighting
 zi for unixorn/warhol.plugin.zsh
 
+# lsd ~ The next gen ls command
+zi for \
+from"gh-r" \
+as"program" \
+bpick"lsd-*" \
+pick"lsd-*/lsd" \
+atload"hook lsd.atload.zsh" \
+@lsd-rs/lsd
+
 zi for \
   atinit'hook history-search-multi-word.atinit.zsh' \
 zdharma-continuum/history-search-multi-word \
@@ -72,6 +84,11 @@ atload"hook zsh-autopair.atload.zsh" \
 atinit"hook zsh-autopair.atinit.zsh" \
 hlissner/zsh-autopair
 
+# Zsh-Alias-matcher ~ A fast and powerful alias matcher for Zsh
+zi for \
+sbin"zsh-alias-matcher -> zsh-alias-matcher" \
+decayofmind/zsh-fast-alias-tips
+
 # iTerm2 integration ~ Shell integration for iTerm2
 zi for \
 if'[[ "$TERM_PROGRAM" = "iTerm.app" ]]' \
@@ -79,18 +96,28 @@ pick"shell_integration/zsh" \
 sbin"utilities/*" \
 gnachman/iTerm2-shell-integration
 
-# glow ~ A markdown reader for the terminal
+# git-fuzzy ~ A CLI interface to git that relies on fzf
 zi for \
-sbin'glow_* -> glow' \
-charmbracelet/glow
+as"program" \
+pick"bin/git-fuzzy" \
+bigH/git-fuzzy
 
-# ------------------------------------------------------------------------------
+# ~- GhR - 1 ------------------------------------------------------------------
 zi default-ice -cq \
 from"gh-r" \
 wait"1" \
 lucid \
 light-mode
 # ------------------------------------------------------------------------------
+
+# lazygit ~ A simple terminal UI for git commands
+zi for \
+sbin'**/lazygit' \
+jesseduffield/lazygit
+
+zinit ice wait lucid
+zinit snippet https://gist.githubusercontent.com/iloveitaly/a79ffc31ef5b4785da8950055763bf52/raw/4140dd8fa63011cdd30814f2fbfc5b52c2052245/github-copilot-cli.zsh
+
 
 # tealdeer ~ A very fast implementation of tldr in Rust
 zi for \
@@ -101,38 +128,27 @@ sbin"tealdeer-* -> tldr" \
 # eza ~ A simple and fast Zsh plugin manager
 zi for \
 as'program' \
-sbin'**/eza -> eza' \
-atload"hook eza.atload.zsh" \
+sbin'**/eza* -> eza' \
+atclone"hook " \
 dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza" \
 eza-community/eza
 
+#atload"hook eza.atload.zsh" \
 # zi for \
 # sbin"eza -> eza" \
 # atload"hook eza.atload.zsh" \
 # dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza" \
 # eza-community/eza
 
-# fd ~ A simple, fast and user-friendly alternative to find
-zi for \
-sbin"fd* -> fd" \
-atload"hook fd.atload.zsh" \
-atclone"hook fd.atclone.zsh" \
-@sharkdp/fd
 
-# bat ~ a cat(1) clone with wings
 zi for \
-mv"bat-*/bat -> bat" \
-atclone"hook bat.atclone.zsh" \
-atpull"%atclone" \
-atload"hook bat.atload.zsh" \
-@sharkdp/bat
+sbin'**/delta -> delta' \
+dandavison/delta
 
-# delta ~ A viewer for git and diff output
+# glow ~ A markdown reader for the terminal
 zi for \
-atload"export DELTA_PAGER='less -R -F -+X --mouse'" \
-dl"https://github.com/dandavison/delta/raw/HEAD/etc/completion/completion.zsh -> _delta" \
-sbin"!delta-*/delta -> delta" \
-@dandavison/delta
+sbin'glow_* -> glow' \
+charmbracelet/glow
 
 # zoxide ~ A smarter cd command
 zi for \
@@ -140,11 +156,7 @@ atload"hook zoxide.atload.zsh" \
 sbin"zoxide -> zoxide" \
 @ajeetdsouza/zoxide
 
-zi for \
-sbin"zsh-alias-matcher -> zsh-alias-matcher" \
-decayofmind/zsh-fast-alias-tips
-
-# ------------------------------------------------------------------------------
+# ~- 1 -------------------------------------------------------------------------
 zi default-ice -cq \
 wait"1" \
 lucid \
@@ -170,21 +182,29 @@ make \
 sbin"yank.1 -> yank" \
 @mptre/yank
 
-# tmux ~ Terminal multiplexer
+# tmux and extensions
 zi for \
-configure'--disable-utf8proc' \
-make \
-sbin"tmux.1 -> tmux" \
-@tmux/tmux
+  configure'--disable-utf8proc' \
+  make \
+@tmux/tmux \
+  depth"1" \
+  blockf \
+  atload"hook fzf-preview.atload.zsh" \
+@yuki-yano/fzf-preview.zsh
 
-# ------------------------------------------------------------------------------
+
+
+
+# ~- 2 -------------------------------------------------------------------------
 zi default-ice -cq \
 wait"2" \
 lucid \
 light-mode
 # ------------------------------------------------------------------------------
 
+# Completion Plugins
 zi for \
+RobSis/zsh-completion-generator \
 chitoku-k/fzf-zsh-completions \
 z-shell/zsh-fancy-completions \
   depth"1" \
@@ -194,7 +214,18 @@ sainnhe/zsh-completions \
   nocd \
   depth"1" \
   atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
-3v1n0/zsh-bash-completions-fallback
+3v1n0/zsh-bash-completions-fallback \
+  blockf \
+  ver"zinit-fixed" \
+  as"completion" \
+  nocompile \
+  mv'git-completion.zsh -> _git' \
+iloveitaly/git-completion
+
+# make sure you execute this *after* asdf or other version managers are loaded
+if (( $+commands[github-copilot-cli] )); then
+eval "$(github-copilot-cli alias -- "$0")"
+fi
 
 #autoload -Uz compinit && compinit
 [[ $(date +'%j') != $(date -r ${LOCAL_CACHE}/.zcompdump +'%j') ]] &&

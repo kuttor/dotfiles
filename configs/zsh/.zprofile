@@ -12,8 +12,7 @@
 export skip_global_compinit=1
 
 # Deprecating zshenv in favor for zprofile
-[[ -f /etc/zshenv && -f /etc/zprofile ]] &&
-  sudo mv /etc/zshenv /etc/zprofile
+[[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
 
 # ------------------------------------------------------------------------------
 # ~ Env-Vars ~
@@ -63,8 +62,7 @@ export HOMEBREW_NO_ENV_HINT=1
 export HOMEBREW_NO_ANALYTICS=1
 
 # -- Help Files --
-export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"
-mkdir -p "${HELPDIR}"
+export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help" && mkdir -p "${HELPDIR}"
 alias help="run-help"
 
 # -- Zsh Configs Path --
@@ -100,7 +98,7 @@ export GOPATH="${LOCAL_DATA}/go"
 
 # -- Config Relocations --eza
 export CURL_HOME="${CONFIGS}/curl"
-export LESSKEY="${CONFIGS}/lesskey"
+export LESSKEY="${CONFIGS}/less/lesskey"
 export WGETRC="${CONFIGS}/wgetrc"
 export INPUTRC="${CONFIGS}/inputrc"
 export DOCKER_CONFIG="${CONFIGS}/docker"
@@ -152,7 +150,7 @@ GITSTATUS_LOG_LEVEL=DEBUG
 GITSTATUS_SHOW_UNTRACKED_FILES="all"
 
 # History
-[[ -z "$HISTFILE" ]] && HISTFILE="${LOCAL_CACHE}/.zsh_history"
+export HISTFILE="${LOCAL_CACHE}/.zsh_history"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
