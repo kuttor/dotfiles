@@ -106,12 +106,7 @@ module Homebrew
     def self.check_for_dependents(kegs, casks: [], named_args: [])
       return false unless (result = InstalledDependents.find_some_installed_dependents(kegs, casks:))
 
-      if Homebrew::EnvConfig.developer?
-        DeveloperDependentsMessage.new(*result, named_args:).output
-      else
-        NondeveloperDependentsMessage.new(*result, named_args:).output
-      end
-
+      DependentsMessage.new(*result, named_args:).output
       true
     end
 
@@ -124,6 +119,15 @@ module Homebrew
         @named_args = named_args
       end
 
+      def output
+        ofail <<~EOS
+          Refusing to uninstall #{reqs.to_sentence}
+          because #{(reqs.count == 1) ? "it" : "they"} #{are_required_by_deps}.
+          You can override this and force removal with:
+            #{sample_command}
+        EOS
+      end
+
       protected
 
       def sample_command
@@ -133,27 +137,6 @@ module Homebrew
       def are_required_by_deps
         "#{(reqs.count == 1) ? "is" : "are"} required by #{deps.to_sentence}, " \
           "which #{(deps.count == 1) ? "is" : "are"} currently installed"
-      end
-    end
-
-    class DeveloperDependentsMessage < DependentsMessage
-      def output
-        opoo <<~EOS
-          #{reqs.to_sentence} #{are_required_by_deps}.
-          You can silence this warning with:
-            #{sample_command}
-        EOS
-      end
-    end
-
-    class NondeveloperDependentsMessage < DependentsMessage
-      def output
-        ofail <<~EOS
-          Refusing to uninstall #{reqs.to_sentence}
-          because #{(reqs.count == 1) ? "it" : "they"} #{are_required_by_deps}.
-          You can override this and force removal with:
-            #{sample_command}
-        EOS
       end
     end
 
