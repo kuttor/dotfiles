@@ -6,6 +6,9 @@
 # Skip the creation of global compinit
 export skip_global_compinit=1
 
+# Start the completion system
+autoload -U compinit; compinit
+
 # Zinit Autoinstaller
 [[ ! -f "${ZINIT_HOME}/zinit.zsh" ]] &&
   git clone https://github.com/zdharma-continuum/zinit.git ${ZINIT_HOME}
@@ -60,6 +63,7 @@ pick"lsd-*/lsd" \
 atload"hook lsd.atload.zsh" \
 @lsd-rs/lsd
 
+# ZDharma Maintained Plugins
 zi for \
   atinit'hook history-search-multi-word.atinit.zsh' \
 zdharma-continuum/history-search-multi-word \
@@ -84,14 +88,8 @@ atload"hook zsh-autopair.atload.zsh" \
 atinit"hook zsh-autopair.atinit.zsh" \
 hlissner/zsh-autopair
 
-# Zsh-Alias-matcher ~ A fast and powerful alias matcher for Zsh
+# Auto installs the iTerm2 shell integration for Zsh
 zi for \
-sbin"zsh-alias-matcher -> zsh-alias-matcher" \
-decayofmind/zsh-fast-alias-tips
-
-# iTerm2 integration ~ Shell integration for iTerm2
-zi for \
-if'[[ "$TERM_PROGRAM" = "iTerm.app" ]]' \
 pick"shell_integration/zsh" \
 sbin"utilities/*" \
 gnachman/iTerm2-shell-integration
@@ -101,6 +99,7 @@ zi for \
 as"program" \
 pick"bin/git-fuzzy" \
 bigH/git-fuzzy
+
 
 # ~- GhR - 1 ------------------------------------------------------------------
 zi default-ice -cq \
@@ -118,7 +117,6 @@ jesseduffield/lazygit
 zinit ice wait lucid
 zinit snippet https://gist.githubusercontent.com/iloveitaly/a79ffc31ef5b4785da8950055763bf52/raw/4140dd8fa63011cdd30814f2fbfc5b52c2052245/github-copilot-cli.zsh
 
-
 # tealdeer ~ A very fast implementation of tldr in Rust
 zi for \
 dl"https://github.com/dbrgn/tealdeer/blob/main/completion/zsh_tealdeer -> _tealdeer" \
@@ -126,14 +124,15 @@ sbin"tealdeer-* -> tldr" \
 @dbrgn/tealdeer
 
 # eza ~ A simple and fast Zsh plugin manager
-zi for \
-as'program' \
-sbin'**/eza* -> eza' \
-atclone"hook " \
+zinit for \
+atclone'./eza.atclone.zsh' \
+atpull'%atclone' \
+atload"hook eza.atload.zsh" \
+pick'eza.zsh' \
 dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza" \
 eza-community/eza
 
-#atload"hook eza.atload.zsh" \
+#atload"hook eza.atload.zsh" \A
 # zi for \
 # sbin"eza -> eza" \
 # atload"hook eza.atload.zsh" \
@@ -144,6 +143,7 @@ eza-community/eza
 zi for \
 sbin'**/delta -> delta' \
 dandavison/delta
+
 
 # glow ~ A markdown reader for the terminal
 zi for \
@@ -190,10 +190,7 @@ zi for \
   depth"1" \
   blockf \
   atload"hook fzf-preview.atload.zsh" \
-@yuki-yano/fzf-preview.zsh
-
-
-
+@yuki-yano/fzf-preview.zsh 
 
 # ~- 2 -------------------------------------------------------------------------
 zi default-ice -cq \
@@ -222,16 +219,21 @@ sainnhe/zsh-completions \
   mv'git-completion.zsh -> _git' \
 iloveitaly/git-completion
 
+# fzf-tab ~ A powerful completion engine for Zsh that uses fzf
+zi for \
+atload"hook fzf-tab.atload.zsh" \
+@Aloxaf/fzf-tab
+
+
 # make sure you execute this *after* asdf or other version managers are loaded
 if (( $+commands[github-copilot-cli] )); then
 eval "$(github-copilot-cli alias -- "$0")"
 fi
 
 #autoload -Uz compinit && compinit
-[[ $(date +'%j') != $(date -r ${LOCAL_CACHE}/.zcompdump +'%j') ]] &&
-compinit || compinit -C
-
-zinit cdreplay -q
+#[[ $(date +'%j') != $(date -r ${LOCAL_CACHE}/.zcompdump +'%j') ]] &&
+#$compinit || compinit -C
+#zinit cdreplay -q
 
 # To customize: run `p10k configure` or edit .p10k.zsh.
 [[ ! -f "${CONFIGS}/.p10k.zsh" ]] || source "${CONFIGS}/.p10k.zsh"

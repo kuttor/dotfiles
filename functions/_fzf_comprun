@@ -1,10 +1,12 @@
 #! /usr/bin/env zsh
 # shellcheck shell=sh
 
-command=$1
+local command=$1
 shift
 
 case "${command}" in
+
+
 cd) fzf --preview 'tre --color=always --editor {}' "$@" ;;
 export | unset) fzf --preview "eval 'echo \$'{}" "$@" ;;
 ssh) fzf --preview 'dig {}' "$@" ;;

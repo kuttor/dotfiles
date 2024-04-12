@@ -1,0 +1,11 @@
+../configs/zsh/.zcompdump
+../.DS_Store
+../configs/zsh/.zsh_history
+configs/zsh/.zcompdump
+configs/zsh/.zsh_history
+configs/zsh/.zsh_history
+.gitignore
+.zcompdump
+.zsh_history
+.zcompdum*
+**/.zcompdump

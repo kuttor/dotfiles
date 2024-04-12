@@ -17,6 +17,7 @@ bindkey "^[[F" end-of-line
 bindkey "^[[H" beginning-of-line
 bindkey "^[^[[C" end-of-line
 bindkey "^[^[[D" beginning-of-line
+bindkey '^Xh' _complete_help
 bindkey -e
 
 source "${HOMEBREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"

@@ -103,8 +103,8 @@
   eautoupdate = 1
 
 [user]
-  name = changme
-  email = changeme
+	name = Andrew Kuttor
+	email = andrew.kuttor@gmail.com
 
 [web]
   browser = safari

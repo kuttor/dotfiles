@@ -47,20 +47,15 @@ zstyle ':completion:*' rehash true
 zstyle ':completion:*' special-dirs true              # Highlight special folders
 zstyle ':completion:*' use-cache true # Cache completions
 zstyle ':completion:*' verbose yes
-
+zstyle ':completion:*' file-sort 'modification'
 zstyle ':completion:*' matcher-list \
 'm:{a-zA-Z}={A-Za-z}' \
 'r:|[._-]=* r:|=*' \
 'l:|=* r:|=*'
 
-# zstyle show completion menu if 1 or more items to select
 zstyle ':completion:*:default' menu select=1 # Show Menu for 1 or more items
 
-
-
-# ------------------------------------------------------------------------------
-# ~ Completion Groups ~
-# ------------------------------------------------------------------------------
+# ~ Group Completion ~
 
 # CD
 zstyle ':completion:*:cd:*' tag-order \
@@ -70,10 +65,10 @@ zstyle ':completion:*:cd:*' group-order \
 local-directories \
 path-directories
 
-# completion of ps command
+# PS
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
-# completion of sudo command
+# Sudo
 zstyle ':completion:*:sudo:*' command-path \
 /usr/local/sbin \
 /usr/local/bin \
@@ -90,35 +85,13 @@ parameters
 # Display man completion by section number
 zstyle ':completion:*:manuals' separate-sections true
 
-# Display man completions in order of modification date
-zstyle ':completion:*' file-sort 'modification'
-
 # Make completion is slow
 zstyle ':completion:*:make:*:targets' call-command true
 zstyle ':completion:*:make::' tag-order targets:
-zstyle ':completion:*:*:*make:*:targets' command awk \''/^[a-zA-Z0-9][^\/\t=]+:/ {print $1}'\' \$file
-
-#zstyle ':completion:*:*:*make:*:*' tag-order '!targets !functions !file-patterns'
+zstyle ':completion:*:*:*make:*:targets' command \
+awk \''/^[a-zA-Z0-9][^\/\t=]+:/ {print $1}'\' \$file
 
 zstyle ':autocomplete:*' widget-style menu-select
 #bindkey -M menu-select '\r' accept-line
 
-# ~ OLD ------------------------------------------------------------------------
-
-## -- Ignore --
-#zstyle ':completion::complete:*:*:files' ignored-patterns '.DS_Store' 'Icon?' '.Trash'
-#zstyle ':completion::complete:*:*:globbed-files' ignored-patterns '.DS_Store' 'Icon?' '.Trash'
-#zstyle ':completion::complete:rm:*:globbed-files' ignored-patter
-#
-#
-## describe different versions of completion. Test with: cd<tab>
-#zstyle ':completion:*:descriptions' format "%F{yellow}--- %d%f"
-#zstyle ':completion:*:messages' format '%d'
-#
-## when no match exists. Test with: cd fdjsakl<tab>
-#
-## groups matches. Test with cd<tab>
-#zstyle ':completion:*' group-name ''
-#
-## this will only show up if a parameter flag has a name but no description
-#zstyle ':completion:*' auto-description 'specify: %d
+zstyle ':completion:*:git-checkout:*' sort false

@@ -98,6 +98,7 @@ export GOPATH="${LOCAL_DATA}/go"
 
 # -- Config Relocations --eza
 export CURL_HOME="${CONFIGS}/curl"
+export GNUPGHOME="${LOCAL_CONFIGS}/.gnuphg"
 export LESSKEY="${CONFIGS}/less/lesskey"
 export WGETRC="${CONFIGS}/wgetrc"
 export INPUTRC="${CONFIGS}/inputrc"
