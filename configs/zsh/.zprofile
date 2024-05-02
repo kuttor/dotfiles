@@ -1,4 +1,3 @@
-#! /usr/bin/env zsh
 # vim:set filetype=zsh syntax=zs
 # vim:set ft=zsh ts=4 sw=4 sts=0
 # vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
@@ -34,13 +33,13 @@ export CONFIGS="${DOTFILES[CONFIGS]}"
 export HOOKS="${DOTFILES[HOOKS]}"
 
 # -- XDG Base Directories --
-export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPPREFIX}}" && mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
-export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}" && mkdir -p "${XDG_STATE_HOME}"
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.local/cache}" && mkdir -p "${XDG_CACHE_HOME}"
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}" && mkdir -p "${XDG_CONFIG_HOME}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}" && mkdir -p "${XDG_DATA_HOME}"
-export XDG_LIB_HOME="${XDG_LIB_HOME:-${HOME}/.local/lib}" && mkdir -p "${XDG_LIB_HOME}"
-export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}" && mkdir -p "${XDG_BIN_HOME}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPPREFIX}}"; mkdir -p -m 0700 "${XDG_RUNTIME_DIR}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"; mkdir -p "${XDG_STATE_HOME}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.local/cache}"; mkdir -p "${XDG_CACHE_HOME}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"; mkdir -p "${XDG_CONFIG_HOME}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"; mkdir -p "${XDG_DATA_HOME}"
+export XDG_LIB_HOME="${XDG_LIB_HOME:-${HOME}/.local/lib}"; mkdir -p "${XDG_LIB_HOME}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-${HOME}/.local/bin}"; mkdir -p "${XDG_BIN_HOME}"
 
 # -- XDG Base Arrays --
 export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${CONFIGS}":"${XDG_CONFIG_DIRS}"
@@ -54,6 +53,12 @@ export LOCAL_DATA="${XDG_DATA_HOME}"
 export LOCAL_LIB="${XDG_LIB_HOME}"
 export LOCAL_BIN="${XDG_BIN_HOME}"
 
+# -- History --
+export HISTFILE="${LOCAL_CACHE}/.zsh_history"
+export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+export HISTSIZE=10000
+export SAVEHIST=10000
+
 # -- Homebrew --
 export HOMEBREW_PREFIX="/opt/homebrew"
 export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
@@ -62,7 +67,7 @@ export HOMEBREW_NO_ENV_HINT=1
 export HOMEBREW_NO_ANALYTICS=1
 
 # -- Help Files --
-export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help" && mkdir -p "${HELPDIR}"
+export HELPDIR="${HOMEBREW_PREFIX}/share/zsh/help"; mkdir -p "${HELPDIR}"
 alias help="run-help"
 
 # -- Zsh Configs Path --
@@ -74,8 +79,12 @@ export ZRCDIR="${ZDOTDIR}"
 export ZLIB="${ZDOTDIR}/lib"
 
 # Zinit Custom Vars
-export ZINIT_HOME="${LOCAL_DATA}/zinit/zinit.git" && mkdir -p "${ZINIT_HOME}"
-export ZPFX="${LOCAL_DATA}/zinit/polaris" && mkdir -p "${ZPFX}"
+export ZINIT_HOME="${LOCAL_DATA}/zinit/zinit.git"; mkdir -p "${ZINIT_HOME}"
+export ZPFX="${LOCAL_DATA}/zinit/polaris"; mkdir -p "${ZPFX}"
+
+# Neovim
+export VIMINIT="${LOCAL_CONFIG}/nvim"; mkdir && -p $VIMINIT
+export MYVIMRC="${LOCAL_CONFIG}/nvim"; mkdir && -p $MYVIMRC
 
 # Zinit Builtins Vars
 typeset -A ZINIT
@@ -149,21 +158,6 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include"
 # GIT
 GITSTATUS_LOG_LEVEL=DEBUG
 GITSTATUS_SHOW_UNTRACKED_FILES="all"
-
-# History
-export HISTFILE="${LOCAL_CACHE}/.zsh_history"
-export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
-export HISTSIZE=10000
-export SAVEHIST=10000
-
-# Add the Zsh-Configs
-source "${ZDOTDIR}/paths.zsh"
-source "${ZDOTDIR}/autoloads.zsh"
-source "${ZDOTDIR}/options.zsh"
-source "${ZDOTDIR}/completions.zsh"
-source "${ZDOTDIR}/aliases.zsh"
-source "${ZDOTDIR}/modules.zsh"
-source "${ZDOTDIR}/keybindings.zsh"
 
 # ~ Source on MacOS only ~
 #[[ ${OSTYPE} == "darwin"* ]] && source "${CONFIGS}/macos.zsh"

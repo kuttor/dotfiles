@@ -25,23 +25,6 @@ fpath=(
   ${fpath}
 )
 
-# Load autoloaded Functions
-() {
-    local FUNCS="${HOME}/.dotfiles/functions"
-
-    # Prevent duplicates
-    typeset -TUg +x FPATH=$FUNCS:$FPATH fpath
-    [[ -d $FUNCS ]] && for i in $FUNCS/*(:t); autoload -U $i
-
-    # Now autoload them
-    # if [[ -d $funcs ]]; then
-    #     autoload ${=$(cd "$funcs" && echo *)}
-    # fi
-    
-    #[[ -d $FUNCS ]] && for i in $FUNCS/*(:t); autoload -U $i;
-
-}
-
 # -- Remove duplicates in FPATH --
 typeset -Ugx FPATH fpath path PATH
 

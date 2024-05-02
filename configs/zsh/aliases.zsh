@@ -19,4 +19,4 @@ alias path_list='echo "$PATH" | tr ":" "\n"'
 
 
 alias vim="nvim"
-
+alias python="python3"

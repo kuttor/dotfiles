@@ -72,3 +72,10 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 
 # https://github.com/zsh-users/zsh-autosuggestions/issues/351
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste)
+
+() {
+    local FUNCS="${HOME}/.dotfiles/functions"
+
+    typeset -TUg +x FPATH=$FUNCS:$FPATH fpath
+    [[ -d $FUNCS ]] && for i in $FUNCS/*(:t); autoload -U $i
+}

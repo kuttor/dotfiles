@@ -17,7 +17,7 @@
   "editor.defaultFormatter": "Shunqian.prettier-plus",
   "workbench.productIconTheme": "fluent-icons",
   "workbench.colorTheme": "SynthWave '84",
-  "workbench.iconTheme": "eq-material-theme-icons",
+  "workbench.iconTheme": "material-icon-theme",
   "workbench.preferredDarkColorTheme": "Andromeda Colorizer",
   "synthwave84.brightness": 0.6
 }

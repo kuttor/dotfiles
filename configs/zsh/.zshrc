@@ -1,3 +1,18 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.dotfiles/configs/zsh/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+# Add the Zsh-Configs
+source "${ZDOTDIR}/paths.zsh"
+source "${ZDOTDIR}/autoloads.zsh"
+source "${ZDOTDIR}/options.zsh"
+source "${ZDOTDIR}/completions.zsh"
+source "${ZDOTDIR}/aliases.zsh"
+source "${ZDOTDIR}/modules.zsh"
+source "${ZDOTDIR}/keybindings.zsh"
+
 #! /usr/bin/env zsh
 # -*- coding: utf-8 -*-
 # vim:set filetype=zsh syntax=zsh
@@ -8,6 +23,8 @@ export skip_global_compinit=1
 
 # Start the completion system
 autoload -U compinit; compinit
+
+export ZINIT_HOME="$HOME/.local/share/zinit"
 
 # Zinit Autoinstaller
 [[ ! -f "${ZINIT_HOME}/zinit.zsh" ]] &&
@@ -237,3 +254,6 @@ fi
 
 # To customize: run `p10k configure` or edit .p10k.zsh.
 [[ ! -f "${CONFIGS}/.p10k.zsh" ]] || source "${CONFIGS}/.p10k.zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/configs/zsh/.p10k.zsh.
+[[ ! -f ~/.dotfiles/configs/zsh/.p10k.zsh ]] || source ~/.dotfiles/configs/zsh/.p10k.zsh
