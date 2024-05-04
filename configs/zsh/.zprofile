@@ -75,7 +75,7 @@ export ZDOTDIR="${CONFIGS}/zsh"
 export ZDATADIR="${LOCAL_DATA}/zsh"
 export ZCACHEDIR="${LOCAL_CACHE}/zsh"
 export ZHOMEDIR="${ZDOTDIR}"
-export ZRCDIR="${ZDOTDIR}"
+export ZRCDIR="${ZDOTDIR}/rc"
 export ZLIB="${ZDOTDIR}/lib"
 
 # Zinit Custom Vars
@@ -83,8 +83,8 @@ export ZINIT_HOME="${LOCAL_DATA}/zinit/zinit.git"; mkdir -p "${ZINIT_HOME}"
 export ZPFX="${LOCAL_DATA}/zinit/polaris"; mkdir -p "${ZPFX}"
 
 # Neovim
-export VIMINIT="${LOCAL_CONFIG}/nvim"; mkdir && -p $VIMINIT
-export MYVIMRC="${LOCAL_CONFIG}/nvim"; mkdir && -p $MYVIMRC
+export VIMINIT="${LOCAL_CONFIG}/nvim"; mkdir -p $VIMINIT
+export MYVIMRC="${LOCAL_CONFIG}/nvim"; mkdir -p $MYVIMRC
 
 # Zinit Builtins Vars
 typeset -A ZINIT

@@ -1,35 +1,27 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.dotfiles/configs/zsh/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-# Add the Zsh-Configs
-source "${ZDOTDIR}/paths.zsh"
-source "${ZDOTDIR}/autoloads.zsh"
-source "${ZDOTDIR}/options.zsh"
-source "${ZDOTDIR}/completions.zsh"
-source "${ZDOTDIR}/aliases.zsh"
-source "${ZDOTDIR}/modules.zsh"
-source "${ZDOTDIR}/keybindings.zsh"
-
 #! /usr/bin/env zsh
 # -*- coding: utf-8 -*-
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0
 
-# Skip the creation of global compinit
-export skip_global_compinit=1
-
-# Start the completion system
-autoload -U compinit; compinit
-
-export ZINIT_HOME="$HOME/.local/share/zinit"
+# p10k instant prompt
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 # Zinit Autoinstaller
 [[ ! -f "${ZINIT_HOME}/zinit.zsh" ]] &&
   git clone https://github.com/zdharma-continuum/zinit.git ${ZINIT_HOME}
 source "${ZINIT_HOME}/zinit.zsh"
+
+() {
+skip_global_compinit=1
+compaudit | xargs chmod g-w,o-w
+}
+
+# Source the ZSH RC files 
+[[ -d "$ZDOTDIR" ]] && for i in "$ZDOTDIR"/rc/*.zsh; do . "$i"; done
+
+export ZINIT_HOME="$HOME/.local/share/zinit"
 
 # Prompt: Powerlevel10k
 zi for \
@@ -60,7 +52,55 @@ zi default-ice -cq \
 wait \
 lucid \
 light-mode
+
 # ------------------------------------------------------------------------------
+# Oh My Zsh plugins
+# ------------------------------------------------------------------------------
+
+zinit default-ice -cq \
+wait"0" \
+lucid
+
+zinit for                         \
+OMZ::lib/completion.zsh           \
+OMZ::lib/compfix.zsh              \
+OMZ::lib/correction.zsh           \
+OMZ::lib/directories.zsh          \
+OMZ::lib/functions.zsh            \
+OMZ::lib/git.zsh                  \
+OMZ::lib/history.zsh              \
+OMZ::lib/misc.zsh                 \
+OMZ::lib/termsupport.zsh          \
+OMZ::lib/theme-and-appearance.zsh \
+OMZ::lib/vcs_info.zsh
+
+# -- Plugins --
+zinit for                      \
+OMZ::plugins/aws               \
+OMZ::plugins/colored-man-pages \
+OMZ::plugins/colorize          \
+OMZ::plugins/common-aliases    \
+OMZ::plugins/composer          \
+OMZ::plugins/copyfile          \
+OMZ::plugins/copypath          \
+OMZ::plugins/cp                \
+OMZ::plugins/extract           \
+OMZ::plugins/fancy-ctrl-z      \
+OMZ::plugins/git               \
+OMZ::plugins/github            \
+OMZ::plugins/gitignore         \
+OMZ::plugins/nvm               \
+OMZ::plugins/pip               \
+OMZ::plugins/sudo              \
+OMZ::plugins/ssh-agent         \
+OMZ::plugins/urltools          \
+OMZ::plugins/tmux              \
+OMZ::plugins/vscode            \
+OMZ::plugins/web-search        \
+atload"hook l.magic-enter.zsh" \
+OMZ::plugins/magic-enter
+
+
 
 # ls_colors ~ A collection of LS_COLORS definitions
 zi pack for ls_colors
@@ -73,12 +113,46 @@ zi for unixorn/warhol.plugin.zsh
 
 # lsd ~ The next gen ls command
 zi for \
-from"gh-r" \
-as"program" \
-bpick"lsd-*" \
-pick"lsd-*/lsd" \
-atload"hook lsd.atload.zsh" \
+  from"gh-r" \
+  as"program" \
+  bpick"lsd-*" \
+  pick"lsd-*/lsd" \
+  atload"hook lsd.atload.zsh" \
 @lsd-rs/lsd
+
+# Vim ~ The one-in-only
+zinit for \
+  as"program" \
+  atclone"
+    rm -f src/auto/config.cache; \
+    ./configure --prefix=$ZPFX
+  " \
+  atpull"%atclone" \
+  make"all install" \
+  pick"$ZPFX/bin/vim"
+vim/vim
+
+# Neovim ~ The next gen Vim
+zi for \
+  from'gh-r' \
+  sbin'**/nvim -> nvim' \
+  ver'nightly' \
+neovim/neovim
+
+# zsh-fnm ~ Fast node manager for Zsh
+zinit for "dominik-schwabe/zsh-fnm"
+
+
+# Code Helpers ~ Linters, LSPs, etc. 
+
+## zsh 
+zi for zdharma-continuum/{zsh-lint,zsh-sweep}
+
+# shell
+zi for \
+  from'gh-r' \
+  sbin'**/sh* -> shfmt' \
+@mvdan/sh
 
 # ZDharma Maintained Plugins
 zi for \
@@ -87,8 +161,6 @@ zdharma-continuum/history-search-multi-word \
   atload'hook zsh-startify.atload.zsh' \
 zdharma-continuum/zsh-startify \
 zdharma-continuum/zzcomplete \
-zdharma-continuum/zsh-lint \
-zdharma-continuum/zsh-sweep \
 zdharma-continuum/git-url \
 NICHOLAS85/z-a-linkbin \
 NICHOLAS85/z-a-eval
@@ -99,54 +171,57 @@ mattmc3/zsh-safe-rm
 
 # Zsh-Autopair ~ Auto-pairing quotes, brackets, etc in command line
 zi for \
-compile"*.zsh" \
-nocompletions \
-atload"hook zsh-autopair.atload.zsh" \
-atinit"hook zsh-autopair.atinit.zsh" \
+  nocompletions \
+  compile"*.zsh" \
+  atload"hook zsh-autopair.atload.zsh" \
+  atinit"hook zsh-autopair.atinit.zsh" \
 hlissner/zsh-autopair
 
 # Auto installs the iTerm2 shell integration for Zsh
 zi for \
-pick"shell_integration/zsh" \
-sbin"utilities/*" \
+  pick"shell_integration/zsh" \
+  sbin"utilities/*" \
 gnachman/iTerm2-shell-integration
 
 # git-fuzzy ~ A CLI interface to git that relies on fzf
 zi for \
-as"program" \
-pick"bin/git-fuzzy" \
+  as"program" \
+  pick"bin/git-fuzzy" \
 bigH/git-fuzzy
 
+# Neofetch ~ A command-line system information tool
+zinit make for @dylanaraps/neofetch
 
-# ~- GhR - 1 ------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 zi default-ice -cq \
-from"gh-r" \
-wait"1" \
-lucid \
+  from"gh-r" \
+  wait"1" \
+  lucid \
 light-mode
 # ------------------------------------------------------------------------------
 
 # lazygit ~ A simple terminal UI for git commands
 zi for \
-sbin'**/lazygit' \
+  sbin'**/lazygit' \
 jesseduffield/lazygit
 
+# github-Copilot ~ A CLI for GitHub Copilot
 zinit ice wait lucid
 zinit snippet https://gist.githubusercontent.com/iloveitaly/a79ffc31ef5b4785da8950055763bf52/raw/4140dd8fa63011cdd30814f2fbfc5b52c2052245/github-copilot-cli.zsh
 
 # tealdeer ~ A very fast implementation of tldr in Rust
 zi for \
-dl"https://github.com/dbrgn/tealdeer/blob/main/completion/zsh_tealdeer -> _tealdeer" \
-sbin"tealdeer-* -> tldr" \
+  dl"https://github.com/dbrgn/tealdeer/blob/main/completion/zsh_tealdeer -> _tealdeer" \
+  sbin"tealdeer-* -> tldr" \
 @dbrgn/tealdeer
 
 # eza ~ A simple and fast Zsh plugin manager
 zinit for \
-atclone'./eza.atclone.zsh' \
-atpull'%atclone' \
-atload"hook eza.atload.zsh" \
-pick'eza.zsh' \
-dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza" \
+  atclone'./eza.atclone.zsh' \
+  atpull'%atclone' \
+  atload"hook eza.atload.zsh" \
+  pick'eza.zsh' \
+  dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza" \
 eza-community/eza
 
 #atload"hook eza.atload.zsh" \A
@@ -156,101 +231,90 @@ eza-community/eza
 # dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza" \
 # eza-community/eza
 
-
+# delta ~ A viewer for git and diff output
 zi for \
-sbin'**/delta -> delta' \
+  sbin'**/delta -> delta' \
 dandavison/delta
-
 
 # glow ~ A markdown reader for the terminal
 zi for \
-sbin'glow_* -> glow' \
+  sbin'glow_* -> glow' \
 charmbracelet/glow
 
 # zoxide ~ A smarter cd command
 zi for \
-atload"hook zoxide.atload.zsh" \
-sbin"zoxide -> zoxide" \
+  atload"hook zoxide.atload.zsh" \
+  sbin"zoxide -> zoxide" \
 @ajeetdsouza/zoxide
 
-# ~- 1 -------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 zi default-ice -cq \
-wait"1" \
-lucid \
+  wait"1" \
+  lucid \
 light-mode
 # ------------------------------------------------------------------------------
 
 # diff-so-fancy ~ Make git diff output more readable
 zi for \
-sbin"bin/git-dsf -> git-dsf" \
+  sbin"bin/git-dsf -> git-dsf" \
 zdharma-continuum/zsh-diff-so-fancy
+
+# history-search-multi-word ~ Make git history search
+zinit for \
+  wait"1" \
+  atinit"
+    zstyle ':history-search-multi-word' page-size '11'
+  " \
+zdharma-continuum/history-search-multi-word
+
 
 # zeno ~ A simple and powerful Zsh prompt
 zi for \
-depth"1" \
-blockf \
-atload"source ${CONFIGS}/zeno/zeno" \
-sbin"bin/zeno -> zeno" \
+  atload"source ${CONFIGS}/zeno/zeno" \
+  blockf \
+  depth"1" \
+  sbin"bin/zeno -> zeno" \
 yuki-yano/zeno.zsh
 
 # yank ~ Yank terminal output to clipboard
 zi for \
-make \
-sbin"yank.1 -> yank" \
+  make \
+  sbin"yank.1 -> yank" \
 @mptre/yank
 
-# tmux and extensions
+# tmux ~ Tmux terminal multiplexer
 zi for \
   configure'--disable-utf8proc' \
   make \
-@tmux/tmux \
-  depth"1" \
-  blockf \
+@tmux/tmux
+
+# fzf-preview ~ adds a popup window via tmux within standard shell mode
+zi for \
   atload"hook fzf-preview.atload.zsh" \
+  blockf \
+  depth"1" \
 @yuki-yano/fzf-preview.zsh 
+
+# Zsh-fzf-utils ~ A collection of utilities for fzf and Zsh
+zi for \
+redxtech/zsh-fzf-utils
 
 # ~- 2 -------------------------------------------------------------------------
 zi default-ice -cq \
-wait"2" \
-lucid \
+  wait"2" \
+  lucid \
 light-mode
 # ------------------------------------------------------------------------------
 
-# Completion Plugins
-zi for \
-RobSis/zsh-completion-generator \
-chitoku-k/fzf-zsh-completions \
-z-shell/zsh-fancy-completions \
-  depth"1" \
-  atpull"zinit cclear && zinit creinstall sainnhe/zsh-completions" \
-  atload"autoload -Uz compinit && compinit -u" \
-sainnhe/zsh-completions \
-  nocd \
-  depth"1" \
-  atinit='ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true' \
-3v1n0/zsh-bash-completions-fallback \
-  blockf \
-  ver"zinit-fixed" \
-  as"completion" \
-  nocompile \
-  mv'git-completion.zsh -> _git' \
-iloveitaly/git-completion
-
 # fzf-tab ~ A powerful completion engine for Zsh that uses fzf
 zi for \
-atload"hook fzf-tab.atload.zsh" \
+  atload"hook fzf-tab.atload.zsh" \
 @Aloxaf/fzf-tab
-
 
 # make sure you execute this *after* asdf or other version managers are loaded
 if (( $+commands[github-copilot-cli] )); then
 eval "$(github-copilot-cli alias -- "$0")"
 fi
-
-#autoload -Uz compinit && compinit
-#[[ $(date +'%j') != $(date -r ${LOCAL_CACHE}/.zcompdump +'%j') ]] &&
-#$compinit || compinit -C
-#zinit cdreplay -q
 
 # To customize: run `p10k configure` or edit .p10k.zsh.
 [[ ! -f "${CONFIGS}/.p10k.zsh" ]] || source "${CONFIGS}/.p10k.zsh"

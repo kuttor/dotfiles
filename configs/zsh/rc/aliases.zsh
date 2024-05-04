@@ -20,3 +20,10 @@ alias path_list='echo "$PATH" | tr ":" "\n"'
 
 alias vim="nvim"
 alias python="python3"
+
+# ZMV
+alias zcp='zmv -C'
+alias zln='zmv -L'
+
+# Zint
+alias zinit=zi

@@ -3,26 +3,24 @@
 # ZSH modules
 
 autoload -U zed
-autoload -U zcalc
 autoload -U zargs
-autoload -Uz run-help
+autoload -U zcalc
 autoload -U parseopts
+autoload -Uz run-help
 autoload -Uz is-at-least
 autoload -Uz add-zsh-hook
-autoload -Uz colors && colors
-autoload -Uz zmv && zle -N zmv
+autoload -Uz read-ini-file
+autoload -Uz colors; colors
+autoload -Uz zmv; zle -N zmv
 autoload -Uz history-search-end
-autoload -Uz vcs_info && zle -N vcs_info
-autoload -Uz is-at-least && zle -N is-at-least
+autoload -Uz reset-broken-terminal 
+autoload -Uz vcs_info; zle -N vcs_info
+autoload -Uz is-at-least; zle -N is-at-least
+autoload -Uz select-word-style; select-word-style
 
-# ctrl-w to smart delete previous word, special, etc
-# autoload -U select-word-style; select-word-style bash
-# WORDCHARS='*?_-[]~&;!#$%^(){}<>|'
-
-# trying this
+# ctrl-w to specify custom word select
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>/ '$'\n'
-autoload -Uz select-word-style
-select-word-style normal
+
 zstyle ':zle:*' word-style unspecified
 
 # shift-tab to reverse completion

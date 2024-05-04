@@ -3,6 +3,10 @@
 # vim:set autoindent copyindent preserveindent smarttab
 # vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
 
+" aliases
+cmdaliases 
+
+
 " enable modelines
 set modeline
 set modelines=5

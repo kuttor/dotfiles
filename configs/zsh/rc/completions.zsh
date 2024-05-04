@@ -8,6 +8,13 @@
 
 setopt prompt_subst # Pass escape sequence (environment variable) through prompt
 
+# ICE Defaults: Zinit Completions 
+zinit default-ice -cq \
+as"completion"        \
+wait"1"               \
+lucid
+
+
 # plugins 
 zi for RobSis/zsh-completion-generator
 zi for z-shell/zsh-fancy-completions
@@ -30,7 +37,7 @@ zi for \
   atinit"
     ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true
   " \
-3v1n0/zsh-bash-completions-fallback
+3v1n0/zsh-bash-completions-fallback \
   
 zi for \
   blockf \
@@ -39,6 +46,17 @@ zi for \
   as"completion" \
   mv'git-completion.zsh -> _git' \
 iloveitaly/git-completion
+
+
+# Oh-My-Zsh Completions
+zinit for              \
+OMZ::plugins/terraform \
+OMZ::plugins/fd/_fd    \
+OMZ::plugins/ag/_ag    \
+OMZ::plugins/pip/_pip
+
+
+
 
 # force completion generation for more obscure commands
 zstyle :plugin:zsh-completion-generator programs \
@@ -83,6 +101,9 @@ zstyle ':completion:*' matcher-list \
 'm:{a-zA-Z}={A-Za-z}' \
 'r:|[._-]=* r:|=*' \
 'l:|=* r:|=*'
+
+# autocompletion in privys 
+zstyle ':completion::complete:*' gain-privileges 1
 
 zstyle ':completion:*:default' menu select=1 # Show Menu for 1 or more items
 
