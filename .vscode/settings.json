@@ -19,5 +19,8 @@
   "workbench.colorTheme": "SynthWave '84",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.preferredDarkColorTheme": "Andromeda Colorizer",
-  "synthwave84.brightness": 0.6
+  "synthwave84.brightness": 0.6,
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
 }

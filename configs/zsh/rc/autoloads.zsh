@@ -19,7 +19,6 @@ autoload -Uz is-at-least; zle -N is-at-least
 autoload -Uz select-word-style; select-word-style
 
 # ctrl-w to specify custom word select
-WORDCHARS='*?_-.[]~=&;!#$%^(){}<>/ '$'\n'
 
 zstyle ':zle:*' word-style unspecified
 

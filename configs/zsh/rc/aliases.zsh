@@ -8,6 +8,17 @@
 #alias cat='c'   && \
 #alias bat='b'   &&
 
+if (( $+commands[eza] )); then
+ alias ls='eza --color=auto --icons --group-directories-first'
+ alias l='ls -lhF'
+ alias la='ls -lhAF'
+ alias tree='ls --tree'
+elif (( $+commands[lsd] )); then
+ alias ls='lsd'
+ alias la='lsd -lahF'
+ alias tree='lsd --tree'
+fi
+
 # MacOS specific
 alias pbc="pbcopy"
 alias pbp="pbpaste"  

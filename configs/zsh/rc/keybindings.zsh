@@ -4,13 +4,10 @@
 
 # to add other keys to this hash, see: man 5 terminfo
 
-stty intr '^C'        # Ctrl+C cancel
-stty susp '^Z'        # Ctrl+Z suspend
-stty stop undef
+#stty intr '^C'        # Ctrl+C cancel
+#stty susp '^Z'        # Ctrl+Z suspend
+#stty stop undef
 
-# ------------------------------------------------------------------------------ 
-# ~ 
-# ------------------------------------------------------------------------------
 typeset -g -A key
 key[End]="${terminfo[kend]}"
 key[Up]="${terminfo[kcuu1]}"
@@ -41,8 +38,6 @@ key[Control-Right]="${terminfo[kRIT5]}"
 [[ -n "${key[Shift-Tab]}"     ]] && bindkey -- "${key[Shift-Tab]}"     reverse-menu-complete
 [[ -n "${key[PageDown]}"      ]] && bindkey -- "${key[PageDown]}"      end-of-buffer-or-history
 [[ -n "${key[PageUp]}"        ]] && bindkey -- "${key[PageUp]}"        beginning-of-buffer-or-history
-
-
 
 
 # Finally, make sure the terminal is in application mode, when zle is
@@ -80,4 +75,3 @@ zle -N down-line-or-beginning-search
 [[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
 [[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
 
-source "${HOMEBREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"
