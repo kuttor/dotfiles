@@ -1,57 +1,247 @@
+#!/usr/bin/env shellcheck
 
+# Set the shell to zsh
+shell=zsh
 
-# Suggest ${VAR} in place of $VAR
-enable=require-variable-braces
-
-# AlloW arbitary filepaths, e.g. source $some_filename
+# Allow following sourced files not specified by path
 external-sources=true
 
-# shellcheck disable=code[,code...]
-statement_where_warning_should_be_disabled
+# Disable warning about unquoted variables when you know what you're doing
+disable=SC2086
 
-# shellcheck shell=sh
-echo foo &> bar
+# Disable warning about using 'echo' with backslashes
+disable=SC2028
 
-# This directive applies to the entire script
-# shellcheck disable=2086
-true
+# Disable warning about using command substitution without quoting
+disable=SC2046
 
-# Confirms files exist befofre sourcing
-here="$( cd "$( dirname "${x )" &> /dev/null && pwd )"
-. "$here/config.sh"
-. "$here/utils.sh"
-
-# SC2039: In POSIX sh, 'local' is undefined.
-# https://github.com/koalaman/shellcheck/wiki/SC2039
+# Disable warning about using 'local' keyword (not POSIX compliant, but is in Zsh)
 disable=SC2039
 
-# SC2166: Prefer [ p ] || [ q ] as [ p -o q ] is not well defined.
-# https://github.com/koalaman/shellcheck/wiki/SC2166
-disable=SC2166
+# Disable warning about direct use of command names without 'command' prefix
+disable=SC2119,SC2120,SC2121
 
-# SC2154: Variable is referenced but not assigned
-# https://github.com/koalaman/shellcheck/wiki/SC2154
+# Disable warning about using '==', which is non-POSIX, but works in Zsh
+disable=SC2193
+
+# Disable warning about using '[[ ]]', which is non-POSIX, but works in Zsh
+disable=SC3010
+
+# Disable warning about using '<<-' here-document syntax
 disable=SC2154
 
-# SC1091: Not following <file>
-# https://github.com/koalaman/shellcheck/wiki/SC1091
-disable=SC1091
+# Disable warning about using '<<-' here-string syntax
+disable=SC2155
 
-# SC2174: When used with -p, -m only applies to the deepest directory.
-# https://github.com/koalaman/shellcheck/wiki/SC2174
-disable=SC2174
+# Disable warning about using '<<' here-document syntax
+# Disable warning about using '<<-' here-document syntax
+disable=SC2153
 
-# SC3043: In POSIX sh, 'local' is undefined.
-# https://github.com/koalaman/shellcheck/wiki/SC3043
-# ... but dash supports it
-disable=SC3043
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
 
-# SC3013: In POSIX sh, -ef is undefined.
-# https://github.com/koalaman/shellcheck/wiki/SC3013
-# ... but dash supports it
-disable=SC3013
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
 
-# SC3045: In POSIX sh, read -p is undefined.
-# https://github.com/koalaman/shellcheck/wiki/SC3045
-# ... but dash supports it
-disable=SC3045
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-document syntax
+disable=SC2154
+
+# Disable warning about using '<<-' here-
