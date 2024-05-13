@@ -129,6 +129,8 @@ export TIMEFMT="%U user %S system %P cpu %*Es total"
 export KEYTIMEOUT="1"
 export ITERM_24BIT="1"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY="YES"
+export TERMINFO="${XDG_DATA_HOME}/terminfo"
+export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
 export TERM="xterm-256color"
 [[ -n $TMUX ]] && export TERM="screen-256color"
 

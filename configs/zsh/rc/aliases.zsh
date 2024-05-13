@@ -3,7 +3,7 @@
 # vim:set filetype=zsh syntax=zsh
 
 # Check if the "check" command exists and autoload all the functions in the functions directory located in ".dotfiles" if not
-if ! (( $+commands[check] )); then
+if ! (($ + commands[check])); then
   autoload -Uz check
 fi
 

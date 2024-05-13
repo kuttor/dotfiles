@@ -18,6 +18,7 @@ lucid
 zinit for RobSis/zsh-completion-generator
 zinit for z-shell/zsh-fancy-completions
 zinit for chitoku-k/fzf-zsh-completions
+zinit for lincheney/fzf-tab-completion
 
 zinit for \
   depth=1 \
@@ -54,9 +55,6 @@ OMZ::plugins/fd/_fd    \
 OMZ::plugins/ag/_ag    \
 OMZ::plugins/pip/_pip
 
-
-
-
 # force completion generation for more obscure commands
 zstyle :plugin:zsh-completion-generator programs \
 ncdu \
@@ -84,11 +82,12 @@ zstyle ':completion:*:options' description 'yes'
 # Completion Options
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' cache-path $LOCAL_CACHE/zsh/cache
+zstyle ':completion:*' fzf-search-display true
 zstyle ':completion:*' extra-verbose yes
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-tab pending # Pasted text with tabs doesnt complete
 zstyle ':completion:*' keep-prefix
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu select=long
 zstyle ':completion:*' recent-dirs-insert both
 zstyle ':completion:*' rehash true
@@ -101,7 +100,38 @@ zstyle ':completion:*' matcher-list \
 'r:|[._-]=* r:|=*' \
 'l:|=* r:|=*'
 
-# autocompletion in privys 
+# fzf-tab-completion testing
+# press ctrl-r to repeat completion *without* accepting i.e. reload the completion
+# press right to accept the completion and retrigger it
+# press alt-enter to accept the completion and run it
+keys=(
+    ctrl-r:'repeat-fzf-completion'
+    right:accept:'repeat-fzf-completion'
+    alt-enter:accept:'zle accept-line'
+)
+# basic file preview for ls (you can replace with something more sophisticated than head)
+zstyle ':completion::*:ls::*' fzf-completion-opts --preview='eval head {1}'
+
+# preview when completing env vars (note: only works for exported variables)
+# eval twice, first to unescape the string, second to expand the $variable
+zstyle ':completion::*:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-completion-opts --preview='eval eval echo {1}'
+
+# preview a `git status` when completing git add
+zstyle ':completion::*:git::git,add,*' fzf-completion-opts --preview='git -c color.status=always status --short'
+
+# if other subcommand to git is given, show a git diff or git log
+zstyle ':completion::*:git::*,[a-z]*' fzf-completion-opts --preview='
+eval set -- {+1}
+for arg in "$@"; do
+    { git diff --color=always -- "$arg" | git log --color=always "$arg" } 2>/dev/null
+done'
+
+zstyle ':completion:*' fzf-completion-keybindings "${keys[@]}"
+# also accept and retrigger completion when pressing / when completing cd
+zstyle ':completion::*:cd:*' fzf-completion-keybindings "${keys[@]}" /:accept:'repeat-fzf-completion'
+
+
+# autocompletion in privys
 zstyle ':completion::complete:*' gain-privileges 1
 
 zstyle ':completion:*:default' menu select=1 # Show Menu for 1 or more items

@@ -3,11 +3,6 @@
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0
 
-# p10k instant prompt
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # ------------------------------------------------------------------------------
 # Check Zinit installation
 # ------------------------------------------------------------------------------
@@ -68,7 +63,7 @@ zinit default-ice -cq wait"0" lucid light-mode
 # sorting out zman
 zinit load zdharma-continuum/zinit-annex-man
 
-# zman ~ A 
+# zman ~ A
 zinit for mattmc3/zman
 
 
@@ -226,6 +221,15 @@ NICHOLAS85/z-a-eval
 
 # zsh-safe-rm ~ prevent the accidental deletion of important files
 zinit for mattmc3/zsh-safe-rm
+
+# zsh-replace-multiple-dots ~ A Zsh plugin that replaces multiple dots
+zinit for momo-lab/zsh-replace-multiple-dots
+
+# zsh-plugin-reload ~ A Zsh plugin that reloads plugins
+zinit for aubreypwd/zsh-plugin-reload
+
+# zsh-recall ~ makes history easier
+zinit for mango-tree/zsh-recall
 
 # zsh-url-highlighter ~ A Zsh plugin that highlights URLs
 # zinit for                                   \
