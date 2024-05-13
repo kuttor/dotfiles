@@ -4,22 +4,41 @@
 # vim:set ft=zsh ts=2 sw=2 sts=0
 
 # p10k instant prompt
-local p10i="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  . "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-[[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] && \
-    . "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
-### Zinit
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+# ------------------------------------------------------------------------------
+# Check Zinit installation
+# ------------------------------------------------------------------------------
 
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+if [[ ! -f $HOME/.local/share/zinit/bin/zinit.zsh ]]; then
+  print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+  command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+  command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/bin" && \
+    print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+    print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
 
-source "${ZINIT_HOME}/zinit.zsh"
-
+source "$HOME/.local/share/zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 skip_global_compinit=1
+
+# ------------------------------------------------------------------------------
+# Install Annexes and Native Plugins
+# ------------------------------------------------------------------------------
+
+# jq ~ A lightweight and flexible command-line JSON processor
+# zinit for       \
+#   from'gh-r'    \
+#   nocompile     \
+# @jqlang/jq
+
+# svn ~ A version control system
+zinit for            \
+  wait"0"            \
+khrt/svn-n-zsh-plugin
 
 # Zinit Annexes
 zinit light-mode lucid for                   \
@@ -36,9 +55,33 @@ zdharma2                                     \
 zdharma                                      \
 ext-git
 
+# ------------------------------------------------------------------------------
+# sourced Zsh files
+# ------------------------------------------------------------------------------
+
+[[ -d "$ZDOTDIR" ]] && for i in "$ZDOTDIR"/rc/*.zsh; do . "$i"; done
+
 # ~ ----------------------------------------------------------------------------
 zinit default-ice -cq wait"0" lucid light-mode
 # ~ ----------------------------------------------------------------------------
+
+# sorting out zman
+zinit load zdharma-continuum/zinit-annex-man
+
+# zman ~ A 
+zinit for mattmc3/zman
+
+
+# ------------------------------------------------------------------------------
+# Source the ZSH RC files
+# ------------------------------------------------------------------------------
+
+[[ -d "$ZDOTDIR" ]] && for i in "$ZDOTDIR"/rc/*.zsh; do . "$i"; done
+
+
+# ------------------------------------------------------------------------------
+# {Powerlevel10k} ~ A fast reimplementation of Powerlevel9k ZSH theme
+# ------------------------------------------------------------------------------
 
 # Prompt: Powerlevel10k
 zinit for                              \
@@ -69,22 +112,6 @@ zinit for                         \
 zinit for \
 redxtech/zsh-fzf-utils
 
-# ------------------------------------------------------------------------------
-# ~ TMUX ~
-# ------------------------------------------------------------------------------
-
-zinit id-as for                 \
-  cmake                         \
-@thewtex/tmux-mem-cpu-load      \
-  configure'--disable-utf8proc' \
-  make                          \
-@tmux/tmux
-
-# ------------------------------------------------------------------------------
-# Source the ZSH RC files
-# ------------------------------------------------------------------------------
-
-[[ -d "$ZDOTDIR" ]] && for i in "$ZDOTDIR"/rc/*.zsh; do . "$i"; done
 
 # ------------------------------------------------------------------------------
 # ~ Oh My Zsh Enhancments~
@@ -143,14 +170,7 @@ zinit pack for dircolors-material
 # Warhol ~ A Zsh plugin for syntax highlighting
 zinit for unixorn/warhol.plugin.zsh
 
-# jq ~ A lightweight and flexible command-line JSON processor
-zinit for       \
-  from'gh-r'    \
-  sbin'* -> jq' \
-  nocompile     \
-@jqlang/jq
-
-# lsd ~ The next gen ls command
+# lsd ~ the next gen ls command
 zinit for                     \
   from'gh-r'                  \
   as'program'                 \
@@ -160,12 +180,20 @@ zinit for                     \
   sbin'lsd -> lsd'            \
 @lsd-rs/lsd
 
-# Neovim ~ The next gen Vim
+# neovim ~ the next gen Vim
 zinit for               \
   from'gh-r'            \
   sbin'**/nvim -> nvim' \
   ver'nightly'          \
 neovim/neovim
+
+# tmux-vim-integration.plugin.zsh ~ a zsh plugin for tmux and v`im integration
+#tmux-vim-tabedit
+#tmux-vim-split
+#tmux-vim-vsplit
+zinit for \
+@jsahlen/tmux-vim-integration.plugin.zsh
+
 
 # zsh-fnm ~ Fast node manager for Zsh
 zinit for \
@@ -197,8 +225,12 @@ NICHOLAS85/z-a-linkbin                              \
 NICHOLAS85/z-a-eval
 
 # zsh-safe-rm ~ prevent the accidental deletion of important files
-zinit for \
-mattmc3/zsh-safe-rm
+zinit for mattmc3/zsh-safe-rm
+
+# zsh-url-highlighter ~ A Zsh plugin that highlights URLs
+# zinit for                                   \
+  # atload'hook zsh-url-highlighter.atload.zsh' \
+# @ascii-soup/zsh-url-highlighter
 
 # Zsh-Autopair ~ Auto-pairing quotes, brackets, etc in command line
 zinit for \
@@ -298,6 +330,14 @@ zinit for \
 zinit default-ice -cq wait"1" lucid light-mode
 # ~-----------------------------------------------------------------------------
 
+# thefuck ~ an automatic command corrector for the terminal
+zinit for \
+  atinit"
+    zstyle ":prezto:module:thefuck" alias "damn"
+    zstyle ":prezto:runcom" zpreztorc "$ZDOTDIR/.zshrc"
+  " \
+@laggardkernel/zsh-thefuck
+
 # github-Copilot ~ A CLI for GitHub Copilot
 zinit snippet https://gist.githubusercontent.com/iloveitaly/a79ffc31ef5b4785da8950055763bf52/raw/4140dd8fa63011cdd30814f2fbfc5b52c2052245/github-copilot-cli.zsh
 
@@ -335,4 +375,4 @@ fi
 [[ ! -f "${CONFIGS}/.p10k.zsh" ]] || source "${CONFIGS}/.p10k.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/configs/zsh/.p10k.zsh.
-[[ ! -f ~/.dotfiles/configs/zsh/.p10k.zsh ]] || source ~/.dotfiles/configs/zsh/.p10k.zsh
+[[ ! -f ~/.dotfiles/configs/.p10k.zsh ]] || source ~/.dotfiles/configs/.p10k.zsh

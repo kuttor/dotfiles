@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+if (( $+commands[$1] )); then
+  return 0
+elif (( $+commands[whence] )) && (( $+whence[$1] )); then
+  return 0
+else
+  if (( $+commands[command -v] )) && (( $(command -v $1) >/dev/null 2>&1 )); then
+    return 0
+  else
+    return 1
+  fi
+fi

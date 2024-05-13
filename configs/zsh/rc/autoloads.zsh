@@ -6,7 +6,6 @@ autoload -U zed
 autoload -U zargs
 autoload -U zcalc
 autoload -U parseopts
-autoload -Uz run-help
 autoload -Uz is-at-least
 autoload -Uz add-zsh-hook
 autoload -Uz read-ini-file
@@ -16,11 +15,15 @@ autoload -Uz history-search-end
 autoload -Uz reset-broken-terminal 
 autoload -Uz vcs_info; zle -N vcs_info
 autoload -Uz is-at-least; zle -N is-at-least
-autoload -Uz select-word-style; select-word-style
+autoload -U select-word-style; select-word-style bash
 
-# ctrl-w to specify custom word select
+# run-help
+autoload -Uz run-help
+(( ${+aliases[run-help]} )) && unalias run-help
+alias help=run-help
+autoload -Uz run-help-git run-help-ip run-help-openssl run-help-p4 run-help-sudo run-help-svk run-help-svn
 
-zstyle ':zle:*' word-style unspecified
+
 
 # shift-tab to reverse completion
 zmodload zsh/complist

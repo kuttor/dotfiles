@@ -2,32 +2,27 @@
 # -*- coding: utf-8 -*-
 # vim:set filetype=zsh syntax=zsh
 
+# Check if the "check" command exists and autoload all the functions in the functions directory located in ".dotfiles" if not
+if ! (( $+commands[check] )); then
+  autoload -Uz check
+fi
+
 # Set Bat as the default cat if it exists
 #if_exists bat   && \
 #alias cat='bat' && \
 #alias cat='c'   && \
 #alias bat='b'   &&
 
-if (( $+commands[eza] )); then
- alias ls='eza --color=auto --icons --group-directories-first'
- alias l='ls -lhF'
- alias la='ls -lhAF'
- alias tree='ls --tree'
-elif (( $+commands[lsd] )); then
- alias ls='lsd'
- alias la='lsd -lahF'
- alias tree='lsd --tree'
-fi
+check bat && alias cat='bat' && alias bat='b'
 
 # MacOS specific
 alias pbc="pbcopy"
-alias pbp="pbpaste"  
+alias pbp="pbpaste"
 
-# Navigation 
+# Navigation
 alias mkcd="mkdir -p $1 && cd $1"
 alias fpath_list='echo "$FPATH" | tr ":" "\n"'
 alias path_list='echo "$PATH" | tr ":" "\n"'
-
 
 alias vim="nvim"
 alias python="python3"

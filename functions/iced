@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+#vim: set syntax=zsh filetype=zsh
+
+emulate -l zsh
+
+zinit default-ice "$@" > /dev/null 2A>&1

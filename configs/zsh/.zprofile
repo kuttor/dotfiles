@@ -3,6 +3,8 @@
 # vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
 # Vim:set nu clipboard+=unnamedplus foldmethsofttabstop=0
 
+export DOTFILES_TEST=$0:h
+
 # Skip the creation of global compinit
 export skip_global_compinit=1
 
@@ -51,6 +53,9 @@ export SAVEHIST=10000
 export HOMEBREW_PREFIX="/opt/homebrew"
 export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
 export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
+export PATH="${HOMEBREW_PREFIX}/bin:/opt/homebrew/sbin${PATH+:$PATH}"
+export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
+export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
 export HOMEBREW_NO_ENV_HINT=1
 export HOMEBREW_NO_ANALYTICS=1
 
@@ -67,11 +72,8 @@ export ZPFX="${LOCAL_DATA}/zinit/polaris"
 mkdir -p "${ZPFX}"
 
 # Neovim
-export VIMINITx="${LOCAL_CONFIG}/nvim"
-mkdir -p ${VIMINIT}
+export VIMINIT="${LOCAL_CONFIG}/nvim"
 export MYVIMRC="${LOCAL_CONFIG}/nvim"
-mkdir -p ${MYVIMRC}
-export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 export VIMDOTDIR="$XDG_CONFIG_HOME/vim"
 
 # Zinit Builtins Vars
@@ -127,6 +129,8 @@ export TIMEFMT="%U user %S system %P cpu %*Es total"
 export KEYTIMEOUT="1"
 export ITERM_24BIT="1"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY="YES"
+export TERM="xterm-256color"
+[[ -n $TMUX ]] && export TERM="screen-256color"
 
 # -- Editors/Pagers --
 export BAT_PAGER="less"
