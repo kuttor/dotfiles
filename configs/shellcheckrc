@@ -1,4 +1,4 @@
-#!/usr/bin/env shellcheck
+#!/usr/bin/env shellcheckrc
 
 # Set the shell to zsh
 shell=zsh
