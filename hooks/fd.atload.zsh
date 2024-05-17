@@ -1,4 +1,6 @@
 #! /usr/bin/env zsh
+# -*- coding: utf-8 -*-
+# vim:set filetype=zsh syntax=zsh
 
 FZF_FD_OPTS="--color='always' --hidden --follow --exclude='.git' --exclude='.vscode'"
 FZF_PREVIEW_FILE_COMMAND="bat --color=always --style=plain"

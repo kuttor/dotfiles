@@ -3,8 +3,13 @@
 # Set the shell to zsh
 shell=zsh
 
+# Direct Shellcheck to allow using the Zsh interpreter
+
 # Allow following sourced files not specified by path
 external-sources=true
+
+# Disable warning about missing a shebang in the header
+disable=SC2148
 
 # Disable warning about unquoted variables when you know what you're doing
 disable=SC2086

@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
-#File: ${HOME}/.dotfiles/hooks/fast-syntax-highlighting.atinit.zsh
-#VIM: set filetype=zsh syntax=zsh
-#Describe: Init-Script for Fast-Syntax-Highlighting plugin
+# -*- coding: utf-8 -*-
+#vim:set filetype=zsh syntax=zsh
 
 ZINIT[COMPINIT_OPTS]=-C
 zicompinit

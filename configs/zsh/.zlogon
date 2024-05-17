@@ -1,12 +1,13 @@
-#! /usr/bin/env zsh
-#! vim: set filetype=zsh syntax=zsh foldmethod=marker foldlevel=0 foldmarker={,}
-#! vim: set tabwidth=2 shiftwidth=2 expandtab autoindent smartindent smarttab
+#!/usr/bin/env zsh
+#vim: set filetype=zsh syntax=zsh foldmethod=marker foldlevel=0 foldmarker={,}
+#vim: set tabwidth=2 shiftwidth=2 expandtab autoindent smartindent smarttab
 # Execute code in the background to not affect the current session
-(){
+
+(
     # <https://github.com/zimfw/zimfw/blob/master/login_init.zsh>
     setopt LOCAL_OPTIONS EXTENDED_GLOB
     autoload -U zrecompile
-    local ZDOTDIR="${HOME}/.dotfiles/configs/zsh"
+    ZDOTDIR="${HOME}/.dotfiles/configs/zsh"
 
     # Compile zcompdump, if modified, to increase startup speed.
     zcompdump="${HOME}/.local/cache/.zcompdump"
@@ -16,4 +17,4 @@
     # zcompile .zshrc
     zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc
     zrecompile -pq ${ZDOTDIR:-${HOME}}/.zprofile
-}
+)

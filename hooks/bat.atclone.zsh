@@ -1,4 +1,12 @@
 #! /usr/bin/env zsh
+# -*- coding: utf-8 -*-
+# vim:set filetype=zsh syntax=zsh
 
 cp -vf bat-*/autocomplete/bat.zsh _bat
-cp -vf bat-*/bat.1 ${ZINIT[MAN_DIR]}/man1
+cp -vf "bat-*/bat.1" ${ZINIT[MAN_DIR]}/man1"
+
+
+
+
+
+

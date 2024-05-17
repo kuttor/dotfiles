@@ -1,4 +1,6 @@
 #! /usr/bin/env zsh
+# -*- coding: utf-8 -*-
+# vim:set filetype=zsh syntax=zsh
 
 export BAT_THEME='base16'
 export BAT_PAGER='less -R -F -+X --mouse'
