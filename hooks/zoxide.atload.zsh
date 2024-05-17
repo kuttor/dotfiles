@@ -3,7 +3,6 @@
 #file: zoxide.atload.zsh
 
 export _ZO_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zoxide"
-mkdir -p "${_ZO_DATA_DIR}"
 
 export _ZO_ECHO=1
 export _ZO_RESOLVE_SYMLINKS=1

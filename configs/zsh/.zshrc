@@ -39,23 +39,20 @@ zdharma2                                     \
 zdharma                                      \
 ext-git
 
-zinit for              \
-NICHOLAS85/z-a-linkbin \
-NICHOLAS85/z-a-eval
+#zinit for              \
+#NICHOLAS85/z-a-linkbin \
+#NICHOLAS85/z-a-eval
 
 # ~=============================================================================
 # (1) LOAD FIRST PLUGINS
 zinit default-ice -cq wait"0" lucid light-mode
 # ~=============================================================================
 
-zinit snippit "${ZSH_CONFIG_DIR}/aliases.zsh"
-zinit snippit "${ZSH_CONFIG_DIR}/functions.zsh"
-zinit snippit "${ZSH_CONFIG_DIR}/options.zsh"
-zinit snippit "${ZSH_CONFIG_DIR}/prompt.zsh"
-zinit snippit "${ZSH_CONFIG_DIR}/keybindings.zsh"
-zinit snippit "${ZSH_CONFIG_DIR}/history.zsh"
-zinit snippit "${ZSH_CONFIG_DIR}/plugins.zsh"
-zinit snippit "${ZSH_CONFIG_DIR}/modules.zsh"
+zinit snippet "${ZSH_CONFIG_DIR}/aliases.zsh"
+zinit snippet "${ZSH_CONFIG_DIR}/options.zsh"
+zinit snippet "${ZSH_CONFIG_DIR}/keybindings.zsh"
+zinit snippdt "${ZSH_CONFIG_DIR}/history.zsh"
+zinit snippet "${ZSH_CONFIG_DIR}/modules.zsh"
 
 # zman ~ adds completion for loading zman pages
 zinit for mattmc3/zman
@@ -237,14 +234,20 @@ zinit for \
   jesseduffield/lazygit
 
 zinit for \
-  sbin'**/gh' \
+  from"gh-r" \
+  as"program" \
+  mv"gh_*/bin/gh* -> gh" \
+  sbin'gh -> gh' \
   cli/cli
 
-# tealdeer ~ A very fast implementation of tldr in Rust
-zinit for \
+zinit for                                                                              \
+  from"gh-r"                                                                           \
+  mv"tealdeer* -> tealdeer"                                                            \
+  pick"tealdeer -> tealdeer"                                                           \
   dl'https://github.com/dbrgn/tealdeer/blob/main/completion/zsh_tealdeer -> _tealdeer' \
-  sbin'tealdeer-* -> tldr' \
+  sbin'tealdeer -> tldr'                                                               \
 @dbrgn/tealdeer
+
 
 # eza ~ A simple and fast Zsh plugin manager
 zinit for \
@@ -330,3 +333,5 @@ zinit snippet "$ZSH_CONFIG_DIR/completions.zsh"
 # To customize: run `p10k configure` or edit .p10k.zsh.
 [[ ! -f "${CONFIGS}/.p10k.zsh" ]] || source "${CONFIGS}/.p10k.zsh"
 
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/configs/zsh/.p10k.zsh.
+[[ ! -f ~/.dotfiles/configs/zsh/.p10k.zsh ]] || source ~/.dotfiles/configs/zsh/.p10k.zsh
