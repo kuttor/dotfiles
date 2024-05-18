@@ -9,6 +9,9 @@ setopt prompt_subst # Pass escape sequence (environment variable) through prompt
 zinit default-ice -cq wait"1" lucid light-mode
 # ~=============================================================================
 
+# completions.zsh ~ personal completions for dotfiles
+zinit snippet "$ZSH_CONFIG_DIR/completions.zsh"
+
 # system completions ~  moves zsh system completions under control of zinit
 zinit wait pack atload=+"zicompinit; zicdreplay" for system-completions
 
@@ -66,7 +69,7 @@ zstyle ":completion:*" group-name ""
 zstyle ":completion:*" insert-tab pending
 zstyle ":completion:*" keep-prefix
 zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"
-zstyle ":completion:*" menu select=long
+zstyle ":completion:*" menu select "long"
 zstyle ":completion:*" recent-dirs-insert both
 zstyle ":completion:*" rehash true
 zstyle ":completion:*" special-dirs true
@@ -88,11 +91,11 @@ zstyle ":completion:*" tag-order \
 
 # Basic file preview for ls
 zstyle ":completion::*:ls::*" \
-fzf-completion-opts --preview="eval head {1}"
+fzf-completion-opts --preview="eval head ${1}"
 
 # Preview when completing env vars
 zstyle ":completion::*:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*" \
-fzf-completion-opts --preview="eval eval echo {1}"
+fzf-completion-opts --preview="eval echo ${1}"
 
 # Preview a `git status` when completing git add
 zstyle ":completion::*:git::git,add,*" \
