@@ -24,23 +24,23 @@ else
 fi
 
 # Zinit Annexes
-zinit for                                    \
-zdharma-continuum/zinit-annex-binary-symlink \
-zdharma-continuum/zinit-annex-meta-plugins   \
-zdharma-continuum/zinit-annex-default-ice    \
-zdharma-continuum/zinit-annex-as-monitor     \
-zdharma-continuum/zinit-annex-link-man       \
-zdharma-continuum/zinit-annex-pull           \
-zdharma-continuum/zinit-annex-man            \
-annexes                                      \
-zsh-users+fast                               \
-console-tools                                \
-zdharma2                                     \
-zdharma                                      \
+zinit for                                                                              \
+zdharma-continuum/zinit-annex-binary-symlink                                           \
+zdharma-continuum/zinit-annex-meta-plugins                                             \
+zdharma-continuum/zinit-annex-default-ice                                              \
+zdharma-continuum/zinit-annex-as-monitor                                               \
+zdharma-continuum/zinit-annex-link-man                                                 \
+zdharma-continuum/zinit-annex-pull                                                     \
+zdharma-continuum/zinit-annex-man                                                      \
+annexes                                                                                \
+zsh-users+fast                                                                         \
+console-tools                                                                          \
+zdharma2                                                                               \
+zdharma                                                                                \
 ext-git
 
-#zinit for              \
-#NICHOLAS85/z-a-linkbin \
+#zinit for                                                                             \
+#NICHOLAS85/z-a-linkbin                                                                \
 #NICHOLAS85/z-a-eval
 
 # ~=============================================================================
@@ -48,98 +48,97 @@ ext-git
 zinit default-ice -cq wait"0" lucid light-mode
 # ~=============================================================================
 
+zinit snippet "${ZSH_CONFIG_DIR}/paths.zsh"
+zinit snippet "${ZSH_CONFIG_DIR}/autoloads.zsh"
 zinit snippet "${ZSH_CONFIG_DIR}/aliases.zsh"
 zinit snippet "${ZSH_CONFIG_DIR}/options.zsh"
 zinit snippet "${ZSH_CONFIG_DIR}/keybindings.zsh"
-zinit snippdt "${ZSH_CONFIG_DIR}/history.zsh"
 zinit snippet "${ZSH_CONFIG_DIR}/modules.zsh"
 
 # zman ~ adds completion for loading zman pages
 zinit for mattmc3/zman
 
 # Prompt: Powerlevel10k
-zinit for \
-  depth=1 \
+zinit for                                                                              \
+  depth=1                                                                              \
 @romkatv/powerlevel10k
 
 
 # lsd ~ the next gen ls command
-zinit for                     \
-  from'gh-r'                  \
-  as'program'                 \
-  bpick'lsd-*'                \
-  pick'lsd-*/lsd'             \
-  atload'hook lsd.atload.zsh' \
-  sbin'lsd -> lsd'            \
+zinit for                                                                              \
+  from'gh-r'                                                                           \
+  as'program'                                                                          \
+  bpick'lsd-*'                                                                         \
+  pick'lsd-*/lsd'                                                                      \
+  atload'hook lsd.atload.zsh'                                                          \
+  sbin'lsd -> lsd'                                                                     \
 @lsd-rs/lsd
 
 # fzf ~ A command-line fuzzy finder
 zinit pack"bgn-binary+keys" for fzf
 
 # fzf-preview ~ adds a popup window via tmux within standard shell mode
-zinit for                             \
-  atload"hook fzf-preview.atload.zsh" \
-  blockf                              \
-  depth"1"                            \
+zinit for                                                                              \
+  atload"hook fzf-preview.atload.zsh"                                                  \
+  blockf                                                                               \
+  depth"1"                                                                             \
 @yuki-yano/fzf-preview.zsh
 
 # fzf-tab ~ A powerful completion engine for Zsh that uses fzf
-zinit for                         \
-  atload"hook fzf-tab.atload.zsh" \
+zinit for                                                                              \
+  atload"hook fzf-tab.atload.zsh"                                                      \
 @Aloxaf/fzf-tab
 
 # Zsh-fzf-utils ~ A collection of utilities for fzf and Zsh
 zinit for @redxtech/zsh-fzf-utils
 
 # zsh-abbr ~ is the zsh manager for abbreviations
-zinit for                                                                    \
-  atload"hook zsh-abbr.atload.zsh"                                           \
-  atinit"hook zsh-abbr.atinit.zsh"                                           \
-  atpull"%atclone"                                                           \
-  sbin"zsh-abbr -> abbr"                                                     \
-  as"completion"                                                             \
-  dl"https://github.com/olets/zsh-abbr/tree/main/completions/_abbr"          \
+zinit for                                                                              \
+  atload"hook zsh-abbr.atload.zsh"                                                     \
+  atpull"%atclone"                                                                     \
+  sbin"zsh-abbr -> abbr"                                                               \
+  as"completion"                                                                       \
+  dl"https://github.com/olets/zsh-abbr/tree/main/completions/_abbr"                    \
 olets/zsh-abbr
 
-
 # OH-My-Zsh Libraries ~ A collection of plugin libraries from Oh My Zsh
-zinit for                      \
-OMZL::completion.zsh           \
-OMZL::compfix.zsh              \
-OMZL::correction.zsh           \
-OMZL::directories.zsh          \
-OMZL::functions.zsh            \
-OMZL::git.zsh                  \
-OMZL::history.zsh              \
-OMZL::misc.zsh                 \
-OMZL::termsupport.zsh          \
-OMZL::theme-and-appearance.zsh \
+zinit for                                                                              \
+OMZL::completion.zsh                                                                   \
+OMZL::compfix.zsh                                                                      \
+OMZL::correction.zsh                                                                   \
+OMZL::directories.zsh                                                                  \
+OMZL::functions.zsh                                                                    \
+OMZL::git.zsh                                                                          \
+OMZL::history.zsh                                                                      \
+OMZL::misc.zsh                                                                         \
+OMZL::termsupport.zsh                                                                  \
+OMZL::theme-and-appearance.zsh                                                         \
 OMZL::vcs_info.zsh
 
 # Oh-my-zsh Plugins ~ A collection of plugins from Oh My Zsh
-zinit for                              \
-OMZP::aws                              \
-OMZP::colored-man-pages                \
-OMZP::colorize                         \
-OMZP::common-aliases                   \
-OMZP::composer                         \
-OMZP::copyfile                         \
-OMZP::copypath                         \
-OMZP::cp                               \
-OMZP::extract                          \
-OMZP::fancy-ctrl-z                     \
-OMZP::git                              \
-OMZP::github                           \
-OMZP::gitignore                        \
-OMZP::nvm                              \
-OMZP::pip                              \
-OMZP::sudo                             \
-OMZP::ssh-agent                        \
-OMZP::urltools                         \
-OMZP::tmux                             \
-OMZP::vscode                           \
-OMZP::web-search                       \
-  atload"hook magic-enter.atload.zsh"  \
+zinit for                                                                              \
+OMZP::aws                                                                              \
+OMZP::colored-man-pages                                                                \
+OMZP::colorize                                                                         \
+OMZP::common-aliases                                                                   \
+OMZP::composer                                                                         \
+OMZP::copyfile                                                                         \
+OMZP::copypath                                                                         \
+OMZP::cp                                                                               \
+OMZP::extract                                                                          \
+OMZP::fancy-ctrl-z                                                                     \
+OMZP::git                                                                              \
+OMZP::github                                                                           \
+OMZP::gitignore                                                                        \
+OMZP::nvm                                                                              \
+OMZP::pip                                                                              \
+OMZP::sudo                                                                             \
+OMZP::ssh-agent                                                                        \
+OMZP::urltools                                                                         \
+OMZP::tmux                                                                             \
+OMZP::vscode                                                                           \
+OMZP::web-search                                                                       \
+  atload"hook magic-enter.atload.zsh"                                                  \
 OMZP::magic-enter
 
 # ls_colors ~ A collection of LS_COLORS definitions
@@ -155,34 +154,34 @@ zinit for "unixorn/warhol.plugin.zsh"
 zinit for "chrissicool/zsh-256color"
 
 # neovim ~ the next gen Vim
-zinit for               \
-  from'gh-r'            \
-  sbin'**/nvim -> nvim' \
-  ver'nightly'          \
+zinit for                                                                              \
+  from'gh-r'                                                                           \
+  sbin'**/nvim -> nvim'                                                                \
+  ver'nightly'                                                                         \
 neovim/neovim
 
 # tmux-vim-integration.plugin.zsh ~ a zsh plugin for tmux and v`im integration
-zinit for                                      \
-  atload'hook tmux-vim-integration.atload.zsh' \
+zinit for                                                                              \
+  atload'hook tmux-vim-integration.atload.zsh'                                         \
 @jsahlen/tmux-vim-integration.plugin.zsh
 
 ## zsh-lint, zsh-sweep ~ linters  for zsh and shell scripts
 zinit for zdharma-continuum/{zsh-lint,zsh-sweep}
 
 # shell
-zinit for               \
-  from'gh-r'            \
-  sbin'**/sh* -> shfmt' \
+zinit for                                                                              \
+  from'gh-r'                                                                           \
+  sbin'**/sh* -> shfmt'                                                                \
 @mvdan/sh
 
 # ZDharma Maintained Plugins
-zinit for                                           \
-  atinit'hook history-search-multi-word.atinit.zsh' \
+zinit for                                                                              \
+  atinit'hook history-search-multi-word.atinit.zsh'                                    \
 zdharma-continuum/history-search-multi-word
 
-zinit for                      \
-zdharma-continuum/zsh-startify \
-zdharma-continuum/zzcomplete   \
+zinit for                                                                              \
+zdharma-continuum/zsh-startify                                                         \
+zdharma-continuum/zzcomplete                                                           \
 zdharma-continuum/git-url
 
 # zsh-safe-rm ~ prevent the accidental deletion of important files
@@ -198,29 +197,29 @@ zinit for aubreypwd/zsh-plugin-reload
 zinit for mango-tree/zsh-recall
 
 # Zsh-Autopair ~ Auto-pairing quotes, brackets, etc in command line
-zinit for                              \
-  nocompletions                        \
-  compile"*.zsh"                       \
-  atload"hook zsh-autopair.atload.zsh" \
-  atinit"hook zsh-autopair.atinit.zsh" \
+zinit for                                                                              \
+  nocompletions                                                                        \
+  compile"*.zsh"                                                                       \
+  atload"hook zsh-autopair.atload.zsh"                                                 \
+  atinit"hook zsh-autopair.atinit.zsh"                                                 \
 hlissner/zsh-autopair
 
 # Auto installs the iTerm2 shell integration for Zsh
-zinit for                     \
-  pick"shell_integration/zsh" \
-  sbin"utilities/*"           \
+zinit for                                                                              \
+  pick"shell_integration/zsh"                                                          \
+  sbin"utilities/*"                                                                    \
 gnachman/iTerm2-shell-integration
 
 # git-fuzzy ~ A CLI interface to git that relies on fzf
-zinit for                      \
-  as"program"                  \
-  pick"bin/git-fuzzy"          \
-  sbin"git-fuzzy -> git-fuzzy" \
+zinit for                                                                              \
+  as"program"                                                                          \
+  pick"bin/git-fuzzy"                                                                  \
+  sbin"git-fuzzy -> git-fuzzy"                                                         \
 bigH/git-fuzzy
 
 # Neofetch ~ A command-line system information tool
-zinit for \
-  make    \
+zinit for                                                                              \
+  make                                                                                 \
 @dylanaraps/neofetch
 
 # ~=============================================================================
@@ -229,15 +228,17 @@ zinit default-ice -cq wait"1" lucid light-mode
 # ~=============================================================================
 
 # lazygit ~ A simple terminal UI for git commands
-zinit for \
-  sbin'**/lazygit' \
+zinit for                                                                              \
+  as"command"                                                                          \
+  from'gh-r'                                                                           \
+  sbin'**/lazygit -> lazygit'                                                          \
   jesseduffield/lazygit
 
-zinit for \
-  from"gh-r" \
-  as"program" \
-  mv"gh_*/bin/gh* -> gh" \
-  sbin'gh -> gh' \
+zinit for                                                                              \
+  from"gh-r"                                                                           \
+  as"program"                                                                          \
+  mv"gh_*/bin/gh* -> gh"                                                               \
+  sbin'gh -> gh'                                                                       \
   cli/cli
 
 zinit for                                                                              \
@@ -250,82 +251,88 @@ zinit for                                                                       
 
 
 # eza ~ A simple and fast Zsh plugin manager
-zinit for \
-  atclone'hook eza.atclone.zsh' \
-  atload'hook eza.atload.zsh' \
-  atpull'%atclone' \
-  pick'eza.zsh' \
-  dl'https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza' \
-  sbin'eza -> eza' \
+zinit for                                                                              \
+  atclone'hook eza.atclone.zsh'                                                        \
+  atload'hook eza.atload.zsh'                                                          \
+  atpull'%atclone'                                                                     \
+  pick'eza.zsh'                                                                        \
+  dl'https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza'      \
+  sbin'eza -> eza'                                                                     \
 @eza-community/eza
 
 # declare-zsh
-zinit for \
+zinit for                                                                              \
 zdharma-continuum/declare-zsh
 
 # sharkdp/fd ~ A simple, fast and user-friendly alternative to 'find'
-zinit for            \
-  as"command"        \
-  from"gh-r"         \
-  mv"fd* -> fd"      \
-  pick"fd/fd"        \
-  sbin"*/bat -> bat" \
+zinit for                                                                              \
+  as"command"                                                                          \
+  from"gh-r"                                                                           \
+  mv"fd* -> fd"                                                                        \
+  pick"fd/fd"                                                                          \
+  sbin"*/bat -> bat"                                                                   \
 @sharkdp/fd
 
 # sharkdp/bat ~ A cat(1) clone with wings
-zinit for            \
-  as"command"        \
-  from"gh-r"         \
-  mv"bat* -> bat"    \
-  sbin"*/bat -> bat" \
-  pick"bat/bat"      \
+zinit for                                                                              \
+  as"command"                                                                          \
+  from"gh-r"                                                                           \
+  mv"bat* -> bat"                                                                      \
+  sbin"*/bat -> bat"                                                                   \
+  pick"bat/bat"                                                                        \
 @sharkdp/bat
 
 # delta ~ A viewer for git and diff output
 zinit for \
-  sbin'**/delta -> delta' \
+  as"command" \                                                                                    \
+  sbin'**/delta -> delta'                                                              \
 dandavison/delta
 
 # glow ~ A markdown reader for the terminal
-zinit for \
-  sbin'glow -> glow' \
+zinit for                                                                              \
+  sbin'glow -> glow'                                                                   \
 charmbracelet/glow
 
 # zoxide ~ A smarter cd command
 zinit for \
-  atload'hook zoxide.atload.zsh' \
-  sbin'zoxide -> zoxide' \
+  as"command" \
+  from"gh-r" \
+  mv"zoxide*/zoxide -> zoxide" \
+  atclone"./zoxide init zsh > init.zsh" \
+  atpull"%atclone" \
+  src"init.zsh" \
+  nocompile'!' \
 @ajeetdsouza/zoxide
 
-# thefuck ~ an automatic command corrector for the terminal
-zinit for \
-  atinit"hook hook thefuck.atinit.zsh" \
-  @laggardkernel/zsh-thefuck
+# zsh-thefuck ~ provides tips for the terminal
+ziint for \
+  atinit"hook thefuck.atinit.zsh"                                                 \
+@laggardkernel/zsh-thefuck
 
 # github-Copilot ~ A CLI for GitHub Copilot
-zinit \
-  atload"hook github-copilot-cli.atload.zsh" \
-  snippit \
-  https://gist.githubusercontent.com/iloveitaly/a79ffc31ef5b4785da8950055763bf52/raw/4140dd8fa63011cdd30814f2fbfc5b52c2052245/github-copilot-cli.zsh
+zinit for                                                                              \
+  atload"hook github-copilot-cli.atload.zsh"                                           \
+  snippet                                                                              \
+https://gist.githubusercontent.com/iloveitaly/a79ffc31ef5b4785da8950055763bf52/raw/4140dd8fa63011cdd30814f2fbfc5b52c2052245/github-copilot-cli.zsh
 
 # history-search-multi-word ~ Make git history search
-zinit for \
-  atinit'hook history-search-multi-word.atinit.zsh' \
-  zdharma-continuum/history-search-multi-word
+zinit for                                                                              \
+  atinit'hook history-search-multi-word.atinit.zsh'                                    \
+zdharma-continuum/history-search-multi-word
 
 # zeno ~ A simple and powerful Zsh prompt
-zinit for \
-  atload'source ${HOME}/.dotfiles/configs/zeno/zeno' \
-  blockf \
-  depth"1" \
-  sbin"bin/zeno -> zeno" \
-  yuki-yano/zeno.zsh
+zinit for                                                                              \
+  atload'source ${HOME}/.dotfiles/configs/zeno/zeno'                                   \
+  blockf                                                                               \
+  depth"1"                                                                             \
+  sbin"bin/zeno -> zeno"                                                               \
+yuki-yano/zeno.zsh
 
 # yank ~ Yank terminal output to clipboard
-zinit for \
-  make \
-  sbin"yank.1 -> yank" \
-  @mptre/yank
+zinit for                                                                              \
+  make                                                                                 \
+  sbin"yank.1 -> yank"                                                                 \
+@mptre/yank
 
 # completions.zsh ~ personal completions for dotfiles
 zinit snippet "$ZSH_CONFIG_DIR/completions.zsh"
