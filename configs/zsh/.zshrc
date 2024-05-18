@@ -9,13 +9,14 @@ fi
 
 # --- zinit load ---
 local ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"]
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
+ZSH_PROFILE=1
 # Start profiler
 if [[ "${ZSH_PROFILE}" == 1 ]]; then
     zmodload zsh/zprof
@@ -95,8 +96,6 @@ zinit for @redxtech/zsh-fzf-utils
 zinit for                                                                              \
   atload"hook zsh-abbr.atload.zsh"                                                     \
   atpull"%atclone"                                                                     \
-  sbin"zsh-abbr -> abbr"                                                               \
-  as"completion"                                                                       \
   dl"https://github.com/olets/zsh-abbr/tree/main/completions/_abbr"                    \
 olets/zsh-abbr
 
@@ -267,28 +266,31 @@ zinit for                                                                       
 zdharma-continuum/declare-zsh
 
 # sharkdp/fd ~ A simple, fast and user-friendly alternative to 'find'
-zinit for                                                                              \
-  as"command"                                                                          \
-  from"gh-r"                                                                           \
-  mv"fd* -> fd"                                                                        \
-  pick"fd/fd"                                                                          \
-  sbin"*/fd -> fd"                                                                   \
-@sharkdp/fd
+# zinit for                                                                              \
+#   as"command"                                                                          \
+#   from"gh-r"                                                                           \
+#   mv"fd* -> fd"                                                                        \
+#   pick"fd/fd"                                                                          \
+#   sbin"*/fd -> fd"                                                                   \
+# @sharkdp/fd
 
 # sharkdp/bat ~ A cat(1) clone with wings
-zinit for                                                                              \
-  as"command"                                                                          \
-  from"gh-r"                                                                           \
-  mv"bat* -> bat"                                                                      \
-  sbin"*/bat -> bat"                                                                   \
-  pick"bat/bat"                                                                        \
-@sharkdp/bat
+# zinit for                                                                              \
+#   as"command"                                                                          \
+#   from"gh-r"                                                                           \
+#   mv"bat* -> bat"                                                                      \
+#   sbin"*/bat -> bat"                                                                   \
+#   pick"bat/bat"                                                                        \
+# @sharkdp/bat
 
 # bin-gem-node annex: Warning: The sbin'' ice (`**/delta -> delta') didn't match any files
 # delta ~ A viewer for git and diff output
 zinit for \
-  as"command" \                                                                        \
-  sbin"**/delta -> delta"                                                              \
+  as"command" \
+  from"gh-r" \
+  sbin"**/delta -> delta" \
+  mv"delta* -> delta" \
+  pick"delta" \
 dandavison/delta
 
 # bin-gem-node annex: Warning: The sbin'' ice (`glow -> glow') didn't match any files
@@ -300,15 +302,14 @@ zinit for                                                                       
 
 #@Warning: mv ice didn't match any file. [zoxide*/zoxide -> zoxide]
 # zoxide ~ A smarter cd command
-zinit for                                                                              \
-  as"command"                                                                          \
-  from"gh-r"                                                                           \
-  mv"zoxide*/zoxide -> zoxide"                                                         \
-  atclone"./zoxide init zsh > init.zsh"                                                \
-  atpull"%atclone"                                                                     \
-  src"init.zsh"                                                                        \
-  nocompile"!"                                                                         \
-@ajeetdsouza/zoxide
+zinit for \
+  as"command" \
+  from"gh-r" \
+  mv"zoxide -> zoxide" \
+  atclone"./zoxide init zsh > init.zsh" \
+  atpull"%atclone" src"init.zsh" \
+  nocompile"!" \
+  @ajeetdsouza/zoxide
 
 # zsh-thefuck ~ provides tips for the terminal
 zinit for                                                                              \
@@ -316,7 +317,7 @@ zinit for                                                                       
 @laggardkernel/zsh-thefuck
 
 # github-Copilot ~ A CLI for GitHub Copilot
-zinit  snippet "https://gist.githubusercontent.com/iloveitaly/a79ffc31ef5b4785da8950055763bf52/raw/4140dd8fa63011cdd30814f2fbfc5b52c2052245/github-copilot-cli.zsh"
+zinit snippet "https://gist.githubusercontent.com/iloveitaly/a79ffc31ef5b4785da8950055763bf52/raw/4140dd8fa63011cdd30814f2fbfc5b52c2052245/github-copilot-cli.zsh"
 
 # deno ~ A simple and
 zinit for                                                                              \

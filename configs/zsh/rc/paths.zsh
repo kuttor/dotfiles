@@ -14,7 +14,7 @@ path=(
   ${path}
 )
 
-# Add functions paths to fpath 
+# Add functions paths to fpath
 fpath=(
   ${HOME}/.local/share/zsh/site-functions
   /usr/local/share/zsh/5.8/site-functions
@@ -27,7 +27,3 @@ fpath=(
 
 # -- Remove duplicates in FPATH --
 typeset -Ugx FPATH fpath path PATH
-
-# Other paths
-export MANPATH="${HOMEBREW_PREFIX}/share/man:${MANPATH+:$MANPATH}:"
-export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
