@@ -16,13 +16,9 @@ source "${ZINIT_HOME}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-ZSH_PROFILE=1
 # Start profiler
-if [[ "${ZSH_PROFILE}" == 1 ]]; then
-    zmodload zsh/zprof
-else
-    ZSH_PROFILE=0
-fi
+ZSH_PROFILE=1
+[[ "${ZSH_PROFILE}" == 1 ]] && zmodload zsh/zprof || ZSH_PROFILE=0
 
 # Zinit Annexes
 zinit for                                                                              \
@@ -60,8 +56,9 @@ zinit snippet "${ZSH_CONFIG_DIR}/modules.zsh"
 zinit for mattmc3/zman
 
 # Prompt: Powerlevel10k
-zinit for                                                                              \
-  depth="1"                                                                            \
+zinit for                                                                     \
+  atload"POWERLEVEL10K_CONFIG_FILE='${DOTFILES[CONFIGS]}/.p10k.zsh'"          \
+  depth="1"                                                                   \
 @romkatv/powerlevel10k
 
 # lsd ~ the next gen ls command
@@ -75,7 +72,10 @@ zinit for                                                                       
 @lsd-rs/lsd
 
 # fzf ~ A command-line fuzzy finder
-zinit pack"bgn-binary+keys" for fzf
+zinit for \
+  pack"bgn-binary+keys" \
+  atload"FZF_CONFIG_PATH='${DOTFILES[CONFIGS]}/fzf.conf'" \
+fzf
 
 # fzf-preview ~ adds a popup window via tmux within standard shell mode
 zinit for                                                                              \
@@ -92,6 +92,19 @@ zinit for                                                                       
 # Zsh-fzf-utils ~ A collection of utilities for fzf and Zsh
 zinit for @redxtech/zsh-fzf-utils
 
+# fzf-help ~ fzf ext to select cli options of a command
+zinit for \
+  as"program" \
+  atload"
+    export FZF_HELP_SYNTAX='help'
+    source $HOME/.local/share/fzf-help/fzf-help.zsh
+    zle -N fzf-help-widget
+    bindkey "^A" fzf-help-widget
+  " \
+  atclone"./install --user" \
+BartSte/fzf-help
+
+
 # zsh-abbr ~ is the zsh manager for abbreviations
 zinit for                                                                              \
   atload"hook zsh-abbr.atload.zsh"                                                     \
@@ -100,12 +113,15 @@ zinit for                                                                       
 olets/zsh-abbr
 
 zinit for                                                                              \
-  atload'source ${HOME}/.dotfiles/configs/zeno/zeno'                                   \
+MichaelAquilina/zsh-you-should-use                                                     \
+momo-lab/zsh-abbrev-alias
+
+zinit for                                                                              \
+  atload"hook zeno.atload.zsh"                                                         \
   blockf                                                                               \
   depth"1"                                                                             \
-  sbin"**/zeno -> zeno" \
+  sbin"**/zeno -> zeno"                                                                \
 yuki-yano/zeno.zsh
-
 
 # OH-My-Zsh Libraries ~ A collection of plugin libraries from Oh My Zsh
 zinit for                                                                              \
@@ -250,23 +266,21 @@ zinit for                                                                       
   sbin"tealdeer -> tldr"                                                               \
 @dbrgn/tealdeer
 
+# tree-sitter ~ A parser generator tool and an incremental parsing library
+zinit for \
+  from"gh-r" \
+  nocompile \
+  sbin"*->tree-sitter" \
+tree-sitter/tree-sitter
 
-# eza ~ A simple and fast Zsh plugin manager
-zinit for                                                                              \
-  atclone"hook eza.atclone.zsh"                                                        \
-  atload"hook eza.atload.zsh"                                                          \
-  atpull"%atclone"                                                                     \
-  pick"eza.zsh"                                                                        \
-  dl"https://github.com/eza-community/eza/blob/main/completions/zsh/_eza -> _eza"      \
-  sbin"eza -> eza"                                                                     \
-@eza-community/eza
 
-# declare-zsh
+# declare-zsh ~ A Zsh plugin that provides a simple way to declare variables
 zinit for                                                                              \
 zdharma-continuum/declare-zsh
 
 # sharkdp/fd ~ A simple, fast and user-friendly alternative to 'find'
-# zinit for                                                                              \
+# zinit for     \
+                                                                         \
 #   as"command"                                                                          \
 #   from"gh-r"                                                                           \
 #   mv"fd* -> fd"                                                                        \
@@ -283,7 +297,6 @@ zdharma-continuum/declare-zsh
 #   pick"bat/bat"                                                                        \
 # @sharkdp/bat
 
-# bin-gem-node annex: Warning: The sbin'' ice (`**/delta -> delta') didn't match any files
 # delta ~ A viewer for git and diff output
 zinit for \
   as"command" \
@@ -293,7 +306,6 @@ zinit for \
   pick"delta" \
 dandavison/delta
 
-# bin-gem-node annex: Warning: The sbin'' ice (`glow -> glow') didn't match any files
 # glow ~ A markdown reader for the terminal
 zinit for                                                                              \
   from"gh-r"                                                                       \
@@ -309,7 +321,7 @@ zinit for \
   atclone"./zoxide init zsh > init.zsh" \
   atpull"%atclone" src"init.zsh" \
   nocompile"!" \
-  @ajeetdsouza/zoxide
+@ajeetdsouza/zoxide
 
 # zsh-thefuck ~ provides tips for the terminal
 zinit for                                                                              \
@@ -332,7 +344,8 @@ zinit for                                                                       
   sbin"yank.1 -> yank"                                                                 \
 @mptre/yank
 
-
-
 # To customize: run `p10k configure` or edit .p10k.zsh.
 [[ ! -f "$DOTFILES[CONFIGS]/.p10k.zsh" ]] || source "$DOTFILES[CONFIGS]/.p10k.zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/configs/zsh/.p10k.zsh.
+[[ ! -f ~/.dotfiles/configs/zsh/.p10k.zsh ]] || source ~/.dotfiles/configs/zsh/.p10k.zsh

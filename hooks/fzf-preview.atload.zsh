@@ -1,37 +1,53 @@
 #!/usr/bin/env zsh
-# vim:set filetype=zsh syntax=zsh
-# vim:set ft=zsh ts=2 sw=2 sts=0
+#vim:set ft=zsh st=zsh sw=2 ts=2
 
-[[ "command -v fzf-preview" >/dev/null ]]&&\
-zstyle ":fzf-tab:complete:(cd|ls|lsd|exa|eza|bat|cat|emacs|nano|vi|vim):*" \
-fzf-preview "lsd -1 $(realpath) || ls -1 $(realpath)" &&\
-zstyle ":fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*" \
-fzf-preview "echo ${(P)word}" &&\
-zstyle ":fzf-tab:complete:git-(add|diff|restore):*" \
-fzf-preview "git diff $word | delta" &&\
-zstyle ':fzf-tab:complete:(\\|)run-help:*' \
-fzf-preview "run-help ${word}"&&\
-zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' \
-fzf-preview 'brew info $word'
-zstyle ':fzf-tab:complete:git-(add|diff|restore):*' \
-fzf-preview 'git diff $word | delta'
-zstyle ':fzf-tab:complete:git-log:*' \
-fzf-preview 'git log --color=always $word'
-zstyle ':fzf-tab:complete:git-help:*' \
-fzf-preview 'git help $word | bat -plman --color=always'
-zstyle ':fzf-tab:complete:git-show:*' \
-fzf-preview 'case "$group" in 
-  "commit tag") git show --color=always $word ;;
-	*) git show --color=always $word | delta ;; esac'
-zstyle ':fzf-tab:complete:git-checkout:*' \
-fzf-preview 'case "$group" in
-	"modified file") git diff $word | delta ;;
-  "recent commit object name") git show --color=always $word | delta ;;
-  *) git log --color=always $word ;;
-  esac'
-zstyle ':fzf-tab:complete:tldr:argument-1' \
-fzf-preview 'tldr --color always $word'
-zstyle ':fzf-tab:user-expand:*' \
-fzf-preview 'less ${(Q)word}'
+# -- zeno config --
 
-FZF_PREVIEW_ENABLE_TMUx=1
+export ZENO_HOME=${XDG_config_home}/
+
+# if disable deno cache command when plugin loaded
+# export ZENO_DISABLE_EXECUTE_CACHE_COMMAND=1
+
+# if enable fzf-tmux
+# export ZENO_ENABLE_FZF_TMUX=1
+
+# if setting fzf-tmux options
+# export ZENO_FZF_TMUX_OPTIONS="-p"
+
+# Experimental: Use UNIX Domain Socket
+export ZENO_ENABLE_SOCK=1
+
+# if disable builtin completion
+# export ZENO_DISABLE_BUILTIN_COMPLETION=1
+
+# default
+export ZENO_GIT_CAT="cat"
+# git file preview with color
+# export ZENO_GIT_CAT="bat --color=always"
+
+# default
+export ZENO_GIT_TREE="tree"
+# git folder preview with color
+# export ZENO_GIT_TREE="exa --tree"
+
+if [[ -n $ZENO_LOADED ]]; then
+  bindkey ' ' zeno-auto-snippet
+
+  # fallback if snippet not matched (default: self-insert)
+  # export ZENO_AUTO_SNIPPET_FALLBACK=self-insert
+
+  # if you use zsh's incremental search
+  # bindkey -M isearch ' ' self-insert
+
+  bindkey '^m' zeno-auto-snippet-and-accept-line
+
+  bindkey '^i' zeno-completion
+
+  bindkey '^x ' zeno-insert-space
+  bindkey '^x^m' accept-line
+  bindkey '^x^z' zeno-toggle-auto-snippet
+
+  # fallback if completion not matched
+  # (default: fzf-completion if exists; otherwise expand-or-complete)
+  # export ZENO_COMPLETION_FALLBACK=expand-or-complete
+fi

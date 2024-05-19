@@ -52,6 +52,12 @@ OMZP::fd/_fd               \
 OMZP::ag/_ag               \
 OMZP::pip/_pip
 
+zicompdef _gnu_generic aomenc ar aria2c bandwhich curl cwebp cjxl darkhttpd direnv docker   \
+          dunst emacs feh ffmpeg ffprobe flask fsck.ext4 fzf gocryptfs hexyl highlight tlp  \
+          histdb inkscape ktlint light lighttpd lsd mimeo megadl mkfs.vfat nzbget tlmgr vue \
+          tlp-stat notify-send pamixer pip pip3 pipx psmem pw-cli rofi rustc tlmgr tlp-stat \
+          vue zstd
+
 # ~=============================================================================
 # -- Zstyle Completion Options --
 # ~=============================================================================
@@ -61,33 +67,38 @@ zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' \
 hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
 # Set completion options
+zstyle ':completion:*' auto-description
+zstyle ':completion:*' file-patterns '%p:globbed-files' '*(-/):directories' '*:all-files'
+zstyle ':completion:*' list-dirs-first true
 zstyle ":completion:*" accept-exact "*(N)"
-zstyle ":completion:*" cache-path $LOCAL_CACHE/zsh/cache
-zstyle ":completion:*" fzf-search-display true
+zstyle ":completion:*" cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 zstyle ":completion:*" extra-verbose yes
+zstyle ":completion:*" file-sort modification
+zstyle ":completion:*" format "Completing %d"
+zstyle ":completion:*" fzf-completion-keybindings "${keys[@]}"
+zstyle ":completion:*" fzf-search-display true
 zstyle ":completion:*" group-name ""
 zstyle ":completion:*" insert-tab pending
 zstyle ":completion:*" keep-prefix
 zstyle ":completion:*" list-colors "${(s.:.)LS_COLORS}"
+zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=*" "l:|=* r:|=*"
 zstyle ":completion:*" menu select "long"
+zstyle ":completion:*" menu select=2
 zstyle ":completion:*" recent-dirs-insert both
 zstyle ":completion:*" rehash true
 zstyle ":completion:*" special-dirs true
 zstyle ":completion:*" use-cache true
 zstyle ":completion:*" verbose yes
+zstyle ":completion:*" tag-order "named-directories" "path-directories" "files" "aliases" "builtins" "functions" "commands" "parameters"
 
-# Set zstyle options for better completion experience
-zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=*" "l:|=* r:|=*"
-zstyle ":completion:*" menu select=2
-zstyle ":completion:*" format "Completing %d"
-zstyle ":completion:*" fzf-completion-keybindings "${keys[@]}"
-zstyle ":completion:*" group-name ""
-zstyle ":completion:*" verbose yes
-zstyle ":completion:*" use-cache on
-zstyle ":completion:*" cache-path ${HOME}/.local/cache/zsh
-zstyle ":completion:*" file-sort modification
-zstyle ":completion:*" tag-order \
-"named-directories" "path-directories" "files" "aliases" "builtins" "functions" "commands" "parameters"
+zstyle ':completion:*:manuals'       separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections   true
+
+zstyle ':completion:*:corrections'   format '%F{green}  %d (errors: %e)  %f'
+zstyle ':completion:*:descriptions'  format '%F{blue}  %d  %f'
+zstyle ':completion:*:messages'      format '%B%F{magenta}  %U%d%u  %f%b'
+zstyle ':completion:*:warnings'      format '%B%F{red} %Uno matches found%u %f%b'
+
 
 # Basic file preview for ls
 zstyle ":completion::*:ls::*" \

@@ -7,6 +7,7 @@ export DOTFILES_TEST=$0:h
 
 # Skip the creation of global compinit
 export skip_global_compinit=1
+export __CF_USER_TEXT_ENCODING="0x1F5:0x0:0x0"
 
 # Deprecating zshenv in favor for zprofile
 [[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
@@ -88,27 +89,28 @@ ZINIT[BIN_DIR]="${HOME}/.local/bin"
 # ZINIT[MUTE_WARNINGS]="1"
 
 # -- config files --
-export CURL_HOME="${DOTFILES[CONFIGS]}/curl"
-export GNUPGHOME="${DOTFILES[CONFIGS]}/.gnuphg"
 export WGETRC="${DOTFILES[CONFIGS]}/wgetrc"
+export CURL_HOME="${DOTFILES[CONFIGS]}/curl"
+
+export GNUPGHOME="${DOTFILES[CONFIGS]}/.gnuphg"
 export INPUTRC="${DOTFILES[CONFIGS]}/inputrc"
 export DOCKER_CONFIG="${DOTFILES[CONFIGS]}/docker"
 export EXA_CONFIG_PATH="${DOTFILES[CONFIGS]}/exa.conf"
-export EZA_CONFIG_PATH="${DOTFILES[CONFIGS]}/eza.conf"
-export FZF_CONFIG_PATH="${DOTFILES[CONFIGS]}/fzf.conf"
 export SHELLSCRIPT_RC="${DOTFILES[CONFIGS]}/shellscriptrc"
 export RPGREP_CONFIG_PATH="${DOTFILES[CONFIGS]}/ripgreprc"
 export EDITORCONFIGRC="${DOTFILES[CONFIGS]}/editorconfigrc"
-export POWERLEVEL10K_CONFIG_FILE="${DOTFILES[CONFIGS]}/.p10k.zsh"
+
+# -- fuzzy --
+export ZENO_HOME="${DOTFILES[CONFIGS]}/zeno"
 
 # -- rust --
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+
 # -- bat --
 export BAT_PAGER="less"
 export BAT_CONFIG_PATH="${DOTFILES[CONFIGS]}/bat.conf"
 
 # -- neovim --
-#export VIMINIT="${LOCAL_CONFIG}/nvim"
 export MYVIMRC="${XDG_CONFIG_HOME}/nvim"
 export VIMDOTDIR="${XDG_CONFIG_HOME}/vim"
 
@@ -149,10 +151,6 @@ export EDITOR="nvim"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PAGER="less"
 export VISUAL="$EDITOR"
-
-# -- python --
-export PYTHONDONTWRITEBYTECODE=true
-#export PYTHONSTARTUP="${DOTFILES[CONFIGS]}/python/.python_startup.py" && mkdir -p "${DOTFILES[CONFIGS]}/python"
 
 # -- cmake --
 export LDFLAGS="-L/usr/local/opt/ruby/lib"

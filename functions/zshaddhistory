@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+whence ${${(z)1}[1]} >| /dev/null || return 1
