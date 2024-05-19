@@ -6,12 +6,11 @@
 # lsd if available
 if command -v lsd >/dev/null 2>&1; then
   alias ls="lsd"
-  alias l='ls -l'
-  alias lsa=ls -lAFhg --group-directories-first --header
-  alias la='ls -a'
-  alias lla='ls -la'
-  alias lt='ls --tree'
-  alias lsa="ls -lAFhg --group-directories-first --header "
+  alias l="lsd -l"
+  alias la="lsd -a"
+  alias lla="lsd -la"
+  alias lt="lsd --tree"
+  alias lsa="lsd -lAFhg --group-directories-first --header "
 fi
 
 # -- rg available --
