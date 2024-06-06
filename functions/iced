@@ -3,6 +3,25 @@
 # vim: foldmethod=marker foldlevel=0 foldmarker={{{,}}} foldminlines=0 foldtext=v:folddashes
 # vim: textwidth=80 wrapmargin=80 spell spelllang=en_us expandtab tabstop=2 shiftwidth=2
 
-emualate -L zsh
+emulate -L zsh
 
-zinit default-ice -ce lucid light-mode 0-01k"$@" >/dev/null 2>&1
+local first_arg="$1"
+shift
+zinit default-ice -ce lucid light-mode wait"$first_arg" "$@" >/dev/null 2>&1
+
+function load_zinit_plugin() {
+  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    echo "Usage: load_zinit_plugin [ice1] [ice2] ... [plugin]"
+    echo "Load a Zinit plugin with the specified ice modifiers."
+    echo "The plugin name should be the last argument."
+    echo "The function defaults to the 'lucid', 'light-mode', and 'wait\"0\"' ice modifiers."
+    echo "Example: load_zinit_plugin atinit\"zstyle ':completion:*' menu select\" \"zdharma/fast-syntax-highlighting\""
+    return 0
+  fi
+
+  local plugin="${@: -1}"  # Get the last argument
+  local ices="${@:1:$#-1}"  # Get all arguments except the last one
+
+  zinit ice lucid light-mode wait"0" $ices
+  zinit load "$plugin"
+}

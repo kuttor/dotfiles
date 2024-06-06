@@ -5,33 +5,14 @@
 
 export DOTFILES_TEST=$0:h
 
-# Skip the creation of global compinit
+# skip the creation of global compinit
 export skip_global_compinit=1
 export __CF_USER_TEXT_ENCODING="0x1F5:0x0:0x0"
 
-# Deprecating zshenv in favor for zprofile
+# deprecating zshenv in favor for zprofile
 [[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
 
-# XDG Base Directory
-export XDG_CACHE_HOME="$HOME/.local/cache"
-export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_BIN_HOME="$HOME/.local/bin"
-
-# -- XDG Base Arrays --
-export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${DOTFILES[CONFIGS]}":"${XDG_CONFIG_DIRS}"
-export XDG_DATA_DIRS="${XDG_DATA_HOME}":"${XDG_DATA_DIRS}"
-export XDG_BIN_DIRS="${XDG_BIN_HOME}":"${XDG_BIN_DIRS}"
-
-# -- XDG Shorteners --
-export LOCAL_CONFIG="${XDG_CONFIG_HOME}"
-export LOCAL_CACHE="${XDG_CACHE_HOME}"
-export LOCAL_DATA="${XDG_DATA_HOME}"
-export LOCAL_LIB="${XDG_LIB_HOME}"
-export LOCAL_BIN="${XDG_BIN_HOME}"
-
-# -- Dotfiles Array --
+# -- dotfiles array --
 typeset -A DOTFILES
 DOTFILES[HOME]="${HOME}/.dotfiles"
 DOTFILES[HOOKS]="${DOTFILES[HOME]}/hooks"
@@ -39,18 +20,36 @@ DOTFILES[CONFIGS]="${DOTFILES[HOME]}/configs"
 DOTFILES[ZSH]="${DOTFILES[HOME]}/configs/zsh"
 DOTFILES[FUNCTIONS]="${DOTFILES[HOME]}/functions"
 
-# -- Dotfiles Array Shorteners --
+# -- xdg base directory --
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.local/cache}"
+export XDG_STATE_HOME="${XDG_CACHE_HOME:-${HOME}/.local/state}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_BIN_HOME="${XDG_CACHE_HOME:-${HOME}/.local/bin}"
+
+# -- antidot --
+[[ -f "${XDG_DATA_HOME}/antidot/env.sh" ]] &&
+    source "${XDG_DATA_HOME}/antidot/env.sh"
+[[ -f "${XDG_DATA_HOME}/antidot/alias.sh" ]] &&
+    source "${XDG_DATA_HOME}/antidot/alias.sh"
+
+# -- xdg base arrays --
+export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${DOTFILES[CONFIGS]}":"${XDG_CONFIG_DIRS}"
+export XDG_DATA_DIRS="${XDG_DATA_HOME}":"${XDG_DATA_DIRS}"
+export XDG_BIN_DIRS="${XDG_BIN_HOME}":"${XDG_BIN_DIRS}"
+
+# -- dotfiles array shorteners --
 export FUNCTIONS="${DOTFILES[FUNCTIONS]}"
 export CONFIGS="${DOTFILES[CONFIGS]}"
 export HOOKS="${DOTFILES[HOOKS]}"
 
-# -- History --
+# -- history --
 export HISTFILE="${XDG_CACHE_HOME}/.zsh_history"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000
 
-# -- Homebrew --
+# -- homebrew --
 export HOMEBREW_PREFIX="/opt/homebrew"
 export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
 export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
@@ -61,7 +60,7 @@ export PATH="${HOMEBREW_PREFIX}/bin:/opt/homebrew/sbin${PATH+:$PATH}"
 export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
 export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
 
-# -- ZShell Custom Vars--
+# -- zshell custom vars--
 export ZDOTDIR="${HOME}/.dotfiles/configs/zsh"
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
 export ZSH_CONFIG_DIR="${ZDOTDIR}/rc"
@@ -69,13 +68,13 @@ export ZSH_DATA_DIR="/usr/share/zsh"
 export HELPDIR="${ZSH_DATA_HOME}"
 mkdir -p "${HELPDIR}"
 
-# Zinit Custom Vars
+# zinit custom vars
 export ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
 mkdir -p "${ZINIT_HOME}"
 export ZPFX="${XDG_DATA_HOME}/zinit/polaris"
 mkdir -p "${ZPFX}"
 
-# Zinit Builtins Vars
+# zinit builtins vars
 typeset -A ZINIT
 ZINIT[ZCOMPDUMP_PATH]="${HOME}/.local/cache/zsh/zcompdump"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
@@ -130,7 +129,7 @@ export NPM_CONFIG_CACHE="${XDG_CACHE_HOME}/npm"
 # -- less --
 export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
 export LESSKEY="${DOTFILES[CONFIGS]}/less/lesskey"
-export LESSOPEN='| pygmentize -g %s'
+#export LESSOPEN='| pygmentize -g %s'
 
 # -- pip --
 export PIP_LOG_FILE="${XDG_CACHE_HOME}/pip/pip.log"

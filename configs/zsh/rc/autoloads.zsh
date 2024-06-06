@@ -1,59 +1,68 @@
 #! /usr/bin/env zsh
-# vim:set nu clipboard+=unnamedplus foldmethsofttabstop=0
-# ZSH modules
+# shellcheck shell=zsh
+# vim:set ft=zsh st=zsh nu clipboard+=unnamedplus foldmethsofttabstop=0
 
+# ------------------------------------------------------------------------------
+# -- Zsh Modules ---------------------------------------------------------------
+# ------------------------------------------------------------------------------
+zmodload zsh/parameter
+zmodload zsh/terminfo
+zmodload zsh/compctl
+zmodload zsh/complist
+zmodload zsh/computil
+zmodload zsh/zle
+zmodload zsh/curses
+zmodload zsh/files
+zmodload zsh/mapfile
+zmodload zsh/zutil
+zmodload -a zsh/zpty zpty
+zmodload -ap zsh/mapfile mapfile
+
+# ------------------------------------------------------------------------------
+# -- Zsh Autoloads -------------------------------------------------------------
+# ------------------------------------------------------------------------------
 autoload -U zed
+autoload -U delta
 autoload -U zargs
 autoload -U zcalc
 autoload -U parseopts
+autoload -Uz run-help
 autoload -Uz is-at-least
 autoload -Uz add-zsh-hook
 autoload -Uz read-ini-file
 autoload -Uz colors; colors
 autoload -Uz zmv; zle -N zmv
 autoload -Uz history-search-end
-autoload -Uz reset-broken-terminal 
+autoload -Uz reset-broken-terminal
 autoload -Uz vcs_info; zle -N vcs_info
-autoload -Uz is-at-least; zle -N is-at-least
+autoload -Uz is-at-least; zle -N is-at-leasto
+autoload -Uz pbcopy-buffer; zle -N pbcopy-buffer
 autoload -U select-word-style; select-word-style bash
+autoload -U edit-command-line; zle -N edit-command-line
+autoload -U url-quote-magic; zle -N self-insert url-quote-magic
+autoload -U expand-or-complete-with-dots; zle -N expand-or-complete-with-dots
+autoload -Uz bracketed-paste-url-magic; zle -N bracketed-paste bracketed-paste-url-magic
 
-# run-help
-autoload -Uz run-help
+for r in run-help-{git,ip,openssl,p4,sudo,svk,svn}; do autoload -Uz $r; done
+
+# run-help ~
 (( ${+aliases[run-help]} )) && unalias run-help
-alias help=run-help
-autoload -Uz run-help-git run-help-ip run-help-openssl run-help-p4 run-help-sudo run-help-svk run-help-svn
+alias help="run-help"
 
-
-
-# shift-tab to reverse completion
-zmodload zsh/complist
+# shift-tab ~ reverse-menu-completion
 bindkey '^[[Z' reverse-menu-complete
 bindkey -M menuselect '^[[Z' reverse-menu-complete
 
 # copy buffer
-zle -N pbcopy-buffer
 bindkey '^X^Y' pbcopy-buffer
 bindkey '^Xy' pbcopy-buffer
 bindkey '^[u' undo
 bindkey '^[r' redo
 
 # edit command-line using editor (like fc command)
-autoload -U edit-command-line; zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
 #bindkey "^E" edit-command-line
-
-# delta for git diff
-autoload -U delta
-
-# url-quote-magic for url completions in zsh
-autoload -U url-quote-magic; zle -N self-insert url-quote-magic
-
-# expand-or-complete-with-dots for better tab completion
-autoload -U expand-or-complete-with-dots; zle -N expand-or-complete-with-dots
-
-# bracketed-paste-url-magic for pasting URLs in zsh
-autoload -Uz bracketed-paste-url-magic; zle -N bracketed-paste bracketed-paste-url-magic
 
 # history-beginning-search-backward-end and history-beginning-search-forward-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -73,9 +82,11 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 # https://github.com/zsh-users/zsh-autosuggestions/issues/351
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste)
 
+# ------------------------------------------------------------------------------
+# -- Zsh Autoload Functions ----------------------------------------------------
+# ------------------------------------------------------------------------------
 () {
     local FUNCS="${HOME}/.dotfiles/functions"
-
     typeset -TUg +x FPATH=$FUNCS:$FPATH fpath
     [[ -d $FUNCS ]] && for i in $FUNCS/*(:t); autoload -U $i
 }

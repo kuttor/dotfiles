@@ -11,6 +11,7 @@ path=(
   /usr/{sbin,bin}
   /{sbin,bin}
   ${HOMEBREW_PREFIX}/{sbin,bin}
+  ${HOME}/Library/Python/3.9/bin
   ${path}
 )
 
