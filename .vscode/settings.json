@@ -3,9 +3,8 @@
   "editor.formatOnSave": true,
   "editor.find.autoFindInSelection": "always",
   "editor.find.globalFindClipboard": true,
-  "editor.inlayHints.fontFamily": "Operator Mono",
+  "editor.inlayHints.fontFamily": "",
   "files.autoSave": "afterDelay",
-  "editor.fontFamily": "Operator Mono",
   "editor.suggest.preview": true,
   "search.showLineNumbers": true,
   "better-comments.highlightPlainText": true,
@@ -16,11 +15,15 @@
   "shellformat.useEditorConfig": true,
   "editor.defaultFormatter": "Shunqian.prettier-plus",
   "workbench.productIconTheme": "fluent-icons",
-  "workbench.colorTheme": "Dracula Soft",
+  "workbench.colorTheme": "SynthWave '84",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.preferredDarkColorTheme": "Andromeda Colorizer",
   "synthwave84.brightness": 0.6,
   "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "editor.fontFamily": "'OperatorMonoSSm Nerd Font', Menlo, Monaco, 'Courier New', monospace",
+  "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   }
 }

@@ -25,35 +25,35 @@ zinit for lincheney/fzf-tab-completion
 
 # zsh-completions ~
 zinit for \
-      depth=1 \
-      atpull"zinit cclear && zinit creinstall" \
-      atload"autoload -Uz compinit && compinit -u" \
-    @sainnhe/zsh-completions
+  depth=1 \
+  atpull"zinit cclear && zinit creinstall" \
+  atload"autoload -Uz compinit && compinit -u" \
+  @sainnhe/zsh-completions
 
 # -- zsh-bash-completions-fallback --
 zinit for \
-      nocd \
-      depth"1" \
-      atinit"ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true" \
-    3v1n0/zsh-bash-completions-fallback
+  nocd \
+  depth"1" \
+  atinit"ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true" \
+  3v1n0/zsh-bash-completions-fallback
 
 # -- git-completion --
 zinit for \
-      blockf \
-      nocompile \
-      ver"zinit-fixed" \
-      as"completion" \
-      mv"git-completion.zsh -> _git" \
-    @iloveitaly/git-completion
+  blockf \
+  nocompile \
+  ver"zinit-fixed" \
+  as"completion" \
+  mv"git-completion.zsh -> _git" \
+  @iloveitaly/git-completion
 
 # -- rust completions --
 zinit for \
-      atload="hook rust-completions.atload.zsh" \
-      as"null" \
-      id-as"rust" \
-      rustup \
-      sbin"bin/*" \
-    zdharma-continuum/null
+  atload="hook rust-completions.atload.zsh" \
+  as"null" \
+  id-as"rust" \
+  rustup \
+  sbin"bin/*" \
+  zdharma-continuum/null
 
 # -- Oh-My-Zsh Completions --
 zinit for \

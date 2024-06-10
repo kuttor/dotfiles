@@ -15,9 +15,9 @@ export __CF_USER_TEXT_ENCODING="0x1F5:0x0:0x0"
 # -- dotfiles array --
 typeset -A DOTFILES
 DOTFILES[HOME]="${HOME}/.dotfiles"
+DOTFILES[ZSH]="${HOME}/configs/zsh"
 DOTFILES[HOOKS]="${DOTFILES[HOME]}/hooks"
 DOTFILES[CONFIGS]="${DOTFILES[HOME]}/configs"
-DOTFILES[ZSH]="${DOTFILES[HOME]}/configs/zsh"
 DOTFILES[FUNCTIONS]="${DOTFILES[HOME]}/functions"
 
 # -- xdg base directory --
@@ -42,12 +42,6 @@ export XDG_BIN_DIRS="${XDG_BIN_HOME}":"${XDG_BIN_DIRS}"
 export FUNCTIONS="${DOTFILES[FUNCTIONS]}"
 export CONFIGS="${DOTFILES[CONFIGS]}"
 export HOOKS="${DOTFILES[HOOKS]}"
-
-# -- history --
-export HISTFILE="${XDG_CACHE_HOME}/.zsh_history"
-export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
-export HISTSIZE=10000
-export SAVEHIST=10000
 
 # -- homebrew --
 export HOMEBREW_PREFIX="/opt/homebrew"
