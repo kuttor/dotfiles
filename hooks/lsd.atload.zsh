@@ -11,3 +11,4 @@ alias ll="lsd -l"
 alias lS="lsd --oneline --classic"
 alias lt="lsd --tree --depth=2"
 alias llm="lsd --timesort --long"
+echo yup

@@ -48,4 +48,4 @@ zinit for \
   OMZP::vscode \
   OMZP::web-search \
   atload"hook magic-enter.atload.zsh" \
-  OMZP::magic-t
+  OMZP::magic-enter

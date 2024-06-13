@@ -154,3 +154,9 @@ export GITSTATUS_LOG_LEVEL=DEBUG
 export GITSTATUS_CACHE_DIR="${XDG_CACHE_HOME}/gitstatus"
 export GITSTATUS_SHOW_UNTRACKED_FILES="all"
 export GIT_CONFIG="${DOTFILES[CONFIGS]}/git/config"
+
+# -- fzf --
+export FZF_CONFIG_PATH="${DOTFILES[CONFIGS]}/fzf.conf"
+
+# -- powerlevel10k --
+export POWERLEVEL10K_CONFIG_FILE="${DOTFILES[CONFIGS]}/.p10k.zsh"

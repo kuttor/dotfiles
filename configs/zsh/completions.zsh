@@ -2,48 +2,33 @@
 # vim:set filetype=zsh syntax=zsh
 # vim:set ft=zsh ts=2 sw=2 sts=0
 
-setopt prompt_subst # Pass escape sequence (environment variable) through prompt
+autoload -U compinit && compinit
+zmodload -i zsh/complist
 
-# ~=============================================================================
+# ==============================================================================
 # -- Completion Plugins -- "load later, turbo enabled completions"
+
+# ==============================================================================
 zinit default-ice -cq wait"1" lucid light-mode
-# ~=============================================================================
 
-# completions.zsh ~ personal completions for dotfiles
-# zinit snippet "$ZSH_CONFIG_DIR/completions.zsh"
-
-# system completions ~  moves zsh system completions under control of zinit
-#zinit wait pack atload=+"zicompinit; zicdreplay" for system-completions
-
-zinit for RobSis/zsh-completion-generator
-
-zinit for z-shell/zsh-fancy-completions
-
-zinit for chitoku-k/fzf-zsh-completions
-
-zinit for lincheney/fzf-tab-completion
-
-# zsh-completions ~
 zinit for \
-  depth=1 \
-  atpull"zinit cclear && zinit creinstall" \
-  atload"autoload -Uz compinit && compinit -u" \
-  @sainnhe/zsh-completions
-
-# -- zsh-bash-completions-fallback --
-zinit for \
-  nocd \
-  depth"1" \
-  atinit"ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true" \
+  RobSis/zsh-completion-generator \
+  z-shell/zsh-fancy-completions \
+  chitoku-k/fzf-zsh-completions \
+  lincheney/fzf-tab-completion \
+      depth=1 \
+      atpull"zinit cclear && zinit creinstall" \
+      atload"autoload -Uz compinit && compinit -u" \
+  @sainnhe/zsh-completions \
+      nocd \
+      depth"1" \
+      atinit"ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true" \
   3v1n0/zsh-bash-completions-fallback
-
-# -- git-completion --
-zinit for \
-  blockf \
-  nocompile \
-  ver"zinit-fixed" \
-  as"completion" \
-  mv"git-completion.zsh -> _git" \
+      blockf \
+      nocompile \
+      ver"zinit-fixed" \
+      as"completion" \
+      mv"git-completion.zsh -> _git" \
   @iloveitaly/git-completion
 
 # -- rust completions --
@@ -67,6 +52,11 @@ zinit for \
 # -- completion options --------------------------------------------------------
 # ==============================================================================
 
+
+# man zshcontrib
+zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*' formats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
+zstyle ':vcs_info:*' enable git #svn cvs
 # -- general --
 zstyle ':completion:*' auto-description
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'

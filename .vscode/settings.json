@@ -25,5 +25,6 @@
   "editor.fontFamily": "'OperatorMonoSSm Nerd Font', Menlo, Monaco, 'Courier New', monospace",
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
-  }
+  },
+  "editor.experimentalInlineEdit.showToolbar": "always"
 }
