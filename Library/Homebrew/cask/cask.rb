@@ -7,6 +7,7 @@ require "cask/cask_loader"
 require "cask/config"
 require "cask/dsl"
 require "cask/metadata"
+require "cask/tab"
 require "utils/bottles"
 require "extend/api_hashable"
 
@@ -158,6 +159,12 @@ module Cask
       languages.any? || artifacts.any?(Artifact::AbstractFlightBlock)
     end
 
+    def uninstall_flight_blocks?
+      artifacts.any? do |artifact|
+        artifact.is_a?(Artifact::AbstractFlightBlock) && artifact.uninstall?
+      end
+    end
+
     sig { returns(T.nilable(Time)) }
     def install_time
       # <caskroom_path>/.metadata/<version>/<timestamp>/Casks/<token>.{rb,json} -> <timestamp>
@@ -207,6 +214,10 @@ module Cask
     sig { returns(T.nilable(String)) }
     def bundle_long_version
       bundle_version&.version
+    end
+
+    def tab
+      Tab.for_cask(self)
     end
 
     def config_path
@@ -465,6 +476,25 @@ module Cask
       hash
     end
 
+    def artifacts_list(compact: false, uninstall_only: false)
+      artifacts.filter_map do |artifact|
+        case artifact
+        when Artifact::AbstractFlightBlock
+          next if uninstall_only && !artifact.uninstall?
+
+          # Only indicate whether this block is used as we don't load it from the API
+          # We can skip this entirely once we move to internal JSON v3.
+          { artifact.summarize => nil } unless compact
+        else
+          zap_artifact = artifact.is_a?(Artifact::Zap)
+          uninstall_artifact = artifact.respond_to?(:uninstall_phase) || artifact.respond_to?(:post_uninstall_phase)
+          next if uninstall_only && !zap_artifact && !uninstall_artifact
+
+          { artifact.class.dsl_key => artifact.to_args }
+        end
+      end
+    end
+
     private
 
     sig { returns(T.nilable(Homebrew::BundleVersion)) }
@@ -480,19 +510,6 @@ module Cask
       hash["installed"] = installed_version
       hash["outdated"] = outdated?
       hash
-    end
-
-    def artifacts_list(compact: false)
-      artifacts.filter_map do |artifact|
-        case artifact
-        when Artifact::AbstractFlightBlock
-          # Only indicate whether this block is used as we don't load it from the API
-          # We can skip this entirely once we move to internal JSON v3.
-          { artifact.summarize => nil } unless compact
-        else
-          { artifact.class.dsl_key => artifact.to_args }
-        end
-      end
     end
 
     def url_specs

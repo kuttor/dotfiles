@@ -8,78 +8,41 @@ require "development_tools"
 require "extend/cachable"
 
 # Rather than calling `new` directly, use one of the class methods like {Tab.create}.
-class Tab
+class AbstractTab
   extend Cachable
 
   FILENAME = "INSTALL_RECEIPT.json"
 
-  # Check whether the formula was installed as a dependency.
+  # Check whether the formula or cask was installed as a dependency.
   #
   # @api internal
   attr_accessor :installed_as_dependency
 
-  # Check whether the formula was installed on request.
+  # Check whether the formula or cask was installed on request.
   #
   # @api internal
   attr_accessor :installed_on_request
 
-  # Check whether the formula was poured from a bottle.
+  attr_accessor :homebrew_version, :tabfile, :loaded_from_api, :time, :arch, :source, :built_on
+
+  # Returns the formula or cask runtime dependencies.
   #
   # @api internal
-  attr_accessor :poured_from_bottle
+  attr_accessor :runtime_dependencies
 
-  attr_accessor :homebrew_version, :tabfile, :built_as_bottle,
-                :changed_files, :loaded_from_api, :time, :stdlib, :aliases, :arch, :source,
-                :built_on
-  attr_writer :used_options, :unused_options, :compiler, :source_modified_time
-
-  # Returns the formula's runtime dependencies.
-  #
-  # @api internal
-  attr_writer :runtime_dependencies
-
-  # Instantiates a {Tab} for a new installation of a formula.
-  def self.create(formula, compiler, stdlib)
-    build = formula.build
-    runtime_deps = formula.runtime_dependencies(undeclared: false)
-    attributes = {
+  def self.generic_attributes(formula_or_cask)
+    {
       "homebrew_version"        => HOMEBREW_VERSION,
-      "used_options"            => build.used_options.as_flags,
-      "unused_options"          => build.unused_options.as_flags,
-      "tabfile"                 => formula.prefix/FILENAME,
-      "built_as_bottle"         => build.bottle?,
       "installed_as_dependency" => false,
       "installed_on_request"    => false,
-      "poured_from_bottle"      => false,
-      "loaded_from_api"         => false,
+      "loaded_from_api"         => formula_or_cask.loaded_from_api?,
       "time"                    => Time.now.to_i,
-      "source_modified_time"    => formula.source_modified_time.to_i,
-      "compiler"                => compiler,
-      "stdlib"                  => stdlib,
-      "aliases"                 => formula.aliases,
-      "runtime_dependencies"    => Tab.runtime_deps_hash(formula, runtime_deps),
       "arch"                    => Hardware::CPU.arch,
-      "source"                  => {
-        "path"         => formula.specified_path.to_s,
-        "tap"          => formula.tap&.name,
-        "tap_git_head" => nil, # Filled in later if possible
-        "spec"         => formula.active_spec_sym.to_s,
-        "versions"     => {
-          "stable"         => formula.stable&.version&.to_s,
-          "head"           => formula.head&.version&.to_s,
-          "version_scheme" => formula.version_scheme,
-        },
-      },
       "built_on"                => DevelopmentTools.build_system_info,
     }
-
-    # We can only get `tap_git_head` if the tap is installed locally
-    attributes["source"]["tap_git_head"] = formula.tap.git_head if formula.tap&.installed?
-
-    new(attributes)
   end
 
-  # Returns the {Tab} for an install receipt at `path`.
+  # Returns the {Tab} for a formula or cask install receipt at `path`.
   #
   # NOTE: Results are cached.
   def self.from_file(path)
@@ -99,30 +62,122 @@ class Tab
       raise e, "Cannot parse #{path}: #{e}", e.backtrace
     end
     attributes["tabfile"] = path
-    attributes["source_modified_time"] ||= 0
-    attributes["source"] ||= {}
 
-    tapped_from = attributes["tapped_from"]
-    if !tapped_from.nil? && tapped_from != "path or URL"
-      attributes["source"]["tap"] = attributes.delete("tapped_from")
-    end
+    new(attributes)
+  end
 
-    if attributes["source"]["tap"] == "mxcl/master" ||
-       attributes["source"]["tap"] == "Homebrew/homebrew"
-      attributes["source"]["tap"] = "homebrew/core"
-    end
+  def self.empty
+    attributes = {
+      "homebrew_version"        => HOMEBREW_VERSION,
+      "installed_as_dependency" => false,
+      "installed_on_request"    => false,
+      "loaded_from_api"         => false,
+      "time"                    => nil,
+      "runtime_dependencies"    => nil,
+      "arch"                    => nil,
+      "source"                  => {
+        "path"         => nil,
+        "tap"          => nil,
+        "tap_git_head" => nil,
+      },
+      "built_on"                => DevelopmentTools.generic_build_system_info,
+    }
 
-    if attributes["source"]["spec"].nil?
+    new(attributes)
+  end
+
+  def initialize(attributes = {})
+    attributes.each { |key, value| instance_variable_set(:"@#{key}", value) }
+  end
+
+  def parsed_homebrew_version
+    return Version::NULL if homebrew_version.nil?
+
+    Version.new(homebrew_version)
+  end
+
+  sig { returns(T.nilable(Tap)) }
+  def tap
+    tap_name = source["tap"]
+    Tap.fetch(tap_name) if tap_name
+  end
+
+  def tap=(tap)
+    tap_name = tap.respond_to?(:name) ? tap.name : tap
+    source["tap"] = tap_name
+  end
+
+  def write
+    self.class.cache[tabfile] = self
+    tabfile.atomic_write(to_json)
+  end
+end
+
+class Tab < AbstractTab
+  # Check whether the formula was poured from a bottle.
+  #
+  # @api internal
+  attr_accessor :poured_from_bottle
+
+  attr_accessor :built_as_bottle, :changed_files, :stdlib, :aliases
+  attr_writer :used_options, :unused_options, :compiler, :source_modified_time
+
+  # Instantiates a {Tab} for a new installation of a formula.
+  def self.create(formula, compiler, stdlib)
+    build = formula.build
+    runtime_deps = formula.runtime_dependencies(undeclared: false)
+    attributes = generic_attributes(formula).merge({
+      "used_options"         => build.used_options.as_flags,
+      "unused_options"       => build.unused_options.as_flags,
+      "tabfile"              => formula.prefix/FILENAME,
+      "built_as_bottle"      => build.bottle?,
+      "poured_from_bottle"   => false,
+      "source_modified_time" => formula.source_modified_time.to_i,
+      "compiler"             => compiler,
+      "stdlib"               => stdlib,
+      "aliases"              => formula.aliases,
+      "runtime_dependencies" => Tab.runtime_deps_hash(formula, runtime_deps),
+      "source"               => {
+        "path"         => formula.specified_path.to_s,
+        "tap"          => formula.tap&.name,
+        "tap_git_head" => nil, # Filled in later if possible
+        "spec"         => formula.active_spec_sym.to_s,
+        "versions"     => {
+          "stable"         => formula.stable&.version&.to_s,
+          "head"           => formula.head&.version&.to_s,
+          "version_scheme" => formula.version_scheme,
+        },
+      },
+    })
+
+    # We can only get `tap_git_head` if the tap is installed locally
+    attributes["source"]["tap_git_head"] = formula.tap.git_head if formula.tap&.installed?
+
+    new(attributes)
+  end
+
+  # Like {from_file}, but bypass the cache.
+  def self.from_file_content(content, path)
+    tab = super
+
+    tab.source_modified_time ||= 0
+    tab.source ||= {}
+
+    tapped_from = tab.instance_variable_get(:@tapped_from)
+    tab.tap = tapped_from if !tapped_from.nil? && tapped_from != "path or URL"
+    tab.tap = "homebrew/core" if tab.tap == "mxcl/master" || tab.tap == "Homebrew/homebrew"
+
+    if tab.source["spec"].nil?
       version = PkgVersion.parse(File.basename(File.dirname(path)))
-      attributes["source"]["spec"] = if version.head?
+      tab.source["spec"] = if version.head?
         "head"
       else
         "stable"
       end
     end
 
-    if attributes["source"]["versions"].nil?
-      attributes["source"]["versions"] = {
+    if tab.source["versions"].nil?
+      tab.source["versions"] = {
         "stable"         => nil,
         "head"           => nil,
         "version_scheme" => 0,
@@ -131,10 +186,10 @@ class Tab
 
     # Tabs created with Homebrew 1.5.13 through 4.0.17 inclusive created empty string versions in some cases.
     ["stable", "head"].each do |spec|
-      attributes["source"]["versions"][spec] = attributes["source"]["versions"][spec].presence
+      tab.source["versions"][spec] = tab.source["versions"][spec].presence
     end
 
-    new(attributes)
+    tab
   end
 
   # Get the {Tab} for the given {Keg},
@@ -213,37 +268,24 @@ class Tab
   end
 
   def self.empty
-    attributes = {
-      "homebrew_version"        => HOMEBREW_VERSION,
-      "used_options"            => [],
-      "unused_options"          => [],
-      "built_as_bottle"         => false,
-      "installed_as_dependency" => false,
-      "installed_on_request"    => false,
-      "poured_from_bottle"      => false,
-      "loaded_from_api"         => false,
-      "time"                    => nil,
-      "source_modified_time"    => 0,
-      "stdlib"                  => nil,
-      "compiler"                => DevelopmentTools.default_compiler,
-      "aliases"                 => [],
-      "runtime_dependencies"    => nil,
-      "arch"                    => nil,
-      "source"                  => {
-        "path"         => nil,
-        "tap"          => nil,
-        "tap_git_head" => nil,
-        "spec"         => "stable",
-        "versions"     => {
-          "stable"         => nil,
-          "head"           => nil,
-          "version_scheme" => 0,
-        },
-      },
-      "built_on"                => DevelopmentTools.generic_build_system_info,
+    tab = super
+
+    tab.used_options = []
+    tab.unused_options = []
+    tab.built_as_bottle = false
+    tab.poured_from_bottle = false
+    tab.source_modified_time = 0
+    tab.stdlib = nil
+    tab.compiler = DevelopmentTools.default_compiler
+    tab.aliases = []
+    tab.source["spec"] = "stable"
+    tab.source["versions"] = {
+      "stable"         => nil,
+      "head"           => nil,
+      "version_scheme" => 0,
     }
 
-    new(attributes)
+    tab
   end
 
   def self.runtime_deps_hash(formula, deps)
@@ -257,10 +299,6 @@ class Tab
         "declared_directly" => formula.deps.include?(dep),
       }
     end
-  end
-
-  def initialize(attributes = {})
-    attributes.each { |key, value| instance_variable_set(:"@#{key}", value) }
   end
 
   def any_args_or_options?
@@ -307,12 +345,6 @@ class Tab
     @compiler || DevelopmentTools.default_compiler
   end
 
-  def parsed_homebrew_version
-    return Version::NULL if homebrew_version.nil?
-
-    Version.new(homebrew_version)
-  end
-
   def runtime_dependencies
     # Homebrew versions prior to 1.1.6 generated incorrect runtime dependency
     # lists.
@@ -331,17 +363,6 @@ class Tab
 
   def bottle?
     built_as_bottle
-  end
-
-  sig { returns(T.nilable(Tap)) }
-  def tap
-    tap_name = source["tap"]
-    Tap.fetch(tap_name) if tap_name
-  end
-
-  def tap=(tap)
-    tap_name = tap.respond_to?(:name) ? tap.name : tap
-    source["tap"] = tap_name
   end
 
   def spec
@@ -416,8 +437,7 @@ class Tab
     # will no longer be valid.
     Formula.clear_cache unless tabfile.exist?
 
-    self.class.cache[tabfile] = self
-    tabfile.atomic_write(to_json)
+    super
   end
 
   sig { returns(String) }
