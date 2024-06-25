@@ -264,7 +264,7 @@ RSpec.describe Formula do
 
     prefix = HOMEBREW_CELLAR/f.name/"0.1"
     prefix.mkpath
-    FileUtils.touch prefix/Tab::FILENAME
+    FileUtils.touch prefix/AbstractTab::FILENAME
 
     expect(f).to have_any_version_installed
   end
@@ -279,7 +279,7 @@ RSpec.describe Formula do
 
     oldname_prefix.mkpath
     oldname_tab = Tab.empty
-    oldname_tab.tabfile = oldname_prefix/Tab::FILENAME
+    oldname_tab.tabfile = oldname_prefix/AbstractTab::FILENAME
     oldname_tab.write
 
     expect(f).not_to need_migration
@@ -346,7 +346,7 @@ RSpec.describe Formula do
       head_prefix.mkpath
 
       tab = Tab.empty
-      tab.tabfile = head_prefix/Tab::FILENAME
+      tab.tabfile = head_prefix/AbstractTab::FILENAME
       tab.source["versions"] = { "stable" => "1.0" }
       tab.write
 
@@ -378,7 +378,7 @@ RSpec.describe Formula do
         prefix.mkpath
 
         tab = Tab.empty
-        tab.tabfile = prefix/Tab::FILENAME
+        tab.tabfile = prefix/AbstractTab::FILENAME
         tab.source_modified_time = stamp
         tab.write
       end
@@ -1106,7 +1106,7 @@ RSpec.describe Formula do
         prefix = f.prefix(version)
         prefix.mkpath
         tab = Tab.empty
-        tab.tabfile = prefix/Tab::FILENAME
+        tab.tabfile = prefix/AbstractTab::FILENAME
         tab.source_modified_time = 1
         tab.write
       end
@@ -1340,7 +1340,7 @@ RSpec.describe Formula do
     def setup_tab_for_prefix(prefix, options = {})
       prefix.mkpath
       tab = Tab.empty
-      tab.tabfile = prefix/Tab::FILENAME
+      tab.tabfile = prefix/AbstractTab::FILENAME
       tab.source["path"] = options[:path].to_s if options[:path]
       tab.source["tap"] = options[:tap] if options[:tap]
       tab.source["versions"] = options[:versions] if options[:versions]

@@ -18,20 +18,40 @@ RSpec.describe Tab do
     end
   end
 
+  matcher :be_installed_as_dependency do
+    match do |actual|
+      actual.installed_as_dependency == true
+    end
+  end
+
+  matcher :be_installed_on_request do
+    match do |actual|
+      actual.installed_on_request == true
+    end
+  end
+
+  matcher :be_loaded_from_api do
+    match do |actual|
+      actual.loaded_from_api == true
+    end
+  end
+
   subject(:tab) do
     described_class.new(
-      "homebrew_version"     => HOMEBREW_VERSION,
-      "used_options"         => used_options.as_flags,
-      "unused_options"       => unused_options.as_flags,
-      "built_as_bottle"      => false,
-      "poured_from_bottle"   => true,
-      "changed_files"        => [],
-      "time"                 => time,
-      "source_modified_time" => 0,
-      "compiler"             => "clang",
-      "stdlib"               => "libcxx",
-      "runtime_dependencies" => [],
-      "source"               => {
+      "homebrew_version"        => HOMEBREW_VERSION,
+      "used_options"            => used_options.as_flags,
+      "unused_options"          => unused_options.as_flags,
+      "built_as_bottle"         => false,
+      "poured_from_bottle"      => true,
+      "installed_as_dependency" => false,
+      "installed_on_request"    => true,
+      "changed_files"           => [],
+      "time"                    => time,
+      "source_modified_time"    => 0,
+      "compiler"                => "clang",
+      "stdlib"                  => "libcxx",
+      "runtime_dependencies"    => [],
+      "source"                  => {
         "tap"      => CoreTap.instance.to_s,
         "path"     => CoreTap.instance.path.to_s,
         "spec"     => "stable",
@@ -40,8 +60,8 @@ RSpec.describe Tab do
           "head"   => "HEAD-1111111",
         },
       },
-      "arch"                 => Hardware::CPU.arch,
-      "built_on"             => DevelopmentTools.build_system_info,
+      "arch"                    => Hardware::CPU.arch,
+      "built_on"                => DevelopmentTools.build_system_info,
     )
   end
 
@@ -65,6 +85,9 @@ RSpec.describe Tab do
     expect(tab.changed_files).to be_nil
     expect(tab).not_to be_built_as_bottle
     expect(tab).not_to be_poured_from_bottle
+    expect(tab).not_to be_installed_as_dependency
+    expect(tab).not_to be_installed_on_request
+    expect(tab).not_to be_loaded_from_api
     expect(tab).to be_stable
     expect(tab).not_to be_head
     expect(tab.tap).to be_nil
@@ -156,10 +179,13 @@ RSpec.describe Tab do
     expect(tab.time).to eq(time)
     expect(tab).not_to be_built_as_bottle
     expect(tab).to be_poured_from_bottle
+    expect(tab).not_to be_installed_as_dependency
+    expect(tab).to be_installed_on_request
+    expect(tab).not_to be_loaded_from_api
   end
 
   describe "::from_file" do
-    it "parses a Tab from a file" do
+    it "parses a formula Tab from a file" do
       path = Pathname.new("#{TEST_FIXTURE_DIR}/receipt.json")
       tab = described_class.from_file(path)
       source_path = "/usr/local/Library/Taps/homebrew/homebrew-core/Formula/foo.rb"
@@ -171,6 +197,9 @@ RSpec.describe Tab do
       expect(tab.changed_files).to eq(changed_files)
       expect(tab).not_to be_built_as_bottle
       expect(tab).to be_poured_from_bottle
+      expect(tab).not_to be_installed_as_dependency
+      expect(tab).to be_installed_on_request
+      expect(tab).not_to be_loaded_from_api
       expect(tab).to be_stable
       expect(tab).not_to be_head
       expect(tab.tap.name).to eq("homebrew/core")
@@ -186,7 +215,7 @@ RSpec.describe Tab do
   end
 
   describe "::from_file_content" do
-    it "parses a Tab from a file" do
+    it "parses a formula Tab from a file" do
       path = Pathname.new("#{TEST_FIXTURE_DIR}/receipt.json")
       tab = described_class.from_file_content(path.read, path)
       source_path = "/usr/local/Library/Taps/homebrew/homebrew-core/Formula/foo.rb"
@@ -198,6 +227,9 @@ RSpec.describe Tab do
       expect(tab.changed_files).to eq(changed_files)
       expect(tab).not_to be_built_as_bottle
       expect(tab).to be_poured_from_bottle
+      expect(tab).not_to be_installed_as_dependency
+      expect(tab).to be_installed_on_request
+      expect(tab).not_to be_loaded_from_api
       expect(tab).to be_stable
       expect(tab).not_to be_head
       expect(tab.tap.name).to eq("homebrew/core")
@@ -211,7 +243,7 @@ RSpec.describe Tab do
       expect(tab.source["path"]).to eq(source_path)
     end
 
-    it "can parse an old Tab file" do
+    it "can parse an old formula Tab file" do
       path = Pathname.new("#{TEST_FIXTURE_DIR}/receipt_old.json")
       tab = described_class.from_file_content(path.read, path)
 
@@ -219,6 +251,9 @@ RSpec.describe Tab do
       expect(tab.unused_options.sort).to eq(unused_options.sort)
       expect(tab).not_to be_built_as_bottle
       expect(tab).to be_poured_from_bottle
+      expect(tab).not_to be_installed_as_dependency
+      expect(tab).not_to be_installed_on_request
+      expect(tab).not_to be_loaded_from_api
       expect(tab).to be_stable
       expect(tab).not_to be_head
       expect(tab.tap.name).to eq("homebrew/core")
@@ -238,7 +273,7 @@ RSpec.describe Tab do
   end
 
   describe "::create" do
-    it "creates a Tab" do
+    it "creates a formula Tab" do
       # < 1.1.7 runtime dependencies were wrong so are ignored
       stub_const("HOMEBREW_VERSION", "1.1.7")
 
@@ -277,7 +312,7 @@ RSpec.describe Tab do
       expect(tab.source["path"]).to eq(f.path.to_s)
     end
 
-    it "can create a Tab from an alias" do
+    it "can create a formula Tab from an alias" do
       alias_path = CoreTap.instance.alias_dir/"bar"
       f = formula(alias_path:) { url "foo-1.0" }
       compiler = DevelopmentTools.default_compiler
