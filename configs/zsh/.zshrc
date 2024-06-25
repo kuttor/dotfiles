@@ -42,23 +42,25 @@ zurbo zdharma-continuum/zinit-annex-as-monitor
 zurbo zdharma-continuum/zinit-annex-link-man
 zurbo zdharma-continuum/zinit-annex-patch-dl
 zurbo zdharma-continuum/zinit-annex-submods
-zurbo zdharma-continuum/zinit-annex-pull
-zurbo zdharma-continuum/zinit-annex-man
+#zurbo zdharma-continuum/zinit-annex-pull
+#zurbo zdharma-continuum/zinit-annex-man
 
 # ==============================================================================
 # -- meta plugins --------------------------------------------------------------
 # ==============================================================================
-zurbo skip'fzf-go peco-go' fuzzy-src
-zurbo skip'hexyl hyperfine' for sharkdp
-zurbo skip'dircolors-material sharkdp' for console-tools
-zurbo skip'fast-syntax-highlighting' for zdharma
-zurbo for zsh-users+fast
+zinit for                                                                      \
+      skip'hexyl hyperfine'                                                    \
+    sharkdp                                                                    \
+      skip'dircolors-material sharkdp'                                         \
+    console-tools                                                              \
+      skip'fast-syntax-highlighting'                                           \
+    zdharma                                                                    \
+    zsh-users+fast
 
 
 # ==============================================================================
-# -- load first ----------------------------------------------------------------
+# -- Zurbo-Loaded --------------------------------------------------------------
 # ==============================================================================
-
 zurbo mattmc3/zman
 zurbo depth"1" @romkatv/powerlevel10k
 
@@ -66,14 +68,15 @@ zurbo depth"1" @romkatv/powerlevel10k
 # ==============================================================================
 # -- github programs -----------------------------------------------------------
 # ==============================================================================
+zinit gh atload_hook bpick"lsd-*" pick"lsd-*/lsd" sbin"lsd -> lsd" @lsd-rs/lsd
 
-zurbo gh atload_hook bpick"lsd-*" pick"lsd-*/lsd" sbin"lsd -> lsd" @lsd-rs/lsd
-zurbo gh
+zurbo gh id-as sbin"lsd -> lsd" for @lsd-rs/lsd
+
+
 # ==============================================================================
 # -- fzf -----------------------------------------------------------------------
 # ==============================================================================
-
-zurbo pack"bgn-binary+keys" @fzf
+zinit pack"bgn-binary+keys" @fzf
 zurbo atload_hook blockf depth"1" @yuki-yano/fzf-preview.zsh
 zurbo atload_hook Aloxaf/fzf-tab
 zurbo atload_hook as"program" atclone"./install --user" @BartSte/fzf-help
@@ -83,95 +86,50 @@ zurbo @redxtech/zsh-fzf-utils
 # -- github-releases -----------------------------------------------------------
 # ==============================================================================
 zurbo atload_hook atpull"%atclone" olets/zsh-abbr
-zurbo atload_hook blockf depth"1" sbin"**/zeno -> zeno" yuki-yano/zeno.zsh
-zurbo pack ls_colors
-zurbo pack dircolors-material
+
+zinit pack ls_colors
+zinit pack dircolors-material
 zurbo unixorn/warhol.plugin.zsh
 zurbo chrissicool/zsh-256color
-zurbo sbin"**/nvim -> nvim" ver"nightly" neovim/neovim
+
 zurbo atload_hook @jsahlen/tmux-vim-integration.plugin.zsh
-zurbo zdharma-continuum/zsh-lint
-zurbo zdharma-continuum/zsh-sweep
-zurbo zdharma-continuum/zsh-startify
-zurbo zdharma-continuum/zzcomplete
-zurbo zdharma-continuum/git-url
-zurbo sbin"**/sh* -> shfmt" @mvdan/sh
-zurbo sbin"*/shellcheck -> shellcheck" koalaman/shellcheck
+
+zinit id-as zdharma-continuum/zsh-lint
+zinit id-as zdharma-continuum/zsh-sweep
+zinit id-as zdharma-continuum/zsh-startify
+zinit id-as zdharma-continuum/zzcompletei
+zinit id-as zdharma-continuum/declare-zsh
+
 zurbo mattmc3/zsh-safe-rm
 zurbo momo-lab/zsh-replace-multiple-dots
-zurbo baubreypwd/zsh-plugin-reload
+zurbo aubreypwd/zsh-plugin-reload
 zurbo mango-tree/zsh-recall
-zurbo nocompletions compile"*.zsh" atload_hook atinit_hook lissner/zsh-autopair
-zurbo pick"shell_integration/zsh" sbin"utilities/*" gnachman/iTerm2-shell-integration
-zurbo gh pick"bin/git-fuzzy" sbin"git-fuzzy -> git-fuzzy" bigH/git-fuzzy
+zurbo nocompletions compile"*.zsh" atload_hook atinit_hook hlissner/zsh-autopair
+
+zinit id-as sbin'**/zeno -> zeno' blockf depth'1' for 'yuki-yano/zeno.zsh'
+zinit id-as sbin'**/sh* -> shfmt'                 for '@mvdan/sh'
+zinit id-as sbin'utilities/*'                     for 'gnachman/iTerm2-shell-integration'
+
 
 # ==============================================================================
-# -- 2nd Load ------------------------------------------------------------------
+# -- GitHub-Released Late-Loaders ----------------------------------------------
 # ==============================================================================
-
 zinit default-ice -cq wait"1" lucid light-mode
-zurbo gh sbin"lazygit -> lazygit" jesseduffield/lazygit
-zurbo gh mv"gh_*/bin/gh* -> gh" sbin"gh -> gh" @cli/cli
 
-zinit for                                                                      \
-      id-as                                                                    \
-      from"gh-r"                                                               \
-      mv"tealdeer* -> tealdeer"                                                \
-      pick"tealdeer -> tealdeer"                                               \
-      dl"https://github.com/dbrgn/tealdeer/blob/main/completion/zsh_tealdeer
-        -> _tealdeer"                                                          \
-      sbin"tealdeer -> tldr"                                                   \
-  @dbrgn/tealdeer
-
-# declare-zsh ~ A Zsh plugin that provides a simple way to declare variables
-zinit for                                                                      \
-      id-as"zsh-declare"                                                       \
-  zdharma-continuum/declare-zsh
-
-# delta ~ A viewer for git and diff output
-zinit for                                                                      \
-      id-as"delta"                                                             \
-      as"command"                                                              \
-      from"gh-r"                                                               \
-      sbin"**/delta -> delta"                                                  \
-      mv"delta* -> delta"                                                      \
-      pick"delta"                                                              \
-  dandavison/delta
-
-# glow ~ A markdown reader for the terminal
-zinit for                                                                      \
-      id-as"glow"                                                              \
-      from"gh-r"                                                               \
-      sbin"**/glow -> glow"                                                    \
-  @charmbracelet/glow
-
-# zoxide ~ A smarter cd command
-zinit for                                                                      \
-      id-as"zoxide"                                                            \
-      as"command"                                                              \
-      from"gh-r"                                                               \
-      mv"zoxide -> zoxide"                                                     \
-      atclone"./zoxide init zsh > init.zsh"                                    \
-      atpull"%atclone"                                                         \
-      src"init.zsh"                                                            \
-      nocompile"!"                                                             \
-  @ajeetdsouza/zoxide
-
-# github-Copilot ~ a cli for github copilot
-zinit snippet "https://gist.githubusercontent.com/iloveitaly/a79ffc31ef5b4785da8950055763bf52/raw/4140dd8fa63011cdd30814f2fbfc5b52c2052245/github-copilot-cli.zsh"
-
-# deno ~ A simple and
-zinit for                                                                      \
-      id-as                                                                    \
-      from"gh-r"                                                               \
-      nocompile                                                                \
-      sbin"* -> deno"                                                          \
-  @denoland/deno
+zinit id-as from'gh-r' sbin'*/shellcheck -> shellcheck'      for 'koalaman/shellcheck'
+zinit id-as from'gh-r' sbin'**/nvim -> nvim' ver'nightly'    for 'neovim/neovim'
+zinit id-as from'gh-r' sbin"git-fuzzy -> git-fuzzy"          for 'bigH/git-fuzzy'
+zinit id-as from'gh-r' sbin'lazygit -> lazygit'              for 'jesseduffield/lazygit'
+zinit id-as from'gh-r' sbin'gh_*/bin/gh* -> gh'              for 'cli/cli'
+zinit id-as from'gh-r' sbin'tealdeer* -> tldr'               for 'dbrgn/tealdeer'
+zinit id-as from'gh-r' sbin'**/delta -> delta'               for 'dandavison/delta'
+zinit id-as from"gh-r" sbin"**/glow -> glow"                 for 'charmbracelet/glow'
+zinit id-as from'gh-r' sbin'zoxide -> zoxide'                for 'ajeetdsouza/zoxide'
+zinit id-as from'gh-r' sbin'**/zeno -> zeno' blockf depth'1' for 'yuki-yano/zeno.zsh'
+zinit id-as from"gh-r" sbin"* -> deno"                       for 'denoland/deno'
 
 # -- snippits --
 zinit snippet "$ZDOTDIR/snippets.zsh"
-
-# -- dotfiles completons --
 zinit snippet "$ZDOTDIR/completions.zsh"
 
 # To customize: run `p10k configure` or edit .p10k.zsh.

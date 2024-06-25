@@ -16,19 +16,19 @@ zinit for \
   z-shell/zsh-fancy-completions \
   chitoku-k/fzf-zsh-completions \
   lincheney/fzf-tab-completion \
-      depth=1 \
-      atpull"zinit cclear && zinit creinstall" \
-      atload"autoload -Uz compinit && compinit -u" \
+  depth=1 \
+  atpull"zinit cclear && zinit creinstall" \
+  atload"autoload -Uz compinit && compinit -u" \
   @sainnhe/zsh-completions \
-      nocd \
-      depth"1" \
-      atinit"ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true" \
+  nocd \
+  depth"1" \
+  atinit"ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true" \
   3v1n0/zsh-bash-completions-fallback
-      blockf \
-      nocompile \
-      ver"zinit-fixed" \
-      as"completion" \
-      mv"git-completion.zsh -> _git" \
+blockf \
+  nocompile \
+  ver"zinit-fixed" \
+  as"completion" \
+  mv"git-completion.zsh -> _git" \
   @iloveitaly/git-completion
 
 # -- rust completions --
@@ -51,7 +51,6 @@ zinit for \
 # ==============================================================================
 # -- completion options --------------------------------------------------------
 # ==============================================================================
-
 
 # man zshcontrib
 zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
@@ -84,7 +83,7 @@ zstyle ':completion:*' menu select '2'
 zstyle ':completion:*' recent-dirs-insert 'both'
 
 # --cache --
-zstyle ':completion:*' cache-path '$XDG_CACHE_HOME/zsh/zcompcache'
+zstyle ':completion:*' cache-path '$HOME/.local/cache/zsh/zcompcache'
 
 # -- manpage --
 zstyle ':completion:*:manuals' separate-sections true

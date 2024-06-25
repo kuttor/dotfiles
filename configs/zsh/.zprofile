@@ -59,7 +59,7 @@ export ZDOTDIR="${HOME}/.dotfiles/configs/zsh"
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
 export ZSH_CONFIG_DIR="${ZDOTDIR}/rc"
 export ZSH_DATA_DIR="/usr/share/zsh"
-export HELPDIR="${ZSH_DATA_HOME}"
+export HELPDIR="${ZSH_DATA_DIR}"
 mkdir -p "${HELPDIR}"
 
 # zinit custom vars
