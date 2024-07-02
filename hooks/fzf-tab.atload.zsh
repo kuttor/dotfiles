@@ -10,26 +10,35 @@ FZF_TAB_GROUP_COLORS=(
 )
 zstyle ':fzf-tab:*' group-colors $FZF_TAB_GROUP_COLORS
 
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# set descriptions format to enable group support
+# NOTE: don't use escape sequences here, fzf-tab will ignore them
+zstyle ':completion:*:descriptions' format '[%d]'
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':completion:*' menu no
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd -1 --color=always $realpath'
+# switch group using `<` and `>`
+zstyle ':fzf-tab:*' switch-group '<' '>'
+
+
 # Main completion configuration for fzf-tab
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd -1 --color="always" $realpath'
 zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
-zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup # use fzf-tmux-popup
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+
 zstyle ':fzf-tab:*' continuous-trigger '/'        # ends and starts new complete with '/'
-zstyle ':fzf-tab:*' switch-group '<' '>' # switch group using `<` and `>`
-zstyle ':completion:*:git-checkout:*' sort false  # disable sort when completing `git checkout`
-zstyle ':completion:*:descriptions' format '[%d]' # set descriptions format to enable group support
-zstyle ':completion:*' menu nocd # force no show menu, requirement for fzf-tab
 zstyle ':fzf-tab:*' fzf-bindings 'ctrl-j:accept' 'ctrl-a:toggle-all'
+
 # apply to all command
 zstyle ':fzf-tab:*' popup-min-size 50 8
+
 # only apply to 'diff'
 zstyle ':fzf-tab:complete:diff:*' popup-min-size 80 12
 
-zstyle ':fzf-tab:complete:*' fzf-bindings \
-	'ctrl-v:execute-silent({_FTB_INIT_}code "$realpath")' \
-  'ctrl-e:execute-silent({_FTB_INIT_}kwrite "$realpath")'
-
-# Setup file preview - keep adding commands we might need preview for
+# file preview - keep adding commands we might need preview for
 function PREVIEW_SNIPPET() {
   local RPATH=$(realpath $1)
   [[ -d $RPATH ]] && lsd -1 --color="always" $RPATH;
@@ -42,6 +51,7 @@ zstyle ':fzf-tab:complete:c:*'    fzf-preview $(PREVIEW_SNIPPET)
 zstyle ':fzf-tab:complete:cat:*'  fzf-preview $(PREVIEW_SNIPPET)
 zstyle ':fzf-tab:complete:cd:*'   fzf-preview $(PREVIEW_SNIPPET)
 zstyle ':fzf-tab:complete:cp:*'   fzf-preview $(PREVIEW_SNIPPET)
+zstyle ':fzf-tab:complete:exa:*'  fzf-preview $(PREVIEW_SNIPPET)
 zstyle ':fzf-tab:complete:ls:*'   fzf-preview $(PREVIEW_SNIPPET)
 zstyle ':fzf-tab:complete:lsd:*'  fzf-preview $(PREVIEW_SNIPPET)
 zstyle ':fzf-tab:complete:mv:*'   fzf-preview $(PREVIEW_SNIPPET)

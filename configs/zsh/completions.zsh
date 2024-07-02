@@ -9,7 +9,7 @@ zmodload -i zsh/complist
 # -- Completion Plugins -- "load later, turbo enabled completions"
 
 # ==============================================================================
-zinit default-ice -cq wait"1" lucid light-mode
+zinit default-ice -cq wait"1" lucid light-mode id-as
 
 zinit for \
   RobSis/zsh-completion-generator \
@@ -23,8 +23,8 @@ zinit for \
   nocd \
   depth"1" \
   atinit"ZSH_BASH_COMPLETIONS_FALLBACK_LAZYLOAD_DISABLE=true" \
-  3v1n0/zsh-bash-completions-fallback
-blockf \
+  3v1n0/zsh-bash-completions-fallback \
+  blockf \
   nocompile \
   ver"zinit-fixed" \
   as"completion" \
@@ -35,10 +35,11 @@ blockf \
 zinit for \
   atload="hook rust-completions.atload.zsh" \
   as"null" \
-  id-as"rust" \
   rustup \
   sbin"bin/*" \
   zdharma-continuum/null
+
+zinit nocompile nocompletions for 'MenkeTechnologies/zsh-more-completions'
 
 # -- Oh-My-Zsh Completions --
 zinit for \
@@ -52,22 +53,23 @@ zinit for \
 # -- completion options --------------------------------------------------------
 # ==============================================================================
 
-# man zshcontrib
-zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
-zstyle ':vcs_info:*' formats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
-zstyle ':vcs_info:*' enable git #svn cvs
+# # man zshcontrib
+# zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+# zstyle ':vcs_info:*' formats '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
+# zstyle ':vcs_info:*' enable git #svn cvs
+
 # -- general --
-zstyle ':completion:*' auto-description
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' extra-verbose 'yes'
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' insert-tab 'pending'
-zstyle ':completion:*' keep-prefix
-zstyle ':completion:*' rehash 'true'
-zstyle ':completion:*' use-cache 'true'
 zstyle ":completion:*" verbose yes
+zstyle ':completion:*' use-cache 'true'
+zstyle ':completion:*' rehash 'true'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' keep-prefix
+zstyle ':completion:*' insert-tab 'pending'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' extra-verbose 'yes'
+zstyle ':completion:*' auto-description
+zstyle ':completion:*' accept-exact '*(N)'
 
 # -- file and folder --
 zstyle ':completion:*' file-patterns '%p:globbed-files' '*(-/):directories' '*:all-files'
@@ -83,7 +85,7 @@ zstyle ':completion:*' menu select '2'
 zstyle ':completion:*' recent-dirs-insert 'both'
 
 # --cache --
-zstyle ':completion:*' cache-path '$HOME/.local/cache/zsh/zcompcache'
+zstyle ':completion:*' cache-path '$XDG_CACHE_HOME/zsh'
 
 # -- manpage --
 zstyle ':completion:*:manuals' separate-sections true
@@ -95,15 +97,15 @@ zstyle ':completion:*:descriptions' format '%F{blue}  %d  %f'
 zstyle ':completion:*:messages' format '%B%F{magenta}  %U%d%u  %f%b'
 zstyle ':completion:*:warnings' format '%B%F{red} %Uno matches found%u %f%b'
 
-# Make completion is slow
+# -- make completion is slow --
 zstyle ':completion:*:make::' tag-order targets:
 zstyle ':completion:*:make:*:targets' call-command true
 zstyle ':completion:*:*:*make:*:targets' command awk \''/^[a-zA-Z0-9][^\/\t=]+:/ {print $1}'\' \$file
 
-# Preview `kill` and `ps` commands
+# -- preview `kill` and `ps` commands --
 zstyle ":completion:*:*:*:*:processes" command "ps -u $USER -o pid,user,comm -w -w"
 
-# Add custom completions here
+# -- add custom completions here --
 zicompdef _gnu_generic ar curl ls docker emacs ffmpeg ffprobe fzf pip \
   gocryptfs highlight tlp light lighttpd lsd mimeo hexyl tlmgr vue \
   notify-send wget pip3 pw-cli rofi rustc tlmgr tlp-stat mv \

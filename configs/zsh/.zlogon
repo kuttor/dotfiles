@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-#vim: set filetype=zsh syntax=zsh foldmethod=marker foldlevel=0 foldmarker={,}
+#vim: set filetype=zsh syntax=zsh sts=2 foldmethod=marker foldlevel=0 foldmarker={,}
 #vim: set tabwidth=2 shiftwidth=2 expandtab autoindent smartindent smarttab
 # Execute code in the background to not affect the current session
 
@@ -7,14 +7,18 @@
     # <https://github.com/zimfw/zimfw/blob/master/login_init.zsh>
     setopt LOCAL_OPTIONS EXTENDED_GLOB
     autoload -U zrecompile
-    ZDOTDIR="${HOME}/.dotfiles/configs/zsh"
+    ZDOTDIR="${ZDOTDIR:-${HOME}/.dotfiles/configs/zsh}"
 
     # Compile zcompdump, if modified, to increase startup speed.
-    zcompdump="${HOME}/.local/cache/.zcompdump"
-    if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
-        zrecompile -pq "$zcompdump"
-    fi
+    zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump"
+    [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]] && zrecompile -pq "$zcompdump"
+
     # zcompile .zshrc
     zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc
     zrecompile -pq ${ZDOTDIR:-${HOME}}/.zprofile
 )
+
+(
+    # Anonymous function for creating symlink
+    ln -sf "${ZDOTDIR:-${HOME}}/.zlogon" "${HOME}/.zlogin"
+) &

@@ -20,7 +20,7 @@ setopt inc_append_history     # Immediately write to history in realtime.
 setopt share_history          # Share history across many shell instances.
 
 # -- history --
-export HISTFILE="$HOME/.local/cache/zsh/.zsh_history"
+export HISTFILE="$XDG_CACHE_HOME/zsh/.zsh_history"
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 export HISTSIZE=10000
 export SAVEHIST=10000

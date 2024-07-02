@@ -49,21 +49,6 @@ for r in run-help-{git,ip,openssl,p4,sudo,svk,svn}; do autoload -Uz $r; done
 (( ${+aliases[run-help]} )) && unalias run-help
 alias help="run-help"
 
-# shift-tab ~ reverse-menu-completion
-bindkey '^[[Z' reverse-menu-complete
-bindkey -M menuselect '^[[Z' reverse-menu-complete
-
-# copy buffer
-bindkey '^X^Y' pbcopy-buffer
-bindkey '^Xy' pbcopy-buffer
-bindkey '^[u' undo
-bindkey '^[r' redo
-
-# edit command-line using editor (like fc command)
-bindkey '^xe' edit-command-line
-bindkey '^x^e' edit-command-line
-#bindkey "^E" edit-command-line
-
 # history-beginning-search-backward-end and history-beginning-search-forward-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
@@ -85,6 +70,7 @@ ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(bracketed-paste)
 # ------------------------------------------------------------------------------
 # -- Zsh Autoload Functions ----------------------------------------------------
 # ------------------------------------------------------------------------------
+
 () {
     local FUNCS="${HOME}/.dotfiles/functions"
     typeset -TUg +x FPATH=$FUNCS:$FPATH fpath

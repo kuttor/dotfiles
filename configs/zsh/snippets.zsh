@@ -21,14 +21,10 @@ zinit for \
   OMZP::ansible \
   OMZP::aws \
   OMZP::brew \
-  OMZP::bgnotify \
   OMZP::colored-man-pages \
   OMZP::colorize \
   OMZP::common-aliases \
   OMZP::composer \
-  OMZP::copybuffer \
-  OMZP::copyfile \
-  OMZP::copypath \
   OMZP::cp \
   OMZP::extract \
   OMZP::fancy-ctrl-z \

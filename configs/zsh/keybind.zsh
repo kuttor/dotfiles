@@ -1,4 +1,4 @@
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 # ~ Keybindings ~
 # ------------------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 # ~ Custom Keybindings ~
 # ------------------------------------------------------------------------------
 bindkey " " magic-space
@@ -65,6 +65,22 @@ bindkey "^[[H" beginning-of-line
 bindkey "^[^[[C" end-of-line
 bindkey "^[^[[D" beginning-of-line
 bindkey '^Xh' _complete_help
+
+# shift-tab ~ reverse-menu-completion
+bindkey '^[[Z' reverse-menu-complete
+bindkey -M menuselect '^[[Z' reverse-menu-complete
+
+# copy buffer
+bindkey '^X^Y' pbcopy-buffer
+bindkey '^Xy' pbcopy-buffer
+bindkey '^[u' undo
+bindkey '^[r' redo
+
+# edit command-line using editor (like fc command)
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+#bindkey "^E" edit-command-line
+
 bindkey -e
 
 # Enable History Search
@@ -75,3 +91,7 @@ zle -N down-line-or-beginning-search
 [[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
 [[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
 
+# exit shell in middle of line
+exit_zsh() { exit }
+zle -N exit_zsh
+bindkey '^D' exit_zsh

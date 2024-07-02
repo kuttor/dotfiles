@@ -1,9 +1,10 @@
+#!/usr/bin/env zsh
 # vim:set filetype=zsh syntax=zs
 # vim:set ft=zsh ts=4 sw=4 sts=0
 # vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
 # Vim:set nu clipboard+=unnamedplus foldmethsofttabstop=0
 
-export DOTFILES_TEST=$0:h
+export DOTFILES=$0:h
 
 # skip the creation of global compinit
 export skip_global_compinit=1
@@ -13,35 +14,30 @@ export __CF_USER_TEXT_ENCODING="0x1F5:0x0:0x0"
 [[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
 
 # -- dotfiles array --
-typeset -A DOTFILES
-DOTFILES[HOME]="${HOME}/.dotfiles"
-DOTFILES[ZSH]="${HOME}/configs/zsh"
-DOTFILES[HOOKS]="${DOTFILES[HOME]}/hooks"
-DOTFILES[CONFIGS]="${DOTFILES[HOME]}/configs"
-DOTFILES[FUNCTIONS]="${DOTFILES[HOME]}/functions"
+typeset -A D
+D=(
+    ZSH "$DOTFILES/configs/zsh"
+    HOOKS "$DOTFILES/hooks"
+    HOME "$DOTFILES/.dotfiles"
+    FUNCTIONS "$DOTFILES/functions"
+    CONFIGS "$DOTFILES/configs"
+)
 
 # -- xdg base directory --
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.local/cache}"
-export XDG_STATE_HOME="${XDG_CACHE_HOME:-${HOME}/.local/state}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
-export XDG_BIN_HOME="${XDG_CACHE_HOME:-${HOME}/.local/bin}"
-
-# -- antidot --
-[[ -f "${XDG_DATA_HOME}/antidot/env.sh" ]] &&
-    source "${XDG_DATA_HOME}/antidot/env.sh"
-[[ -f "${XDG_DATA_HOME}/antidot/alias.sh" ]] &&
-    source "${XDG_DATA_HOME}/antidot/alias.sh"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-$HOME/.local/bin}"
 
 # -- xdg base arrays --
-export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}":"${DOTFILES[CONFIGS]}":"${XDG_CONFIG_DIRS}"
-export XDG_DATA_DIRS="${XDG_DATA_HOME}":"${XDG_DATA_DIRS}"
-export XDG_BIN_DIRS="${XDG_BIN_HOME}":"${XDG_BIN_DIRS}"
+export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}:${D[CONFIGS]}:${XDG_CONFIG_DIRS}"
+export XDG_BIN_DIRS="${XDG_BIN_HOME}:${XDG_BIN_DIRS}"
+export XDG_DATA_DIRS="${XDG_DATA_HOME}:${XDG_DATA_DIRS}"
 
-# -- dotfiles array shorteners --
-export FUNCTIONS="${DOTFILES[FUNCTIONS]}"
-export CONFIGS="${DOTFILES[CONFIGS]}"
-export HOOKS="${DOTFILES[HOOKS]}"
+# -- antidot --
+[[ -f "${XDG_DATA_HOME}/antidot/env.sh" ]] && . "${XDG_DATA_HOME}/antidot/env.sh"
+[[ -f "${XDG_DATA_HOME}/antidot/alias.sh" ]] && . "${XDG_DATA_HOME}/antidot/alias.sh"
 
 # -- homebrew --
 export HOMEBREW_PREFIX="/opt/homebrew"
@@ -54,21 +50,17 @@ export PATH="${HOMEBREW_PREFIX}/bin:/opt/homebrew/sbin${PATH+:$PATH}"
 export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
 export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
 
-# -- zshell custom vars--
+# -- zshell --
 export ZDOTDIR="${HOME}/.dotfiles/configs/zsh"
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
 export ZSH_CONFIG_DIR="${ZDOTDIR}/rc"
 export ZSH_DATA_DIR="/usr/share/zsh"
-export HELPDIR="${ZSH_DATA_DIR}"
-mkdir -p "${HELPDIR}"
+export HELPDIR="${ZSH_DATA_DIR}" && mkdir -p "${HELPDIR}"
 
-# zinit custom vars
-export ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
-mkdir -p "${ZINIT_HOME}"
-export ZPFX="${XDG_DATA_HOME}/zinit/polaris"
-mkdir -p "${ZPFX}"
+# -- zinit  --
+export ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git" && mkdir -p "${ZINIT_HOME}"
+export ZPFX="${XDG_DATA_HOME}/zinit/polaris" && mkdir -p "${ZPFX}"
 
-# zinit builtins vars
 typeset -A ZINIT
 ZINIT[ZCOMPDUMP_PATH]="${HOME}/.local/cache/zsh/zcompdump"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
@@ -81,16 +73,31 @@ ZINIT[BIN_DIR]="${HOME}/.local/bin"
 # ZINIT[COMPLETIONS_DIR]="${DATA}/zinit/completions"
 # ZINIT[MUTE_WARNINGS]="1"
 
-# -- config files --
+# -- wget --
 export WGETRC="${DOTFILES[CONFIGS]}/wgetrc"
+
+# -- curl --
 export CURL_HOME="${DOTFILES[CONFIGS]}/curl"
 
+# -- gnupg --
 export GNUPGHOME="${DOTFILES[CONFIGS]}/.gnuphg"
+
+# -- inputrc --
 export INPUTRC="${DOTFILES[CONFIGS]}/inputrc"
+
+# -- doocker --
 export DOCKER_CONFIG="${DOTFILES[CONFIGS]}/docker"
+
+# -- exa --
 export EXA_CONFIG_PATH="${DOTFILES[CONFIGS]}/exa.conf"
+
+# -- shellscript --
 export SHELLSCRIPT_RC="${DOTFILES[CONFIGS]}/shellscriptrc"
+
+# -- ripgrep --
 export RPGREP_CONFIG_PATH="${DOTFILES[CONFIGS]}/ripgreprc"
+
+# -- editorconfig --
 export EDITORCONFIGRC="${DOTFILES[CONFIGS]}/editorconfigrc"
 
 # -- fuzzy --
@@ -139,10 +146,12 @@ export TERM="xterm-256color"
 export TERMINFO="${XDG_DATA_HOME}/terminfo"
 export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
 
-# -- editors and pagers --
-export EDITOR="nvim"
+# -- pagers --
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PAGER="less"
+
+# --editors --
+export EDITOR="nvim"
 export VISUAL="$EDITOR"
 
 # -- cmake --
@@ -157,6 +166,3 @@ export GIT_CONFIG="${DOTFILES[CONFIGS]}/git/config"
 
 # -- fzf --
 export FZF_CONFIG_PATH="${DOTFILES[CONFIGS]}/fzf.conf"
-
-# -- powerlevel10k --
-export POWERLEVEL10K_CONFIG_FILE="${DOTFILES[CONFIGS]}/.p10k.zsh"
