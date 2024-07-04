@@ -40,7 +40,6 @@ class AbstractTab
       "time"                    => Time.now.to_i,
       "arch"                    => Hardware::CPU.arch,
       "source"                  => {
-        "path"         => formula_or_cask.sourcefile_path.to_s,
         "tap"          => formula_or_cask.tap&.name,
         "tap_git_head" => (formula_or_cask.tap&.installed? ? formula_or_cask.tap.git_head : nil),
       },
@@ -147,6 +146,7 @@ class Tab < AbstractTab
     tab.aliases = formula.aliases
     tab.runtime_dependencies = Tab.runtime_deps_hash(formula, runtime_deps)
     tab.source["spec"] = formula.active_spec_sym.to_s
+    tab.source["path"] = formula.specified_path.to_s
     tab.source["versions"] = {
       "stable"         => formula.stable&.version&.to_s,
       "head"           => formula.head&.version&.to_s,

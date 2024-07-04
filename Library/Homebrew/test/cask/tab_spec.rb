@@ -212,6 +212,10 @@ RSpec.describe Cask::Tab, :cask do
   describe "::create" do
     it "creates a cask Tab" do
       cask = Cask::CaskLoader.load("local-caffeine")
+      expected_artifacts = [
+        { app: ["Caffeine.app"] },
+        { zap: [{ trash: "#{TEST_FIXTURE_DIR}/cask/caffeine/org.example.caffeine.plist" }] },
+      ]
 
       tab = described_class.create(cask)
       expect(tab).not_to be_loaded_from_api
@@ -225,7 +229,7 @@ RSpec.describe Cask::Tab, :cask do
         "version"      => "1.2.3",
       })
       expect(tab.runtime_dependencies).to eq({})
-      expect(tab.uninstall_artifacts).to eq([{ app: ["Caffeine.app"] }])
+      expect(tab.uninstall_artifacts).to eq(expected_artifacts)
     end
   end
 

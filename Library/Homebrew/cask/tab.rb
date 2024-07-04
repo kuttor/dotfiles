@@ -15,6 +15,7 @@ module Cask
       tab.uninstall_flight_blocks = cask.uninstall_flight_blocks?
       tab.runtime_dependencies = Tab.runtime_deps_hash(cask, cask.depends_on)
       tab.source["version"] = cask.version.to_s
+      tab.source["path"] = cask.sourcefile_path.to_s
       tab.uninstall_artifacts = cask.artifacts_list(uninstall_only: true)
 
       tab
