@@ -9,23 +9,15 @@ module Cask
 
     # Instantiates a {Tab} for a new installation of a cask.
     def self.create(cask)
-      attributes = generic_attributes(cask).merge({
-        "tabfile"                 => cask.metadata_main_container_path/FILENAME,
-        "uninstall_flight_blocks" => cask.uninstall_flight_blocks?,
-        "runtime_dependencies"    => Tab.runtime_deps_hash(cask, cask.depends_on),
-        "source"                  => {
-          "path"         => cask.sourcefile_path.to_s,
-          "tap"          => cask.tap&.name,
-          "tap_git_head" => nil, # Filled in later if possible
-          "version"      => cask.version.to_s,
-        },
-        "uninstall_artifacts"     => cask.artifacts_list(uninstall_only: true),
-      })
+      tab = super
 
-      # We can only get `tap_git_head` if the tap is installed locally
-      attributes["source"]["tap_git_head"] = cask.tap.git_head if cask.tap&.installed?
+      tab.tabfile = cask.metadata_main_container_path/FILENAME
+      tab.uninstall_flight_blocks = cask.uninstall_flight_blocks?
+      tab.runtime_dependencies = Tab.runtime_deps_hash(cask, cask.depends_on)
+      tab.source["version"] = cask.version.to_s
+      tab.uninstall_artifacts = cask.artifacts_list(uninstall_only: true)
 
-      new(attributes)
+      tab
     end
 
     # Returns a {Tab} for an already installed cask,
@@ -39,11 +31,10 @@ module Cask
       tab.source = {
         "path"         => cask.sourcefile_path.to_s,
         "tap"          => cask.tap&.name,
-        "tap_git_head" => nil,
+        "tap_git_head" => (cask.tap&.installed? ? cask.tap.git_head : nil),
         "version"      => cask.version.to_s,
       }
       tab.uninstall_artifacts = cask.artifacts_list(uninstall_only: true)
-      tab.source["tap_git_head"] = cask.tap.git_head if cask.tap&.installed?
 
       tab
     end

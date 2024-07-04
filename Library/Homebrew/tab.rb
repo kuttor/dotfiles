@@ -30,16 +30,24 @@ class AbstractTab
   # @api internal
   attr_accessor :runtime_dependencies
 
-  def self.generic_attributes(formula_or_cask)
-    {
+  # Instantiates a {Tab} for a new installation of a formula or cask.
+  def self.create(formula_or_cask)
+    attributes = {
       "homebrew_version"        => HOMEBREW_VERSION,
       "installed_as_dependency" => false,
       "installed_on_request"    => false,
       "loaded_from_api"         => formula_or_cask.loaded_from_api?,
       "time"                    => Time.now.to_i,
       "arch"                    => Hardware::CPU.arch,
+      "source"                  => {
+        "path"         => formula_or_cask.sourcefile_path.to_s,
+        "tap"          => formula_or_cask.tap&.name,
+        "tap_git_head" => (formula_or_cask.tap&.installed? ? formula_or_cask.tap.git_head : nil),
+      },
       "built_on"                => DevelopmentTools.build_system_info,
     }
+
+    new(attributes)
   end
 
   # Returns the {Tab} for a formula or cask install receipt at `path`.
@@ -124,36 +132,28 @@ class Tab < AbstractTab
 
   # Instantiates a {Tab} for a new installation of a formula.
   def self.create(formula, compiler, stdlib)
+    tab = super(formula)
     build = formula.build
     runtime_deps = formula.runtime_dependencies(undeclared: false)
-    attributes = generic_attributes(formula).merge({
-      "used_options"         => build.used_options.as_flags,
-      "unused_options"       => build.unused_options.as_flags,
-      "tabfile"              => formula.prefix/FILENAME,
-      "built_as_bottle"      => build.bottle?,
-      "poured_from_bottle"   => false,
-      "source_modified_time" => formula.source_modified_time.to_i,
-      "compiler"             => compiler,
-      "stdlib"               => stdlib,
-      "aliases"              => formula.aliases,
-      "runtime_dependencies" => Tab.runtime_deps_hash(formula, runtime_deps),
-      "source"               => {
-        "path"         => formula.specified_path.to_s,
-        "tap"          => formula.tap&.name,
-        "tap_git_head" => nil, # Filled in later if possible
-        "spec"         => formula.active_spec_sym.to_s,
-        "versions"     => {
-          "stable"         => formula.stable&.version&.to_s,
-          "head"           => formula.head&.version&.to_s,
-          "version_scheme" => formula.version_scheme,
-        },
-      },
-    })
 
-    # We can only get `tap_git_head` if the tap is installed locally
-    attributes["source"]["tap_git_head"] = formula.tap.git_head if formula.tap&.installed?
+    tab.used_options = build.used_options.as_flags
+    tab.unused_options = build.unused_options.as_flags
+    tab.tabfile = formula.prefix/FILENAME
+    tab.built_as_bottle = build.bottle?
+    tab.poured_from_bottle = false
+    tab.source_modified_time = formula.source_modified_time.to_i
+    tab.compiler = compiler
+    tab.stdlib = stdlib
+    tab.aliases = formula.aliases
+    tab.runtime_dependencies = Tab.runtime_deps_hash(formula, runtime_deps)
+    tab.source["spec"] = formula.active_spec_sym.to_s
+    tab.source["versions"] = {
+      "stable"         => formula.stable&.version&.to_s,
+      "head"           => formula.head&.version&.to_s,
+      "version_scheme" => formula.version_scheme,
+    }
 
-    new(attributes)
+    tab
   end
 
   # Like {from_file}, but bypass the cache.
@@ -253,10 +253,11 @@ class Tab < AbstractTab
       tab = empty
       tab.unused_options = formula.options.as_flags
       tab.source = {
-        "path"     => formula.specified_path.to_s,
-        "tap"      => formula.tap&.name,
-        "spec"     => formula.active_spec_sym.to_s,
-        "versions" => {
+        "path"         => formula.specified_path.to_s,
+        "tap"          => formula.tap&.name,
+        "tap_git_head" => (formula.tap&.installed? ? formula.tap.git_head : nil),
+        "spec"         => formula.active_spec_sym.to_s,
+        "versions"     => {
           "stable"         => formula.stable&.version&.to_s,
           "head"           => formula.head&.version&.to_s,
           "version_scheme" => formula.version_scheme,
