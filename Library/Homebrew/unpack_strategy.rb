@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "system_command"
@@ -7,10 +7,47 @@ require "system_command"
 module UnpackStrategy
   extend T::Helpers
 
+  AnyStrategy = T.type_alias do # rubocop:disable Style/MutableConstant
+    T.any(
+      T.class_of(UnpackStrategy::Tar),
+      T.class_of(UnpackStrategy::Pax),
+      T.class_of(UnpackStrategy::Gzip),
+      T.class_of(UnpackStrategy::Dmg),
+      T.class_of(UnpackStrategy::Lzma),
+      T.class_of(UnpackStrategy::Xz),
+      T.class_of(UnpackStrategy::Zstd),
+      T.class_of(UnpackStrategy::Lzip),
+      T.class_of(UnpackStrategy::Air),
+      T.class_of(UnpackStrategy::Jar),
+      T.class_of(UnpackStrategy::LuaRock),
+      T.class_of(UnpackStrategy::MicrosoftOfficeXml),
+      T.class_of(UnpackStrategy::Zip),
+      T.class_of(UnpackStrategy::Pkg),
+      T.class_of(UnpackStrategy::Xar),
+      T.class_of(UnpackStrategy::Ttf),
+      T.class_of(UnpackStrategy::Otf),
+      T.class_of(UnpackStrategy::Git),
+      T.class_of(UnpackStrategy::Mercurial),
+      T.class_of(UnpackStrategy::Subversion),
+      T.class_of(UnpackStrategy::Cvs),
+      T.class_of(UnpackStrategy::SelfExtractingExecutable),
+      T.class_of(UnpackStrategy::Cab),
+      T.class_of(UnpackStrategy::Executable),
+      T.class_of(UnpackStrategy::Bzip2),
+      T.class_of(UnpackStrategy::Fossil),
+      T.class_of(UnpackStrategy::Bazaar),
+      T.class_of(UnpackStrategy::P7Zip),
+      T.class_of(UnpackStrategy::Sit),
+      T.class_of(UnpackStrategy::Rar),
+      T.class_of(UnpackStrategy::Lha),
+    )
+  end
+
   include SystemCommand::Mixin
 
+  sig { returns(T.nilable(T::Array[AnyStrategy])) }
   def self.strategies
-    @strategies ||= [
+    @strategies ||= T.let([
       Tar, # Needs to be before Bzip2/Gzip/Xz/Lzma/Zstd.
       Pax,
       Gzip,
@@ -43,10 +80,11 @@ module UnpackStrategy
       Sit,
       Rar,
       Lha,
-    ].freeze
+    ].freeze, T.nilable(T::Array[AnyStrategy]))
   end
   private_class_method :strategies
 
+  sig { params(type: Symbol).returns(T.nilable(T.any(T.class_of(UnpackStrategy::Uncompressed), AnyStrategy))) }
   def self.from_type(type)
     type = {
       naked:     :uncompressed,
@@ -61,23 +99,29 @@ module UnpackStrategy
     end
   end
 
+  sig { params(extension: String).returns(T.nilable(AnyStrategy)) }
   def self.from_extension(extension)
-    strategies.sort_by { |s| s.extensions.map(&:length).max || 0 }
-              .reverse
-              .find { |s| s.extensions.any? { |ext| extension.end_with?(ext) } }
+    strategies&.sort_by { |s| s.extensions.map(&:length).max || 0 }
+              &.reverse
+              &.find { |s| s.extensions.any? { |ext| extension.end_with?(ext) } }
   end
 
+  sig { params(path: Pathname).returns(T.nilable(AnyStrategy)) }
   def self.from_magic(path)
-    strategies.find { |s| s.can_extract?(path) }
+    strategies&.find { |s| s.can_extract?(path) }
   end
 
+  sig {
+    params(path: Pathname, prioritize_extension: T::Boolean, type: T.nilable(Symbol), ref_type: T.nilable(String),
+           ref: T.nilable(String), merge_xattrs: T.nilable(T::Boolean)).returns(T.untyped)
+  }
   def self.detect(path, prioritize_extension: false, type: nil, ref_type: nil, ref: nil, merge_xattrs: nil)
     strategy = from_type(type) if type
 
     if prioritize_extension && path.extname.present?
       strategy ||= from_extension(path.extname)
-      strategy ||= strategies.select { |s| s < Directory || s == Fossil }
-                             .find { |s| s.can_extract?(path) }
+      strategy ||= strategies&.select { |s| s < Directory || s == Fossil }
+                             &.find { |s| s.can_extract?(path) }
     else
       strategy ||= from_magic(path)
       strategy ||= from_extension(path.extname)
@@ -88,24 +132,32 @@ module UnpackStrategy
     strategy.new(path, ref_type:, ref:, merge_xattrs:)
   end
 
-  attr_reader :path, :merge_xattrs
+  sig { returns(Pathname) }
+  attr_reader :path
 
+  sig { returns(T.nilable(T::Boolean)) }
+  attr_reader :merge_xattrs
+
+  sig {
+    params(path: T.any(String, Pathname), ref_type: T.nilable(String), ref: T.nilable(String),
+           merge_xattrs: T.nilable(T::Boolean)).void
+  }
   def initialize(path, ref_type: nil, ref: nil, merge_xattrs: nil)
-    @path = Pathname(path).expand_path
+    @path = T.let(Pathname(path).expand_path, Pathname)
     @ref_type = ref_type
     @ref = ref
     @merge_xattrs = merge_xattrs
   end
 
   abstract!
-  sig { abstract.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).returns(T.untyped) }
+  sig { abstract.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).void }
   def extract_to_dir(unpack_dir, basename:, verbose:); end
   private :extract_to_dir
 
   sig {
     params(
       to: T.nilable(Pathname), basename: T.nilable(T.any(String, Pathname)), verbose: T::Boolean,
-    ).returns(T.untyped)
+    ).void
   }
   def extract(to: nil, basename: nil, verbose: false)
     basename ||= path.basename
@@ -131,7 +183,10 @@ module UnpackStrategy
       children = tmp_unpack_dir.children
 
       if children.size == 1 && !children.fetch(0).directory?
-        s = UnpackStrategy.detect(children.first, prioritize_extension:)
+        first_child = children.first
+        next if first_child.nil?
+
+        s = UnpackStrategy.detect(first_child, prioritize_extension:)
 
         s.extract_nestedly(to:, verbose:, prioritize_extension:)
 
@@ -149,6 +204,7 @@ module UnpackStrategy
     end
   end
 
+  sig { returns(T::Array[String]) }
   def dependencies
     []
   end
