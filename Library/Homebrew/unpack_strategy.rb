@@ -7,6 +7,7 @@ require "system_command"
 module UnpackStrategy
   extend T::Helpers
 
+  # FIXME: Enable cop again when https://github.com/sorbet/sorbet/issues/3532 is fixed.
   AnyStrategy = T.type_alias do # rubocop:disable Style/MutableConstant
     T.any(
       T.class_of(UnpackStrategy::Tar),
@@ -101,6 +102,8 @@ module UnpackStrategy
 
   sig { params(extension: String).returns(T.nilable(AnyStrategy)) }
   def self.from_extension(extension)
+    return unless strategies
+
     strategies&.sort_by { |s| s.extensions.map(&:length).max || 0 }
               &.reverse
               &.find { |s| s.extensions.any? { |ext| extension.end_with?(ext) } }
@@ -113,15 +116,15 @@ module UnpackStrategy
 
   sig {
     params(path: Pathname, prioritize_extension: T::Boolean, type: T.nilable(Symbol), ref_type: T.nilable(String),
-           ref: T.nilable(String), merge_xattrs: T.nilable(T::Boolean)).returns(T.untyped)
+           ref: T.nilable(String), merge_xattrs: T::Boolean).returns(T.untyped)
   }
-  def self.detect(path, prioritize_extension: false, type: nil, ref_type: nil, ref: nil, merge_xattrs: nil)
+  def self.detect(path, prioritize_extension: false, type: nil, ref_type: nil, ref: nil, merge_xattrs: false)
     strategy = from_type(type) if type
 
     if prioritize_extension && path.extname.present?
       strategy ||= from_extension(path.extname)
-      strategy ||= strategies&.select { |s| s < Directory || s == Fossil }
-                             &.find { |s| s.can_extract?(path) }
+
+      strategy ||= strategies&.find { |s| (s < Directory || s == Fossil) && s.can_extract?(path) }
     else
       strategy ||= from_magic(path)
       strategy ||= from_extension(path.extname)
@@ -135,14 +138,14 @@ module UnpackStrategy
   sig { returns(Pathname) }
   attr_reader :path
 
-  sig { returns(T.nilable(T::Boolean)) }
+  sig { returns(T::Boolean) }
   attr_reader :merge_xattrs
 
   sig {
     params(path: T.any(String, Pathname), ref_type: T.nilable(String), ref: T.nilable(String),
-           merge_xattrs: T.nilable(T::Boolean)).void
+           merge_xattrs: T::Boolean).void
   }
-  def initialize(path, ref_type: nil, ref: nil, merge_xattrs: nil)
+  def initialize(path, ref_type: nil, ref: nil, merge_xattrs: false)
     @path = T.let(Pathname(path).expand_path, Pathname)
     @ref_type = ref_type
     @ref = ref
