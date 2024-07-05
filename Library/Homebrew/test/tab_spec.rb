@@ -397,6 +397,25 @@ RSpec.describe Tab do
     end
   end
 
+  describe "::tap_git_head" do
+    it "returns nil if the tap is nil" do
+      formula = instance_double(Formula, tap: nil)
+      expect(described_class.tap_git_head(formula)).to be_nil
+    end
+
+    it "returns nil if the tap is not installed" do
+      tap = instance_double(Tap, installed?: false)
+      formula = instance_double(Formula, tap:)
+      expect(described_class.tap_git_head(formula)).to be_nil
+    end
+
+    it "returns the tap git head if the tap is installed" do
+      tap = instance_double(Tap, installed?: true, git_head: "0453e16c8e3fac73104da50927a86221ca0740c2")
+      formula = instance_double(Formula, tap:)
+      expect(described_class.tap_git_head(formula)).to eq("0453e16c8e3fac73104da50927a86221ca0740c2")
+    end
+  end
+
   specify "#to_json" do
     json_tab = described_class.new(JSON.parse(tab.to_json))
     expect(json_tab.homebrew_version).to eq(tab.homebrew_version)
@@ -428,6 +447,62 @@ RSpec.describe Tab do
     expect(json_tab.runtime_dependencies).to eq(tab.runtime_dependencies)
     expect(json_tab.arch).to eq(tab.arch.to_s)
     expect(json_tab.built_on["os"]).to eq(tab.built_on["os"])
+  end
+
+  describe "#to_s" do
+    let(:time_string) { Time.at(1_720_189_863).strftime("%Y-%m-%d at %H:%M:%S") }
+
+    it "returns install information for the Tab" do
+      tab = described_class.new(
+        poured_from_bottle: true,
+        loaded_from_api:    true,
+        time:               1_720_189_863,
+        used_options:       %w[--with-foo --without-bar],
+      )
+      output = "Poured from bottle using the formulae.brew.sh API on #{time_string} " \
+               "with: --with-foo --without-bar"
+      expect(tab.to_s).to eq(output)
+    end
+
+    it "includes 'Poured from bottle' if the formula was installed from a bottle" do
+      tab = described_class.new(poured_from_bottle: true)
+      expect(tab.to_s).to include("Poured from bottle")
+    end
+
+    it "includes 'Built from source' if the formula was not installed from a bottle" do
+      tab = described_class.new(poured_from_bottle: false)
+      expect(tab.to_s).to include("Built from source")
+    end
+
+    it "includes 'using the formulae.brew.sh API' if the formula was installed from the API" do
+      tab = described_class.new(loaded_from_api: true)
+      expect(tab.to_s).to include("using the formulae.brew.sh API")
+    end
+
+    it "does not include 'using the formulae.brew.sh API' if the formula was not installed from the API" do
+      tab = described_class.new(loaded_from_api: false)
+      expect(tab.to_s).not_to include("using the formulae.brew.sh API")
+    end
+
+    it "includes the time value if specified" do
+      tab = described_class.new(time: 1_720_189_863)
+      expect(tab.to_s).to include("on #{time_string}")
+    end
+
+    it "does not include the time value if not specified" do
+      tab = described_class.new(time: nil)
+      expect(tab.to_s).not_to match(/on %d+-%d+-%d+ at %d+:%d+:%d+/)
+    end
+
+    it "includes options if specified" do
+      tab = described_class.new(used_options: %w[--with-foo --without-bar])
+      expect(tab.to_s).to include("with: --with-foo --without-bar")
+    end
+
+    it "not to include options if not specified" do
+      tab = described_class.new(used_options: [])
+      expect(tab.to_s).not_to include("with: ")
+    end
   end
 
   specify "::remap_deprecated_options" do

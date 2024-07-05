@@ -276,4 +276,44 @@ RSpec.describe Cask::Tab, :cask do
     expect(json_tab.uninstall_artifacts).to eq(tab.uninstall_artifacts)
     expect(json_tab.built_on["os"]).to eq(tab.built_on["os"])
   end
+
+  describe "#to_s" do
+    let(:time_string) { Time.at(1_720_189_863).strftime("%Y-%m-%d at %H:%M:%S") }
+
+    it "returns install information for a Tab with a time that was loaded from the API" do
+      tab = described_class.new(
+        loaded_from_api: true,
+        time:            1_720_189_863,
+      )
+      output = "Installed using the formulae.brew.sh API on #{time_string}"
+      expect(tab.to_s).to eq(output)
+    end
+
+    it "returns install information for a Tab with a time that was not loaded from the API" do
+      tab = described_class.new(
+        loaded_from_api: false,
+        time:            1_720_189_863,
+      )
+      output = "Installed on #{time_string}"
+      expect(tab.to_s).to eq(output)
+    end
+
+    it "returns install information for a Tab without a time that was loaded from the API" do
+      tab = described_class.new(
+        loaded_from_api: true,
+        time:            nil,
+      )
+      output = "Installed using the formulae.brew.sh API"
+      expect(tab.to_s).to eq(output)
+    end
+
+    it "returns install information for a Tab without a time that was not loaded from the API" do
+      tab = described_class.new(
+        loaded_from_api: false,
+        time:            nil,
+      )
+      output = "Installed"
+      expect(tab.to_s).to eq(output)
+    end
+  end
 end
