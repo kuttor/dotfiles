@@ -41,7 +41,7 @@ class AbstractTab
       "arch"                    => Hardware::CPU.arch,
       "source"                  => {
         "tap"          => formula_or_cask.tap&.name,
-        "tap_git_head" => (formula_or_cask.tap&.installed? ? formula_or_cask.tap.git_head : nil),
+        "tap_git_head" => tap_git_head(formula_or_cask),
       },
       "built_on"                => DevelopmentTools.build_system_info,
     }
@@ -91,6 +91,12 @@ class AbstractTab
     }
 
     new(attributes)
+  end
+
+  def self.tap_git_head(formula_or_cask)
+    return unless formula_or_cask.tap&.installed?
+
+    formula_or_cask.tap.git_head
   end
 
   def initialize(attributes = {})
@@ -176,13 +182,7 @@ class Tab < AbstractTab
       end
     end
 
-    if tab.source["versions"].nil?
-      tab.source["versions"] = {
-        "stable"         => nil,
-        "head"           => nil,
-        "version_scheme" => 0,
-      }
-    end
+    tab.source["versions"] ||= empty_source_versions
 
     # Tabs created with Homebrew 1.5.13 through 4.0.17 inclusive created empty string versions in some cases.
     ["stable", "head"].each do |spec|
@@ -255,7 +255,7 @@ class Tab < AbstractTab
       tab.source = {
         "path"         => formula.specified_path.to_s,
         "tap"          => formula.tap&.name,
-        "tap_git_head" => (formula.tap&.installed? ? formula.tap.git_head : nil),
+        "tap_git_head" => tap_git_head(formula),
         "spec"         => formula.active_spec_sym.to_s,
         "versions"     => {
           "stable"         => formula.stable&.version&.to_s,
@@ -280,14 +280,19 @@ class Tab < AbstractTab
     tab.compiler = DevelopmentTools.default_compiler
     tab.aliases = []
     tab.source["spec"] = "stable"
-    tab.source["versions"] = {
+    tab.source["versions"] = empty_source_versions
+
+    tab
+  end
+
+  def self.empty_source_versions
+    {
       "stable"         => nil,
       "head"           => nil,
       "version_scheme" => 0,
     }
-
-    tab
   end
+  private_class_method :empty_source_versions
 
   def self.runtime_deps_hash(formula, deps)
     deps.map do |dep|
