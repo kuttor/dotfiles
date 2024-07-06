@@ -9,8 +9,9 @@ module UnpackStrategy
   include SystemCommand::Mixin
   abstract!
 
+  # FIXME: Enable cop again when https://github.com/sorbet/sorbet/issues/3532 is fixed.
   # rubocop:disable Style/MutableConstant
-  UnpackStrategyImpl = T.type_alias { T.all(T::Class[UnpackStrategy], UnpackStrategy::ClassMethods) }
+  UnpackStrategyType = T.type_alias { T.all(T::Class[UnpackStrategy], UnpackStrategy::ClassMethods) }
   # rubocop:enable Style/MutableConstant
 
   module ClassMethods
@@ -26,7 +27,7 @@ module UnpackStrategy
 
   mixes_in_class_methods(ClassMethods)
 
-  sig { returns(T.nilable(T::Array[UnpackStrategyImpl])) }
+  sig { returns(T.nilable(T::Array[UnpackStrategyType])) }
   def self.strategies
     @strategies ||= T.let([
       Tar, # Needs to be before Bzip2/Gzip/Xz/Lzma/Zstd.
@@ -61,11 +62,11 @@ module UnpackStrategy
       Sit,
       Rar,
       Lha,
-    ].freeze, T.nilable(T::Array[UnpackStrategyImpl]))
+    ].freeze, T.nilable(T::Array[UnpackStrategyType]))
   end
   private_class_method :strategies
 
-  sig { params(type: Symbol).returns(T.nilable(UnpackStrategyImpl)) }
+  sig { params(type: Symbol).returns(T.nilable(UnpackStrategyType)) }
   def self.from_type(type)
     type = {
       naked:     :uncompressed,
@@ -80,7 +81,7 @@ module UnpackStrategy
     end
   end
 
-  sig { params(extension: String).returns(T.nilable(UnpackStrategyImpl)) }
+  sig { params(extension: String).returns(T.nilable(UnpackStrategyType)) }
   def self.from_extension(extension)
     return unless strategies
 
@@ -89,7 +90,7 @@ module UnpackStrategy
               &.find { |s| s.extensions.any? { |ext| extension.end_with?(ext) } }
   end
 
-  sig { params(path: Pathname).returns(T.nilable(UnpackStrategyImpl)) }
+  sig { params(path: Pathname).returns(T.nilable(UnpackStrategyType)) }
   def self.from_magic(path)
     strategies&.find { |s| s.can_extract?(path) }
   end
