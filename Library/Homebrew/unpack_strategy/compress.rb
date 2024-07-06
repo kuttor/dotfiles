@@ -6,7 +6,7 @@ require_relative "tar"
 module UnpackStrategy
   # Strategy for unpacking compress archives.
   class Compress < Tar
-    sig { returns(T::Array[String]) }
+    sig { override.returns(T::Array[String]) }
     def self.extensions
       [".Z"]
     end

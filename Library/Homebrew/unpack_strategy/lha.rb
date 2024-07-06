@@ -6,7 +6,7 @@ module UnpackStrategy
   class Lha
     include UnpackStrategy
 
-    sig { returns(T::Array[String]) }
+    sig { override.returns(T::Array[String]) }
     def self.extensions
       [".lha", ".lzh"]
     end

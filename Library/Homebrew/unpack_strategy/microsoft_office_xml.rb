@@ -6,7 +6,7 @@ require_relative "uncompressed"
 module UnpackStrategy
   # Strategy for unpacking Microsoft Office documents.
   class MicrosoftOfficeXml < Uncompressed
-    sig { returns(T::Array[String]) }
+    sig { override.returns(T::Array[String]) }
     def self.extensions
       [
         ".doc", ".docx",

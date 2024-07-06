@@ -6,7 +6,7 @@ module UnpackStrategy
   class Gzip
     include UnpackStrategy
 
-    sig { returns(T::Array[String]) }
+    sig { override.returns(T::Array[String]) }
     def self.extensions
       [".gz"]
     end

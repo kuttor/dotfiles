@@ -6,7 +6,7 @@ module UnpackStrategy
   class P7Zip
     include UnpackStrategy
 
-    sig { returns(T::Array[String]) }
+    sig { override.returns(T::Array[String]) }
     def self.extensions
       [".7z"]
     end

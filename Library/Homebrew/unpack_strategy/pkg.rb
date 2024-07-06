@@ -6,7 +6,7 @@ require_relative "uncompressed"
 module UnpackStrategy
   # Strategy for unpacking macOS package installers.
   class Pkg < Uncompressed
-    sig { returns(T::Array[String]) }
+    sig { override.returns(T::Array[String]) }
     def self.extensions
       [".pkg", ".mkpg"]
     end

@@ -6,47 +6,27 @@ require "system_command"
 # Module containing all available strategies for unpacking archives.
 module UnpackStrategy
   extend T::Helpers
+  include SystemCommand::Mixin
+  abstract!
 
-  # FIXME: Enable cop again when https://github.com/sorbet/sorbet/issues/3532 is fixed.
-  AnyStrategy = T.type_alias do # rubocop:disable Style/MutableConstant
-    T.any(
-      T.class_of(UnpackStrategy::Tar),
-      T.class_of(UnpackStrategy::Pax),
-      T.class_of(UnpackStrategy::Gzip),
-      T.class_of(UnpackStrategy::Dmg),
-      T.class_of(UnpackStrategy::Lzma),
-      T.class_of(UnpackStrategy::Xz),
-      T.class_of(UnpackStrategy::Zstd),
-      T.class_of(UnpackStrategy::Lzip),
-      T.class_of(UnpackStrategy::Air),
-      T.class_of(UnpackStrategy::Jar),
-      T.class_of(UnpackStrategy::LuaRock),
-      T.class_of(UnpackStrategy::MicrosoftOfficeXml),
-      T.class_of(UnpackStrategy::Zip),
-      T.class_of(UnpackStrategy::Pkg),
-      T.class_of(UnpackStrategy::Xar),
-      T.class_of(UnpackStrategy::Ttf),
-      T.class_of(UnpackStrategy::Otf),
-      T.class_of(UnpackStrategy::Git),
-      T.class_of(UnpackStrategy::Mercurial),
-      T.class_of(UnpackStrategy::Subversion),
-      T.class_of(UnpackStrategy::Cvs),
-      T.class_of(UnpackStrategy::SelfExtractingExecutable),
-      T.class_of(UnpackStrategy::Cab),
-      T.class_of(UnpackStrategy::Executable),
-      T.class_of(UnpackStrategy::Bzip2),
-      T.class_of(UnpackStrategy::Fossil),
-      T.class_of(UnpackStrategy::Bazaar),
-      T.class_of(UnpackStrategy::P7Zip),
-      T.class_of(UnpackStrategy::Sit),
-      T.class_of(UnpackStrategy::Rar),
-      T.class_of(UnpackStrategy::Lha),
-    )
+  # rubocop:disable Style/MutableConstant
+  UnpackStrategyImpl = T.type_alias { T.all(T::Class[UnpackStrategy], UnpackStrategy::ClassMethods) }
+  # rubocop:enable Style/MutableConstant
+
+  module ClassMethods
+    extend T::Helpers
+    abstract!
+
+    sig { abstract.returns(T::Array[String]) }
+    def extensions; end
+
+    sig { abstract.params(path: Pathname).returns(T::Boolean) }
+    def can_extract?(path); end
   end
 
-  include SystemCommand::Mixin
+  mixes_in_class_methods(ClassMethods)
 
-  sig { returns(T.nilable(T::Array[AnyStrategy])) }
+  sig { returns(T.nilable(T::Array[UnpackStrategyImpl])) }
   def self.strategies
     @strategies ||= T.let([
       Tar, # Needs to be before Bzip2/Gzip/Xz/Lzma/Zstd.
@@ -81,11 +61,11 @@ module UnpackStrategy
       Sit,
       Rar,
       Lha,
-    ].freeze, T.nilable(T::Array[AnyStrategy]))
+    ].freeze, T.nilable(T::Array[UnpackStrategyImpl]))
   end
   private_class_method :strategies
 
-  sig { params(type: Symbol).returns(T.nilable(T.any(T.class_of(UnpackStrategy::Uncompressed), AnyStrategy))) }
+  sig { params(type: Symbol).returns(T.nilable(UnpackStrategyImpl)) }
   def self.from_type(type)
     type = {
       naked:     :uncompressed,
@@ -100,7 +80,7 @@ module UnpackStrategy
     end
   end
 
-  sig { params(extension: String).returns(T.nilable(AnyStrategy)) }
+  sig { params(extension: String).returns(T.nilable(UnpackStrategyImpl)) }
   def self.from_extension(extension)
     return unless strategies
 
@@ -109,7 +89,7 @@ module UnpackStrategy
               &.find { |s| s.extensions.any? { |ext| extension.end_with?(ext) } }
   end
 
-  sig { params(path: Pathname).returns(T.nilable(AnyStrategy)) }
+  sig { params(path: Pathname).returns(T.nilable(UnpackStrategyImpl)) }
   def self.from_magic(path)
     strategies&.find { |s| s.can_extract?(path) }
   end
@@ -152,7 +132,6 @@ module UnpackStrategy
     @merge_xattrs = merge_xattrs
   end
 
-  abstract!
   sig { abstract.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).void }
   def extract_to_dir(unpack_dir, basename:, verbose:); end
   private :extract_to_dir

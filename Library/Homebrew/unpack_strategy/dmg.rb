@@ -121,6 +121,12 @@ module UnpackStrategy
         end
       end
 
+      sig { override.returns(T::Array[String]) }
+      def self.extensions = []
+
+      sig { override.params(_path: Pathname).returns(T::Boolean) }
+      def self.can_extract?(_path) = false
+
       private
 
       sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).returns(T.untyped) }
@@ -165,7 +171,7 @@ module UnpackStrategy
     end
     private_constant :Mount
 
-    sig { returns(T::Array[String]) }
+    sig { override.returns(T::Array[String]) }
     def self.extensions
       [".dmg"]
     end
