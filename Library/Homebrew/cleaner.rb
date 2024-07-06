@@ -155,8 +155,17 @@ class Cleaner
 
   sig { void }
   def rewrite_shebangs
+    require "language/node"
     require "language/perl"
     require "utils/shebang"
+
+    rewrites = [Language::Node::Shebang.method(:detected_node_shebang),
+                Language::Perl::Shebang.method(:detected_perl_shebang)].filter_map do |detector|
+      detector.call(@formula)
+    rescue ShebangDetectionError
+      nil
+    end
+    return if rewrites.empty?
 
     basepath = @formula.prefix.realpath
     basepath.find do |path|
@@ -164,11 +173,7 @@ class Cleaner
 
       next if path.directory? || path.symlink?
 
-      begin
-        Utils::Shebang.rewrite_shebang Language::Perl::Shebang.detected_perl_shebang(@formula), path
-      rescue ShebangDetectionError
-        break
-      end
+      rewrites.each { |rw| Utils::Shebang.rewrite_shebang rw, path }
     end
   end
 
