@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Homebrew
@@ -97,17 +97,13 @@ module Homebrew
       # @return [Hash]
       sig { returns(T::Hash[Symbol, T.untyped]) }
       def strategies
-        return @strategies if defined? @strategies
-
-        @strategies = {}
-        Strategy.constants.sort.each do |const_symbol|
+        @strategies ||= T.let(Strategy.constants.sort.each_with_object({}) do |const_symbol, hash|
           constant = Strategy.const_get(const_symbol)
           next unless constant.is_a?(Class)
 
           key = Utils.underscore(const_symbol).to_sym
-          @strategies[key] = constant
-        end
-        @strategies
+          hash[key] = constant
+        end, T.nilable(T::Hash[Symbol, T.untyped]))
       end
       private_class_method :strategies
 
