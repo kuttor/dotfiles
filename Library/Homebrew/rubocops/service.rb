@@ -22,8 +22,9 @@ module RuboCop
         # At least one of these methods must be defined in a service block.
         REQUIRED_METHOD_CALLS = [:run, :name].freeze
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          service_node = find_block(body_node, :service)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          service_node = find_block(formula_nodes.body_node, :service)
           return if service_node.blank?
 
           method_calls = service_node.each_descendant(:send).group_by(&:method_name)

@@ -11,8 +11,9 @@ module RuboCop
       class Urls < FormulaCop
         include UrlHelper
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          return if body_node.nil?
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          return if (body_node = formula_nodes.body_node).nil?
 
           urls = find_every_func_call_by_name(body_node, :url)
           mirrors = find_every_func_call_by_name(body_node, :mirror)
@@ -42,8 +43,9 @@ module RuboCop
 
       # This cop makes sure that the correct format for PyPI URLs is used.
       class PyPiUrls < FormulaCop
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          return if body_node.nil?
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          return if (body_node = formula_nodes.body_node).nil?
 
           urls = find_every_func_call_by_name(body_node, :url)
           mirrors = find_every_func_call_by_name(body_node, :mirror)
@@ -72,8 +74,9 @@ module RuboCop
 
       # This cop makes sure that git URLs have a `revision`.
       class GitUrls < FormulaCop
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          return if body_node.nil?
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          return if (body_node = formula_nodes.body_node).nil?
           return if formula_tap != "homebrew-core"
 
           find_method_calls_by_name(body_node, :url).each do |url|
@@ -94,8 +97,9 @@ module RuboCop
     module FormulaAuditStrict
       # This cop makes sure that git URLs have a `tag`.
       class GitUrls < FormulaCop
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          return if body_node.nil?
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          return if (body_node = formula_nodes.body_node).nil?
           return if formula_tap != "homebrew-core"
 
           find_method_calls_by_name(body_node, :url).each do |url|

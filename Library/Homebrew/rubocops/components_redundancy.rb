@@ -20,8 +20,9 @@ module RuboCop
         STABLE_MSG = "`stable do` should not be present without a `head` spec"
         STABLE_BLOCK_METHODS = [:url, :sha256, :mirror, :version].freeze
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          return if body_node.nil?
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          return if (body_node = formula_nodes.body_node).nil?
 
           urls = find_method_calls_by_name(body_node, :url)
 

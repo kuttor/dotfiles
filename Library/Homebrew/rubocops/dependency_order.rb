@@ -13,7 +13,10 @@ module RuboCop
       class DependencyOrder < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          body_node = formula_nodes.body_node
+
           check_dependency_nodes_order(body_node)
           check_uses_from_macos_nodes_order(body_node)
           ([:head, :stable] + on_system_methods).each do |block_name|

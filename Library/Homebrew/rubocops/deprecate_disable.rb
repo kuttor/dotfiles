@@ -10,7 +10,10 @@ module RuboCop
       class DeprecateDisableDate < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          body_node = formula_nodes.body_node
+
           [:deprecate!, :disable!].each do |method|
             node = find_node_method_by_name(body_node, method)
 
@@ -39,7 +42,10 @@ module RuboCop
 
         PUNCTUATION_MARKS = %w[. ! ?].freeze
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          body_node = formula_nodes.body_node
+
           [:deprecate!, :disable!].each do |method|
             node = find_node_method_by_name(body_node, method)
 
