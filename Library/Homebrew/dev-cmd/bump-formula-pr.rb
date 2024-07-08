@@ -440,7 +440,7 @@ module Homebrew
 
       sig {
         params(formula: Formula, new_version: T.nilable(String), url: String,
-               specs: Float).returns(T::Array[T.untyped])
+               specs: String).returns(T::Array[T.untyped])
       }
       def fetch_resource_and_forced_version(formula, new_version, url, **specs)
         resource = Resource.new
