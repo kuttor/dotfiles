@@ -59,8 +59,9 @@ module RuboCop
           zlib
         ].freeze
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          return if body_node.nil?
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          return if (body_node = formula_nodes.body_node).nil?
 
           find_method_with_args(body_node, :keg_only, :provided_by_macos) do
             return if PROVIDED_BY_MACOS_FORMULAE.include? @formula_name
@@ -95,8 +96,9 @@ module RuboCop
           zsh
         ].freeze
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          return if body_node.nil?
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          return if (body_node = formula_nodes.body_node).nil?
 
           depends_on_linux = depends_on?(:linux)
 

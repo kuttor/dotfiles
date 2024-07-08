@@ -10,7 +10,9 @@ module RuboCop
       class Text < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(node, _class_node, _parent_class_node, body_node)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          node = formula_nodes.node
           full_source_content = source_buffer(node).source
 
           if (match = full_source_content.match(/^require ['"]formula['"]$/))
@@ -20,7 +22,7 @@ module RuboCop
             end
           end
 
-          return if body_node.nil?
+          return if (body_node = formula_nodes.body_node).nil?
 
           if find_method_def(body_node, :plist)
             problem "`def plist` is deprecated. Please use services instead: https://docs.brew.sh/Formula-Cookbook#service-files"
@@ -113,8 +115,9 @@ module RuboCop
     module FormulaAuditStrict
       # This cop contains stricter checks for various problems in a formula's source code.
       class Text < FormulaCop
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          return if body_node.nil?
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          return if (body_node = formula_nodes.body_node).nil?
 
           find_method_with_args(body_node, :go_resource) do
             problem "`go_resource`s are deprecated. Please ask upstream to implement Go vendoring"

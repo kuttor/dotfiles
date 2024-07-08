@@ -16,7 +16,10 @@ module RuboCop
           AmazonWebServicesFormula
         ].freeze
 
-        def audit_formula(_node, _class_node, parent_class_node, _body_node)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          parent_class_node = formula_nodes.parent_class_node
+
           parent_class = class_name(parent_class_node)
           return unless DEPRECATED_CLASSES.include?(parent_class)
 
@@ -30,8 +33,9 @@ module RuboCop
       class Test < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          test = find_block(body_node, :test)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          test = find_block(formula_nodes.body_node, :test)
           return unless test
 
           if test.body.nil?
@@ -69,11 +73,13 @@ module RuboCop
     module FormulaAuditStrict
       # This cop makes sure that a `test` block exists.
       class TestPresent < FormulaCop
-        def audit_formula(_node, class_node, _parent_class_node, body_node)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          body_node = formula_nodes.body_node
           return if find_block(body_node, :test)
           return if find_node_method_by_name(body_node, :disable!)
 
-          offending_node(class_node) if body_node.nil?
+          offending_node(formula_nodes.class_node) if body_node.nil?
           problem "A `test do` test block should be added"
         end
       end

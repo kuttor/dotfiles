@@ -11,8 +11,9 @@ module RuboCop
       class LivecheckSkip < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          livecheck_node = find_block(body_node, :livecheck)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          livecheck_node = find_block(formula_nodes.body_node, :livecheck)
           return if livecheck_node.blank?
 
           skip = find_every_method_call_by_name(livecheck_node, :skip).first
@@ -39,8 +40,9 @@ module RuboCop
 
       # This cop ensures that a `url` is specified in the `livecheck` block.
       class LivecheckUrlProvided < FormulaCop
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          livecheck_node = find_block(body_node, :livecheck)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          livecheck_node = find_block(formula_nodes.body_node, :livecheck)
           return unless livecheck_node
 
           url_node = find_every_method_call_by_name(livecheck_node, :url).first
@@ -62,7 +64,9 @@ module RuboCop
       class LivecheckUrlSymbol < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          body_node = formula_nodes.body_node
           livecheck_node = find_block(body_node, :livecheck)
           return if livecheck_node.blank?
 
@@ -117,8 +121,9 @@ module RuboCop
       class LivecheckRegexParentheses < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          livecheck_node = find_block(body_node, :livecheck)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          livecheck_node = find_block(formula_nodes.body_node, :livecheck)
           return if livecheck_node.blank?
 
           skip = find_every_method_call_by_name(livecheck_node, :skip).first.present?
@@ -144,8 +149,9 @@ module RuboCop
 
         TAR_PATTERN = /\\?\.t(ar|(g|l|x)z$|[bz2]{2,4}$)(\\?\.((g|l|x)z)|[bz2]{2,4}|Z)?$/i
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          livecheck_node = find_block(body_node, :livecheck)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          livecheck_node = find_block(formula_nodes.body_node, :livecheck)
           return if livecheck_node.blank?
 
           skip = find_every_method_call_by_name(livecheck_node, :skip).first.present?
@@ -171,8 +177,9 @@ module RuboCop
       # This cop ensures that a `regex` is provided when `strategy :page_match` is specified
       # in the `livecheck` block.
       class LivecheckRegexIfPageMatch < FormulaCop
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          livecheck_node = find_block(body_node, :livecheck)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          livecheck_node = find_block(formula_nodes.body_node, :livecheck)
           return if livecheck_node.blank?
 
           skip = find_every_method_call_by_name(livecheck_node, :skip).first.present?
@@ -199,10 +206,11 @@ module RuboCop
 
         MSG = "Regexes should be case-insensitive unless sensitivity is explicitly required for proper matching."
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
           return if tap_style_exception? :regex_case_sensitive_allowlist
 
-          livecheck_node = find_block(body_node, :livecheck)
+          livecheck_node = find_block(formula_nodes.body_node, :livecheck)
           return if livecheck_node.blank?
 
           skip = find_every_method_call_by_name(livecheck_node, :skip).first.present?

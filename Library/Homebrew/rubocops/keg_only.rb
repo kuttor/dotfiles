@@ -10,8 +10,9 @@ module RuboCop
       class KegOnly < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          keg_only_node = find_node_method_by_name(body_node, :keg_only)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          keg_only_node = find_node_method_by_name(formula_nodes.body_node, :keg_only)
           return unless keg_only_node
 
           allowlist = %w[

@@ -10,8 +10,9 @@ module RuboCop
       class BottleFormat < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          bottle_node = find_block(body_node, :bottle)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          bottle_node = find_block(formula_nodes.body_node, :bottle)
           return if bottle_node.nil?
 
           sha256_nodes = find_method_calls_by_name(bottle_node.body, :sha256)
@@ -55,8 +56,9 @@ module RuboCop
       class BottleTagIndentation < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          bottle_node = find_block(body_node, :bottle)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          bottle_node = find_block(formula_nodes.body_node, :bottle)
           return if bottle_node.nil?
 
           sha256_nodes = find_method_calls_by_name(bottle_node.body, :sha256)
@@ -89,8 +91,9 @@ module RuboCop
       class BottleDigestIndentation < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          bottle_node = find_block(body_node, :bottle)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          bottle_node = find_block(formula_nodes.body_node, :bottle)
           return if bottle_node.nil?
 
           sha256_nodes = find_method_calls_by_name(bottle_node.body, :sha256)
@@ -123,8 +126,9 @@ module RuboCop
       class BottleOrder < FormulaCop
         extend AutoCorrector
 
-        def audit_formula(_node, _class_node, _parent_class_node, body_node)
-          bottle_node = find_block(body_node, :bottle)
+        sig { override.params(formula_nodes: FormulaNodes).void }
+        def audit_formula(formula_nodes)
+          bottle_node = find_block(formula_nodes.body_node, :bottle)
           return if bottle_node.nil?
           return if bottle_node.child_nodes.blank?
 
