@@ -2,7 +2,13 @@
 # vim:set filetype=zsh syntax=zs
 # vim:set ft=zsh ts=4 sw=4 sts=0
 # vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
-# Vim:set nu clipboard+=unnamedplus foldmethsofttabstop=0
+# vim:set nu clipboard+=unnamedplus foldmethsofttabstop=0
+
+# random tldr
+command -v tldr &>/dev/null && tldr --quiet $(tldr --quiet --list | shuf -n1)
+
+
+ulimit -c unlimited
 
 export DOTFILES=$0:h
 

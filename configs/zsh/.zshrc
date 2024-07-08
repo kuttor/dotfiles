@@ -113,6 +113,7 @@ zinit default-ice --clear --quiet                                              \
 
 # -- plugins --
 # zinit sbin"lsd* -> lsd"                     for "@lsd-rs/lsd"
+zinit sbin'**/bat -> bat'                   for "@sharkdp/bat"
 zinit sbin"* -> deno"                       for "denoland/deno"
 zinit sbin"assh* -> assh"                   for "moul/assh"
 zinit sbin"sd* -> sd"                       for "chmln/sd"
