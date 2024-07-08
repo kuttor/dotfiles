@@ -259,19 +259,19 @@ class Vernier::Output::Firefox::Thread
   # source://vernier//lib/vernier/output/firefox.rb#211
   def initialize(ruby_thread_id, profile, categorizer, name:, tid:, samples:, weights:, markers:, started_at:, timestamps: T.unsafe(nil), sample_categories: T.unsafe(nil), stopped_at: T.unsafe(nil), allocations: T.unsafe(nil), is_main: T.unsafe(nil), is_start: T.unsafe(nil)); end
 
-  # source://vernier//lib/vernier/output/firefox.rb#390
+  # source://vernier//lib/vernier/output/firefox.rb#398
   def allocations_table; end
 
-  # source://vernier//lib/vernier/output/firefox.rb#318
+  # source://vernier//lib/vernier/output/firefox.rb#326
   def data; end
 
-  # source://vernier//lib/vernier/output/firefox.rb#297
+  # source://vernier//lib/vernier/output/firefox.rb#305
   def filter_filenames(filenames); end
 
-  # source://vernier//lib/vernier/output/firefox.rb#470
+  # source://vernier//lib/vernier/output/firefox.rb#478
   def frame_table; end
 
-  # source://vernier//lib/vernier/output/firefox.rb#494
+  # source://vernier//lib/vernier/output/firefox.rb#502
   def func_table; end
 
   # Returns the value of attribute is_start.
@@ -279,7 +279,7 @@ class Vernier::Output::Firefox::Thread
   # source://vernier//lib/vernier/output/firefox.rb#209
   def is_start; end
 
-  # source://vernier//lib/vernier/output/firefox.rb#350
+  # source://vernier//lib/vernier/output/firefox.rb#358
   def markers_table; end
 
   # Returns the value of attribute profile.
@@ -287,21 +287,21 @@ class Vernier::Output::Firefox::Thread
   # source://vernier//lib/vernier/output/firefox.rb#209
   def profile; end
 
-  # source://vernier//lib/vernier/output/firefox.rb#409
+  # source://vernier//lib/vernier/output/firefox.rb#417
   def samples_table; end
 
-  # source://vernier//lib/vernier/output/firefox.rb#445
+  # source://vernier//lib/vernier/output/firefox.rb#453
   def stack_table; end
 
-  # source://vernier//lib/vernier/output/firefox.rb#519
+  # source://vernier//lib/vernier/output/firefox.rb#527
   def string_table; end
 
   private
 
-  # source://vernier//lib/vernier/output/firefox.rb#525
+  # source://vernier//lib/vernier/output/firefox.rb#533
   def gc_category; end
 
-  # source://vernier//lib/vernier/output/firefox.rb#529
+  # source://vernier//lib/vernier/output/firefox.rb#537
   def thread_category; end
 end
 
