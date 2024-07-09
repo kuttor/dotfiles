@@ -217,16 +217,16 @@ RSpec.describe Cask::Cask, :cask do
 
     it "returns all artifacts when no options are given" do
       expected_artifacts = [
-        { "uninstall_preflight" => nil },
-        { "preflight" => nil },
+        { uninstall_preflight: nil },
+        { preflight: nil },
         { uninstall: [{
           rmdir: "#{TEST_TMPDIR}/empty_directory_path",
           trash: ["#{TEST_TMPDIR}/foo", "#{TEST_TMPDIR}/bar"],
         }] },
         { pkg: ["ManyArtifacts/ManyArtifacts.pkg"] },
         { app: ["ManyArtifacts/ManyArtifacts.app"] },
-        { "uninstall_postflight" => nil },
-        { "postflight" => nil },
+        { uninstall_postflight: nil },
+        { postflight: nil },
         { zap: [{
           rmdir: ["~/Library/Caches/ManyArtifacts", "~/Library/Application Support/ManyArtifacts"],
           trash: "~/Library/Logs/ManyArtifacts.log",
@@ -255,13 +255,13 @@ RSpec.describe Cask::Cask, :cask do
 
     it "returns only uninstall artifacts when uninstall_only is true" do
       expected_artifacts = [
-        { "uninstall_preflight" => nil },
+        { uninstall_preflight: nil },
         { uninstall: [{
           rmdir: "#{TEST_TMPDIR}/empty_directory_path",
           trash: ["#{TEST_TMPDIR}/foo", "#{TEST_TMPDIR}/bar"],
         }] },
         { app: ["ManyArtifacts/ManyArtifacts.app"] },
-        { "uninstall_postflight" => nil },
+        { uninstall_postflight: nil },
         { zap: [{
           rmdir: ["~/Library/Caches/ManyArtifacts", "~/Library/Application Support/ManyArtifacts"],
           trash: "~/Library/Logs/ManyArtifacts.log",
@@ -285,6 +285,39 @@ RSpec.describe Cask::Cask, :cask do
       ]
 
       expect(cask.artifacts_list(compact: true, uninstall_only: true)).to eq(expected_artifacts)
+    end
+  end
+
+  describe "#uninstall_flight_blocks?" do
+    matcher :have_uninstall_flight_blocks do
+      match do |actual|
+        actual.uninstall_flight_blocks? == true
+      end
+    end
+
+    it "returns true when there are uninstall_preflight blocks" do
+      cask = Cask::CaskLoader.load("with-uninstall-preflight")
+      expect(cask).to have_uninstall_flight_blocks
+    end
+
+    it "returns true when there are uninstall_postflight blocks" do
+      cask = Cask::CaskLoader.load("with-uninstall-postflight")
+      expect(cask).to have_uninstall_flight_blocks
+    end
+
+    it "returns false when there are only preflight blocks" do
+      cask = Cask::CaskLoader.load("with-preflight")
+      expect(cask).not_to have_uninstall_flight_blocks
+    end
+
+    it "returns false when there are only postflight blocks" do
+      cask = Cask::CaskLoader.load("with-postflight")
+      expect(cask).not_to have_uninstall_flight_blocks
+    end
+
+    it "returns false when there are no flight blocks" do
+      cask = Cask::CaskLoader.load("local-caffeine")
+      expect(cask).not_to have_uninstall_flight_blocks
     end
   end
 

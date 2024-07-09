@@ -34,12 +34,6 @@ module Cask
         directives.keys.map(&:to_s).join(", ")
       end
 
-      def uninstall?
-        directives.keys.any? do |key|
-          key.to_s.start_with?("uninstall_")
-        end
-      end
-
       private
 
       def class_for_dsl_key(dsl_key)

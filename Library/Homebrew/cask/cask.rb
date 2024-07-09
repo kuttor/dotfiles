@@ -161,7 +161,12 @@ module Cask
 
     def uninstall_flight_blocks?
       artifacts.any? do |artifact|
-        artifact.is_a?(Artifact::AbstractFlightBlock) && artifact.uninstall?
+        case artifact
+        when Artifact::PreflightBlock
+          artifact.directives.key?(:uninstall_preflight)
+        when Artifact::PostflightBlock
+          artifact.directives.key?(:uninstall_postflight)
+        end
       end
     end
 
@@ -480,11 +485,13 @@ module Cask
       artifacts.filter_map do |artifact|
         case artifact
         when Artifact::AbstractFlightBlock
-          next if uninstall_only && !artifact.uninstall?
+          uninstall_flight_block = artifact.directives.key?(:uninstall_preflight) ||
+                                   artifact.directives.key?(:uninstall_postflight)
+          next if uninstall_only && !uninstall_flight_block
 
           # Only indicate whether this block is used as we don't load it from the API
           # We can skip this entirely once we move to internal JSON v3.
-          { artifact.summarize => nil } unless compact
+          { artifact.summarize.to_sym => nil } unless compact
         else
           zap_artifact = artifact.is_a?(Artifact::Zap)
           uninstall_artifact = artifact.respond_to?(:uninstall_phase) || artifact.respond_to?(:post_uninstall_phase)

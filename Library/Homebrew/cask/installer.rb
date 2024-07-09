@@ -426,7 +426,7 @@ on_request: true)
 
     def remove_tabfile
       tabfile = @cask.tab.tabfile
-      FileUtils.rm_f tabfile if tabfile.present? && tabfile.exist?
+      FileUtils.rm_f tabfile if tabfile
       @cask.config_path.parent.rmdir_if_possible
     end
 

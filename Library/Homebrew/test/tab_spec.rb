@@ -397,25 +397,6 @@ RSpec.describe Tab do
     end
   end
 
-  describe "::tap_git_head" do
-    it "returns nil if the tap is nil" do
-      formula = instance_double(Formula, tap: nil)
-      expect(described_class.tap_git_head(formula)).to be_nil
-    end
-
-    it "returns nil if the tap is not installed" do
-      tap = instance_double(Tap, installed?: false)
-      formula = instance_double(Formula, tap:)
-      expect(described_class.tap_git_head(formula)).to be_nil
-    end
-
-    it "returns the tap git head if the tap is installed" do
-      tap = instance_double(Tap, installed?: true, git_head: "0453e16c8e3fac73104da50927a86221ca0740c2")
-      formula = instance_double(Formula, tap:)
-      expect(described_class.tap_git_head(formula)).to eq("0453e16c8e3fac73104da50927a86221ca0740c2")
-    end
-  end
-
   specify "#to_json" do
     json_tab = described_class.new(JSON.parse(tab.to_json))
     expect(json_tab.homebrew_version).to eq(tab.homebrew_version)

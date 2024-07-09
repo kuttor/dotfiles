@@ -32,7 +32,7 @@ module Cask
       tab.source = {
         "path"         => cask.sourcefile_path.to_s,
         "tap"          => cask.tap&.name,
-        "tap_git_head" => tap_git_head(cask),
+        "tap_git_head" => cask.tap_git_head,
         "version"      => cask.version.to_s,
       }
       tab.uninstall_artifacts = cask.artifacts_list(uninstall_only: true)

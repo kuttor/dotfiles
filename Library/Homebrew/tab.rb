@@ -41,7 +41,7 @@ class AbstractTab
       "arch"                    => Hardware::CPU.arch,
       "source"                  => {
         "tap"          => formula_or_cask.tap&.name,
-        "tap_git_head" => tap_git_head(formula_or_cask),
+        "tap_git_head" => formula_or_cask.tap_git_head,
       },
       "built_on"                => DevelopmentTools.build_system_info,
     }
@@ -93,12 +93,6 @@ class AbstractTab
     new(attributes)
   end
 
-  def self.tap_git_head(formula_or_cask)
-    return unless formula_or_cask.tap&.installed?
-
-    formula_or_cask.tap.git_head
-  end
-
   def initialize(attributes = {})
     attributes.each { |key, value| instance_variable_set(:"@#{key}", value) }
   end
@@ -134,6 +128,7 @@ class Tab < AbstractTab
 
   attr_accessor :built_as_bottle, :changed_files, :stdlib, :aliases
   attr_writer :used_options, :unused_options, :compiler, :source_modified_time
+  attr_reader :tapped_from
 
   # Instantiates a {Tab} for a new installation of a formula.
   def self.create(formula, compiler, stdlib)
@@ -169,8 +164,7 @@ class Tab < AbstractTab
     tab.source_modified_time ||= 0
     tab.source ||= {}
 
-    tapped_from = tab.instance_variable_get(:@tapped_from)
-    tab.tap = tapped_from if !tapped_from.nil? && tapped_from != "path or URL"
+    tab.tap = tab.tapped_from if !tab.tapped_from.nil? && tab.tapped_from != "path or URL"
     tab.tap = "homebrew/core" if tab.tap == "mxcl/master" || tab.tap == "Homebrew/homebrew"
 
     if tab.source["spec"].nil?
@@ -255,7 +249,7 @@ class Tab < AbstractTab
       tab.source = {
         "path"         => formula.specified_path.to_s,
         "tap"          => formula.tap&.name,
-        "tap_git_head" => tap_git_head(formula),
+        "tap_git_head" => formula.tap_git_head,
         "spec"         => formula.active_spec_sym.to_s,
         "versions"     => {
           "stable"         => formula.stable&.version&.to_s,
