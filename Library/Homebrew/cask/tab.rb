@@ -50,34 +50,33 @@ module Cask
     end
 
     def self.runtime_deps_hash(cask, depends_on)
-      mappable_types = [:cask, :formula]
-      depends_on.to_h do |type, deps|
-        next [type, deps] unless mappable_types.include? type
-
-        deps = deps.map do |dep|
-          if type == :cask
-            c = CaskLoader.load(dep)
-            {
-              "full_name"         => c.full_name,
-              "version"           => c.version.to_s,
-              "declared_directly" => cask.depends_on.cask.include?(dep),
-            }
-          elsif type == :formula
-            f = Formulary.factory(dep, warn: false)
-            {
-              "full_name"         => f.full_name,
-              "version"           => f.version.to_s,
-              "revision"          => f.revision,
-              "pkg_version"       => f.pkg_version.to_s,
-              "declared_directly" => cask.depends_on.formula.include?(dep),
-            }
-          else
-            dep
-          end
-        end
-
-        [type, deps]
+      cask_and_formula_dep_graph = ::Utils::TopologicalHash.graph_package_dependencies(cask)
+      cask_deps, formula_deps = cask_and_formula_dep_graph.values.flatten.uniq.partition do |dep|
+        dep.is_a?(Cask)
       end
+
+      runtime_deps = {}
+
+      if cask_deps.any?
+        runtime_deps[:cask] = cask_deps.map do |dep|
+          {
+            "full_name"         => dep.full_name,
+            "version"           => dep.version.to_s,
+            "declared_directly" => cask.depends_on.cask.include?(dep.full_name),
+          }
+        end
+      end
+
+      if formula_deps.any?
+        runtime_deps[:formula] = formula_deps.map do |dep|
+          formula_to_dep_hash(dep, cask.depends_on.formula)
+        end
+      end
+
+      runtime_deps[:macos] = depends_on.macos if depends_on.macos
+      runtime_deps[:arch] = depends_on.arch if depends_on.arch
+
+      runtime_deps
     end
 
     def version

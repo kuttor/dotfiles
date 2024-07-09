@@ -93,6 +93,17 @@ class AbstractTab
     new(attributes)
   end
 
+  def self.formula_to_dep_hash(formula, declared_deps)
+    {
+      "full_name"         => formula.full_name,
+      "version"           => formula.version.to_s,
+      "revision"          => formula.revision,
+      "pkg_version"       => formula.pkg_version.to_s,
+      "declared_directly" => declared_deps.include?(formula.full_name),
+    }
+  end
+  private_class_method :formula_to_dep_hash
+
   def initialize(attributes = {})
     attributes.each { |key, value| instance_variable_set(:"@#{key}", value) }
   end
@@ -290,14 +301,7 @@ class Tab < AbstractTab
 
   def self.runtime_deps_hash(formula, deps)
     deps.map do |dep|
-      f = dep.to_formula
-      {
-        "full_name"         => f.full_name,
-        "version"           => f.version.to_s,
-        "revision"          => f.revision,
-        "pkg_version"       => f.pkg_version.to_s,
-        "declared_directly" => formula.deps.include?(dep),
-      }
+      formula_to_dep_hash(dep.to_formula, formula.deps.map(&:name))
     end
   end
 

@@ -85,28 +85,79 @@ RSpec.describe Cask::Tab, :cask do
     expect(tab.runtime_dependencies).not_to be_nil
   end
 
-  specify "::runtime_deps_hash" do
-    cask = Cask::CaskLoader.load("with-depends-on-everything")
+  describe "::runtime_deps_hash" do
+    specify "with no dependencies" do
+      cask = Cask::CaskLoader.load("local-transmission")
 
-    unar = instance_double(Formula, full_name: "unar", version: "1.2", revision: 0, pkg_version: "1.2")
-    expect(Formulary).to receive(:factory).with("unar", { warn: false }).and_return(unar)
+      expect(described_class.runtime_deps_hash(cask, cask.depends_on)).to eq({})
+    end
 
-    expected_hash = {
-      arch:    [{ type: :intel, bits: 64 }, { type: :arm, bits: 64 }],
-      cask:    [
-        { "full_name"=>"local-caffeine", "version"=>"1.2.3", "declared_directly"=>true },
-        { "full_name"=>"local-transmission", "version"=>"2.61", "declared_directly"=>true },
-      ],
-      formula: [
-        { "full_name"=>"unar", "version"=>"1.2", "revision"=>0, "pkg_version"=>"1.2", "declared_directly"=>true },
-      ],
-      macos:   MacOSRequirement.new([:el_capitan], comparator: ">="),
-    }
+    specify "with cask dependencies" do
+      cask = Cask::CaskLoader.load("with-depends-on-cask")
 
-    runtime_deps_hash = described_class.runtime_deps_hash(cask, cask.depends_on)
-    tab = described_class.new
-    tab.runtime_dependencies = runtime_deps_hash
-    expect(tab.runtime_dependencies).to eql(expected_hash)
+      expected_hash = {
+        cask: [
+          { "full_name"=>"local-transmission", "version"=>"2.61", "declared_directly"=>true },
+        ],
+      }
+      expect(described_class.runtime_deps_hash(cask, cask.depends_on)).to eq(expected_hash)
+    end
+
+    specify "with macos symbol dependencies" do
+      cask = Cask::CaskLoader.load("with-depends-on-macos-symbol")
+
+      expected_hash = {
+        macos: MacOSRequirement.new([MacOS.version.to_sym], comparator: "=="),
+      }
+      expect(described_class.runtime_deps_hash(cask, cask.depends_on)).to eq(expected_hash)
+    end
+
+    specify "with macos array dependencies" do
+      cask = Cask::CaskLoader.load("with-depends-on-macos-array")
+
+      expected_hash = {
+        macos: MacOSRequirement.new([[:catalina, MacOS.version.to_sym]], comparator: "=="),
+      }
+      expect(described_class.runtime_deps_hash(cask, cask.depends_on)).to eq(expected_hash)
+    end
+
+    specify "with arch dependencies" do
+      cask = Cask::CaskLoader.load("with-depends-on-arch")
+
+      expected_hash = {
+        arch: [
+          { type: :intel, bits: 64 },
+          { type: :arm, bits: 64 },
+        ],
+      }
+      expect(described_class.runtime_deps_hash(cask, cask.depends_on)).to eq(expected_hash)
+    end
+
+    specify "with all types of dependencies" do
+      cask = Cask::CaskLoader.load("with-depends-on-everything")
+
+      unar = instance_double(Formula, full_name: "unar", version: "1.2", revision: 0, pkg_version: "1.2",
+                             deps: [], requirements: [])
+      expect(Formulary).to receive(:factory).with("unar").and_return(unar)
+
+      expected_hash = {
+        arch:    [{ type: :intel, bits: 64 }, { type: :arm, bits: 64 }],
+        cask:    [
+          { "full_name"=>"local-caffeine", "version"=>"1.2.3", "declared_directly"=>true },
+          { "full_name"=>"with-depends-on-cask", "version"=>"1.2.3", "declared_directly"=>true },
+          { "full_name"=>"local-transmission", "version"=>"2.61", "declared_directly"=>false },
+        ],
+        formula: [
+          { "full_name"=>"unar", "version"=>"1.2", "revision"=>0, "pkg_version"=>"1.2", "declared_directly"=>true },
+        ],
+        macos:   MacOSRequirement.new([:el_capitan], comparator: ">="),
+      }
+
+      runtime_deps_hash = described_class.runtime_deps_hash(cask, cask.depends_on)
+      tab = described_class.new
+      tab.runtime_dependencies = runtime_deps_hash
+      expect(tab.runtime_dependencies).to eql(expected_hash)
+    end
   end
 
   specify "other attributes" do

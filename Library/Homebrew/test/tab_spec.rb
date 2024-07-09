@@ -155,18 +155,69 @@ RSpec.describe Tab do
     expect(tab.runtime_dependencies).not_to be_nil
   end
 
-  specify "::runtime_deps_hash" do
-    runtime_deps = [Dependency.new("foo")]
-    foo = formula("foo") { url "foo-1.0" }
-    stub_formula_loader foo
-    runtime_deps_hash = described_class.runtime_deps_hash(foo, runtime_deps)
-    tab = described_class.new
-    tab.homebrew_version = "1.1.6"
-    tab.runtime_dependencies = runtime_deps_hash
-    expect(tab.runtime_dependencies).to eql(
-      [{ "full_name" => "foo", "version" => "1.0", "revision" => 0, "pkg_version" => "1.0",
-"declared_directly" => false }],
-    )
+  describe "::runtime_deps_hash" do
+    it "handles older Homebrew versions correctly" do
+      runtime_deps = [Dependency.new("foo")]
+      foo = formula("foo") { url "foo-1.0" }
+      stub_formula_loader foo
+      runtime_deps_hash = described_class.runtime_deps_hash(foo, runtime_deps)
+      tab = described_class.new
+      tab.homebrew_version = "1.1.6"
+      tab.runtime_dependencies = runtime_deps_hash
+      expect(tab.runtime_dependencies).to eql(
+        [{ "full_name" => "foo", "version" => "1.0", "revision" => 0, "pkg_version" => "1.0",
+        "declared_directly" => false }],
+      )
+    end
+
+    it "include declared dependencies" do
+      foo = formula("foo") { url "foo-1.0" }
+      stub_formula_loader foo
+
+      runtime_deps = [Dependency.new("foo")]
+      formula = instance_double(Formula, deps: runtime_deps)
+
+      expected_output = [
+        {
+          "full_name"         => "foo",
+          "version"           => "1.0",
+          "revision"          => 0,
+          "pkg_version"       => "1.0",
+          "declared_directly" => true,
+        },
+      ]
+      expect(described_class.runtime_deps_hash(formula, runtime_deps)).to eq(expected_output)
+    end
+
+    it "includes recursive dependencies" do
+      foo = formula("foo") { url "foo-1.0" }
+      stub_formula_loader foo
+      bar = formula("bar") { url "bar-2.0" }
+      stub_formula_loader bar
+
+      # Simulating dependencies formula => foo => bar
+      formula_declared_deps = [Dependency.new("foo")]
+      formula_recursive_deps = [Dependency.new("foo"), Dependency.new("bar")]
+      formula = instance_double(Formula, deps: formula_declared_deps)
+
+      expected_output = [
+        {
+          "full_name"         => "foo",
+          "version"           => "1.0",
+          "revision"          => 0,
+          "pkg_version"       => "1.0",
+          "declared_directly" => true,
+        },
+        {
+          "full_name"         => "bar",
+          "version"           => "2.0",
+          "revision"          => 0,
+          "pkg_version"       => "2.0",
+          "declared_directly" => false,
+        },
+      ]
+      expect(described_class.runtime_deps_hash(formula, formula_recursive_deps)).to eq(expected_output)
+    end
   end
 
   specify "#cxxstdlib" do
