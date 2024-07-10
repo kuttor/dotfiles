@@ -13,7 +13,7 @@ module Cask
 
       tab.tabfile = cask.metadata_main_container_path/FILENAME
       tab.uninstall_flight_blocks = cask.uninstall_flight_blocks?
-      tab.runtime_dependencies = Tab.runtime_deps_hash(cask, cask.depends_on)
+      tab.runtime_dependencies = Tab.runtime_deps_hash(cask)
       tab.source["version"] = cask.version.to_s
       tab.source["path"] = cask.sourcefile_path.to_s
       tab.uninstall_artifacts = cask.artifacts_list(uninstall_only: true)
@@ -49,7 +49,7 @@ module Cask
       tab
     end
 
-    def self.runtime_deps_hash(cask, depends_on)
+    def self.runtime_deps_hash(cask)
       cask_and_formula_dep_graph = ::Utils::TopologicalHash.graph_package_dependencies(cask)
       cask_deps, formula_deps = cask_and_formula_dep_graph.values.flatten.uniq.partition do |dep|
         dep.is_a?(Cask)
@@ -72,9 +72,6 @@ module Cask
           formula_to_dep_hash(dep, cask.depends_on.formula)
         end
       end
-
-      runtime_deps[:macos] = depends_on.macos if depends_on.macos
-      runtime_deps[:arch] = depends_on.arch if depends_on.arch
 
       runtime_deps
     end
