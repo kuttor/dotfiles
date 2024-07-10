@@ -191,8 +191,8 @@ RSpec.describe Tab do
 
     it "includes recursive dependencies" do
       foo = formula("foo") { url "foo-1.0" }
-      stub_formula_loader foo
       bar = formula("bar") { url "bar-2.0" }
+      stub_formula_loader foo
       stub_formula_loader bar
 
       # Simulating dependencies formula => foo => bar
