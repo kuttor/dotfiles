@@ -436,7 +436,7 @@ module Homebrew
         boolean:     true,
       },
       HOMEBREW_UPGRADE_GREEDY:                   {
-        description: "If set, pass `--greedy` to all cask upgrade commands.",
+        description: "If set, pass `--greedy` to all cask upgrade commands and `brew outdated`.",
         boolean:     true,
       },
       HOMEBREW_VERBOSE:                          {
