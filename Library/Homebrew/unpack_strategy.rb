@@ -96,7 +96,7 @@ module UnpackStrategy
   end
 
   sig {
-    params(path: Pathname, prioritize_extension: T::Boolean, type: T.nilable(Symbol), ref_type: T.nilable(String),
+    params(path: Pathname, prioritize_extension: T::Boolean, type: T.nilable(Symbol), ref_type: T.nilable(Symbol),
            ref: T.nilable(String), merge_xattrs: T::Boolean).returns(T.untyped)
   }
   def self.detect(path, prioritize_extension: false, type: nil, ref_type: nil, ref: nil, merge_xattrs: false)
@@ -123,14 +123,14 @@ module UnpackStrategy
   attr_reader :merge_xattrs
 
   sig {
-    params(path: T.any(String, Pathname), ref_type: T.nilable(String), ref: T.nilable(String),
+    params(path: T.any(String, Pathname), ref_type: T.nilable(Symbol), ref: T.nilable(String),
            merge_xattrs: T::Boolean).void
   }
   def initialize(path, ref_type: nil, ref: nil, merge_xattrs: false)
     @path = T.let(Pathname(path).expand_path, Pathname)
-    @ref_type = ref_type
-    @ref = ref
-    @merge_xattrs = merge_xattrs
+    @ref_type = T.let(ref_type, T.nilable(Symbol))
+    @ref = T.let(ref, T.nilable(String))
+    @merge_xattrs = T.let(merge_xattrs, T::Boolean)
   end
 
   sig { abstract.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).void }
