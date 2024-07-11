@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require_relative "generic_unar"
@@ -11,6 +11,7 @@ module UnpackStrategy
       [".sit"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       path.magic_number.match?(/\AStuffIt/n)
     end

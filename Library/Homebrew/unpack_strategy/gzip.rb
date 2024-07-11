@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module UnpackStrategy
@@ -11,6 +11,7 @@ module UnpackStrategy
       [".gz"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       path.magic_number.match?(/\A\037\213/n)
     end

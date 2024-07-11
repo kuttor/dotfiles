@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module UnpackStrategy
@@ -11,6 +11,7 @@ module UnpackStrategy
       [".cab"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       path.magic_number.match?(/\AMSCF/n)
     end
@@ -23,8 +24,9 @@ module UnpackStrategy
                       verbose:
     end
 
+    sig { returns(T.nilable(T::Array[Formula])) }
     def dependencies
-      @dependencies ||= [Formula["cabextract"]]
+      @dependencies ||= T.let([Formula["cabextract"]], T.nilable(T::Array[Formula]))
     end
   end
 end

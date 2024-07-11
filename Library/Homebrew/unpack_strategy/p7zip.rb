@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module UnpackStrategy
@@ -11,12 +11,14 @@ module UnpackStrategy
       [".7z"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       path.magic_number.match?(/\A7z\xBC\xAF\x27\x1C/n)
     end
 
+    sig { returns(T.nilable(T::Array[Formula])) }
     def dependencies
-      @dependencies ||= [Formula["p7zip"]]
+      @dependencies ||= T.let([Formula["p7zip"]], T.nilable(T::Array[Formula]))
     end
 
     private

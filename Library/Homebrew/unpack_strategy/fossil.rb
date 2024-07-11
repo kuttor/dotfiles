@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "system_command"
@@ -14,6 +14,7 @@ module UnpackStrategy
       []
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       return false unless path.magic_number.match?(/\ASQLite format 3\000/n)
 

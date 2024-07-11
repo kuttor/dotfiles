@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "system_command"
@@ -22,6 +22,7 @@ module UnpackStrategy
       ]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       return true if path.magic_number.match?(/\A.{257}ustar/n)
 

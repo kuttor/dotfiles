@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module UnpackStrategy
@@ -11,6 +11,7 @@ module UnpackStrategy
       [".pax"]
     end
 
+    sig { override.params(_path: Pathname).returns(T::Boolean) }
     def self.can_extract?(_path)
       false
     end

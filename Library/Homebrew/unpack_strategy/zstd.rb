@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module UnpackStrategy
@@ -11,12 +11,14 @@ module UnpackStrategy
       [".zst"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       path.magic_number.match?(/\x28\xB5\x2F\xFD/n)
     end
 
+    sig { returns(T.nilable(T::Array[Formula])) }
     def dependencies
-      @dependencies ||= [Formula["zstd"]]
+      @dependencies ||= T.let([Formula["zstd"]], T.nilable(T::Array[Formula]))
     end
 
     private

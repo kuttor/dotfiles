@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require_relative "uncompressed"
@@ -11,6 +11,7 @@ module UnpackStrategy
       [".apk", ".jar"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       return false unless Zip.can_extract?(path)
 

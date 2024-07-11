@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module UnpackStrategy
@@ -11,12 +11,14 @@ module UnpackStrategy
       []
     end
 
+    sig { override.params(_path: Pathname).returns(T::Boolean) }
     def self.can_extract?(_path)
       false
     end
 
+    sig { returns(T.nilable(T::Array[Formula])) }
     def dependencies
-      @dependencies ||= [Formula["unar"]]
+      @dependencies ||= T.let([Formula["unar"]], T.nilable(T::Array[Formula]))
     end
 
     private

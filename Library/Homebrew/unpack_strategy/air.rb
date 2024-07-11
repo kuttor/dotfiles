@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module UnpackStrategy
@@ -11,13 +11,15 @@ module UnpackStrategy
       [".air"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       mime_type = "application/vnd.adobe.air-application-installer-package+zip"
       path.magic_number.match?(/.{59}#{Regexp.escape(mime_type)}/)
     end
 
+    sig { returns(T.nilable(T::Array[Cask::Cask])) }
     def dependencies
-      @dependencies ||= [Cask::CaskLoader.load("adobe-air")]
+      @dependencies ||= T.let([Cask::CaskLoader.load("adobe-air")], T.nilable(T::Array[Cask::Cask]))
     end
 
     AIR_APPLICATION_INSTALLER =

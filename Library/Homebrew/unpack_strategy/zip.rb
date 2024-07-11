@@ -23,6 +23,7 @@ module UnpackStrategy
               .returns(SystemCommand::Result)
     }
     def extract_to_dir(unpack_dir, basename:, verbose:)
+      odebug "in unpack_strategy, zip, extract_to_dir, verbose: #{verbose.inspect}"
       unzip = if which("unzip").blank?
         begin
           Formula["unzip"]

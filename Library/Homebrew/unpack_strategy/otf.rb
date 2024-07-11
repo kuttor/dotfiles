@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require_relative "uncompressed"
@@ -11,6 +11,7 @@ module UnpackStrategy
       [".otf"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       path.magic_number.match?(/\AOTTO/n)
     end
