@@ -32,6 +32,7 @@ module Homebrew
                             "formula is outdated. Otherwise, the repository's HEAD will only be checked for " \
                             "updates when a new stable or development version has been released."
         switch "-g", "--greedy",
+               env:         :upgrade_greedy,
                description: "Also include outdated casks with `auto_updates true` or `version :latest`."
 
         switch "--greedy-latest",
@@ -48,8 +49,6 @@ module Homebrew
 
       sig { override.void }
       def run
-        @greedy = Homebrew::EnvConfig.upgrade_greedy? || args.greedy?
-
         case json_version(args.json)
         when :v1
           odie "`brew outdated --json=v1` is no longer supported. Use brew outdated --json=v2 instead."
@@ -120,7 +119,7 @@ module Homebrew
           else
             c = formula_or_cask
 
-            puts c.outdated_info(@greedy, verbose?, false, args.greedy_latest?, args.greedy_auto_updates?)
+            puts c.outdated_info(args.greedy?, verbose?, false, args.greedy_latest?, args.greedy_auto_updates?)
           end
         end
       end
@@ -145,7 +144,7 @@ module Homebrew
           else
             c = formula_or_cask
 
-            c.outdated_info(@greedy, verbose?, true, args.greedy_latest?, args.greedy_auto_updates?)
+            c.outdated_info(args.greedy?, verbose?, true, args.greedy_latest?, args.greedy_auto_updates?)
           end
         end
       end
@@ -195,7 +194,7 @@ module Homebrew
           if formula_or_cask.is_a?(Formula)
             formula_or_cask.outdated?(fetch_head: args.fetch_HEAD?)
           else
-            formula_or_cask.outdated?(greedy: @greedy, greedy_latest: args.greedy_latest?,
+            formula_or_cask.outdated?(greedy: args.greedy?, greedy_latest: args.greedy_latest?,
                                       greedy_auto_updates: args.greedy_auto_updates?)
           end
         end
