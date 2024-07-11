@@ -15,7 +15,7 @@ module UnpackStrategy
       path.magic_number.match?(/\AMSCF/n)
     end
 
-    sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).returns(T.untyped) }
+    sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).void }
     def extract_to_dir(unpack_dir, basename:, verbose:)
       system_command! "cabextract",
                       args:    ["-d", unpack_dir, "--", path],

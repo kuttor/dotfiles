@@ -34,7 +34,7 @@ module UnpackStrategy
 
     private
 
-    sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).returns(T.untyped) }
+    sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).void }
     def extract_to_dir(unpack_dir, basename:, verbose:)
       Dir.mktmpdir("homebrew-tar", HOMEBREW_TEMP) do |tmpdir|
         tar_path = if DependencyCollector.tar_needs_xz_dependency? && Xz.can_extract?(path)

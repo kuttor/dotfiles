@@ -17,7 +17,7 @@ module UnpackStrategy
 
     private
 
-    sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).returns(T.untyped) }
+    sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).void }
     def extract_to_dir(unpack_dir, basename:, verbose:)
       path.children.each do |child|
         system_command! "cp",
