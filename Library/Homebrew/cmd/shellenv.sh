@@ -57,7 +57,7 @@ homebrew-shellenv() {
       echo "export HOMEBREW_CELLAR=\"${HOMEBREW_CELLAR}\";"
       echo "export HOMEBREW_REPOSITORY=\"${HOMEBREW_REPOSITORY}\";"
       echo "export PATH=\"${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin\${PATH+:\$PATH}\";"
-      echo "[ -z \"\${MANPATH}\" ] || export MANPATH=\":\${MANPATH#:}\";"
+      echo "[ -z \"\${MANPATH-}\" ] || export MANPATH=\":\${MANPATH#:}\";"
       echo "export INFOPATH=\"${HOMEBREW_PREFIX}/share/info:\${INFOPATH:-}\";"
       ;;
   esac
