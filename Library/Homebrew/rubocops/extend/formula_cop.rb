@@ -16,7 +16,7 @@ module RuboCop
 
       attr_accessor :file_path
 
-      @registry = Cop.registry
+      @registry = Registry.global
 
       class FormulaNodes < T::Struct
         prop :node, RuboCop::AST::ClassNode

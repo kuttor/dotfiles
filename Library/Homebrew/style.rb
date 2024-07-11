@@ -129,18 +129,18 @@ module Homebrew
       args += ["--extra-details"] if verbose
 
       if except_cops
-        except_cops.map! { |cop| RuboCop::Cop::Cop.registry.qualified_cop_name(cop.to_s, "") }
+        except_cops.map! { |cop| RuboCop::Cop::Registry.global.qualified_cop_name(cop.to_s, "") }
         cops_to_exclude = except_cops.select do |cop|
-          RuboCop::Cop::Cop.registry.names.include?(cop) ||
-            RuboCop::Cop::Cop.registry.departments.include?(cop.to_sym)
+          RuboCop::Cop::Registry.global.names.include?(cop) ||
+            RuboCop::Cop::Registry.global.departments.include?(cop.to_sym)
         end
 
         args << "--except" << cops_to_exclude.join(",") unless cops_to_exclude.empty?
       elsif only_cops
-        only_cops.map! { |cop| RuboCop::Cop::Cop.registry.qualified_cop_name(cop.to_s, "") }
+        only_cops.map! { |cop| RuboCop::Cop::Registry.global.qualified_cop_name(cop.to_s, "") }
         cops_to_include = only_cops.select do |cop|
-          RuboCop::Cop::Cop.registry.names.include?(cop) ||
-            RuboCop::Cop::Cop.registry.departments.include?(cop.to_sym)
+          RuboCop::Cop::Registry.global.names.include?(cop) ||
+            RuboCop::Cop::Registry.global.departments.include?(cop.to_sym)
         end
 
         odie "RuboCops #{only_cops.join(",")} were not found" if cops_to_include.empty?
