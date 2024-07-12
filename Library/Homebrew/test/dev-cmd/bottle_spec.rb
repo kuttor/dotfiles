@@ -32,7 +32,7 @@ RSpec.describe Homebrew::DevCmd::Bottle do
 
   it_behaves_like "parseable arguments"
 
-  it "builds a bottle for the given Formula", :integration_test do
+  it "builds a bottle for the given Formula", :integration_test, :needs_network do
     install_test_formula "testball", build_bottle: true
 
     # `brew bottle` should not fail with dead symlink
