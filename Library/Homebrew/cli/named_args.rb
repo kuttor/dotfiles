@@ -138,9 +138,9 @@ module Homebrew
         Homebrew.with_no_api_env_if_needed(@without_api) do
           unreadable_error = nil
 
-          if only != :cask
+          formula_or_kegs = if only != :cask
             begin
-              formula = case method
+              case method
               when nil, :factory
                 options = { warn:, force_bottle: @force_bottle, flags: @flags }.compact
                 Formulary.factory(name, *@override_spec, **options)
@@ -156,27 +156,32 @@ module Homebrew
               else
                 raise
               end
-
-              warn_if_cask_conflicts(name, "formula") if only != :formula
-              return formula
             rescue FormulaUnreadableError, FormulaClassUnavailableError,
                    TapFormulaUnreadableError, TapFormulaClassUnavailableError,
                    FormulaSpecificationError => e
               # Need to rescue before `FormulaUnavailableError` (superclass of this)
               # The formula was found, but there's a problem with its implementation
               unreadable_error ||= e
+              nil
             rescue NoSuchKegError, FormulaUnavailableError => e
               raise e if only == :formula
+
+              nil
             end
           end
 
-          if only != :formula
+          if only == :formula
+            return formula_or_kegs if formula_or_kegs
+          elsif formula_or_kegs && (!formula_or_kegs.is_a?(Formula) || formula_or_kegs.tap&.core_tap?)
+            warn_if_cask_conflicts(name, "formula")
+            return formula_or_kegs
+          else
             want_keg_like_cask = [:latest_kegs, :default_kegs, :kegs].include?(method)
 
-            begin
+            cask = begin
               config = Cask::Config.from_args(@parent) if @cask_options
               options = { warn: }.compact
-              cask = Cask::CaskLoader.load(name, config:, **options)
+              candidate_cask = Cask::CaskLoader.load(name, config:, **options)
 
               if unreadable_error.present?
                 onoe <<~EOS
@@ -188,27 +193,46 @@ module Homebrew
 
               # If we're trying to get a keg-like Cask, do our best to use the same cask
               # file that was used for installation, if possible.
-              if want_keg_like_cask && (installed_caskfile = cask.installed_caskfile) && installed_caskfile.exist?
-                cask = Cask::CaskLoader.load(installed_caskfile)
+              if want_keg_like_cask &&
+                 (installed_caskfile = candidate_cask.installed_caskfile) &&
+                 installed_caskfile.exist?
+                Cask::CaskLoader.load(installed_caskfile)
+              else
+                candidate_cask
               end
-
-              return cask
             rescue Cask::CaskUnreadableError, Cask::CaskInvalidError => e
               # If we're trying to get a keg-like Cask, do our best to handle it
               # not being readable and return something that can be used.
               if want_keg_like_cask
                 cask_version = Cask::Cask.new(name, config:).installed_version
-                cask = Cask::Cask.new(name, config:) do
+                Cask::Cask.new(name, config:) do
                   version cask_version if cask_version
                 end
-                return cask
+              else
+                # Need to rescue before `CaskUnavailableError` (superclass of this)
+                # The cask was found, but there's a problem with its implementation
+                unreadable_error ||= e
+                nil
               end
-
-              # Need to rescue before `CaskUnavailableError` (superclass of this)
-              # The cask was found, but there's a problem with its implementation
-              unreadable_error ||= e
             rescue Cask::CaskUnavailableError => e
               raise e if only == :cask
+
+              nil
+            end
+
+            # Prioritise formulae unless it's a core tap cask (we already prioritised core tap formulae above)
+            if formula_or_kegs && !cask&.tap&.core_cask_tap?
+              if cask || unreadable_error
+                onoe <<~EOS if unreadable_error
+                  Failed to load cask: #{name}
+                  #{unreadable_error}
+                EOS
+                opoo package_conflicts_message(name, "formula", cask)
+              end
+              return formula_or_kegs
+            elsif cask
+              opoo package_conflicts_message(name, "cask", formula_or_kegs) if formula_or_kegs
+              return cask
             end
           end
 
@@ -438,13 +462,29 @@ module Homebrew
         end
       end
 
-      def warn_if_cask_conflicts(ref, loaded_type)
+      def package_conflicts_message(ref, loaded_type, package)
         message = "Treating #{ref} as a #{loaded_type}."
-        begin
-          cask = Cask::CaskLoader.load(ref, warn: false)
+        case package
+        when Formula, Keg, Array
+          message += " For the formula, "
+          if package.is_a?(Formula) && (tap = package.tap)
+            message += "use #{tap.name}/#{package.name} or "
+          end
+          message += "specify the `--formula` flag."
+        when Cask::Cask
           message += " For the cask, "
-          message += "use #{cask.tap.name}/#{cask.token} or " if cask.tap
+          if (tap = package.tap)
+            message += "use #{tap.name}/#{package.token} or "
+          end
           message += "specify the `--cask` flag."
+        end
+        message.freeze
+      end
+
+      def warn_if_cask_conflicts(ref, loaded_type)
+        available = true
+        cask = begin
+          Cask::CaskLoader.load(ref, warn: false)
         rescue Cask::CaskUnreadableError => e
           # Need to rescue before `CaskUnavailableError` (superclass of this)
           # The cask was found, but there's a problem with its implementation
@@ -452,11 +492,15 @@ module Homebrew
             Failed to load cask: #{ref}
             #{e}
           EOS
+          nil
         rescue Cask::CaskUnavailableError
           # No ref conflict with a cask, do nothing
-          return
+          available = false
+          nil
         end
-        opoo message.freeze
+        return unless available
+
+        opoo package_conflicts_message(ref, loaded_type, cask)
       end
     end
   end
