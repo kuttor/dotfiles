@@ -5,8 +5,8 @@ require "formulary"
 module Test
   module Helper
     module Formula
-      def formula(name = "formula_name", path: Formulary.core_path(name), spec: :stable, alias_path: nil, tap: nil,
-                  &block)
+      def formula(name = "formula_name", path: nil, spec: :stable, alias_path: nil, tap: nil, &block)
+        path ||= Formulary.find_formula_in_tap(name, tap || CoreTap.instance)
         Class.new(::Formula, &block).new(name, path, spec, alias_path:, tap:)
       end
 
