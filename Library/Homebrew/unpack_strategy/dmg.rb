@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "tempfile"
@@ -14,7 +14,7 @@ module UnpackStrategy
     module Bom
       extend SystemCommand::Mixin
 
-      DMG_METADATA = Set.new(%w[
+      DMG_METADATA = T.let(Set.new(%w[
         .background
         .com.apple.timemachine.donotpresent
         .com.apple.timemachine.supported
@@ -26,12 +26,13 @@ module UnpackStrategy
         .TemporaryItems
         .Trashes
         .VolumeIcon.icns
-      ]).freeze
+      ]).freeze, T::Set[String])
       private_constant :DMG_METADATA
 
       class Error < RuntimeError; end
 
       class EmptyError < Error
+        sig { params(path: Pathname).void }
         def initialize(path)
           super "BOM for path '#{path}' is empty."
         end
@@ -81,6 +82,7 @@ module UnpackStrategy
     class Mount
       include UnpackStrategy
 
+      sig { params(verbose: T::Boolean).void }
       def eject(verbose: false)
         tries = 3
         begin
@@ -176,6 +178,7 @@ module UnpackStrategy
       [".dmg"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       stdout, _, status = system_command("hdiutil", args: ["imageinfo", "-format", path], print_stderr: false)
       status.success? && !stdout.empty?
@@ -194,7 +197,8 @@ module UnpackStrategy
       end
     end
 
-    def mount(verbose: false)
+    sig { params(verbose: T::Boolean, _block: T.proc.params(arg0: T::Array[Mount]).void).void }
+    def mount(verbose: false, &_block)
       Dir.mktmpdir("homebrew-dmg", HOMEBREW_TEMP) do |mount_dir|
         mount_dir = Pathname(mount_dir)
 
