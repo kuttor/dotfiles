@@ -21,7 +21,7 @@ module Homebrew
     # Returns the output of running cmd and asserts the exit status.
     #
     # @api public
-    sig { params(cmd: String, result: Integer).returns(String) }
+    sig { params(cmd: T.any(Pathname, String), result: Integer).returns(String) }
     def shell_output(cmd, result = 0)
       ohai cmd
       output = `#{cmd}`
