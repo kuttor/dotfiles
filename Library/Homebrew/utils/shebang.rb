@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Utils
@@ -8,13 +8,20 @@ module Utils
 
     # Specification on how to rewrite a given shebang.
     class RewriteInfo
-      attr_reader :regex, :max_length, :replacement
+      sig { returns(Regexp) }
+      attr_reader :regex
+
+      sig { returns(Integer) }
+      attr_reader :max_length
+
+      sig { returns(T.any(String, Pathname)) }
+      attr_reader :replacement
 
       sig { params(regex: Regexp, max_length: Integer, replacement: T.any(String, Pathname)).void }
       def initialize(regex, max_length, replacement)
-        @regex = regex
-        @max_length = max_length
-        @replacement = replacement
+        @regex = T.let(regex, Regexp)
+        @max_length = T.let(max_length, Integer)
+        @replacement = T.let(replacement, T.any(String, Pathname))
       end
     end
 

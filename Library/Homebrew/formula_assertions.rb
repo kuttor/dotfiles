@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Homebrew
@@ -10,15 +10,18 @@ module Homebrew
     require "minitest/assertions"
     include ::Minitest::Assertions
 
+    sig { params(assertions: Integer).returns(Integer) }
     attr_writer :assertions
 
+    sig { returns(Integer) }
     def assertions
-      @assertions ||= 0
+      @assertions ||= T.let(0, T.nilable(Integer))
     end
 
     # Returns the output of running cmd and asserts the exit status.
     #
     # @api public
+    sig { params(cmd: String, result: Integer).returns(String) }
     def shell_output(cmd, result = 0)
       ohai cmd
       output = `#{cmd}`
@@ -33,6 +36,7 @@ module Homebrew
     # optionally asserts the exit status.
     #
     # @api public
+    sig { params(cmd: String, input: T.nilable(String), result: T.nilable(Integer)).returns(String) }
     def pipe_output(cmd, input = nil, result = nil)
       ohai cmd
       output = IO.popen(cmd, "w+") do |pipe|

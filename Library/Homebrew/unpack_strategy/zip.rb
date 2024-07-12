@@ -6,12 +6,12 @@ module UnpackStrategy
   class Zip
     include UnpackStrategy
 
-    sig { returns(T::Array[String]) }
+    sig { override.returns(T::Array[String]) }
     def self.extensions
       [".zip"]
     end
 
-    sig { params(path: Pathname).returns(T::Boolean) }
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       path.magic_number.match?(/\APK(\003\004|\005\006)/n)
     end
@@ -23,6 +23,7 @@ module UnpackStrategy
               .returns(SystemCommand::Result)
     }
     def extract_to_dir(unpack_dir, basename:, verbose:)
+      odebug "in unpack_strategy, zip, extract_to_dir, verbose: #{verbose.inspect}"
       unzip = if which("unzip").blank?
         begin
           Formula["unzip"]

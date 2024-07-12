@@ -6,6 +6,12 @@ module UnpackStrategy
   class Uncompressed
     include UnpackStrategy
 
+    sig { override.returns(T::Array[String]) }
+    def self.extensions = []
+
+    sig { override.params(_path: Pathname).returns(T::Boolean) }
+    def self.can_extract?(_path) = false
+
     sig {
       params(
         to:                   T.nilable(Pathname),
@@ -20,7 +26,7 @@ module UnpackStrategy
 
     private
 
-    sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).returns(T.untyped) }
+    sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).void }
     def extract_to_dir(unpack_dir, basename:, verbose: false)
       FileUtils.cp path, unpack_dir/basename.sub(/^[\da-f]{64}--/, ""), preserve: true, verbose:
     end

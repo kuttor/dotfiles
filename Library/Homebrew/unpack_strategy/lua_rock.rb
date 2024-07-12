@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require_relative "uncompressed"
@@ -6,11 +6,12 @@ require_relative "uncompressed"
 module UnpackStrategy
   # Strategy for unpacking LuaRock archives.
   class LuaRock < Uncompressed
-    sig { returns(T::Array[String]) }
+    sig { override.returns(T::Array[String]) }
     def self.extensions
       [".rock"]
     end
 
+    sig { override.params(path: Pathname).returns(T::Boolean) }
     def self.can_extract?(path)
       return false unless Zip.can_extract?(path)
 
