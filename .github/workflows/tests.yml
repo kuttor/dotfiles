@@ -33,6 +33,7 @@ jobs:
           core: false
           cask: false
           test-bot: false
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache Bundler RubyGems
         uses: actions/cache@v4
@@ -85,6 +86,7 @@ jobs:
           core: true
           cask: true
           test-bot: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache Bundler RubyGems
         uses: actions/cache@v4
