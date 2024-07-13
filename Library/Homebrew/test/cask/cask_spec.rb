@@ -212,6 +212,115 @@ RSpec.describe Cask::Cask, :cask do
     end
   end
 
+  describe "#artifacts_list" do
+    subject(:cask) { Cask::CaskLoader.load("many-artifacts") }
+
+    it "returns all artifacts when no options are given" do
+      expected_artifacts = [
+        { uninstall_preflight: nil },
+        { preflight: nil },
+        { uninstall: [{
+          rmdir: "#{TEST_TMPDIR}/empty_directory_path",
+          trash: ["#{TEST_TMPDIR}/foo", "#{TEST_TMPDIR}/bar"],
+        }] },
+        { pkg: ["ManyArtifacts/ManyArtifacts.pkg"] },
+        { app: ["ManyArtifacts/ManyArtifacts.app"] },
+        { uninstall_postflight: nil },
+        { postflight: nil },
+        { zap: [{
+          rmdir: ["~/Library/Caches/ManyArtifacts", "~/Library/Application Support/ManyArtifacts"],
+          trash: "~/Library/Logs/ManyArtifacts.log",
+        }] },
+      ]
+
+      expect(cask.artifacts_list).to eq(expected_artifacts)
+    end
+
+    it "skips flight blocks when compact is true" do
+      expected_artifacts = [
+        { uninstall: [{
+          rmdir: "#{TEST_TMPDIR}/empty_directory_path",
+          trash: ["#{TEST_TMPDIR}/foo", "#{TEST_TMPDIR}/bar"],
+        }] },
+        { pkg: ["ManyArtifacts/ManyArtifacts.pkg"] },
+        { app: ["ManyArtifacts/ManyArtifacts.app"] },
+        { zap: [{
+          rmdir: ["~/Library/Caches/ManyArtifacts", "~/Library/Application Support/ManyArtifacts"],
+          trash: "~/Library/Logs/ManyArtifacts.log",
+        }] },
+      ]
+
+      expect(cask.artifacts_list(compact: true)).to eq(expected_artifacts)
+    end
+
+    it "returns only uninstall artifacts when uninstall_only is true" do
+      expected_artifacts = [
+        { uninstall_preflight: nil },
+        { uninstall: [{
+          rmdir: "#{TEST_TMPDIR}/empty_directory_path",
+          trash: ["#{TEST_TMPDIR}/foo", "#{TEST_TMPDIR}/bar"],
+        }] },
+        { app: ["ManyArtifacts/ManyArtifacts.app"] },
+        { uninstall_postflight: nil },
+        { zap: [{
+          rmdir: ["~/Library/Caches/ManyArtifacts", "~/Library/Application Support/ManyArtifacts"],
+          trash: "~/Library/Logs/ManyArtifacts.log",
+        }] },
+      ]
+
+      expect(cask.artifacts_list(uninstall_only: true)).to eq(expected_artifacts)
+    end
+
+    it "skips flight blocks and returns only uninstall artifacts when compact and uninstall_only are true" do
+      expected_artifacts = [
+        { uninstall: [{
+          rmdir: "#{TEST_TMPDIR}/empty_directory_path",
+          trash: ["#{TEST_TMPDIR}/foo", "#{TEST_TMPDIR}/bar"],
+        }] },
+        { app: ["ManyArtifacts/ManyArtifacts.app"] },
+        { zap: [{
+          rmdir: ["~/Library/Caches/ManyArtifacts", "~/Library/Application Support/ManyArtifacts"],
+          trash: "~/Library/Logs/ManyArtifacts.log",
+        }] },
+      ]
+
+      expect(cask.artifacts_list(compact: true, uninstall_only: true)).to eq(expected_artifacts)
+    end
+  end
+
+  describe "#uninstall_flight_blocks?" do
+    matcher :have_uninstall_flight_blocks do
+      match do |actual|
+        actual.uninstall_flight_blocks? == true
+      end
+    end
+
+    it "returns true when there are uninstall_preflight blocks" do
+      cask = Cask::CaskLoader.load("with-uninstall-preflight")
+      expect(cask).to have_uninstall_flight_blocks
+    end
+
+    it "returns true when there are uninstall_postflight blocks" do
+      cask = Cask::CaskLoader.load("with-uninstall-postflight")
+      expect(cask).to have_uninstall_flight_blocks
+    end
+
+    it "returns false when there are only preflight blocks" do
+      cask = Cask::CaskLoader.load("with-preflight")
+      expect(cask).not_to have_uninstall_flight_blocks
+    end
+
+    it "returns false when there are only postflight blocks" do
+      cask = Cask::CaskLoader.load("with-postflight")
+      expect(cask).not_to have_uninstall_flight_blocks
+    end
+
+    it "returns false when there are no flight blocks" do
+      cask = Cask::CaskLoader.load("local-caffeine")
+      expect(cask).not_to have_uninstall_flight_blocks
+    end
+  end
+
   describe "#to_h" do
     let(:expected_json) { (TEST_FIXTURE_DIR/"cask/everything.json").read.strip }
 

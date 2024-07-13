@@ -70,7 +70,7 @@ jobs:
         run: rm -f "${RUNNER_TEMP}/${TEMPORARY_CERTIFICATE_FILE}"
 
       - name: Checkout another Homebrew to brew subdirectory
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           path: brew
           fetch-depth: 0
@@ -120,7 +120,7 @@ jobs:
           fi
 
       - name: Upload installer to GitHub Actions
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
         with:
           name: Homebrew-${{ steps.homebrew-version.outputs.version }}.pkg
           path: Homebrew-${{ steps.homebrew-version.outputs.version }}.pkg
@@ -142,7 +142,7 @@ jobs:
             name: macos-14-arm64
     steps:
       - name: Download installer from GitHub Actions
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: "${{ needs.build.outputs.installer_path }}"
 
@@ -191,7 +191,7 @@ jobs:
       contents: write
     steps:
       - name: Download installer from GitHub Actions
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: "${{ needs.build.outputs.installer_path }}"
 

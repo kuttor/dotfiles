@@ -36,7 +36,7 @@ RSpec.describe Homebrew::Cmd::Uses do
     %w[foo installed].each do |formula_name|
       keg_dir = HOMEBREW_CELLAR/formula_name/"1.0"
       keg_dir.mkpath
-      touch keg_dir/Tab::FILENAME
+      touch keg_dir/AbstractTab::FILENAME
     end
 
     expect { brew "uses", "foo", "--eval-all", "--include-optional", "--missing", "--recursive" }

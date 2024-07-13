@@ -191,7 +191,7 @@ RSpec.shared_context "integration test" do # rubocop:disable RSpec/ContextWordin
     keg.mkpath
 
     tab = Tab.for_name(name)
-    tab.tabfile ||= keg/Tab::FILENAME
+    tab.tabfile ||= keg/AbstractTab::FILENAME
     tab_attributes.each do |key, value|
       tab.instance_variable_set(:"@#{key}", value)
     end

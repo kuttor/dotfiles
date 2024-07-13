@@ -17,8 +17,8 @@ module Formulary
   extend Context
   extend Cachable
 
-  URL_START_REGEX = %r{(https?|ftp|file)://}
-  private_constant :URL_START_REGEX
+  ALLOWED_URL_SCHEMES = %w[file].freeze
+  private_constant :ALLOWED_URL_SCHEMES
 
   # `:codesign` and custom requirement classes are not supported.
   API_SUPPORTED_REQUIREMENTS = [:arch, :linux, :macos, :maximum_macos, :xcode].freeze
@@ -592,36 +592,23 @@ module Formulary
     def self.try_new(ref, from: T.unsafe(nil), warn: false)
       ref = ref.to_s
 
-      new(ref) if HOMEBREW_BOTTLES_EXTNAME_REGEX.match?(ref)
+      new(ref) if HOMEBREW_BOTTLES_EXTNAME_REGEX.match?(ref) && File.exist?(ref)
     end
 
-    def initialize(bottle_name)
-      case bottle_name
-      when URL_START_REGEX
-        # The name of the formula is found between the last slash and the last hyphen.
-        formula_name = File.basename(bottle_name)[/(.+)-/, 1]
-        resource = Resource.new(formula_name) { url bottle_name }
-        resource.specs[:bottle] = true
-        downloader = resource.downloader
-        cached = downloader.cached_location.exist?
-        downloader.fetch
-        ohai "Pouring the cached bottle" if cached
-        @bottle_filename = downloader.cached_location
-      else
-        @bottle_filename = Pathname(bottle_name).realpath
-      end
-      name, full_name = Utils::Bottles.resolve_formula_names @bottle_filename
+    def initialize(bottle_name, warn: false)
+      @bottle_path = Pathname(bottle_name).realpath
+      name, full_name = Utils::Bottles.resolve_formula_names(@bottle_path)
       super name, Formulary.path(full_name)
     end
 
     def get_formula(spec, force_bottle: false, flags: [], ignore_errors: false, **)
       formula = begin
-        contents = Utils::Bottles.formula_contents(@bottle_filename, name:)
+        contents = Utils::Bottles.formula_contents(@bottle_path, name:)
         Formulary.from_contents(name, path, contents, spec, force_bottle:,
                                 flags:, ignore_errors:)
       rescue FormulaUnreadableError => e
         opoo <<~EOS
-          Unreadable formula in #{@bottle_filename}:
+          Unreadable formula in #{@bottle_path}:
           #{e}
         EOS
         super
@@ -632,7 +619,7 @@ module Formulary
         EOS
         super
       end
-      formula.local_bottle_path = @bottle_filename
+      formula.local_bottle_path = @bottle_path
       formula
     end
   end
@@ -709,7 +696,7 @@ module Formulary
     def self.try_new(ref, from: T.unsafe(nil), warn: false)
       ref = ref.to_s
 
-      new(ref, from:) if URL_START_REGEX.match?(ref)
+      new(ref, from:) if URI(ref).scheme.present?
     end
 
     attr_reader :url
@@ -726,12 +713,8 @@ module Formulary
     end
 
     def load_file(flags:, ignore_errors:)
-      match = url.match(%r{githubusercontent.com/[\w-]+/[\w-]+/[a-f0-9]{40}(?:/Formula)?/(?<name>[\w+-.@]+).rb})
-      if match
-        raise UnsupportedInstallationMethod,
-              "Installation of #{match[:name]} from a GitHub commit URL is unsupported! " \
-              "`brew extract #{match[:name]}` to a stable tap on GitHub instead."
-      elsif url.match?(%r{^(https?|ftp)://})
+      url_scheme = URI(url).scheme
+      if ALLOWED_URL_SCHEMES.exclude?(url_scheme)
         raise UnsupportedInstallationMethod,
               "Non-checksummed download of #{name} formula file from an arbitrary URL is unsupported! " \
               "`brew extract` or `brew create` and `brew tap-new` to create a formula file in a tap " \

@@ -33,7 +33,7 @@ RSpec.describe Homebrew::Cmd::Untap do
           keg_path = HOMEBREW_CELLAR/name/"1.2.3"
           keg_path.mkpath
 
-          tab_path = keg_path/Tab::FILENAME
+          tab_path = keg_path/AbstractTab::FILENAME
           tab_path.write <<~JSON
             {
               "source": {
