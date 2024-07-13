@@ -396,7 +396,7 @@ class Bottle
     github_packages_manifest_resource.fetch(verify_download_integrity: false)
 
     begin
-      github_packages_manifest_resource_tab(github_packages_manifest_resource)
+      github_packages_manifest_resource.tab
     rescue RuntimeError => e
       raise DownloadError.new(github_packages_manifest_resource, e)
     end
@@ -415,7 +415,7 @@ class Bottle
   def tab_attributes
     return {} unless github_packages_manifest_resource&.downloaded?
 
-    github_packages_manifest_resource_tab(github_packages_manifest_resource)
+    github_packages_manifest_resource.tab
   end
 
   sig { returns(Filename) }
@@ -425,46 +425,11 @@ class Bottle
 
   private
 
-  def github_packages_manifest_resource_tab(github_packages_manifest_resource)
-    manifest_json = github_packages_manifest_resource.cached_download.read
-
-    json = begin
-      JSON.parse(manifest_json)
-    rescue JSON::ParserError
-      raise "The downloaded GitHub Packages manifest was corrupted or modified (it is not valid JSON): " \
-            "\n#{github_packages_manifest_resource.cached_download}"
-    end
-
-    manifests = json["manifests"]
-    raise ArgumentError, "Missing 'manifests' section." if manifests.blank?
-
-    manifests_annotations = manifests.filter_map { |m| m["annotations"] }
-    raise ArgumentError, "Missing 'annotations' section." if manifests_annotations.blank?
-
-    bottle_digest = @resource.checksum.hexdigest
-    image_ref = GitHubPackages.version_rebuild(@resource.version, rebuild, @tag.to_s)
-    manifest_annotations = manifests_annotations.find do |m|
-      next if m["sh.brew.bottle.digest"] != bottle_digest
-
-      m["org.opencontainers.image.ref.name"] == image_ref
-    end
-    raise ArgumentError, "Couldn't find manifest matching bottle checksum." if manifest_annotations.blank?
-
-    tab = manifest_annotations["sh.brew.tab"]
-    raise ArgumentError, "Couldn't find tab from manifest." if tab.blank?
-
-    begin
-      JSON.parse(tab)
-    rescue JSON::ParserError
-      raise ArgumentError, "Couldn't parse tab JSON."
-    end
-  end
-
   def github_packages_manifest_resource
     return if @resource.download_strategy != CurlGitHubPackagesDownloadStrategy
 
     @github_packages_manifest_resource ||= begin
-      resource = Resource.new("#{name}_bottle_manifest")
+      resource = Resource::BottleManifest.new(self)
 
       version_rebuild = GitHubPackages.version_rebuild(@resource.version, rebuild)
       resource.version(version_rebuild)
