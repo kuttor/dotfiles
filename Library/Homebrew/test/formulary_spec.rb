@@ -523,6 +523,38 @@ RSpec.describe Formulary do
         end
       end
     end
+
+    context "when passed a URL" do
+      it "raises an error when given an https URL" do
+        expect do
+          described_class.factory("https://brew.sh/foo.rb")
+        end.to raise_error(UnsupportedInstallationMethod)
+      end
+
+      it "raises an error when given a bottle URL" do
+        expect do
+          described_class.factory("https://brew.sh/foo-1.0.arm64_catalina.bottle.tar.gz")
+        end.to raise_error(UnsupportedInstallationMethod)
+      end
+
+      it "raises an error when given an ftp URL" do
+        expect do
+          described_class.factory("ftp://brew.sh/foo.rb")
+        end.to raise_error(UnsupportedInstallationMethod)
+      end
+
+      it "raises an error when given an sftp URL" do
+        expect do
+          described_class.factory("sftp://brew.sh/foo.rb")
+        end.to raise_error(UnsupportedInstallationMethod)
+      end
+
+      it "does not raise an error when given a file URL" do
+        expect do
+          described_class.factory("file://#{TEST_FIXTURE_DIR}/testball.rb")
+        end.not_to raise_error(UnsupportedInstallationMethod)
+      end
+    end
   end
 
   specify "::from_contents" do
