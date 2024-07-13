@@ -36,6 +36,12 @@ then
   exit 1
 fi
 
+# Reset sudo timestamp to avoid running unauthorized sudo commands
+if command -v sudo >/dev/null
+then
+  sudo --reset-timestamp
+fi
+
 quiet_cd() {
   CDPATH='' cd -- "$@" &>/dev/null || return
 }
