@@ -37,14 +37,7 @@ class Sandbox
   def allow_write(path:, type: :literal)
     add_rule allow: true, operation: "file-write*", filter: path_filter(path, type)
     add_rule allow: true, operation: "file-write-setugid", filter: path_filter(path, type)
-
-    file_write_mode_path = if Pathname(path).directory?
-      "#{path}/*"
-    else
-      path
-    end
-
-    add_rule allow: true, operation: "file-write-mode", filter: path_filter(file_write_mode_path, type)
+    add_rule allow: true, operation: "file-write-mode", filter: path_filter(path, type)
   end
 
   sig { params(path: T.any(String, Pathname), type: Symbol).void }
