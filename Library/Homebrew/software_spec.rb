@@ -392,14 +392,7 @@ class Bottle
   def fetch_tab
     return if github_packages_manifest_resource.blank?
 
-    # a checksum is used later identifying the correct tab but we do not have the checksum for the manifest/tab
-    github_packages_manifest_resource.fetch(verify_download_integrity: false)
-
-    begin
-      github_packages_manifest_resource.tab
-    rescue RuntimeError => e
-      raise DownloadError.new(github_packages_manifest_resource, e)
-    end
+    github_packages_manifest_resource.fetch
   rescue DownloadError
     raise unless fallback_on_error
 
