@@ -592,21 +592,21 @@ module Formulary
     def self.try_new(ref, from: T.unsafe(nil), warn: false)
       ref = ref.to_s
 
-      new(ref) if HOMEBREW_BOTTLES_EXTNAME_REGEX.match?(ref)
+      new(ref, warn:) if HOMEBREW_BOTTLES_EXTNAME_REGEX.match?(ref)
     end
 
-    def initialize(bottle_name)
+    def initialize(bottle_name, warn: false)
       case bottle_name
       when URL_START_REGEX
         # The name of the formula is found between the last slash and the last hyphen.
         formula_name = File.basename(bottle_name)[/(.+)-/, 1]
-        resource = Resource.new(formula_name) { url bottle_name }
-        resource.specs[:bottle] = true
-        downloader = resource.downloader
-        cached = downloader.cached_location.exist?
-        downloader.fetch
-        ohai "Pouring the cached bottle" if cached
-        @bottle_filename = downloader.cached_location
+        resource = Resource.new(formula_name) { url bottle_name, bottle: true }
+        if resource.downloaded?
+          ohai "Pouring the cached bottle" unless warn
+        else
+          resource.fetch
+        end
+        @bottle_filename = resource.cached_download
       else
         @bottle_filename = Pathname(bottle_name).realpath
       end
