@@ -40,6 +40,16 @@ module Homebrew
     # @api private
     class GhAuthNeeded < RuntimeError; end
 
+    # Returns whether attestation verification is enabled.
+    #
+    # @api private
+    sig { returns(T::Boolean) }
+    def self.enabled?
+      Homebrew::EnvConfig.verify_attestations? \
+        || Homebrew::EnvConfig.developer? \
+        || Homebrew::Settings.read("devcmdrun") == "true"
+    end
+
     # Returns a path to a suitable `gh` executable for attestation verification.
     #
     # @api private
