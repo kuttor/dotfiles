@@ -8,7 +8,14 @@ RSpec.describe RuboCop::Cop::Homebrew::NoFileutilsRmrf do
   it "registers an offense when using FileUtils.rm_rf" do
     expect_offense(<<~RUBY)
       FileUtils.rm_rf("path/to/directory")
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: Use `FileUtils.rm_r` instead of `FileUtils.rm_rf`.
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
+    RUBY
+  end
+
+  it "registers an offense when using FileUtils.rm_f" do
+    expect_offense(<<~RUBY)
+      FileUtils.rm_f("path/to/directory")
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
     RUBY
   end
 
@@ -25,6 +32,12 @@ RSpec.describe RuboCop::Cop::Homebrew::NoFileutilsRmrf do
   it "does not register an offense when using FileUtils.rm_r" do
     expect_no_offenses(<<~RUBY)
       FileUtils.rm_r("path/to/directory")
+    RUBY
+  end
+
+  it "does not register an offense when using FileUtils.rm" do
+    expect_no_offenses(<<~RUBY)
+      FileUtils.rm("path/to/directory")
     RUBY
   end
 end
