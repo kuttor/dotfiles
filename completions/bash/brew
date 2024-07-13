@@ -2113,7 +2113,9 @@ _brew_tab() {
   case "${cur}" in
     -*)
       __brewcomp "
+      --cask
       --debug
+      --formula
       --help
       --installed-on-request
       --no-installed-on-request
@@ -2124,7 +2126,8 @@ _brew_tab() {
       ;;
     *) ;;
   esac
-  __brew_complete_formulae
+  __brew_complete_installed_formulae
+  __brew_complete_installed_casks
 }
 
 _brew_tap() {

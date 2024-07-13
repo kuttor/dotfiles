@@ -1414,14 +1414,17 @@ __fish_brew_complete_arg 'style; and not __fish_seen_argument -l cask -l casks' 
 __fish_brew_complete_arg 'style; and not __fish_seen_argument -l formula -l formulae' -a '(__fish_brew_suggest_casks_all)'
 
 
-__fish_brew_complete_cmd 'tab' 'Edit tab information for installed formulae'
+__fish_brew_complete_cmd 'tab' 'Edit tab information for installed formulae or casks'
+__fish_brew_complete_arg 'tab' -l cask -d 'Only mark casks'
 __fish_brew_complete_arg 'tab' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'tab' -l formula -d 'Only mark formulae'
 __fish_brew_complete_arg 'tab' -l help -d 'Show this message'
-__fish_brew_complete_arg 'tab' -l installed-on-request -d 'Mark formula as installed on request'
-__fish_brew_complete_arg 'tab' -l no-installed-on-request -d 'Mark formula as not installed on request'
+__fish_brew_complete_arg 'tab' -l installed-on-request -d 'Mark installed_formula or installed_cask as installed on request'
+__fish_brew_complete_arg 'tab' -l no-installed-on-request -d 'Mark installed_formula or installed_cask as not installed on request'
 __fish_brew_complete_arg 'tab' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'tab' -l verbose -d 'Make some output more verbose'
-__fish_brew_complete_arg 'tab' -a '(__fish_brew_suggest_formulae_all)'
+__fish_brew_complete_arg 'tab; and not __fish_seen_argument -l cask -l casks' -a '(__fish_brew_suggest_formulae_installed)'
+__fish_brew_complete_arg 'tab; and not __fish_seen_argument -l formula -l formulae' -a '(__fish_brew_suggest_casks_installed)'
 
 
 __fish_brew_complete_cmd 'tap' 'Tap a formula repository'
