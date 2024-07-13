@@ -58,7 +58,7 @@ jobs:
         id: checkout
         if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
         run: |
-          gh pr checkout '${{ github.event.pull_request.number || github.event.inputs.pull_request }}'
+          gh pr checkout "${PR}"
 
           branch="$(git branch --show-current)"
           echo "branch=${branch}" >> "$GITHUB_OUTPUT"
@@ -66,6 +66,7 @@ jobs:
           gem_name="$(echo "${branch}" | sed -E 's|.*/||;s|(.*)-.*$|\1|')"
           echo "gem_name=${gem_name}" >> "$GITHUB_OUTPUT"
         env:
+          PR: ${{ github.event.pull_request.number || github.event.inputs.pull_request }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ${{ steps.set-up-homebrew.outputs.repository-path }}
 
