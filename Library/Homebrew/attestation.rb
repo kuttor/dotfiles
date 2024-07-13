@@ -45,9 +45,13 @@ module Homebrew
     # @api private
     sig { returns(T::Boolean) }
     def self.enabled?
-      Homebrew::EnvConfig.verify_attestations? \
-        || Homebrew::EnvConfig.developer? \
-        || Homebrew::Settings.read("devcmdrun") == "true"
+      # TODO: allow this undocumented variable until this is rolled out more
+      #       widely and then we can remove or document it.
+      return false if ENV.fetch("HOMEBREW_NO_VERIFY_ATTESTATIONS", false)
+
+      Homebrew::EnvConfig.verify_attestations? ||
+        Homebrew::EnvConfig.developer? ||
+        Homebrew::Settings.read("devcmdrun") == "true"
     end
 
     # Returns a path to a suitable `gh` executable for attestation verification.
