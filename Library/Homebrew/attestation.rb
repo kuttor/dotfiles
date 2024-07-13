@@ -48,10 +48,10 @@ module Homebrew
       # TODO: allow this undocumented variable until this is rolled out more
       #       widely and then we can remove or document it.
       return false if ENV.fetch("HOMEBREW_NO_VERIFY_ATTESTATIONS", false)
-
-      Homebrew::EnvConfig.verify_attestations? ||
-        Homebrew::EnvConfig.developer? ||
-        Homebrew::Settings.read("devcmdrun") == "true"
+      return true if Homebrew::EnvConfig.verify_attestations?
+      return false if ENV.fetch("CI", false)
+        
+      Homebrew::EnvConfig.developer?
     end
 
     # Returns a path to a suitable `gh` executable for attestation verification.
