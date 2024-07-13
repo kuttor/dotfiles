@@ -592,36 +592,23 @@ module Formulary
     def self.try_new(ref, from: T.unsafe(nil), warn: false)
       ref = ref.to_s
 
-      new(ref, warn:) if HOMEBREW_BOTTLES_EXTNAME_REGEX.match?(ref)
+      new(ref) if HOMEBREW_BOTTLES_EXTNAME_REGEX.match?(ref) && File.exist?(ref)
     end
 
     def initialize(bottle_name, warn: false)
-      case bottle_name
-      when URL_START_REGEX
-        # The name of the formula is found between the last slash and the last hyphen.
-        formula_name = File.basename(bottle_name)[/(.+)-/, 1]
-        resource = Resource.new(formula_name) { url bottle_name, bottle: true }
-        if resource.downloaded?
-          ohai "Pouring the cached bottle" unless warn
-        else
-          resource.fetch
-        end
-        @bottle_filename = resource.cached_download
-      else
-        @bottle_filename = Pathname(bottle_name).realpath
-      end
-      name, full_name = Utils::Bottles.resolve_formula_names @bottle_filename
+      @bottle_path = Pathname(bottle_name).realpath
+      name, full_name = Utils::Bottles.resolve_formula_names(@bottle_path)
       super name, Formulary.path(full_name)
     end
 
     def get_formula(spec, force_bottle: false, flags: [], ignore_errors: false, **)
       formula = begin
-        contents = Utils::Bottles.formula_contents(@bottle_filename, name:)
+        contents = Utils::Bottles.formula_contents(@bottle_path, name:)
         Formulary.from_contents(name, path, contents, spec, force_bottle:,
                                 flags:, ignore_errors:)
       rescue FormulaUnreadableError => e
         opoo <<~EOS
-          Unreadable formula in #{@bottle_filename}:
+          Unreadable formula in #{@bottle_path}:
           #{e}
         EOS
         super
@@ -632,7 +619,7 @@ module Formulary
         EOS
         super
       end
-      formula.local_bottle_path = @bottle_filename
+      formula.local_bottle_path = @bottle_path
       formula
     end
   end
