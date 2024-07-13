@@ -21,6 +21,50 @@ RSpec.describe Sandbox, :needs_macos do
     expect(file).to exist
   end
 
+  describe "#path_filter" do
+    ["'", '"', "(", ")", "\n"].each do |char|
+      it "fails if the path contains #{char}" do
+        expect do
+          sandbox.path_filter("foo#{char}bar", :subpath)
+        end.to raise_error(ArgumentError)
+      end
+    end
+  end
+
+  describe "#allow_write_cellar" do
+    it "fails when the formula has a name including )" do
+      f = formula do
+        url "https://brew.sh/foo-1.0.tar.gz"
+        version "1.0"
+
+        def initialize(*, **)
+          super
+          @name = "foo)bar"
+        end
+      end
+
+      expect do
+        sandbox.allow_write_cellar f
+      end.to raise_error(ArgumentError)
+    end
+
+    it "fails when the formula has a name including \"" do
+      f = formula do
+        url "https://brew.sh/foo-1.0.tar.gz"
+        version "1.0"
+
+        def initialize(*, **)
+          super
+          @name = "foo\"bar"
+        end
+      end
+
+      expect do
+        sandbox.allow_write_cellar f
+      end.to raise_error(ArgumentError)
+    end
+  end
+
   describe "#exec" do
     it "fails when writing to file not specified with ##allow_write" do
       expect do

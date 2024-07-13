@@ -231,6 +231,22 @@ class Sandbox
     end
   end
 
+  # @api private
+  sig { params(path: T.any(String, Pathname), type: Symbol).returns(String) }
+  def path_filter(path, type)
+    invalid_char = ['"', "'", "(", ")", "\n"].find do |c|
+      path.to_s.include?(c)
+    end
+    raise ArgumentError, "Invalid character #{invalid_char} in path: #{path}" if invalid_char
+
+    case type
+    when :regex   then "regex #\"#{path}\""
+    when :subpath then "subpath \"#{expand_realpath(Pathname.new(path))}\""
+    when :literal then "literal \"#{expand_realpath(Pathname.new(path))}\""
+    else raise ArgumentError, "Invalid path filter type: #{type}"
+    end
+  end
+
   private
 
   sig { params(path: Pathname).returns(Pathname) }
@@ -238,16 +254,6 @@ class Sandbox
     raise unless path.absolute?
 
     path.exist? ? path.realpath : expand_realpath(path.parent)/path.basename
-  end
-
-  sig { params(path: T.any(String, Pathname), type: Symbol).returns(String) }
-  def path_filter(path, type)
-    case type
-    when :regex   then "regex #\"#{path}\""
-    when :subpath then "subpath \"#{expand_realpath(Pathname.new(path))}\""
-    when :literal then "literal \"#{expand_realpath(Pathname.new(path))}\""
-    else raise ArgumentError, "Invalid path filter type: #{type}"
-    end
   end
 
   class SandboxRule
