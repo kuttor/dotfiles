@@ -106,7 +106,7 @@ module Utils
 
       def load_tab(formula)
         keg = Keg.new(formula.prefix)
-        tabfile = keg/Tab::FILENAME
+        tabfile = keg/AbstractTab::FILENAME
         bottle_json_path = formula.local_bottle_path&.sub(/\.(\d+\.)?tar\.gz$/, ".json")
 
         if (tab_attributes = formula.bottle_tab_attributes.presence)

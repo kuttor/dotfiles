@@ -637,7 +637,7 @@ class Formula
   # If at least one version of {Formula} is installed.
   sig { returns(T::Boolean) }
   def any_version_installed?
-    installed_prefixes.any? { |keg| (keg/Tab::FILENAME).file? }
+    installed_prefixes.any? { |keg| (keg/AbstractTab::FILENAME).file? }
   end
 
   # The link status symlink directory for this {Formula}.

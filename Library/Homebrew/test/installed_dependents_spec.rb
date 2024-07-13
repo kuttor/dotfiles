@@ -61,7 +61,7 @@ RSpec.describe InstalledDependents do
     def tab_dependencies(keg, deps, homebrew_version: "1.1.6")
       alter_tab(keg) do |tab|
         tab.homebrew_version = homebrew_version
-        tab.tabfile = keg/Tab::FILENAME
+        tab.tabfile = keg/AbstractTab::FILENAME
         tab.runtime_dependencies = deps
       end
     end

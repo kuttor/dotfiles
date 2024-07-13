@@ -32,7 +32,7 @@ RSpec.describe Homebrew::Cmd::Deps do
     # Mock `Formula#any_version_installed?` by creating the tab in a plausible keg directory
     keg_dir = HOMEBREW_CELLAR/"installed"/"1.0"
     keg_dir.mkpath
-    touch keg_dir/Tab::FILENAME
+    touch keg_dir/AbstractTab::FILENAME
 
     expect { brew "deps", "baz", "--include-test", "--missing", "--skip-recommended" }
       .to be_a_success

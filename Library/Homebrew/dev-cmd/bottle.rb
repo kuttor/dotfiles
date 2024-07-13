@@ -524,7 +524,7 @@ module Homebrew
             tab.time = nil
             tab.changed_files = changed_files.dup
             if args.only_json_tab?
-              tab.changed_files.delete(Pathname.new(Tab::FILENAME))
+              tab.changed_files.delete(Pathname.new(AbstractTab::FILENAME))
               tab.tabfile.unlink
             else
               tab.write
