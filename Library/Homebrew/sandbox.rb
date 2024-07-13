@@ -37,6 +37,7 @@ class Sandbox
   def allow_write(path:, type: :literal)
     add_rule allow: true, operation: "file-write*", filter: path_filter(path, type)
     add_rule allow: true, operation: "file-write-setugid", filter: path_filter(path, type)
+    add_rule allow: true, operation: "file-write-mode", filter: path_filter(path, type)
   end
 
   sig { params(path: T.any(String, Pathname), type: Symbol).void }
@@ -295,6 +296,8 @@ class Sandbox
           (regex #"^/dev/tty[a-z0-9]*$")
           )
       (deny file-write*) ; deny non-allowlist file write operations
+      (deny file-write-setugid) ; deny non-allowlist file write SUID/SGID operations
+      (deny file-write-mode) ; deny non-allowlist file write mode operations
       (allow process-exec
           (literal "/bin/ps")
           (with no-sandbox)

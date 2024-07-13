@@ -101,4 +101,32 @@ RSpec.describe Sandbox, :needs_macos do
         .and output(a_string_matching(/foo/).and(matching(/bar/).and(not_matching(/Python/)))).to_stdout
     end
   end
+
+  describe "#disallow chmod on some directory" do
+    it "formula does a chmod to opt" do
+      expect { sandbox.exec "chmod", "ug-w", HOMEBREW_PREFIX }.to raise_error(ErrorDuringExecution)
+    end
+
+    it "allows chmod on a path allowed to write" do
+      mktmpdir do |path|
+        FileUtils.touch path/"foo"
+        sandbox.allow_write_path(path)
+        expect { sandbox.exec "chmod", "ug-w", path/"foo" }.not_to raise_error(ErrorDuringExecution)
+      end
+    end
+  end
+
+  describe "#disallow chmod SUID or SGID on some directory" do
+    it "formula does a chmod 4000 to opt" do
+      expect { sandbox.exec "chmod", "4000", HOMEBREW_PREFIX }.to raise_error(ErrorDuringExecution)
+    end
+
+    it "allows chmod 4000 on a path allowed to write" do
+      mktmpdir do |path|
+        FileUtils.touch path/"foo"
+        sandbox.allow_write_path(path)
+        expect { sandbox.exec "chmod", "4000", path/"foo" }.not_to raise_error(ErrorDuringExecution)
+      end
+    end
+  end
 end
