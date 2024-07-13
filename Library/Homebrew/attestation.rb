@@ -50,7 +50,7 @@ module Homebrew
       return false if ENV.fetch("HOMEBREW_NO_VERIFY_ATTESTATIONS", false)
       return true if Homebrew::EnvConfig.verify_attestations?
       return false if ENV.fetch("CI", false)
-        
+
       Homebrew::EnvConfig.developer?
     end
 
