@@ -18,4 +18,34 @@ RSpec.describe Cask::CaskLoader::FromURILoader do
       RUBY
     end
   end
+
+  describe "::load" do
+    it "raises an error when given an https URL" do
+      loader = described_class.new("https://brew.sh/foo.rb")
+      expect do
+        loader.load(config: nil)
+      end.to raise_error(UnsupportedInstallationMethod)
+    end
+
+    it "raises an error when given an ftp URL" do
+      loader = described_class.new("ftp://brew.sh/foo.rb")
+      expect do
+        loader.load(config: nil)
+      end.to raise_error(UnsupportedInstallationMethod)
+    end
+
+    it "raises an error when given an sftp URL" do
+      loader = described_class.new("sftp://brew.sh/foo.rb")
+      expect do
+        loader.load(config: nil)
+      end.to raise_error(UnsupportedInstallationMethod)
+    end
+
+    it "does not raise an error when given a file URL" do
+      loader = described_class.new("file://#{TEST_FIXTURE_DIR}/cask/Casks/local-caffeine.rb")
+      expect do
+        loader.load(config: nil)
+      end.not_to raise_error(UnsupportedInstallationMethod)
+    end
+  end
 end

@@ -17,8 +17,8 @@ module Formulary
   extend Context
   extend Cachable
 
-  URL_START_REGEX = %r{(https?|ftp|file)://}
-  private_constant :URL_START_REGEX
+  ALLOWED_URL_SCHEMES = %w[file].freeze
+  private_constant :ALLOWED_URL_SCHEMES
 
   # `:codesign` and custom requirement classes are not supported.
   API_SUPPORTED_REQUIREMENTS = [:arch, :linux, :macos, :maximum_macos, :xcode].freeze
@@ -696,7 +696,7 @@ module Formulary
     def self.try_new(ref, from: T.unsafe(nil), warn: false)
       ref = ref.to_s
 
-      new(ref, from:) if URL_START_REGEX.match?(ref)
+      new(ref, from:) if URI(ref).scheme.present?
     end
 
     attr_reader :url
@@ -713,12 +713,8 @@ module Formulary
     end
 
     def load_file(flags:, ignore_errors:)
-      match = url.match(%r{githubusercontent.com/[\w-]+/[\w-]+/[a-f0-9]{40}(?:/Formula)?/(?<name>[\w+-.@]+).rb})
-      if match
-        raise UnsupportedInstallationMethod,
-              "Installation of #{match[:name]} from a GitHub commit URL is unsupported! " \
-              "`brew extract #{match[:name]}` to a stable tap on GitHub instead."
-      elsif url.match?(%r{^(https?|ftp)://})
+      url_scheme = URI(url).scheme
+      if ALLOWED_URL_SCHEMES.exclude?(url_scheme)
         raise UnsupportedInstallationMethod,
               "Non-checksummed download of #{name} formula file from an arbitrary URL is unsupported! " \
               "`brew extract` or `brew create` and `brew tap-new` to create a formula file in a tap " \

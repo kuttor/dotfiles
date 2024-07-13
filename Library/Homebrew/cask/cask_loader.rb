@@ -12,6 +12,9 @@ module Cask
   module CaskLoader
     extend Context
 
+    ALLOWED_URL_SCHEMES = %w[file].freeze
+    private_constant :ALLOWED_URL_SCHEMES
+
     module ILoader
       extend T::Helpers
       interface!
@@ -171,16 +174,24 @@ module Cask
         new(uri)
       end
 
-      attr_reader :url
+      attr_reader :url, :name
 
       sig { params(url: T.any(URI::Generic, String)).void }
       def initialize(url)
         @url = URI(url)
-        super Cache.path/File.basename(T.must(@url.path))
+        @name = File.basename(T.must(@url.path))
+        super Cache.path/name
       end
 
       def load(config:)
         path.dirname.mkpath
+
+        if ALLOWED_URL_SCHEMES.exclude?(url.scheme)
+          raise UnsupportedInstallationMethod,
+                "Non-checksummed download of #{name} formula file from an arbitrary URL is unsupported! " \
+                "`brew extract` or `brew create` and `brew tap-new` to create a formula file in a tap " \
+                "on GitHub instead."
+        end
 
         begin
           ohai "Downloading #{url}"
