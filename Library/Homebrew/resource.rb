@@ -267,6 +267,58 @@ class Resource < Downloadable
     end
   end
 
+  # A resource for a bottle manifest.
+  class BottleManifest < Resource
+    class Error < RuntimeError; end
+
+    attr_reader :bottle
+
+    def initialize(bottle)
+      super("#{bottle.name}_bottle_manifest")
+      @bottle = bottle
+    end
+
+    def verify_download_integrity(_filename)
+      # We don't have a checksum, but we can at least try parsing it.
+      tab
+    rescue Error => e
+      raise DownloadError.new(self, e)
+    end
+
+    def tab
+      json = begin
+        JSON.parse(cached_download.read)
+      rescue JSON::ParserError
+        raise Error, "The downloaded GitHub Packages manifest was corrupted or modified (it is not valid JSON): " \
+                     "\n#{cached_download}"
+      end
+
+      manifests = json["manifests"]
+      raise Error, "Missing 'manifests' section." if manifests.blank?
+
+      manifests_annotations = manifests.filter_map { |m| m["annotations"] }
+      raise Error, "Missing 'annotations' section." if manifests_annotations.blank?
+
+      bottle_digest = bottle.resource.checksum.hexdigest
+      image_ref = GitHubPackages.version_rebuild(bottle.resource.version, bottle.rebuild, bottle.tag.to_s)
+      manifest_annotations = manifests_annotations.find do |m|
+        next if m["sh.brew.bottle.digest"] != bottle_digest
+
+        m["org.opencontainers.image.ref.name"] == image_ref
+      end
+      raise Error, "Couldn't find manifest matching bottle checksum." if manifest_annotations.blank?
+
+      tab = manifest_annotations["sh.brew.tab"]
+      raise Error, "Couldn't find tab from manifest." if tab.blank?
+
+      begin
+        JSON.parse(tab)
+      rescue JSON::ParserError
+        raise Error, "Couldn't parse tab JSON."
+      end
+    end
+  end
+
   # A resource containing a patch.
   class PatchResource < Resource
     attr_reader :patch_files
