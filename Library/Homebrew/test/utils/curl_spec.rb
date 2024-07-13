@@ -35,19 +35,19 @@ RSpec.describe "Utils::Curl" do
       file_hash:      nil,
     }
 
-    details[:normal][:ok] = Marshal.load(Marshal.dump(details[:normal][:no_cookie]))
+    details[:normal][:ok] = details[:normal][:no_cookie].deep_dup
     details[:normal][:ok][:status_code] = "200"
 
-    details[:normal][:single_cookie] = Marshal.load(Marshal.dump(details[:normal][:no_cookie]))
+    details[:normal][:single_cookie] = details[:normal][:no_cookie].deep_dup
     details[:normal][:single_cookie][:headers]["set-cookie"] = "a_cookie=for_testing"
 
-    details[:normal][:multiple_cookies] = Marshal.load(Marshal.dump(details[:normal][:no_cookie]))
+    details[:normal][:multiple_cookies] = details[:normal][:no_cookie].deep_dup
     details[:normal][:multiple_cookies][:headers]["set-cookie"] = [
       "first_cookie=for_testing",
       "last_cookie=also_for_testing",
     ]
 
-    details[:normal][:blank_headers] = Marshal.load(Marshal.dump(details[:normal][:no_cookie]))
+    details[:normal][:blank_headers] = details[:normal][:no_cookie].deep_dup
     details[:normal][:blank_headers][:headers] = {}
 
     details[:cloudflare][:single_cookie] = {
@@ -75,7 +75,7 @@ RSpec.describe "Utils::Curl" do
       file_hash:      nil,
     }
 
-    details[:cloudflare][:multiple_cookies] = Marshal.load(Marshal.dump(details[:cloudflare][:single_cookie]))
+    details[:cloudflare][:multiple_cookies] = details[:cloudflare][:single_cookie].deep_dup
     details[:cloudflare][:multiple_cookies][:headers]["set-cookie"] = [
       "first_cookie=for_testing",
       "__cf_bm=abcdef0123456789; path=/; expires=Thu, 28-Apr-22 18:38:40 GMT; domain=www.example.com; HttpOnly; " \
@@ -83,28 +83,28 @@ RSpec.describe "Utils::Curl" do
       "last_cookie=also_for_testing",
     ]
 
-    details[:cloudflare][:no_server] = Marshal.load(Marshal.dump(details[:cloudflare][:single_cookie]))
+    details[:cloudflare][:no_server] = details[:cloudflare][:single_cookie].deep_dup
     details[:cloudflare][:no_server][:headers].delete("server")
 
-    details[:cloudflare][:wrong_server] = Marshal.load(Marshal.dump(details[:cloudflare][:single_cookie]))
+    details[:cloudflare][:wrong_server] = details[:cloudflare][:single_cookie].deep_dup
     details[:cloudflare][:wrong_server][:headers]["server"] = "nginx 1.2.3"
 
     # TODO: Make the Incapsula test data more realistic once we can find an
     # example website to reference.
-    details[:incapsula][:single_cookie_visid_incap] = Marshal.load(Marshal.dump(details[:normal][:no_cookie]))
+    details[:incapsula][:single_cookie_visid_incap] = details[:normal][:no_cookie].deep_dup
     details[:incapsula][:single_cookie_visid_incap][:headers]["set-cookie"] = "visid_incap_something=something"
 
-    details[:incapsula][:single_cookie_incap_ses] = Marshal.load(Marshal.dump(details[:normal][:no_cookie]))
+    details[:incapsula][:single_cookie_incap_ses] = details[:normal][:no_cookie].deep_dup
     details[:incapsula][:single_cookie_incap_ses][:headers]["set-cookie"] = "incap_ses_something=something"
 
-    details[:incapsula][:multiple_cookies_visid_incap] = Marshal.load(Marshal.dump(details[:normal][:no_cookie]))
+    details[:incapsula][:multiple_cookies_visid_incap] = details[:normal][:no_cookie].deep_dup
     details[:incapsula][:multiple_cookies_visid_incap][:headers]["set-cookie"] = [
       "first_cookie=for_testing",
       "visid_incap_something=something",
       "last_cookie=also_for_testing",
     ]
 
-    details[:incapsula][:multiple_cookies_incap_ses] = Marshal.load(Marshal.dump(details[:normal][:no_cookie]))
+    details[:incapsula][:multiple_cookies_incap_ses] = details[:normal][:no_cookie].deep_dup
     details[:incapsula][:multiple_cookies_incap_ses][:headers]["set-cookie"] = [
       "first_cookie=for_testing",
       "incap_ses_something=something",
