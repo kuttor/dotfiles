@@ -1162,9 +1162,9 @@ evaluation of this command's output to your dotfiles (e.g. `~/.bash_profile` or
 The shell can be specified explicitly with a supported shell name parameter.
 Unknown shells will output POSIX exports.
 
-### `tab` \[`--installed-on-request`\] \[`--no-installed-on-request`\] *`formula`* \[...\]
+### `tab` \[*`options`*\] *`installed_formula`*\|*`installed_cask`* \[...\]
 
-Edit tab information for installed formulae.
+Edit tab information for installed formulae or casks.
 
 This can be useful when you want to control whether an installed formula should
 be removed by `brew autoremove`. To prevent removal, mark the formula as
@@ -1173,11 +1173,19 @@ request.
 
 `--installed-on-request`
 
-: Mark *`formula`* as installed on request.
+: Mark *`installed_formula`* or *`installed_cask`* as installed on request.
 
 `--no-installed-on-request`
 
-: Mark *`formula`* as not installed on request.
+: Mark *`installed_formula`* or *`installed_cask`* as not installed on request.
+
+`--formula`
+
+: Only mark formulae.
+
+`--cask`
+
+: Only mark casks.
 
 ### `tap` \[*`options`*\] \[*`user`*`/`*`repo`*\] \[*`URL`*\]
 
