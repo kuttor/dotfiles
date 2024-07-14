@@ -13,6 +13,11 @@ tap_path() {
   local repo
   local part
 
+  if [[ "${tap}" != *"/"* ]]
+  then
+    odie "Invalid tap name: ${tap}"
+  fi
+
   user="$(echo "${tap%%/*}" | tr '[:upper:]' '[:lower:]')"
   repo="$(echo "${tap#*/}" | tr '[:upper:]' '[:lower:]')"
 
