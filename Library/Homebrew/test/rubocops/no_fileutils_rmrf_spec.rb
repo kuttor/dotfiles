@@ -10,16 +10,20 @@ RSpec.describe RuboCop::Cop::Homebrew::NoFileutilsRmrf do
       expect_offense(<<~RUBY)
         rm_rf("path/to/directory")
         ^^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
+        FileUtils.rm_rf("path/to/directory")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
       RUBY
     end
 
     it "autocorrects" do
       corrected = autocorrect_source(<<~RUBY)
         rm_rf("path/to/directory")
+        FileUtils.rm_rf("path/to/other/directory")
       RUBY
 
       expect(corrected).to eq(<<~RUBY)
         rm_r("path/to/directory")
+        FileUtils.rm_r("path/to/other/directory")
       RUBY
     end
   end
@@ -29,16 +33,20 @@ RSpec.describe RuboCop::Cop::Homebrew::NoFileutilsRmrf do
       expect_offense(<<~RUBY)
         rm_f("path/to/directory")
         ^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
+        FileUtils.rm_f("path/to/other/directory")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
       RUBY
     end
 
     it "autocorrects" do
       corrected = autocorrect_source(<<~RUBY)
         rm_f("path/to/directory")
+        FileUtils.rm_f("path/to/other/directory")
       RUBY
 
       expect(corrected).to eq(<<~RUBY)
         rm("path/to/directory")
+        FileUtils.rm("path/to/other/directory")
       RUBY
     end
   end
@@ -48,16 +56,20 @@ RSpec.describe RuboCop::Cop::Homebrew::NoFileutilsRmrf do
       expect_offense(<<~RUBY)
         rmtree("path/to/directory")
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
+        Pathname.rmtree("path/to/other/directory")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
       RUBY
     end
 
     it "autocorrects" do
       corrected = autocorrect_source(<<~RUBY)
         rmtree("path/to/directory")
+        Pathname.rmtree("path/to/other/directory")
       RUBY
 
       expect(corrected).to eq(<<~RUBY)
         rm_r("path/to/directory")
+        FileUtils.rm_r("path/to/other/directory")
       RUBY
     end
   end

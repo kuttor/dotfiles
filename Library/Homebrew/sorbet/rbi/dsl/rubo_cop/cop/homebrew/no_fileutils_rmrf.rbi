@@ -7,6 +7,12 @@
 
 class RuboCop::Cop::Homebrew::NoFileutilsRmrf
   sig { params(node: RuboCop::AST::Node, kwargs: T.untyped, block: T.untyped).returns(T.untyped) }
+  def fileutils_rm_r_f_tree?(node, **kwargs, &block); end
+
+  sig { params(node: RuboCop::AST::Node, kwargs: T.untyped, block: T.untyped).returns(T.untyped) }
+  def pathname_rm_r_f_tree?(node, **kwargs, &block); end
+
+  sig { params(node: RuboCop::AST::Node, kwargs: T.untyped, block: T.untyped).returns(T.untyped) }
   def plain_rm_r_f_tree?(node, **kwargs, &block); end
 
   sig { params(node: RuboCop::AST::Node, kwargs: T.untyped, block: T.untyped).returns(T.untyped) }
