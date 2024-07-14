@@ -1,6 +1,8 @@
 # typed: true
 # frozen_string_literal: true
 
+require "forwardable"
+
 # Representation of a `*PATH` environment variable.
 class PATH
   include Enumerable

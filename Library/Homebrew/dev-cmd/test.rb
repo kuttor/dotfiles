@@ -35,6 +35,7 @@ module Homebrew
 
         require "formula_assertions"
         require "formula_free_port"
+        require "utils/fork"
 
         args.named.to_resolved_formulae.each do |f|
           # Cannot test uninstalled formulae
@@ -100,6 +101,8 @@ module Homebrew
             end
           rescue Exception => e # rubocop:disable Lint/RescueException
             retry if retry_test?(f)
+
+            require "utils/backtrace"
             ofail "#{f.full_name}: failed"
             $stderr.puts e, Utils::Backtrace.clean(e)
           ensure

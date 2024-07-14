@@ -87,6 +87,7 @@ class DependencyCollector
   def glibc_dep_if_needed(related_formula_names); end
 
   def git_dep_if_needed(tags)
+    require "utils/git"
     return if Utils::Git.available?
 
     Dependency.new("git", [*tags, :implicit])
@@ -97,6 +98,7 @@ class DependencyCollector
   end
 
   def subversion_dep_if_needed(tags)
+    require "utils/svn"
     return if Utils::Svn.available?
 
     Dependency.new("subversion", [*tags, :implicit])

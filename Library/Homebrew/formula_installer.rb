@@ -24,6 +24,7 @@ require "unlink"
 require "service"
 require "attestation"
 require "sbom"
+require "utils/fork"
 
 # Installer for a formula.
 class FormulaInstaller

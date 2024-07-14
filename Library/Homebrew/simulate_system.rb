@@ -1,6 +1,8 @@
 # typed: true
 # frozen_string_literal: true
 
+require "macos_version"
+
 module Homebrew
   # Helper module for simulating different system configurations.
   class SimulateSystem

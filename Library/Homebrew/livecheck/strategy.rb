@@ -1,6 +1,8 @@
 # typed: strict
 # frozen_string_literal: true
 
+require "utils/curl"
+
 module Homebrew
   module Livecheck
     # The `Livecheck::Strategy` module contains the various strategies as well

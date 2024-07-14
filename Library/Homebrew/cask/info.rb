@@ -27,6 +27,8 @@ module Cask
 
     def self.info(cask)
       puts get_info(cask)
+
+      require "utils/analytics"
       ::Utils::Analytics.cask_output(cask, args: Homebrew::CLI::Args.new)
     end
 

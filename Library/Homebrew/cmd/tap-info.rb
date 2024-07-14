@@ -23,6 +23,8 @@ module Homebrew
 
       sig { override.void }
       def run
+        require "tap"
+
         taps = if args.installed?
           Tap
         else

@@ -6,6 +6,7 @@ require "software_spec"
 require "development_tools"
 require "extend/ENV"
 require "system_command"
+require "git_repository"
 
 # Helper module for querying information about the system configuration.
 module SystemConfig

@@ -3,17 +3,6 @@
 
 require_relative "startup"
 
-require "English"
-require "fileutils"
-require "json"
-require "json/add/exception"
-require "forwardable"
-
-require "extend/array"
-require "extend/blank"
-require "extend/enumerable"
-require "extend/string"
-
 HOMEBREW_API_DEFAULT_DOMAIN = ENV.fetch("HOMEBREW_API_DEFAULT_DOMAIN").freeze
 HOMEBREW_BOTTLE_DEFAULT_DOMAIN = ENV.fetch("HOMEBREW_BOTTLE_DEFAULT_DOMAIN").freeze
 HOMEBREW_BREW_DEFAULT_GIT_REMOTE = ENV.fetch("HOMEBREW_BREW_DEFAULT_GIT_REMOTE").freeze
@@ -64,11 +53,6 @@ HOMEBREW_PULL_API_REGEX =
 HOMEBREW_PULL_OR_COMMIT_URL_REGEX =
   %r[https://github\.com/([\w-]+)/([\w-]+)?/(?:pull/(\d+)|commit/[0-9a-fA-F]{4,40})]
 HOMEBREW_BOTTLES_EXTNAME_REGEX = /\.([a-z0-9_]+)\.bottle\.(?:(\d+)\.)?tar\.gz$/
-
-require "env_config"
-require "macos_version"
-require "os"
-require "messages"
 
 module Homebrew
   extend FileUtils
@@ -127,13 +111,19 @@ module Homebrew
   end
 end
 
-require "context"
-require "git_repository"
+require "extend/blank"
+require "os"
+
+require "extend/array"
+require "extend/cachable"
+require "extend/enumerable"
+require "extend/kernel"
+require "extend/string"
 require "extend/pathname"
-require "cli/args"
+
+require "exceptions"
 
 require "PATH"
-
 ENV["HOMEBREW_PATH"] ||= ENV.fetch("PATH")
 ORIGINAL_PATHS = PATH.new(ENV.fetch("HOMEBREW_PATH")).filter_map do |p|
   Pathname.new(p).expand_path
@@ -141,9 +131,5 @@ rescue
   nil
 end.freeze
 
-require "exceptions"
-require "utils"
-
-require "official_taps"
-require "tap"
 require "tap_constants"
+require "official_taps"

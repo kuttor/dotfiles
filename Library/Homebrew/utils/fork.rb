@@ -30,6 +30,8 @@ module Utils
   end
 
   def self.safe_fork
+    require "json/add/exception"
+
     Dir.mktmpdir("homebrew", HOMEBREW_TEMP) do |tmpdir|
       UNIXServer.open("#{tmpdir}/socket") do |server|
         read, write = IO.pipe

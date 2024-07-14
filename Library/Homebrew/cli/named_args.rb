@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 require "delegate"
-require "api"
 require "cli/args"
 
 module Homebrew
@@ -29,12 +28,6 @@ module Homebrew
         cask_options: false,
         without_api: false
       )
-        require "cask/cask"
-        require "cask/cask_loader"
-        require "formulary"
-        require "keg"
-        require "missing_formula"
-
         @args = args
         @override_spec = override_spec
         @force_bottle = force_bottle

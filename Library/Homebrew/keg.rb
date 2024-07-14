@@ -193,6 +193,8 @@ class Keg
       return false if file.directory? && !file.children.reject(&:ds_store?).empty?
 
       basename = file.basename.to_s
+
+      require "metafiles"
       next if Metafiles.copy?(basename)
       next if %w[.DS_Store INSTALL_RECEIPT.json].include?(basename)
 

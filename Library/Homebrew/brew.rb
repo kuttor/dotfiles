@@ -39,6 +39,7 @@ begin
       help_flag = true
       help_cmd_index = i
     elsif !cmd && help_flag_list.exclude?(arg)
+      require "commands"
       cmd = ARGV.delete_at(i)
       cmd = Commands::HOMEBREW_INTERNAL_COMMAND_ALIASES.fetch(cmd, cmd)
     end
@@ -59,13 +60,13 @@ begin
 
   ENV["PATH"] = path.to_s
 
-  require "abstract_command"
   require "commands"
-  require "settings"
 
   internal_cmd = Commands.valid_internal_cmd?(cmd) || Commands.valid_internal_dev_cmd?(cmd) if cmd
 
   unless internal_cmd
+    require "tap"
+
     # Add contributed commands to PATH before checking.
     homebrew_path.append(Tap.cmd_directories)
 
@@ -88,6 +89,8 @@ begin
     cmd_class = Homebrew::AbstractCommand.command(cmd)
     if cmd_class
       command_instance = cmd_class.new
+
+      require "utils/analytics"
       Utils::Analytics.report_command_run(command_instance)
       command_instance.run
     else
@@ -102,6 +105,8 @@ begin
     end
     exec "brew-#{cmd}", *ARGV
   else
+    require "tap"
+
     possible_tap = OFFICIAL_CMD_TAPS.find { |_, cmds| cmds.include?(cmd) }
     possible_tap = Tap.fetch(possible_tap.first) if possible_tap
 
@@ -142,6 +147,7 @@ rescue UsageError => e
   Homebrew::Help.help cmd, remaining_args: args&.remaining, usage_error: e.message
 rescue SystemExit => e
   onoe "Kernel.exit" if args&.debug? && !e.success?
+  require "utils/backtrace"
   $stderr.puts Utils::Backtrace.clean(e) if args&.debug? || ARGV.include?("--debug")
   raise
 rescue Interrupt
@@ -179,6 +185,7 @@ rescue RuntimeError, SystemCallError => e
   raise if e.message.empty?
 
   onoe e
+  require "utils/backtrace"
   $stderr.puts Utils::Backtrace.clean(e) if args&.debug? || ARGV.include?("--debug")
 
   exit 1
@@ -186,6 +193,7 @@ rescue Exception => e # rubocop:disable Lint/RescueException
   onoe e
 
   method_deprecated_error = e.is_a?(MethodDeprecatedError)
+  require "utils/backtrace"
   $stderr.puts Utils::Backtrace.clean(e) if args&.debug? || ARGV.include?("--debug") || !method_deprecated_error
 
   if OS.unsupported_configuration?

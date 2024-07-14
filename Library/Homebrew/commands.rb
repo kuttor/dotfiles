@@ -1,8 +1,6 @@
 # typed: true
 # frozen_string_literal: true
 
-require "completions"
-
 # Helper functions for commands.
 module Commands
   HOMEBREW_CMD_PATH = (HOMEBREW_LIBRARY_PATH/"cmd").freeze
@@ -72,16 +70,22 @@ module Commands
 
   # Ruby commands which can be `require`d without being run.
   def self.external_ruby_v2_cmd_path(cmd)
+    require "tap"
+
     path = which("#{cmd}.rb", Tap.cmd_directories)
     path if require?(path)
   end
 
   # Ruby commands which are run by being `require`d.
   def self.external_ruby_cmd_path(cmd)
+    require "tap"
+
     which("brew-#{cmd}.rb", PATH.new(ENV.fetch("PATH")).append(Tap.cmd_directories))
   end
 
   def self.external_cmd_path(cmd)
+    require "tap"
+
     which("brew-#{cmd}", PATH.new(ENV.fetch("PATH")).append(Tap.cmd_directories))
   end
 
@@ -112,6 +116,8 @@ module Commands
   end
 
   def self.official_external_commands_paths(quiet:)
+    require "tap"
+
     OFFICIAL_CMD_TAPS.flat_map do |tap_name, cmds|
       tap = Tap.fetch(tap_name)
       tap.install(quiet:) unless tap.installed?
@@ -137,6 +143,8 @@ module Commands
   end
 
   def self.external_commands
+    require "tap"
+
     Tap.cmd_directories.flat_map do |path|
       find_commands(path).select(&:executable?)
                          .map { basename_without_extension(_1) }
@@ -156,6 +164,8 @@ module Commands
   end
 
   def self.rebuild_internal_commands_completion_list
+    require "completions"
+
     cmds = internal_commands + internal_developer_commands + internal_commands_aliases
     cmds.reject! { |cmd| Homebrew::Completions::COMPLETIONS_EXCLUSION_LIST.include? cmd }
 
@@ -164,6 +174,8 @@ module Commands
   end
 
   def self.rebuild_commands_completion_list
+    require "completions"
+
     # Ensure that the cache exists so we can build the commands list
     HOMEBREW_CACHE.mkpath
 

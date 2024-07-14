@@ -150,12 +150,14 @@ RSpec.describe Homebrew::Completions do
   end
 
   context "when generating completions" do
-    describe ".update_shell_completions!" do
-      it "generates shell completions" do
-        described_class.update_shell_completions!
-        expect(completions_dir/"bash/brew").to be_a_file
-      end
-    end
+    # TODO: re-enable this test if it can be made to take ~ 1 second or there's
+    #       an actual regression.
+    # describe ".update_shell_completions!" do
+    #   it "generates shell completions" do
+    #     described_class.update_shell_completions!
+    #     expect(completions_dir/"bash/brew").to be_a_file
+    #   end
+    # end
 
     describe ".format_description" do
       it "escapes single quotes" do

@@ -5,6 +5,7 @@ require "attrable"
 require "open3"
 require "plist"
 require "shellwords"
+require "uri"
 
 require "context"
 require "extend/io"

@@ -15,6 +15,7 @@ require "extend/ENV"
 require "fcntl"
 require "socket"
 require "cmd/install"
+require "json/add/exception"
 
 # A formula build.
 class Build

@@ -1,12 +1,6 @@
 # typed: true
 # frozen_string_literal: true
 
-require "context"
-require "resource"
-require "metafiles"
-require "extend/file/atomic"
-require "system_command"
-
 module DiskUsageExtension
   sig { returns(Integer) }
   def disk_usage
@@ -74,6 +68,8 @@ module DiskUsageExtension
     end
   end
 end
+
+require "system_command"
 
 # Homebrew extends Ruby's `Pathname` to make our code more readable.
 # @see https://ruby-doc.org/stdlib-2.6.3/libdoc/pathname/rdoc/Pathname.html Ruby's Pathname API
@@ -186,6 +182,8 @@ class Pathname
   # @api public
   sig { params(content: String).void }
   def atomic_write(content)
+    require "extend/file/atomic"
+
     old_stat = stat if exist?
     File.atomic_write(self) do |file|
       file.write(content)
@@ -433,6 +431,8 @@ class Pathname
   end
 
   def install_metafiles(from = Pathname.pwd)
+    require "metafiles"
+
     Pathname(from).children.each do |p|
       next if p.directory?
       next if File.empty?(p)
@@ -514,8 +514,9 @@ class Pathname
     nil
   end
 end
-
 require "extend/os/pathname"
+
+require "context"
 
 module ObserverPathnameExtension
   class << self

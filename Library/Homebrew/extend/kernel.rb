@@ -3,6 +3,7 @@
 
 # Contains shorthand Homebrew utility methods like `ohai`, `opoo`, `odisabled`.
 # TODO: move these out of `Kernel`.
+
 module Kernel
   def require?(path)
     return false if path.nil?
@@ -74,6 +75,9 @@ module Kernel
   # @api public
   sig { params(message: T.any(String, Exception)).void }
   def onoe(message)
+    require "utils/formatter"
+    require "utils/github/actions"
+
     Tty.with($stderr) do |stderr|
       stderr.puts Formatter.error(message, label: "Error")
       GitHub::Actions.puts_annotation_if_env_set(:error, message.to_s)
@@ -149,6 +153,8 @@ module Kernel
 
     backtrace.each do |line|
       next unless (match = line.match(HOMEBREW_TAP_PATH_REGEX))
+
+      require "tap"
 
       tap = Tap.fetch(match[:user], match[:repo])
       tap_message = +"\nPlease report this issue to the #{tap.full_name} tap"
