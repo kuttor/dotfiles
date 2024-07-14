@@ -109,7 +109,10 @@ module Homebrew
       return if name == owner.name # Skip the top-level package name as we only care about `resource "foo"` blocks.
 
       if url.end_with? ".whl"
-        pypi_package_name, = File.basename(URI(url).path).split("-", 2)
+        path = URI(url).path
+        return unless path.present?
+
+        pypi_package_name, = File.basename(path).split("-", 2)
       else
         url =~ %r{/(?<package_name>[^/]+)-}
         pypi_package_name = Regexp.last_match(:package_name).to_s.gsub(/[_.]/, "-")
