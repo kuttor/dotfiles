@@ -34,6 +34,8 @@ module Homebrew
                description: "Check only formulae."
         switch "--cask", "--casks",
                description: "Check only casks."
+        switch "--eval-all",
+               description: "Evaluate all formulae and casks."
         flag   "--tap=",
                description: "Check formulae and casks within the given tap, specified as <user>`/`<repo>."
         switch "--installed",
@@ -76,6 +78,10 @@ module Homebrew
             formulae + casks
           elsif args.named.present?
             args.named.to_formulae_and_casks_with_taps
+          else
+            formulae = args.cask? ? [] : Formula.all(eval_all: args.eval_all?)
+            casks = args.formula? ? [] : Cask::Cask.all(eval_all: args.eval_all?)
+            formulae + casks
           end
 
           formulae_and_casks = formulae_and_casks&.sort_by do |formula_or_cask|
