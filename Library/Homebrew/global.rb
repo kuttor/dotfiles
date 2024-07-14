@@ -114,12 +114,12 @@ module Homebrew
 end
 
 require "extend/blank"
+require "extend/kernel"
 require "os"
 
 require "extend/array"
 require "extend/cachable"
 require "extend/enumerable"
-require "extend/kernel"
 require "extend/string"
 require "extend/pathname"
 
