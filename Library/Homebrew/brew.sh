@@ -166,7 +166,7 @@ case "$@" in
     homebrew-list "$@" && exit 0
     ;;
   # falls back to cmd/help.rb on a non-zero return
-  help | "")
+  help | --help | -h | --usage | -? | "")
     homebrew-help "$@" && exit 0
     ;;
 esac
