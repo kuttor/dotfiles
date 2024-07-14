@@ -60,6 +60,11 @@ Homebrew/CompactBlank:
     # `blank?` is not necessarily available here:
     - "Homebrew/extend/enumerable.rb"
 
+Homebrew/NoFileutilsRmrf:
+  Include:
+    - "/**/{Formula,Casks}/**/*.rb"
+    - "**/{Formula,Casks}/**/*.rb"
+
 # only used internally
 Homebrew/MoveToExtendOS:
   Enabled: false

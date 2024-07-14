@@ -9,15 +9,14 @@ module RuboCop
       class NoFileutilsRmrf < Base
         extend AutoCorrector
 
-        MSG = "Use `FileUtils.rm` or `FileUtils.rm_r` instead of `FileUtils.rm_rf`, `FileUtils.rm_f`, " \
-              "or `{FileUtils,Pathname}.rmtree`."
+        MSG = "Use `rm` or `rm_r` instead of `rm_rf`, `rm_f`, or `rmtree`."
 
-        def_node_matcher :fileutils_rm_r_f?, <<~PATTERN
-          (send (const {nil? cbase} :FileUtils) {:rm_rf :rm_f :rmtree} ...)
+        def_node_matcher :self_rm_r_f_tree?, <<~PATTERN
+          (send (self) {:rm_rf :rm_f :rmtree} ...)
         PATTERN
 
-        def_node_matcher :pathname_rmtree?, <<~PATTERN
-          (send (const {nil? cbase} :Pathname) :rmtree ...)
+        def_node_matcher :plain_rm_r_f_tree?, <<~PATTERN
+          (send nil? {:rm_rf :rm_f :rmtree} ...)
         PATTERN
 
         def on_send(node)
@@ -30,12 +29,12 @@ module RuboCop
               "rm"
             end
 
-            corrector.replace(node.loc.expression, "FileUtils.#{new_method}(#{node.arguments.first.source})")
+            corrector.replace(node.loc.expression, "#{new_method}(#{node.arguments.first.source})")
           end
         end
 
         def neither_rm_rf_nor_rmtree?(node)
-          !fileutils_rm_r_f?(node) && !pathname_rmtree?(node)
+          !self_rm_r_f_tree?(node) && !plain_rm_r_f_tree?(node)
         end
       end
     end
