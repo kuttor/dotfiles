@@ -4,6 +4,7 @@
 require "abstract_command"
 require "bump_version_parser"
 require "livecheck/livecheck"
+require "utils/repology"
 
 module Homebrew
   module DevCmd
