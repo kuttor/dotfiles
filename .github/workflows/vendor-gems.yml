@@ -22,15 +22,7 @@ permissions:
 
 jobs:
   vendor-gems:
-    if: >
-      github.repository_owner == 'Homebrew' && (
-        github.event_name == 'workflow_dispatch' ||
-        github.event_name == 'pull_request' ||
-        github.event_name == 'push' || (
-          github.event.pull_request.user.login == 'dependabot[bot]' &&
-          contains(github.event.pull_request.title, '/Library/Homebrew')
-        )
-      )
+    if: github.repository_owner == 'Homebrew'
     runs-on: macos-14
     steps:
       - name: Set up Homebrew
