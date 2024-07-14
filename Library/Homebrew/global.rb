@@ -113,6 +113,14 @@ module Homebrew
   end
 end
 
+require "PATH"
+ENV["HOMEBREW_PATH"] ||= ENV.fetch("PATH")
+ORIGINAL_PATHS = PATH.new(ENV.fetch("HOMEBREW_PATH")).filter_map do |p|
+  Pathname.new(p).expand_path
+rescue
+  nil
+end.freeze
+
 require "extend/blank"
 require "extend/kernel"
 require "os"
@@ -124,14 +132,6 @@ require "extend/string"
 require "extend/pathname"
 
 require "exceptions"
-
-require "PATH"
-ENV["HOMEBREW_PATH"] ||= ENV.fetch("PATH")
-ORIGINAL_PATHS = PATH.new(ENV.fetch("HOMEBREW_PATH")).filter_map do |p|
-  Pathname.new(p).expand_path
-rescue
-  nil
-end.freeze
 
 require "tap_constants"
 require "official_taps"
