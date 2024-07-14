@@ -503,7 +503,7 @@ RSpec.describe Homebrew::FormulaAuditor do
   end
 
   describe "#audit_resource_name_matches_pypi_package_name_in_url" do
-    it "reports a problem if the resource name does not match the python package name" do
+    it "reports a problem if the resource name does not match the python sdist name" do
       fa = formula_auditor "foo", <<~RUBY
         class Foo < Formula
           url "https://brew.sh/foo-1.0.tgz"
@@ -512,6 +512,25 @@ RSpec.describe Homebrew::FormulaAuditor do
 
           resource "Something" do
             url "https://files.pythonhosted.org/packages/FooSomething-1.0.0.tar.gz"
+            sha256 "def456"
+          end
+        end
+      RUBY
+
+      fa.audit_specs
+      expect(fa.problems.first[:message])
+        .to match("resource name should be `FooSomething` to match the PyPI package name")
+    end
+
+    it "reports a problem if the resource name does not match the python wheel name" do
+      fa = formula_auditor "foo", <<~RUBY
+        class Foo < Formula
+          url "https://brew.sh/foo-1.0.tgz"
+          sha256 "abc123"
+          homepage "https://brew.sh"
+
+          resource "Something" do
+            url "https://files.pythonhosted.org/packages/FooSomething-1.0.0-py3-none-any.whl"
             sha256 "def456"
           end
         end
