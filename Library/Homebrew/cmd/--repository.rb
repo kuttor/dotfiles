@@ -26,7 +26,9 @@ module Homebrew
 
       sig { override.void }
       def run
-        raise StandardError, "This command is not meant to be run."
+        raise StandardError,
+              "This command is just here for completions generation. " \
+              "It's actually defined in `cmd/--repository.sh` instead."
       end
     end
   end
