@@ -352,7 +352,7 @@ module Utils
         check_github_api = url_type == SharedAudits::URL_TYPE_HOMEPAGE &&
                            details[:status_code] == "404" &&
                            repo_details &&
-                           Homebrew::EnvConfig.github_api_token
+                           Homebrew::EnvConfig.github_api_token.present?
 
         unless check_github_api
           return "The #{url_type} #{url} is not reachable (HTTP status code #{details[:status_code]})"
