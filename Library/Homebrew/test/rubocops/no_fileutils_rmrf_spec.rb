@@ -61,4 +61,23 @@ RSpec.describe RuboCop::Cop::Homebrew::NoFileutilsRmrf do
       RUBY
     end
   end
+
+  describe "Pathname.rmtree" do
+    it "registers an offense" do
+      expect_offense(<<~RUBY)
+        Pathname.rmtree("path/to/directory")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
+      RUBY
+    end
+
+    it "autocorrects" do
+      corrected = autocorrect_source(<<~RUBY)
+        Pathname.rmtree("path/to/directory")
+      RUBY
+
+      expect(corrected).to eq(<<~RUBY)
+        FileUtils.rm_r("path/to/directory")
+      RUBY
+    end
+  end
 end
