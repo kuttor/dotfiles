@@ -3949,6 +3949,11 @@ command execution e.g. `$(cat file)`.
 
 : If set, `brew update` will not show the list of newly added formulae/casks.
 
+`HOMEBREW_NO_VERIFY_ATTESTATIONS`
+
+: If set, Homebrew not verify cryptographic attestations of build provenance for
+  bottles from homebrew-core.
+
 `HOMEBREW_PIP_INDEX_URL`
 
 : If set, `brew install` *`formula`* will use this URL to download PyPI package
