@@ -75,11 +75,13 @@ module Utils
           exit!(true)
         end
 
-        ignore_interrupts(quiet: true) do # the child will receive the interrupt and marshal it back
+        pid = T.must(pid)
+
+        begin
           begin
             socket = server.accept_nonblock
           rescue Errno::EAGAIN, Errno::EWOULDBLOCK, Errno::ECONNABORTED, Errno::EPROTO, Errno::EINTR
-            retry unless Process.waitpid(T.must(pid), Process::WNOHANG)
+            retry unless Process.waitpid(pid, Process::WNOHANG)
           else
             socket.send_io(write)
             socket.close
@@ -87,23 +89,24 @@ module Utils
           write.close
           data = read.read
           read.close
-          Process.wait(T.must(pid)) unless socket.nil?
-
-          # 130 is the exit status for a process interrupted via Ctrl-C.
-          # We handle it here because of the possibility of an interrupted process terminating
-          # without writing its Interrupt exception to the error pipe.
-          raise Interrupt if $CHILD_STATUS.exitstatus == 130
-
-          if data.present?
-            error_hash = JSON.parse(T.must(data.lines.first))
-
-            e = ChildProcessError.new(error_hash)
-
-            raise rewrite_child_error(e)
-          end
-
-          raise "Forked child process failed: #{$CHILD_STATUS}" unless $CHILD_STATUS.success?
+          Process.waitpid(pid) unless socket.nil?
+        rescue Interrupt
+          Process.waitpid(pid)
         end
+
+        # 130 is the exit status for a process interrupted via Ctrl-C.
+        raise Interrupt if $CHILD_STATUS.exitstatus == 130
+        raise Interrupt if $CHILD_STATUS.termsig == Signal.list["INT"]
+
+        if data.present?
+          error_hash = JSON.parse(T.must(data.lines.first))
+
+          e = ChildProcessError.new(error_hash)
+
+          raise rewrite_child_error(e)
+        end
+
+        raise "Forked child process failed: #{$CHILD_STATUS}" unless $CHILD_STATUS.success?
       end
     end
   end
