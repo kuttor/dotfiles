@@ -10,7 +10,6 @@ on:
       - .github/workflows/vendor-gems.yml
     branches-ignore:
       - master
-  pull_request_target:
   workflow_dispatch:
     inputs:
       pull_request:
@@ -43,20 +42,20 @@ jobs:
           test-bot: false
 
       - name: Configure Git user
-        if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch'
         uses: Homebrew/actions/git-user-config@master
         with:
           username: BrewTestBot
 
       - name: Set up commit signing
-        if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch'
         uses: Homebrew/actions/setup-commit-signing@master
         with:
           signing_key: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY }}
 
       - name: Check out pull request
         id: checkout
-        if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch'
         run: |
           gh pr checkout "${PR}"
 
@@ -74,7 +73,7 @@ jobs:
         env:
           HOMEBREW_GPG_PASSPHRASE: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY_PASSPHRASE }}
         run: |
-          if [[ "${GITHUB_EVENT_NAME}" == "pull_request_target" || "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]
           then
             brew vendor-gems --non-bundler-gems
           else
@@ -85,7 +84,7 @@ jobs:
         run: brew typecheck --update
 
       - name: Commit RBI changes
-        if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch'
         env:
           GEM_NAME: ${{ steps.checkout.outputs.gem_name }}
           HOMEBREW_GPG_PASSPHRASE: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY_PASSPHRASE }}
@@ -101,13 +100,13 @@ jobs:
       - name: Generate push token
         uses: actions/create-github-app-token@31c86eb3b33c9b601a1f60f98dcbfd1d70f379b4 # v1
         id: app-token
-        if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch'
         with:
           app-id: ${{ vars.BREW_COMMIT_APP_ID }}
           private-key: ${{ secrets.BREW_COMMIT_APP_KEY }}
 
       - name: Push to pull request
-        if: github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch'
         uses: Homebrew/actions/git-try-push@master
         with:
           token: ${{ steps.app-token.outputs.token }}
