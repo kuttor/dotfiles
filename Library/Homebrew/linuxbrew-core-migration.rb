@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 # List of formulae that had a revision in linuxbrew-core
