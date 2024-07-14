@@ -73,12 +73,22 @@ module PyPI
         return
       end
 
-      sdist = json["urls"].find { |url| url["packagetype"] == "sdist" }
-      return if sdist.nil?
+      dist = json["urls"].find do |url|
+        url["packagetype"] == "sdist"
+      end
+
+      # If there isn't an sdist, we use the first source wheel.
+      if dist.nil?
+        dist = json["urls"].find do |url|
+          url["filename"].end_with?("-none-any.whl")
+        end
+      end
+
+      return if dist.nil?
 
       @pypi_info = [
-        PyPI.normalize_python_package(json["info"]["name"]), sdist["url"],
-        sdist["digests"]["sha256"], json["info"]["version"]
+        PyPI.normalize_python_package(json["info"]["name"]), dist["url"],
+        dist["digests"]["sha256"], json["info"]["version"]
       ]
     end
 
