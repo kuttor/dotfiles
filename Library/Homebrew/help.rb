@@ -7,48 +7,16 @@ require "commands"
 module Homebrew
   # Helper module for printing help output.
   module Help
-    # NOTE: Keep the length of vanilla `--help` less than 25 lines!
-    #       This is because the default Terminal height is 25 lines. Scrolling sucks
-    #       and concision is important. If more help is needed we should start
-    #       specialising help like the gem command does.
-    # NOTE: Keep lines less than 80 characters! Wrapping is just not cricket.
-    HOMEBREW_HELP = <<~EOS
-      Example usage:
-        brew search TEXT|/REGEX/
-        brew info [FORMULA|CASK...]
-        brew install FORMULA|CASK...
-        brew update
-        brew upgrade [FORMULA|CASK...]
-        brew uninstall FORMULA|CASK...
-        brew list [FORMULA|CASK...]
-
-      Troubleshooting:
-        brew config
-        brew doctor
-        brew install --verbose --debug FORMULA|CASK
-
-      Contributing:
-        brew create URL [--no-fetch]
-        brew edit [FORMULA|CASK...]
-
-      Further help:
-        brew commands
-        brew help [COMMAND]
-        man brew
-        https://docs.brew.sh
-    EOS
-    private_constant :HOMEBREW_HELP
-
     def self.help(cmd = nil, empty_argv: false, usage_error: nil, remaining_args: [])
       if cmd.nil?
         # Handle `brew` (no arguments).
         if empty_argv
-          $stderr.puts HOMEBREW_HELP
+          $stderr.puts HOMEBREW_HELP_MESSAGE
           exit 1
         end
 
         # Handle `brew (-h|--help|--usage|-?|help)` (no other arguments).
-        puts HOMEBREW_HELP
+        puts HOMEBREW_HELP_MESSAGE
         exit 0
       end
 
@@ -57,7 +25,7 @@ module Homebrew
 
       # Display command-specific (or generic) help in response to `UsageError`.
       if usage_error
-        $stderr.puts path ? command_help(cmd, path, remaining_args:) : HOMEBREW_HELP
+        $stderr.puts path ? command_help(cmd, path, remaining_args:) : HOMEBREW_HELP_MESSAGE
         $stderr.puts
         onoe usage_error
         exit 1
@@ -83,7 +51,7 @@ module Homebrew
 
       output ||= if output.blank?
         opoo "No help text in: #{path}" if Homebrew::EnvConfig.developer?
-        HOMEBREW_HELP
+        HOMEBREW_HELP_MESSAGE
       end
 
       output

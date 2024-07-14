@@ -127,6 +127,9 @@ case "$1" in
     exit 0
     ;;
 esac
+
+source "${HOMEBREW_LIBRARY}/Homebrew/help.sh"
+
 # functions that take multiple arguments or handle multiple commands.
 # doesn't need a default case as other arguments handled elsewhere.
 # shellcheck disable=SC2249
@@ -161,6 +164,10 @@ case "$@" in
   list*)
     source "${HOMEBREW_LIBRARY}/Homebrew/list.sh"
     homebrew-list "$@" && exit 0
+    ;;
+  # falls back to cmd/help.rb on a non-zero return
+  help | "")
+    homebrew-help "$@" && exit 0
     ;;
 esac
 
@@ -683,6 +690,7 @@ HOMEBREW_USER_AGENT_CURL="${HOMEBREW_USER_AGENT} ${curl_name_and_version// //}"
 HOMEBREW_CURL_SPEED_LIMIT=100
 HOMEBREW_CURL_SPEED_TIME=5
 
+export HOMEBREW_HELP_MESSAGE
 export HOMEBREW_VERSION
 export HOMEBREW_MACOS_ARM_DEFAULT_PREFIX
 export HOMEBREW_LINUX_DEFAULT_PREFIX
