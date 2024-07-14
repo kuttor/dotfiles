@@ -1,8 +1,6 @@
 # typed: true
 # frozen_string_literal: true
 
-require "env_config"
-
 # Various helper functions for interacting with TTYs.
 module Tty
   @stream = $stdout
@@ -109,6 +107,8 @@ module Tty
 
     sig { returns(T::Boolean) }
     def color?
+      require "env_config"
+
       return false if Homebrew::EnvConfig.no_color?
       return true if Homebrew::EnvConfig.color?
 

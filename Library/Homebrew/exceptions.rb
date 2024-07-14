@@ -1,9 +1,6 @@
 # typed: true
 # frozen_string_literal: true
 
-require "shellwords"
-require "utils"
-
 # Raised when a command is used wrong.
 #
 # @api internal
@@ -554,6 +551,8 @@ end
 # installed in a situation where a bottle is required.
 class UnbottledError < RuntimeError
   def initialize(formulae)
+    require "utils"
+
     msg = +<<~EOS
       The following #{Utils.pluralize("formula", formulae.count, plural: "e")} cannot be installed from #{Utils.pluralize("bottle", formulae.count)} and must be
       built from source.

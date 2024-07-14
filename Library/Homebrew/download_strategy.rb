@@ -737,6 +737,8 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   # @api public
   sig { returns(Time) }
   def source_modified_time
+    require "utils/svn"
+
     time = if Version.new(T.must(Utils::Svn.version)) >= Version.new("1.9")
       out, = silent_command("svn", args: ["info", "--show-item", "last-changed-date"], chdir: cached_location)
       out
@@ -789,6 +791,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
 
     args << "--ignore-externals" if ignore_externals
 
+    require "utils/svn"
     args.concat Utils::Svn.invalid_cert_flags if meta[:trust_cert] == true
 
     if target.directory?
@@ -921,6 +924,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   def partial_clone_sparse_checkout?
     return false if @only_path.blank?
 
+    require "utils/git"
     Utils::Git.supports_partial_clone_sparse_checkout?
   end
 

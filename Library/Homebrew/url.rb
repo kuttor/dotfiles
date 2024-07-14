@@ -1,7 +1,6 @@
 # typed: true
 # frozen_string_literal: true
 
-require "download_strategy"
 require "version"
 
 class URL

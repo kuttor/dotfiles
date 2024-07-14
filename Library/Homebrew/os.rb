@@ -30,6 +30,7 @@ module OS
   # @api public
   sig { returns(Version) }
   def self.kernel_version
+    require "utils/popen"
     @kernel_version ||= Version.new(Utils.safe_popen_read("uname", "-r").chomp)
   end
 
@@ -38,6 +39,7 @@ module OS
   # @api public
   sig { returns(String) }
   def self.kernel_name
+    require "utils/popen"
     @kernel_name ||= Utils.safe_popen_read("uname", "-s").chomp
   end
 

@@ -6,10 +6,12 @@ raise "#{__FILE__} must not be loaded via `require`." if $PROGRAM_NAME != __FILE
 old_trap = trap("INT") { exit! 130 }
 
 require_relative "global"
+
 require "fcntl"
 require "socket"
 require "cli/parser"
 require "cmd/postinstall"
+require "json/add/exception"
 
 begin
   args = Homebrew::Cmd::Postinstall.new.args

@@ -5,8 +5,10 @@ require "abstract_command"
 require "env_config"
 require "cask/config"
 require "cli/args"
+require "commands"
 require "optparse"
 require "utils/tty"
+require "utils/formatter"
 
 module Homebrew
   module CLI

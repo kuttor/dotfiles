@@ -14,6 +14,7 @@ require "fcntl"
 require "socket"
 require "cli/parser"
 require "dev-cmd/test"
+require "json/add/exception"
 
 TEST_TIMEOUT_SECONDS = 5 * 60
 

@@ -4,7 +4,7 @@
 require "context"
 require "erb"
 require "settings"
-require "api"
+require "extend/cachable"
 
 module Utils
   # Helper module for fetching and reporting analytics data.
@@ -51,6 +51,8 @@ module Utils
 
       sig { params(url: String, args: T::Array[String]).void }
       def deferred_curl(url, args)
+        require "utils/curl"
+
         curl = Utils::Curl.curl_executable
         if ENV["HOMEBREW_ANALYTICS_DEBUG"]
           puts "#{curl} #{args.join(" ")} \"#{url}\""
@@ -203,6 +205,8 @@ module Utils
       end
 
       def output(args:, filter: nil)
+        require "api"
+
         days = args.days || "30"
         category = args.category || "install"
         begin
@@ -270,6 +274,8 @@ module Utils
         return unless args.github_packages_downloads?
         return unless formula.core_formula?
 
+        require "utils/curl"
+
         escaped_formula_name = GitHubPackages.image_formula_name(formula.name)
                                              .gsub("/", "%2F")
         formula_url_suffix = "container/core%2F#{escaped_formula_name}/"
@@ -310,6 +316,8 @@ module Utils
       def formula_output(formula, args:)
         return if Homebrew::EnvConfig.no_analytics? || Homebrew::EnvConfig.no_github_api?
 
+        require "api"
+
         json = Homebrew::API::Formula.fetch formula.name
         return if json.blank? || json["analytics"].blank?
 
@@ -322,6 +330,8 @@ module Utils
 
       def cask_output(cask, args:)
         return if Homebrew::EnvConfig.no_analytics? || Homebrew::EnvConfig.no_github_api?
+
+        require "api"
 
         json = Homebrew::API::Cask.fetch cask.token
         return if json.blank? || json["analytics"].blank?

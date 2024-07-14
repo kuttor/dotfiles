@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "livecheck/constants"
+require "cask/cask"
 
 # The {Livecheck} class implements the DSL methods used in a formula's, cask's
 # or resource's `livecheck` block and stores related instance variables. Most

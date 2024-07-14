@@ -2,9 +2,6 @@
 # frozen_string_literal: true
 
 require "commands"
-require "completions"
-require "extend/cachable"
-require "description_cache_store"
 require "settings"
 
 # A {Tap} is used to extend the formulae provided by Homebrew core.
@@ -197,6 +194,8 @@ class Tap
   private_class_method :new
 
   def initialize(user, repository)
+    require "git_repository"
+
     @user = user
     @repository = repository
     @name = "#{@user}/#{@repository}".downcase
@@ -509,6 +508,8 @@ class Tap
 
     formatted_contents = contents.presence&.to_sentence&.dup&.prepend(" ")
     $stderr.puts "Tapped#{formatted_contents} (#{path.abv})." unless quiet
+
+    require "description_cache_store"
     CacheStoreDatabase.use(:descriptions) do |db|
       DescriptionCacheStore.new(db)
                            .update_from_formula_names!(formula_names)
@@ -547,9 +548,12 @@ class Tap
   end
 
   def link_completions_and_manpages
+    require "utils/link"
+
     command = "brew tap --repair"
     Utils::Link.link_manpages(path, command)
 
+    require "completions"
     Homebrew::Completions.show_completions_message_if_needed
     if official? || Homebrew::Completions.link_completions?
       Utils::Link.link_completions(path, command)
@@ -602,6 +606,7 @@ class Tap
     abv = path.abv
     formatted_contents = contents.presence&.to_sentence&.dup&.prepend(" ")
 
+    require "description_cache_store"
     CacheStoreDatabase.use(:descriptions) do |db|
       DescriptionCacheStore.new(db)
                            .delete_from_formula_names!(formula_names)
@@ -610,6 +615,8 @@ class Tap
       CaskDescriptionCacheStore.new(db)
                                .delete_from_cask_tokens!(cask_tokens)
     end
+
+    require "utils/link"
     Utils::Link.unlink_manpages(path)
     Utils::Link.unlink_completions(path)
     path.rmtree
