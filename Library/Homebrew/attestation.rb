@@ -62,7 +62,7 @@ module Homebrew
     # @api private
     sig { returns(Pathname) }
     def self.gh_executable
-      # NOTE: We disable HOMEBREW_NO_VERIFY_ATTESTATIONS when installing `gh` itself,
+      # NOTE: We set HOMEBREW_NO_VERIFY_ATTESTATIONS when installing `gh` itself,
       #       to prevent a cycle during bootstrapping. This can eventually be resolved
       #       by vendoring a pure-Ruby Sigstore verifier client.
       @gh_executable ||= T.let(with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
@@ -111,7 +111,7 @@ module Homebrew
                                  .stdout.match(/\d+(?:\.\d+)+/i).to_s)
         if gh_version < GH_ATTESTATION_MIN_VERSION
           raise e,
-                "#{gh_executable} is too old, you must upgrade it to continue."
+                "#{gh_executable} is too old, you must upgrade it to continue"
         end
 
         raise InvalidAttestationError, "attestation verification failed: #{e}"

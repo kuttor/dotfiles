@@ -77,7 +77,7 @@ RSpec.describe Homebrew::Attestation do
     end
   end
 
-  describe "::check_attestation (with old gh)" do
+  describe "::check_attestation fails with old gh" do
     before do
       allow(described_class).to receive(:gh_executable)
         .and_return(fake_old_gh)
