@@ -496,6 +496,7 @@ _brew_bottle() {
 _brew_bump() {
   _arguments \
     '--debug[Display any debugging information]' \
+    '--eval-all[Evaluate all formulae and casks]' \
     '--full-name[Print formulae/casks with fully-qualified names]' \
     '--help[Show this message]' \
     '(--tap)--installed[Check formulae and casks that are currently installed]' \
@@ -504,6 +505,7 @@ _brew_bump() {
     '(--open-pr)--no-pull-requests[Do not retrieve pull requests from GitHub]' \
     '(--no-pull-requests)--open-pr[Open a pull request for the new version if none have been opened yet]' \
     '--quiet[Make some output more quiet]' \
+    '--repology[Use Repology to check for outdated packages]' \
     '--start-with[Letter or word that the list of package results should alphabetically follow]' \
     '(--installed)--tap[Check formulae and casks within the given tap, specified as user`/`repo]' \
     '--verbose[Make some output more verbose]' \

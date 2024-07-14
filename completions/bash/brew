@@ -438,6 +438,7 @@ _brew_bump() {
       __brewcomp "
       --cask
       --debug
+      --eval-all
       --formula
       --full-name
       --help
@@ -447,6 +448,7 @@ _brew_bump() {
       --no-pull-requests
       --open-pr
       --quiet
+      --repology
       --start-with
       --tap
       --verbose

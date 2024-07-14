@@ -1764,6 +1764,14 @@ formulae, also displays whether a pull request has been opened with the URL.
 
 : Check only casks.
 
+`--eval-all`
+
+: Evaluate all formulae and casks.
+
+`--repology`
+
+: Use Repology to check for outdated packages.
+
 `--tap`
 
 : Check formulae and casks within the given tap, specified as
