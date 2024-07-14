@@ -302,6 +302,7 @@ class Sandbox
           (literal "/bin/ps")
           (with no-sandbox)
           ) ; allow certain processes running without sandbox
+      (deny signal (target others)) ; deny sending signals to other processes
       (allow default) ; allow everything else
     ERB
 
