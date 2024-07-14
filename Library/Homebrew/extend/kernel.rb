@@ -351,16 +351,14 @@ module Kernel
 
   IGNORE_INTERRUPTS_MUTEX = Thread::Mutex.new.freeze
 
-  def ignore_interrupts(quiet: false)
+  def ignore_interrupts
     IGNORE_INTERRUPTS_MUTEX.synchronize do
       interrupted = T.let(false, T::Boolean)
       old_sigint_handler = trap(:INT) do
         interrupted = true
 
-        unless quiet
-          $stderr.print "\n"
-          $stderr.puts "One sec, cleaning up..."
-        end
+        $stderr.print "\n"
+        $stderr.puts "One sec, cleaning up..."
       end
 
       begin
