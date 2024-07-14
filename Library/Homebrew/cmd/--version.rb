@@ -5,18 +5,15 @@ require "abstract_command"
 
 module Homebrew
   module Cmd
-    class Repository < AbstractCommand
+    class Version < AbstractCommand
       sig { override.returns(String) }
-      def self.command_name = "--repository"
+      def self.command_name = "--version"
 
       cmd_args do
         description <<~EOS
-          Display where Homebrew's Git repository is located.
-
-          If <user>`/`<repo> are provided, display where tap <user>`/`<repo>'s directory is located.
+          Print the version numbers of Homebrew, Homebrew/homebrew-core and
+          Homebrew/homebrew-cask (if tapped) to standard output.
         EOS
-
-        named_args :tap
       end
 
       sig { override.void }

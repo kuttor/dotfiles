@@ -267,6 +267,22 @@ _brew___repository() {
   __brew_complete_tapped
 }
 
+_brew___version() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+}
+
 _brew__s() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "${cur}" in
@@ -290,6 +306,22 @@ _brew__s() {
       --quiet
       --repology
       --ubuntu
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+}
+
+_brew__v() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
       --verbose
       "
       return
@@ -570,6 +602,22 @@ _brew_bump_unversioned_casks() {
   esac
   __brew_complete_casks
   __brew_complete_tapped
+}
+
+_brew_casks() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
 }
 
 _brew_cat() {
@@ -1025,6 +1073,22 @@ _brew_formula() {
     *) ;;
   esac
   __brew_complete_formulae
+}
+
+_brew_formulae() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
 }
 
 _brew_generate_cask_api() {
@@ -1997,6 +2061,22 @@ _brew_rm() {
   __brew_complete_installed_casks
 }
 
+_brew_rubocop() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+}
+
 _brew_ruby() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "${cur}" in
@@ -2065,6 +2145,23 @@ _brew_search() {
   esac
 }
 
+_brew_setup_ruby() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+  __brew_complete_commands
+}
+
 _brew_sh() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "${cur}" in
@@ -2082,6 +2179,22 @@ _brew_sh() {
     *) ;;
   esac
   __brew_complete_files
+}
+
+_brew_shellenv() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
 }
 
 _brew_style() {
@@ -2539,6 +2652,23 @@ _brew_update_report() {
   esac
 }
 
+_brew_update_reset() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+  __brew_complete_tapped
+}
+
 _brew_update_sponsors() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "${cur}" in
@@ -2675,6 +2805,22 @@ _brew_vendor_gems() {
   esac
 }
 
+_brew_vendor_install() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+}
+
 _brew() {
   local i=1 cmd
 
@@ -2713,7 +2859,9 @@ _brew() {
     --prefix) _brew___prefix ;;
     --repo) _brew___repo ;;
     --repository) _brew___repository ;;
+    --version) _brew___version ;;
     -S) _brew__s ;;
+    -v) _brew__v ;;
     abv) _brew_abv ;;
     analytics) _brew_analytics ;;
     audit) _brew_audit ;;
@@ -2724,6 +2872,7 @@ _brew() {
     bump-formula-pr) _brew_bump_formula_pr ;;
     bump-revision) _brew_bump_revision ;;
     bump-unversioned-casks) _brew_bump_unversioned_casks ;;
+    casks) _brew_casks ;;
     cat) _brew_cat ;;
     cleanup) _brew_cleanup ;;
     command) _brew_command ;;
@@ -2745,6 +2894,7 @@ _brew() {
     extract) _brew_extract ;;
     fetch) _brew_fetch ;;
     formula) _brew_formula ;;
+    formulae) _brew_formulae ;;
     generate-cask-api) _brew_generate_cask_api ;;
     generate-formula-api) _brew_generate_formula_api ;;
     generate-man-completions) _brew_generate_man_completions ;;
@@ -2785,10 +2935,13 @@ _brew() {
     release) _brew_release ;;
     remove) _brew_remove ;;
     rm) _brew_rm ;;
+    rubocop) _brew_rubocop ;;
     ruby) _brew_ruby ;;
     rubydoc) _brew_rubydoc ;;
     search) _brew_search ;;
+    setup-ruby) _brew_setup_ruby ;;
     sh) _brew_sh ;;
+    shellenv) _brew_shellenv ;;
     style) _brew_style ;;
     tab) _brew_tab ;;
     tap) _brew_tap ;;
@@ -2811,11 +2964,13 @@ _brew() {
     update-maintainers) _brew_update_maintainers ;;
     update-python-resources) _brew_update_python_resources ;;
     update-report) _brew_update_report ;;
+    update-reset) _brew_update_reset ;;
     update-sponsors) _brew_update_sponsors ;;
     update-test) _brew_update_test ;;
     upgrade) _brew_upgrade ;;
     uses) _brew_uses ;;
     vendor-gems) _brew_vendor_gems ;;
+    vendor-install) _brew_vendor_install ;;
     *) ;;
   esac
 }

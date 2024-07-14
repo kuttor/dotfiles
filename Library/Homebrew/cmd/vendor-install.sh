@@ -1,7 +1,4 @@
-#:  @hide_from_man_page
-#:  * `vendor-install` [<target>]
-#:
-#:  Install Homebrew's portable Ruby.
+# Documentation defined in Library/Homebrew/cmd/vendor-install.rb
 
 # HOMEBREW_CURLRC, HOMEBREW_LIBRARY is from the user environment
 # HOMEBREW_CACHE, HOMEBREW_CURL, HOMEBREW_LINUX, HOMEBREW_LINUX_MINIMUM_GLIBC_VERSION, HOMEBREW_MACOS,

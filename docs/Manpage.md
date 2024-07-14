@@ -1141,12 +1141,14 @@ Perform a substring search of cask tokens and formula names for *`text`*. If
 
 : Search for *`text`* in the given database.
 
-### `setup-ruby [command]`
+### `setup-ruby` \[*`command`* ...\]
 
 Installs and configures Homebrew's Ruby. If `command` is passed, it will only
 run Bundler if necessary for that command.
 
-### `shellenv [bash|csh|fish|pwsh|sh|tcsh|zsh]`
+### `shellenv` \[*`shell`* ...\]
+
+Valid shells: bash\|csh\|fish\|pwsh\|sh\|tcsh\|zsh
 
 Print export statements. When run in a shell, this installation of Homebrew will
 be added to your `PATH`, `MANPATH`, and `INFOPATH`.
@@ -1284,7 +1286,7 @@ Remove a tapped formula repository.
 
 : Untap even if formulae or casks from this tap are currently installed.
 
-### `update` \[*`options`*\]
+### `update`, `up` \[*`options`*\]
 
 Fetch the newest version of Homebrew and all formulae from GitHub using `git`(1)
 and perform any necessary migrations.
@@ -1301,7 +1303,15 @@ and perform any necessary migrations.
 
 : Always do a slower, full update check (even if unnecessary).
 
-### `update-reset` \[*`path-to-tap-repository`* ...\]
+`-v`, `--verbose`
+
+: Print the directories checked and `git` operations performed.
+
+`-d`, `--debug`
+
+: Display a trace of all shell commands as they are executed.
+
+### `update-reset` \[*`tap`* ...\]
 
 Fetch and reset Homebrew and all tap repositories (or any specified
 *`repository`*) using `git`(1) to their latest `origin/HEAD`.

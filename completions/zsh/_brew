@@ -208,7 +208,7 @@ __brew_internal_commands() {
     'search:Perform a substring search of cask tokens and formula names for text'
     'setup-ruby:Installs and configures Homebrew'\''s Ruby'
     'sh:Enter an interactive shell for Homebrew'\''s build environment'
-    'shellenv:Print export statements'
+    'shellenv:Valid shells: bash|csh|fish|pwsh|sh|tcsh|zsh  Print export statements'
     'style:Check formulae or files for conformance to Homebrew style guidelines'
     'tab:Edit tab information for installed formulae or casks'
     'tap:Tap a formula repository'
@@ -363,6 +363,15 @@ _brew___repository() {
     '*::tap:__brew_any_tap'
 }
 
+# brew --version
+_brew___version() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]'
+}
+
 # brew -S
 _brew__s() {
   _arguments \
@@ -384,6 +393,15 @@ _brew__s() {
     '--quiet[Make some output more quiet]' \
     '(--macports --fink --opensuse --fedora --archlinux --debian --ubuntu)--repology[Search for text in the given database]' \
     '(--repology --macports --fink --opensuse --fedora --archlinux --debian)--ubuntu[Search for text in the given database]' \
+    '--verbose[Make some output more verbose]'
+}
+
+# brew -v
+_brew__v() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
     '--verbose[Make some output more verbose]'
 }
 
@@ -603,6 +621,15 @@ _brew_bump_unversioned_casks() {
     '*::cask:__brew_casks' \
     - tap \
     '*::tap:__brew_any_tap'
+}
+
+# brew casks
+_brew_casks() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]'
 }
 
 # brew cat
@@ -934,6 +961,15 @@ _brew_formula() {
     '--verbose[Make some output more verbose]' \
     - formula \
     '*::formula:__brew_formulae'
+}
+
+# brew formulae
+_brew_formulae() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]'
 }
 
 # brew generate-cask-api
@@ -1667,6 +1703,15 @@ _brew_rm() {
     '*::installed_cask:__brew_installed_casks'
 }
 
+# brew rubocop
+_brew_rubocop() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]'
+}
+
 # brew ruby
 _brew_ruby() {
   _arguments \
@@ -1715,6 +1760,17 @@ _brew_search() {
     '--verbose[Make some output more verbose]'
 }
 
+# brew setup-ruby
+_brew_setup_ruby() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]' \
+    - command \
+    '*::command:__brew_commands'
+}
+
 # brew sh
 _brew_sh() {
   _arguments \
@@ -1726,6 +1782,15 @@ _brew_sh() {
     '--verbose[Make some output more verbose]' \
     - file \
     '*::file:__brew_formulae_or_ruby_files'
+}
+
+# brew shellenv
+_brew_shellenv() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]'
 }
 
 # brew style
@@ -2049,6 +2114,17 @@ _brew_update_report() {
     '--verbose[Make some output more verbose]'
 }
 
+# brew update-reset
+_brew_update_reset() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]' \
+    - tap \
+    '*::tap:__brew_any_tap'
+}
+
 # brew update-sponsors
 _brew_update_sponsors() {
   _arguments \
@@ -2150,6 +2226,15 @@ _brew_vendor_gems() {
     '--no-commit[Do not generate a new commit upon completion]' \
     '--quiet[Make some output more quiet]' \
     '--update[Update the specified list of vendored gems to the latest version]' \
+    '--verbose[Make some output more verbose]'
+}
+
+# brew vendor-install
+_brew_vendor_install() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
     '--verbose[Make some output more verbose]'
 }
 

@@ -1,7 +1,4 @@
-#:  * `casks`
-#:
-#:  List all locally installable casks including short names.
-#:
+# Documentation defined in Library/Homebrew/cmd/casks.rb
 
 # HOMEBREW_LIBRARY is set in bin/brew
 # shellcheck disable=SC2154

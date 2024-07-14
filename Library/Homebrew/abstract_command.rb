@@ -32,6 +32,12 @@ module Homebrew
              .delete_suffix("-cmd")
       end
 
+      sig { void }
+      def raise_sh_command_error!
+        raise StandardError, "This command is just here for completions generation. " \
+                             "It's actually defined in `cmd/#{command_name}` instead."
+      end
+
       # @return the AbstractCommand subclass associated with the brew CLI command name.
       sig { params(name: String).returns(T.nilable(T.class_of(AbstractCommand))) }
       def command(name) = subclasses.find { _1.command_name == name }

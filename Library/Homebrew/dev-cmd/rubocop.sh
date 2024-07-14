@@ -1,6 +1,4 @@
-#:  * `rubocop`
-#:
-#:  Installs, configures and runs Homebrew's `rubocop`.
+# Documentation defined in Library/Homebrew/dev-cmd/rubocop.rb
 
 # HOMEBREW_LIBRARY is from the user environment.
 # HOMEBREW_RUBY_PATH is set by utils/ruby.sh

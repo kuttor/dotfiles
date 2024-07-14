@@ -719,9 +719,11 @@ Search for \fItext\fP in the given database\.
 .TP
 \fB\-\-ubuntu\fP
 Search for \fItext\fP in the given database\.
-.SS "\fBsetup\-ruby \fR[command]\fP"
+.SS "\fBsetup\-ruby\fP \fR[\fIcommand\fP \.\.\.]"
 Installs and configures Homebrew\[u2019]s Ruby\. If \fBcommand\fP is passed, it will only run Bundler if necessary for that command\.
-.SS "\fBshellenv \fR[bash|csh|fish|pwsh|sh|tcsh|zsh]\fP"
+.SS "\fBshellenv\fP \fR[\fIshell\fP \.\.\.]"
+Valid shells: bash|csh|fish|pwsh|sh|tcsh|zsh
+.P
 Print export statements\. When run in a shell, this installation of Homebrew will be added to your \fBPATH\fP, \fBMANPATH\fP, and \fBINFOPATH\fP\&\.
 .P
 The variables \fBHOMEBREW_PREFIX\fP, \fBHOMEBREW_CELLAR\fP and \fBHOMEBREW_REPOSITORY\fP are also exported to avoid querying them multiple times\. To help guarantee idempotence, this command produces no output when Homebrew\[u2019]s \fBbin\fP and \fBsbin\fP directories are first and second respectively in your \fBPATH\fP\&\. Consider adding evaluation of this command\[u2019]s output to your dotfiles (e\.g\. \fB~/\.bash_profile\fP or \fB~/\.zprofile\fP on macOS and \fB~/\.bashrc\fP or \fB~/\.zshrc\fP on Linux) with: \fBeval "$(brew shellenv)"\fP
@@ -800,7 +802,7 @@ Remove a tapped formula repository\.
 .TP
 \fB\-f\fP, \fB\-\-force\fP
 Untap even if formulae or casks from this tap are currently installed\.
-.SS "\fBupdate\fP \fR[\fIoptions\fP]"
+.SS "\fBupdate\fP, \fBup\fP \fR[\fIoptions\fP]"
 Fetch the newest version of Homebrew and all formulae from GitHub using \fBgit\fP(1) and perform any necessary migrations\.
 .TP
 \fB\-\-merge\fP
@@ -811,7 +813,13 @@ Run on auto\-updates (e\.g\. before \fBbrew install\fP)\. Skips some slower step
 .TP
 \fB\-f\fP, \fB\-\-force\fP
 Always do a slower, full update check (even if unnecessary)\.
-.SS "\fBupdate\-reset\fP \fR[\fIpath\-to\-tap\-repository\fP \.\.\.]"
+.TP
+\fB\-v\fP, \fB\-\-verbose\fP
+Print the directories checked and \fBgit\fP operations performed\.
+.TP
+\fB\-d\fP, \fB\-\-debug\fP
+Display a trace of all shell commands as they are executed\.
+.SS "\fBupdate\-reset\fP \fR[\fItap\fP \.\.\.]"
 Fetch and reset Homebrew and all tap repositories (or any specified \fIrepository\fP) using \fBgit\fP(1) to their latest \fBorigin/HEAD\fP\&\.
 .P
 \fINote:\fP this will destroy all your uncommitted or committed changes\.

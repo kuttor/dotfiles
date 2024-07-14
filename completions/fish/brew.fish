@@ -263,6 +263,13 @@ __fish_brew_complete_arg '--repository' -l verbose -d 'Make some output more ver
 __fish_brew_complete_arg '--repository' -a '(__fish_brew_suggest_taps_installed)'
 
 
+__fish_brew_complete_cmd '--version' 'Print the version numbers of Homebrew, Homebrew/homebrew-core and Homebrew/homebrew-cask (if tapped) to standard output'
+__fish_brew_complete_arg '--version' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg '--version' -l help -d 'Show this message'
+__fish_brew_complete_arg '--version' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg '--version' -l verbose -d 'Make some output more verbose'
+
+
 __fish_brew_complete_cmd '-S' 'Perform a substring search of cask tokens and formula names for text'
 __fish_brew_complete_arg '-S' -l archlinux -d 'Search for text in the given database'
 __fish_brew_complete_arg '-S' -l cask -d 'Search for casks'
@@ -283,6 +290,13 @@ __fish_brew_complete_arg '-S' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg '-S' -l repology -d 'Search for text in the given database'
 __fish_brew_complete_arg '-S' -l ubuntu -d 'Search for text in the given database'
 __fish_brew_complete_arg '-S' -l verbose -d 'Make some output more verbose'
+
+
+__fish_brew_complete_cmd '-v' 'Print the version numbers of Homebrew, Homebrew/homebrew-core and Homebrew/homebrew-cask (if tapped) to standard output'
+__fish_brew_complete_arg '-v' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg '-v' -l help -d 'Show this message'
+__fish_brew_complete_arg '-v' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg '-v' -l verbose -d 'Make some output more verbose'
 
 
 __fish_brew_complete_cmd 'abv' 'Display brief statistics for your Homebrew installation'
@@ -469,6 +483,13 @@ __fish_brew_complete_arg 'bump-unversioned-casks' -l state-file -d 'File for cac
 __fish_brew_complete_arg 'bump-unversioned-casks' -l verbose -d 'Make some output more verbose'
 __fish_brew_complete_arg 'bump-unversioned-casks' -a '(__fish_brew_suggest_casks_all)'
 __fish_brew_complete_arg 'bump-unversioned-casks' -a '(__fish_brew_suggest_taps_installed)'
+
+
+__fish_brew_complete_cmd 'casks' 'List all locally installable casks including short names'
+__fish_brew_complete_arg 'casks' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'casks' -l help -d 'Show this message'
+__fish_brew_complete_arg 'casks' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'casks' -l verbose -d 'Make some output more verbose'
 
 
 __fish_brew_complete_cmd 'cat' 'Display the source of a formula or cask'
@@ -739,6 +760,13 @@ __fish_brew_complete_arg 'formula' -l help -d 'Show this message'
 __fish_brew_complete_arg 'formula' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'formula' -l verbose -d 'Make some output more verbose'
 __fish_brew_complete_arg 'formula' -a '(__fish_brew_suggest_formulae_all)'
+
+
+__fish_brew_complete_cmd 'formulae' 'List all locally installable formulae including short names'
+__fish_brew_complete_arg 'formulae' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'formulae' -l help -d 'Show this message'
+__fish_brew_complete_arg 'formulae' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'formulae' -l verbose -d 'Make some output more verbose'
 
 
 __fish_brew_complete_cmd 'generate-cask-api' 'Generate `homebrew/cask` API data files for https://formulae.brew.sh'
@@ -1351,6 +1379,13 @@ __fish_brew_complete_arg 'rm; and not __fish_seen_argument -l cask -l casks' -a 
 __fish_brew_complete_arg 'rm; and not __fish_seen_argument -l formula -l formulae' -a '(__fish_brew_suggest_casks_installed)'
 
 
+__fish_brew_complete_cmd 'rubocop' 'Installs, configures and runs Homebrew\'s `rubocop`'
+__fish_brew_complete_arg 'rubocop' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'rubocop' -l help -d 'Show this message'
+__fish_brew_complete_arg 'rubocop' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'rubocop' -l verbose -d 'Make some output more verbose'
+
+
 __fish_brew_complete_cmd 'ruby' 'Run a Ruby instance with Homebrew\'s libraries loaded'
 __fish_brew_complete_arg 'ruby' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'ruby' -l help -d 'Show this message'
@@ -1391,6 +1426,14 @@ __fish_brew_complete_arg 'search' -l ubuntu -d 'Search for text in the given dat
 __fish_brew_complete_arg 'search' -l verbose -d 'Make some output more verbose'
 
 
+__fish_brew_complete_cmd 'setup-ruby' 'Installs and configures Homebrew\'s Ruby'
+__fish_brew_complete_arg 'setup-ruby' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'setup-ruby' -l help -d 'Show this message'
+__fish_brew_complete_arg 'setup-ruby' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'setup-ruby' -l verbose -d 'Make some output more verbose'
+__fish_brew_complete_arg 'setup-ruby' -a '(__fish_brew_suggest_commands)'
+
+
 __fish_brew_complete_cmd 'sh' 'Enter an interactive shell for Homebrew\'s build environment'
 __fish_brew_complete_arg 'sh' -l cmd -d 'Execute commands in a non-interactive shell'
 __fish_brew_complete_arg 'sh' -l debug -d 'Display any debugging information'
@@ -1398,6 +1441,13 @@ __fish_brew_complete_arg 'sh' -l env -d 'Use the standard `PATH` instead of supe
 __fish_brew_complete_arg 'sh' -l help -d 'Show this message'
 __fish_brew_complete_arg 'sh' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'sh' -l verbose -d 'Make some output more verbose'
+
+
+__fish_brew_complete_cmd 'shellenv' 'Valid shells: bash|csh|fish|pwsh|sh|tcsh|zsh  Print export statements'
+__fish_brew_complete_arg 'shellenv' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'shellenv' -l help -d 'Show this message'
+__fish_brew_complete_arg 'shellenv' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'shellenv' -l verbose -d 'Make some output more verbose'
 
 
 __fish_brew_complete_cmd 'style' 'Check formulae or files for conformance to Homebrew style guidelines'
@@ -1656,6 +1706,14 @@ __fish_brew_complete_arg 'update-report' -l quiet -d 'Make some output more quie
 __fish_brew_complete_arg 'update-report' -l verbose -d 'Make some output more verbose'
 
 
+__fish_brew_complete_cmd 'update-reset' 'Fetch and reset Homebrew and all tap repositories (or any specified repository) using `git`(1) to their latest `origin/HEAD`'
+__fish_brew_complete_arg 'update-reset' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'update-reset' -l help -d 'Show this message'
+__fish_brew_complete_arg 'update-reset' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'update-reset' -l verbose -d 'Make some output more verbose'
+__fish_brew_complete_arg 'update-reset' -a '(__fish_brew_suggest_taps_installed)'
+
+
 __fish_brew_complete_cmd 'update-sponsors' 'Update the list of GitHub Sponsors in the `Homebrew/brew` README'
 __fish_brew_complete_arg 'update-sponsors' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'update-sponsors' -l help -d 'Show this message'
@@ -1745,6 +1803,13 @@ __fish_brew_complete_arg 'vendor-gems' -l no-commit -d 'Do not generate a new co
 __fish_brew_complete_arg 'vendor-gems' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'vendor-gems' -l update -d 'Update the specified list of vendored gems to the latest version'
 __fish_brew_complete_arg 'vendor-gems' -l verbose -d 'Make some output more verbose'
+
+
+__fish_brew_complete_cmd 'vendor-install' 'Install Homebrew\'s portable Ruby'
+__fish_brew_complete_arg 'vendor-install' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'vendor-install' -l help -d 'Show this message'
+__fish_brew_complete_arg 'vendor-install' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'vendor-install' -l verbose -d 'Make some output more verbose'
 
 
 

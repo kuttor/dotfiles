@@ -1,8 +1,4 @@
-#:  * `--repository`, `--repo` [<tap> ...]
-#:
-#:  Display where Homebrew's Git repository is located.
-#:
-#:  If <user>`/`<repo> are provided, display where tap <user>`/`<repo>'s directory is located.
+# Documentation defined in Library/Homebrew/cmd/--repository.rb
 
 # HOMEBREW_REPOSITORY, HOMEBREW_LIBRARY are set by brew.sh
 # shellcheck disable=SC2154

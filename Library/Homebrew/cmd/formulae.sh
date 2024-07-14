@@ -1,7 +1,4 @@
-#:  * `formulae`
-#:
-#:  List all locally installable formulae including short names.
-#:
+# Documentation defined in Library/Homebrew/cmd/formulae.rb
 
 # HOMEBREW_LIBRARY is set by bin/brew
 # shellcheck disable=SC2154

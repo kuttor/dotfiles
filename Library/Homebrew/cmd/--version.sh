@@ -1,6 +1,4 @@
-#:  * `--version`, `-v`
-#:
-#:  Print the version numbers of Homebrew, Homebrew/homebrew-core and Homebrew/homebrew-cask (if tapped) to standard output.
+# Documentation defined in Library/Homebrew/cmd/--version.rb
 
 # HOMEBREW_CORE_REPOSITORY, HOMEBREW_CASK_REPOSITORY, HOMEBREW_VERSION are set by brew.sh
 # shellcheck disable=SC2154
