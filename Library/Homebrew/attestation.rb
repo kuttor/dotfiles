@@ -45,13 +45,13 @@ module Homebrew
     # @api private
     sig { returns(T::Boolean) }
     def self.enabled?
-      # TODO: allow this undocumented variable until this is rolled out more
-      #       widely and then we can remove or document it.
-      return false if ENV.fetch("HOMEBREW_NO_VERIFY_ATTESTATIONS", false)
+      return false if Homebrew::EnvConfig.no_verify_attestations?
       return true if Homebrew::EnvConfig.verify_attestations?
+      return false if GitHub::API.credentials.blank?
       return false if ENV.fetch("CI", false)
+      return false unless Formula["gh"].any_version_installed?
 
-      Homebrew::EnvConfig.developer?
+      Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?
     end
 
     # Returns a path to a suitable `gh` executable for attestation verification.

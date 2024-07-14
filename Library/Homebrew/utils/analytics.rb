@@ -119,7 +119,7 @@ module Utils
         tags = {
           command:,
           ci:        ENV["CI"].present?,
-          devcmdrun: config_true?(:devcmdrun),
+          devcmdrun: Homebrew::EnvConfig.devcmdrun?,
           developer: Homebrew::EnvConfig.developer?,
         }
 
@@ -354,7 +354,7 @@ module Utils
             prefix:,
             default_prefix: Homebrew.default_prefix?,
             developer:      Homebrew::EnvConfig.developer?,
-            devcmdrun:      config_true?(:devcmdrun),
+            devcmdrun:      Homebrew::EnvConfig.devcmdrun?,
             arch:           HOMEBREW_PHYSICAL_PROCESSOR,
             os:             HOMEBREW_SYSTEM,
           }

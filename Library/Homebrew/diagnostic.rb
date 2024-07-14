@@ -865,7 +865,7 @@ module Homebrew
       def check_for_unnecessary_core_tap
         return if Homebrew::EnvConfig.developer?
         return if Homebrew::EnvConfig.no_install_from_api?
-        return if Homebrew::Settings.read("devcmdrun") == "true"
+        return if Homebrew::EnvConfig.devcmdrun?
         return unless CoreTap.instance.installed?
 
         <<~EOS
@@ -879,7 +879,7 @@ module Homebrew
       def check_for_unnecessary_cask_tap
         return if Homebrew::EnvConfig.developer?
         return if Homebrew::EnvConfig.no_install_from_api?
-        return if Homebrew::Settings.read("devcmdrun") == "true"
+        return if Homebrew::EnvConfig.devcmdrun?
 
         cask_tap = CoreCaskTap.instance
         return unless cask_tap.installed?

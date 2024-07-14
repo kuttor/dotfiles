@@ -36,7 +36,7 @@ module Homebrew
           if env_vars.any?
             verb = (env_vars.count == 1) ? "is" : "are"
             puts "Developer mode is enabled because #{env_vars.to_sentence} #{verb} set."
-          elsif Homebrew::Settings.read("devcmdrun") == "true"
+          elsif Homebrew::EnvConfig.devcmdrun?
             puts "Developer mode is enabled."
           else
             puts "Developer mode is disabled."
