@@ -130,7 +130,7 @@ RSpec.describe Sandbox, :needs_macos do
     end
   end
 
-  describe "#disallow sending signal to other processes" do
+  describe "disallow sending signal to other processes" do
     # we have to spawn a process, otherwise kill doesn't try to send a signal if the process doesn't exist
     let(:pid) do
       pid = spawn("sleep 1000")
