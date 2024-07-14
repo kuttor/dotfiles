@@ -24,6 +24,9 @@ class Homebrew::DevCmd::Bump::Args < Homebrew::CLI::Args
   def eval_all?; end
 
   sig { returns(T::Boolean) }
+  def repology?; end
+
+  sig { returns(T::Boolean) }
   def formulae?; end
 
   sig { returns(T::Boolean) }
