@@ -140,6 +140,7 @@ module Commands
   def self.find_internal_commands(path)
     find_commands(path).map(&:basename)
                        .map { basename_without_extension(_1) }
+                       .uniq
   end
 
   def self.external_commands
