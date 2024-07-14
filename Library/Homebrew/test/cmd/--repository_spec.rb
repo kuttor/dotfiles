@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
-require "cmd/--repository"
-require "cmd/shared_examples/args_parse"
-
-RSpec.describe Homebrew::Cmd::Repository do
-  it_behaves_like "parseable arguments"
-
+RSpec.describe "brew --repository", type: :system do
   it "prints Homebrew's repository", :integration_test do
     expect { brew_sh "--repository" }
       .to output("#{ENV.fetch("HOMEBREW_REPOSITORY")}\n").to_stdout
@@ -14,8 +9,8 @@ RSpec.describe Homebrew::Cmd::Repository do
   end
 
   it "prints a Tap's repository", :integration_test do
-    expect { brew "--repository", "foo/bar" }
-      .to output("#{HOMEBREW_LIBRARY}/Taps/foo/homebrew-bar\n").to_stdout
+    expect { brew_sh "--repository", "foo/bar" }
+      .to output("#{ENV.fetch("HOMEBREW_LIBRARY")}/Taps/foo/homebrew-bar\n").to_stdout
       .and not_to_output.to_stderr
       .and be_a_success
   end
