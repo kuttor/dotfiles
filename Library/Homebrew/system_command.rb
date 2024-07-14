@@ -238,14 +238,12 @@ class SystemCommand
     }
     options[:chdir] = chdir if chdir
 
-    raw_stdin, raw_stdout, raw_stderr, raw_wait_thr = ignore_interrupts do
-      Open3.popen3(
-        env.merge({ "COLUMNS" => Tty.width.to_s }),
-        [executable, executable],
-        *args,
-        **options,
-      )
-    end
+    raw_stdin, raw_stdout, raw_stderr, raw_wait_thr = Open3.popen3(
+      env.merge({ "COLUMNS" => Tty.width.to_s }),
+      [executable, executable],
+      *args,
+      **options,
+    )
 
     write_input_to(raw_stdin)
     raw_stdin.close_write

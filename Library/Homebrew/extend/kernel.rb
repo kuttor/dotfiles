@@ -349,30 +349,26 @@ module Kernel
     end
   end
 
-  def ignore_interrupts(_opt = nil)
-    # rubocop:disable Style/GlobalVars
-    $ignore_interrupts_nesting_level = 0 unless defined?($ignore_interrupts_nesting_level)
-    $ignore_interrupts_nesting_level += 1
+  IGNORE_INTERRUPTS_MUTEX = Thread::Mutex.new.freeze
 
-    $ignore_interrupts_interrupted = false unless defined?($ignore_interrupts_interrupted)
-    old_sigint_handler = trap(:INT) do
-      $ignore_interrupts_interrupted = true
-      $stderr.print "\n"
-      $stderr.puts "One sec, cleaning up..."
-    end
+  def ignore_interrupts
+    IGNORE_INTERRUPTS_MUTEX.synchronize do
+      interrupted = T.let(false, T::Boolean)
+      old_sigint_handler = trap(:INT) do
+        interrupted = true
 
-    begin
-      yield
-    ensure
-      trap(:INT, old_sigint_handler)
+        $stderr.print "\n"
+        $stderr.puts "One sec, cleaning up..."
+      end
 
-      $ignore_interrupts_nesting_level -= 1
-      if $ignore_interrupts_nesting_level == 0 && $ignore_interrupts_interrupted
-        $ignore_interrupts_interrupted = false
-        raise Interrupt
+      begin
+        yield
+      ensure
+        trap(:INT, old_sigint_handler)
+
+        raise Interrupt if interrupted
       end
     end
-    # rubocop:enable Style/GlobalVars
   end
 
   def redirect_stdout(file)
