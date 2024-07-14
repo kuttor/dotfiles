@@ -77,7 +77,7 @@ module PyPI
         url["packagetype"] == "sdist"
       end
 
-      # If there isn't an sdist, we use the first source wheel.
+      # If there isn't an sdist, we use the first universal wheel.
       if dist.nil?
         dist = json["urls"].find do |url|
           url["filename"].end_with?("-none-any.whl")
