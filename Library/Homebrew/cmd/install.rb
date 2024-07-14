@@ -338,6 +338,8 @@ module Homebrew
         Homebrew.messages.display_messages(display_times: args.display_times?)
       rescue FormulaUnreadableError, FormulaClassUnavailableError,
              TapFormulaUnreadableError, TapFormulaClassUnavailableError => e
+        require "utils/backtrace"
+
         # Need to rescue before `FormulaUnavailableError` (superclass of this)
         # is handled, as searching for a formula doesn't make sense here (the
         # formula was found, but there's a problem with its implementation).
