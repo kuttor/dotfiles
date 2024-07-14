@@ -75,7 +75,7 @@ module Utils
           exit!(true)
         end
 
-        ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
+        ignore_interrupts(quiet: true) do # the child will receive the interrupt and marshal it back
           begin
             socket = server.accept_nonblock
           rescue Errno::EAGAIN, Errno::EWOULDBLOCK, Errno::ECONNABORTED, Errno::EPROTO, Errno::EINTR

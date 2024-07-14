@@ -351,7 +351,7 @@ module Kernel
 
   IGNORE_INTERRUPTS_MUTEX = Thread::Mutex.new.freeze
 
-  def ignore_interrupts(_opt = nil)
+  def ignore_interrupts(quiet: false)
     IGNORE_INTERRUPTS_MUTEX.synchronize do
       # rubocop:disable Style/GlobalVars
       $ignore_interrupts_nesting_level = 0 unless defined?($ignore_interrupts_nesting_level)
@@ -360,8 +360,11 @@ module Kernel
       $ignore_interrupts_interrupted = false unless defined?($ignore_interrupts_interrupted)
       old_sigint_handler = trap(:INT) do
         $ignore_interrupts_interrupted = true
-        $stderr.print "\n"
-        $stderr.puts "One sec, cleaning up..."
+
+        unless quiet
+          $stderr.print "\n"
+          $stderr.puts "One sec, cleaning up..."
+        end
       end
 
       begin
