@@ -279,7 +279,10 @@ module Homebrew
         puts Formatter.url(formula.homepage) if formula.homepage
 
         deprecate_disable_info_string = DeprecateDisable.message(formula)
-        puts deprecate_disable_info_string.capitalize if deprecate_disable_info_string.present?
+        if deprecate_disable_info_string.present?
+          deprecate_disable_info_string.tap { |info_string| info_string[0] = info_string[0].upcase }
+          puts deprecate_disable_info_string
+        end
 
         conflicts = formula.conflicts.map do |conflict|
           reason = " (because #{conflict.reason})" if conflict.reason

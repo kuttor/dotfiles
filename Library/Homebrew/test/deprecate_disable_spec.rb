@@ -4,16 +4,20 @@ require "deprecate_disable"
 
 RSpec.describe DeprecateDisable do
   let(:deprecated_formula) do
-    instance_double(Formula, deprecated?: true, disabled?: false, deprecation_reason: :does_not_build)
+    instance_double(Formula, deprecated?: true, disabled?: false, deprecation_reason: :does_not_build,
+                    deprecation_date: nil, disable_date: nil)
   end
   let(:disabled_formula) do
-    instance_double(Formula, deprecated?: false, disabled?: true, disable_reason: "is broken")
+    instance_double(Formula, deprecated?: false, disabled?: true, disable_reason: "is broken",
+                    deprecation_date: nil, disable_date: nil)
   end
   let(:deprecated_cask) do
-    instance_double(Cask::Cask, deprecated?: true, disabled?: false, deprecation_reason: :discontinued)
+    instance_double(Cask::Cask, deprecated?: true, disabled?: false, deprecation_reason: :discontinued,
+                   deprecation_date: nil, disable_date: nil)
   end
   let(:disabled_cask) do
-    instance_double(Cask::Cask, deprecated?: false, disabled?: true, disable_reason: nil)
+    instance_double(Cask::Cask, deprecated?: false, disabled?: true, disable_reason: nil,
+                    deprecation_date: nil, disable_date: nil)
   end
 
   before do

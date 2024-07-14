@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 # Helper module for handling `disable!` and `deprecate!`.
+# @api internal
 module DeprecateDisable
   module_function
 
@@ -29,6 +30,10 @@ module DeprecateDisable
     unsigned:                 "is unsigned or does not meet signature requirements",
   }.freeze
 
+  # One year when << or >> to Date.today.
+  REMOVE_DISABLED_TIME_WINDOW = 12
+  REMOVE_DISABLED_BEFORE = (Date.today << REMOVE_DISABLED_TIME_WINDOW).freeze
+
   def type(formula_or_cask)
     return :deprecated if formula_or_cask.deprecated?
 
@@ -52,9 +57,19 @@ module DeprecateDisable
       reason
     end
 
-    return "#{type(formula_or_cask)} because it #{reason}!" if reason.present?
+    message = if reason.present?
+      "#{type(formula_or_cask)} because it #{reason}!"
+    else
+      "#{type(formula_or_cask)}!"
+    end
 
-    "#{type(formula_or_cask)}!"
+    disable_date = formula_or_cask.disable_date
+    if !disable_date && formula_or_cask.deprecation_date
+      disable_date = formula_or_cask.deprecation_date >> REMOVE_DISABLED_TIME_WINDOW
+    end
+    message = "#{message} It will be disabled on #{disable_date}." if disable_date
+
+    message
   end
 
   def to_reason_string_or_symbol(string, type:)
