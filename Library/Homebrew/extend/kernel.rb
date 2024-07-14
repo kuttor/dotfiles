@@ -353,7 +353,7 @@ module Kernel
 
   def ignore_interrupts(quiet: false)
     IGNORE_INTERRUPTS_MUTEX.synchronize do
-      interrupted = false
+      interrupted = T.let(false, T::Boolean)
       old_sigint_handler = trap(:INT) do
         interrupted = true
 
