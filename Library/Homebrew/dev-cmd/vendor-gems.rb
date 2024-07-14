@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "abstract_command"
+require "utils/git"
 
 module Homebrew
   module DevCmd
