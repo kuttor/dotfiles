@@ -12,6 +12,18 @@ end
 
 class Homebrew::Cmd::TabCmd::Args < Homebrew::CLI::Args
   sig { returns(T::Boolean) }
+  def cask?; end
+
+  sig { returns(T::Boolean) }
+  def casks?; end
+
+  sig { returns(T::Boolean) }
+  def formula?; end
+
+  sig { returns(T::Boolean) }
+  def formulae?; end
+
+  sig { returns(T::Boolean) }
   def installed_on_request?; end
 
   sig { returns(T::Boolean) }
