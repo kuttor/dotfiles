@@ -353,13 +353,9 @@ module Kernel
 
   def ignore_interrupts(quiet: false)
     IGNORE_INTERRUPTS_MUTEX.synchronize do
-      # rubocop:disable Style/GlobalVars
-      $ignore_interrupts_nesting_level = 0 unless defined?($ignore_interrupts_nesting_level)
-      $ignore_interrupts_nesting_level += 1
-
-      $ignore_interrupts_interrupted = false unless defined?($ignore_interrupts_interrupted)
+      interrupted = false
       old_sigint_handler = trap(:INT) do
-        $ignore_interrupts_interrupted = true
+        interrupted = true
 
         unless quiet
           $stderr.print "\n"
@@ -372,13 +368,8 @@ module Kernel
       ensure
         trap(:INT, old_sigint_handler)
 
-        $ignore_interrupts_nesting_level -= 1
-        if $ignore_interrupts_nesting_level == 0 && $ignore_interrupts_interrupted
-          $ignore_interrupts_interrupted = false
-          raise Interrupt
-        end
+        raise Interrupt if interrupted
       end
-      # rubocop:enable Style/GlobalVars
     end
   end
 
