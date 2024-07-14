@@ -43,12 +43,11 @@ class GitHubArtifactDownloadStrategy < AbstractFileDownloadStrategy
       rescue ErrorDuringExecution
         raise CurlDownloadStrategyError, url
       end
-      ignore_interrupts do
-        cached_location.dirname.mkpath
-        temporary_path.rename(cached_location)
-        symlink_location.dirname.mkpath
-      end
+      cached_location.dirname.mkpath
+      temporary_path.rename(cached_location)
     end
+
+    symlink_location.dirname.mkpath
     FileUtils.ln_s cached_location.relative_path_from(symlink_location.dirname), symlink_location, force: true
   end
 
