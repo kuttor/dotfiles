@@ -134,7 +134,7 @@ RSpec.describe Sandbox, :needs_macos do
     # we have to spawn a process, otherwise kill doesn't try to send a signal if the process doesn't exist
     let(:pid) do
       pid = spawn("sleep 1000")
-      sleep 1 # Ensure the process has started
+      sleep 0.1 # Ensure the process has started
       pid
     end
 
