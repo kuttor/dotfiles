@@ -14,6 +14,7 @@ require "erb"
 require "utils/gzip"
 require "api"
 require "extend/hash/deep_merge"
+require "metafiles"
 
 module Homebrew
   module DevCmd
