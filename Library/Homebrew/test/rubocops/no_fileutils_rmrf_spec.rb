@@ -64,6 +64,8 @@ RSpec.describe RuboCop::Cop::Homebrew::NoFileutilsRmrf do
         end
         buildpath.rmtree
         ^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
+        (path/"here").rmtree
+        ^^^^^^^^^^^^^^^^^^^^ Homebrew/NoFileutilsRmrf: #{RuboCop::Cop::Homebrew::NoFileutilsRmrf::MSG}
       RUBY
     end
 
@@ -76,6 +78,7 @@ RSpec.describe RuboCop::Cop::Homebrew::NoFileutilsRmrf do
           Pathname("path/to/yet/another/directory")
         end
         buildpath.rmtree
+        (path/"here").rmtree
       RUBY
 
       expect(corrected).to eq(<<~RUBY)
@@ -86,6 +89,7 @@ RSpec.describe RuboCop::Cop::Homebrew::NoFileutilsRmrf do
           Pathname("path/to/yet/another/directory")
         end
         FileUtils.rm_r(buildpath)
+        FileUtils.rm_r(path/"here")
       RUBY
     end
   end

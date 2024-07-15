@@ -46,8 +46,8 @@ module RuboCop
             else
               node.arguments.first.source
             end
-
-            corrector.replace(node.loc.expression, "#{class_name}#{new_method}(#{args})")
+            args = "(#{args})" unless args.start_with?("(")
+            corrector.replace(node.loc.expression, "#{class_name}#{new_method}#{args}")
           end
         end
 
