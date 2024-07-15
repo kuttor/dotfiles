@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "abstract_command"
+require "tap"
 
 module Homebrew
   module Cmd
