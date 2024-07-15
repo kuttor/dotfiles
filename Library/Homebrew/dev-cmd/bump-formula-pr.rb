@@ -4,6 +4,7 @@
 require "abstract_command"
 require "fileutils"
 require "formula"
+require "utils/inreplace"
 require "utils/pypi"
 require "utils/tar"
 
