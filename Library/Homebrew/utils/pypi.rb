@@ -1,6 +1,8 @@
 # typed: true
 # frozen_string_literal: true
 
+require "utils/inreplace"
+
 # Helper functions for updating PyPI resources.
 module PyPI
   PYTHONHOSTED_URL_PREFIX = "https://files.pythonhosted.org/packages/"
