@@ -11,35 +11,38 @@ module RuboCop
 
         MSG = "Use `rm` or `rm_r` instead of `rm_rf`, `rm_f`, or `rmtree`."
 
-        def_node_matcher :fileutils_rm_r_f_tree?, <<~PATTERN
-          (send (const {nil? cbase} :FileUtils) {:rm_rf :rm_f :rmtree} ...)
+        def_node_matcher :any_receiver_rm_r_f?, <<~PATTERN
+          (send
+            {(const {nil? cbase} :FileUtils) (self)}
+            {:rm_rf :rm_f}
+            ...)
         PATTERN
 
-        def_node_matcher :instance_rmtree?, <<~PATTERN
-          (send (lvar ...) :rmtree ...)
+        def_node_matcher :no_receiver_rm_r_f?, <<~PATTERN
+          (send nil? {:rm_rf :rm_f} ...)
         PATTERN
 
-        def_node_matcher :self_rm_r_f_tree?, <<~PATTERN
-          (send (self) {:rm_rf :rm_f :rmtree} ...)
+        def_node_matcher :no_receiver_rmtree?, <<~PATTERN
+          (send nil? :rmtree ...)
         PATTERN
 
-        def_node_matcher :plain_rm_r_f_tree?, <<~PATTERN
-          (send nil? {:rm_rf :rm_f :rmtree} ...)
+        def_node_matcher :any_receiver_rmtree?, <<~PATTERN
+          (send !nil? :rmtree ...)
         PATTERN
 
         def on_send(node)
           return if neither_rm_rf_nor_rmtree?(node)
 
           add_offense(node) do |corrector|
-            class_name = "FileUtils." if fileutils_rm_r_f_tree?(node) || instance_rmtree?(node)
+            class_name = "FileUtils." if any_receiver_rm_r_f?(node) || any_receiver_rmtree?(node)
             new_method = if node.method?(:rm_rf) || node.method?(:rmtree)
               "rm_r"
             else
               "rm"
             end
 
-            args = if instance_rmtree?(node)
-              node.receiver.source
+            args = if any_receiver_rmtree?(node)
+              node.receiver&.source || node.arguments.first&.source
             else
               node.arguments.first.source
             end
@@ -49,8 +52,8 @@ module RuboCop
         end
 
         def neither_rm_rf_nor_rmtree?(node)
-          !self_rm_r_f_tree?(node) && !plain_rm_r_f_tree?(node) &&
-            !fileutils_rm_r_f_tree?(node) && !instance_rmtree?(node)
+          !any_receiver_rm_r_f?(node) && !no_receiver_rm_r_f?(node) &&
+            !any_receiver_rmtree?(node) && !no_receiver_rmtree?(node)
         end
       end
     end
