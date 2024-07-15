@@ -40,12 +40,13 @@ module Homebrew
         ENV["HOMEBREW_DEV_CMD_RUN"] = nil
         ENV["HOMEBREW_MERGE"] = nil
         ENV["HOMEBREW_NO_UPDATE_CLEANUP"] = nil
+        ENV["HOMEBREW_UPDATE_TO_TAG"] = nil
 
         branch = if args.to_tag?
           ENV["HOMEBREW_UPDATE_TO_TAG"] = "1"
           "stable"
         else
-          ENV["HOMEBREW_UPDATE_TO_TAG"] = nil
+          ENV["HOMEBREW_DEV_CMD_RUN"] = "1"
           "master"
         end
 
