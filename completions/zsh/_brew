@@ -2120,9 +2120,7 @@ _brew_update_reset() {
     '--debug[Display any debugging information]' \
     '--help[Show this message]' \
     '--quiet[Make some output more quiet]' \
-    '--verbose[Make some output more verbose]' \
-    - tap \
-    '*::tap:__brew_any_tap'
+    '--verbose[Make some output more verbose]'
 }
 
 # brew update-sponsors

@@ -13,7 +13,7 @@ module Homebrew
           *Note:* this will destroy all your uncommitted or committed changes.
         EOS
 
-        named_args :tap
+        named_args :repository
       end
 
       sig { override.void }

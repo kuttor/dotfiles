@@ -2666,7 +2666,6 @@ _brew_update_reset() {
       ;;
     *) ;;
   esac
-  __brew_complete_tapped
 }
 
 _brew_update_sponsors() {

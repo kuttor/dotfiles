@@ -1311,7 +1311,7 @@ and perform any necessary migrations.
 
 : Display a trace of all shell commands as they are executed.
 
-### `update-reset` \[*`tap`* ...\]
+### `update-reset` \[*`repository`* ...\]
 
 Fetch and reset Homebrew and all tap repositories (or any specified
 *`repository`*) using `git`(1) to their latest `origin/HEAD`.

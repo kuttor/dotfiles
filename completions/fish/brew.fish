@@ -1711,7 +1711,6 @@ __fish_brew_complete_arg 'update-reset' -l debug -d 'Display any debugging infor
 __fish_brew_complete_arg 'update-reset' -l help -d 'Show this message'
 __fish_brew_complete_arg 'update-reset' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'update-reset' -l verbose -d 'Make some output more verbose'
-__fish_brew_complete_arg 'update-reset' -a '(__fish_brew_suggest_taps_installed)'
 
 
 __fish_brew_complete_cmd 'update-sponsors' 'Update the list of GitHub Sponsors in the `Homebrew/brew` README'
