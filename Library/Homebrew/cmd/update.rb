@@ -2,10 +2,13 @@
 # frozen_string_literal: true
 
 require "abstract_command"
+require "shell_command"
 
 module Homebrew
   module Cmd
     class Update < AbstractCommand
+      include ShellCommand
+
       cmd_args do
         description <<~EOS
           Fetch the newest version of Homebrew and all formulae from GitHub using `git`(1) and perform any necessary migrations.
@@ -23,9 +26,6 @@ module Homebrew
         switch "-d", "--debug",
                description: "Display a trace of all shell commands as they are executed."
       end
-
-      sig { override.void }
-      def run = raise_sh_command_error!
     end
   end
 end
