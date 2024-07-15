@@ -61,5 +61,12 @@ module Homebrew
 
     sig { abstract.void }
     def run; end
+
+    sig { void }
+    def raise_sh_command_error!
+      raise StandardError,
+            "This command is just here for completions generation. " \
+            "It's actually defined in `cmd/#{self.class.command_name}.sh` instead."
+    end
   end
 end

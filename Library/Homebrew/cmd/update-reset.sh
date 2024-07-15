@@ -1,8 +1,4 @@
-#:  * `update-reset` [<path-to-tap-repository> ...]
-#:
-#:  Fetch and reset Homebrew and all tap repositories (or any specified <repository>) using `git`(1) to their latest `origin/HEAD`.
-#:
-#:  *Note:* this will destroy all your uncommitted or committed changes.
+# Documentation defined in Library/Homebrew/cmd/update-reset.rb
 
 # Replaces the function in Library/Homebrew/brew.sh to cache the Git executable to provide
 # speedup when using Git repeatedly and prevent errors if the shim changes mid-update.

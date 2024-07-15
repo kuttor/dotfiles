@@ -1,9 +1,4 @@
-#:  * `setup-ruby [command]`
-#:
-#:  Installs and configures Homebrew's Ruby.
-#:  If `command` is passed, it will only run Bundler if necessary for that
-#:  command.
-#:
+# Documentation defined in Library/Homebrew/cmd/setup-ruby.rb
 
 # HOMEBREW_LIBRARY is set by brew.sh
 # HOMEBREW_BREW_FILE is set by extend/ENV/super.rb

@@ -1,14 +1,4 @@
-#:  * `update` [<options>]
-#:
-#:  Fetch the newest version of Homebrew and all formulae from GitHub using `git`(1) and perform any necessary migrations.
-#:
-#:        --merge                      Use `git merge` to apply updates (rather than `git rebase`).
-#:        --auto-update                Run on auto-updates (e.g. before `brew install`). Skips some slower steps.
-#:    -f, --force                      Always do a slower, full update check (even if unnecessary).
-#:    -q, --quiet                      Make some output more quiet.
-#:    -v, --verbose                    Print the directories checked and `git` operations performed.
-#:    -d, --debug                      Display a trace of all shell commands as they are executed.
-#:    -h, --help                       Show this message.
+# Documentation defined in Library/Homebrew/cmd/update.rb
 
 # HOMEBREW_CURLRC, HOMEBREW_DEVELOPER, HOMEBREW_GIT_EMAIL, HOMEBREW_GIT_NAME
 # HOMEBREW_UPDATE_CLEANUP, HOMEBREW_UPDATE_TO_TAG are from the user environment
