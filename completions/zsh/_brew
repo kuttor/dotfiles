@@ -143,7 +143,7 @@ __brew_internal_commands() {
     'audit:Check formula for Homebrew coding style violations'
     'autoremove:Uninstall formulae that were only installed as a dependency of another formula and are now no longer needed'
     'bottle:Generate a bottle (binary package) from a formula that was installed with `--build-bottle`'
-    'bump:Display out-of-date brew formulae and the latest version available'
+    'bump:Displays out-of-date packages and the latest version available'
     'bump-cask-pr:Create a pull request to update cask with a new version'
     'bump-formula-pr:Create a pull request to update formula with a new URL or a new tag'
     'bump-revision:Create a commit to increment the revision of formula'
@@ -514,11 +514,10 @@ _brew_bottle() {
 _brew_bump() {
   _arguments \
     '--debug[Display any debugging information]' \
-    '--eval-all[Evaluate all formulae and casks]' \
+    '(--installed)--eval-all[Evaluate all formulae and casks]' \
     '--full-name[Print formulae/casks with fully-qualified names]' \
     '--help[Show this message]' \
-    '(--tap)--installed[Check formulae and casks that are currently installed]' \
-    '--limit[Limit number of package results returned]' \
+    '(--tap --eval-all)--installed[Check formulae and casks that are currently installed]' \
     '--no-fork[Don'\''t try to fork the repository]' \
     '(--open-pr)--no-pull-requests[Do not retrieve pull requests from GitHub]' \
     '(--no-pull-requests)--open-pr[Open a pull request for the new version if none have been opened yet]' \

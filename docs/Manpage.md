@@ -1754,9 +1754,9 @@ at its original value, while `--no-rebuild` will remove it.
 
 ### `bump` \[*`options`*\] \[*`formula`*\|*`cask`* ...\]
 
-Display out-of-date brew formulae and the latest version available. If the
-returned current and livecheck versions differ or when querying specific
-formulae, also displays whether a pull request has been opened with the URL.
+Displays out-of-date packages and the latest version available. If the returned
+current and livecheck versions differ or when querying specific packages, also
+displays whether a pull request has been opened with the URL.
 
 `--full-name`
 
@@ -1798,10 +1798,6 @@ formulae, also displays whether a pull request has been opened with the URL.
 `--open-pr`
 
 : Open a pull request for the new version if none have been opened yet.
-
-`--limit`
-
-: Limit number of package results returned.
 
 `--start-with`
 

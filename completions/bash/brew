@@ -475,7 +475,6 @@ _brew_bump() {
       --full-name
       --help
       --installed
-      --limit
       --no-fork
       --no-pull-requests
       --open-pr
