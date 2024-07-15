@@ -57,16 +57,6 @@ module Homebrew
       Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?
     end
 
-    # Ensures the availability of a suitable `gh` executable for attestation verification.
-    #
-    # @api private
-    sig { returns(Pathname) }
-    def self.ensure_gh_installed!
-      return @gh_executable if @gh_executable.present?
-
-      gh_executable
-    end
-
     # Returns a path to a suitable `gh` executable for attestation verification.
     #
     # @api private
