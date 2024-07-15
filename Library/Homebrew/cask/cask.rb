@@ -323,6 +323,8 @@ module Cask
 
     def tap_git_head
       @tap_git_head ||= tap&.git_head
+    rescue TapUnavailableError
+      nil
     end
 
     def populate_from_api!(json_cask)
