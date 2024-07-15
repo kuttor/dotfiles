@@ -75,6 +75,7 @@ module Homebrew
       # NOTE: We set HOMEBREW_NO_VERIFY_ATTESTATIONS when installing `gh` itself,
       #       to prevent a cycle during bootstrapping. This can eventually be resolved
       #       by vendoring a pure-Ruby Sigstore verifier client.
+      @gh_executable ||= T.let(nil, T.nilable(Pathname))
       return @gh_executable if @gh_executable.present?
 
       with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
@@ -88,7 +89,7 @@ module Homebrew
         end
       end
 
-      @gh_executable
+      T.must(@gh_executable)
     end
 
     # Verifies the given bottle against a cryptographic attestation of build provenance.
