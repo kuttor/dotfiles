@@ -46,13 +46,12 @@ module Homebrew
                description: "Don't try to fork the repository."
         switch "--open-pr",
                description: "Open a pull request for the new version if none have been opened yet."
-        flag   "--limit=",
-               description: "Limit number of package results returned."
         flag   "--start-with=",
                description: "Letter or word that the list of package results should alphabetically follow."
 
         conflicts "--cask", "--formula"
         conflicts "--tap=", "--installed"
+        conflicts "--eval-all", "--installed"
         conflicts "--no-pull-requests", "--open-pr"
 
         named_args [:formula, :cask], without_api: true
@@ -62,11 +61,9 @@ module Homebrew
       def run
         Homebrew.install_bundler_gems!(groups: ["livecheck"])
 
-        if args.limit.present? && !args.formula? && !args.cask?
-          raise UsageError, "`--limit` must be used with either `--formula` or `--cask`."
-        end
-
         Homebrew.with_no_api_env do
+          eval_all = args.eval_all? || Homebrew::EnvConfig.eval_all?
+
           formulae_and_casks = if args.tap
             tap = Tap.fetch(T.must(args.tap))
             raise UsageError, "`--tap` cannot be used with official taps." if tap.official?
@@ -80,10 +77,12 @@ module Homebrew
             formulae + casks
           elsif args.named.present?
             args.named.to_formulae_and_casks_with_taps
-          else
-            formulae = args.cask? ? [] : Formula.all(eval_all: args.eval_all?)
-            casks = args.formula? ? [] : Cask::Cask.all(eval_all: args.eval_all?)
+          elsif eval_all
+            formulae = args.cask? ? [] : Formula.all(eval_all:)
+            casks = args.formula? ? [] : Cask::Cask.all(eval_all:)
             formulae + casks
+          else
+            raise UsageError, "`brew bump` without named arguments needs `--installed` or `--eval-all` passed or `HOMEBREW_EVAL_ALL` set!"
           end
 
           formulae_and_casks = formulae_and_casks&.sort_by do |formula_or_cask|
@@ -98,7 +97,7 @@ module Homebrew
             end
           end
 
-          handle_formula_and_casks(formulae_and_casks)
+          handle_formulae_and_casks(formulae_and_casks)
         end
       end
 
@@ -113,7 +112,7 @@ module Homebrew
       end
 
       sig { params(formulae_and_casks: T::Array[T.any(Formula, Cask::Cask)]).void }
-      def handle_formula_and_casks(formulae_and_casks)
+      def handle_formulae_and_casks(formulae_and_casks)
         Livecheck.load_other_tap_strategies(formulae_and_casks)
 
         ambiguous_casks = []
