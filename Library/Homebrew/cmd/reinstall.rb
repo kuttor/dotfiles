@@ -124,6 +124,14 @@ module Homebrew
           end
         end
 
+        if Homebrew::Attestation.enabled?
+          if formulae.include?(Formula["gh"])
+            formulae.unshift(T.must(formulae.delete(Formula["gh"])))
+          else
+            Homebrew::Attestation.ensure_gh_installed!
+          end
+        end
+
         Install.perform_preinstall_checks
 
         formulae.each do |formula|

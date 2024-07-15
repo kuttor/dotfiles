@@ -134,6 +134,14 @@ module Homebrew
         only_upgrade_formulae = formulae.present? && casks.blank?
         only_upgrade_casks = casks.present? && formulae.blank?
 
+        if Homebrew::Attestation.enabled?
+          if formulae.include?(Formula["gh"])
+            formulae.unshift(T.must(formulae.delete(Formula["gh"])))
+          else
+            Homebrew::Attestation.ensure_gh_installed!
+          end
+        end
+
         upgrade_outdated_formulae(formulae) unless only_upgrade_casks
         upgrade_outdated_casks(casks) unless only_upgrade_formulae
 
