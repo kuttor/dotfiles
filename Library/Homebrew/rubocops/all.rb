@@ -11,6 +11,7 @@ require_relative "negate_include"
 require_relative "presence"
 require_relative "present"
 require_relative "safe_navigation_with_blank"
+require_relative "shell_command_stub"
 require_relative "shell_commands"
 require_relative "install_bundler_gems"
 

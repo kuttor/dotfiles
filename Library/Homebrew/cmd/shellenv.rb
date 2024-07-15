@@ -2,10 +2,13 @@
 # frozen_string_literal: true
 
 require "abstract_command"
+require "shell_command"
 
 module Homebrew
   module Cmd
     class Shellenv < AbstractCommand
+      include ShellCommand
+
       cmd_args do
         description <<~EOS
           Valid shells: bash|csh|fish|pwsh|sh|tcsh|zsh
@@ -21,9 +24,6 @@ module Homebrew
         EOS
         named_args :shell
       end
-
-      sig { override.void }
-      def run = raise_sh_command_error!
     end
   end
 end
