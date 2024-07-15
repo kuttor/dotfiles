@@ -138,7 +138,7 @@ module Homebrew
           if formulae.include?(Formula["gh"])
             formulae.unshift(formulae.delete(Formula["gh"]))
           else
-            Homebrew::Attestation.ensure_gh_installed!
+            Homebrew::Attestation.gh_executable
           end
         end
 

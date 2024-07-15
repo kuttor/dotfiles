@@ -53,7 +53,6 @@ module Homebrew
       return true if Homebrew::EnvConfig.verify_attestations?
       return false if GitHub::API.credentials.blank?
       return false if ENV.fetch("CI", false)
-      return false unless Formula["gh"].any_version_installed?
 
       Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?
     end
@@ -70,7 +69,7 @@ module Homebrew
       return @gh_executable if @gh_executable.present?
 
       with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
-        @gh_executable = ensure_executable!("gh")
+        @gh_executable = ensure_executable!("gh", reason: "verifying attestations")
 
         gh_version = Version.new(system_command!(@gh_executable, args: ["--version"], print_stderr: false)
                                  .stdout.match(/\d+(?:\.\d+)+/i).to_s)

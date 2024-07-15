@@ -77,7 +77,7 @@ RSpec.describe Homebrew::Attestation do
 
     it "calls ensure_executable and ensure_formula_installed" do
       expect(described_class).to receive(:ensure_executable!)
-        .with("gh")
+        .with("gh", reason: "verifying attestations")
         .and_return(fake_old_gh)
 
       expect(described_class).to receive(:ensure_formula_installed!)
