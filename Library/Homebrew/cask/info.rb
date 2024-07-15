@@ -42,16 +42,15 @@ module Cask
       return "Not installed" unless cask.installed?
 
       versioned_staged_path = cask.caskroom_path.join(cask.installed_version)
-      path_details = if versioned_staged_path.exist?
-        versioned_staged_path.abv
-      else
-        Formatter.error("does not exist")
-      end
+
+      return "Installed\n#{versioned_staged_path} (#{Formatter.error("does not exist")})\n" unless versioned_staged_path.exist?
+
+      path_details = versioned_staged_path.children.sum(&:disk_usage)
 
       tab = Tab.for_cask(cask)
 
       info = ["Installed"]
-      info << "#{versioned_staged_path} (#{path_details})"
+      info << "#{versioned_staged_path} (#{disk_usage_readable(path_details)})"
       info << "  #{tab}" if tab.tabfile&.exist?
       info.join("\n")
     end
