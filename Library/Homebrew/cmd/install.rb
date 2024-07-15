@@ -263,6 +263,14 @@ module Homebrew
           end
         end
 
+        if Homebrew::Attestation.enabled?
+          if formulae.include?(Formula["gh"])
+            formulae.unshift(formulae.delete(Formula["gh"]))
+          else
+            Homebrew::Attestation.ensure_gh_installed!
+          end
+        end
+
         # if the user's flags will prevent bottle only-installations when no
         # developer tools are available, we need to stop them early on
         build_flags = []

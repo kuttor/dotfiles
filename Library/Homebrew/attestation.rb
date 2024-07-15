@@ -57,6 +57,16 @@ module Homebrew
       Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?
     end
 
+    # Ensures the availability of a suitable `gh` executable for attestation verification.
+    #
+    # @api private
+    sig { returns(Pathname) }
+    def self.ensure_gh_installed!
+      return @gh_executable if @gh_executable.present?
+
+      gh_executable
+    end
+
     # Returns a path to a suitable `gh` executable for attestation verification.
     #
     # @api private
@@ -65,9 +75,20 @@ module Homebrew
       # NOTE: We set HOMEBREW_NO_VERIFY_ATTESTATIONS when installing `gh` itself,
       #       to prevent a cycle during bootstrapping. This can eventually be resolved
       #       by vendoring a pure-Ruby Sigstore verifier client.
-      @gh_executable ||= T.let(with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
-        ensure_executable!("gh")
-      end, T.nilable(Pathname))
+      return @gh_executable if @gh_executable.present?
+
+      with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
+        @gh_executable = ensure_executable!("gh")
+
+        gh_version = Version.new(system_command!(@gh_executable, args: ["--version"], print_stderr: false)
+                                 .stdout.match(/\d+(?:\.\d+)+/i).to_s)
+        if gh_version < GH_ATTESTATION_MIN_VERSION
+          @gh_executable = ensure_formula_installed!("gh", latest: true,
+                                                           reason: "verifying attestations").opt_bin/"gh"
+        end
+      end
+
+      @gh_executable
     end
 
     # Verifies the given bottle against a cryptographic attestation of build provenance.
