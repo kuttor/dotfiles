@@ -82,7 +82,9 @@ module Homebrew
             casks = args.formula? ? [] : Cask::Cask.all(eval_all:)
             formulae + casks
           else
-            raise UsageError, "`brew bump` without named arguments needs `--installed` or `--eval-all` passed or `HOMEBREW_EVAL_ALL` set!"
+            raise UsageError,
+                  "`brew bump` without named arguments needs `--installed` or `--eval-all` passed or " \
+                  "`HOMEBREW_EVAL_ALL` set!"
           end
 
           formulae_and_casks = formulae_and_casks&.sort_by do |formula_or_cask|
