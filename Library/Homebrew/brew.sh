@@ -886,6 +886,7 @@ fi
 export HOMEBREW_CORE_GIT_REMOTE
 
 # Set HOMEBREW_DEVELOPER_COMMAND if the command being run is a developer command
+unset HOMEBREW_DEVELOPER_COMMAND
 if [[ -f "${HOMEBREW_LIBRARY}/Homebrew/dev-cmd/${HOMEBREW_COMMAND}.sh" ]] ||
    [[ -f "${HOMEBREW_LIBRARY}/Homebrew/dev-cmd/${HOMEBREW_COMMAND}.rb" ]]
 then
