@@ -2,10 +2,13 @@
 # frozen_string_literal: true
 
 require "abstract_command"
+require "shell_command"
 
 module Homebrew
   module Cmd
     class Repository < AbstractCommand
+      include ShellCommand
+
       sig { override.returns(String) }
       def self.command_name = "--repository"
 
@@ -18,9 +21,6 @@ module Homebrew
 
         named_args :tap
       end
-
-      sig { override.void }
-      def run = raise_sh_command_error!
     end
   end
 end
