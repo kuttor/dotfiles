@@ -22,9 +22,9 @@ module Homebrew
 
       cmd_args do
         description <<~EOS
-          Display out-of-date brew formulae and the latest version available. If the
+          Displays out-of-date packages and the latest version available. If the
           returned current and livecheck versions differ or when querying specific
-          formulae, also displays whether a pull request has been opened with the URL.
+          packages, also displays whether a pull request has been opened with the URL.
         EOS
         switch "--full-name",
                description: "Print formulae/casks with fully-qualified names."
@@ -87,11 +87,18 @@ module Homebrew
                   "`HOMEBREW_EVAL_ALL` set!"
           end
 
+          if args.start_with
+            formulae_and_casks.select! do |formula_or_cask|
+              name = formula_or_cask.respond_to?(:token) ? formula_or_cask.token : formula_or_cask.name
+              name.start_with?(args.start_with)
+            end
+          end
+
           formulae_and_casks = formulae_and_casks&.sort_by do |formula_or_cask|
             formula_or_cask.respond_to?(:token) ? formula_or_cask.token : formula_or_cask.name
           end
 
-          unless Utils::Curl.curl_supports_tls13?
+          if args.repology? && !Utils::Curl.curl_supports_tls13?
             begin
               ensure_formula_installed!("curl", reason: "Repology queries") unless HOMEBREW_BREWED_CURL_PATH.exist?
             rescue FormulaUnavailableError
