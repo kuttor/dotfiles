@@ -9,6 +9,8 @@ module Homebrew
 
     sig { void }
     def run
+      T.bind(self, AbstractCommand)
+
       sh_cmd_path = "#{self.class.dev_cmd? ? "dev-cmd" : "cmd"}/#{self.class.command_name}.sh"
       raise StandardError,
             "This command is just here for completions generation. " \
