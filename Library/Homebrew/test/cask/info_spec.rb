@@ -122,36 +122,34 @@ RSpec.describe Cask::Info, :cask do
     EOS
   end
 
-  context "when a Cask is installed" do
-    it "prints install information from tab" do
-      mktmpdir do |caskroom|
-        FileUtils.mkdir caskroom/"2.61"
+  it "prints install information for an installed Cask" do
+    mktmpdir do |caskroom|
+      FileUtils.mkdir caskroom/"2.61"
 
-        cask = Cask::CaskLoader.load("local-transmission")
-        time = 1_720_189_863
-        tab = Cask::Tab.new(loaded_from_api: true, tabfile: TEST_FIXTURE_DIR/"cask_receipt.json", time:)
-        expect(cask).to receive(:installed?).and_return(true)
-        expect(cask).to receive(:caskroom_path).and_return(caskroom)
-        expect(cask).to receive(:installed_version).and_return("2.61")
-        expect(Cask::Tab).to receive(:for_cask).with(cask).and_return(tab)
+      cask = Cask::CaskLoader.load("local-transmission")
+      time = 1_720_189_863
+      tab = Cask::Tab.new(loaded_from_api: true, tabfile: TEST_FIXTURE_DIR/"cask_receipt.json", time:)
+      expect(cask).to receive(:installed?).and_return(true)
+      expect(cask).to receive(:caskroom_path).and_return(caskroom)
+      expect(cask).to receive(:installed_version).and_return("2.61")
+      expect(Cask::Tab).to receive(:for_cask).with(cask).and_return(tab)
 
-        expect do
-          described_class.info(cask)
-        end.to output(<<~EOS).to_stdout
-          ==> local-transmission: 2.61
-          https://transmissionbt.com/
-          Installed
-          #{caskroom}/2.61 (0B)
-            Installed using the formulae.brew.sh API on #{Time.at(time).strftime("%Y-%m-%d at %H:%M:%S")}
-          From: https://github.com/Homebrew/homebrew-cask/blob/HEAD/Casks/l/local-transmission.rb
-          ==> Name
-          Transmission
-          ==> Description
-          BitTorrent client
-          ==> Artifacts
-          Transmission.app (App)
-        EOS
-      end
+      expect do
+        described_class.info(cask)
+      end.to output(<<~EOS).to_stdout
+        ==> local-transmission: 2.61
+        https://transmissionbt.com/
+        Installed
+        #{caskroom}/2.61 (0B)
+          Installed using the formulae.brew.sh API on #{Time.at(time).strftime("%Y-%m-%d at %H:%M:%S")}
+        From: https://github.com/Homebrew/homebrew-cask/blob/HEAD/Casks/l/local-transmission.rb
+        ==> Name
+        Transmission
+        ==> Description
+        BitTorrent client
+        ==> Artifacts
+        Transmission.app (App)
+      EOS
     end
   end
 end
