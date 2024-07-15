@@ -129,13 +129,6 @@ module Homebrew
         # Even if we have credentials, they may be invalid or malformed.
         raise GhAuthNeeded, "invalid credentials" if e.status.exitstatus == 4
 
-        gh_version = Version.new(system_command!(gh_executable, args: ["--version"], print_stderr: false)
-                                 .stdout.match(/\d+(?:\.\d+)+/i).to_s)
-        if gh_version < GH_ATTESTATION_MIN_VERSION
-          raise e,
-                "#{gh_executable} is too old, you must upgrade it to continue"
-        end
-
         raise InvalidAttestationError, "attestation verification failed: #{e}"
       end
 

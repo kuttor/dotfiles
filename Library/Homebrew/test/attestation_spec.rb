@@ -6,6 +6,7 @@ RSpec.describe Homebrew::Attestation do
   let(:fake_gh) { Pathname.new("/extremely/fake/gh") }
   let(:fake_old_gh) { Pathname.new("/extremely/fake/old/gh") }
   let(:fake_gh_creds) { "fake-gh-api-token" }
+  let(:fake_gh_formula) { instance_double(Formula, "gh", opt_bin: Pathname.new("/extremely/fake")) }
   let(:fake_gh_version) { instance_double(SystemCommand::Result, stdout: "2.49.0") }
   let(:fake_old_gh_version) { instance_double(SystemCommand::Result, stdout: "2.48.0") }
   let(:fake_error_status) { instance_double(Process::Status, exitstatus: 1, termsig: nil) }
@@ -68,40 +69,22 @@ RSpec.describe Homebrew::Attestation do
   end
 
   describe "::gh_executable" do
-    it "calls ensure_executable" do
-      expect(described_class).to receive(:ensure_executable!)
-        .with("gh")
-        .and_return(fake_gh)
-
-      described_class.gh_executable
-    end
-  end
-
-  describe "::check_attestation fails with old gh" do
     before do
-      allow(described_class).to receive(:gh_executable)
-        .and_return(fake_old_gh)
-
       allow(described_class).to receive(:system_command!)
         .with(fake_old_gh, args: ["--version"], print_stderr: false)
         .and_return(fake_old_gh_version)
     end
 
-    it "raises when gh is too old" do
-      expect(GitHub::API).to receive(:credentials)
-        .and_return(fake_gh_creds)
+    it "calls ensure_executable and ensure_formula_installed" do
+      expect(described_class).to receive(:ensure_executable!)
+        .with("gh")
+        .and_return(fake_old_gh)
 
-      expect(described_class).to receive(:system_command!)
-        .with(fake_old_gh, args: ["attestation", "verify", cached_download, "--repo",
-                                  described_class::HOMEBREW_CORE_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
-              print_stderr: false, chdir: HOMEBREW_TEMP)
-        .and_raise(ErrorDuringExecution.new(["foo"], status: fake_error_status))
+      expect(described_class).to receive(:ensure_formula_installed!)
+        .with("gh", latest: true, reason: "verifying attestations")
+        .and_return(fake_gh_formula)
 
-      expect do
-        described_class.check_attestation fake_bottle,
-                                          described_class::HOMEBREW_CORE_REPO
-      end.to raise_error(ErrorDuringExecution)
+      described_class.gh_executable
     end
   end
 
@@ -109,10 +92,6 @@ RSpec.describe Homebrew::Attestation do
     before do
       allow(described_class).to receive(:gh_executable)
         .and_return(fake_gh)
-
-      allow(described_class).to receive(:system_command!)
-        .with(fake_gh, args: ["--version"], print_stderr: false)
-        .and_return(fake_gh_version)
     end
 
     it "raises without any gh credentials" do
