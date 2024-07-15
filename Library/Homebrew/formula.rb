@@ -2232,6 +2232,8 @@ class Formula
 
   def tap_git_head
     tap&.git_head
+  rescue TapUnavailableError
+    nil
   end
 
   delegate env: :"self.class"
