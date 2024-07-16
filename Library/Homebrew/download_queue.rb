@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require "downloadable"
-require "concurrent/promise"
+require "concurrent/promises"
 require "concurrent/executors"
 
 module Homebrew
@@ -16,11 +16,16 @@ module Homebrew
       @pool = Concurrent::FixedThreadPool.new(size)
     end
 
-    sig { params(downloadable: Downloadable).returns(Concurrent::Promise) }
-    def enqueue(downloadable)
-      Concurrent::Promise.execute(executor: pool) do
-        downloadable.fetch(quiet: pool.max_length > 1)
+    sig { params(downloadable: Downloadable, force: T::Boolean).returns(Concurrent::Promises::Future) }
+    def enqueue(downloadable, force: false)
+      quiet = pool.max_length > 1
+      # Passing in arguments from outside into the future is a common  `concurrent-ruby` pattern.
+      # rubocop:disable Lint/ShadowingOuterLocalVariable
+      Concurrent::Promises.future_on(pool, downloadable, force, quiet) do |downloadable, force, quiet|
+        downloadable.clear_cache if force
+        downloadable.fetch(quiet:)
       end
+      # rubocop:enable Lint/ShadowingOuterLocalVariable
     end
 
     sig { void }
