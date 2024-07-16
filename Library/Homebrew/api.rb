@@ -4,6 +4,7 @@
 require "api/analytics"
 require "api/cask"
 require "api/formula"
+require "development_tools"
 require "warnings"
 Warnings.ignore :default_gems do
   require "base64" # TODO: Add this to the Gemfile or remove it before moving to Ruby 3.4.

@@ -3,6 +3,7 @@
 
 require "url"
 require "checksum"
+require "download_strategy"
 
 class Downloadable
   include Context
