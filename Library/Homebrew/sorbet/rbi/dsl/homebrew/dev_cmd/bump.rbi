@@ -32,9 +32,6 @@ class Homebrew::DevCmd::Bump::Args < Homebrew::CLI::Args
   sig { returns(T::Boolean) }
   def installed?; end
 
-  sig { returns(T.nilable(String)) }
-  def limit; end
-
   sig { returns(T::Boolean) }
   def no_fork?; end
 
