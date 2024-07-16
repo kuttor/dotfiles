@@ -174,7 +174,10 @@ module Homebrew
           begin
             reporter = Reporter.new(tap)
           rescue Reporter::ReporterRevisionUnsetError => e
-            onoe "#{e.message}\n#{Utils::Backtrace.clean(e)&.join("\n")}" if Homebrew::EnvConfig.developer?
+            if Homebrew::EnvConfig.developer?
+              require "utils/backtrace"
+              onoe "#{e.message}\n#{Utils::Backtrace.clean(e)&.join("\n")}"
+            end
             next
           end
           if reporter.updated?
@@ -624,7 +627,10 @@ class Reporter
             system HOMEBREW_BREW_FILE, "link", new_full_name, "--overwrite"
           end
         rescue Exception => e # rubocop:disable Lint/RescueException
-          onoe "#{e.message}\n#{Utils::Backtrace.clean(e)&.join("\n")}" if Homebrew::EnvConfig.developer?
+          if Homebrew::EnvConfig.developer?
+            require "utils/backtrace"
+            onoe "#{e.message}\n#{Utils::Backtrace.clean(e)&.join("\n")}"
+          end
         end
         next
       end

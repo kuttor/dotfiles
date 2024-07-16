@@ -55,6 +55,8 @@ class FormulaVersions
       nostdout { Formulary.from_contents(name, path, contents, ignore_errors: true) }
     end
   rescue *IGNORED_EXCEPTIONS => e
+    require "utils/backtrace"
+
     # We rescue these so that we can skip bad versions and
     # continue walking the history
     odebug "#{e} in #{name} at revision #{revision}", Utils::Backtrace.clean(e)

@@ -226,7 +226,10 @@ class Migrator
   rescue Exception => e # rubocop:disable Lint/RescueException
     onoe "The migration did not complete successfully."
     puts e
-    puts Utils::Backtrace.clean(e) if debug?
+    if debug?
+      require "utils/backtrace"
+      puts Utils::Backtrace.clean(e)
+    end
     puts "Backing up..."
     ignore_interrupts { backup_oldname }
   ensure
@@ -357,7 +360,10 @@ class Migrator
     rescue Exception => e # rubocop:disable Lint/RescueException
       onoe "An unexpected error occurred during linking"
       puts e
-      puts Utils::Backtrace.clean(e) if debug?
+      if debug?
+        require "utils/backtrace"
+        puts Utils::Backtrace.clean(e)
+      end
       ignore_interrupts { new_keg.unlink(verbose: verbose?) }
       raise
     end

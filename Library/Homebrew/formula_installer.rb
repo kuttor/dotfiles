@@ -1034,7 +1034,12 @@ on_request: installed_on_request?, options:)
       ofail "An unexpected error occurred during the `brew link` step"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts e
-      puts Utils::Backtrace.clean(e) if debug?
+
+      if debug?
+        require "utils/backtrace"
+        puts Utils::Backtrace.clean(e)
+      end
+
       @show_summary_heading = true
       ignore_interrupts do
         keg.unlink
@@ -1080,6 +1085,8 @@ on_request: installed_on_request?, options:)
   rescue Exception => e # rubocop:disable Lint/RescueException
     puts e
     ofail "Failed to install service files"
+
+    require "utils/backtrace"
     odebug e, Utils::Backtrace.clean(e)
   end
 
@@ -1090,7 +1097,10 @@ on_request: installed_on_request?, options:)
     ofail "Failed to fix install linkage"
     puts "The formula built, but you may encounter issues using it or linking other"
     puts "formulae against it."
+
+    require "utils/backtrace"
     odebug e, Utils::Backtrace.clean(e)
+
     @show_summary_heading = true
   end
 
@@ -1101,7 +1111,10 @@ on_request: installed_on_request?, options:)
   rescue Exception => e # rubocop:disable Lint/RescueException
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix."
+
+    require "utils/backtrace"
     odebug e, Utils::Backtrace.clean(e)
+
     Homebrew.failed = true
     @show_summary_heading = true
   end
@@ -1171,7 +1184,10 @@ on_request: installed_on_request?, options:)
     opoo "The post-install step did not complete successfully"
     puts "You can try again using:"
     puts "  brew postinstall #{formula.full_name}"
+
+    require "utils/backtrace"
     odebug e, Utils::Backtrace.clean(e), always_display: Homebrew::EnvConfig.developer?
+
     Homebrew.failed = true
     @show_summary_heading = true
   end

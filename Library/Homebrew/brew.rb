@@ -147,8 +147,10 @@ rescue UsageError => e
   Homebrew::Help.help cmd, remaining_args: args&.remaining, usage_error: e.message
 rescue SystemExit => e
   onoe "Kernel.exit" if args&.debug? && !e.success?
-  require "utils/backtrace"
-  $stderr.puts Utils::Backtrace.clean(e) if args&.debug? || ARGV.include?("--debug")
+  if args&.debug? || ARGV.include?("--debug")
+    require "utils/backtrace"
+    $stderr.puts Utils::Backtrace.clean(e)
+  end
   raise
 rescue Interrupt
   $stderr.puts # seemingly a newline is typical
@@ -185,8 +187,10 @@ rescue RuntimeError, SystemCallError => e
   raise if e.message.empty?
 
   onoe e
-  require "utils/backtrace"
-  $stderr.puts Utils::Backtrace.clean(e) if args&.debug? || ARGV.include?("--debug")
+  if args&.debug? || ARGV.include?("--debug")
+    require "utils/backtrace"
+    $stderr.puts Utils::Backtrace.clean(e)
+  end
 
   exit 1
 rescue Exception => e # rubocop:disable Lint/RescueException
