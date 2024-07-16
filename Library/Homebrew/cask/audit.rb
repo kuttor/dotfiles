@@ -672,6 +672,7 @@ module Cask
       return if cask_min_os&.to_sym == min_os.to_sym
       return if cask.on_system_blocks_exist? &&
                 OnSystem.arch_condition_met?(:arm) &&
+                cask_min_os.present? &&
                 cask_min_os < MacOSVersion.new("11")
 
       min_os_definition = if cask_min_os.present?
