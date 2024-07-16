@@ -112,7 +112,7 @@ module Utils
         options_array = command_instance.args.options_only.to_a.compact
 
         # Strip out any flag values to reduce cardinality and preserve privacy.
-        options_array.map! { |option| option.sub(/=.*/, "=") }
+        options_array.map! { |option| option.sub(/=.*/m, "=") }
 
         # Strip out --with-* and --without-* options
         options_array.reject! { |option| option.match(/^--with(out)?-/) }
