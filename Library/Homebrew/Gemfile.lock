@@ -97,8 +97,8 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-rspec (3.0.3)
       rubocop (~> 1.61)
-    rubocop-sorbet (0.8.3)
-      rubocop (>= 0.90.0)
+    rubocop-sorbet (0.8.4)
+      rubocop (>= 1)
     ruby-macho (4.1.0)
     ruby-prof (1.7.0)
     ruby-progressbar (1.13.0)
@@ -148,7 +148,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
