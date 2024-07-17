@@ -102,7 +102,7 @@ module Homebrew
 
       begin
         result = system_command!(gh_executable, args: cmd, env: { "GH_TOKEN" => credentials },
-                                secrets: [credentials], print_stderr: false)
+                                 secrets: [credentials], print_stderr: false, chdir: HOMEBREW_TEMP)
       rescue ErrorDuringExecution => e
         # Even if we have credentials, they may be invalid or malformed.
         raise GhAuthNeeded, "invalid credentials" if e.status.exitstatus == 4
