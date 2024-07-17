@@ -4,6 +4,7 @@
 require "date"
 require "json"
 require "utils/popen"
+require "utils/github/api"
 require "exceptions"
 require "system_command"
 
@@ -52,7 +53,6 @@ module Homebrew
       return true if Homebrew::EnvConfig.verify_attestations?
       return false if GitHub::API.credentials.blank?
       return false if ENV.fetch("CI", false)
-      return false unless Formula["gh"].any_version_installed?
 
       Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?
     end
@@ -65,9 +65,25 @@ module Homebrew
       # NOTE: We set HOMEBREW_NO_VERIFY_ATTESTATIONS when installing `gh` itself,
       #       to prevent a cycle during bootstrapping. This can eventually be resolved
       #       by vendoring a pure-Ruby Sigstore verifier client.
-      @gh_executable ||= T.let(with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
-        ensure_executable!("gh")
-      end, T.nilable(Pathname))
+      @gh_executable ||= T.let(nil, T.nilable(Pathname))
+      return @gh_executable if @gh_executable.present?
+
+      with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
+        @gh_executable = ensure_executable!("gh", reason: "verifying attestations")
+
+        gh_version = Version.new(system_command!(@gh_executable, args: ["--version"], print_stderr: false)
+                                 .stdout.match(/\d+(?:\.\d+)+/i).to_s)
+        if gh_version < GH_ATTESTATION_MIN_VERSION
+          if Formula["gh"].version < GH_ATTESTATION_MIN_VERSION
+            raise "#{@gh_executable} is too old, you must upgrade it to >=#{GH_ATTESTATION_MIN_VERSION} to continue"
+          end
+
+          @gh_executable = ensure_formula_installed!("gh", latest: true,
+                                                           reason: "verifying attestations").opt_bin/"gh"
+        end
+      end
+
+      T.must(@gh_executable)
     end
 
     # Verifies the given bottle against a cryptographic attestation of build provenance.
@@ -106,13 +122,6 @@ module Homebrew
       rescue ErrorDuringExecution => e
         # Even if we have credentials, they may be invalid or malformed.
         raise GhAuthNeeded, "invalid credentials" if e.status.exitstatus == 4
-
-        gh_version = Version.new(system_command!(gh_executable, args: ["--version"], print_stderr: false)
-                                 .stdout.match(/\d+(?:\.\d+)+/i).to_s)
-        if gh_version < GH_ATTESTATION_MIN_VERSION
-          raise e,
-                "#{gh_executable} is too old, you must upgrade it to continue"
-        end
 
         raise InvalidAttestationError, "attestation verification failed: #{e}"
       end
