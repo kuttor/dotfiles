@@ -1040,13 +1040,15 @@ class GitDownloadStrategy < VCSDownloadStrategy
   sig { params(timeout: T.nilable(Time)).void }
   def update_submodules(timeout: nil)
     command! "git",
-             args:    ["submodule", "foreach", "--recursive", "git submodule sync"],
-             chdir:   cached_location,
-             timeout: Utils::Timer.remaining(timeout)
+             args:      ["submodule", "foreach", "--recursive", "git submodule sync"],
+             chdir:     cached_location,
+             timeout:   Utils::Timer.remaining(timeout),
+             reset_uid: true
     command! "git",
-             args:    ["submodule", "update", "--init", "--recursive"],
-             chdir:   cached_location,
-             timeout: Utils::Timer.remaining(timeout)
+             args:      ["submodule", "update", "--init", "--recursive"],
+             chdir:     cached_location,
+             timeout:   Utils::Timer.remaining(timeout),
+             reset_uid: true
     fix_absolute_submodule_gitdir_references!
   end
 
@@ -1059,8 +1061,9 @@ class GitDownloadStrategy < VCSDownloadStrategy
   # See https://github.com/Homebrew/homebrew-core/pull/1520 for an example.
   def fix_absolute_submodule_gitdir_references!
     submodule_dirs = command!("git",
-                              args:  ["submodule", "--quiet", "foreach", "--recursive", "pwd"],
-                              chdir: cached_location).stdout
+                              args:      ["submodule", "--quiet", "foreach", "--recursive", "pwd"],
+                              chdir:     cached_location,
+                              reset_uid: true).stdout
 
     submodule_dirs.lines.map(&:chomp).each do |submodule_dir|
       work_dir = Pathname.new(submodule_dir)
