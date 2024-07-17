@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 require "attrable"
-require "open3"
 require "plist"
 require "shellwords"
 require "uri"
@@ -92,6 +91,7 @@ class SystemCommand
       verbose:      T.nilable(T::Boolean),
       secrets:      T.any(String, T::Array[String]),
       chdir:        T.any(String, Pathname),
+      reset_uid:    T::Boolean,
       timeout:      T.nilable(T.any(Integer, Float)),
     ).void
   }
@@ -109,6 +109,7 @@ class SystemCommand
     verbose: false,
     secrets: [],
     chdir: T.unsafe(nil),
+    reset_uid: false,
     timeout: nil
   )
     require "extend/ENV"
@@ -140,6 +141,7 @@ class SystemCommand
     @verbose = verbose
     @secrets = (Array(secrets) + ENV.sensitive_environment.values).uniq
     @chdir = chdir
+    @reset_uid = reset_uid
     @timeout = timeout
   end
 
@@ -152,7 +154,7 @@ class SystemCommand
 
   attr_reader :executable, :args, :input, :chdir, :env
 
-  attr_predicate :sudo?, :sudo_as_root?, :must_succeed?
+  attr_predicate :sudo?, :sudo_as_root?, :must_succeed?, :reset_uid?
 
   sig { returns(T::Boolean) }
   def debug?
@@ -238,12 +240,7 @@ class SystemCommand
     }
     options[:chdir] = chdir if chdir
 
-    raw_stdin, raw_stdout, raw_stderr, raw_wait_thr = Open3.popen3(
-      env.merge({ "COLUMNS" => Tty.width.to_s }),
-      [executable, executable],
-      *args,
-      **options,
-    )
+    raw_stdin, raw_stdout, raw_stderr, raw_wait_thr = exec3(env, executable, *args, **options)
 
     write_input_to(raw_stdin)
     raw_stdin.close_write
@@ -276,9 +273,56 @@ class SystemCommand
   rescue Interrupt
     Process.kill("INT", raw_wait_thr.pid) if raw_wait_thr && !sudo?
     raise Interrupt
-  rescue SystemCallError => e
-    @status = $CHILD_STATUS
-    @output << [:stderr, e.message]
+  ensure
+    raw_stdin&.close
+    raw_stdout&.close
+    raw_stderr&.close
+  end
+
+  sig {
+    params(
+      env:        T::Hash[String, String],
+      executable: String,
+      args:       String,
+      options:    T.untyped,
+    ).returns([IO, IO, IO, Thread])
+  }
+  def exec3(env, executable, *args, **options)
+    in_r, in_w = IO.pipe
+    options[:in] = in_r
+    in_w.sync = true
+
+    out_r, out_w = IO.pipe
+    options[:out] = out_w
+
+    err_r, err_w = IO.pipe
+    options[:err] = err_w
+
+    pid = fork do
+      Process::UID.change_privilege(Process.euid) if reset_uid? && Process.euid != Process.uid
+
+      exec(
+        env.merge({ "COLUMNS" => Tty.width.to_s }),
+        [executable, executable],
+        *args,
+        **options,
+      )
+    rescue SystemCallError => e
+      $stderr.puts(e.message)
+      exit!(127)
+    end
+    wait_thr = Process.detach(pid)
+
+    [in_w, out_r, err_r, wait_thr]
+  rescue
+    in_w&.close
+    out_r&.close
+    err_r&.close
+    raise
+  ensure
+    in_r&.close
+    out_w&.close
+    err_w&.close
   end
 
   sig { params(raw_stdin: IO).void }

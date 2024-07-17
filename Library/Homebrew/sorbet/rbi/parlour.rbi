@@ -279,6 +279,9 @@ class SystemCommand
 
   sig { returns(T::Boolean) }
   def must_succeed?; end
+
+  sig { returns(T::Boolean) }
+  def reset_uid?; end
 end
 
 module Utils
