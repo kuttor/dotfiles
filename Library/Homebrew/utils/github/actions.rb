@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "securerandom"
@@ -85,13 +85,13 @@ module GitHub
         raise ArgumentError, "Unsupported type: #{type.inspect}" if ANNOTATION_TYPES.exclude?(type)
 
         @type = type
-        @message = Tty.strip_ansi(message)
-        @file = self.class.path_relative_to_workspace(file) if file.present?
-        @title = Tty.strip_ansi(title) if title
-        @line = Integer(line) if line
-        @end_line = Integer(end_line) if end_line
-        @column = Integer(column) if column
-        @end_column = Integer(end_column) if end_column
+        @message = T.let(Tty.strip_ansi(message), String)
+        @file = T.let(self.class.path_relative_to_workspace(file), T.nilable(Pathname)) if file.present?
+        @title = T.let(Tty.strip_ansi(title), String) if title
+        @line = T.let(Integer(line), Integer) if line
+        @end_line = T.let(Integer(end_line), Integer) if end_line
+        @column = T.let(Integer(column), Integer) if column
+        @end_column = T.let(Integer(end_column), Integer) if end_column
       end
 
       sig { returns(String) }
