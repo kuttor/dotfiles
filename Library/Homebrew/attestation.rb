@@ -74,6 +74,10 @@ module Homebrew
         gh_version = Version.new(system_command!(@gh_executable, args: ["--version"], print_stderr: false)
                                  .stdout.match(/\d+(?:\.\d+)+/i).to_s)
         if gh_version < GH_ATTESTATION_MIN_VERSION
+          if Formula["gh"].version < GH_ATTESTATION_MIN_VERSION
+            raise "#{@gh_executable} is too old, you must upgrade it to >=#{GH_ATTESTATION_MIN_VERSION} to continue"
+          end
+
           @gh_executable = ensure_formula_installed!("gh", latest: true,
                                                            reason: "verifying attestations").opt_bin/"gh"
         end

@@ -70,6 +70,10 @@ RSpec.describe Homebrew::Attestation do
 
   describe "::gh_executable" do
     before do
+      allow(Formulary).to receive(:factory)
+        .with("gh")
+        .and_return(instance_double(Formula, version: Version.new("2.49.0")))
+
       allow(described_class).to receive(:system_command!)
         .with(fake_old_gh, args: ["--version"], print_stderr: false)
         .and_return(fake_old_gh_version)
