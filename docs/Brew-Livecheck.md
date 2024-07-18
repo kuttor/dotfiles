@@ -283,16 +283,17 @@ Or a more complex one:
 
 ```ruby
 livecheck do
-      url "https://example.org/my-app/latest-mac.yml"
-      regex(/MyApp[._-](\d+(?:\.\d+)+)-mac-ddl-stage-(\d+(?:\.\d+)*)-([0-9a-f]+)\.dmg/i)
-      strategy :electron_builder do |yaml, regex|
-        yaml["files"]&.map do |file|
-          match = file["url"]&.match(regex)
-          next if match.blank?
+  url "https://example.org/my-app/latest-mac.yml"
+  regex(/MyApp[._-](\d+(?:\.\d+)+)-mac-ddl-stage-(\d+(?:\.\d+)*)-([0-9a-f]+)\.dmg/i)
+  strategy :electron_builder do |yaml, regex|
+    yaml["files"]&.map do |file|
+      match = file["url"]&.match(regex)
+      next if match.blank?
 
-          "#{match[1]},#{match[2]},#{match[3]}"
-        end
-      end
+      "#{match[1]},#{match[2]},#{match[3]}"
+    end
+  end
+end
 ```
 
 #### `Json` `strategy` block
