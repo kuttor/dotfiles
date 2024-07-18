@@ -115,7 +115,7 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::HOMEBREW_CORE_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .and_raise(ErrorDuringExecution.new(["foo"], status: fake_error_status))
 
@@ -132,14 +132,14 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::HOMEBREW_CORE_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .and_raise(ErrorDuringExecution.new(["foo"], status: fake_auth_status))
 
       expect do
         described_class.check_attestation fake_bottle,
                                           described_class::HOMEBREW_CORE_REPO
-      end.to raise_error(described_class::GhAuthNeeded)
+      end.to raise_error(described_class::GhAuthInvalid)
     end
 
     it "raises when gh returns invalid JSON" do
@@ -149,7 +149,7 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::HOMEBREW_CORE_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .and_return(fake_result_invalid_json)
 
@@ -166,7 +166,7 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::HOMEBREW_CORE_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .and_return(fake_json_resp_wrong_sub)
 
@@ -183,7 +183,7 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::HOMEBREW_CORE_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .and_return(fake_result_json_resp)
 
@@ -204,7 +204,7 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::HOMEBREW_CORE_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .and_return(fake_result_json_resp)
 
@@ -215,7 +215,7 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::HOMEBREW_CORE_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .once
         .and_raise(described_class::InvalidAttestationError)
@@ -223,7 +223,7 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::BACKFILL_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .and_return(fake_result_json_resp_backfill)
 
@@ -234,7 +234,7 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::HOMEBREW_CORE_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .once
         .and_raise(described_class::InvalidAttestationError)
@@ -242,7 +242,7 @@ RSpec.describe Homebrew::Attestation do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::BACKFILL_REPO, "--format", "json"],
-              env: { "GH_TOKEN" => fake_gh_creds }, secrets: [fake_gh_creds],
+              env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .and_return(fake_result_json_resp_too_new)
 

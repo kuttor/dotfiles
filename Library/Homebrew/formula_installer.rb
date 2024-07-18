@@ -1284,6 +1284,22 @@ on_request: installed_on_request?, options:)
       ohai "Verifying attestation for #{formula.name}"
       begin
         Homebrew::Attestation.check_core_attestation formula.bottle
+      rescue Homebrew::Attestation::GhAuthInvalid
+        # Only raise an error if we explicitly opted-in to verification.
+        raise CannotInstallFormulaError, <<~EOS if Homebrew::EnvConfig.verify_attestations?
+          The bottle for #{formula.name} could not be verified.
+
+          This typically indicates an invalid GitHub API token.
+
+          If you have `HOMEBREW_GITHUB_API_TOKEN` set, check it is correct
+          or unset it and instead run:
+
+            gh auth login
+        EOS
+
+        # If we didn't explicitly opt-in, then quietly opt-out in the case of invalid credentials.
+        # Based on user reports, a significant number of users are running with stale tokens.
+        ENV["HOMEBREW_NO_VERIFY_ATTESTATIONS"] = "1"
       rescue Homebrew::Attestation::GhAuthNeeded
         raise CannotInstallFormulaError, <<~EOS
           The bottle for #{formula.name} could not be verified.
