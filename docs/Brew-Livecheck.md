@@ -268,7 +268,7 @@ livecheck do
 end
 ```
 
-If you need to modify the version, you can access the yaml hash in the strategy block like so:
+If you need to modify the version, you can access the YAML hash in the `strategy` block like so:
 
 ```ruby
 livecheck do
