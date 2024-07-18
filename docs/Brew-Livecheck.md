@@ -268,6 +268,33 @@ livecheck do
 end
 ```
 
+If you need to modify the version, you can access the yaml hash in the strategy block like so:
+
+```ruby
+livecheck do
+  url "https://example.org/my-app/latest-mac.yml"
+  strategy :electron_builder do |yaml|
+    yaml["version"]&.gsub(/\D/, "")
+  end
+end
+```
+
+Or a more complex one:
+
+```ruby
+livecheck do
+      url "https://example.org/my-app/latest-mac.yml"
+      regex(/MyApp[._-](\d+(?:\.\d+)+)-mac-ddl-stage-(\d+(?:\.\d+)*)-([0-9a-f]+)\.dmg/i)
+      strategy :electron_builder do |yaml, regex|
+        yaml["files"]&.map do |file|
+          match = file["url"]&.match(regex)
+          next if match.blank?
+
+          "#{match[1]},#{match[2]},#{match[3]}"
+        end
+      end
+```
+
 #### `Json` `strategy` block
 
 A `strategy` block for `Json` receives parsed JSON data and, if provided, a regex. For example, if we have an object containing an array of objects with a `version` string, we can select only the members that match the regex and isolate the relevant version text as follows:
