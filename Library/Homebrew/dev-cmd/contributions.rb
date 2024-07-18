@@ -48,12 +48,20 @@ module Homebrew
         results = {}
         grand_totals = {}
 
-        repos = if args.repositories.blank? || args.repositories&.include?("primary")
-          PRIMARY_REPOS
-        elsif args.repositories&.include?("all")
-          SUPPORTED_REPOS
-        else
-          args.repositories
+        repos = T.must(
+          if args.repositories.blank? || args.repositories&.include?("primary")
+            PRIMARY_REPOS
+          elsif args.repositories&.include?("all")
+            SUPPORTED_REPOS
+          else
+            args.repositories
+          end,
+        )
+
+        repos.each do |repo|
+          if SUPPORTED_REPOS.exclude?(repo)
+            odie "Unsupported repository: #{repo}. Try one of #{SUPPORTED_REPOS.join(", ")}."
+          end
         end
 
         from = args.from.presence || Date.today.prev_year.iso8601
@@ -150,17 +158,18 @@ module Homebrew
         ]
       end
 
-      sig { params(repos: T.nilable(T::Array[String]), person: String, from: String).void }
+      sig {
+        params(
+          repos:  T::Array[String],
+          person: String,
+          from:   String,
+        ).returns(T::Hash[Symbol, T.untyped])
+      }
       def scan_repositories(repos, person, from:)
-        return if repos.blank?
-
         data = {}
+        return data if repos.blank?
 
         repos.each do |repo|
-          if SUPPORTED_REPOS.exclude?(repo)
-            return ofail "Unsupported repository: #{repo}. Try one of #{SUPPORTED_REPOS.join(", ")}."
-          end
-
           repo_path = find_repo_path_for_repo(repo)
           tap = Tap.fetch("homebrew", repo)
           unless repo_path.exist?
