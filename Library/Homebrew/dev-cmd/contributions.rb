@@ -6,6 +6,8 @@ require "warnings"
 Warnings.ignore :default_gems do
   require "csv"
 end
+require "tap"
+require "utils/github"
 
 module Homebrew
   module DevCmd
