@@ -1773,16 +1773,16 @@ class Formula
     "#<Formula #{name} (#{active_spec_sym}) #{path}>"
   end
 
-  # Standard parameters for configure builds.
-  sig {
-    params(
-      prefix: T.any(String, Pathname),
-      libdir: T.any(String, Pathname),
-    ).returns(T::Array[String])
-  }
-  def std_configure_args(prefix: self.prefix, libdir: "lib")
-    libdir = Pathname(libdir).expand_path(prefix)
-    ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--libdir=#{libdir}"]
+  # Standard parameters for cabal-v2 builds.
+  sig { returns(T::Array[String]) }
+  def std_cabal_v2_args
+    # cabal-install's dependency-resolution backtracking strategy can
+    # easily need more than the default 2,000 maximum number of
+    # "backjumps," since Hackage is a fast-moving, rolling-release
+    # target. The highest known needed value by a formula was 43,478
+    # for git-annex, so 100,000 should be enough to avoid most
+    # gratuitous backjumps build failures.
+    ["--jobs=#{ENV.make_jobs}", "--max-backjumps=100000", "--install-method=copy", "--installdir=#{bin}"]
   end
 
   # Standard parameters for cargo builds.
@@ -1819,6 +1819,18 @@ class Formula
   end
   alias generic_std_cmake_args std_cmake_args
 
+  # Standard parameters for configure builds.
+  sig {
+    params(
+      prefix: T.any(String, Pathname),
+      libdir: T.any(String, Pathname),
+    ).returns(T::Array[String])
+  }
+  def std_configure_args(prefix: self.prefix, libdir: "lib")
+    libdir = Pathname(libdir).expand_path(prefix)
+    ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--libdir=#{libdir}"]
+  end
+
   # Standard parameters for Go builds.
   sig {
     params(output:  T.any(String, Pathname),
@@ -1828,18 +1840,6 @@ class Formula
     args = ["-trimpath", "-o=#{output}"]
     args += ["-ldflags=#{Array(ldflags).join(" ")}"] if ldflags
     args
-  end
-
-  # Standard parameters for cabal-v2 builds.
-  sig { returns(T::Array[String]) }
-  def std_cabal_v2_args
-    # cabal-install's dependency-resolution backtracking strategy can
-    # easily need more than the default 2,000 maximum number of
-    # "backjumps," since Hackage is a fast-moving, rolling-release
-    # target. The highest known needed value by a formula was 43,478
-    # for git-annex, so 100,000 should be enough to avoid most
-    # gratuitous backjumps build failures.
-    ["--jobs=#{ENV.make_jobs}", "--max-backjumps=100000", "--install-method=copy", "--installdir=#{bin}"]
   end
 
   # Standard parameters for meson builds.
