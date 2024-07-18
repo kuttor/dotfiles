@@ -284,13 +284,13 @@ Similarly, you can work with the `files` array like this:
 ```ruby
 livecheck do
   url "https://example.org/my-app/latest-mac.yml"
-  regex(/MyApp[._-](\d+(?:\.\d+)+)-mac-ddl-stage-(\d+(?:\.\d+)*)-([0-9a-f]+)\.dmg/i)
+  regex(/MyApp[._-]v?(\d+(?:\.\d+)+)-(\h+)\.dmg/i)
   strategy :electron_builder do |yaml, regex|
     yaml["files"]&.map do |file|
       match = file["url"]&.match(regex)
       next if match.blank?
 
-      "#{match[1]},#{match[2]},#{match[3]}"
+      "#{match[1]},#{match[2]}"
     end
   end
 end
