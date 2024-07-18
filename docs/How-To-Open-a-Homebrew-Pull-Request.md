@@ -6,11 +6,11 @@ The type of change you want to make influences which of Homebrew's main reposito
 
 ## Submit a new version of an existing formula
 
-1. Use `brew bump-formula-pr` to do everything (i.e. forking, committing, pushing) with a single command. Run `brew bump-formula-pr --help` to learn more.
+1. Use [`brew bump-formula-pr`](Manpage#bump-formula-pr-options-formula) to do everything (i.e. forking, committing, pushing) with a single command. Run `brew bump-formula-pr --help` to learn more.
 
 ## Submit a new version of an existing cask
 
-1. Use `brew bump-cask-pr` to do everything (i.e. forking, committing, pushing) with a single command. Run `brew bump-cask-pr --help` to learn more.
+1. Use [`brew bump-cask-pr`](Manpage#bump-cask-pr-options-cask) to do everything (i.e. forking, committing, pushing) with a single command. Run `brew bump-cask-pr --help` to learn more.
 
 ## Set up your own fork of the Homebrew repository
 
