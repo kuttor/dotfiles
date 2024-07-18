@@ -56,8 +56,16 @@ class Dependency
 
     return false if minimum_version.blank?
 
-    installed_version = formula.any_installed_version
-    return false unless installed_version
+    # If the opt prefix doesn't exist: we likely have an incomplete installation.
+    return false unless formula.opt_prefix.exist?
+
+    installed_keg = formula.any_installed_keg
+    return false unless installed_keg
+
+    # If the keg name doesn't match, we may have moved from an alias to a full formula and need to upgrade.
+    return false unless formula.possible_names.include?(installed_keg.name)
+
+    installed_version = installed_keg.version
 
     # Tabs prior to 4.1.18 did not have revision or pkg_version fields.
     # As a result, we have to be more conversative when we do not have
