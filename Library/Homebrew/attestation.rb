@@ -118,8 +118,7 @@ module Homebrew
       cmd += ["--cert-identity", signing_workflow] if signing_workflow.present?
 
       # Fail early if we have no credentials. The command below invariably
-      # fails without them, so this saves us a network roundtrip before
-      # presenting the user with the same error.
+      # fails without them, so this saves us an unnecessary subshell.
       credentials = GitHub::API.credentials
       raise GhAuthNeeded, "missing credentials" if credentials.blank?
 
