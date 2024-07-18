@@ -448,13 +448,80 @@ end
 
 ### Standard arguments
 
-For any formula using a well-known build system, there'll be arguments that should be passed during compilation such that its build conforms to Homebrew standards. These have been collected into a set of `std_*_args` methods (like [`std_configure_args`](https://rubydoc.brew.sh/Formula#std_configure_args-instance_method) and [`std_cmake_args`](https://rubydoc.brew.sh/Formula#std_cmake_args-instance_method) as seen in the [output of `brew create`](#grab-the-url)) that set the build type and installation paths, plus any other applicable options.
+For any formula using certain well-known build systems, there will be arguments that should be passed during compilation so that the build conforms to Homebrew standards. These have been collected into a set of `std_*_args` methods.
 
 Most of these methods accept parameters to customize their output. For example, to set the install prefix to [**`libexec`**](#variables-for-directory-locations) for `configure` or `cmake`:
 
 ```ruby
 system "./configure", *std_configure_args(prefix: libexec)
 system "cmake", "-S", ".", "-B", "build", *std_cmake_args(install_prefix: libexec)
+```
+
+The `std_*_args` methods, as well as the arguments they pass, are:
+
+#### `std_cabal_v2_args`
+
+```ruby
+"--jobs=#{ENV.make_jobs}"
+"--max-backjumps=100000"
+"--install-method=copy"
+"--installdir=#{bin}"
+```
+
+#### `std_cargo_args`
+
+```ruby
+"--locked"
+"--root=#{root}"
+"--path=#{path}"
+```
+
+#### `std_cmake_args`
+
+```ruby
+"-DCMAKE_INSTALL_PREFIX=#{install_prefix}"
+"-DCMAKE_INSTALL_LIBDIR=#{install_libdir}"
+"-DCMAKE_BUILD_TYPE=Release"
+"-DCMAKE_FIND_FRAMEWORK=#{find_framework}"
+"-DCMAKE_VERBOSE_MAKEFILE=ON"
+"-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=#{HOMEBREW_LIBRARY_PATH}/cmake/trap_fetchcontent_provider.cmake"
+"-Wno-dev"
+"-DBUILD_TESTING=OFF"
+```
+
+#### `std_configure_args`
+
+```ruby
+"--disable-debug"
+"--disable-dependency-tracking"
+"--prefix=#{prefix}"
+"--libdir=#{libdir}"
+```
+
+#### `std_go_args`
+
+```ruby
+"-trimpath"
+"-o=#{output}"
+```
+
+#### `std_meson_args`
+
+```ruby
+"--prefix=#{prefix}"
+"--libdir=#{lib}"
+"--buildtype=release"
+"--wrap-mode=nofallback"
+```
+
+#### `std_pip_args`
+
+```ruby
+"--verbose"
+"--no-deps"
+"--no-binary=:all:"
+"--ignore-installed"
+"--no-compile"
 ```
 
 ### `bin.install "foo"`
