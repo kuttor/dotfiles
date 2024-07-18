@@ -44,6 +44,12 @@ module Homebrew
     # @api private
     class GhAuthNeeded < RuntimeError; end
 
+    # Raised if attestation verification cannot continue due to invalid
+    # credentials.
+    #
+    # @api private
+    class GhAuthInvalid < RuntimeError; end
+
     # Returns whether attestation verification is enabled.
     #
     # @api private
@@ -53,6 +59,7 @@ module Homebrew
       return true if Homebrew::EnvConfig.verify_attestations?
       return false if GitHub::API.credentials.blank?
       return false if ENV.fetch("CI", false)
+      return false if OS.unsupported_configuration?
 
       Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?
     end
@@ -117,11 +124,14 @@ module Homebrew
       raise GhAuthNeeded, "missing credentials" if credentials.blank?
 
       begin
-        result = system_command!(gh_executable, args: cmd, env: { "GH_TOKEN" => credentials },
+        result = system_command!(gh_executable, args: cmd,
+                                 env: { "GH_TOKEN" => credentials, "GH_HOST" => "github.com" },
                                  secrets: [credentials], print_stderr: false, chdir: HOMEBREW_TEMP)
       rescue ErrorDuringExecution => e
         # Even if we have credentials, they may be invalid or malformed.
-        raise GhAuthNeeded, "invalid credentials" if e.status.exitstatus == 4
+        if e.status.exitstatus == 4 || e.stderr.include?("HTTP 401: Bad credentials")
+          raise GhAuthInvalid, "invalid credentials"
+        end
 
         raise InvalidAttestationError, "attestation verification failed: #{e}"
       end
