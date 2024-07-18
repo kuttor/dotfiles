@@ -279,7 +279,7 @@ livecheck do
 end
 ```
 
-Or a more complex one:
+Similarly, you can work with the `files` array like this:
 
 ```ruby
 livecheck do
