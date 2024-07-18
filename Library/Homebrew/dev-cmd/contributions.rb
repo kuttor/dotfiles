@@ -2,10 +2,6 @@
 # frozen_string_literal: true
 
 require "abstract_command"
-require "warnings"
-Warnings.ignore :default_gems do
-  require "csv"
-end
 require "tap"
 require "utils/github"
 
@@ -120,6 +116,11 @@ module Homebrew
 
       sig { params(totals: T::Hash[String, T::Hash[Symbol, Integer]]).returns(String) }
       def generate_csv(totals)
+        require "warnings"
+        Warnings.ignore :default_gems do
+          require "csv"
+        end
+
         CSV.generate do |csv|
           csv << %w[user repo author committer coauthor review total]
 
