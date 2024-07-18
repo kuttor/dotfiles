@@ -555,6 +555,14 @@ RSpec.describe Formulary do
         end.not_to raise_error(UnsupportedInstallationMethod)
       end
     end
+
+    context "when passed ref with spaces" do
+      it "raises a FormulaUnavailableError error" do
+        expect do
+          described_class.factory("foo bar")
+        end.to raise_error(FormulaUnavailableError)
+      end
+    end
   end
 
   specify "::from_contents" do

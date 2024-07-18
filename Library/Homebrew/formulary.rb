@@ -696,9 +696,20 @@ module Formulary
         .returns(T.nilable(T.attached_class))
     }
     def self.try_new(ref, from: T.unsafe(nil), warn: false)
-      ref = ref.to_s
+      # Cache compiled regex
+      @uri_regex ||= begin
+        uri_regex = ::URI::DEFAULT_PARSER.make_regexp
+        Regexp.new("\\A#{uri_regex.source}\\Z", uri_regex.options)
+      end
 
-      new(ref, from:) if URI(ref).scheme.present?
+      uri = ref.to_s
+      return unless uri.match?(@uri_regex)
+
+      uri = URI(uri)
+      return unless uri.path
+      return unless uri.scheme.present?
+
+      new(uri, from:)
     end
 
     attr_reader :url
