@@ -28,6 +28,8 @@ module Homebrew
         cask_options: false,
         without_api: false
       )
+        require "missing_formula"
+
         @args = args
         @override_spec = override_spec
         @force_bottle = force_bottle
