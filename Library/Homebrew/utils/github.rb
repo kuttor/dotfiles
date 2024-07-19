@@ -2,6 +2,8 @@
 # frozen_string_literal: true
 
 require "uri"
+require "utils/curl"
+require "utils/popen"
 require "utils/github/actions"
 require "utils/github/api"
 

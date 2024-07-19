@@ -3,6 +3,7 @@
 
 require "system_command"
 require "tempfile"
+require "utils/curl"
 require "utils/shell"
 require "utils/formatter"
 require "utils/uid"
