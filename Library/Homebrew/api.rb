@@ -40,6 +40,9 @@ module Homebrew
     }
     def self.fetch_json_api_file(endpoint, target: HOMEBREW_CACHE_API/endpoint,
                                  stale_seconds: Homebrew::EnvConfig.api_auto_update_secs.to_i)
+      # Lazy-load dependency.
+      require "development_tools"
+
       retry_count = 0
       url = "#{Homebrew::EnvConfig.api_domain}/#{endpoint}"
       default_url = "#{HOMEBREW_API_DEFAULT_DOMAIN}/#{endpoint}"
