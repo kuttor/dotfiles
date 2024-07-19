@@ -134,14 +134,7 @@ module Homebrew
         only_upgrade_formulae = formulae.present? && casks.blank?
         only_upgrade_casks = casks.present? && formulae.blank?
 
-        if Homebrew::Attestation.enabled?
-          if formulae.include?(Formula["gh"])
-            # Move `gh` to the front of the list so that it gets installed first.
-            formulae = [Formula["gh"]] | formulae
-          else
-            Homebrew::Attestation.gh_executable
-          end
-        end
+        formulae = Homebrew::Attestation.sort_formulae_for_install(formulae) if Homebrew::Attestation.enabled?
 
         upgrade_outdated_formulae(formulae) unless only_upgrade_casks
         upgrade_outdated_casks(casks) unless only_upgrade_formulae

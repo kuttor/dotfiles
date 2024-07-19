@@ -124,14 +124,7 @@ module Homebrew
           end
         end
 
-        if Homebrew::Attestation.enabled?
-          if formulae.include?(Formula["gh"])
-            # Move `gh` to the front of the list so that it gets installed first.
-            formulae = [Formula["gh"]] | formulae
-          else
-            Homebrew::Attestation.gh_executable
-          end
-        end
+        formulae = Homebrew::Attestation.sort_formulae_for_install(formulae) if Homebrew::Attestation.enabled?
 
         Install.perform_preinstall_checks
 
