@@ -93,6 +93,24 @@ module Homebrew
       T.must(@gh_executable)
     end
 
+    # Prioritize installing `gh` first if it's in the formula list
+    # or check for the existence of the `gh` executable elsewhere.
+    #
+    # This ensures that a valid version of `gh` is installed before
+    # we use it to check the attestations of any other formulae we
+    # want to install.
+    #
+    # @api private
+    sig { params(formulae: T::Array[Formula]).returns(T::Array[Formula]) }
+    def self.sort_formulae_for_install(formulae)
+      if formulae.include?(Formula["gh"])
+        [Formula["gh"]] | formulae
+      else
+        Homebrew::Attestation.gh_executable
+        formulae
+      end
+    end
+
     # Verifies the given bottle against a cryptographic attestation of build provenance.
     #
     # The provenance is verified as originating from `signing_repository`, which is a `String`

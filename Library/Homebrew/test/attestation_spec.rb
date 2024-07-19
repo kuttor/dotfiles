@@ -92,6 +92,46 @@ RSpec.describe Homebrew::Attestation do
     end
   end
 
+  # NOTE: `Homebrew::CLI::NamedArgs` will often return frozen arrays of formulae
+  #       so that's why we test with frozen arrays here.
+  describe "::sort_formulae_for_install", :integration_test do
+    let(:gh) { Formula["gh"] }
+    let(:other) { Formula["other"] }
+
+    before do
+      setup_test_formula("gh")
+      setup_test_formula("other")
+    end
+
+    context "when `gh` is in the formula list" do
+      it "moves `gh` formulae to the front of the list" do
+        expect(described_class).not_to receive(:gh_executable)
+
+        [
+          [[gh], [gh]],
+          [[gh, other], [gh, other]],
+          [[other, gh], [gh, other]],
+        ].each do |input, output|
+          expect(described_class.sort_formulae_for_install(input.freeze)).to eq(output)
+        end
+      end
+    end
+
+    context "when the formula list is empty" do
+      it "checks for the `gh` executable" do
+        expect(described_class).to receive(:gh_executable).once
+        expect(described_class.sort_formulae_for_install([].freeze)).to eq([])
+      end
+    end
+
+    context "when `gh` is not in the formula list" do
+      it "checks for the `gh` executable" do
+        expect(described_class).to receive(:gh_executable).once
+        expect(described_class.sort_formulae_for_install([other].freeze)).to eq([other])
+      end
+    end
+  end
+
   describe "::check_attestation" do
     before do
       allow(described_class).to receive(:gh_executable)

@@ -109,7 +109,7 @@ module Homebrew
       sig { override.void }
       def run
         formulae, casks = T.cast(
-          args.named.to_formulae_and_casks(method: :resolve).partition { _1.is_a?(Formula) },
+          args.named.to_resolved_formulae_to_casks,
           [T::Array[Formula], T::Array[Cask::Cask]],
         )
 
@@ -124,13 +124,7 @@ module Homebrew
           end
         end
 
-        if Homebrew::Attestation.enabled?
-          if formulae.include?(Formula["gh"])
-            formulae.unshift(T.must(formulae.delete(Formula["gh"])))
-          else
-            Homebrew::Attestation.gh_executable
-          end
-        end
+        formulae = Homebrew::Attestation.sort_formulae_for_install(formulae) if Homebrew::Attestation.enabled?
 
         Install.perform_preinstall_checks
 
