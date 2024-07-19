@@ -175,7 +175,7 @@ module Homebrew
             if latest_keg.nil?
               ofail "#{f.full_specified_name} not installed"
             else
-              opoo "#{f.full_specified_name} #{latest_keg.version} already installed"
+              opoo "#{f.full_specified_name} #{latest_keg.version} already installed" unless args.quiet?
             end
           end
         end
