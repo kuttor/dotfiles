@@ -1,6 +1,8 @@
 # typed: true
 # frozen_string_literal: true
 
+require "utils/svn"
+
 module Homebrew
   # Auditor for checking common violations in {Resource}s.
   class ResourceAuditor
