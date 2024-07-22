@@ -26,5 +26,8 @@
   "[ignore]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-  "editor.experimentalInlineEdit.showToolbar": "always"
+  "editor.experimentalInlineEdit.showToolbar": "always",
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  }
 }
