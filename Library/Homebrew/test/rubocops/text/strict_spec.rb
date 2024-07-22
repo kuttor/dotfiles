@@ -131,5 +131,16 @@ RSpec.describe RuboCop::Cop::FormulaAuditStrict::Text do
         end
       RUBY
     end
+
+    it 'reports an offense if "\#{bin}/<formula name>" is present' do
+      expect_offense(<<~RUBY, "/homebrew-core/Formula/foo.rb")
+        class Foo < Formula
+          test do
+            ohai "\#{bin}/foo", "-v"
+                 ^^^^^^^^^^^^ FormulaAuditStrict/Text: Use `bin/"foo"` instead of `"\#{bin}/foo"`
+          end
+        end
+      RUBY
+    end
   end
 end
