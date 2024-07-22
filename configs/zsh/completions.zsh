@@ -1,4 +1,3 @@
- or later)
 zstyle ':completion:*' use-cache true
 # Select completion candidates with ←↓↑→ (completion candidates are displayed in different colors)
 # zstyle show completion menu if 1 or more items to select
@@ -25,11 +24,12 @@ zstyle ':completion:*:*:*make:*:targets' command awk \''/^[a-zA-Z0-9][^\/\t=]+:/
 #zstyle ':completion:*:*:make:*:targets' ignored-patterns '*.o'
 #zstyle ':completion:*:*:*make:*:*' tag-order '!targets !functions !file-patterns'
 #zstyle ':completion:*:*:*make:*:*' avoid-completer '_files'
+
 #==============================================================#
 ##          Completion                                        ##
 #==============================================================#
 
-setopt prompt_subst          # Pass escape sequence (environment variable) through prompt
+setopt prompt_subst # Pass escape sequence (environment variable) through prompt
 
 # see http://zsh.sourceforge.net/Doc/Release/Completion-System.html
 

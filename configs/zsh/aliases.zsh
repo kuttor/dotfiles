@@ -3,14 +3,11 @@
 #vim:set filetype=zsh syntax=zsh tabstop=2 shiftwidth=2 expandtab:
 #vim:set foldmethod=marker foldlevel=0 foldmarker={{{,}}} foldminlines=100:
 
-# lsd if available
+# -- lsd available -
 if command -v lsd >/dev/null 2>&1; then
   alias ls="lsd"
-  alias l="lsd -l"
-  alias la="lsd -a"
-  alias lla="lsd -la"
-  alias lt="lsd --tree"
-  alias lsa="lsd -lAFhg --group-directories-first --header "
+else
+  alias ls="ls"
 fi
 
 # -- rg available --
@@ -71,6 +68,7 @@ alias pbp="pbpaste"
 
 # navigation
 alias mkcd="mkdir -p $1 && cd $1"
+alias lsd="lsd --oneline --group-directories-first "
 alias fpath_list="echo '$FPATH' | tr ':' '\n'"
 alias path_list="echo '$PATH' | tr ':' '\n'"
 
