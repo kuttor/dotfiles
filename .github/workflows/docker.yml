@@ -61,7 +61,7 @@ jobs:
         run: echo "digest=$(docker inspect --format='{{index .RepoDigests 0}}' brew)" >> "$GITHUB_OUTPUT"
 
       - name: Generate build provenance
-        uses: actions/attest-build-provenance@v1.3.3
+        uses: actions/attest-build-provenance@5e9cb68e95676991667494a6a4e59b8a2f13e1d0 # v1.3.3
         id: attest
         with:
           subject-name: ghcr.io/homebrew/ubuntu${{matrix.version}}
