@@ -488,6 +488,7 @@ EOS
 
   if [[ -z "${HOMEBREW_VERBOSE}" ]]
   then
+    export GIT_ADVICE="false"
     QUIET_ARGS=(-q)
   else
     QUIET_ARGS=()
