@@ -251,14 +251,14 @@ RSpec.describe Homebrew::Attestation do
       described_class.check_core_attestation fake_bottle
     end
 
-    it "calls gh with args for backfill when homebrew-core fails" do
+    it "calls gh with args for backfill when homebrew-core attestation is missing" do
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
                               described_class::HOMEBREW_CORE_REPO, "--format", "json"],
               env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .once
-        .and_raise(described_class::InvalidAttestationError)
+        .and_raise(described_class::MissingAttestationError)
 
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",
@@ -277,7 +277,7 @@ RSpec.describe Homebrew::Attestation do
               env: { "GH_TOKEN" => fake_gh_creds, "GH_HOST" => "github.com" }, secrets: [fake_gh_creds],
               print_stderr: false, chdir: HOMEBREW_TEMP)
         .once
-        .and_raise(described_class::InvalidAttestationError)
+        .and_raise(described_class::MissingAttestationError)
 
       expect(described_class).to receive(:system_command!)
         .with(fake_gh, args: ["attestation", "verify", cached_download, "--repo",

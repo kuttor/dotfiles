@@ -1310,7 +1310,7 @@ on_request: installed_on_request?, options:)
 
             gh auth login
         EOS
-      rescue Homebrew::Attestation::InvalidAttestationError => e
+      rescue Homebrew::Attestation::MissingAttestationError, Homebrew::Attestation::InvalidAttestationError => e
         raise CannotInstallFormulaError, <<~EOS
           The bottle for #{formula.name} has an invalid build provenance attestation.
 
