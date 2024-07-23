@@ -33,6 +33,11 @@ module Homebrew
     # @api private
     BACKFILL_CUTOFF = T.let(DateTime.new(2024, 3, 14).freeze, DateTime)
 
+    # Raised when the attestation was not found.
+    #
+    # @api private
+    class MissingAttestationError < RuntimeError; end
+
     # Raised when attestation verification fails.
     #
     # @api private
@@ -150,6 +155,8 @@ module Homebrew
           raise GhAuthInvalid, "invalid credentials"
         end
 
+        raise MissingAttestationError, "attestation not found: #{e}" if e.stderr.include?("HTTP 404: Not Found")
+
         raise InvalidAttestationError, "attestation verification failed: #{e}"
       end
 
@@ -212,7 +219,7 @@ module Homebrew
         # attestations currently do not include reusable workflow state by default.
         attestation = check_attestation bottle, HOMEBREW_CORE_REPO
         return attestation
-      rescue InvalidAttestationError
+      rescue MissingAttestationError
         odebug "falling back on backfilled attestation for #{bottle}"
 
         # Our backfilled attestation is a little unique: the subject is not just the bottle
