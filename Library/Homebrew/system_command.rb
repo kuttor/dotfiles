@@ -265,15 +265,16 @@ class SystemCommand
     raise Timeout::Error if raw_wait_thr.join(Utils::Timer.remaining(end_time)).nil?
 
     @status = raw_wait_thr.value
-
-    thread_ready_queue.pop
-    line_thread.raise ProcessTerminatedInterrupt.new
-    thread_done_queue << true
-    line_thread.join
   rescue Interrupt
     Process.kill("INT", raw_wait_thr.pid) if raw_wait_thr && !sudo?
     raise Interrupt
   ensure
+    if line_thread
+      thread_ready_queue.pop
+      line_thread.raise ProcessTerminatedInterrupt.new
+      thread_done_queue << true
+      line_thread.join
+    end
     raw_stdin&.close
     raw_stdout&.close
     raw_stderr&.close
