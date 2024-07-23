@@ -57,6 +57,10 @@ jobs:
         run: docker run --rm brew brew test-bot --only-setup
 
       - run: docker image inspect --format=json brew
+      - run: docker image inspect --format='{{.Id}}' brew
+
+      - run: docker images --digests brew
+      - run: docker images --digests brew --format='{{.Digest}}'
 
       - name: Generate image digest
         id: digest
