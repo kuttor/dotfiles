@@ -646,15 +646,22 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def combined_mirrors
     return @combined_mirrors if defined?(@combined_mirrors)
 
-    backup_mirrors = apache_mirrors.fetch("backup", [])
-                                   .map { |mirror| "#{mirror}#{apache_mirrors["path_info"]}" }
+    backup_mirrors = unless apache_mirrors["in_attic"]
+      apache_mirrors.fetch("backup", [])
+                    .map { |mirror| "#{mirror}#{apache_mirrors["path_info"]}" }
+    end
 
     @combined_mirrors = [*@mirrors, *backup_mirrors]
   end
 
   def resolve_url_basename_time_file_size(url, timeout: nil)
     if url == self.url
-      super("#{apache_mirrors["preferred"]}#{apache_mirrors["path_info"]}", timeout:)
+      preferred = if apache_mirrors["in_attic"]
+        "https://archive.apache.org/dist/"
+      else
+        apache_mirrors["preferred"]
+      end
+      super("#{preferred}#{apache_mirrors["path_info"]}", timeout:)
     else
       super
     end
