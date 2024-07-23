@@ -58,7 +58,7 @@ jobs:
 
       - name: Generate image digest
         id: digest
-        run: echo "digest=$(docker inspect --format='{{index .RepoDigests 0}}' brew)" >> "$GITHUB_OUTPUT"
+        run: echo "digest=$(docker image inspect --format='{{.Digest}}' brew)" >> "$GITHUB_OUTPUT"
 
       - name: Generate build provenance
         uses: actions/attest-build-provenance@5e9cb68e95676991667494a6a4e59b8a2f13e1d0 # v1.3.3
