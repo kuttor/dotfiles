@@ -52,6 +52,18 @@ jobs:
       - name: Run brew test-bot --only-setup
         run: docker run --rm brew brew test-bot --only-setup
 
+      - name: Generate image digest
+        id: digest
+        run: echo "digest=$(docker inspect --format='{{index .RepoDigests 0}}' brew)" >> "$GITHUB_OUTPUT"
+
+      - name: Generate build provenance
+        uses: actions/attest-build-provenance@v1.3.3
+        id: attest
+        with:
+          subject-name: ghcr.io/homebrew/ubuntu${{matrix.version}}
+          subject-digest: ${{ steps.digest.outputs.digest }}
+          push-to-registry: ${{ startsWith(github.ref, 'refs/tags/') }}
+
       - name: Deploy the tagged Docker image to GitHub Packages
         if: startsWith(github.ref, 'refs/tags/')
         run: |
