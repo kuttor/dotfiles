@@ -19,6 +19,10 @@ jobs:
   build:
     if: github.repository_owner == 'Homebrew'
     runs-on: macos-latest
+    permissions:
+      contents: read # for code access
+      attestations: write # for actions/attest-build-provenance
+      id-token: write # for actions/attest-build-provenance
     outputs:
       installer_path: "Homebrew-${{ steps.homebrew-version.outputs.version }}.pkg"
     env:
@@ -118,6 +122,11 @@ jobs:
           then
             security delete-keychain "${RUNNER_TEMP}/${TEMPORARY_KEYCHAIN_FILE}"
           fi
+
+      - name: Generate build provenance
+        uses: actions/attest-build-provenance@v1.3.3
+        with:
+          subject-path: Homebrew-${{ steps.homebrew-version.outputs.version }}.pkg
 
       - name: Upload installer to GitHub Actions
         uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4
