@@ -477,7 +477,7 @@ module Homebrew
         description: "A comma-separated list of hostnames and domain names excluded " \
                      "from proxying by `curl`(1), `git`(1) and `svn`(1) when downloading through Homebrew.",
       },
-    }.freeze, T::Hash[Symbol, T.untyped])
+    }.freeze, T::Hash[Symbol, T::Hash[Symbol, T.untyped]])
 
     sig { params(env: Symbol, hash: T::Hash[Symbol, T.untyped]).returns(String) }
     def env_method_name(env, hash)
