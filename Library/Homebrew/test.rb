@@ -35,7 +35,7 @@ begin
   formula = T.must(args.named.to_resolved_formulae.first)
   formula.extend(Homebrew::Assertions)
   formula.extend(Homebrew::FreePort)
-  if args.debug?
+  if args.debug? && !Homebrew::EnvConfig.disable_debrew?
     require "debrew"
     formula.extend(Debrew::Formula)
   end

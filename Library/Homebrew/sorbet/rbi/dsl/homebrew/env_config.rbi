@@ -89,6 +89,9 @@ module Homebrew::EnvConfig
     def developer?; end
 
     sig { returns(T::Boolean) }
+    def disable_debrew?; end
+
+    sig { returns(T::Boolean) }
     def disable_load_formula?; end
 
     sig { returns(T.nilable(::String)) }
