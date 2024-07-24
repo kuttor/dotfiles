@@ -592,6 +592,8 @@ module Formulary
         .returns(T.nilable(T.attached_class))
     }
     def self.try_new(ref, from: T.unsafe(nil), warn: false)
+      return if Homebrew::EnvConfig.forbid_packages_from_paths?
+
       ref = ref.to_s
 
       new(ref) if HOMEBREW_BOTTLES_EXTNAME_REGEX.match?(ref) && File.exist?(ref)
@@ -643,6 +645,9 @@ module Formulary
       end
 
       return unless path.expand_path.exist?
+
+      return if Homebrew::EnvConfig.forbid_packages_from_paths? &&
+                !path.realpath.to_s.start_with?("#{HOMEBREW_CELLAR}/", "#{HOMEBREW_LIBRARY}/Taps/")
 
       options = if (tap = Tap.from_path(path))
         # Only treat symlinks in taps as aliases.
@@ -696,6 +701,8 @@ module Formulary
         .returns(T.nilable(T.attached_class))
     }
     def self.try_new(ref, from: T.unsafe(nil), warn: false)
+      return if Homebrew::EnvConfig.forbid_packages_from_paths?
+
       # Cache compiled regex
       @uri_regex ||= begin
         uri_regex = ::URI::DEFAULT_PARSER.make_regexp

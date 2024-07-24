@@ -103,6 +103,9 @@ module Cask
         return if %w[.rb .json].exclude?(path.extname)
         return unless path.expand_path.exist?
 
+        return if Homebrew::EnvConfig.forbid_packages_from_paths? &&
+                  !path.realpath.to_s.start_with?("#{Caskroom.path}/", "#{HOMEBREW_LIBRARY}/Taps/")
+
         new(path)
       end
 
@@ -159,6 +162,8 @@ module Cask
                 .returns(T.nilable(T.attached_class))
       }
       def self.try_new(ref, warn: false)
+        return if Homebrew::EnvConfig.forbid_packages_from_paths?
+
         # Cache compiled regex
         @uri_regex ||= begin
           uri_regex = ::URI::DEFAULT_PARSER.make_regexp

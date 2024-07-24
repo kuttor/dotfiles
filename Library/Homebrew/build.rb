@@ -216,6 +216,7 @@ class Build
 end
 
 begin
+  ENV.delete("HOMEBREW_FORBID_PACKAGES_FROM_PATHS")
   args = Homebrew::Cmd::InstallCmd.new.args
   Context.current = args.context
 

@@ -218,6 +218,11 @@ module Homebrew
         description: "A space-separated list of taps. Homebrew will refuse to install a " \
                      "formula if it or any of its dependencies is in a tap on this list.",
       },
+      HOMEBREW_FORBID_PACKAGES_FROM_PATHS:       {
+        description: "If set, Homebrew will refuse to read formulae or casks provided from file paths, " \
+                     "e.g. `brew install ./package.rb`.",
+        boolean:     true,
+      },
       HOMEBREW_FORCE_BREWED_CA_CERTIFICATES:     {
         description: "If set, always use a Homebrew-installed `ca-certificates` rather than the system version. " \
                      "Automatically set if the system version is too old.",

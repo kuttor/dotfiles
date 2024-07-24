@@ -118,9 +118,27 @@ RSpec.describe Formulary do
         expect(described_class.factory(formula_path)).to be_a(Formula)
       end
 
+      it "errors when given a path but paths are disabled" do
+        ENV["HOMEBREW_FORBID_PACKAGES_FROM_PATHS"] = "1"
+        FileUtils.cp formula_path, HOMEBREW_TEMP
+        temp_formula_path = HOMEBREW_TEMP/formula_path.basename
+        expect do
+          described_class.factory(temp_formula_path)
+        ensure
+          temp_formula_path.unlink
+        end.to raise_error(FormulaUnavailableError)
+      end
+
       it "returns a Formula when given a URL", :needs_utils_curl, :no_api do
         formula = described_class.factory("file://#{formula_path}")
         expect(formula).to be_a(Formula)
+      end
+
+      it "errors when given a URL but paths are disabled" do
+        ENV["HOMEBREW_FORBID_PACKAGES_FROM_PATHS"] = "1"
+        expect do
+          described_class.factory("file://#{formula_path}")
+        end.to raise_error(FormulaUnavailableError)
       end
 
       context "when given a bottle" do
