@@ -625,14 +625,21 @@ RSpec.describe Version do
         .to be_detected_from("https://www.monkey.org/~provos/libevent-1.4.14b-stable.tar.gz")
     end
 
-    specify "debian style 1" do
+    specify "debian style" do
       expect(described_class.new("3.03"))
         .to be_detected_from("https://ftp.de.debian.org/debian/pool/main/s/sl/sl_3.03.orig.tar.gz")
     end
 
-    specify "debian style 2" do
+    specify "debian style with letter suffix" do
       expect(described_class.new("1.01b"))
         .to be_detected_from("https://ftp.de.debian.org/debian/pool/main/m/mmv/mmv_1.01b.orig.tar.gz")
+    end
+
+    specify "debian style dotless" do
+      expect(described_class.new("1"))
+        .to be_detected_from("https://deb.debian.org/debian/pool/main/e/example/example_1.orig.tar.gz")
+      expect(described_class.new("20040914"))
+        .to be_detected_from("https://deb.debian.org/debian/pool/main/e/example/example_20040914.orig.tar.gz")
     end
 
     specify "bottle style" do
