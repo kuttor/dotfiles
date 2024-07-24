@@ -3691,6 +3691,11 @@ command execution e.g. `$(cat file)`.
 : If set, tweak behaviour to be more relevant for Homebrew developers (active or
   budding) by e.g. turning warnings into errors.
 
+`HOMEBREW_DISABLE_DEBREW`
+
+: If set, the interactive formula debugger available via `--debug` will be
+  disabled.
+
 `HOMEBREW_DISABLE_LOAD_FORMULA`
 
 : If set, refuse to load formulae. This is useful when formulae are not trusted

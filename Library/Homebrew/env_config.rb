@@ -152,6 +152,10 @@ module Homebrew
                      "budding) by e.g. turning warnings into errors.",
         boolean:     true,
       },
+      HOMEBREW_DISABLE_DEBREW:                   {
+        description: "If set, the interactive formula debugger available via `--debug` will be disabled.",
+        boolean:     true,
+      },
       HOMEBREW_DISABLE_LOAD_FORMULA:             {
         description: "If set, refuse to load formulae. This is useful when formulae are not trusted (such " \
                      "as in pull requests).",
