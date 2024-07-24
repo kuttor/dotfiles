@@ -137,9 +137,10 @@ module RuboCop
             problem "Use `\#{pkgshare}` instead of `\#{share}/#{@formula_name}`"
           end
 
-          interpolated_bin_path_starts_with(body_node, "/#{@formula_name}") do |bin_node|
+          interpolated_bin_path_starts_with(body_node, "/#{@formula_name}", true) do |bin_node|
             offending_node(bin_node)
-            problem "Use `bin/\"#{@formula_name}\"` instead of `\"\#{bin}/#{@formula_name}\"`"
+            cmd = bin_node.source.match(%r{\#{bin}/(\S+)})[1]&.delete_suffix('"') || @formula_name
+            problem "Use `bin/\"#{cmd}\"` instead of `\"\#{bin}/#{cmd}\"`"
           end
 
           return if formula_tap != "homebrew-core"
@@ -150,8 +151,10 @@ module RuboCop
         end
 
         # Check whether value starts with the formula name and then a "/", " " or EOS.
-        def path_starts_with?(path, starts_with)
-          path.match?(%r{^#{Regexp.escape(starts_with)}(/| |$)})
+        # If we're checking for "#{bin}", we also check for "-" since similar binaries also don't need interpolation.
+        def path_starts_with?(path, starts_with, bin = false)
+          ending = bin ? "/| |-|$" : "/| |$"
+          path.match?(/^#{Regexp.escape(starts_with)}(#{ending})/)
         end
 
         # Find "#{share}/foo"
@@ -159,9 +162,9 @@ module RuboCop
           $(dstr (begin (send nil? :share)) (str #path_starts_with?(%1)))
         EOS
 
-        # Find "#{bin}/foo"
+        # Find "#{bin}/foo" and "#{bin}/foo-bar"
         def_node_search :interpolated_bin_path_starts_with, <<~EOS
-          $(dstr (begin (send nil? :bin)) (str #path_starts_with?(%1)))
+          $(dstr (begin (send nil? :bin)) (str #path_starts_with?(%1, %2)))
         EOS
 
         # Find share/"foo"
