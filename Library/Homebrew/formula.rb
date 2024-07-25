@@ -1848,6 +1848,16 @@ class Formula
     ["--prefix=#{prefix}", "--libdir=#{lib}", "--buildtype=release", "--wrap-mode=nofallback"]
   end
 
+  # Standard parameters for npm builds.
+  sig { params(prefix: T.any(String, Pathname, FalseClass)).returns(T::Array[String]) }
+  def std_npm_args(prefix: libexec)
+    require "language/node"
+
+    return Language::Node.std_npm_install_args(Pathname(prefix)) if prefix
+
+    Language::Node.local_npm_install_args
+  end
+
   # Standard parameters for pip builds.
   sig {
     params(prefix:          T.any(String, Pathname, FalseClass),
@@ -2965,6 +2975,8 @@ class Formula
         pretty_args -= std_go_args
       when "meson"
         pretty_args -= std_meson_args
+      when "npm"
+        pretty_args -= std_npm_args
       when %r{(^|/)(pip|python)(?:[23](?:\.\d{1,2})?)?$}
         pretty_args -= std_pip_args
       end
