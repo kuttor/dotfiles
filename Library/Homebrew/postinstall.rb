@@ -14,6 +14,7 @@ require "cmd/postinstall"
 require "json/add/exception"
 
 begin
+  ENV.delete("HOMEBREW_FORBID_PACKAGES_FROM_PATHS")
   args = Homebrew::Cmd::Postinstall.new.args
   error_pipe = UNIXSocket.open(ENV.fetch("HOMEBREW_ERROR_PIPE"), &:recv_io)
   error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
