@@ -715,7 +715,6 @@ module Homebrew
         strategies = Strategy.from_url(
           url,
           livecheck_strategy:,
-          url_provided:       livecheck_url.present?,
           regex_provided:     livecheck_regex.present?,
           block_provided:     livecheck_strategy_block.present?,
         )
@@ -930,7 +929,6 @@ module Homebrew
         strategies = Strategy.from_url(
           url,
           livecheck_strategy:,
-          url_provided:       livecheck_url.present?,
           regex_provided:     livecheck_regex.present?,
           block_provided:     livecheck_strategy_block.present?,
         )
