@@ -28,8 +28,6 @@ module Homebrew
         cask_options: false,
         without_api: false
       )
-        require "missing_formula"
-
         @args = args
         @override_spec = override_spec
         @force_bottle = force_bottle
@@ -315,6 +313,8 @@ module Homebrew
 
       sig { returns(T::Array[Keg]) }
       def to_default_kegs
+        require "missing_formula"
+
         @to_default_kegs ||= begin
           to_formulae_and_casks(only: :formula, method: :default_kegs).freeze
         rescue NoSuchKegError => e
@@ -327,6 +327,8 @@ module Homebrew
 
       sig { returns(T::Array[Keg]) }
       def to_latest_kegs
+        require "missing_formula"
+
         @to_latest_kegs ||= begin
           to_formulae_and_casks(only: :formula, method: :latest_kegs).freeze
         rescue NoSuchKegError => e
@@ -339,6 +341,8 @@ module Homebrew
 
       sig { returns(T::Array[Keg]) }
       def to_kegs
+        require "missing_formula"
+
         @to_kegs ||= begin
           to_formulae_and_casks(only: :formula, method: :kegs).freeze
         rescue NoSuchKegError => e
