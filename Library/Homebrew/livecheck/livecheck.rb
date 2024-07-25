@@ -7,7 +7,6 @@ require "livecheck/livecheck_version"
 require "livecheck/skip_conditions"
 require "livecheck/strategy"
 require "addressable"
-require "uri"
 
 module Homebrew
   # The {Livecheck} module consists of methods used by the `brew livecheck`
