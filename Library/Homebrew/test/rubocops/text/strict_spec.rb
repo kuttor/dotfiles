@@ -144,5 +144,16 @@ RSpec.describe RuboCop::Cop::FormulaAuditStrict::Text do
         end
       RUBY
     end
+
+    it 'reports an offense if "\#{bin}" is in a `shell_output` string' do
+      expect_offense(<<~RUBY, "/homebrew-core/Formula/foo.rb")
+        class Foo < Formula
+          test do
+            shell_output("\#{bin}/foo --version")
+                         ^^^^^^^^^^^^^^^^^^^^^^ FormulaAuditStrict/Text: Use `bin/"foo"` instead of `"\#{bin}/foo"`
+          end
+        end
+      RUBY
+    end
   end
 end
