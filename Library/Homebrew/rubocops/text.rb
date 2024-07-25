@@ -153,7 +153,7 @@ module RuboCop
         # Check whether value starts with the formula name and then a "/", " " or EOS.
         # If we're checking for "#{bin}", we also check for "-" since similar binaries also don't need interpolation.
         def path_starts_with?(path, starts_with, bin: false)
-          ending = bin ? "/| |-|$" : "/| |$"
+          ending = bin ? "/|-|$" : "/| |$"
           path.match?(/^#{Regexp.escape(starts_with)}(#{ending})/)
         end
 
