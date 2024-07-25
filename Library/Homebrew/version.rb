@@ -462,8 +462,11 @@ class Version
     # e.g. `https://search.maven.org/remotecontent?filepath=org/apache/orc/orc-tools/1.2.3/orc-tools-1.2.3-uber.jar`
     StemParser.new(/-(#{NUMERIC_WITH_DOTS})-/),
 
-    # e.g. `dash_0.5.5.1.orig.tar.gz (Debian style)`
-    StemParser.new(/_(#{NUMERIC_WITH_DOTS}[abc]?)\.orig$/),
+    # Debian style
+    # e.g. `dash_0.5.5.1.orig.tar.gz`
+    # e.g. `lcrack_20040914.orig.tar.gz`
+    # e.g. `mkcue_1.orig.tar.gz`
+    StemParser.new(/_(#{NUMERIC_WITH_OPTIONAL_DOTS}[abc]?)\.orig$/),
 
     # e.g. `https://www.openssl.org/source/openssl-0.9.8s.tar.gz`
     StemParser.new(/-v?(\d[^-]+)/),
