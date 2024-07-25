@@ -137,6 +137,14 @@ module GitHub
       JSON::ParserError,
     ].freeze
 
+    sig { returns(T.nilable(String)) }
+    private_class_method def self.uid_home
+      Etc.getpwuid(Process.uid)&.dir
+    rescue ArgumentError
+      # Cover for misconfigured NSS setups
+      nil
+    end
+
     # Gets the token from the GitHub CLI for github.com.
     sig { returns(T.nilable(String)) }
     def self.github_cli_token
@@ -144,8 +152,8 @@ module GitHub
         # Avoid `Formula["gh"].opt_bin` so this method works even with `HOMEBREW_DISABLE_LOAD_FORMULA`.
         env = {
           "PATH" => PATH.new(HOMEBREW_PREFIX/"opt/gh/bin", ENV.fetch("PATH")),
-          "HOME" => Etc.getpwuid(Process.uid)&.dir,
-        }
+          "HOME" => uid_home,
+        }.compact
         gh_out, _, result = system_command "gh",
                                            args:         ["auth", "token", "--hostname", "github.com"],
                                            env:,
@@ -164,7 +172,7 @@ module GitHub
         git_credential_out, _, result = system_command "git",
                                                        args:         ["credential-osxkeychain", "get"],
                                                        input:        ["protocol=https\n", "host=github.com\n"],
-                                                       env:          { "HOME" => Etc.getpwuid(Process.uid)&.dir },
+                                                       env:          { "HOME" => uid_home }.compact,
                                                        print_stderr: false
         return unless result.success?
 
