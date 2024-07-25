@@ -125,8 +125,6 @@ module Homebrew
       # @param url [String] the URL to check for matching strategies
       # @param livecheck_strategy [Symbol] a strategy symbol from the
       #   `livecheck` block
-      # @param url_provided [Boolean] whether a url is provided in the
-      #   `livecheck` block
       # @param regex_provided [Boolean] whether a regex is provided in the
       #   `livecheck` block
       # @param block_provided [Boolean] whether a `strategy` block is provided
@@ -136,12 +134,11 @@ module Homebrew
         params(
           url:                String,
           livecheck_strategy: T.nilable(Symbol),
-          url_provided:       T::Boolean,
           regex_provided:     T::Boolean,
           block_provided:     T::Boolean,
         ).returns(T::Array[T.untyped])
       }
-      def from_url(url, livecheck_strategy: nil, url_provided: false, regex_provided: false, block_provided: false)
+      def from_url(url, livecheck_strategy: nil, regex_provided: false, block_provided: false)
         usable_strategies = strategies.select do |strategy_symbol, strategy|
           if strategy == PageMatch
             # Only treat the strategy as usable if the `livecheck` block
