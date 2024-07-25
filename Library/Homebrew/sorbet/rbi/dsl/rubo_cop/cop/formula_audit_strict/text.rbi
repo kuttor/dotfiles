@@ -14,6 +14,16 @@ class RuboCop::Cop::FormulaAuditStrict::Text
       block: T.untyped
     ).returns(T.untyped)
   end
+  def interpolated_bin_path_starts_with(node, *pattern, **kwargs, &block); end
+
+  sig do
+    params(
+      node: RuboCop::AST::Node,
+      pattern: T.any(String, Symbol),
+      kwargs: T.untyped,
+      block: T.untyped
+    ).returns(T.untyped)
+  end
   def interpolated_share_path_starts_with(node, *pattern, **kwargs, &block); end
 
   sig do
