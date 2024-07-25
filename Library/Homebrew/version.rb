@@ -732,7 +732,7 @@ class Version
 
   sig { params(options: T.untyped).returns(String) }
   def to_json(*options)
-    version.to_json(*options)
+    T.unsafe(version).to_json(*options)
   end
 
   sig { params(method: T.any(Symbol, String), include_all: T::Boolean).returns(T::Boolean) }
