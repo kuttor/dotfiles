@@ -2,8 +2,6 @@
 # frozen_string_literal: true
 
 require "abstract_command"
-require "tap"
-require "utils/github"
 
 module Homebrew
   module DevCmd
@@ -68,6 +66,7 @@ module Homebrew
 
         contribution_types = [:author, :committer, :coauthor, :review]
 
+        require "utils/github"
         users = args.user.presence || GitHub.members_by_team("Homebrew", "maintainers").keys
         users.each do |username|
           # TODO: Using the GitHub username to scan the `git log` undercounts some
@@ -106,6 +105,7 @@ module Homebrew
       def find_repo_path_for_repo(repo)
         return HOMEBREW_REPOSITORY if repo == "brew"
 
+        require "tap"
         Tap.fetch("homebrew", repo).path
       end
 
@@ -169,6 +169,8 @@ module Homebrew
         data = {}
         return data if repos.blank?
 
+        require "tap"
+        require "utils/github"
         repos.each do |repo|
           repo_path = find_repo_path_for_repo(repo)
           tap = Tap.fetch("homebrew", repo)
@@ -229,6 +231,7 @@ module Homebrew
                to: T.nilable(String)).returns(Integer)
       }
       def count_reviews(repo_full_name, person, from:, to:)
+        require "utils/github"
         GitHub.count_issues("", is: "pr", repo: repo_full_name, reviewed_by: person, review: "approved", from:, to:)
       rescue GitHub::API::ValidationFailedError
         if args.verbose?

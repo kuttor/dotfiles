@@ -2,8 +2,6 @@
 # frozen_string_literal: true
 
 require "uri"
-require "utils/curl"
-require "utils/popen"
 require "utils/github/actions"
 require "utils/github/api"
 
@@ -705,6 +703,7 @@ module GitHub
     pr_message = info[:pr_message]
 
     sourcefile_path.parent.cd do
+      require "utils/popen"
       git_dir = Utils.popen_read("git", "rev-parse", "--git-dir").chomp
       shallow = !git_dir.empty? && File.exist?("#{git_dir}/shallow")
       changed_files = [sourcefile_path]
@@ -814,6 +813,7 @@ module GitHub
   def self.last_commit(user, repo, ref, version)
     return if Homebrew::EnvConfig.no_github_api?
 
+    require "utils/curl"
     output, _, status = Utils::Curl.curl_output(
       "--silent", "--head", "--location",
       "--header", "Accept: application/vnd.github.sha",
@@ -832,6 +832,7 @@ module GitHub
   def self.multiple_short_commits_exist?(user, repo, commit)
     return false if Homebrew::EnvConfig.no_github_api?
 
+    require "utils/curl"
     output, _, status = Utils::Curl.curl_output(
       "--silent", "--head", "--location",
       "--header", "Accept: application/vnd.github.sha",
