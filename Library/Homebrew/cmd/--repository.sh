@@ -25,7 +25,7 @@ tap_path() {
     fi
   done
 
-  repo="${repo#(home|linux)brew-}"
+  repo="${repo#@(home|linux)brew-}"
   echo "${HOMEBREW_LIBRARY}/Taps/${user}/homebrew-${repo}"
 }
 
@@ -38,8 +38,11 @@ homebrew---repository() {
     return
   fi
 
-  for tap in "$@"
-  do
-    tap_path "${tap}"
-  done
+  (
+    shopt -s extglob
+    for tap in "$@"
+    do
+      tap_path "${tap}"
+    done
+  )
 }
