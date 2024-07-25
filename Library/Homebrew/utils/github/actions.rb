@@ -1,9 +1,6 @@
 # typed: strict
 # frozen_string_literal: true
 
-require "securerandom"
-require "utils/tty"
-
 module GitHub
   # Helper functions for interacting with GitHub Actions.
   #
@@ -22,6 +19,7 @@ module GitHub
       # Format multiline strings for environment files
       # See https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
 
+      require "securerandom"
       delimiter = "ghadelimiter_#{SecureRandom.uuid}"
 
       if name.include?(delimiter) || value.include?(delimiter)
@@ -84,6 +82,7 @@ module GitHub
       def initialize(type, message, file: nil, title: nil, line: nil, end_line: nil, column: nil, end_column: nil)
         raise ArgumentError, "Unsupported type: #{type.inspect}" if ANNOTATION_TYPES.exclude?(type)
 
+        require "utils/tty"
         @type = type
         @message = T.let(Tty.strip_ansi(message), String)
         @file = T.let(self.class.path_relative_to_workspace(file), T.nilable(Pathname)) if file.present?
