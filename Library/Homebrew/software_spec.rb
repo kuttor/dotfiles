@@ -87,8 +87,7 @@ class SoftwareSpec
     resources.each_value do |r|
       r.owner = self
       next if r.version
-
-      raise "#{full_name}: version missing for \"#{r.name}\" resource!" if version.nil?
+      next if version.nil?
 
       r.version(version.head? ? Version.new("HEAD") : version.dup)
     end
