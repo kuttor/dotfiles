@@ -270,7 +270,7 @@ module Homebrew
         # comparison.
         current = if formula
           if formula.head_only?
-            formula.any_installed_version.version.commit
+            Version.new(formula.any_installed_version.version.commit)
           else
             T.must(formula.stable).version
           end
@@ -279,10 +279,10 @@ module Homebrew
         end
 
         current_str = current.to_s
-        current = LivecheckVersion.create(formula_or_cask, current) unless formula&.head_only?
+        current = LivecheckVersion.create(formula_or_cask, current)
 
         latest = if formula&.head_only?
-          T.must(formula.head).downloader.fetch_last_commit
+          Version.new(T.must(formula.head).downloader.fetch_last_commit)
         else
           version_info = latest_version(
             formula_or_cask,
@@ -345,7 +345,7 @@ module Homebrew
         end
 
         latest_str = latest.to_s
-        latest = LivecheckVersion.create(formula_or_cask, latest) unless formula&.head_only?
+        latest = LivecheckVersion.create(formula_or_cask, latest)
 
         is_outdated = if formula&.head_only?
           # A HEAD-only formula is considered outdated if the latest upstream
