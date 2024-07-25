@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "download_strategy"
@@ -24,12 +24,14 @@ end
 
 # Strategy for downloading an artifact from GitHub Actions.
 class GitHubArtifactDownloadStrategy < AbstractFileDownloadStrategy
+  sig { params(url: String, artifact_id: String, token: String).void }
   def initialize(url, artifact_id, token:)
     super(url, "artifact", artifact_id)
-    @cache = HOMEBREW_CACHE/"gh-actions-artifact"
-    @token = token
+    @cache = T.let(HOMEBREW_CACHE/"gh-actions-artifact", Pathname)
+    @token = T.let(token, String)
   end
 
+  sig { params(timeout: T.nilable(Integer)).void }
   def fetch(timeout: nil)
     ohai "Downloading #{url}"
     if cached_location.exist?

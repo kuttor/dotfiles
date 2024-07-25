@@ -8,7 +8,7 @@ module Homebrew
   module Cmd
     class CleanupCmd < AbstractCommand
       cmd_args do
-        days = Homebrew::EnvConfig::ENVS[:HOMEBREW_CLEANUP_MAX_AGE_DAYS][:default]
+        days = Homebrew::EnvConfig::ENVS[:HOMEBREW_CLEANUP_MAX_AGE_DAYS]&.dig(:default)
         description <<~EOS
           Remove stale lock files and outdated downloads for all formulae and casks,
           and remove old versions of installed formulae. If arguments are specified,

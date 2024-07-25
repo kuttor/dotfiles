@@ -1,10 +1,11 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "json"
 
 module Cask
   class Info
+    sig { params(cask: Cask).returns(String) }
     def self.get_info(cask)
       require "cask/installer"
 
@@ -25,6 +26,7 @@ module Cask
       output
     end
 
+    sig { params(cask: Cask).void }
     def self.info(cask)
       puts get_info(cask)
 
@@ -32,16 +34,19 @@ module Cask
       ::Utils::Analytics.cask_output(cask, args: Homebrew::CLI::Args.new)
     end
 
+    sig { params(cask: Cask).returns(String) }
     def self.title_info(cask)
       title = "#{oh1_title(cask.token)}: #{cask.version}"
       title += " (auto_updates)" if cask.auto_updates
       title
     end
 
+    sig { params(cask: Cask).returns(String) }
     def self.installation_info(cask)
       return "Not installed" unless cask.installed?
+      return "No installed version" unless (installed_version = cask.installed_version).present?
 
-      versioned_staged_path = cask.caskroom_path.join(cask.installed_version)
+      versioned_staged_path = cask.caskroom_path.join(installed_version)
 
       return "Installed\n#{versioned_staged_path} (#{Formatter.error("does not exist")})\n" unless versioned_staged_path.exist?
 
@@ -55,6 +60,7 @@ module Cask
       info.join("\n")
     end
 
+    sig { params(cask: Cask).returns(String) }
     def self.name_info(cask)
       <<~EOS
         #{ohai_title((cask.name.size > 1) ? "Names" : "Name")}
@@ -62,6 +68,7 @@ module Cask
       EOS
     end
 
+    sig { params(cask: Cask).returns(String) }
     def self.desc_info(cask)
       <<~EOS
         #{ohai_title("Description")}
@@ -69,6 +76,7 @@ module Cask
       EOS
     end
 
+    sig { params(cask: Cask).returns(T.nilable(String)) }
     def self.language_info(cask)
       return if cask.languages.empty?
 
@@ -78,6 +86,7 @@ module Cask
       EOS
     end
 
+    sig { params(cask: Cask).returns(T.nilable(String)) }
     def self.repo_info(cask)
       return if cask.tap.nil?
 
@@ -90,6 +99,7 @@ module Cask
       "From: #{Formatter.url(url)}"
     end
 
+    sig { params(cask: Cask).returns(String) }
     def self.artifact_info(cask)
       artifact_output = ohai_title("Artifacts").dup
       cask.artifacts.each do |artifact|
