@@ -147,27 +147,6 @@ RSpec.describe RuboCop::Cop::FormulaAudit::Miscellaneous do
       RUBY
     end
 
-    it "reports an offense when `npm install` is called without Language::Node arguments" do
-      expect_offense(<<~RUBY)
-        class Foo < Formula
-          desc "foo"
-          url 'https://brew.sh/foo-1.0.tgz'
-          system "npm", "install"
-          ^^^^^^^^^^^^^^^^^^^^^^^ FormulaAudit/Miscellaneous: Use Language::Node for npm install args
-        end
-      RUBY
-    end
-
-    it "reports no offenses when `npm install` is called without Language::Node arguments in an exempt formula" do
-      expect_no_offenses(<<~RUBY, "/homebrew-core/Formula/kibana@4.4.rb")
-        class KibanaAT44 < Formula
-          desc "foo"
-          url 'https://brew.sh/foo-1.0.tgz'
-          system "npm", "install"
-        end
-      RUBY
-    end
-
     it "reports an offense when `depends_on` is called with an instance" do
       expect_offense(<<~RUBY)
         class Foo < Formula

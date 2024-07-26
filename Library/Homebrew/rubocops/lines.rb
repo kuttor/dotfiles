@@ -750,18 +750,6 @@ module RuboCop
             problem "Use ruby-macho instead of calling #{@offensive_node.source}"
           end
 
-          find_every_method_call_by_name(body_node, :system).each do |method_node|
-            # Skip Kibana: npm cache edge (see formula for more details)
-            next if @formula_name.match?(/^kibana(@\d[\d.]*)?$/)
-
-            first_param, second_param = parameters(method_node)
-            next if !node_equals?(first_param, "npm") ||
-                    !node_equals?(second_param, "install")
-
-            offending_node(method_node)
-            problem "Use Language::Node for npm install args" unless languageNodeModule?(method_node)
-          end
-
           problem "Use new-style test definitions (test do)" if find_method_def(body_node, :test)
 
           find_method_with_args(body_node, :skip_clean, :all) do
@@ -855,11 +843,6 @@ module RuboCop
         def_node_search :formula_path_strings, <<~EOS
           {(dstr (begin (send nil? %1)) $(str _ ))
            (dstr _ (begin (send nil? %1)) $(str _ ))}
-        EOS
-
-        # Node Pattern search for Language::Node
-        def_node_search :languageNodeModule?, <<~EOS
-          (const (const nil? :Language) :Node)
         EOS
       end
     end
