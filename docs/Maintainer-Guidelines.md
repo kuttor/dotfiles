@@ -22,7 +22,8 @@ When reviewing a PR, use "approve", "approve with comments", "comment" or "reque
 - ✅ Approve: if you feel that the PR looks good as is, you can ✅ approve it as-is.
 - ✅ Approve with comments: if you have a few questions or comments to be answered and the PR can be merged after they are addressed, you can ✅ approve with comments.
   - Please trust that other maintainers will not merge the PR until the comments are addressed rather than e.g. making them wait another 24h to get another review.
-  - If auto-merge is enabled: you can disable it (add `automerge-skip` on homebrew-core/cask) if you want to ensure the PR is not merged until your comments are at least read.
+  - If auto-merge is enabled: don't worry, PRs need to have comments manually resolved before they are automatically merged.
+    Please feel free to ✅ approve or ✅ approve with comments even if others have just commented and it will not be merged until the author has resolved the comments.
 - 🗣️ Comment: if you need to ask questions before you can provide a ✅ approval but are fine with someone else providing a ✅ approval before you, provide a comment review and ask questions.
 - 🚫 Request changes: a last resort.
   - When reviewing non-maintainers' PRs: this means "these changes must be made before this PR should be merged by anyone".
