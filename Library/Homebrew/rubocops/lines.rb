@@ -901,7 +901,7 @@ module RuboCop
         end
       end
 
-      # This cop makes sure that formulae build with `rust` instead of `rustup-init`.
+      # This cop makes sure that formulae build with `rust` instead of `rustup`.
       class RustCheck < FormulaCop
         extend AutoCorrector
 
@@ -912,7 +912,7 @@ module RuboCop
           # Enforce use of `rust` for rust dependency in core
           return if formula_tap != "homebrew-core"
 
-          find_method_with_args(body_node, :depends_on, "rustup-init") do
+          find_method_with_args(body_node, :depends_on, "rustup") do
             problem "Formulae in homebrew/core should use 'depends_on \"rust\"' " \
                     "instead of '#{@offensive_node.source}'." do |corrector|
               corrector.replace(@offensive_node.source_range, "depends_on \"rust\"")
@@ -920,9 +920,9 @@ module RuboCop
           end
 
           # TODO: Enforce order of dependency types so we don't need to check for
-          #       depends_on "rustup-init" => [:test, :build]
+          #       depends_on "rustup" => [:test, :build]
           [:build, [:build, :test], [:test, :build]].each do |type|
-            find_method_with_args(body_node, :depends_on, "rustup-init" => type) do
+            find_method_with_args(body_node, :depends_on, "rustup" => type) do
               problem "Formulae in homebrew/core should use 'depends_on \"rust\" => #{type}' " \
                       "instead of '#{@offensive_node.source}'." do |corrector|
                 corrector.replace(@offensive_node.source_range, "depends_on \"rust\" => #{type}")
@@ -936,10 +936,10 @@ module RuboCop
           find_every_method_call_by_name(install_node, :system).each do |method|
             param = parameters(method).first
             next if param.blank?
-            # FIXME: Handle Pathname parameters (e.g. `system bin/"rustup-init"`).
-            next if regex_match_group(param, /rustup-init$/).blank?
+            # FIXME: Handle Pathname parameters (e.g. `system bin/"rustup"`).
+            next if regex_match_group(param, /rustup$/).blank?
 
-            problem "Formula in homebrew/core should not use `rustup-init` at build-time."
+            problem "Formula in homebrew/core should not use `rustup` at build-time."
           end
         end
       end
