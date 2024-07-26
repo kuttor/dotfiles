@@ -514,6 +514,16 @@ The `std_*_args` methods, as well as the arguments they pass, are:
 "--wrap-mode=nofallback"
 ```
 
+#### `std_npm_args`
+
+```ruby
+"-ddd"
+"--global"
+"--build-from-source"
+"--cache=$(brew --cache)/npm_cache"
+"--prefix=#{libexec}"
+```
+
 #### `std_pip_args`
 
 ```ruby
