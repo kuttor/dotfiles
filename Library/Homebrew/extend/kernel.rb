@@ -264,6 +264,8 @@ module Kernel
 
   # Kernel.system but with exceptions.
   def safe_system(cmd, *args, **options)
+    require "utils"
+
     return if Homebrew.system(cmd, *args, **options)
 
     raise ErrorDuringExecution.new([cmd, *args], status: $CHILD_STATUS)
@@ -273,6 +275,8 @@ module Kernel
   #
   # @api internal
   def quiet_system(cmd, *args)
+    require "utils"
+
     Homebrew._system(cmd, *args) do
       # Redirect output streams to `/dev/null` instead of closing as some programs
       # will fail to execute if they can't write to an open stream.
