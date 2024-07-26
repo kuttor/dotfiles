@@ -31,14 +31,4 @@ class RuboCop::Cop::FormulaAudit::Miscellaneous
 
   sig { params(node: RuboCop::AST::Node, kwargs: T.untyped, block: T.untyped).returns(T.untyped) }
   def hash_dep(node, **kwargs, &block); end
-
-  sig do
-    params(
-      node: RuboCop::AST::Node,
-      pattern: T.any(String, Symbol),
-      kwargs: T.untyped,
-      block: T.untyped
-    ).returns(T::Boolean)
-  end
-  def languageNodeModule?(node, *pattern, **kwargs, &block); end
 end
