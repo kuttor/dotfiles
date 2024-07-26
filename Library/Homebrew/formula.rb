@@ -2975,8 +2975,6 @@ class Formula
         pretty_args -= std_go_args
       when "meson"
         pretty_args -= std_meson_args
-      when "npm"
-        pretty_args -= std_npm_args
       when %r{(^|/)(pip|python)(?:[23](?:\.\d{1,2})?)?$}
         pretty_args -= std_pip_args
       end
