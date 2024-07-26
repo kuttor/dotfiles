@@ -24,9 +24,16 @@ class SBOM
     end
     active_spec_sym = formula.active_spec_sym
 
+    homebrew_version_maybe_dev = if (match_data = HOMEBREW_VERSION.match(/^[\d.]+/))
+      suffix = "-dev" if HOMEBREW_VERSION.include?("-")
+      match_data[0] + suffix.to_s
+    else
+      HOMEBREW_VERSION
+    end
+
     attributes = {
       name:                 formula.name,
-      homebrew_version:     HOMEBREW_VERSION,
+      homebrew_version:     homebrew_version_maybe_dev,
       spdxfile:             SBOM.spdxfile(formula),
       time:                 tab.time,
       source_modified_time: tab.source_modified_time.to_i,
