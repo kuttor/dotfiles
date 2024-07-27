@@ -68,12 +68,12 @@ module Cask
       verify_has_sha if require_sha? && !force?
       check_requirements
 
+      forbidden_tap_check
+      forbidden_cask_and_formula_check
+
       download(quiet:, timeout:)
 
       satisfy_cask_and_formula_dependencies
-
-      forbidden_tap_check
-      forbidden_cask_and_formula_check
     end
 
     def stage
@@ -660,15 +660,15 @@ on_request: true)
           next if dep_name.blank?
 
           raise CaskCannotBeInstalledError.new(@cask, <<~EOS
-            The installation of #{@cask} has a dependency #{dep_name}
-            but the #{dep_name} #{dep_type} was forbidden by #{owner} in `#{variable}`.#{owner_contact}
+            has a dependency #{dep_name} but the
+            #{dep_name} #{dep_type} was forbidden for installation by #{owner} in `#{variable}`.#{owner_contact}
           EOS
           )
         end
       end
       return if forbidden_casks.blank?
 
-      cask_name = if forbidden_casks.include?(@cask.token)
+      if forbidden_casks.include?(@cask.token)
         @cask.token
       elsif forbidden_casks.include?(@cask.full_name)
         @cask.full_name
@@ -677,8 +677,7 @@ on_request: true)
       end
 
       raise CaskCannotBeInstalledError.new(@cask, <<~EOS
-        The installation of #{cask_name} was forbidden by #{owner}
-        in `HOMEBREW_FORBIDDEN_CASKS`.#{owner_contact}
+        forbidden for installation by #{owner} in `HOMEBREW_FORBIDDEN_CASKS`.#{owner_contact}
       EOS
       )
     end
