@@ -158,6 +158,8 @@ module RuboCop
         end
 
         def path_starts_with_bin?(path, starts_with)
+          return false if path.include?(" ")
+
           path_starts_with?(path, starts_with, bin: true)
         end
 
