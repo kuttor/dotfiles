@@ -16,7 +16,7 @@ module UnpackStrategy
       path.magic_number.match?(/\A..-(lh0|lh1|lz4|lz5|lzs|lh\\40|lhd|lh2|lh3|lh4|lh5)-/n)
     end
 
-    sig { returns(T.nilable(T::Array[Formula])) }
+    sig { returns(T::Array[Formula]) }
     def dependencies
       @dependencies ||= T.let([Formula["lha"]], T.nilable(T::Array[Formula]))
     end

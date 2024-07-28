@@ -24,7 +24,7 @@ module UnpackStrategy
                       verbose:
     end
 
-    sig { returns(T.nilable(T::Array[Formula])) }
+    sig { returns(T::Array[Formula]) }
     def dependencies
       @dependencies ||= T.let([Formula["cabextract"]], T.nilable(T::Array[Formula]))
     end

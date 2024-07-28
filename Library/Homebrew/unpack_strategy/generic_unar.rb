@@ -16,7 +16,7 @@ module UnpackStrategy
       false
     end
 
-    sig { returns(T.nilable(T::Array[Formula])) }
+    sig { returns(T::Array[Formula]) }
     def dependencies
       @dependencies ||= T.let([Formula["unar"]], T.nilable(T::Array[Formula]))
     end
