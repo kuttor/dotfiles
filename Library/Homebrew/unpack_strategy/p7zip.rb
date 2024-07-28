@@ -16,7 +16,7 @@ module UnpackStrategy
       path.magic_number.match?(/\A7z\xBC\xAF\x27\x1C/n)
     end
 
-    sig { returns(T.nilable(T::Array[Formula])) }
+    sig { returns(T::Array[Formula]) }
     def dependencies
       @dependencies ||= T.let([Formula["p7zip"]], T.nilable(T::Array[Formula]))
     end
