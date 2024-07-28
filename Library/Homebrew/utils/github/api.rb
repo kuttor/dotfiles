@@ -137,6 +137,7 @@ module GitHub
 
     sig { returns(T.nilable(String)) }
     private_class_method def self.uid_home
+      require "etc"
       Etc.getpwuid(Process.uid)&.dir
     rescue ArgumentError
       # Cover for misconfigured NSS setups
