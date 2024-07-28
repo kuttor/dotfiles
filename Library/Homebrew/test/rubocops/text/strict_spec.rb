@@ -150,6 +150,8 @@ RSpec.describe RuboCop::Cop::FormulaAuditStrict::Text do
         class Foo < Formula
           test do
             shell_output("\#{bin}/foo --version")
+            assert_match "help", shell_output("\#{bin}/foo-something --help 2>&1")
+            assert_match "OK", shell_output("\#{bin}/foo-something_else --check 2>&1")
           end
         end
       RUBY
