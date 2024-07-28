@@ -16,7 +16,7 @@ module UnpackStrategy
       path.magic_number.match?(/\ALZIP/n)
     end
 
-    sig { returns(T.nilable(T::Array[Formula])) }
+    sig { returns(T::Array[Formula]) }
     def dependencies
       @dependencies ||= T.let([Formula["lzip"]], T.nilable(T::Array[Formula]))
     end

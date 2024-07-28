@@ -17,7 +17,7 @@ module UnpackStrategy
       path.magic_number.match?(/.{59}#{Regexp.escape(mime_type)}/)
     end
 
-    sig { returns(T.nilable(T::Array[Cask::Cask])) }
+    sig { returns(T::Array[Cask::Cask]) }
     def dependencies
       @dependencies ||= T.let([Cask::CaskLoader.load("adobe-air")], T.nilable(T::Array[Cask::Cask]))
     end

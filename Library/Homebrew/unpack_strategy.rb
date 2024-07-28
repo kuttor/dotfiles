@@ -187,7 +187,7 @@ module UnpackStrategy
     end
   end
 
-  sig { returns(T::Array[String]) }
+  sig { returns(T.any(T::Array[Cask::Cask], T::Array[Formula])) }
   def dependencies
     []
   end

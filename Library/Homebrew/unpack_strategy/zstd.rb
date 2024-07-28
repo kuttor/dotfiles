@@ -16,7 +16,7 @@ module UnpackStrategy
       path.magic_number.match?(/\x28\xB5\x2F\xFD/n)
     end
 
-    sig { returns(T.nilable(T::Array[Formula])) }
+    sig { returns(T::Array[Formula]) }
     def dependencies
       @dependencies ||= T.let([Formula["zstd"]], T.nilable(T::Array[Formula]))
     end
