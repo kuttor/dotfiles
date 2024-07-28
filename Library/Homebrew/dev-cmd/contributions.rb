@@ -86,6 +86,8 @@ module Homebrew
           contributions <<
             "#{Utils.pluralize("time", grand_totals[username].values.sum, include_count: true)} (total)"
 
+          next if args.csv?
+
           puts [
             "#{username} contributed",
             *contributions.to_sentence,
@@ -93,10 +95,7 @@ module Homebrew
           ].join(" ")
         end
 
-        return unless args.csv?
-
-        puts
-        puts generate_csv(grand_totals)
+        puts generate_csv(grand_totals) if args.csv?
       end
 
       private
