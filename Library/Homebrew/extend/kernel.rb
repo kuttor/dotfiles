@@ -425,7 +425,7 @@ module Kernel
   end
 
   # Ensure the given executable is exist otherwise install the brewed version
-  def ensure_executable!(name, formula_name = nil, reason: "")
+  def ensure_executable!(name, formula_name = nil, reason: "", latest: false)
     formula_name ||= name
 
     executable = [
@@ -438,7 +438,7 @@ module Kernel
     ].compact.first
     return executable if executable.exist?
 
-    ensure_formula_installed!(formula_name, reason:).opt_bin/name
+    ensure_formula_installed!(formula_name, reason:, latest:).opt_bin/name
   end
 
   def paths

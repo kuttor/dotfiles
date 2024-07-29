@@ -16,9 +16,6 @@ module Homebrew
     HOMEBREW_CORE_REPO = "Homebrew/homebrew-core"
 
     # @api private
-    GH_ATTESTATION_MIN_VERSION = T.let(Version.new("2.49.0").freeze, Version)
-
-    # @api private
     BACKFILL_REPO = "trailofbits/homebrew-brew-verify"
 
     # No backfill attestations after this date are considered valid.
@@ -74,25 +71,14 @@ module Homebrew
     # @api private
     sig { returns(Pathname) }
     def self.gh_executable
-      # NOTE: We set HOMEBREW_NO_VERIFY_ATTESTATIONS when installing `gh` itself,
-      #       to prevent a cycle during bootstrapping. This can eventually be resolved
-      #       by vendoring a pure-Ruby Sigstore verifier client.
       @gh_executable ||= T.let(nil, T.nilable(Pathname))
       return @gh_executable if @gh_executable.present?
 
+      # NOTE: We set HOMEBREW_NO_VERIFY_ATTESTATIONS when installing `gh` itself,
+      #       to prevent a cycle during bootstrapping. This can eventually be resolved
+      #       by vendoring a pure-Ruby Sigstore verifier client.
       with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
-        @gh_executable = ensure_executable!("gh", reason: "verifying attestations")
-
-        gh_version = Version.new(system_command!(@gh_executable, args: ["--version"], print_stderr: false)
-                                 .stdout.match(/\d+(?:\.\d+)+/i).to_s)
-        if gh_version < GH_ATTESTATION_MIN_VERSION
-          if Formula["gh"].version < GH_ATTESTATION_MIN_VERSION
-            raise "#{@gh_executable} is too old, you must upgrade it to >=#{GH_ATTESTATION_MIN_VERSION} to continue"
-          end
-
-          @gh_executable = ensure_formula_installed!("gh", latest: true,
-                                                           reason: "verifying attestations").opt_bin/"gh"
-        end
+        @gh_executable = ensure_executable!("gh", reason: "verifying attestations", latest: true)
       end
 
       T.must(@gh_executable)
