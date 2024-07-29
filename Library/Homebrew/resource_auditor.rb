@@ -120,7 +120,7 @@ module Homebrew
         pypi_package_name = Regexp.last_match(:package_name).to_s
       end
 
-      pypi_package_name.gsub!(/[_.]/, "-")
+      T.must(pypi_package_name).gsub!(/[_.]/, "-")
 
       return if name.casecmp(pypi_package_name).zero?
 
