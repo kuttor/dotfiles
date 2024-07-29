@@ -425,7 +425,7 @@ module Kernel
   end
 
   # Ensure the given executable is exist otherwise install the brewed version
-  def ensure_executable!(name, formula_name = nil, reason: "")
+  def ensure_executable!(name, formula_name = nil, reason: "", latest: false)
     formula_name ||= name
 
     executable = [
