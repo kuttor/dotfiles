@@ -438,7 +438,7 @@ module Kernel
     ].compact.first
     return executable if executable.exist?
 
-    ensure_formula_installed!(formula_name, reason:).opt_bin/name
+    ensure_formula_installed!(formula_name, reason:, latest:).opt_bin/name
   end
 
   def paths
