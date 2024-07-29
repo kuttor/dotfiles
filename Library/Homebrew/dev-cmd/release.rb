@@ -30,6 +30,8 @@ module Homebrew
       def run
         safe_system "git", "-C", HOMEBREW_REPOSITORY, "fetch", "origin" if Homebrew::EnvConfig.no_auto_update?
 
+        require "utils/github"
+
         begin
           latest_release = GitHub.get_latest_release "Homebrew", "brew"
         rescue GitHub::API::HTTPNotFoundError
