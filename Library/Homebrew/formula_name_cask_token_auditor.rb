@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 module Homebrew
-  class TokenAuditor
+  class FormulaNameCaskTokenAuditor
     sig { returns(String) }
     attr_reader :token
 

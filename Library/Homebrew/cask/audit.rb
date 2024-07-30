@@ -9,7 +9,7 @@ require "livecheck/livecheck"
 require "source_location"
 require "system_command"
 require "utils/backtrace"
-require "token_auditor"
+require "formula_name_cask_token_auditor"
 require "utils/curl"
 require "utils/git"
 require "utils/shared_audits"
@@ -395,7 +395,7 @@ module Cask
 
     sig { void }
     def audit_token
-      token_auditor = Homebrew::TokenAuditor.new(cask.token)
+      token_auditor = Homebrew::FormulaNameCaskTokenAuditor.new(cask.token)
       return if (errors = token_auditor.errors).empty?
 
       add_error "Cask token '#{cask.token}' must not contain #{errors.to_sentence(two_words_connector: " or ",

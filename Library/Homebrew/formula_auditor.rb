@@ -3,7 +3,7 @@
 
 require "deprecate_disable"
 require "formula_versions"
-require "token_auditor"
+require "formula_name_cask_token_auditor"
 require "resource_auditor"
 require "utils/shared_audits"
 
@@ -164,8 +164,8 @@ module Homebrew
     def audit_name
       name = formula.name
 
-      token_auditor = Homebrew::TokenAuditor.new(name)
-      unless (errors = token_auditor.errors).empty?
+      name_auditor = Homebrew::FormulaNameCaskTokenAuditor.new(name)
+      unless (errors = name_auditor.errors).empty?
         problem "Formula name '#{name}' must not contain #{errors.to_sentence(two_words_connector: " or ",
                                                                               last_word_connector: " or ")}."
       end
