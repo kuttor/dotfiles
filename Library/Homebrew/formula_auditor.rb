@@ -594,7 +594,6 @@ module Homebrew
     end
 
     def audit_wayback_url
-      return unless @strict
       return unless @core_tap
       return if formula.deprecated? || formula.disabled?
 
