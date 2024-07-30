@@ -396,7 +396,7 @@ module Cask
     sig { void }
     def audit_token
       token_auditor = Homebrew::FormulaNameCaskTokenAuditor.new(cask.token)
-      return if (errors = token_auditor.errors).empty?
+      return if (errors = token_auditor.errors).none?
 
       add_error "Cask token '#{cask.token}' must not contain #{errors.to_sentence(two_words_connector: " or ",
                                                                                   last_word_connector: " or ")}."

@@ -165,7 +165,7 @@ module Homebrew
       name = formula.name
 
       name_auditor = Homebrew::FormulaNameCaskTokenAuditor.new(name)
-      unless (errors = name_auditor.errors).empty?
+      if (errors = name_auditor.errors).any?
         problem "Formula name '#{name}' must not contain #{errors.to_sentence(two_words_connector: " or ",
                                                                               last_word_connector: " or ")}."
       end
