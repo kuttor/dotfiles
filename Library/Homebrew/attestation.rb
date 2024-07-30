@@ -59,11 +59,11 @@ module Homebrew
     def self.enabled?
       return false if Homebrew::EnvConfig.no_verify_attestations?
       return true if Homebrew::EnvConfig.verify_attestations?
-      return false if GitHub::API.credentials.blank?
       return false if ENV.fetch("CI", false)
       return false if OS.unsupported_configuration?
 
-      Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?
+      # Always check credentials last to avoid unnecessary credential extraction.
+      (Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?) && GitHub::API.credentials.present?
     end
 
     # Returns a path to a suitable `gh` executable for attestation verification.
