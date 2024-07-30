@@ -411,7 +411,7 @@ module Homebrew
       (downloads - referenced_downloads).each do |download|
         if self.class.incomplete?(download)
           begin
-            LockFile.new(download.basename).with_lock do
+            DownloadLock.new(download).with_lock do
               download.unlink
             end
           rescue OperationInProgressError

@@ -3,7 +3,7 @@
 require "lock_file"
 
 RSpec.describe LockFile do
-  subject(:lock_file) { described_class.new("foo") }
+  subject(:lock_file) { described_class.new(:lock, Pathname("foo")) }
 
   describe "#lock" do
     it "does not raise an error when already locked" do
@@ -16,7 +16,7 @@ RSpec.describe LockFile do
       lock_file.lock
 
       expect do
-        described_class.new("foo").lock
+        described_class.new(:lock, Pathname("foo")).lock
       end.to raise_error(OperationInProgressError)
     end
   end
@@ -30,7 +30,7 @@ RSpec.describe LockFile do
       lock_file.lock
       lock_file.unlock
 
-      expect { described_class.new("foo").lock }.not_to raise_error
+      expect { described_class.new(:lock, Pathname("foo")).lock }.not_to raise_error
     end
   end
 end

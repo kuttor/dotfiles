@@ -295,6 +295,10 @@ module Homebrew
                       "or `$HOME/.homebrew/livecheck_watchlist.txt` otherwise.",
         default:      "#{ENV.fetch("HOMEBREW_USER_CONFIG_HOME")}/livecheck_watchlist.txt",
       },
+      HOMEBREW_LOCK_CONTEXT:                     {
+        description: "If set, Homebrew will add this output as additional context for locking errors. " \
+                     "This is useful when running `brew` in the background.",
+      },
       HOMEBREW_LOGS:                             {
         description:  "Use this directory to store log files.",
         default_text: "macOS: `$HOME/Library/Logs/Homebrew`, " \

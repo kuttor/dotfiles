@@ -3,13 +3,15 @@
 
 require "fcntl"
 
-# A lock file.
+# A lock file to prevent multiple Homebrew processes from modifying the same path.
 class LockFile
   attr_reader :path
 
-  def initialize(name)
-    @name = name.to_s
-    @path = HOMEBREW_LOCKS/"#{@name}.lock"
+  sig { params(type: Symbol, locked_path: Pathname).void }
+  def initialize(type, locked_path)
+    @locked_path = locked_path
+    lock_name = locked_path.basename.to_s
+    @path = HOMEBREW_LOCKS/"#{lock_name}.#{type}.lock"
     @lockfile = nil
   end
 
@@ -18,7 +20,7 @@ class LockFile
     create_lockfile
     return if @lockfile.flock(File::LOCK_EX | File::LOCK_NB)
 
-    raise OperationInProgressError, @name
+    raise OperationInProgressError, @locked_path
   end
 
   def unlock
@@ -51,14 +53,24 @@ end
 
 # A lock file for a formula.
 class FormulaLock < LockFile
-  def initialize(name)
-    super("#{name}.formula")
+  sig { params(rack_name: String).void }
+  def initialize(rack_name)
+    super(:formula, HOMEBREW_CELLAR/rack_name)
   end
 end
 
 # A lock file for a cask.
 class CaskLock < LockFile
-  def initialize(name)
-    super("#{name}.cask")
+  sig { params(cask_token: String).void }
+  def initialize(cask_token)
+    super(:cask, HOMEBREW_PREFIX/"Caskroom/#{cask_token}")
+  end
+end
+
+# A lock file for a download.
+class DownloadLock < LockFile
+  sig { params(download_path: Pathname).void }
+  def initialize(download_path)
+    super(:download, download_path)
   end
 end

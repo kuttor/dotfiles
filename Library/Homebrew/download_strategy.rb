@@ -395,7 +395,7 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
   def fetch(timeout: nil)
     end_time = Time.now + timeout if timeout
 
-    download_lock = LockFile.new(temporary_path.basename)
+    download_lock = DownloadLock.new(temporary_path)
     download_lock.lock
 
     urls = [url, *mirrors]
