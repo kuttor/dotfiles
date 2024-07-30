@@ -20,10 +20,6 @@ module Homebrew
       errors << "non-ASCII characters" unless token.ascii_only?
       errors << "double hyphens" if token.include?("--")
 
-      # A bunch of formulae contain these:
-      # errors << "underscores" if token.include?("_")
-      # errors << "plus symbols" if token.include?("+")
-
       errors << "a leading @" if token.start_with?("@")
       errors << "a trailing @" if token.end_with?("@")
       errors << "a leading hyphen" if token.start_with?("-")
