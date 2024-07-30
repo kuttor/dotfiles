@@ -365,10 +365,12 @@ module Language
         def pip_install(targets, build_isolation: true)
           targets = Array(targets)
           targets.each do |t|
-            if t.is_a?(Resource) && t.url&.end_with?("-none-any.whl")
-              t.stage { do_install(Pathname.pwd/t.downloader.basename, build_isolation:) }
-            elsif t.is_a?(Resource)
-              t.stage { do_install(Pathname.pwd, build_isolation:) }
+            if t.is_a?(Resource)
+              t.stage do
+                target = Pathname.pwd
+                target /= t.downloader.basename if t.url&.end_with?("-none-any.whl")
+                do_install(target, build_isolation:)
+              end
             else
               t = t.lines.map(&:strip) if t.is_a?(String) && t.include?("\n")
               do_install(t, build_isolation:)
