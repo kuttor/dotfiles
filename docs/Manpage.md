@@ -3872,6 +3872,11 @@ command execution e.g. `$(cat file)`.
   `$XDG_CONFIG_HOME` is set or `$HOME/.homebrew/livecheck_watchlist.txt`
   otherwise.
 
+`HOMEBREW_LOCK_CONTEXT`
+
+: If set, Homebrew will add this output as additional context for locking
+  errors. This is useful when running `brew` in the background.
+
 `HOMEBREW_LOGS`
 
 : Use this directory to store log files.

@@ -149,9 +149,9 @@ RSpec.describe "Exception" do
   end
 
   describe OperationInProgressError do
-    subject(:error) { described_class.new("foo") }
+    subject(:error) { described_class.new(Pathname("foo")) }
 
-    it(:to_s) { expect(error.to_s).to match(/Operation already in progress for foo/) }
+    it(:to_s) { expect(error.to_s).to match(/has already locked foo/) }
   end
 
   describe FormulaInstallationAlreadyAttemptedError do

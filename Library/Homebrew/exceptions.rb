@@ -359,10 +359,14 @@ end
 
 # Raised when another Homebrew operation is already in progress.
 class OperationInProgressError < RuntimeError
-  def initialize(name)
+  sig { params(locked_path: Pathname).void }
+  def initialize(locked_path)
+    full_command = Homebrew.running_command_with_args.presence || "brew"
+    lock_context = if (env_lock_context = Homebrew::EnvConfig.lock_context.presence)
+      "\n#{env_lock_context}"
+    end
     message = <<~EOS
-      Operation already in progress for #{name}
-      Another active Homebrew process is already using #{name}.
+      A `#{full_command}` process has already locked #{locked_path}.#{lock_context}
       Please wait for it to finish or terminate it to continue.
     EOS
 

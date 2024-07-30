@@ -87,6 +87,7 @@ begin
   if internal_cmd || Commands.external_ruby_v2_cmd_path(cmd)
     cmd = T.must(cmd)
     cmd_class = Homebrew::AbstractCommand.command(cmd)
+    Homebrew.running_command = cmd
     if cmd_class
       command_instance = cmd_class.new
 
@@ -97,6 +98,7 @@ begin
       Homebrew.public_send Commands.method_name(cmd)
     end
   elsif (path = Commands.external_ruby_cmd_path(cmd))
+    Homebrew.running_command = cmd
     require?(path)
     exit Homebrew.failed? ? 1 : 0
   elsif Commands.external_cmd_path(cmd)

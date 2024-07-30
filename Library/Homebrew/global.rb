@@ -110,6 +110,16 @@ module Homebrew
     def auto_update_command?
       ENV.fetch("HOMEBREW_AUTO_UPDATE_COMMAND", false).present?
     end
+
+    sig { params(cmd: T.nilable(String)).void }
+    def running_command=(cmd)
+      @running_command_with_args = "#{cmd} #{ARGV.join(" ")}"
+    end
+
+    sig { returns String }
+    def running_command_with_args
+      "brew #{@running_command_with_args}".strip
+    end
   end
 end
 
