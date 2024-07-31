@@ -22,7 +22,7 @@ RSpec.describe Sandbox, :needs_macos do
   end
 
   describe "#path_filter" do
-    ["'", '"', "(", ")", "\n"].each do |char|
+    ["'", '"', "(", ")", "\n", "\\"].each do |char|
       it "fails if the path contains #{char}" do
         expect do
           sandbox.path_filter("foo#{char}bar", :subpath)

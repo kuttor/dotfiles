@@ -235,7 +235,7 @@ class Sandbox
   # @api private
   sig { params(path: T.any(String, Pathname), type: Symbol).returns(String) }
   def path_filter(path, type)
-    invalid_char = ['"', "'", "(", ")", "\n"].find do |c|
+    invalid_char = ['"', "'", "(", ")", "\n", "\\"].find do |c|
       path.to_s.include?(c)
     end
     raise ArgumentError, "Invalid character #{invalid_char} in path: #{path}" if invalid_char
