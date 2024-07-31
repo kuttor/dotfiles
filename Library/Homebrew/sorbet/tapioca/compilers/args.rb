@@ -21,31 +21,22 @@ module Tapioca
 
       sig { override.returns(T::Enumerable[Parsable]) }
       def self.gather_constants
-        # require all the commands to ensure the _arg methods are defined
+        # require all the commands to ensure the command subclasses are defined
         ["cmd", "dev-cmd"].each do |dir|
           Dir[File.join(__dir__, "../../../#{dir}", "*.rb")].each { require(_1) }
         end
-        [Homebrew::CLI::Args] + Homebrew::AbstractCommand.subclasses
+        Homebrew::AbstractCommand.subclasses
       end
 
       sig { override.void }
       def decorate
-        if constant == Homebrew::CLI::Args
-          root.create_path(Homebrew::CLI::Args) do |klass|
-            Homebrew.methods(false).select { _1.end_with?("_args") }.each do |args_method_name|
-              parser = Homebrew.method(args_method_name).call
-              create_args_methods(klass, parser)
-            end
-          end
-        else
-          cmd = T.cast(constant, T.class_of(Homebrew::AbstractCommand))
-          args_class_name = T.must(T.must(cmd.args_class).name)
-          root.create_class(args_class_name, superclass_name: "Homebrew::CLI::Args") do |klass|
-            create_args_methods(klass, cmd.parser)
-          end
-          root.create_path(constant) do |klass|
-            klass.create_method("args", return_type: args_class_name)
-          end
+        cmd = T.cast(constant, T.class_of(Homebrew::AbstractCommand))
+        args_class_name = T.must(T.must(cmd.args_class).name)
+        root.create_class(args_class_name, superclass_name: "Homebrew::CLI::Args") do |klass|
+          create_args_methods(klass, cmd.parser)
+        end
+        root.create_path(constant) do |klass|
+          klass.create_method("args", return_type: args_class_name)
         end
       end
 
@@ -80,8 +71,6 @@ module Tapioca
         args_table(parser).each do |method_name, value|
           method_name_str = method_name.to_s
           next if GLOBAL_OPTIONS.include?(method_name_str)
-          # some args are used in multiple commands (this is ok as long as they have the same type)
-          next if klass.nodes.any? { T.cast(_1, RBI::Method).name == method_name_str }
 
           return_type = get_return_type(method_name, value, comma_array_methods)
           klass.create_method(method_name_str, return_type:)
