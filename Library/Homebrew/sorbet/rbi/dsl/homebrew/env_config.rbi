@@ -190,7 +190,7 @@ module Homebrew::EnvConfig
     sig { returns(String) }
     def livecheck_watchlist; end
 
-    sig { returns(String) }
+    sig { returns(T.nilable(::String)) }
     def lock_context; end
 
     sig { returns(String) }
