@@ -29,7 +29,9 @@ $(brew --prefix python)/libexec/bin
 
 The Python formulae install [pip](https://pip.pypa.io/) (as `pip3`). Python@3.11 and older Python formulae also install [Setuptools](https://pypi.org/project/setuptools/).
 
-Starting with Python@3.12, the bundled Python packages should be updated by reinstalling brewed Python. For older Python formulae, they can be updated as described below.
+Starting with Python 3.12, the bundled Python packages should be updated by reinstalling brewed Python. For older Python formulae, they can be updated as described below.
+
+**Warning!** The steps below **do not work** for Homebrew's Python 3.12 or newer. If you need a newer version of `pip` or `setuptools` than comes with the Homebrewed Python, you **must** use a virtual environment or other isolation mechanism [per below](#pep-668-and-virtual-environments).
 
 Setuptools can be updated via `pip`, without having to reinstall brewed Python:
 
@@ -84,9 +86,9 @@ Since the system Python may not know which compiler flags to set when building b
 CFLAGS="-I$(brew --prefix)/include" LDFLAGS="-L$(brew --prefix)/lib" pip install <package>
 ```
 
-## PEP 668 (Python@3.12) and virtual environments
+## PEP 668 and virtual environments
 
-Starting with Python@3.12, Homebrew follows [PEP 668](https://peps.python.org/pep-0668/#marking-an-interpreter-as-using-an-external-package-manager).
+Starting with Python 3.12, Homebrew follows [PEP 668](https://peps.python.org/pep-0668/#marking-an-interpreter-as-using-an-external-package-manager).
 
 If you wish to install a non-brew-packaged Python package (from PyPI for example):
 
