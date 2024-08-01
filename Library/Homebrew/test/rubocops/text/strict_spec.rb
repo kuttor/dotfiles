@@ -132,14 +132,23 @@ RSpec.describe RuboCop::Cop::FormulaAuditStrict::Text do
       RUBY
     end
 
-    it 'reports an offense if "\#{bin}/<formula_name>" or other dashed binaries too are present' do
+    it 'reports an offense & autocorrects if "\#{bin}/<formula_name>" or other dashed binaries too are present' do
       expect_offense(<<~RUBY, "/homebrew-core/Formula/foo.rb")
         class Foo < Formula
           test do
-            ohai "\#{bin}/foo", "-v"
-                 ^^^^^^^^^^^^ FormulaAuditStrict/Text: Use `bin/"foo"` instead of `"\#{bin}/foo"`
-            ohai "\#{bin}/foo-bar", "-v"
-                 ^^^^^^^^^^^^^^^^ FormulaAuditStrict/Text: Use `bin/"foo-bar"` instead of `"\#{bin}/foo-bar"`
+            system "\#{bin}/foo", "-v"
+                   ^^^^^^^^^^^^ FormulaAuditStrict/Text: Use `bin/"foo"` instead of `"\#{bin}/foo"`
+            system "\#{bin}/foo-bar", "-v"
+                   ^^^^^^^^^^^^^^^^ FormulaAuditStrict/Text: Use `bin/"foo-bar"` instead of `"\#{bin}/foo-bar"`
+          end
+        end
+      RUBY
+
+      expect_correction(<<~RUBY)
+        class Foo < Formula
+          test do
+            system bin/"foo", "-v"
+            system bin/"foo-bar", "-v"
           end
         end
       RUBY
