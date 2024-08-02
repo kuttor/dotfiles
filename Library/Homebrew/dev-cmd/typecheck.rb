@@ -90,7 +90,7 @@ module Homebrew
             if (watchman = which("watchman", ORIGINAL_PATHS))
               srb_exec << "--watchman-path" << watchman
             else
-              srb_exec << "--disable-watchman" unless which("watchman", ORIGINAL_PATHS)
+              srb_exec << "--disable-watchman"
             end
           end
 
