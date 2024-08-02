@@ -13,7 +13,6 @@
       // Installing all necessary extensions for vscode
       // Taken from: .vscode/extensions.json
       "extensions": [
-        "kaiwood.endwise",
         "Shopify.ruby-lsp",
         "sorbet.sorbet-vscode-extension",
         "github.vscode-github-actions",
