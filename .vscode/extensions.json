@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "kaiwood.endwise",
     "Shopify.ruby-lsp",
     "sorbet.sorbet-vscode-extension",
     "github.vscode-github-actions",
