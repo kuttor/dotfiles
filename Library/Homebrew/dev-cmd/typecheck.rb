@@ -24,6 +24,8 @@ module Homebrew
         switch "--suggest-typed",
                depends_on:  "--update",
                description: "Try upgrading `typed` sigils."
+        switch "--lsp",
+               description: "Start the Sorbet LSP server."
         flag   "--dir=",
                description: "Typecheck all files in a specific directory."
         flag   "--file=",
@@ -33,6 +35,9 @@ module Homebrew
                             "in their paths (relative to the input path passed to Sorbet)."
 
         conflicts "--dir", "--file"
+        conflicts "--lsp", "--update"
+        conflicts "--lsp", "--update-all"
+        conflicts "--lsp", "--fix"
 
         named_args :none
       end
@@ -78,6 +83,15 @@ module Homebrew
             srb_exec << "--suppress-error-code" << "7003"
 
             srb_exec << "--autocorrect"
+          end
+
+          if args.lsp?
+            srb_exec << "--lsp"
+            if (watchman = which("watchman", ORIGINAL_PATHS))
+              srb_exec << "--watchman-path" << watchman
+            else
+              srb_exec << "--disable-watchman" unless which("watchman", ORIGINAL_PATHS)
+            end
           end
 
           srb_exec += ["--ignore", args.ignore] if args.ignore.present?

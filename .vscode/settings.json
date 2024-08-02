@@ -18,6 +18,21 @@
     "editor.formatOnType": true,
     "editor.semanticHighlighting.enabled": true,
   },
+  "sorbet.enabled": true,
+  "sorbet.lspConfigs": [
+    {
+      "id": "default",
+      "name": "Brew Typecheck",
+      "description": "Default configuration",
+      "cwd": "${workspaceFolder}",
+      "command": [
+        "./bin/brew",
+        "typecheck",
+        "--lsp",
+      ]
+    }
+  ],
+  "sorbet.selectedLspConfigId": "default",
   "shellcheck.customArgs": [
     "--shell=bash",
     "--enable=all",
