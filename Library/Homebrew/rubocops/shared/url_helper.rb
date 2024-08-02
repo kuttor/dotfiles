@@ -242,6 +242,7 @@ module RuboCop
           next if url.match? %r{raw.githubusercontent.com/.*/.*/(main|master|HEAD)/}
           next if url.include?("releases/download")
           next if url.include?("desktop.githubusercontent.com/github-desktop/releases/")
+          next if url.include?("desktop.githubusercontent.com/releases/")
 
           problem "Use GitHub tarballs rather than zipballs (url is #{url})."
         end
