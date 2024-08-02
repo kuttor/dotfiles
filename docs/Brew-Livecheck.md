@@ -313,10 +313,10 @@ end
 
 #### `Sparkle` `strategy` block
 
-A `strategy` block for `Sparkle` receives an `item` which has methods for the `version`, `short_version`, `nice_version`, `url`, `channel` and `title`. It expects a URL for an XML feed providing release information to a macOS application that self-updates using the Sparkle framework. This URL can be found within the app bundle as the `SUFeedURL` property in `Contents/Info.plist` or by using the [`find-appcast`](https://github.com/Homebrew/homebrew-cask/blob/HEAD/developer/bin/find-appcast) script. Run it with:
+A `strategy` block for `Sparkle` receives an `item` which has methods for the `version`, `short_version`, `nice_version`, `url`, `channel` and `title`. It expects a URL for an XML feed providing release information to a macOS application that self-updates using the Sparkle framework. This URL can be found within the app bundle as the `SUFeedURL` property in `Contents/Info.plist` or by using the [`find-appcast`](https://github.com/Homebrew/homebrew-cask/blob/HEAD/cmd/find-appcast.rb) command. Run it with:
 
 ```bash
-"$(brew --repository homebrew/cask)/developer/bin/find-appcast" '/path/to/application.app'
+brew find-appcast '/path/to/application.app'
 ```
 
 The default pattern for the `Sparkle` strategy is to generate `"#{item.short_version},#{item.version}"` from `sparkle:shortVersionString` and `sparkle:version` if both are set. In the example below, the `url` also includes a download ID which is needed:
