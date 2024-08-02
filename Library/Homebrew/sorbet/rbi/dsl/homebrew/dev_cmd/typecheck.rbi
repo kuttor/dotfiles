@@ -24,6 +24,9 @@ class Homebrew::DevCmd::Typecheck::Args < Homebrew::CLI::Args
   def ignore; end
 
   sig { returns(T::Boolean) }
+  def lsp?; end
+
+  sig { returns(T::Boolean) }
   def suggest_typed?; end
 
   sig { returns(T::Boolean) }
