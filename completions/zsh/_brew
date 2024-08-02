@@ -1881,13 +1881,14 @@ _brew_tc() {
     '--debug[Display any debugging information]' \
     '(--file)--dir[Typecheck all files in a specific directory]' \
     '(--dir)--file[Typecheck a single file]' \
-    '--fix[Automatically fix type errors]' \
+    '(--lsp)--fix[Automatically fix type errors]' \
     '--help[Show this message]' \
     '--ignore[Ignores input files that contain the given string in their paths (relative to the input path passed to Sorbet)]' \
+    '(--update --update-all --fix)--lsp[Start the Sorbet LSP server]' \
     '--quiet[Silence all non-critical errors]' \
     '--suggest-typed[Try upgrading `typed` sigils]' \
-    '--update[Update RBI files]' \
-    '--update-all[Update all RBI files rather than just updated gems]' \
+    '(--lsp)--update[Update RBI files]' \
+    '(--lsp)--update-all[Update all RBI files rather than just updated gems]' \
     '--verbose[Make some output more verbose]'
 }
 
@@ -1929,13 +1930,14 @@ _brew_typecheck() {
     '--debug[Display any debugging information]' \
     '(--file)--dir[Typecheck all files in a specific directory]' \
     '(--dir)--file[Typecheck a single file]' \
-    '--fix[Automatically fix type errors]' \
+    '(--lsp)--fix[Automatically fix type errors]' \
     '--help[Show this message]' \
     '--ignore[Ignores input files that contain the given string in their paths (relative to the input path passed to Sorbet)]' \
+    '(--update --update-all --fix)--lsp[Start the Sorbet LSP server]' \
     '--quiet[Silence all non-critical errors]' \
     '--suggest-typed[Try upgrading `typed` sigils]' \
-    '--update[Update RBI files]' \
-    '--update-all[Update all RBI files rather than just updated gems]' \
+    '(--lsp)--update[Update RBI files]' \
+    '(--lsp)--update-all[Update all RBI files rather than just updated gems]' \
     '--verbose[Make some output more verbose]'
 }
 

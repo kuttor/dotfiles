@@ -2775,6 +2775,10 @@ Check for typechecking errors using Sorbet.
 
 : Try upgrading `typed` sigils.
 
+`--lsp`
+
+: Start the Sorbet LSP server.
+
 `--dir`
 
 : Typecheck all files in a specific directory.

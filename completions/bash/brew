@@ -2316,6 +2316,7 @@ _brew_tc() {
       --fix
       --help
       --ignore
+      --lsp
       --quiet
       --suggest-typed
       --update
@@ -2384,6 +2385,7 @@ _brew_typecheck() {
       --fix
       --help
       --ignore
+      --lsp
       --quiet
       --suggest-typed
       --update
