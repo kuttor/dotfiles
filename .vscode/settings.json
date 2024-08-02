@@ -6,8 +6,17 @@
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
-  "ruby.useLanguageServer": true,
-  "ruby.rubocop.executePath": "Library/Homebrew/shims/gems/",
+  "rubyLsp.rubyVersionManager": {
+    "identifier": "custom"
+  },
+  "rubyLsp.customRubyCommand": "PATH=${workspaceFolder}/Library/Homebrew/vendor/portable-ruby/current/bin:$PATH",
+  "rubyLsp.bundleGemfile": "Library/Homebrew/Gemfile",
+  "rubyLsp.formatter": "rubocop",
+  "[ruby]": {
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
+    "editor.formatOnSave": true,
+    "editor.semanticHighlighting.enabled": true,
+  },
   "shellcheck.customArgs": [
     "--shell=bash",
     "--enable=all",
