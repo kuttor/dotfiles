@@ -14,8 +14,7 @@
       // Taken from: .vscode/extensions.json
       "extensions": [
         "kaiwood.endwise",
-        "lorankloeze.ruby-rubocop-revived",
-        "rebornix.ruby",
+        "Shopify.ruby-lsp",
         "sorbet.sorbet-vscode-extension",
         "github.vscode-github-actions",
         "timonwong.shellcheck",
