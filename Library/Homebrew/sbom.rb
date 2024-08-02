@@ -306,7 +306,7 @@ class SBOM
                                                                 T::Array[T::Hash[Symbol, String]])]])
   }
   def full_spdx_runtime_dependencies(bottling:)
-    return [] if @runtime_dependencies.blank?
+    return [] if bottling || @runtime_dependencies.blank?
 
     @runtime_dependencies.compact.filter_map do |dependency|
       next unless dependency.present?
@@ -340,10 +340,6 @@ class SBOM
           },
         ],
       }
-      if bottling
-        dependency_json.delete(:downloadLocation)
-        dependency_json.delete(:checksums)
-      end
       dependency_json
     end
   end
