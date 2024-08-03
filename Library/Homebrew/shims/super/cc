@@ -324,11 +324,13 @@ class Cmd
       args << "-no_weak_imports" if no_weak_imports?
       args << "-no_fixup_chains" if no_fixup_chains?
       args << "-oso_prefix" << formula_buildpath if oso_prefix? && formula_buildpath
+      args << "-ld_classic" if ld_classic?
     when :ccld, :cxxld
       args << "-Wl,-headerpad_max_install_names"
       args << "-Wl,-no_weak_imports" if no_weak_imports?
       args << "-Wl,-no_fixup_chains" if no_fixup_chains?
       args << "-Wl,-oso_prefix,#{formula_buildpath}" if oso_prefix? && formula_buildpath
+      args << "-Wl,-ld_classic" if ld_classic?
     end
     args
   end
@@ -439,6 +441,10 @@ class Cmd
 
   def oso_prefix?
     config.include?("o") && !configure?
+  end
+
+  def ld_classic?
+    config.include?("c") && calls_ld? && @args.any? { |arg| arg.match?(/^(-Wl,)?-dead_strip_dylibs$/) }
   end
 
   def calls_ld?
