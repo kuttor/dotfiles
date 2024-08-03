@@ -307,7 +307,7 @@ module Utils
 
           last_thirty_days_downloads = last_thirty_days_match.captures.first.tr(",", "")
           thirty_day_download_count += if (millions_match = last_thirty_days_downloads.match(/(\d+\.\d+)M/).presence)
-            millions_match.captures.first.to_i * 1_000_000
+            millions_match.captures.first.to_f * 1_000_000
           else
             last_thirty_days_downloads.to_i
           end
