@@ -32,8 +32,8 @@ homebrew-shellenv() {
       echo "setenv HOMEBREW_CELLAR ${HOMEBREW_CELLAR};"
       echo "setenv HOMEBREW_REPOSITORY ${HOMEBREW_REPOSITORY};"
       echo "setenv PATH ${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:\$PATH;"
-      echo "if ( \${?MANPATH} == 1 ) setenv MANPATH :\${MANPATH};"
-      echo "setenv INFOPATH ${HOMEBREW_PREFIX}/share/info\`if ( \${?INFOPATH} == 1 ) echo \":\${INFOPATH}\"\`;"
+      echo "test \${?MANPATH} -eq 1 && setenv MANPATH :\${MANPATH};"
+      echo "setenv INFOPATH ${HOMEBREW_PREFIX}/share/info\`test \${?INFOPATH} -eq 1 && echo :\${INFOPATH}\`;"
       ;;
     pwsh | -pwsh | pwsh-preview | -pwsh-preview)
       echo "[System.Environment]::SetEnvironmentVariable('HOMEBREW_PREFIX','${HOMEBREW_PREFIX}',[System.EnvironmentVariableTarget]::Process)"
