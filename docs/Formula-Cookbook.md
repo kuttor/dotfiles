@@ -995,7 +995,7 @@ class Foo < Formula
   url "https://example.com/foo-1.0.tar.gz"
 
   def post_install
-    rm_f pkgetc/"cert.pem"
+    rm pkgetc/"cert.pem" if File.exist?(pkgetc/"cert.pem")
     pkgetc.install_symlink Formula["ca-certificates"].pkgetc/"cert.pem"
   end
   # ...
