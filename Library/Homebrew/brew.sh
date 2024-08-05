@@ -294,7 +294,7 @@ auto-update() {
     for repo_fetch_head in "${repo_fetch_heads[@]}"
     do
       if [[ ! -f "${repo_fetch_head}" ]] ||
-         [[ -z "$(find "${repo_fetch_head}" -type f -mtime -"${HOMEBREW_AUTO_UPDATE_SECS}"s 2>/dev/null)" ]]
+         [[ -z "$(find "${repo_fetch_head}" -type f -newermt "-${HOMEBREW_AUTO_UPDATE_SECS} seconds" 2>/dev/null)" ]]
       then
         needs_auto_update=1
         break
