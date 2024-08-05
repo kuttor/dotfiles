@@ -105,10 +105,6 @@ module Homebrew
         # Documentation: https://docs.brew.sh/Formula-Cookbook
         #                https://rubydoc.brew.sh/Formula
         # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-        <% if @mode == :node %>
-        require "language/node"
-
-        <% end %>
         class #{Formulary.class_s(name)} < Formula
         <% if @mode == :python %>
           include Language::Python::Virtualenv
@@ -179,7 +175,7 @@ module Homebrew
             system "meson", "compile", "-C", "build", "--verbose"
             system "meson", "install", "-C", "build"
         <% elsif @mode == :node %>
-            system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+            system "npm", "install", *std_npm_args
             bin.install_symlink Dir["\#{libexec}/bin/*"]
         <% elsif @mode == :perl %>
             ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
