@@ -82,8 +82,8 @@ module Cask
     def self.deps_info(cask)
       depends_on = cask.depends_on
 
-      formula_deps = depends_on[:formula]&.map(&:to_s) || []
-      cask_deps = depends_on[:cask]&.map { |dep| "#{dep} (cask)" } || []
+      formula_deps = Array(depends_on[:formula]).map(&:to_s)
+      cask_deps = Array(depends_on[:cask]).map { |dep| "#{dep} (cask)" }
 
       all_deps = formula_deps + cask_deps
       return if all_deps.empty?
