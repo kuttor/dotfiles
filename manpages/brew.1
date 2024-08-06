@@ -1960,6 +1960,8 @@ Write all installed casks/formulae/images/taps into a \fBBrewfile\fP in the curr
 Uninstall all dependencies not present in the \fBBrewfile\fP\&\.
 .P
 This workflow is useful for maintainers or testers who regularly install lots of formulae\.
+.P
+Unless \fB\-\-force\fP is passed, this returns a 1 exit code if anything would be removed\.
 .TP
 \fBbrew bundle check\fP
 Check if all dependencies present in the \fBBrewfile\fP are installed\.

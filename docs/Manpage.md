@@ -3066,6 +3066,9 @@ a local machine).
 This workflow is useful for maintainers or testers who regularly install lots of
 formulae.
 
+Unless `--force` is passed, this returns a 1 exit code if anything would be
+removed.
+
 `brew bundle check`
 
 : Check if all dependencies present in the `Brewfile` are installed.
