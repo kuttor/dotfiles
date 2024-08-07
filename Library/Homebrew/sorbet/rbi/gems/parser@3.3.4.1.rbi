@@ -5129,7 +5129,7 @@ class Parser::Source::Buffer
   # @api public
   # @return [Buffer] a new instance of Buffer
   #
-  # source://parser//lib/parser/source/buffer.rb#110
+  # source://parser//lib/parser/source/buffer.rb#109
   def initialize(name, first_line = T.unsafe(nil), source: T.unsafe(nil)); end
 
   # Convert a character index into the source to a column number.
@@ -5138,7 +5138,7 @@ class Parser::Source::Buffer
   # @param position [Integer]
   # @return [Integer] column
   #
-  # source://parser//lib/parser/source/buffer.rb#247
+  # source://parser//lib/parser/source/buffer.rb#246
   def column_for_position(position); end
 
   # Convert a character index into the source to a `[line, column]` tuple.
@@ -5147,7 +5147,7 @@ class Parser::Source::Buffer
   # @param position [Integer]
   # @return [[Integer, Integer]] `[line, column]`
   #
-  # source://parser//lib/parser/source/buffer.rb#222
+  # source://parser//lib/parser/source/buffer.rb#221
   def decompose_position(position); end
 
   # First line of the buffer, 1 by default.
@@ -5160,12 +5160,12 @@ class Parser::Source::Buffer
 
   # @api public
   #
-  # source://parser//lib/parser/source/buffer.rb#317
+  # source://parser//lib/parser/source/buffer.rb#316
   def freeze; end
 
   # @api public
   #
-  # source://parser//lib/parser/source/buffer.rb#323
+  # source://parser//lib/parser/source/buffer.rb#322
   def inspect; end
 
   # Number of last line in the buffer
@@ -5173,7 +5173,7 @@ class Parser::Source::Buffer
   # @api public
   # @return [Integer]
   #
-  # source://parser//lib/parser/source/buffer.rb#312
+  # source://parser//lib/parser/source/buffer.rb#311
   def last_line; end
 
   # Convert a character index into the source to a line number.
@@ -5182,7 +5182,7 @@ class Parser::Source::Buffer
   # @param position [Integer]
   # @return [Integer] line
   #
-  # source://parser//lib/parser/source/buffer.rb#236
+  # source://parser//lib/parser/source/buffer.rb#235
   def line_for_position(position); end
 
   # Extract line `lineno` as a new `Range`, taking `first_line` into account.
@@ -5192,7 +5192,7 @@ class Parser::Source::Buffer
   # @raise [IndexError] if `lineno` is out of bounds
   # @return [Range]
   #
-  # source://parser//lib/parser/source/buffer.rb#289
+  # source://parser//lib/parser/source/buffer.rb#288
   def line_range(lineno); end
 
   # Buffer name. If the buffer was created from a file, the name corresponds
@@ -5211,7 +5211,7 @@ class Parser::Source::Buffer
   # @raise [ArgumentError] if already populated
   # @return [String]
   #
-  # source://parser//lib/parser/source/buffer.rb#185
+  # source://parser//lib/parser/source/buffer.rb#184
   def raw_source=(input); end
 
   # Populate this buffer from correspondingly named file.
@@ -5222,12 +5222,12 @@ class Parser::Source::Buffer
   # @raise [ArgumentError] if already populated
   # @return [Buffer] self
   #
-  # source://parser//lib/parser/source/buffer.rb#136
+  # source://parser//lib/parser/source/buffer.rb#135
   def read; end
 
   # @api public
   #
-  # source://parser//lib/parser/source/buffer.rb#199
+  # source://parser//lib/parser/source/buffer.rb#198
   def slice(start, length = T.unsafe(nil)); end
 
   # Source code contained in this buffer.
@@ -5236,7 +5236,7 @@ class Parser::Source::Buffer
   # @raise [RuntimeError] if buffer is not populated yet
   # @return [String] source code
   #
-  # source://parser//lib/parser/source/buffer.rb#150
+  # source://parser//lib/parser/source/buffer.rb#149
   def source; end
 
   # Populate this buffer from a string with encoding autodetection.
@@ -5248,7 +5248,7 @@ class Parser::Source::Buffer
   # @raise [EncodingError] if `input` includes invalid byte sequence for the encoding
   # @return [String]
   #
-  # source://parser//lib/parser/source/buffer.rb#167
+  # source://parser//lib/parser/source/buffer.rb#166
   def source=(input); end
 
   # Extract line `lineno` from source, taking `first_line` into account.
@@ -5258,7 +5258,7 @@ class Parser::Source::Buffer
   # @raise [IndexError] if `lineno` is out of bounds
   # @return [String]
   #
-  # source://parser//lib/parser/source/buffer.rb#278
+  # source://parser//lib/parser/source/buffer.rb#277
   def source_line(lineno); end
 
   # Return an `Array` of source code lines.
@@ -5266,30 +5266,30 @@ class Parser::Source::Buffer
   # @api public
   # @return [Array<String>]
   #
-  # source://parser//lib/parser/source/buffer.rb#257
+  # source://parser//lib/parser/source/buffer.rb#256
   def source_lines; end
 
   # @api public
   # @return [Range] A range covering the whole source
   #
-  # source://parser//lib/parser/source/buffer.rb#303
+  # source://parser//lib/parser/source/buffer.rb#302
   def source_range; end
 
   private
 
   # @api public
   #
-  # source://parser//lib/parser/source/buffer.rb#353
+  # source://parser//lib/parser/source/buffer.rb#352
   def bsearch(line_begins, position); end
 
   # @api public
   #
-  # source://parser//lib/parser/source/buffer.rb#330
+  # source://parser//lib/parser/source/buffer.rb#329
   def line_begins; end
 
   # @api public
   #
-  # source://parser//lib/parser/source/buffer.rb#344
+  # source://parser//lib/parser/source/buffer.rb#343
   def line_index_for_position(position); end
 
   class << self
