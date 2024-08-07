@@ -10,9 +10,7 @@ require "utils/curl"
 # Rather than calling `new` directly, use one of the class methods like {SBOM.create}.
 class SBOM
   FILENAME = "sbom.spdx.json"
-  SCHEMA_URL = "https://spdx.github.io/spdx-3-model/model.jsonld"
-  SCHEMA_FILENAME = "sbom.spdx.schema.3.json"
-  SCHEMA_CACHE_TARGET = (HOMEBREW_CACHE/"sbom/#{SCHEMA_FILENAME}").freeze
+  SCHEMA_FILE = (HOMEBREW_LIBRARY_PATH/"data/schemas/sbom.spdx.schema.3.json").freeze
 
   # Instantiates a {SBOM} for a new installation of a formula.
   sig { params(formula: Formula, tab: Tab).returns(T.attached_class) }
@@ -89,43 +87,9 @@ class SBOM
     spdxfile(formula).exist?
   end
 
-  sig { returns(T::Hash[String, String]) }
-  def self.fetch_schema!
-    return @schema if @schema.present?
-
-    url = SCHEMA_URL
-    target = SCHEMA_CACHE_TARGET
-    quieter = target.exist? && !target.empty?
-
-    curl_args = Utils::Curl.curl_args(retries: 0)
-    curl_args += ["--silent", "--time-cond", target.to_s] if quieter
-
-    begin
-      unless quieter
-        oh1 "Fetching SBOM schema"
-        ohai "Downloading #{url}"
-      end
-      Utils::Curl.curl_download(*curl_args, url, to: target, retries: 0)
-      FileUtils.touch(target, mtime: Time.now)
-    rescue ErrorDuringExecution
-      target.unlink if target.exist? && target.empty?
-
-      if target.exist?
-        opoo "SBOM schema update failed, falling back to cached version."
-      else
-        opoo "Failed to fetch SBOM schema, cannot perform SBOM validation!"
-
-        return {}
-      end
-    end
-
-    @schema = begin
-      JSON.parse(target.read, freeze: true)
-    rescue JSON::ParserError
-      target.unlink
-      opoo "Failed to fetch SBOM schema, cached version corrupted, cannot perform SBOM validation!"
-      {}
-    end
+  sig { returns(T::Hash[String, T.untyped]) }
+  def self.schema
+    @schema ||= JSON.parse(SCHEMA_FILE.read, freeze: true)
   end
 
   sig { params(bottling: T::Boolean).returns(T::Boolean) }
@@ -136,14 +100,7 @@ class SBOM
       return true
     end
 
-    schema = SBOM.fetch_schema!
-    if schema.blank?
-      error_message = "Could not fetch JSON schema to validate SBOM!"
-      ENV["HOMEBREW_ENFORCE_SBOM"] ? odie(error_message) : opoo(error_message)
-      return false
-    end
-
-    schemer = JSONSchemer.schema(schema)
+    schemer = JSONSchemer.schema(SBOM.schema)
     data = to_spdx_sbom(bottling:)
     return true if schemer.valid?(data)
 

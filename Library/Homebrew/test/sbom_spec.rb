@@ -2,7 +2,7 @@
 
 require "sbom"
 
-RSpec.describe SBOM, :needs_network do
+RSpec.describe SBOM do
   describe "#valid?" do
     it "returns true if a minimal SBOM is valid" do
       f = formula { url "foo-1.0" }
