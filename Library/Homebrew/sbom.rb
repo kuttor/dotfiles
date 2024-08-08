@@ -10,7 +10,7 @@ require "utils/curl"
 # Rather than calling `new` directly, use one of the class methods like {SBOM.create}.
 class SBOM
   FILENAME = "sbom.spdx.json"
-  SCHEMA_FILE = (HOMEBREW_LIBRARY_PATH/"data/schemas/sbom.spdx.schema.3.json").freeze
+  SCHEMA_FILE = (HOMEBREW_LIBRARY_PATH/"data/schemas/sbom.json").freeze
 
   # Instantiates a {SBOM} for a new installation of a formula.
   sig { params(formula: Formula, tab: Tab).returns(T.attached_class) }
@@ -293,7 +293,7 @@ class SBOM
           {
             referenceCategory: "PACKAGE-MANAGER",
             referenceLocator:  "pkg:brew/#{dependency["full_name"]}@#{dependency["pkg_version"]}",
-            referenceType:     :purl,
+            referenceType:     "purl",
           },
         ],
       }
@@ -341,7 +341,7 @@ class SBOM
       spdxVersion:       "SPDX-2.3",
       name:              "SBOM-SPDX-#{name}-#{spec_version}",
       creationInfo:      {
-        created:  (Time.at(time).utc if time.present? && !bottling),
+        created:  (Time.at(time).utc.iso8601 if time.present? && !bottling),
         creators: ["Tool: https://github.com/homebrew/brew@#{homebrew_version}"],
       },
       dataLicense:       "CC0-1.0",

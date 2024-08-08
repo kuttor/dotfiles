@@ -68,5 +68,12 @@ RSpec.describe SBOM do
       sbom = described_class.create(f, tab)
       expect(sbom).to be_valid
     end
+
+    it "returns false if an SBOM is invalid" do
+      f = formula { url "foo-1.0" }
+      sbom = described_class.create(f, Tab.new)
+      allow(sbom).to receive(:to_spdx_sbom).and_return({}) # fake an empty SBOM
+      expect(sbom).not_to be_valid
+    end
   end
 end
