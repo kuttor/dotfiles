@@ -22,18 +22,11 @@ class SBOM
     end
     active_spec_sym = formula.active_spec_sym
 
-    homebrew_version_maybe_dev = if (match_data = HOMEBREW_VERSION.match(/^[\d.]+/))
-      suffix = "-dev" if HOMEBREW_VERSION.include?("-")
-      match_data[0] + suffix.to_s
-    else
-      HOMEBREW_VERSION
-    end
-
     attributes = {
       name:                 formula.name,
-      homebrew_version:     homebrew_version_maybe_dev,
+      homebrew_version:     HOMEBREW_VERSION,
       spdxfile:             SBOM.spdxfile(formula),
-      time:                 tab.time,
+      time:                 tab.time || Time.now,
       source_modified_time: tab.source_modified_time.to_i,
       compiler:             tab.compiler,
       stdlib:               tab.stdlib,
@@ -92,22 +85,27 @@ class SBOM
     @schema ||= JSON.parse(SCHEMA_FILE.read, freeze: true)
   end
 
-  sig { params(bottling: T::Boolean).returns(T::Boolean) }
-  def valid?(bottling: false)
+  sig { params(bottling: T::Boolean).returns(T::Array[T::Hash[String, T.untyped]]) }
+  def schema_validation_errors(bottling: false)
     unless require? "json_schemer"
       error_message = "Need json_schemer to validate SBOM, run `brew install-bundler-gems --add-groups=bottle`!"
       odie error_message if ENV["HOMEBREW_ENFORCE_SBOM"]
-      return true
+      return []
     end
 
     schemer = JSONSchemer.schema(SBOM.schema)
     data = to_spdx_sbom(bottling:)
-    return true if schemer.valid?(data)
+
+    schemer.validate(data).map { |error| error["error"] }
+  end
+
+  sig { params(bottling: T::Boolean).returns(T::Boolean) }
+  def valid?(bottling: false)
+    validation_errors = schema_validation_errors(bottling:)
+    return true if validation_errors.empty?
 
     opoo "SBOM validation errors:"
-    schemer.validate(data).to_a.each do |error|
-      puts error["error"]
-    end
+    validation_errors.each(&:puts)
 
     odie "Failed to validate SBOM against JSON schema!" if ENV["HOMEBREW_ENFORCE_SBOM"]
 
@@ -210,7 +208,7 @@ class SBOM
         filesAnalyzed:    false,
         licenseDeclared:  assert_value(nil),
         builtDate:        source_modified_time.to_s,
-        licenseConcluded: license,
+        licenseConcluded: assert_value(license),
         downloadLocation: bottle_info.fetch("url"),
         copyrightText:    assert_value(nil),
         externalRefs:     [
@@ -323,8 +321,8 @@ class SBOM
     if stdlib.present?
       compiler_info["SPDXRef-Stdlib"] = {
         SPDXID:           "SPDXRef-Stdlib",
-        name:             stdlib,
-        versionInfo:      stdlib,
+        name:             stdlib.to_s,
+        versionInfo:      stdlib.to_s,
         filesAnalyzed:    false,
         licenseDeclared:  assert_value(nil),
         licenseConcluded: assert_value(nil),
@@ -335,15 +333,21 @@ class SBOM
       }
     end
 
+    # Improve reproducibility when bottling.
+    if bottling
+      created = source_modified_time.iso8601
+      creators = ["Tool: https://github.com/Homebrew/brew"]
+    else
+      created = Time.at(time).utc.iso8601
+      creators = ["Tool: https://github.com/Homebrew/brew@#{homebrew_version}"]
+    end
+
     packages = generate_packages_json(runtime_full, compiler_info, bottling:)
     {
       SPDXID:            "SPDXRef-DOCUMENT",
       spdxVersion:       "SPDX-2.3",
       name:              "SBOM-SPDX-#{name}-#{spec_version}",
-      creationInfo:      {
-        created:  (Time.at(time).utc.iso8601 if time.present? && !bottling),
-        creators: ["Tool: https://github.com/homebrew/brew@#{homebrew_version}"],
-      },
+      creationInfo:      { created:, creators: },
       dataLicense:       "CC0-1.0",
       documentNamespace: "https://formulae.brew.sh/spdx/#{name}-#{spec_version}.json",
       documentDescribes: packages.map { |dependency| dependency[:SPDXID] },
