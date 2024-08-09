@@ -3180,9 +3180,9 @@ the output is not to a tty, print the appropriate handler script for your shell.
 Manage background services with macOS' `launchctl`(1) daemon manager or Linux's
 `systemctl`(1) service manager.
 
-If `sudo` is passed, operate on
-`/Library/LaunchDaemons`/`/usr/lib/systemd/system` (started at boot). Otherwise,
-operate on `~/Library/LaunchAgents`/`~/.config/systemd/user` (started at login).
+If `sudo` is passed, operate on `/Library/LaunchDaemons` or
+`/usr/lib/systemd/system` (started at boot). Otherwise, operate on
+`~/Library/LaunchAgents` or `~/.config/systemd/user` (started at login).
 
 \[`sudo`\] `brew services` \[`list`\] (`--json`) (`--debug`)
 
