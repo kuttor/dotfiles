@@ -2033,7 +2033,7 @@ Print instructions for setting up the command\-not\-found hook for your shell\. 
 .SS "\fBservices\fP \fR[\fIsubcommand\fP]"
 Manage background services with macOS\[u2019] \fBlaunchctl\fP(1) daemon manager or Linux\[u2019]s \fBsystemctl\fP(1) service manager\.
 .P
-If \fBsudo\fP is passed, operate on \fB/Library/LaunchDaemons\fP/\fB/usr/lib/systemd/system\fP (started at boot)\. Otherwise, operate on \fB~/Library/LaunchAgents\fP/\fB~/\.config/systemd/user\fP (started at login)\.
+If \fBsudo\fP is passed, operate on \fB/Library/LaunchDaemons\fP or \fB/usr/lib/systemd/system\fP (started at boot)\. Otherwise, operate on \fB~/Library/LaunchAgents\fP or \fB~/\.config/systemd/user\fP (started at login)\.
 .TP
 [\fBsudo\fP] \fBbrew services\fP [\fBlist\fP] (\fB\-\-json\fP) (\fB\-\-debug\fP)
 List information about all managed services for the current user (or root)\. Provides more output from Homebrew and \fBlaunchctl\fP(1) or \fBsystemctl\fP(1) if run with \fB\-\-debug\fP\&\.
