@@ -54,12 +54,13 @@ module Utils
         require "utils/curl"
 
         curl = Utils::Curl.curl_executable
+        args = Utils::Curl.curl_args(*args, "--silent", "--output", "/dev/null", show_error: false)
         if ENV["HOMEBREW_ANALYTICS_DEBUG"]
           puts "#{curl} #{args.join(" ")} \"#{url}\""
           puts Utils.popen_read(curl, *args, url)
         else
           pid = fork do
-            exec curl, *args, "--silent", "--output", "/dev/null", url
+            exec curl, *args, url
           end
           Process.detach T.must(pid)
         end

@@ -65,7 +65,7 @@ module Utils
         show_error:      T.nilable(T::Boolean),
         user_agent:      T.any(String, Symbol, NilClass),
         referer:         T.nilable(String),
-      ).returns(T::Array[T.untyped])
+      ).returns(T::Array[String])
     }
     def curl_args(
       *extra_args,
@@ -129,7 +129,7 @@ module Utils
 
       args << "--referer" << referer if referer.present?
 
-      args + extra_args
+      (args + extra_args).map(&:to_s)
     end
 
     def curl_with_workarounds(
