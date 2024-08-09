@@ -224,7 +224,7 @@ module Homebrew
             # to `brew install` such as `--HEAD` also need to be provided to `brew test`.
             #
             # The installed folder is not in the path, so use the entire path to any
-            # executables being tested: `system "\#{bin}/program", "do", "something"`.
+            # executables being tested: `system bin/"program", "do", "something"`.
             system "false"
           end
         end
