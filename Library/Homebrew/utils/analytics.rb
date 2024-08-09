@@ -59,9 +59,7 @@ module Utils
           puts "#{curl} #{args.join(" ")} \"#{url}\""
           puts Utils.popen_read(curl, *args, url)
         else
-          pid = fork do
-            exec curl, *args, url
-          end
+          pid = spawn curl, *args, url
           Process.detach T.must(pid)
         end
       end
