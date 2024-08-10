@@ -65,10 +65,8 @@ begin
   internal_cmd = Commands.valid_internal_cmd?(cmd) || Commands.valid_internal_dev_cmd?(cmd) if cmd
 
   unless internal_cmd
-    require "tap"
-
     # Add contributed commands to PATH before checking.
-    homebrew_path.append(Tap.cmd_directories)
+    homebrew_path.append(Commands.cmd_directories)
 
     # External commands expect a normal PATH
     ENV["PATH"] = homebrew_path.to_s

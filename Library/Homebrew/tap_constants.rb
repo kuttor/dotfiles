@@ -1,6 +1,8 @@
 # typed: strict
 # frozen_string_literal: true
 
+HOMEBREW_TAP_DIRECTORY = T.let((HOMEBREW_LIBRARY/"Taps").freeze, Pathname)
+
 # Match a formula name.
 HOMEBREW_TAP_FORMULA_NAME_REGEX = T.let(/(?<name>[\w+\-.@]+)/, Regexp)
 # Match taps' formulae, e.g. `someuser/sometap/someformula`.
