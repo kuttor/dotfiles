@@ -776,28 +776,24 @@ module Homebrew
         problem "#{stable.version} is a development release"
 
       when %r{https?://gitlab\.com/([\w-]+)/([\w-]+)}
-        owner = Regexp.last_match(1)
-        repo = Regexp.last_match(2)
+        owner = T.must(T.must(Regexp.last_match(1)))
+        repo = T.must(T.must(Regexp.last_match(2)))
 
         tag = SharedAudits.gitlab_tag_from_url(url)
         tag ||= stable.specs[:tag]
         tag ||= stable.version
 
         if @online
-          return if owner.nil? || repo.nil?
-
           error = SharedAudits.gitlab_release(owner, repo, tag, formula:)
           problem error if error
         end
       when %r{^https://github.com/([\w-]+)/([\w-]+)}
-        owner = Regexp.last_match(1)
-        repo = Regexp.last_match(2)
+        owner = T.must(Regexp.last_match(1))
+        repo = T.must(Regexp.last_match(2))
         tag = SharedAudits.github_tag_from_url(url)
         tag ||= formula.stable.specs[:tag]
 
         if @online
-          return if owner.nil? || repo.nil?
-
           error = SharedAudits.github_release(owner, repo, tag, formula:)
           problem error if error
         end
