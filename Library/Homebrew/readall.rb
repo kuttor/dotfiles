@@ -58,7 +58,7 @@ module Readall
       next if valid == true || valid&.include?(bottle_tag)
 
       formula_name = file.basename(".rb").to_s
-      formula_contents = File.read(file, encoding: "UTF-8")
+      formula_contents = file.read.force_encoding("UTF-8")
 
       readall_namespace = "ReadallNamespace"
       readall_formula_class = Formulary.load_formula(formula_name, file, formula_contents, readall_namespace,
