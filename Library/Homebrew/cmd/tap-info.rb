@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "abstract_command"
@@ -42,6 +42,7 @@ module Homebrew
 
       private
 
+      sig { params(taps: T::Array[Tap]).void }
       def print_tap_info(taps)
         if taps.none?
           tap_count = 0
@@ -83,6 +84,7 @@ module Homebrew
         end
       end
 
+      sig { params(taps: T::Array[Tap]).void }
       def print_tap_json(taps)
         puts JSON.pretty_generate(taps.map(&:to_hash))
       end
