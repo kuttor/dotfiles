@@ -167,6 +167,14 @@ module Homebrew
           @command_name = T.let(T.must(cmd_location.label).chomp("_args").tr("_", "-"), String)
           @is_dev_cmd = T.let(T.must(cmd_location.absolute_path).start_with?(Commands::HOMEBREW_DEV_CMD_PATH),
                               T::Boolean)
+          # We allow this path only from `brew.rb`:
+          if @command_name != "<main>"
+            odeprecated(
+              "`brew #{@command_name}', which does not inherit from from Homebrew::AbstractCommand. This command " \
+              "needs to be refactored, as it is written in a style that",
+              disable_for_developers: false,
+            )
+          end
         end
 
         @constraints = T.let([], T::Array[[String, String]])
