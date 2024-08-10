@@ -169,7 +169,7 @@ module Homebrew
                               T::Boolean)
           odeprecated(
             "`brew #{@command_name}', which does not inherit from from Homebrew::AbstractCommand. This command " \
-            "needs to be refactored, as it is written in a style that",
+            "needs to be refactored ( see https://docs.brew.sh/External-Commands ), as it is written in a style that",
             disable_for_developers: false,
           )
         end
