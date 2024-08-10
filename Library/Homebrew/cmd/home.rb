@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "abstract_command"
@@ -41,6 +41,7 @@ module Homebrew
 
       private
 
+      sig { params(formula_or_cask: T.any(Formula, Cask::Cask)).returns(String) }
       def name_of(formula_or_cask)
         if formula_or_cask.is_a? Formula
           "Formula #{formula_or_cask.name}"
