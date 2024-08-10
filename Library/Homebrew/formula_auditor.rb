@@ -582,15 +582,13 @@ module Homebrew
       metadata = SharedAudits.eol_data(name, formula.version.major)
       metadata ||= SharedAudits.eol_data(name, formula.version.major_minor)
 
-      return if metadata.blank? || metadata["eol"] == false
+      return if metadata.blank? || (eol_date = metadata["eol"]).blank?
 
-      see_url = "see #{Formatter.url("https://endoflife.date/#{name}")}"
-      if metadata["eol"] == true
-        problem "Product is EOL, #{see_url}"
-        return
-      end
+      message = "Product is EOL"
+      message += " since #{eol_date}" if Date.parse(eol_date.to_s) <= Date.today
+      message += ", see #{Formatter.url("https://endoflife.date/#{name}")}"
 
-      problem "Product is EOL since #{metadata["eol"]}, #{see_url}" if Date.parse(metadata["eol"]) <= Date.today
+      problem message
     end
 
     def audit_wayback_url
@@ -786,6 +784,8 @@ module Homebrew
         tag ||= stable.version
 
         if @online
+          return if owner.nil? || repo.nil?
+
           error = SharedAudits.gitlab_release(owner, repo, tag, formula:)
           problem error if error
         end
@@ -796,6 +796,8 @@ module Homebrew
         tag ||= formula.stable.specs[:tag]
 
         if @online
+          return if owner.nil? || repo.nil?
+
           error = SharedAudits.github_release(owner, repo, tag, formula:)
           problem error if error
         end
