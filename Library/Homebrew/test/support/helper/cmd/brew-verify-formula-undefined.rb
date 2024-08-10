@@ -3,7 +3,14 @@
 
 require "cli/parser"
 
-parser = Homebrew::CLI::Parser.new do
+module Homebrew
+  module Cmd
+    class VerifyFormulaUndefined < AbstractCommand
+    end
+  end
+end
+
+parser = Homebrew::CLI::Parser.new(Homebrew::Cmd::VerifyFormulaUndefined) do
   usage_banner <<~EOS
     `verify-formula-undefined`
 
