@@ -62,4 +62,9 @@ module Homebrew
     sig { abstract.void }
     def run; end
   end
+
+  module Cmd
+    # The command class for `brew` itself, allowing its args to be parsed.
+    class Brew < AbstractCommand; end
+  end
 end
