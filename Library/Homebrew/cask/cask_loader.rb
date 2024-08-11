@@ -51,10 +51,14 @@ module Cask
 
     # Loads a cask from a string.
     class FromContentLoader < AbstractContentLoader
+      sig {
+        params(ref: T.any(Pathname, String, URI::Generic), warn: T::Boolean)
+          .returns(T.nilable(T.attached_class))
+      }
       def self.try_new(ref, warn: false)
-        return false unless ref.respond_to?(:to_str)
+        return if ref.is_a?(URI::Generic)
 
-        content = T.unsafe(ref).to_str
+        content = ref.to_str
 
         # Cache compiled regex
         @regex ||= begin
