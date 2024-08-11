@@ -66,7 +66,7 @@ begin
 
   unless internal_cmd
     # Add contributed commands to PATH before checking.
-    homebrew_path.append(Commands.cmd_directories)
+    homebrew_path.append(Commands.tap_cmd_directories)
 
     # External commands expect a normal PATH
     ENV["PATH"] = homebrew_path.to_s

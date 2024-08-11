@@ -764,7 +764,7 @@ module Homebrew
       end
 
       def check_for_external_cmd_name_conflict
-        cmds = Commands.cmd_directories.flat_map { |p| Dir["#{p}/brew-*"] }.uniq
+        cmds = Commands.tap_cmd_directories.flat_map { |p| Dir["#{p}/brew-*"] }.uniq
         cmds = cmds.select { |cmd| File.file?(cmd) && File.executable?(cmd) }
         cmd_map = {}
         cmds.each do |cmd|

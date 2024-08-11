@@ -70,17 +70,17 @@ module Commands
 
   # Ruby commands which can be `require`d without being run.
   def self.external_ruby_v2_cmd_path(cmd)
-    path = which("#{cmd}.rb", cmd_directories)
+    path = which("#{cmd}.rb", tap_cmd_directories)
     path if require?(path)
   end
 
   # Ruby commands which are run by being `require`d.
   def self.external_ruby_cmd_path(cmd)
-    which("brew-#{cmd}.rb", PATH.new(ENV.fetch("PATH")).append(cmd_directories))
+    which("brew-#{cmd}.rb", PATH.new(ENV.fetch("PATH")).append(tap_cmd_directories))
   end
 
   def self.external_cmd_path(cmd)
-    which("brew-#{cmd}", PATH.new(ENV.fetch("PATH")).append(cmd_directories))
+    which("brew-#{cmd}", PATH.new(ENV.fetch("PATH")).append(tap_cmd_directories))
   end
 
   def self.path(cmd)
@@ -103,7 +103,7 @@ module Commands
 
   # An array of all tap cmd directory {Pathname}s.
   sig { returns(T::Array[Pathname]) }
-  def self.cmd_directories
+  def self.tap_cmd_directories
     Pathname.glob HOMEBREW_TAP_DIRECTORY/"*/*/cmd"
   end
 
@@ -144,7 +144,7 @@ module Commands
   end
 
   def self.external_commands
-    cmd_directories.flat_map do |path|
+    tap_cmd_directories.flat_map do |path|
       find_commands(path).select(&:executable?)
                          .map { basename_without_extension(_1) }
                          .map { |p| p.to_s.delete_prefix("brew-").strip }
