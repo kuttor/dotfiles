@@ -587,15 +587,13 @@ module Homebrew
       metadata = SharedAudits.eol_data(name, formula.version.major)
       metadata ||= SharedAudits.eol_data(name, formula.version.major_minor)
 
-      return if metadata.blank? || metadata["eol"] == false
+      return if metadata.blank? || (eol_date = metadata["eol"]).blank?
 
-      see_url = "see #{Formatter.url("https://endoflife.date/#{name}")}"
-      if metadata["eol"] == true
-        problem "Product is EOL, #{see_url}"
-        return
-      end
+      message = "Product is EOL"
+      message += " since #{eol_date}" if Date.parse(eol_date.to_s) <= Date.today
+      message += ", see #{Formatter.url("https://endoflife.date/#{name}")}"
 
-      problem "Product is EOL since #{metadata["eol"]}, #{see_url}" if Date.parse(metadata["eol"]) <= Date.today
+      problem message
     end
 
     def audit_wayback_url
@@ -783,8 +781,8 @@ module Homebrew
         problem "#{stable.version} is a development release"
 
       when %r{https?://gitlab\.com/([\w-]+)/([\w-]+)}
-        owner = Regexp.last_match(1)
-        repo = Regexp.last_match(2)
+        owner = T.must(Regexp.last_match(1))
+        repo = T.must(Regexp.last_match(2))
 
         tag = SharedAudits.gitlab_tag_from_url(url)
         tag ||= stable.specs[:tag]
@@ -795,8 +793,8 @@ module Homebrew
           problem error if error
         end
       when %r{^https://github.com/([\w-]+)/([\w-]+)}
-        owner = Regexp.last_match(1)
-        repo = Regexp.last_match(2)
+        owner = T.must(Regexp.last_match(1))
+        repo = T.must(Regexp.last_match(2))
         tag = SharedAudits.github_tag_from_url(url)
         tag ||= formula.stable.specs[:tag]
 

@@ -743,7 +743,7 @@ module Cask
     def audit_github_prerelease_version
       odebug "Auditing GitHub prerelease"
       user, repo = get_repo_data(%r{https?://github\.com/([^/]+)/([^/]+)/?.*}) if online?
-      return if user.nil?
+      return if user.nil? || repo.nil?
 
       tag = SharedAudits.github_tag_from_url(cask.url)
       tag ||= cask.version
@@ -754,7 +754,7 @@ module Cask
     sig { void }
     def audit_gitlab_prerelease_version
       user, repo = get_repo_data(%r{https?://gitlab\.com/([^/]+)/([^/]+)/?.*}) if online?
-      return if user.nil?
+      return if user.nil? || repo.nil?
 
       odebug "Auditing GitLab prerelease"
 
@@ -770,7 +770,7 @@ module Cask
       return if cask.deprecated? || cask.disabled?
 
       user, repo = get_repo_data(%r{https?://github\.com/([^/]+)/([^/]+)/?.*}) if online?
-      return if user.nil?
+      return if user.nil? || repo.nil?
 
       metadata = SharedAudits.github_repo_data(user, repo)
       return if metadata.nil?
@@ -784,7 +784,7 @@ module Cask
       return if cask.deprecated? || cask.disabled?
 
       user, repo = get_repo_data(%r{https?://gitlab\.com/([^/]+)/([^/]+)/?.*}) if online?
-      return if user.nil?
+      return if user.nil? || repo.nil?
 
       odebug "Auditing GitLab repo archived"
 
@@ -799,7 +799,7 @@ module Cask
       return unless new_cask?
 
       user, repo = get_repo_data(%r{https?://github\.com/([^/]+)/([^/]+)/?.*})
-      return if user.nil?
+      return if user.nil? || repo.nil?
 
       odebug "Auditing GitHub repo"
 
@@ -812,7 +812,7 @@ module Cask
       return unless new_cask?
 
       user, repo = get_repo_data(%r{https?://gitlab\.com/([^/]+)/([^/]+)/?.*})
-      return if user.nil?
+      return if user.nil? || repo.nil?
 
       odebug "Auditing GitLab repo"
 
@@ -825,7 +825,7 @@ module Cask
       return unless new_cask?
 
       user, repo = get_repo_data(%r{https?://bitbucket\.org/([^/]+)/([^/]+)/?.*})
-      return if user.nil?
+      return if user.nil? || repo.nil?
 
       odebug "Auditing Bitbucket repo"
 
