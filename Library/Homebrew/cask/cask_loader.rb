@@ -51,22 +51,29 @@ module Cask
 
     # Loads a cask from a string.
     class FromContentLoader < AbstractContentLoader
+      sig {
+        params(ref: T.any(Pathname, String, Cask, URI::Generic), warn: T::Boolean)
+          .returns(T.nilable(T.attached_class))
+      }
       def self.try_new(ref, warn: false)
-        return false unless ref.respond_to?(:to_str)
+        case ref
+        when Cask, URI::Generic
+          # do nothing
+        else
+          content = ref.to_str
 
-        content = T.unsafe(ref).to_str
+          # Cache compiled regex
+          @regex ||= begin
+            token  = /(?:"[^"]*"|'[^']*')/
+            curly  = /\(\s*#{token.source}\s*\)\s*\{.*\}/
+            do_end = /\s+#{token.source}\s+do(?:\s*;\s*|\s+).*end/
+            /\A\s*cask(?:#{curly.source}|#{do_end.source})\s*\Z/m
+          end
 
-        # Cache compiled regex
-        @regex ||= begin
-          token  = /(?:"[^"]*"|'[^']*')/
-          curly  = /\(\s*#{token.source}\s*\)\s*\{.*\}/
-          do_end = /\s+#{token.source}\s+do(?:\s*;\s*|\s+).*end/
-          /\A\s*cask(?:#{curly.source}|#{do_end.source})\s*\Z/m
+          return unless content.match?(@regex)
+
+          new(content)
         end
-
-        return unless content.match?(@regex)
-
-        new(content)
       end
 
       sig { params(content: String, tap: Tap).void }
