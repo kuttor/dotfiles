@@ -39,19 +39,20 @@ module Homebrew
         conflicts "--lsp", "--update-all"
         conflicts "--lsp", "--fix"
 
-        named_args :none
+        named_args :tap
       end
 
       sig { override.void }
       def run
         update = args.update? || args.update_all?
+        directory = args.no_named? ? HOMEBREW_LIBRARY_PATH : args.named.to_paths(only: :tap).first
         groups = update ? Homebrew.valid_gem_groups : ["typecheck"]
         Homebrew.install_bundler_gems!(groups:)
 
         # Sorbet doesn't use bash privileged mode so we align EUID and UID here.
         Process::UID.change_privilege(Process.euid) if Process.euid != Process.uid
 
-        HOMEBREW_LIBRARY_PATH.cd do
+        directory.cd do
           if update
             workers = args.debug? ? ["--workers=1"] : []
             safe_system "bundle", "exec", "tapioca", "dsl", *workers
