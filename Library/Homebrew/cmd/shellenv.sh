@@ -24,8 +24,8 @@ homebrew-shellenv() {
       echo "set -gx HOMEBREW_CELLAR \"${HOMEBREW_CELLAR}\";"
       echo "set -gx HOMEBREW_REPOSITORY \"${HOMEBREW_REPOSITORY}\";"
       echo "fish_add_path -gP \"${HOMEBREW_PREFIX}/bin\" \"${HOMEBREW_PREFIX}/sbin\";"
-      echo "set -q MANPATH; and set MANPATH[1] \":\$(string trim --left --chars=\":\" \$MANPATH[1])\";"
-      echo "! set -q INFOPATH; and set INFOPATH ''; set -gx INFOPATH \"${HOMEBREW_PREFIX}/share/info\" \$INFOPATH;"
+      echo "if test -n \"\$MANPATH[1]\"; set -gx MANPATH '' \$MANPATH; end;"
+      echo "if not contains \"${HOMEBREW_PREFIX}/share/info\" \$INFOPATH; set -gx INFOPATH \"${HOMEBREW_PREFIX}/share/info\" \$INFOPATH; end;"
       ;;
     csh | -csh | tcsh | -tcsh)
       echo "setenv HOMEBREW_PREFIX ${HOMEBREW_PREFIX};"
