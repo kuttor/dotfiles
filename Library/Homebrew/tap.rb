@@ -14,8 +14,6 @@ require "settings"
 class Tap
   extend Cachable
 
-  TAP_DIRECTORY = (HOMEBREW_LIBRARY/"Taps").freeze
-
   HOMEBREW_TAP_CASK_RENAMES_FILE = "cask_renames.json"
   private_constant :HOMEBREW_TAP_CASK_RENAMES_FILE
   HOMEBREW_TAP_FORMULA_RENAMES_FILE = "formula_renames.json"
@@ -201,7 +199,7 @@ class Tap
     @repository = repository
     @name = "#{@user}/#{@repository}".downcase
     @full_name = "#{@user}/homebrew-#{@repository}"
-    @path = TAP_DIRECTORY/@full_name.downcase
+    @path = HOMEBREW_TAP_DIRECTORY/@full_name.downcase
     @git_repository = GitRepository.new(@path)
   end
 
@@ -286,7 +284,7 @@ class Tap
   sig { returns(String) }
   def repository_var_suffix
     @repository_var_suffix ||= path.to_s
-                                   .delete_prefix(TAP_DIRECTORY.to_s)
+                                   .delete_prefix(HOMEBREW_TAP_DIRECTORY.to_s)
                                    .tr("^A-Za-z0-9", "_")
                                    .upcase
   end
@@ -1021,8 +1019,8 @@ class Tap
   # @api public
   sig { returns(T::Array[Tap]) }
   def self.installed
-    cache[:installed] ||= if TAP_DIRECTORY.directory?
-      TAP_DIRECTORY.subdirs.flat_map(&:subdirs).map { from_path(_1) }
+    cache[:installed] ||= if HOMEBREW_TAP_DIRECTORY.directory?
+      HOMEBREW_TAP_DIRECTORY.subdirs.flat_map(&:subdirs).map { from_path(_1) }
     else
       []
     end
@@ -1058,12 +1056,6 @@ class Tap
     odeprecated "`#{self}.names`"
 
     map(&:name).sort
-  end
-
-  # An array of all tap cmd directory {Pathname}s.
-  sig { returns(T::Array[Pathname]) }
-  def self.cmd_directories
-    Pathname.glob TAP_DIRECTORY/"*/*/cmd"
   end
 
   # An array of official taps that have been manually untapped

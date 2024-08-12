@@ -8,7 +8,7 @@ RSpec.describe Tap do
 
   subject(:homebrew_foo_tap) { described_class.fetch("Homebrew", "foo") }
 
-  let(:path) { Tap::TAP_DIRECTORY/"homebrew/homebrew-foo" }
+  let(:path) { HOMEBREW_TAP_DIRECTORY/"homebrew/homebrew-foo" }
   let(:formula_file) { path/"Formula/foo.rb" }
   let(:alias_file) { path/"Aliases/bar" }
   let(:cmd_file) { path/"cmd/brew-tap-cmd.rb" }
@@ -172,7 +172,7 @@ RSpec.describe Tap do
 
   specify "#issues_url" do
     t = described_class.fetch("someone", "foo")
-    path = Tap::TAP_DIRECTORY/"someone/homebrew-foo"
+    path = HOMEBREW_TAP_DIRECTORY/"someone/homebrew-foo"
     path.mkpath
     cd path do
       system "git", "init"
@@ -182,7 +182,7 @@ RSpec.describe Tap do
     expect(t.issues_url).to eq("https://github.com/someone/homebrew-foo/issues")
     expect(homebrew_foo_tap.issues_url).to eq("https://github.com/Homebrew/homebrew-foo/issues")
 
-    (Tap::TAP_DIRECTORY/"someone/homebrew-no-git").mkpath
+    (HOMEBREW_TAP_DIRECTORY/"someone/homebrew-no-git").mkpath
     expect(described_class.fetch("someone", "no-git").issues_url).to be_nil
   ensure
     path.parent.rmtree
@@ -378,7 +378,7 @@ RSpec.describe Tap do
       end.to raise_error(ErrorDuringExecution)
 
       expect(tap).not_to be_installed
-      expect(Tap::TAP_DIRECTORY/"user").not_to exist
+      expect(HOMEBREW_TAP_DIRECTORY/"user").not_to exist
     end
   end
 
@@ -652,7 +652,7 @@ RSpec.describe Tap do
     end
 
     specify "files" do
-      path = Tap::TAP_DIRECTORY/"homebrew/homebrew-core"
+      path = HOMEBREW_TAP_DIRECTORY/"homebrew/homebrew-core"
       formula_file = core_tap.formula_dir/"foo.rb"
       core_tap.formula_dir.mkpath
       formula_file.write <<~RUBY

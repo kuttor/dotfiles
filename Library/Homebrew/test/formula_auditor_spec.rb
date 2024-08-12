@@ -11,9 +11,9 @@ RSpec.describe Homebrew::FormulaAuditor do
     @count += 1
   end
   let(:formula_subpath) { "Formula/foo#{foo_version}.rb" }
-  let(:origin_tap_path) { Tap::TAP_DIRECTORY/"homebrew/homebrew-foo" }
+  let(:origin_tap_path) { HOMEBREW_TAP_DIRECTORY/"homebrew/homebrew-foo" }
   let(:origin_formula_path) { origin_tap_path/formula_subpath }
-  let(:tap_path) { Tap::TAP_DIRECTORY/"homebrew/homebrew-bar" }
+  let(:tap_path) { HOMEBREW_TAP_DIRECTORY/"homebrew/homebrew-bar" }
   let(:formula_path) { tap_path/formula_subpath }
 
   def formula_auditor(name, text, options = {})
