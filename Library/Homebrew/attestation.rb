@@ -52,12 +52,6 @@ module Homebrew
     # @api private
     class GhAuthInvalid < RuntimeError; end
 
-    # Raised if the version of `gh` invoked is too old to support
-    # attestations.
-    #
-    # @api private
-    class GhTooOld < RuntimeError; end
-
     # Returns whether attestation verification is enabled.
     #
     # @api private
@@ -67,6 +61,9 @@ module Homebrew
       return true if Homebrew::EnvConfig.verify_attestations?
       return false if ENV.fetch("CI", false)
       return false if OS.unsupported_configuration?
+
+      gh_version = Formula["gh"].any_installed_version
+      return false if gh_version.nil? || gh_version < "2.49"
 
       # Always check credentials last to avoid unnecessary credential extraction.
       (Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?) && GitHub::API.credentials.present?
@@ -84,7 +81,7 @@ module Homebrew
       #       to prevent a cycle during bootstrapping. This can eventually be resolved
       #       by vendoring a pure-Ruby Sigstore verifier client.
       with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
-        @gh_executable = ensure_executable!("gh", reason: "verifying attestations", latest: true)
+        @gh_executable = ensure_formula_installed!("gh", reason: "verifying attestations", latest: true).opt_bin/"gh"
       end
 
       T.must(@gh_executable)
@@ -148,11 +145,6 @@ module Homebrew
         end
 
         raise MissingAttestationError, "attestation not found: #{e}" if e.stderr.include?("HTTP 404: Not Found")
-
-        if e.stderr.include?("unknown command \"attestation\" for \"gh\"")
-          raise GhTooOld,
-                "your version of `gh` is too old; run `brew upgrade gh` to continue"
-        end
 
         raise InvalidAttestationError, "attestation verification failed: #{e}"
       end
