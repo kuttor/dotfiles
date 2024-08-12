@@ -62,9 +62,6 @@ module Homebrew
       return false if ENV.fetch("CI", false)
       return false if OS.unsupported_configuration?
 
-      gh_version = Formula["gh"].any_installed_version
-      return false if gh_version.nil? || gh_version < "2.49"
-
       # Always check credentials last to avoid unnecessary credential extraction.
       (Homebrew::EnvConfig.developer? || Homebrew::EnvConfig.devcmdrun?) && GitHub::API.credentials.present?
     end
@@ -81,7 +78,7 @@ module Homebrew
       #       to prevent a cycle during bootstrapping. This can eventually be resolved
       #       by vendoring a pure-Ruby Sigstore verifier client.
       with_env(HOMEBREW_NO_VERIFY_ATTESTATIONS: "1") do
-        @gh_executable = ensure_formula_installed!("gh", reason: "verifying attestations", latest: true).opt_bin/"gh"
+        @gh_executable = ensure_executable!("gh", reason: "verifying attestations", latest: true)
       end
 
       T.must(@gh_executable)
