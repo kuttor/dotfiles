@@ -4,6 +4,7 @@ require "diagnostic"
 
 RSpec.describe Homebrew::Attestation do
   let(:fake_gh) { Pathname.new("/extremely/fake/gh") }
+  let(:fake_gh_formula) { instance_double(Formula, opt_bin: Pathname.new("/extremely/fake")) }
   let(:fake_old_gh) { Pathname.new("/extremely/fake/old/gh") }
   let(:fake_gh_creds) { "fake-gh-api-token" }
   let(:fake_error_status) { instance_double(Process::Status, exitstatus: 1, termsig: nil) }
@@ -66,12 +67,12 @@ RSpec.describe Homebrew::Attestation do
   end
 
   describe "::gh_executable" do
-    it "calls ensure_executable" do
-      expect(described_class).to receive(:ensure_executable!)
+    it "calls ensure_formula_installed" do
+      expect(described_class).to receive(:ensure_formula_installed!)
         .with("gh", reason: "verifying attestations", latest: true)
-        .and_return(fake_gh)
+        .and_return(fake_gh_formula)
 
-      described_class.gh_executable
+      described_class.gh_executable == fake_gh
     end
   end
 
