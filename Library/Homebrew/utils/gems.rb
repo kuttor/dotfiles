@@ -1,4 +1,4 @@
-# typed: true
+# typed: true  # rubocop:disable Sorbet/StrictSigil
 # frozen_string_literal: true
 
 # Never `require` anything in this file (except English). It needs to be able to

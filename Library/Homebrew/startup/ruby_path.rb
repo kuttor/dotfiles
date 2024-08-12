@@ -1,4 +1,4 @@
-# typed: true
+# typed: true # rubocop:todo Sorbet/StrictSigil
 # frozen_string_literal: true
 
 RUBY_PATH = Pathname.new(RbConfig.ruby).freeze

@@ -1,4 +1,4 @@
-# typed: true
+# typed: true # rubocop:todo Sorbet/StrictSigil
 # frozen_string_literal: true
 
 # Contains shorthand Homebrew utility methods like `ohai`, `opoo`, `odisabled`.

@@ -274,11 +274,11 @@ Sorbet/RedundantExtendTSig:
 
 Sorbet/StrictSigil:
   Enabled: true
-  inherit_mode:
-    override:
-      - Include
-  Include:
-    - "**/*.rbi"
+  Exclude:
+    - "Taps/**/*"
+    - "/**/{Formula,Casks}/**/*.rb"
+    - "**/{Formula,Casks}/**/*.rb"
+    - "Homebrew/test/**/*.rb"
 
 Sorbet/TrueSigil:
   Enabled: true
