@@ -587,10 +587,14 @@ module Homebrew
       metadata = SharedAudits.eol_data(name, formula.version.major)
       metadata ||= SharedAudits.eol_data(name, formula.version.major_minor)
 
-      return if metadata.blank? || (eol_date = metadata["eol"]).blank?
+      return if metadata.blank? || (eol = metadata["eol"]).blank?
+
+      is_eol = eol == true
+      is_eol ||= eol.is_a?(String) && (eol_date = Date.parse(eol)) <= Date.today
+      return unless is_eol
 
       message = "Product is EOL"
-      message += " since #{eol_date}" if Date.parse(eol_date.to_s) <= Date.today
+      message += " since #{eol_date}" if eol_date.present?
       message += ", see #{Formatter.url("https://endoflife.date/#{name}")}"
 
       problem message

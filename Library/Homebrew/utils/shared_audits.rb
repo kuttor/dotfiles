@@ -10,9 +10,9 @@ module SharedAudits
 
   module_function
 
-  sig { params(product: String, cycle: String).returns(T.nilable(T::Hash[String, T::Hash[Symbol, T.untyped]])) }
+  sig { params(product: String, cycle: String).returns(T.nilable(T::Hash[String, T.untyped])) }
   def eol_data(product, cycle)
-    @eol_data ||= T.let({}, T.nilable(T::Hash[String, T::Hash[String, T.untyped]]))
+    @eol_data ||= T.let({}, T.nilable(T::Hash[String, T.untyped]))
     @eol_data["#{product}/#{cycle}"] ||= begin
       out, _, status = Utils::Curl.curl_output("--location", "https://endoflife.date/api/#{product}/#{cycle}.json")
       json = JSON.parse(out) if status.success?
