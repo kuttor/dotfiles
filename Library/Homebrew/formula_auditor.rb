@@ -776,8 +776,8 @@ module Homebrew
         problem "#{stable.version} is a development release"
 
       when %r{https?://gitlab\.com/([\w-]+)/([\w-]+)}
-        owner = T.must(T.must(Regexp.last_match(1)))
-        repo = T.must(T.must(Regexp.last_match(2)))
+        owner = T.must(Regexp.last_match(1))
+        repo = T.must(Regexp.last_match(2))
 
         tag = SharedAudits.gitlab_tag_from_url(url)
         tag ||= stable.specs[:tag]
