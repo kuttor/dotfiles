@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require "abstract_command"
@@ -160,6 +160,7 @@ module Homebrew
 
       private
 
+      sig { void }
       def filtered_list
         names = if args.no_named?
           Formula.racks
@@ -189,6 +190,7 @@ module Homebrew
         end
       end
 
+      sig { void }
       def list_casks
         casks = if args.no_named?
           Cask::Caskroom.casks
@@ -212,6 +214,7 @@ module Homebrew
     end
 
     class PrettyListing
+      sig { params(path: T.any(String, Pathname, Keg)).void }
       def initialize(path)
         Pathname.new(path).children.sort_by { |p| p.to_s.downcase }.each do |pn|
           case pn.basename.to_s
@@ -240,7 +243,8 @@ module Homebrew
 
       private
 
-      def print_dir(root)
+      sig { params(root: Pathname, block: T.nilable(T.proc.params(arg0: Pathname).returns(T::Boolean))).void }
+      def print_dir(root, &block)
         dirs = []
         remaining_root_files = []
         other = ""
@@ -248,7 +252,7 @@ module Homebrew
         root.children.sort.each do |pn|
           if pn.directory?
             dirs << pn
-          elsif block_given? && yield(pn)
+          elsif block && yield(pn)
             puts pn
             other = "other "
           elsif pn.basename.to_s != ".DS_Store"
@@ -265,6 +269,7 @@ module Homebrew
         print_remaining_files remaining_root_files, root, other
       end
 
+      sig { params(files: T::Array[Pathname], root: Pathname, other: String).void }
       def print_remaining_files(files, root, other = "")
         if files.length == 1
           puts files
