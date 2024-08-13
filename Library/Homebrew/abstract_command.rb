@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "cli/parser"
+require "shell_command"
 
 module Homebrew
   # Subclass this to implement a `brew` command. This is preferred to declaring a named function in the `Homebrew`
@@ -40,6 +41,9 @@ module Homebrew
 
       sig { returns(T::Boolean) }
       def dev_cmd? = T.must(name).start_with?("Homebrew::DevCmd")
+
+      sig { returns(T::Boolean) }
+      def ruby_cmd? = !include?(Homebrew::ShellCommand)
 
       sig { returns(CLI::Parser) }
       def parser = CLI::Parser.new(self, &@parser_block)

@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "rdbg",
+      "name": "Attach with rdbg",
+      "request": "attach",
+      "rdbgPath": "${workspaceFolder}/Library/Homebrew/vendor/portable-ruby/current/lib/ruby/gems/3.3.0/gems/debug-1.9.1/exe/rdbg",
+      "env": {
+        "TMPDIR": "/private/tmp/",
+      }
+    }
+  ]
+}
