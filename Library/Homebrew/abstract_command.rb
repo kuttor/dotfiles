@@ -14,6 +14,8 @@ module Homebrew
   #
   # To subclass, implement a `run` method and provide a `cmd_args` block to document the command and its allowed args.
   # To generate method signatures for command args, run `brew typecheck --update`.
+  #
+  # @api public
   class AbstractCommand
     extend T::Helpers
 
@@ -44,6 +46,9 @@ module Homebrew
 
       private
 
+      # The description and arguments of the command should be defined within this block.
+      #
+      # @api public
       sig { params(block: T.proc.bind(CLI::Parser).void).void }
       def cmd_args(&block)
         @parser_block = T.let(block, T.nilable(T.proc.void))
@@ -59,6 +64,9 @@ module Homebrew
       @args = T.let(self.class.parser.parse(argv), CLI::Args)
     end
 
+    # This method will be invoked when the command is run.
+    #
+    # @api public
     sig { abstract.void }
     def run; end
   end
