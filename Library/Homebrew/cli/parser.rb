@@ -167,11 +167,11 @@ module Homebrew
           @command_name = T.let(T.must(cmd_location.label).chomp("_args").tr("_", "-"), String)
           @is_dev_cmd = T.let(T.must(cmd_location.absolute_path).start_with?(Commands::HOMEBREW_DEV_CMD_PATH),
                               T::Boolean)
-          odeprecated(
-            "`brew #{@command_name}'. This command needs to be refactored, as it is written in a style that",
-            "inheritance from `Homebrew::AbstractCommand' ( see https://docs.brew.sh/External-Commands )",
-            disable_for_developers: false,
-          )
+          # odeprecated(
+          #   "`brew #{@command_name}'. This command needs to be refactored, as it is written in a style that",
+          #   "inheritance from `Homebrew::AbstractCommand' ( see https://docs.brew.sh/External-Commands )",
+          #   disable_for_developers: false,
+          # )
         end
 
         @constraints = T.let([], T::Array[[String, String]])
