@@ -1,7 +1,8 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 class IO
+  sig { params(sep: BasicObject).returns(String) }
   def readline_nonblock(sep = $INPUT_RECORD_SEPARATOR)
     line = +""
     buffer = +""
