@@ -44,15 +44,18 @@ module Homebrew
 
       sig { override.void }
       def run
+        if (args.dir.present? || args.file.present?) && args.named.present?
+          raise UsageError, "Cannot use `--dir` or `--file` when specifying a tap."
+        end
+
         update = args.update? || args.update_all?
-        directory = args.no_named? ? HOMEBREW_LIBRARY_PATH : args.named.to_paths(only: :tap).first
         groups = update ? Homebrew.valid_gem_groups : ["typecheck"]
         Homebrew.install_bundler_gems!(groups:)
 
         # Sorbet doesn't use bash privileged mode so we align EUID and UID here.
         Process::UID.change_privilege(Process.euid) if Process.euid != Process.uid
 
-        directory.cd do
+        HOMEBREW_LIBRARY_PATH.cd do
           if update
             workers = args.debug? ? ["--workers=1"] : []
             safe_system "bundle", "exec", "tapioca", "dsl", *workers
@@ -96,10 +99,11 @@ module Homebrew
           end
 
           srb_exec += ["--ignore", args.ignore] if args.ignore.present?
-          if args.file.present? || args.dir.present?
+          if args.file.present? || args.dir.present? || (tap_dir = args.named.to_paths(only: :tap).first).present?
             cd("sorbet") do
               srb_exec += ["--file", "../#{args.file}"] if args.file
               srb_exec += ["--dir", "../#{args.dir}"] if args.dir
+              srb_exec += ["--dir", tap_dir.to_s] if tap_dir
             end
           end
           success = system(*srb_exec)
