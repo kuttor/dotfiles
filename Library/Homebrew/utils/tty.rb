@@ -51,6 +51,21 @@ module Tty
       string.gsub(/\033\[\d+(;\d+)*m/, "")
     end
 
+    sig { params(line_count: Integer).returns(String) }
+    def move_cursor_up(line_count)
+      "\033[#{line_count}A"
+    end
+
+    sig { params(line_count: Integer).returns(String) }
+    def move_cursor_down(line_count)
+      "\033[#{line_count}B"
+    end
+
+    sig { returns(String) }
+    def clear_to_end
+      "\033[K"
+    end
+
     sig { returns(String) }
     def hide_cursor
       "\033[?25l"

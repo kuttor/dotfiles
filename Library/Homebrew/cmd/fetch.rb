@@ -275,7 +275,7 @@ module Homebrew
 
                 finished_downloads.each do |downloadable, future|
                   previous_pending_line_count -= 1
-                  print "\033[K"
+                  $stdout.print Tty.clear_to_end
                   $stdout.flush
                   output_message.call(downloadable, future)
                 end
@@ -284,13 +284,13 @@ module Homebrew
                 remaining_downloads.each do |downloadable, future|
                   break if previous_pending_line_count >= [concurrency, (Tty.height - 1)].min
 
-                  print "\033[K"
+                  $stdout.print Tty.clear_to_end
                   $stdout.flush
                   previous_pending_line_count += output_message.call(downloadable, future)
                 end
 
                 if previous_pending_line_count.positive?
-                  $stdout.print "\033[#{previous_pending_line_count}A"
+                  $stdout.print Tty.move_cursor_up(previous_pending_line_count)
                   $stdout.flush
                 end
 
@@ -300,8 +300,11 @@ module Homebrew
                   # FIXME: Implement cancellation of running downloads.
                 end
 
-                print "\n" * previous_pending_line_count
-                $stdout.flush
+                if previous_pending_line_count.positive?
+                  $stdout.print Tty.move_cursor_down(previous_pending_line_count - 1)
+                  $stdout.flush
+                end
+
                 raise
               end
             end
