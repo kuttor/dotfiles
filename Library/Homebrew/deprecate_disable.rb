@@ -67,7 +67,13 @@ module DeprecateDisable
     if !disable_date && formula_or_cask.deprecation_date
       disable_date = formula_or_cask.deprecation_date >> REMOVE_DISABLED_TIME_WINDOW
     end
-    message = "#{message} It will be disabled on #{disable_date}." if disable_date
+    if disable_date
+      message += if disable_date < Date.today
+        " It was disabled on #{disable_date}."
+      else
+        " It will be disabled on #{disable_date}."
+      end
+    end
 
     message
   end
