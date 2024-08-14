@@ -48,7 +48,7 @@ begin
   ARGV.delete_at(help_cmd_index) if help_cmd_index
 
   require "cli/parser"
-  args = Homebrew::CLI::Parser.new.parse(ARGV.dup.freeze, ignore_invalid_options: true)
+  args = Homebrew::CLI::Parser.new(Homebrew::Cmd::Brew).parse(ARGV.dup.freeze, ignore_invalid_options: true)
   Context.current = args.context
 
   path = PATH.new(ENV.fetch("PATH"))
