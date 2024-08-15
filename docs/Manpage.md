@@ -2142,6 +2142,21 @@ see: <https://rubydoc.brew.sh/Formula>
 
 : Ignore errors for disallowed formula names and names that shadow aliases.
 
+### `debugger` \[`--stop`\] \[`--open`\] *`command`* \[...\]
+
+Run the specified Homebrew command in debug mode.
+
+To pass flags to the command, use `--` to separate them from the `brew` flags.
+For example: `brew debugger -- list --formula`.
+
+`-s`, `--stop`
+
+: Stop at the beginning of the script.
+
+`-O`, `--open`
+
+: Start remote debugging over a Unix socket.
+
 ### `dispatch-build-bottle` \[*`options`*\] *`formula`* \[...\]
 
 Build bottles for these formulae with GitHub Actions.

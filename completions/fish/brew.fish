@@ -585,6 +585,16 @@ __fish_brew_complete_arg 'create' -l tap -d 'Generate the new formula within the
 __fish_brew_complete_arg 'create' -l verbose -d 'Make some output more verbose'
 
 
+__fish_brew_complete_cmd 'debugger' 'Run the specified Homebrew command in debug mode'
+__fish_brew_complete_arg 'debugger' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'debugger' -l help -d 'Show this message'
+__fish_brew_complete_arg 'debugger' -l open -d 'Start remote debugging over a Unix socket'
+__fish_brew_complete_arg 'debugger' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'debugger' -l stop -d 'Stop at the beginning of the script'
+__fish_brew_complete_arg 'debugger' -l verbose -d 'Make some output more verbose'
+__fish_brew_complete_arg 'debugger' -a '(__fish_brew_suggest_commands)'
+
+
 __fish_brew_complete_cmd 'deps' 'Show dependencies for formula'
 __fish_brew_complete_arg 'deps' -l HEAD -d 'Show dependencies for HEAD version instead of stable version'
 __fish_brew_complete_arg 'deps' -l annotate -d 'Mark any build, test, implicit, optional, or recommended dependencies as such in the output'
