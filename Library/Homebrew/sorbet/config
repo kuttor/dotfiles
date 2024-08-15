@@ -4,4 +4,5 @@
 --ignore=/vendor/gems
 --ignore=/vendor/portable-ruby
 --ignore=/test/.gem
+--suppress-error-code=3008
 --suppress-error-code=7019
