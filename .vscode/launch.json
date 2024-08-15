@@ -3,9 +3,18 @@
   "configurations": [
     {
       "type": "rdbg",
-      "name": "Attach with rdbg",
+      "name": "Debug Homebrew command",
+      "request": "launch",
+      "rdbgPath": "${workspaceFolder}/Library/Homebrew/shims/gems/rdbg",
+      "command": "brew debugger --",
+      "script": "${fileBasenameNoExtension}",
+      "askParameters": true
+    },
+    {
+      "type": "rdbg",
+      "name": "Attach to Homebrew debugger",
       "request": "attach",
-      "rdbgPath": "${workspaceFolder}/Library/Homebrew/vendor/portable-ruby/current/lib/ruby/gems/3.3.0/gems/debug-1.9.1/exe/rdbg",
+      "rdbgPath": "${workspaceFolder}/Library/Homebrew/shims/gems/rdbg",
       "env": {
         "TMPDIR": "/private/tmp/",
       }
