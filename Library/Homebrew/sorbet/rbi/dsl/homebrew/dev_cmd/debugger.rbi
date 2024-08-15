@@ -15,11 +15,11 @@ class Homebrew::DevCmd::Debugger::Args < Homebrew::CLI::Args
   def O?; end
 
   sig { returns(T::Boolean) }
-  def n?; end
-
-  sig { returns(T::Boolean) }
-  def nonstop?; end
-
-  sig { returns(T::Boolean) }
   def open?; end
+
+  sig { returns(T::Boolean) }
+  def s?; end
+
+  sig { returns(T::Boolean) }
+  def stop?; end
 end

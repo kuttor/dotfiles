@@ -11,8 +11,8 @@ module Homebrew
           To pass flags to the command, use `--` to separate them from the `brew` flags.
           For example: `brew debugger -- list --formula`.
         EOS
-        switch "-n", "--nonstop",
-               description: "Do not stop at the beginning of the script."
+        switch "-s", "--stop",
+               description: "Stop at the beginning of the script."
         switch "-O", "--open",
                description: "Start remote debugging over a Unix socket."
 
@@ -21,12 +21,14 @@ module Homebrew
 
       sig { override.void }
       def run
+        raise UsageError, "Debugger is only supported with portable Ruby!" unless HOMEBREW_USING_PORTABLE_RUBY
+
         unless Commands.valid_ruby_cmd?(args.named.first)
           raise UsageError, "`#{args.named.first}` is not a valid Ruby command!"
         end
 
         brew_rb = (HOMEBREW_LIBRARY_PATH/"brew.rb").resolved_path
-        nonstop = "1" if args.nonstop?
+        nonstop = "1" unless args.stop?
         debugger_method = if args.open?
           "open"
         else

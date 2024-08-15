@@ -42,12 +42,8 @@ module Commands
   end
 
   def self.valid_ruby_cmd?(cmd)
-    if (valid_internal_cmd?(cmd) || valid_internal_dev_cmd?(cmd) || external_ruby_v2_cmd_path(cmd)) &&
-       (command = Homebrew::AbstractCommand.command(cmd))
-      command.ruby_cmd?
-    else
-      false
-    end
+    (valid_internal_cmd?(cmd) || valid_internal_dev_cmd?(cmd) || external_ruby_v2_cmd_path(cmd)) &&
+      Homebrew::AbstractCommand.command(cmd)&.ruby_cmd?
   end
 
   def self.method_name(cmd)
