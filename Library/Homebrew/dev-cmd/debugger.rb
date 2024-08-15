@@ -11,8 +11,6 @@ module Homebrew
           To pass flags to the command, use `--` to separate them from the `brew` flags.
           For example: `brew debugger -- list --formula`.
         EOS
-        switch "-s", "--stop",
-               description: "Stop at the beginning of the script."
         switch "-O", "--open",
                description: "Start remote debugging over a Unix socket."
 
@@ -28,14 +26,17 @@ module Homebrew
         end
 
         brew_rb = (HOMEBREW_LIBRARY_PATH/"brew.rb").resolved_path
-        nonstop = "1" unless args.stop?
         debugger_method = if args.open?
           "open"
         else
           "start"
         end
 
-        with_env RUBY_DEBUG_NONSTOP: nonstop, RUBY_DEBUG_FORK_MODE: "parent" do
+        env = {}
+        env[:RUBY_DEBUG_FORK_MODE] = "parent"
+        env[:RUBY_DEBUG_NONSTOP] = "1" unless ENV["HOMEBREW_RDBG"]
+
+        with_env(**env) do
           system(*HOMEBREW_RUBY_EXEC_ARGS,
                  "-I", $LOAD_PATH.join(File::PATH_SEPARATOR),
                  "-rdebug/#{debugger_method}",
