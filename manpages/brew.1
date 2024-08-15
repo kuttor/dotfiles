@@ -1363,6 +1363,16 @@ Generate the new formula within the given tap, specified as \fIuser\fP\fB/\fP\fI
 .TP
 \fB\-f\fP, \fB\-\-force\fP
 Ignore errors for disallowed formula names and names that shadow aliases\.
+.SS "\fBdebugger\fP \fR[\fB\-\-stop\fP] \fR[\fB\-\-open\fP] \fIcommand\fP \fR[\.\.\.]"
+Run the specified Homebrew command in debug mode\.
+.P
+To pass flags to the command, use \fB\-\-\fP to separate them from the \fBbrew\fP flags\. For example: \fBbrew debugger \-\- list \-\-formula\fP\&\.
+.TP
+\fB\-s\fP, \fB\-\-stop\fP
+Stop at the beginning of the script\.
+.TP
+\fB\-O\fP, \fB\-\-open\fP
+Start remote debugging over a Unix socket\.
 .SS "\fBdispatch\-build\-bottle\fP \fR[\fIoptions\fP] \fIformula\fP \fR[\.\.\.]"
 Build bottles for these formulae with GitHub Actions\.
 .TP
