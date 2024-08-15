@@ -792,7 +792,6 @@ _brew_debugger() {
       --help
       --open
       --quiet
-      --stop
       --verbose
       "
       return

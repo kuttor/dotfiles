@@ -590,7 +590,6 @@ __fish_brew_complete_arg 'debugger' -l debug -d 'Display any debugging informati
 __fish_brew_complete_arg 'debugger' -l help -d 'Show this message'
 __fish_brew_complete_arg 'debugger' -l open -d 'Start remote debugging over a Unix socket'
 __fish_brew_complete_arg 'debugger' -l quiet -d 'Make some output more quiet'
-__fish_brew_complete_arg 'debugger' -l stop -d 'Stop at the beginning of the script'
 __fish_brew_complete_arg 'debugger' -l verbose -d 'Make some output more verbose'
 __fish_brew_complete_arg 'debugger' -a '(__fish_brew_suggest_commands)'
 
