@@ -753,7 +753,6 @@ _brew_debugger() {
     '--help[Show this message]' \
     '--open[Start remote debugging over a Unix socket]' \
     '--quiet[Make some output more quiet]' \
-    '--stop[Stop at the beginning of the script]' \
     '--verbose[Make some output more verbose]' \
     - command \
     '*::command:__brew_commands'
