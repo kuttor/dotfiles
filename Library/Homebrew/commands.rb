@@ -41,6 +41,11 @@ module Commands
     require?(HOMEBREW_DEV_CMD_PATH/cmd)
   end
 
+  def self.valid_ruby_cmd?(cmd)
+    (valid_internal_cmd?(cmd) || valid_internal_dev_cmd?(cmd) || external_ruby_v2_cmd_path(cmd)) &&
+      Homebrew::AbstractCommand.command(cmd)&.ruby_cmd?
+  end
+
   def self.method_name(cmd)
     cmd.to_s
        .tr("-", "_")
