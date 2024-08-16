@@ -4,11 +4,52 @@
 require "cli/parser"
 
 UNDEFINED_CONSTANTS = %w[
+  AbstractDownloadStrategy
+  Addressable
+  Base64
+  CacheStore
   Cask::Cask
+  Cask::CaskLoader
+  Completions
+  CSV
   Formula
   Formulary
+  GitRepository
   Homebrew::API
+  Homebrew::Manpages
+  Homebrew::Settings
+  JSONSchemer
+  Kramdown
+  Metafiles
+  MethodSource
+  Minitest
+  Nokogiri
+  OS::Mac::Version
+  Parlour
+  PatchELF
+  Pry
+  ProgressBar
+  REXML
+  Red
+  RSpec
+  RuboCop
+  StackProf
+  Spoom
   Tap
+  Tapioca
+  UnpackStrategy
+  Utils::Analytics
+  Utils::Backtrace
+  Utils::Bottles
+  Utils::Curl
+  Utils::Fork
+  Utils::Git
+  Utils::GitHub
+  Utils::Link
+  Utils::Svn
+  Uri
+  Vernier
+  YARD
 ].freeze
 
 module Homebrew
