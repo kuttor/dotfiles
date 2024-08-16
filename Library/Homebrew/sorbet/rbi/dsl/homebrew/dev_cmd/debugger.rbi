@@ -16,10 +16,4 @@ class Homebrew::DevCmd::Debugger::Args < Homebrew::CLI::Args
 
   sig { returns(T::Boolean) }
   def open?; end
-
-  sig { returns(T::Boolean) }
-  def s?; end
-
-  sig { returns(T::Boolean) }
-  def stop?; end
 end
