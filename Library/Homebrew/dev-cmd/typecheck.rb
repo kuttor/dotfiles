@@ -46,6 +46,8 @@ module Homebrew
       def run
         if (args.dir.present? || args.file.present?) && args.named.present?
           raise UsageError, "Cannot use `--dir` or `--file` when specifying a tap."
+        elsif args.fix? && args.named.present?
+          raise UsageError, "Cannot use `--fix` when specifying a tap."
         end
 
         update = args.update? || args.update_all?
