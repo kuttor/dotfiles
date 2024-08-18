@@ -56,24 +56,21 @@ module Cask
           .returns(T.nilable(T.attached_class))
       }
       def self.try_new(ref, warn: false)
-        case ref
-        when Cask, URI::Generic
-          # do nothing
-        else
-          content = ref.to_str
+        return if ref.is_a?(Cask)
 
-          # Cache compiled regex
-          @regex ||= begin
-            token  = /(?:"[^"]*"|'[^']*')/
-            curly  = /\(\s*#{token.source}\s*\)\s*\{.*\}/
-            do_end = /\s+#{token.source}\s+do(?:\s*;\s*|\s+).*end/
-            /\A\s*cask(?:#{curly.source}|#{do_end.source})\s*\Z/m
-          end
+        content = ref.to_str
 
-          return unless content.match?(@regex)
-
-          new(content)
+        # Cache compiled regex
+        @regex ||= begin
+          token  = /(?:"[^"]*"|'[^']*')/
+          curly  = /\(\s*#{token.source}\s*\)\s*\{.*\}/
+          do_end = /\s+#{token.source}\s+do(?:\s*;\s*|\s+).*end/
+          /\A\s*cask(?:#{curly.source}|#{do_end.source})\s*\Z/m
         end
+
+        return unless content.match?(@regex)
+
+        new(content)
       end
 
       sig { params(content: String, tap: Tap).void }
