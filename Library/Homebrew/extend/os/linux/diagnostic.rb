@@ -61,7 +61,8 @@ module Homebrew
 
       def check_xdg_data_dirs
         xdg_data_dirs = ENV.fetch("HOMEBREW_XDG_DATA_DIRS", nil)
-        return if xdg_data_dirs.blank? || xdg_data_dirs.split(":").include?(HOMEBREW_PREFIX/"share")
+        return if xdg_data_dirs.blank?
+        return if xdg_data_dirs.split(":").include?("#{HOMEBREW_PREFIX}/share")
 
         <<~EOS
           Homebrew's share was not found in your XDG_DATA_DIRS but you have
