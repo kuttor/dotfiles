@@ -36,7 +36,7 @@ module Homebrew
           formula_or_cask.homepage
         end
 
-        exec_browser(*T.unsafe(homepages))
+        exec_browser(*homepages)
       end
 
       private

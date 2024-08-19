@@ -3124,7 +3124,7 @@ class Formula
     removed = ENV.remove_cc_etc
 
     begin
-      T.unsafe(self).system("xcodebuild", *args)
+      self.system("xcodebuild", *args)
     ensure
       ENV.update(removed)
     end
