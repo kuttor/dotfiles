@@ -98,7 +98,7 @@ module Hardware
         :dunno
       end
 
-      sig { returns(T.nilable(Integer)) }
+      sig { returns(Integer) }
       def cores
         return @cores if @cores
 
@@ -178,12 +178,12 @@ module Hardware
         false
       end
 
-      sig { returns(T::Array[String]) }
+      sig { returns(T::Array[Symbol]) }
       def features
         []
       end
 
-      sig { params(name: T::Array[String]).returns(T::Boolean) }
+      sig { params(name: Symbol).returns(T::Boolean) }
       def feature?(name)
         features.include?(name)
       end
@@ -203,7 +203,7 @@ module Hardware
   end
 
   class << self
-    sig { returns(T.nilable(T.any(Integer, String))) }
+    sig { returns(String) }
     def cores_as_words
       case Hardware::CPU.cores
       when 1 then "single"
@@ -213,7 +213,7 @@ module Hardware
       when 8 then "octa"
       when 12 then "dodeca"
       else
-        Hardware::CPU.cores
+        Hardware::CPU.cores.to_s
       end
     end
 
