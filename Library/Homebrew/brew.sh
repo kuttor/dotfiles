@@ -446,10 +446,13 @@ then
   then
     HOMEBREW_VERSION="$(cat "${GIT_DESCRIBE_CACHE_FILE}")"
   else
-    rm -rf "${GIT_DESCRIBE_CACHE}"
     HOMEBREW_VERSION="$("${HOMEBREW_GIT}" -C "${HOMEBREW_REPOSITORY}" describe --tags --dirty --abbrev=7 2>/dev/null)"
-    mkdir -p "${GIT_DESCRIBE_CACHE}"
-    echo "${HOMEBREW_VERSION}" >"${GIT_DESCRIBE_CACHE_FILE}"
+    # Don't output any permissions errors here.
+    # The user may not have write permissions to the cache but we don't care
+    # because it's an optional performance improvement.
+    rm -rf "${GIT_DESCRIBE_CACHE}" 2>/dev/null
+    mkdir -p "${GIT_DESCRIBE_CACHE}" 2>/dev/null
+    echo "${HOMEBREW_VERSION}" >"${GIT_DESCRIBE_CACHE_FILE}" 2>/dev/null
   fi
   unset GIT_DESCRIBE_CACHE_FILE
 else
