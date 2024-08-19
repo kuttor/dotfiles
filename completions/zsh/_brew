@@ -1902,7 +1902,9 @@ _brew_tc() {
     '--suggest-typed[Try upgrading `typed` sigils]' \
     '(--lsp)--update[Update RBI files]' \
     '(--lsp)--update-all[Update all RBI files rather than just updated gems]' \
-    '--verbose[Make some output more verbose]'
+    '--verbose[Make some output more verbose]' \
+    - tap \
+    '*::tap:__brew_any_tap'
 }
 
 # brew test
@@ -1951,7 +1953,9 @@ _brew_typecheck() {
     '--suggest-typed[Try upgrading `typed` sigils]' \
     '(--lsp)--update[Update RBI files]' \
     '(--lsp)--update-all[Update all RBI files rather than just updated gems]' \
-    '--verbose[Make some output more verbose]'
+    '--verbose[Make some output more verbose]' \
+    - tap \
+    '*::tap:__brew_any_tap'
 }
 
 # brew unbottled

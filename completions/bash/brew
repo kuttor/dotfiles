@@ -2345,6 +2345,7 @@ _brew_tc() {
       ;;
     *) ;;
   esac
+  __brew_complete_tapped
 }
 
 _brew_test() {
@@ -2414,6 +2415,7 @@ _brew_typecheck() {
       ;;
     *) ;;
   esac
+  __brew_complete_tapped
 }
 
 _brew_unbottled() {

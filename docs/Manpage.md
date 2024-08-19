@@ -2762,7 +2762,7 @@ Run Homebrew's unit and integration tests.
 
 : Randomise tests with the specified *`value`* instead of a random seed.
 
-### `typecheck`, `tc` \[*`options`*\]
+### `typecheck`, `tc` \[*`options`*\] \[*`tap`* ...\]
 
 Check for typechecking errors using Sorbet.
 
