@@ -23,10 +23,6 @@ jobs:
       fail-fast: false
       matrix:
         version: ["18.04", "20.04", "22.04", "24.04"]
-    permissions:
-      contents: read # for code access
-      attestations: write # for actions/attest-build-provenance
-      id-token: write # for actions/attest-build-provenance
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
