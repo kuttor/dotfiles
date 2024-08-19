@@ -248,14 +248,14 @@ jobs:
           docker tag brew "homebrew/ubuntu22.04:${{ github.ref_name }}"
           docker push "homebrew/ubuntu22.04:${{ github.ref_name }}"
 
-      - name: Generate image digest
+      - name: Generate Docker image digest
         if: github.ref == 'refs/heads/master'
         id: digest
         run: |
           digest="$(docker image inspect --format='{{.Digest}}' brew)"
           echo "digest=$digest" >> "$GITHUB_OUTPUT"
 
-      - name: Generate build provenance
+      - name: Generate Docker image build provenance
         uses: actions/attest-build-provenance@5e9cb68e95676991667494a6a4e59b8a2f13e1d0 # v1.3.3
         if: github.ref == 'refs/heads/master'
         id: attest
