@@ -1534,6 +1534,7 @@ __fish_brew_complete_arg 'tc' -l suggest-typed -d 'Try upgrading `typed` sigils'
 __fish_brew_complete_arg 'tc' -l update -d 'Update RBI files'
 __fish_brew_complete_arg 'tc' -l update-all -d 'Update all RBI files rather than just updated gems'
 __fish_brew_complete_arg 'tc' -l verbose -d 'Make some output more verbose'
+__fish_brew_complete_arg 'tc' -a '(__fish_brew_suggest_taps_installed)'
 
 
 __fish_brew_complete_cmd 'test' 'Run the test method provided by an installed formula'
@@ -1576,6 +1577,7 @@ __fish_brew_complete_arg 'typecheck' -l suggest-typed -d 'Try upgrading `typed` 
 __fish_brew_complete_arg 'typecheck' -l update -d 'Update RBI files'
 __fish_brew_complete_arg 'typecheck' -l update-all -d 'Update all RBI files rather than just updated gems'
 __fish_brew_complete_arg 'typecheck' -l verbose -d 'Make some output more verbose'
+__fish_brew_complete_arg 'typecheck' -a '(__fish_brew_suggest_taps_installed)'
 
 
 __fish_brew_complete_cmd 'unbottled' 'Show the unbottled dependents of formulae'
