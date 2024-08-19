@@ -670,7 +670,7 @@ module Homebrew
       def process_option(*args, type:, hidden: false)
         option, = @parser.make_switch(args)
         @processed_options.reject! { |existing| existing.second == option.long.first } if option.long.first.present?
-        @processed_options << [option.short.first, option.long.first, option.arg, option.desc.first, hidden]
+        @processed_options << [option.short.first, option.long.first, option.desc.first, hidden]
 
         args.pop # last argument is the description
         if type == :switch
