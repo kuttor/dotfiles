@@ -439,24 +439,48 @@ setup_git
 
 GIT_DESCRIBE_CACHE="${HOMEBREW_REPOSITORY}/.git/describe-cache"
 GIT_REVISION=$("${HOMEBREW_GIT}" -C "${HOMEBREW_REPOSITORY}" rev-parse HEAD 2>/dev/null)
+
+# safe fallback in case git rev-parse fails e.g. if this is not considered a safe git directory
+if [[ -z "${GIT_REVISION}" ]]
+then
+  GIT_HEAD="$(cat "${HOMEBREW_REPOSITORY}/.git/HEAD" 2>/dev/null)"
+  if [[ "${GIT_HEAD}" == "ref: refs/heads/master" ]]
+  then
+    GIT_REVISION="$(cat "${HOMEBREW_REPOSITORY}/.git/refs/heads/master" 2>/dev/null)"
+  elif [[ "${GIT_HEAD}" == "ref: refs/heads/stable" ]]
+  then
+    GIT_REVISION="$(cat "${HOMEBREW_REPOSITORY}/.git/refs/heads/stable" 2>/dev/null)"
+  fi
+  unset GIT_HEAD
+fi
+
 if [[ -n "${GIT_REVISION}" ]]
 then
   GIT_DESCRIBE_CACHE_FILE="${GIT_DESCRIBE_CACHE}/${GIT_REVISION}"
-  if [[ -f "${GIT_DESCRIBE_CACHE_FILE}" ]]
+  if [[ -r "${GIT_DESCRIBE_CACHE_FILE}" ]]
   then
-    HOMEBREW_VERSION="$(cat "${GIT_DESCRIBE_CACHE_FILE}")"
-  else
+    GIT_DESCRIBE_CACHE_HOMEBREW_VERSION="$(cat "${GIT_DESCRIBE_CACHE_FILE}")"
+    if [[ -n "${GIT_DESCRIBE_CACHE_HOMEBREW_VERSION}" && "${GIT_DESCRIBE_CACHE_HOMEBREW_VERSION}" != *"-dirty" ]]
+    then
+      HOMEBREW_VERSION="${GIT_DESCRIBE_CACHE_HOMEBREW_VERSION}"
+    fi
+    unset GIT_DESCRIBE_CACHE_HOMEBREW_VERSION
+  fi
+
+  if [[ -z "${HOMEBREW_VERSION}" ]]
+  then
     HOMEBREW_VERSION="$("${HOMEBREW_GIT}" -C "${HOMEBREW_REPOSITORY}" describe --tags --dirty --abbrev=7 2>/dev/null)"
-    # Don't output any permissions errors here.
-    # The user may not have write permissions to the cache but we don't care
-    # because it's an optional performance improvement.
+    # Don't output any permissions errors here. The user may not have write
+    # permissions to the cache but we don't care because it's an optional
+    # performance improvement.
     rm -rf "${GIT_DESCRIBE_CACHE}" 2>/dev/null
     mkdir -p "${GIT_DESCRIBE_CACHE}" 2>/dev/null
-    echo "${HOMEBREW_VERSION}" >"${GIT_DESCRIBE_CACHE_FILE}" 2>/dev/null
+    echo "${HOMEBREW_VERSION}" | tee "${GIT_DESCRIBE_CACHE_FILE}" &>/dev/null
   fi
   unset GIT_DESCRIBE_CACHE_FILE
 else
-  rm -rf "${GIT_DESCRIBE_CACHE}"
+  # Don't care about permission errors here either.
+  rm -rf "${GIT_DESCRIBE_CACHE}" 2>/dev/null
 fi
 unset GIT_REVISION
 unset GIT_DESCRIBE_CACHE
