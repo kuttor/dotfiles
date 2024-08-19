@@ -16,7 +16,6 @@ module Homebrew
       # FIXME: Enable cop again when https://github.com/sorbet/sorbet/issues/3532 is fixed.
       # rubocop:disable Style/MutableConstant
       ArgType = T.type_alias { T.any(NilClass, Symbol, T::Array[String], T::Array[Symbol]) }
-      OptionsType = T.type_alias { T::Array[[String, T.nilable(String), T.nilable(String), String, T::Boolean]] }
       # rubocop:enable Style/MutableConstant
       HIDDEN_DESC_PLACEHOLDER = "@@HIDDEN@@"
       SYMBOL_TO_USAGE_MAPPING = T.let({
@@ -25,7 +24,7 @@ module Homebrew
       }.freeze, T::Hash[Symbol, String])
       private_constant :ArgType, :HIDDEN_DESC_PLACEHOLDER, :SYMBOL_TO_USAGE_MAPPING
 
-      sig { returns(OptionsType) }
+      sig { returns(Args::OptionsType) }
       attr_reader :processed_options
 
       sig { returns(T::Boolean) }
@@ -177,7 +176,7 @@ module Homebrew
         @constraints = T.let([], T::Array[[String, String]])
         @conflicts = T.let([], T::Array[T::Array[String]])
         @switch_sources = T.let({}, T::Hash[String, Symbol])
-        @processed_options = T.let([], OptionsType)
+        @processed_options = T.let([], Args::OptionsType)
         @non_global_processed_options = T.let([], T::Array[[String, ArgType]])
         @named_args_type = T.let(nil, T.nilable(ArgType))
         @max_named_args = T.let(nil, T.nilable(Integer))
