@@ -488,7 +488,7 @@ unset GIT_DESCRIBE_CACHE
 HOMEBREW_USER_AGENT_VERSION="${HOMEBREW_VERSION}"
 if [[ -z "${HOMEBREW_VERSION}" ]]
 then
-  HOMEBREW_VERSION=">=4.1.0 (shallow or no git repository)"
+  HOMEBREW_VERSION=">=4.3.0 (shallow or no git repository)"
   HOMEBREW_USER_AGENT_VERSION="4.X.Y"
 fi
 
