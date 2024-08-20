@@ -408,9 +408,10 @@ Style/OpenStructUse:
 
 Style/OptionalBooleanParameter:
   AllowedMethods:
-    # This is an override of a core library method
+    # These are overrides of core library methods
     # see https://ruby-doc.org/3.3.4/Object.html#method-i-respond_to-3F
     - respond_to?
+    - respond_to_missing?
 
 # Rescuing `StandardError` is an understood default.
 Style/RescueStandardError:
