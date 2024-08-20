@@ -89,6 +89,9 @@ module Superenv
     # Prevent the OpenSSL rust crate from building a vendored OpenSSL.
     # https://github.com/sfackler/rust-openssl/blob/994e5ff8c63557ab2aa85c85cc6956b0b0216ca7/openssl/src/lib.rs#L65
     self["OPENSSL_NO_VENDOR"] = "1"
+    # Prevent Go from automatically downloading a newer toolchain than the one that we have.
+    # https://tip.golang.org/doc/toolchain
+    self["GOTOOLCHAIN"] = "local"
 
     set_debug_symbols if debug_symbols
 
