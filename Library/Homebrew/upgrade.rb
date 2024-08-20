@@ -409,7 +409,7 @@ module Homebrew
       return if dry_run
 
       reinstallable_broken_dependents.each do |formula|
-        Homebrew.reinstall_formula(
+        Reinstall.reinstall_formula(
           formula,
           flags:,
           force_bottle:,
