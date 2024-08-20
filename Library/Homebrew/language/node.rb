@@ -89,6 +89,10 @@ module Language
 
     # Mixin module for {Formula} adding shebang rewrite features.
     module Shebang
+      extend T::Helpers
+
+      requires_ancestor { Formula }
+
       module_function
 
       # A regex to match potential shebang permutations.
