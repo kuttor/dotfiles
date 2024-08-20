@@ -41,7 +41,7 @@ module Homebrew
           # Sublime requires opting into the project editing path,
           # as opposed to VS Code which will infer from the .vscode path
           if which_editor(silent: true) == "subl"
-            ["--project", "#{HOMEBREW_REPOSITORY}/.sublime/homebrew.sublime-project"]
+            ["--project", HOMEBREW_REPOSITORY/".sublime/homebrew.sublime-project"]
           else
             # If no formulae are listed, open the project root in an editor.
             [HOMEBREW_REPOSITORY]
@@ -62,6 +62,8 @@ module Homebrew
         exec_editor(*paths)
 
         if paths.any? do |path|
+             next if path.is_a?(String) && path == "--project"
+
              !Homebrew::EnvConfig.no_install_from_api? &&
              !Homebrew::EnvConfig.no_env_hints? &&
              (core_formula_path?(path) || core_cask_path?(path) || core_formula_tap?(path) || core_cask_tap?(path))
