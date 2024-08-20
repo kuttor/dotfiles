@@ -12,7 +12,7 @@ module Homebrew
         end
         alias generic_analytics_api_path analytics_api_path
 
-        sig { params(category: String, days: T.any(Integer, String)).returns(T::Hash[String, Integer]) }
+        sig { params(category: String, days: T.any(Integer, String)).returns(T::Hash[String, T.untyped]) }
         def fetch(category, days)
           Homebrew::API.fetch "#{analytics_api_path}/#{category}/#{days}d.json"
         end
