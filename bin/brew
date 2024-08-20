@@ -108,14 +108,14 @@ HOMEBREW_LIBRARY="${HOMEBREW_REPOSITORY}/Library"
 
 # Load Homebrew's variable configuration files from disk.
 export_homebrew_env_file() {
-  local env_file
+  local env_file="${1}"
+  local homebrew_env_regex="^HOMEBREW_[A-Z_]+=[^=]*$"
 
-  env_file="${1}"
   [[ -r "${env_file}" ]] || return 0
   while read -r line
   do
     # only load HOMEBREW_* lines
-    [[ "${line}" = "HOMEBREW_"* ]] || continue
+    [[ "${line}" =~ ${homebrew_env_regex} ]] || continue
     export "${line?}"
   done <"${env_file}"
 }
