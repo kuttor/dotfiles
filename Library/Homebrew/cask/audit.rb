@@ -751,7 +751,12 @@ module Cask
       return unless File.exist?(plist_path)
 
       plist = system_command!("plutil", args: ["-convert", "xml1", "-o", "-", plist_path]).plist
-      plist["CFBundleExecutable"].presence
+      binary = plist["CFBundleExecutable"].presence
+      return unless binary
+
+      binary_path = "#{path}/Contents/MacOS/#{binary}"
+
+      binary_path if File.exist?(binary_path) && File.executable?(binary_path)
     end
 
     sig { void }
