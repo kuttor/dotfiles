@@ -574,7 +574,11 @@ module Cask
               File.executable?(f) && !File.directory?(f) && !f.end_with?(".dylib")
             end
             add_error "No binaries in App: #{artifact.source}", location: cask.url.location if files.empty?
-            system_command("lipo", args: ["-archs", files.first], print_stderr: false)
+
+            main_binary = get_plist_main_binary(path)
+            main_binary ||= files.first
+
+            system_command("lipo", args: ["-archs", main_binary], print_stderr: false)
           when Artifact::Binary
             binary_path = path.to_s.gsub(cask.appdir, tmpdir)
             system_command("lipo", args: ["-archs", binary_path], print_stderr: true)
@@ -737,6 +741,17 @@ module Cask
       rescue MacOSVersion::Error
         nil
       end
+    end
+
+    sig { params(path: Pathname).returns(T.nilable(String)) }
+    def get_plist_main_binary(path)
+      return unless online?
+
+      plist_path = "#{path}/Contents/Info.plist"
+      return unless File.exist?(plist_path)
+
+      plist = system_command!("plutil", args: ["-convert", "xml1", "-o", "-", plist_path]).plist
+      plist["CFBundleExecutable"].presence
     end
 
     sig { void }
