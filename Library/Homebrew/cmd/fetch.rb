@@ -290,7 +290,7 @@ module Homebrew
                 end
 
                 if previous_pending_line_count.positive?
-                  $stdout.print Tty.move_cursor_up(previous_pending_line_count)
+                  $stdout.print Tty.move_cursor_up_beginning(previous_pending_line_count)
                   $stdout.flush
                 end
 
