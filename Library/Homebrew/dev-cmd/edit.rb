@@ -62,7 +62,7 @@ module Homebrew
         exec_editor(*paths)
 
         if paths.any? do |path|
-             next if path.is_a?(String) && path == "--project"
+             next if path == "--project"
 
              !Homebrew::EnvConfig.no_install_from_api? &&
              !Homebrew::EnvConfig.no_env_hints? &&
