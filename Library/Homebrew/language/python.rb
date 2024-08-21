@@ -105,6 +105,10 @@ module Language
 
     # Mixin module for {Formula} adding shebang rewrite features.
     module Shebang
+      extend T::Helpers
+
+      requires_ancestor { Formula }
+
       module_function
 
       # A regex to match potential shebang permutations.
@@ -144,6 +148,10 @@ module Language
 
     # Mixin module for {Formula} adding virtualenv support features.
     module Virtualenv
+      extend T::Helpers
+
+      requires_ancestor { Formula }
+
       # Instantiates, creates and yields a {Virtualenv} object for use from
       # {Formula#install}, which provides helper methods for instantiating and
       # installing packages into a Python virtualenv.

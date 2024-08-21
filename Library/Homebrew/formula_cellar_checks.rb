@@ -8,6 +8,7 @@ module FormulaCellarChecks
   extend T::Helpers
 
   abstract!
+  requires_ancestor { Kernel }
 
   sig { abstract.returns(Formula) }
   def formula; end

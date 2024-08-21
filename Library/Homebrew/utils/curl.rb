@@ -11,6 +11,9 @@ module Utils
   module Curl
     include SystemCommand::Mixin
     extend SystemCommand::Mixin
+    extend T::Helpers
+
+    requires_ancestor { Kernel }
 
     # Error returned when the server sent data curl could not parse.
     CURL_WEIRD_SERVER_REPLY_EXIT_CODE = 8

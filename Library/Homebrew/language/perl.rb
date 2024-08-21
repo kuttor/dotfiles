@@ -8,6 +8,10 @@ module Language
   module Perl
     # Helper module for replacing `perl` shebangs.
     module Shebang
+      extend T::Helpers
+
+      requires_ancestor { Formula }
+
       module_function
 
       # A regex to match potential shebang permutations.
