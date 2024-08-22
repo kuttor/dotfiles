@@ -1091,7 +1091,7 @@ _brew_instal() {
     '(--cask)--bottle-arch[Optimise bottles for the specified architecture rather than the oldest architecture supported by the version of macOS the bottles are built on]' \
     '(--cask --build-from-source --force-bottle)--build-bottle[Prepare the formula for eventual bottling during installation, skipping any post-install steps]' \
     '(--cask --build-bottle --force-bottle)--build-from-source[Compile formula from source even if a bottle is provided. Dependencies will still be installed from bottles if they are available]' \
-    '(--cask)--cc[Attempt to compile using the specified compiler, which should be the name of the compiler'\''s executable, e.g. `gcc-7` for GCC 7. In order to use LLVM'\''s clang, specify `llvm_clang`. To use the Apple-provided clang, specify `clang`. This option will only accept compilers that are provided by Homebrew or bundled with macOS. Please do not file issues if you encounter errors while using this option]' \
+    '(--cask)--cc[Attempt to compile using the specified compiler, which should be the name of the compiler'\''s executable, e.g. `gcc-9` for GCC 9. In order to use LLVM'\''s clang, specify `llvm_clang`. To use the Apple-provided clang, specify `clang`. This option will only accept compilers that are provided by Homebrew or bundled with macOS. Please do not file issues if you encounter errors while using this option]' \
     '(--formula)--colorpickerdir[Target location for Color Pickers (default: `~/Library/ColorPickers`)]' \
     '--debug[If brewing fails, open an interactive debugging session with access to IRB or a shell inside the temporary build directory]' \
     '(--cask)--debug-symbols[Generate debug symbols on build. Source will be retained in a cache directory]' \
@@ -1149,7 +1149,7 @@ _brew_install() {
     '(--cask)--bottle-arch[Optimise bottles for the specified architecture rather than the oldest architecture supported by the version of macOS the bottles are built on]' \
     '(--cask --build-from-source --force-bottle)--build-bottle[Prepare the formula for eventual bottling during installation, skipping any post-install steps]' \
     '(--cask --build-bottle --force-bottle)--build-from-source[Compile formula from source even if a bottle is provided. Dependencies will still be installed from bottles if they are available]' \
-    '(--cask)--cc[Attempt to compile using the specified compiler, which should be the name of the compiler'\''s executable, e.g. `gcc-7` for GCC 7. In order to use LLVM'\''s clang, specify `llvm_clang`. To use the Apple-provided clang, specify `clang`. This option will only accept compilers that are provided by Homebrew or bundled with macOS. Please do not file issues if you encounter errors while using this option]' \
+    '(--cask)--cc[Attempt to compile using the specified compiler, which should be the name of the compiler'\''s executable, e.g. `gcc-9` for GCC 9. In order to use LLVM'\''s clang, specify `llvm_clang`. To use the Apple-provided clang, specify `clang`. This option will only accept compilers that are provided by Homebrew or bundled with macOS. Please do not file issues if you encounter errors while using this option]' \
     '(--formula)--colorpickerdir[Target location for Color Pickers (default: `~/Library/ColorPickers`)]' \
     '--debug[If brewing fails, open an interactive debugging session with access to IRB or a shell inside the temporary build directory]' \
     '(--cask)--debug-symbols[Generate debug symbols on build. Source will be retained in a cache directory]' \
