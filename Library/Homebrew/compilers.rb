@@ -2,8 +2,8 @@
 # frozen_string_literal: true
 
 module CompilerConstants
-  GNU_GCC_VERSIONS = %w[4.9 5 6 7 8 9 10 11 12 13 14].freeze
-  GNU_GCC_REGEXP = /^gcc-(4\.9|[5-9]|10|11|12|13|14)$/
+  GNU_GCC_VERSIONS = %w[7 8 9 10 11 12 13 14].freeze
+  GNU_GCC_REGEXP = /^gcc-(#{GNU_GCC_VERSIONS.join("|")})$/
   COMPILER_SYMBOL_MAP = {
     "gcc"        => :gcc,
     "clang"      => :clang,
