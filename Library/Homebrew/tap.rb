@@ -1427,12 +1427,16 @@ class CoreCaskTap < AbstractCoreTap
   def cask_files_by_name
     return super if Homebrew::EnvConfig.no_install_from_api?
 
-    @cask_files_by_name ||= Homebrew::API::Cask.all_casks.each_with_object({}) do |item, hash|
-      name, cask_hash = item
-      # If there's more than one item with the same path: use the longer one to prioritise more specific results.
-      existing_path = hash[name]
-      new_path = path/cask_hash["ruby_source_path"]
-      hash[name] = new_path if existing_path.nil? || existing_path.to_s.length < new_path.to_s.length
+    @cask_files_by_name ||= begin
+      tap_path = path.to_s
+      Homebrew::API::Cask.all_casks.each_with_object({}) do |item, hash|
+        name, cask_hash = item
+        # If there's more than one item with the same path: use the longer one to prioritise more specific results.
+        existing_path = hash[name]
+        # Pathname equivalent is slow in a tight loop
+        new_path = File.join(tap_path, cask_hash.fetch("ruby_source_path"))
+        hash[name] = Pathname(new_path) if existing_path.nil? || existing_path.to_s.length < new_path.length
+      end
     end
   end
 
