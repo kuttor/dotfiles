@@ -761,6 +761,14 @@ paths within its current keg. If *`cask`* is provided, list its artifacts.
 
 : List the formulae installed as dependencies.
 
+`--poured-from-bottle`
+
+: List the formulae installed from a bottle.
+
+`--built-from-source`
+
+: List the formulae compiled from source.
+
 `-1`
 
 : Force output to be one entry per line. This is the default when output is not

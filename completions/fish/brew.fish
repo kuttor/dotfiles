@@ -1031,6 +1031,7 @@ __fish_brew_complete_arg 'linkage' -a '(__fish_brew_suggest_formulae_installed)'
 
 
 __fish_brew_complete_cmd 'list' 'List all installed formulae and casks'
+__fish_brew_complete_arg 'list' -l built-from-source -d 'List the formulae compiled from source'
 __fish_brew_complete_arg 'list' -l cask -d 'List only casks, or treat all named arguments as casks'
 __fish_brew_complete_arg 'list' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'list' -l formula -d 'List only formulae, or treat all named arguments as formulae'
@@ -1040,6 +1041,7 @@ __fish_brew_complete_arg 'list' -l installed-as-dependency -d 'List the formulae
 __fish_brew_complete_arg 'list' -l installed-on-request -d 'List the formulae installed on request'
 __fish_brew_complete_arg 'list' -l multiple -d 'Only show formulae with multiple versions installed'
 __fish_brew_complete_arg 'list' -l pinned -d 'List only pinned formulae, or only the specified (pinned) formulae if formula are provided. See also `pin`, `unpin`'
+__fish_brew_complete_arg 'list' -l poured-from-bottle -d 'List the formulae installed from a bottle'
 __fish_brew_complete_arg 'list' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'list' -l verbose -d 'Make some output more verbose'
 __fish_brew_complete_arg 'list' -l versions -d 'Show the version number for installed formulae, or only the specified formulae if formula are provided'
@@ -1099,6 +1101,7 @@ __fish_brew_complete_arg 'log; and not __fish_seen_argument -l formula -l formul
 
 
 __fish_brew_complete_cmd 'ls' 'List all installed formulae and casks'
+__fish_brew_complete_arg 'ls' -l built-from-source -d 'List the formulae compiled from source'
 __fish_brew_complete_arg 'ls' -l cask -d 'List only casks, or treat all named arguments as casks'
 __fish_brew_complete_arg 'ls' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'ls' -l formula -d 'List only formulae, or treat all named arguments as formulae'
@@ -1108,6 +1111,7 @@ __fish_brew_complete_arg 'ls' -l installed-as-dependency -d 'List the formulae i
 __fish_brew_complete_arg 'ls' -l installed-on-request -d 'List the formulae installed on request'
 __fish_brew_complete_arg 'ls' -l multiple -d 'Only show formulae with multiple versions installed'
 __fish_brew_complete_arg 'ls' -l pinned -d 'List only pinned formulae, or only the specified (pinned) formulae if formula are provided. See also `pin`, `unpin`'
+__fish_brew_complete_arg 'ls' -l poured-from-bottle -d 'List the formulae installed from a bottle'
 __fish_brew_complete_arg 'ls' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'ls' -l verbose -d 'Make some output more verbose'
 __fish_brew_complete_arg 'ls' -l versions -d 'Show the version number for installed formulae, or only the specified formulae if formula are provided'
