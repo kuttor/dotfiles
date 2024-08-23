@@ -635,7 +635,7 @@ module Homebrew
           homebrew_curl_root_domains << domain if domain.present?
         end
       when Cask::Cask
-        return false if formula_or_cask.url.using != :homebrew_curl
+        return false if formula_or_cask.url&.using != :homebrew_curl
 
         domain = Addressable::URI.parse(formula_or_cask.url.to_s)&.domain
         homebrew_curl_root_domains << domain if domain.present?
