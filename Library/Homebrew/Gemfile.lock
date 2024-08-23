@@ -53,7 +53,7 @@ GEM
     rbi (0.1.14)
       prism (>= 0.18.0, < 1.0.0)
       sorbet-runtime (>= 0.5.9204)
-    rbs (3.5.2)
+    rbs (3.5.3)
       logger
     redcarpet (3.6.0)
     regexp_parser (2.9.2)
@@ -156,7 +156,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
