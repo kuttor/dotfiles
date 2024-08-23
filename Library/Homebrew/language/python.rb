@@ -330,8 +330,9 @@ module Language
           # Robustify symlinks to survive python patch upgrades
           @venv_root.find do |f|
             next unless f.symlink?
-            next unless (rp = f.realpath.to_s).start_with? HOMEBREW_CELLAR
+            next unless f.readlink.expand_path.to_s.start_with? HOMEBREW_CELLAR
 
+            rp = f.realpath.to_s
             version = rp.match %r{^#{HOMEBREW_CELLAR}/python@(.*?)/}o
             version = "@#{version.captures.first}" unless version.nil?
 
