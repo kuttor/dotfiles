@@ -584,8 +584,8 @@ module Homebrew
 
       return if formula.tap&.audit_exception :eol_date_blocklist, name
 
-      metadata = SharedAudits.eol_data(name, formula.version.major)
-      metadata ||= SharedAudits.eol_data(name, formula.version.major_minor)
+      metadata = SharedAudits.eol_data(name, formula.version.major.to_s)
+      metadata ||= SharedAudits.eol_data(name, formula.version.major_minor.to_s)
 
       return if metadata.blank? || (eol = metadata["eol"]).blank?
 
