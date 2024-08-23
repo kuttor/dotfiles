@@ -1501,6 +1501,7 @@ _brew_list() {
   case "${cur}" in
     -*)
       __brewcomp "
+      --built-from-source
       --cask
       --debug
       --formula
@@ -1510,6 +1511,7 @@ _brew_list() {
       --installed-on-request
       --multiple
       --pinned
+      --poured-from-bottle
       --quiet
       --verbose
       --versions
@@ -1605,6 +1607,7 @@ _brew_ls() {
   case "${cur}" in
     -*)
       __brewcomp "
+      --built-from-source
       --cask
       --debug
       --formula
@@ -1614,6 +1617,7 @@ _brew_ls() {
       --installed-on-request
       --multiple
       --pinned
+      --poured-from-bottle
       --quiet
       --verbose
       --versions
