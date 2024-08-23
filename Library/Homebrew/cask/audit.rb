@@ -622,7 +622,7 @@ module Cask
       if referenced_cask
         skip_info = Homebrew::Livecheck::SkipConditions.referenced_skip_information(
           referenced_cask,
-          Homebrew::Livecheck.cask_name(cask),
+          Homebrew::Livecheck.package_or_resource_name(cask),
         )
       end
 
