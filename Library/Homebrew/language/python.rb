@@ -350,6 +350,18 @@ module Language
             prefix_file.atomic_write prefix_path
           end
 
+          # Reduce some differences between macOS and Linux venv
+          lib64 = @venv_root/"lib64"
+          lib64.make_symlink "lib" unless lib64.exist?
+          if (cfg_file = @venv_root/"pyvenv.cfg").exist?
+            cfg = cfg_file.read
+            framework = "Frameworks/Python.framework/Versions"
+            cfg.match(%r{= *(#{HOMEBREW_CELLAR}/(python@[\d.]+)/[^/]+(?:/#{framework}/[\d.]+)?/bin)}) do |match|
+              cfg.sub! match[1].to_s, Formula[match[2]].opt_bin
+              cfg_file.atomic_write cfg
+            end
+          end
+
           # Remove unnecessary activate scripts
           (@venv_root/"bin").glob("[Aa]ctivate*").map(&:unlink)
         end
