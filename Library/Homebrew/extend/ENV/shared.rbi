@@ -12,14 +12,3 @@ module SharedEnvExtension
   }
   def []=(key, value); end
 end
-
-# @!visibility private
-class Sorbet
-  module Private
-    module Static
-      class ENVClass
-        include SharedEnvExtension
-      end
-    end
-  end
-end

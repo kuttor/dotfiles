@@ -1,7 +1,7 @@
 # typed: strict
 
 module EnvActivation
-  include Superenv
+  include SharedEnvExtension
 end
 
 # @!visibility private
