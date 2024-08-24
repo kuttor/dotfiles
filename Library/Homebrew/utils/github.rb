@@ -434,41 +434,37 @@ module GitHub
       )
   }
   def self.sponsorships(user)
-    has_next_page = T.let(true, T::Boolean)
-    after = ""
-    sponsorships = T.let([], T::Array[Hash])
-    errors = T.let([], T::Array[Hash])
-    while has_next_page
-      query = <<~EOS
-          { organization(login: "#{user}") {
-            sponsorshipsAsMaintainer(first: 100 #{after}) {
-              pageInfo {
-                startCursor
-                hasNextPage
-                endCursor
-              }
-              totalCount
-              nodes {
-                tier {
+    query = <<~EOS
+        query($user: String, $after: String) { organization(login: $user) {
+          sponsorshipsAsMaintainer(first: 100, after: $after) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              tier {
+                monthlyPriceInDollars
+                closestLesserValueTier {
                   monthlyPriceInDollars
-                  closestLesserValueTier {
-                    monthlyPriceInDollars
-                  }
                 }
-                sponsorEntity {
-                  __typename
-                  ... on Organization { login name }
-                  ... on User { login name }
-                }
+              }
+              sponsorEntity {
+                ... on Organization { login name }
+                ... on User { login name }
               }
             }
           }
         }
-      EOS
+      }
+    EOS
+
+    sponsorships = T.let([], T::Array[Hash])
+    errors = T.let([], T::Array[Hash])
+
+    API.paginate_graphql(query, variables: { user: }, scopes: ["user"], raise_errors: false) do |result|
       # Some organisations do not permit themselves to be queried through the
       # API like this and raise an error so handle these errors later.
       # This has been reported to GitHub.
-      result = API.open_graphql(query, scopes: ["user"], raise_errors: false)
       errors += result["errors"] if result["errors"].present?
 
       current_sponsorships = result["data"]["organization"]["sponsorshipsAsMaintainer"]
@@ -478,12 +474,7 @@ module GitHub
         sponsorships += nodes
       end
 
-      if (page_info = current_sponsorships["pageInfo"].presence) &&
-         page_info["hasNextPage"].presence
-        after = %Q(, after: "#{page_info["endCursor"]}")
-      else
-        has_next_page = false
-      end
+      current_sponsorships.fetch("pageInfo")
     end
 
     # Only raise errors if we didn't get any sponsorships.
