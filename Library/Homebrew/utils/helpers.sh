@@ -82,7 +82,7 @@ which() {
 }
 
 numeric() {
-  # Condense the exploded argument into a single return value.
-  # shellcheck disable=SC2086,SC2183
-  printf "%01d%02d%02d%03d" ${1//[.rc]/ } 2>/dev/null
+  local -a version_array
+  IFS=".rc" read -r -a version_array <<<"${1}"
+  printf "%01d%02d%02d%03d" "${version_array[@]}" 2>/dev/null
 }
