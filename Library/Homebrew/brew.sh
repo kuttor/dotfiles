@@ -387,7 +387,7 @@ fi
 # Docker image deprecation
 if [[ -f "${HOMEBREW_REPOSITORY}/.docker-deprecate" ]]
 then
-  DOCKER_DEPRECATION_MESSAGE="$(cat "${HOMEBREW_REPOSITORY}/.docker-deprecate")"
+  read -r DOCKER_DEPRECATION_MESSAGE <"${HOMEBREW_REPOSITORY}/.docker-deprecate"
   if [[ -n "${GITHUB_ACTIONS}" ]]
   then
     echo "::warning::${DOCKER_DEPRECATION_MESSAGE}" >&2
@@ -443,13 +443,13 @@ GIT_REVISION=$("${HOMEBREW_GIT}" -C "${HOMEBREW_REPOSITORY}" rev-parse HEAD 2>/d
 # safe fallback in case git rev-parse fails e.g. if this is not considered a safe git directory
 if [[ -z "${GIT_REVISION}" ]]
 then
-  GIT_HEAD="$(cat "${HOMEBREW_REPOSITORY}/.git/HEAD" 2>/dev/null)"
+  read -r GIT_HEAD <"${HOMEBREW_REPOSITORY}/.git/HEAD" 2>/dev/null
   if [[ "${GIT_HEAD}" == "ref: refs/heads/master" ]]
   then
-    GIT_REVISION="$(cat "${HOMEBREW_REPOSITORY}/.git/refs/heads/master" 2>/dev/null)"
+    read -r GIT_REVISION <"${HOMEBREW_REPOSITORY}/.git/refs/heads/master" 2>/dev/null
   elif [[ "${GIT_HEAD}" == "ref: refs/heads/stable" ]]
   then
-    GIT_REVISION="$(cat "${HOMEBREW_REPOSITORY}/.git/refs/heads/stable" 2>/dev/null)"
+    read -r GIT_REVISION <"${HOMEBREW_REPOSITORY}/.git/refs/heads/stable" 2>/dev/null
   fi
   unset GIT_HEAD
 fi
@@ -461,7 +461,7 @@ then
   if "${HOMEBREW_GIT}" -C "${HOMEBREW_REPOSITORY}" diff-index --quiet --exit-code HEAD -- 2>/dev/null &&
      [[ -r "${GIT_DESCRIBE_CACHE_FILE}" ]]
   then
-    GIT_DESCRIBE_CACHE_HOMEBREW_VERSION="$(cat "${GIT_DESCRIBE_CACHE_FILE}")"
+    read -r GIT_DESCRIBE_CACHE_HOMEBREW_VERSION <"${GIT_DESCRIBE_CACHE_FILE}"
     if [[ -n "${GIT_DESCRIBE_CACHE_HOMEBREW_VERSION}" && "${GIT_DESCRIBE_CACHE_HOMEBREW_VERSION}" != *"-dirty" ]]
     then
       HOMEBREW_VERSION="${GIT_DESCRIBE_CACHE_HOMEBREW_VERSION}"
