@@ -545,11 +545,13 @@ then
     HOMEBREW_PHYSICAL_PROCESSOR="arm64"
   fi
 
-  # Intentionally set this variable by exploding another.
-  # shellcheck disable=SC2086,SC2183
-  printf -v HOMEBREW_MACOS_VERSION_NUMERIC "%02d%02d%02d" ${HOMEBREW_MACOS_VERSION//./ }
-  # shellcheck disable=SC2248
-  printf -v HOMEBREW_MACOS_OLDEST_ALLOWED_NUMERIC "%02d%02d%02d" ${HOMEBREW_MACOS_OLDEST_ALLOWED//./ }
+  IFS=. read -r -a MACOS_VERSION_ARRAY <<<"${HOMEBREW_MACOS_VERSION}"
+  printf -v HOMEBREW_MACOS_VERSION_NUMERIC "%02d%02d%02d" "${MACOS_VERSION_ARRAY[@]}"
+
+  IFS=. read -r -a MACOS_VERSION_ARRAY <<<"${HOMEBREW_MACOS_OLDEST_ALLOWED}"
+  printf -v HOMEBREW_MACOS_OLDEST_ALLOWED_NUMERIC "%02d%02d%02d" "${MACOS_VERSION_ARRAY[@]}"
+
+  unset MACOS_VERSION_ARRAY
 
   # Don't include minor versions for Big Sur and later.
   if [[ "${HOMEBREW_MACOS_VERSION_NUMERIC}" -gt "110000" ]]
@@ -616,7 +618,6 @@ else
 
   curl_version_output="$(${HOMEBREW_CURL} --version 2>/dev/null)"
   curl_name_and_version="${curl_version_output%% (*}"
-  # shellcheck disable=SC2248
   if [[ "$(numeric "${curl_name_and_version##* }")" -lt "$(numeric "${HOMEBREW_MINIMUM_CURL_VERSION}")" ]]
   then
     message="Please update your system curl or set HOMEBREW_CURL_PATH to a newer version.
@@ -645,7 +646,6 @@ Your curl executable: $(type -p "${HOMEBREW_CURL}")"
   # $extra is intentionally discarded.
   # shellcheck disable=SC2034
   IFS='.' read -r major minor micro build extra <<<"${git_version_output##* }"
-  # shellcheck disable=SC2248
   if [[ "$(numeric "${major}.${minor}.${micro}.${build}")" -lt "$(numeric "${HOMEBREW_MINIMUM_GIT_VERSION}")" ]]
   then
     message="Please update your system Git or set HOMEBREW_GIT_PATH to a newer version.
@@ -962,17 +962,16 @@ check-run-command-as-root
 
 check-prefix-is-not-tmpdir
 
-# shellcheck disable=SC2250
 if [[ "${HOMEBREW_PREFIX}" == "/usr/local" ]] &&
    [[ "${HOMEBREW_PREFIX}" != "${HOMEBREW_REPOSITORY}" ]] &&
    [[ "${HOMEBREW_CELLAR}" == "${HOMEBREW_REPOSITORY}/Cellar" ]]
 then
   cat >&2 <<EOS
 Warning: your HOMEBREW_PREFIX is set to /usr/local but HOMEBREW_CELLAR is set
-to $HOMEBREW_CELLAR. Your current HOMEBREW_CELLAR location will stop
+to ${HOMEBREW_CELLAR}. Your current HOMEBREW_CELLAR location will stop
 you being able to use all the binary packages (bottles) Homebrew provides. We
 recommend you move your HOMEBREW_CELLAR to /usr/local/Cellar which will get you
-access to all bottles."
+access to all bottles.
 EOS
 fi
 
