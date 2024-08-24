@@ -915,8 +915,8 @@ module GitHub
     homebrew_prs_count = 0
 
     API.paginate_graphql(query) do |result|
-      data = result["viewer"]
-      github_user = data["login"]
+      data = result.fetch("viewer")
+      github_user = data.fetch("login")
 
       # BrewTestBot can open as many PRs as it wants.
       return false if github_user.casecmp("brewtestbot").zero?
