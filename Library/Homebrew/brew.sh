@@ -457,7 +457,9 @@ fi
 if [[ -n "${GIT_REVISION}" ]]
 then
   GIT_DESCRIBE_CACHE_FILE="${GIT_DESCRIBE_CACHE}/${GIT_REVISION}"
-  if [[ -r "${GIT_DESCRIBE_CACHE_FILE}" ]]
+  # Pass `--` to guard against `git` being confused by a file named `HEAD`.
+  if "${HOMEBREW_GIT}" -C "${HOMEBREW_REPOSITORY}" diff-index --quiet --exit-code HEAD -- 2>/dev/null &&
+     [[ -r "${GIT_DESCRIBE_CACHE_FILE}" ]]
   then
     GIT_DESCRIBE_CACHE_HOMEBREW_VERSION="$(cat "${GIT_DESCRIBE_CACHE_FILE}")"
     if [[ -n "${GIT_DESCRIBE_CACHE_HOMEBREW_VERSION}" && "${GIT_DESCRIBE_CACHE_HOMEBREW_VERSION}" != *"-dirty" ]]
