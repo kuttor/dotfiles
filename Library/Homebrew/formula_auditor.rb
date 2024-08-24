@@ -802,7 +802,7 @@ module Homebrew
         tag = SharedAudits.github_tag_from_url(url)
         tag ||= formula.stable.specs[:tag]
 
-        if @online
+        if @online && !tag.nil?
           error = SharedAudits.github_release(owner, repo, tag, formula:)
           problem error if error
         end
