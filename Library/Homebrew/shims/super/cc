@@ -5,7 +5,11 @@ then
   echo "${0##*/}: The build tool has reset ENV; --env=std required." >&2
   exit 1
 fi
-export HOMEBREW_LD_LIBRARY_PATH="${LD_LIBRARY_PATH}"
+unset HOMEBREW_LD_LIBRARY_PATH
+if [[ -n "${LD_LIBRARY_PATH+set}" ]]
+then
+  export HOMEBREW_LD_LIBRARY_PATH="${LD_LIBRARY_PATH}"
+fi
 unset LD_LIBRARY_PATH
 unset RUBYLIB
 exec "${HOMEBREW_RUBY_PATH}" --enable-frozen-string-literal --disable=gems,did_you_mean,rubyopt -x "$0" "$@"
