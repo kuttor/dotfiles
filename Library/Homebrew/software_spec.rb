@@ -436,6 +436,22 @@ class Bottle
     {}
   end
 
+  sig { returns(T.nilable(Integer)) }
+  def bottle_size
+    resource = github_packages_manifest_resource
+    return unless resource&.downloaded?
+
+    resource.bottle_size
+  end
+
+  sig { returns(T.nilable(Integer)) }
+  def installed_size
+    resource = github_packages_manifest_resource
+    return unless resource&.downloaded?
+
+    resource.installed_size
+  end
+
   sig { returns(Filename) }
   def filename
     Filename.create(resource.owner, @tag, @spec.rebuild)

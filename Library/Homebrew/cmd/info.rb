@@ -45,6 +45,8 @@ module Homebrew
         switch "--github",
                description: "Open the GitHub source page for <formula> and <cask> in a browser. " \
                             "To view the history locally: `brew log -p` <formula> or <cask>"
+        switch "--fetch-manifest",
+               description: "Fetch GitHub Packages manifest for extra information when <formula> is not installed."
         flag   "--json",
                description: "Print a JSON representation. Currently the default value for <version> is `v1` for " \
                             "<formula>. For <formula> and <cask> use `v2`. See the docs for examples of using the " \
@@ -69,6 +71,8 @@ module Homebrew
         conflicts "--installed", "--eval-all"
         conflicts "--installed", "--all"
         conflicts "--formula", "--cask"
+        conflicts "--fetch-manifest", "--cask"
+        conflicts "--fetch-manifest", "--json"
 
         named_args [:formula, :cask]
       end
@@ -303,6 +307,17 @@ module Homebrew
         ]
         if kegs.empty?
           puts "Not installed"
+          if (bottle = formula.bottle)
+            begin
+              bottle.fetch_tab(quiet: !args.debug?) if args.fetch_manifest?
+              bottle_size = bottle.bottle_size
+              installed_size = bottle.installed_size
+              puts "Bottle Size: #{disk_usage_readable(bottle_size)}" if bottle_size
+              puts "Installed Size: #{disk_usage_readable(installed_size)}" if installed_size
+            rescue RuntimeError => e
+              odebug e
+            end
+          end
         else
           puts "Installed"
           kegs.each do |keg|
