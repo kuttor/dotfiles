@@ -661,6 +661,7 @@ module Homebrew
           all_files = keg.find
                          .select(&:file?)
                          .map { |path| path.to_s.delete_prefix(keg_prefix) }
+          installed_size = keg.disk_usage
         end
 
         json = {
@@ -693,6 +694,7 @@ module Homebrew
                   "tab"             => tab.to_bottle_hash,
                   "path_exec_files" => path_exec_files,
                   "all_files"       => all_files,
+                  "installed_size"  => installed_size,
                 },
               },
             },
