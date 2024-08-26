@@ -306,7 +306,7 @@ class GitHubPackages
         "org.opencontainers.image.created"       => created_date,
         "org.opencontainers.image.description"   => bottle_hash["formula"]["desc"],
         "org.opencontainers.image.documentation" => documentation,
-        "org.opencontainers.image.license"       => bottle_hash["formula"]["license"],
+        "org.opencontainers.image.licenses"      => bottle_hash["formula"]["license"],
         "org.opencontainers.image.ref.name"      => version_rebuild,
         "org.opencontainers.image.revision"      => git_revision,
         "org.opencontainers.image.source"        => source,
