@@ -55,7 +55,7 @@ jobs:
           github.event_name == 'release' ||
           (github.event_name == 'push' && github.ref == 'refs/heads/master')
         run: |
-          echo "$TOKEN" | docker login ghcr.io -u BrewTestBot --password-stdin
+          docker login ghcr.io -u BrewTestBot --password-stdin <<<"$TOKEN"
         env:
           TOKEN: ${{secrets.HOMEBREW_BREW_GITHUB_PACKAGES_TOKEN}}
 
@@ -64,7 +64,7 @@ jobs:
           github.event_name == 'release' ||
           (github.event_name == 'push' && github.ref == 'refs/heads/master')
         run: |
-          echo "$TOKEN" | docker login -u brewtestbot --password-stdin
+          docker login -u brewtestbot --password-stdin <<<"$TOKEN"
         env:
           TOKEN: ${{secrets.HOMEBREW_BREW_DOCKER_TOKEN}}
 
