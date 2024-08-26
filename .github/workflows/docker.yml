@@ -1,23 +1,21 @@
 name: Docker
+
 on:
   pull_request:
-    paths:
-      - .github/workflows/docker.yml
-      - Dockerfile
   push:
-    paths:
-      - .github/workflows/docker.yml
-      - Dockerfile
-    branches-ignore:
+    branches:
       - master
+  merge_group:
   release:
     types:
       - published
+
 permissions:
   contents: read
+
 jobs:
   ubuntu:
-    if: startsWith(github.repository, 'Homebrew/')
+    if: github.repository_owner == 'Homebrew'
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -52,28 +50,44 @@ jobs:
       - name: Run brew test-bot --only-setup
         run: docker run --rm brew brew test-bot --only-setup
 
+      - name: Log in to GitHub Packages
+        if: >
+          github.event_name == 'release' ||
+          (github.event_name == 'push' && github.ref == 'refs/heads/master')
+        run: |
+          echo "$TOKEN" | docker login ghcr.io -u BrewTestBot --password-stdin
+        env:
+          TOKEN: ${{secrets.HOMEBREW_BREW_GITHUB_PACKAGES_TOKEN}}
+
+      - name: Log in to Docker Hub
+        if: >
+          github.event_name == 'release' ||
+          (github.event_name == 'push' && github.ref == 'refs/heads/master')
+        run: |
+          echo "$TOKEN" | docker login -u brewtestbot --password-stdin
+        env:
+          TOKEN: ${{secrets.HOMEBREW_BREW_DOCKER_TOKEN}}
+
       - name: Deploy the tagged Docker image to GitHub Packages
-        if: startsWith(github.ref, 'refs/tags/')
+        if: github.event_name == 'release'
         run: |
           brew_version="${GITHUB_REF:10}"
           echo "brew_version=${brew_version}" >> "${GITHUB_ENV}"
-          echo ${{secrets.HOMEBREW_BREW_GITHUB_PACKAGES_TOKEN}} | docker login ghcr.io -u BrewTestBot --password-stdin
           docker tag brew "ghcr.io/homebrew/ubuntu${{matrix.version}}:${brew_version}"
           docker push "ghcr.io/homebrew/ubuntu${{matrix.version}}:${brew_version}"
           docker tag brew "ghcr.io/homebrew/ubuntu${{matrix.version}}:latest"
           docker push "ghcr.io/homebrew/ubuntu${{matrix.version}}:latest"
 
       - name: Deploy the tagged Docker image to Docker Hub
-        if: startsWith(github.ref, 'refs/tags/')
+        if: github.event_name == 'release'
         run: |
-          echo ${{secrets.HOMEBREW_BREW_DOCKER_TOKEN}} | docker login -u brewtestbot --password-stdin
           docker tag brew "homebrew/ubuntu${{matrix.version}}:${brew_version}"
           docker push "homebrew/ubuntu${{matrix.version}}:${brew_version}"
           docker tag brew "homebrew/ubuntu${{matrix.version}}:latest"
           docker push "homebrew/ubuntu${{matrix.version}}:latest"
 
       - name: Deploy the homebrew/brew Docker image to GitHub Packages and Docker Hub
-        if: startsWith(github.ref, 'refs/tags/') && matrix.version == '22.04'
+        if: github.event_name == 'release' && matrix.version == '22.04'
         run: |
           docker tag brew "ghcr.io/homebrew/brew:${brew_version}"
           docker push "ghcr.io/homebrew/brew:${brew_version}"
@@ -83,3 +97,13 @@ jobs:
           docker push "homebrew/brew:${brew_version}"
           docker tag brew "homebrew/brew:latest"
           docker push "homebrew/brew:latest"
+
+      - name: Deploy the homebrew/ubuntu22.04:master Docker image to GitHub Packages and Docker Hub
+        if: >
+          github.event_name == 'push' && github.ref == 'refs/heads/master' &&
+          matrix.version == '22.04'
+        run: |
+          docker tag brew "ghcr.io/homebrew/ubuntu22.04:master"
+          docker push "ghcr.io/homebrew/ubuntu22.04:master"
+          docker tag brew "homebrew/ubuntu22.04:master"
+          docker push "homebrew/ubuntu22.04:master"
