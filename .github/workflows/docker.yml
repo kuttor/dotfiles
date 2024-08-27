@@ -31,21 +31,35 @@ jobs:
       - name: Fetch origin/master from Git
         run: git fetch origin master
 
-      - name: Build Docker image
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3
+
+      - name: Determine build attributes
+        id: attributes
         run: |
-          brew_version="$(git describe --tags --dirty --abbrev=7)"
-          echo "Building for Homebrew ${brew_version}"
-          docker build -t brew \
-               --build-arg=version=${{matrix.version}} \
-               --label org.opencontainers.image.created="$(date --rfc-3339=seconds --utc)" \
-               --label org.opencontainers.image.url="https://brew.sh" \
-               --label org.opencontainers.image.documentation="https://docs.brew.sh" \
-               --label org.opencontainers.image.source="https://github.com/${GITHUB_REPOSITORY}" \
-               --label org.opencontainers.image.version="${brew_version}" \
-               --label org.opencontainers.image.revision="${GITHUB_SHA}" \
-               --label org.opencontainers.image.vendor="${GITHUB_REPOSITORY_OWNER}" \
-               --label org.opencontainers.image.licenses="BSD-2-Clause" \
-               .
+          {
+            echo "date=$(date --rfc-3339=seconds --utc)"
+            echo "brew_version=$(git describe --tags --dirty --abbrev=7)"
+          } | tee -a "${GITHUB_OUTPUT}"
+
+      - name: Build Docker image
+        uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6
+        with:
+          push: false
+          tags: brew
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            version=${{ matrix.version }}
+          labels: |
+            org.opencontainers.image.created=${{ steps.attributes.outputs.date }}
+            org.opencontainers.image.url=https://brew.sh
+            org.opencontainers.image.documentation=https://docs.brew.sh
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ steps.attributes.outputs.brew_version }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.vendor=${{ github.repository_owner }}
+            org.opencontainers.image.licenses=BSD-2-Clause
 
       - name: Run brew test-bot --only-setup
         run: docker run --rm brew brew test-bot --only-setup
