@@ -712,10 +712,10 @@ class Tap
       if formula_dir == path
         # We only want the top level here so we don't treat commands & casks as formulae.
         # Sharding is only supported in Formula/ and HomebrewFormula/.
-        Dir.glob(File.join(formula_dir.to_s, "*.rb"))
+        Pathname.glob(formula_dir/"*.rb")
       else
-        Dir.glob(File.join(formula_dir.to_s, "**/*.rb"))
-      end.map { Pathname(_1) }
+        Pathname.glob(formula_dir/"**/*.rb")
+      end
     else
       []
     end
@@ -736,7 +736,7 @@ class Tap
   sig { returns(T::Array[Pathname]) }
   def cask_files
     @cask_files ||= if cask_dir.directory?
-      Dir.glob(File.join(cask_dir.to_s, "**/*.rb")).map { Pathname(_1) }
+      Pathname.glob(cask_dir/"**/*.rb")
     else
       []
     end
