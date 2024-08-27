@@ -197,9 +197,6 @@ module SharedAudits
 
   sig { params(url: String).returns(T.nilable(String)) }
   def self.gitlab_tag_from_url(url)
-    url = url.to_s
-    url.match(%r{^https://gitlab\.com/[\w-]+/[\w-]+/-/archive/([^/]+)/})
-       .to_a
-       .second
+    url[%r{^https://gitlab\.com/(?:\w[\w.-]*/){2,}-/archive/([^/]+)/}, 1]
   end
 end
