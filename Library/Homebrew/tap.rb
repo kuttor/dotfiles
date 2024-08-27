@@ -755,13 +755,15 @@ class Tap
 
   sig { returns(Regexp) }
   def formula_file_regex
-    @formula_file_regex ||= case formula_dir.basename.to_s
-    when "Formula"
+    @formula_file_regex ||= case formula_dir
+    when path/"Formula"
       %r{^Formula(/[^/]+)+\.rb$}
-    when "HomebrewFormula"
+    when path/"HomebrewFormula"
       %r{^HomebrewFormula(/[^/]+)+\.rb$}
-    else
+    when path
       %r{^[^/]+\.rb$}
+    else
+      raise ArgumentError, "Unexpected formula_dir: #{formula_dir}"
     end
   end
   private :formula_file_regex
