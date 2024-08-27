@@ -40,8 +40,9 @@ jobs:
           date="$(date --rfc-3339=seconds --utc)"
           brew_version="$(git describe --tags --dirty --abbrev=7)"
 
+          DELIMITER="END_LABELS_$(LC_ALL=C tr -dc '[:alnum:]' </dev/urandom | head -c20)"
           cat <<EOS | tee -a "${GITHUB_OUTPUT}"
-          labels<<END_LABELS
+          labels<<${DELIMITER}
           org.opencontainers.image.created=${date}
           org.opencontainers.image.url=https://brew.sh
           org.opencontainers.image.documentation=https://docs.brew.sh
@@ -50,7 +51,7 @@ jobs:
           org.opencontainers.image.revision=${GITHUB_SHA}
           org.opencontainers.image.vendor=${GITHUB_REPOSITORY_OWNER}
           org.opencontainers.image.licenses=BSD-2-Clause
-          END_LABELS
+          ${DELIMITER}
           EOS
 
           tags=()
@@ -80,9 +81,10 @@ jobs:
 
           {
             if [[ "${#tags[@]}" -ne 0 ]]; then
-              echo "tags<<END_TAGS"
+              DELIMITER="END_TAGS_$(LC_ALL=C tr -dc '[:alnum:]' </dev/urandom | head -c20)"
+              echo "tags<<${DELIMITER}"
               printf "%s\n" "${tags[@]}"
-              echo "END_TAGS"
+              echo "${DELIMITER}"
               echo "push=true"
             else
               echo "push=false"
