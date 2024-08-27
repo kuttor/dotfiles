@@ -685,7 +685,9 @@ module Homebrew
               "root_url" => bottle.root_url,
               "cellar"   => bottle_cellar.to_s,
               "rebuild"  => bottle.rebuild,
-              "date"     => Pathname(filename.to_s).mtime.strftime("%F"),
+              # date is used for org.opencontainers.image.created which is an RFC 3339 date-time.
+              # Time#iso8601 produces an XML Schema date-time that meets RFC 3339 ABNF.
+              "date"     => Pathname(filename.to_s).mtime.utc.iso8601,
               "tags"     => {
                 bottle_tag.to_s => {
                   "filename"        => filename.url_encode,
