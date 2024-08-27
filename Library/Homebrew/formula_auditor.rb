@@ -790,7 +790,7 @@ module Homebrew
 
         tag = SharedAudits.gitlab_tag_from_url(url)
         tag ||= stable.specs[:tag]
-        tag ||= stable.version
+        tag ||= stable.version.to_s
 
         if @online
           error = SharedAudits.gitlab_release(owner, repo, tag, formula:)
