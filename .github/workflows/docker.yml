@@ -37,89 +37,95 @@ jobs:
       - name: Determine build attributes
         id: attributes
         run: |
+          date="$(date --rfc-3339=seconds --utc)"
+          brew_version="$(git describe --tags --dirty --abbrev=7)"
+
+          cat <<EOS | tee -a "${GITHUB_OUTPUT}"
+          labels<<END_LABELS
+          org.opencontainers.image.created=${date}
+          org.opencontainers.image.url=https://brew.sh
+          org.opencontainers.image.documentation=https://docs.brew.sh
+          org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}
+          org.opencontainers.image.version=${brew_version}
+          org.opencontainers.image.revision=${GITHUB_SHA}
+          org.opencontainers.image.vendor=${GITHUB_REPOSITORY_OWNER}
+          org.opencontainers.image.licenses=BSD-2-Clause
+          END_LABELS
+          EOS
+
+          tags=()
+          if [[ "${GITHUB_EVENT_NAME}" == "release" ]]; then
+            tags+=(
+              "ghcr.io/homebrew/ubuntu${{matrix.version}}:${brew_version}"
+              "ghcr.io/homebrew/ubuntu${{matrix.version}}:latest"
+              "homebrew/ubuntu${{matrix.version}}:${brew_version}"
+              "homebrew/ubuntu${{matrix.version}}:latest"
+            )
+            if [[ "${{ matrix.version }}" == "22.04" ]]; then
+              tags+=(
+                "ghcr.io/homebrew/brew:${brew_version}"
+                "ghcr.io/homebrew/brew:latest"
+                "homebrew/brew:${brew_version}"
+                "homebrew/brew:latest"
+              )
+            fi
+          elif [[ "${GITHUB_EVENT_NAME}" == "push" &&
+                  "${GITHUB_REF}" == "refs/heads/master" &&
+                  "${{ matrix.version }}" == "22.04" ]]; then
+            tags+=(
+              "ghcr.io/homebrew/ubuntu${{ matrix.version }}:master"
+              "homebrew/ubuntu${{matrix.version}}:master"
+            )
+          fi
+
           {
-            echo "date=$(date --rfc-3339=seconds --utc)"
-            echo "brew_version=$(git describe --tags --dirty --abbrev=7)"
+            if [[ "${#tags[@]}" -ne 0 ]]; then
+              echo "tags<<END_TAGS"
+              printf "%s\n" "${tags[@]}"
+              echo "END_TAGS"
+              echo "push=true"
+            else
+              echo "push=false"
+            fi
           } | tee -a "${GITHUB_OUTPUT}"
 
       - name: Build Docker image
         uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6
         with:
-          push: false
+          context: .
+          load: true
           tags: brew
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            version=${{ matrix.version }}
-          labels: |
-            org.opencontainers.image.created=${{ steps.attributes.outputs.date }}
-            org.opencontainers.image.url=https://brew.sh
-            org.opencontainers.image.documentation=https://docs.brew.sh
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.version=${{ steps.attributes.outputs.brew_version }}
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.vendor=${{ github.repository_owner }}
-            org.opencontainers.image.licenses=BSD-2-Clause
+          build-args: version=${{ matrix.version }}
+          labels: ${{ steps.attributes.outputs.labels }}
 
       - name: Run brew test-bot --only-setup
         run: docker run --rm brew brew test-bot --only-setup
 
       - name: Log in to GitHub Packages
-        if: >
-          github.event_name == 'release' ||
-          (github.event_name == 'push' && github.ref == 'refs/heads/master' &&
-           matrix.version == '22.04')
-        run: |
-          docker login ghcr.io -u BrewTestBot --password-stdin <<<"$TOKEN"
-        env:
-          TOKEN: ${{secrets.HOMEBREW_BREW_GITHUB_PACKAGES_TOKEN}}
+        if: steps.attributes.outputs.push == 'true'
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+        with:
+          registry: ghcr.io
+          username: BrewTestBot
+          password: ${{ secrets.HOMEBREW_BREW_GITHUB_PACKAGES_TOKEN }}
 
       - name: Log in to Docker Hub
-        if: >
-          github.event_name == 'release' ||
-          (github.event_name == 'push' && github.ref == 'refs/heads/master' &&
-           matrix.version == '22.04')
-        run: |
-          docker login -u brewtestbot --password-stdin <<<"$TOKEN"
-        env:
-          TOKEN: ${{secrets.HOMEBREW_BREW_DOCKER_TOKEN}}
+        if: steps.attributes.outputs.push == 'true'
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+        with:
+          username: brewtestbot
+          password: ${{ secrets.HOMEBREW_BREW_DOCKER_TOKEN }}
 
-      - name: Deploy the tagged Docker image to GitHub Packages
-        if: github.event_name == 'release'
-        run: |
-          brew_version="${GITHUB_REF:10}"
-          echo "brew_version=${brew_version}" >> "${GITHUB_ENV}"
-          docker tag brew "ghcr.io/homebrew/ubuntu${{matrix.version}}:${brew_version}"
-          docker push "ghcr.io/homebrew/ubuntu${{matrix.version}}:${brew_version}"
-          docker tag brew "ghcr.io/homebrew/ubuntu${{matrix.version}}:latest"
-          docker push "ghcr.io/homebrew/ubuntu${{matrix.version}}:latest"
-
-      - name: Deploy the tagged Docker image to Docker Hub
-        if: github.event_name == 'release'
-        run: |
-          docker tag brew "homebrew/ubuntu${{matrix.version}}:${brew_version}"
-          docker push "homebrew/ubuntu${{matrix.version}}:${brew_version}"
-          docker tag brew "homebrew/ubuntu${{matrix.version}}:latest"
-          docker push "homebrew/ubuntu${{matrix.version}}:latest"
-
-      - name: Deploy the homebrew/brew Docker image to GitHub Packages and Docker Hub
-        if: github.event_name == 'release' && matrix.version == '22.04'
-        run: |
-          docker tag brew "ghcr.io/homebrew/brew:${brew_version}"
-          docker push "ghcr.io/homebrew/brew:${brew_version}"
-          docker tag brew "ghcr.io/homebrew/brew:latest"
-          docker push "ghcr.io/homebrew/brew:latest"
-          docker tag brew "homebrew/brew:${brew_version}"
-          docker push "homebrew/brew:${brew_version}"
-          docker tag brew "homebrew/brew:latest"
-          docker push "homebrew/brew:latest"
-
-      - name: Deploy the homebrew/ubuntu22.04:master Docker image to GitHub Packages and Docker Hub
-        if: >
-          github.event_name == 'push' && github.ref == 'refs/heads/master' &&
-          matrix.version == '22.04'
-        run: |
-          docker tag brew "ghcr.io/homebrew/ubuntu22.04:master"
-          docker push "ghcr.io/homebrew/ubuntu22.04:master"
-          docker tag brew "homebrew/ubuntu22.04:master"
-          docker push "homebrew/ubuntu22.04:master"
+      - name: Deploy the tagged Docker image
+        if: steps.attributes.outputs.push == 'true'
+        uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.attributes.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: version=${{ matrix.version }}
+          labels: ${{ steps.attributes.outputs.labels }}
