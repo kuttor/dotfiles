@@ -53,7 +53,8 @@ jobs:
       - name: Log in to GitHub Packages
         if: >
           github.event_name == 'release' ||
-          (github.event_name == 'push' && github.ref == 'refs/heads/master')
+          (github.event_name == 'push' && github.ref == 'refs/heads/master' &&
+           matrix.version == '22.04')
         run: |
           docker login ghcr.io -u BrewTestBot --password-stdin <<<"$TOKEN"
         env:
@@ -62,7 +63,8 @@ jobs:
       - name: Log in to Docker Hub
         if: >
           github.event_name == 'release' ||
-          (github.event_name == 'push' && github.ref == 'refs/heads/master')
+          (github.event_name == 'push' && github.ref == 'refs/heads/master' &&
+           matrix.version == '22.04')
         run: |
           docker login -u brewtestbot --password-stdin <<<"$TOKEN"
         env:
