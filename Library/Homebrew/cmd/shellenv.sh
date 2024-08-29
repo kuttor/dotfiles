@@ -22,12 +22,14 @@ homebrew-shellenv() {
      [[ "${HOMEBREW_MACOS_VERSION_NUMERIC}" -ge "140000" ]] &&
      [[ -x /usr/libexec/path_helper ]]
   then
-    if [[ ! -f "${HOMEBREW_PREFIX}/etc/paths" ]]
+    HOMEBREW_PATHS_FILE="${HOMEBREW_PREFIX}/etc/paths"
+
+    if [[ ! -f "${HOMEBREW_PATHS_FILE}" ]]
     then
-      printf '%s/bin\n%s/sbin\n' "${HOMEBREW_PREFIX}" "${HOMEBREW_PREFIX}" >"${HOMEBREW_PREFIX}/etc/paths"
+      printf '%s/bin\n%s/sbin\n' "${HOMEBREW_PREFIX}" "${HOMEBREW_PREFIX}" >"${HOMEBREW_PATHS_FILE}"
     fi
 
-    if [[ -r "${HOMEBREW_PREFIX}/etc/paths" ]]
+    if [[ -r "${HOMEBREW_PATHS_FILE}" ]]
     then
       PATH_HELPER_ROOT="${HOMEBREW_PREFIX}"
     fi
