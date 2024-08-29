@@ -16,15 +16,6 @@ The type of change you want to make influences which of Homebrew's main reposito
 
 ### Core `brew` code pull request
 
-Before getting started, please read the [Acceptable Formulae](https://github.com/Homebrew/brew/blob/master/docs/Acceptable-Formulae.md) and note that we cannot distribute every single piece of software and have to draw a line on “notability” somewhere. If you don't meet notability requirements you might consider [creating your own tap](https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap). Of course, we would be happy to reconsider in the future!
-
-Notability [auditor](https://github.com/Homebrew/brew/blob/638a3dc3a33c4c2029db058cf3d399008621e973/Library/Homebrew/utils/shared_audits.rb) will fail on repositories that do not meet:
-
-- **>29** days old
-- **>29** forks
-- **>29** watchers (Github only)
-- **>74** stars
-
 1. [Fork the Homebrew/brew repository on GitHub](https://github.com/Homebrew/brew/fork).
    * This creates a personal remote repository that you can push to. This is needed because only Homebrew maintainers have push access to the main repositories.
 2. Change to the directory containing your Homebrew installation:
@@ -42,6 +33,15 @@ Notability [auditor](https://github.com/Homebrew/brew/blob/638a3dc3a33c4c2029db0
    * `<YOUR_USERNAME>` is your GitHub username, not your local machine username.
 
 ### Formulae-related pull request
+
+Before getting started with a new formulae, please read the [Acceptable Formulae](https://github.com/Homebrew/brew/blob/master/docs/Acceptable-Formulae.md) and note that we cannot distribute every single piece of software and have to draw a line on “notability” somewhere. If you don't meet notability requirements you might consider [creating your own tap](https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap). Of course, we would be happy to reconsider in the future!
+
+Notability [auditor](https://github.com/Homebrew/brew/blob/638a3dc3a33c4c2029db058cf3d399008621e973/Library/Homebrew/utils/shared_audits.rb) will fail on repositories that do not meet:
+
+* **>29** days old
+* **>29** forks
+* **>29** watchers (Github only)
+* **>74** stars
 
 1. [Fork the Homebrew/homebrew-core repository on GitHub](https://github.com/Homebrew/homebrew-core/fork).
    * This creates a personal remote repository that you can push to. This is needed because only Homebrew maintainers have push access to the main repositories.
