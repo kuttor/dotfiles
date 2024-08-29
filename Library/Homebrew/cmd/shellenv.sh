@@ -26,7 +26,7 @@ homebrew-shellenv() {
 
     if [[ ! -f "${HOMEBREW_PATHS_FILE}" ]]
     then
-      printf '%s/bin\n%s/sbin\n' "${HOMEBREW_PREFIX}" "${HOMEBREW_PREFIX}" >"${HOMEBREW_PATHS_FILE}"
+      printf '%s/bin\n%s/sbin\n' "${HOMEBREW_PREFIX}" "${HOMEBREW_PREFIX}" >"${HOMEBREW_PATHS_FILE}" 2>/dev/null
     fi
 
     if [[ -r "${HOMEBREW_PATHS_FILE}" ]]
