@@ -369,17 +369,6 @@ then
   odie "Cowardly refusing to continue at this prefix: ${HOMEBREW_PREFIX}"
 fi
 
-# Many Pathname operations use getwd when they shouldn't, and then throw
-# odd exceptions. Reduce our support burden by showing a user-friendly error.
-if ! [[ -d "${PWD}" ]]
-then
-  odie "The current working directory must exist to run brew."
-fi
-if ! [[ -r "${PWD}" ]]
-then
-  odie "The current working directory must be readable to ${USER} to run brew."
-fi
-
 #####
 ##### Now, do everything else (that may be a bit slower).
 #####
