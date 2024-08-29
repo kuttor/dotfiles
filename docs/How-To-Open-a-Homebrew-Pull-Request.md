@@ -16,7 +16,7 @@ The type of change you want to make influences which of Homebrew's main reposito
 
 ### Core `brew` code pull request
 
-Before getting started, please note that we cannot distribute every single piece of software and have to draw a line on “notability” somewhere. Of course, we would be happy to reconsider in the future. If you don't meet notability requirements you might consider [creating your own tap](https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap).
+Before getting started, please read the [Acceptable Formulae](https://github.com/Homebrew/brew/blob/master/docs/Acceptable-Formulae.md) and note that we cannot distribute every single piece of software and have to draw a line on “notability” somewhere. If you don't meet notability requirements you might consider [creating your own tap](https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap). Of course, we would be happy to reconsider in the future!
 
 Notability [auditor](https://github.com/Homebrew/brew/blob/638a3dc3a33c4c2029db058cf3d399008621e973/Library/Homebrew/utils/shared_audits.rb) will fail on repositories that do not meet:
 
