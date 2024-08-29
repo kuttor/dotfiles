@@ -36,7 +36,6 @@ The type of change you want to make influences which of Homebrew's main reposito
 
 Before creating a new formulae, please read [Acceptable Formulae](https://docs.brew.sh/Acceptable-Formulae).
 
-
 1. [Fork the Homebrew/homebrew-core repository on GitHub](https://github.com/Homebrew/homebrew-core/fork).
    * This creates a personal remote repository that you can push to. This is needed because only Homebrew maintainers have push access to the main repositories.
 2. Tap (download a local clone of) the repository of core Homebrew formulae:
