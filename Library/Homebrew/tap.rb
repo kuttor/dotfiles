@@ -753,15 +753,21 @@ class Tap
     end
   end
 
+  RUBY_FILE_NAME_REGEX = %r{[^/]+\.rb}
+  private_constant :RUBY_FILE_NAME_REGEX
+
+  ZERO_OR_MORE_SUBDIRECTORIES_REGEX = %r{(?:[^/]+/)*}
+  private_constant :ZERO_OR_MORE_SUBDIRECTORIES_REGEX
+
   sig { returns(Regexp) }
   def formula_file_regex
     @formula_file_regex ||= case formula_dir
     when path/"Formula"
-      %r{^Formula(/[^/]+)+\.rb$}
+      %r{^Formula/#{ZERO_OR_MORE_SUBDIRECTORIES_REGEX.source}#{RUBY_FILE_NAME_REGEX.source}$}o
     when path/"HomebrewFormula"
-      %r{^HomebrewFormula(/[^/]+)+\.rb$}
+      %r{^HomebrewFormula/#{ZERO_OR_MORE_SUBDIRECTORIES_REGEX.source}#{RUBY_FILE_NAME_REGEX.source}$}o
     when path
-      %r{^[^/]+\.rb$}
+      /^#{RUBY_FILE_NAME_REGEX.source}$/o
     else
       raise ArgumentError, "Unexpected formula_dir: #{formula_dir}"
     end
@@ -774,7 +780,7 @@ class Tap
     file.match?(formula_file_regex)
   end
 
-  CASK_FILE_REGEX = %r{^Casks(/[^/]+)+\.rb$}
+  CASK_FILE_REGEX = %r{^Casks/#{ZERO_OR_MORE_SUBDIRECTORIES_REGEX.source}#{RUBY_FILE_NAME_REGEX.source}$}
   private_constant :CASK_FILE_REGEX
 
   # accepts the relative path of a file from {Tap}'s path
