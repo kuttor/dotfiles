@@ -185,14 +185,8 @@ module SharedAudits
 
   sig { params(url: String).returns(T.nilable(String)) }
   def self.github_tag_from_url(url)
-    url = url.to_s
-    tag = url.match(%r{^https://github\.com/[\w-]+/[\w-]+/archive/refs/tags/([^/]+)\.(tar\.gz|zip)$})
-             .to_a
-             .second
-    tag ||= url.match(%r{^https://github\.com/[\w-]+/[\w-]+/releases/download/([^/]+)/})
-               .to_a
-               .second
-    tag
+    tag = url[%r{^https://github\.com/[\w-]+/[\w.-]+/archive/refs/tags/(.+)\.(tar\.gz|zip)$}, 1]
+    tag || url[%r{^https://github\.com/[\w-]+/[\w.-]+/releases/download/([^/]+)/}, 1]
   end
 
   sig { params(url: String).returns(T.nilable(String)) }
