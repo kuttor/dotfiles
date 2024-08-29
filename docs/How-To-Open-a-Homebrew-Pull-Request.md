@@ -34,15 +34,7 @@ The type of change you want to make influences which of Homebrew's main reposito
 
 ### Formulae-related pull request
 
-Before getting started with a new formulae, please read the [Acceptable Formulae](https://github.com/Homebrew/brew/blob/master/docs/Acceptable-Formulae.md) and note that we cannot distribute every single piece of software and have to draw a line on “notability” somewhere. If you don't meet notability requirements you might consider [creating your own tap](https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap). Of course, we would be happy to reconsider in the future!
-
-Notability [auditor](https://github.com/Homebrew/brew/blob/638a3dc3a33c4c2029db058cf3d399008621e973/Library/Homebrew/utils/shared_audits.rb) will fail on repositories that do not meet:
-
-* **>29** days old
-* **>29** forks
-* **>29** watchers (Github only)
-* **>74** stars
-
+Before creating a new formulae, please read [Acceptable Formulae](https://github.com/Homebrew/brew/blob/master/docs/Acceptable-Formulae.md).
 1. [Fork the Homebrew/homebrew-core repository on GitHub](https://github.com/Homebrew/homebrew-core/fork).
    * This creates a personal remote repository that you can push to. This is needed because only Homebrew maintainers have push access to the main repositories.
 2. Tap (download a local clone of) the repository of core Homebrew formulae:
