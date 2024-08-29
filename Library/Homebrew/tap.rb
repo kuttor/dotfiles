@@ -753,34 +753,40 @@ class Tap
     end
   end
 
-  # Check whether the file has a Ruby extension.
-  sig { params(file: Pathname).returns(T::Boolean) }
-  def ruby_file?(file)
-    file.extname == ".rb"
-  end
-  private :ruby_file?
+  RUBY_FILE_NAME_REGEX = %r{[^/]+\.rb}
+  private_constant :RUBY_FILE_NAME_REGEX
 
-  # Check whether the given path would present a {Formula} file in this {Tap}.
-  # Accepts either an absolute path or a path relative to this {Tap}'s path.
-  sig { params(file: T.any(String, Pathname)).returns(T::Boolean) }
+  ZERO_OR_MORE_SUBDIRECTORIES_REGEX = %r{(?:[^/]+/)*}
+  private_constant :ZERO_OR_MORE_SUBDIRECTORIES_REGEX
+
+  sig { returns(Regexp) }
+  def formula_file_regex
+    @formula_file_regex ||= case formula_dir
+    when path/"Formula"
+      %r{^Formula/#{ZERO_OR_MORE_SUBDIRECTORIES_REGEX.source}#{RUBY_FILE_NAME_REGEX.source}$}o
+    when path/"HomebrewFormula"
+      %r{^HomebrewFormula/#{ZERO_OR_MORE_SUBDIRECTORIES_REGEX.source}#{RUBY_FILE_NAME_REGEX.source}$}o
+    when path
+      /^#{RUBY_FILE_NAME_REGEX.source}$/o
+    else
+      raise ArgumentError, "Unexpected formula_dir: #{formula_dir}"
+    end
+  end
+  private :formula_file_regex
+
+  # accepts the relative path of a file from {Tap}'s path
+  sig { params(file: String).returns(T::Boolean) }
   def formula_file?(file)
-    file = Pathname.new(file) unless file.is_a? Pathname
-    file = file.expand_path(path)
-    return false unless ruby_file?(file)
-    return false if cask_file?(file)
-
-    file.to_s.start_with?("#{formula_dir}/")
+    file.match?(formula_file_regex)
   end
 
-  # Check whether the given path would present a {Cask} file in this {Tap}.
-  # Accepts either an absolute path or a path relative to this {Tap}'s path.
-  sig { params(file: T.any(String, Pathname)).returns(T::Boolean) }
-  def cask_file?(file)
-    file = Pathname.new(file) unless file.is_a? Pathname
-    file = file.expand_path(path)
-    return false unless ruby_file?(file)
+  CASK_FILE_REGEX = %r{^Casks/#{ZERO_OR_MORE_SUBDIRECTORIES_REGEX.source}#{RUBY_FILE_NAME_REGEX.source}$}
+  private_constant :CASK_FILE_REGEX
 
-    file.to_s.start_with?("#{cask_dir}/")
+  # accepts the relative path of a file from {Tap}'s path
+  sig { params(file: String).returns(T::Boolean) }
+  def cask_file?(file)
+    file.match?(CASK_FILE_REGEX)
   end
 
   # An array of all {Formula} names of this {Tap}.
