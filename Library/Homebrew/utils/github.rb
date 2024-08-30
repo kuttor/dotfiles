@@ -435,7 +435,7 @@ module GitHub
   }
   def self.sponsorships(user)
     query = <<~EOS
-        query($user: String, $after: String) { organization(login: $user) {
+        query($user: String!, $after: String) { organization(login: $user) {
           sponsorshipsAsMaintainer(first: 100, after: $after) {
             pageInfo {
               hasNextPage
