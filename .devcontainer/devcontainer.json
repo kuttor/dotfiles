@@ -14,11 +14,11 @@
         "Homebrew/homebrew-bundle": {
           "permissions": {
             "contents": "write"
-          },
-          "Homebrew/homebrew-services": {
-            "permissions": {
-              "contents": "write"
-            }
+          }
+        },
+        "Homebrew/homebrew-services": {
+          "permissions": {
+            "contents": "write"
           }
         }
       }
