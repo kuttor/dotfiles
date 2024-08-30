@@ -4158,14 +4158,14 @@ Popoff, Mike McQuaid and Rylan Polster.
 
 Homebrew's maintainers are Alexander Bayandin, Bevan Kay, Bo Anderson, Branch
 Vincent, Caleb Xu, Carlo Cabrera, Douglas Eichelberger, Dustin Rodrigues, Eric
-Knibbe, FX Coudert, Issy Long, Justin Krehel, Klaus Hipp, Markus Reiter, Miccal
-Matthews, Michael Cho, Michka Popoff, Mike McQuaid, Nanda H Krishna, Patrick
-Linnane, Rui Chen, Ruoyu Zhong, Rylan Polster, Sam Ford, Sean Molenaar, Thierry
-Moisan, Timothy Sutton, William Woodruff and Štefan Baebler.
+Knibbe, FX Coudert, Issy Long, Justin Krehel, Klaus Hipp, Markus Reiter, Michael
+Cho, Michka Popoff, Mike McQuaid, Nanda H Krishna, Patrick Linnane, Rui Chen,
+Ruoyu Zhong, Rylan Polster, Sam Ford, Sean Molenaar, Thierry Moisan, Timothy
+Sutton, William Woodruff and Štefan Baebler.
 
-Former maintainers with significant contributions include Misty De Méo, Shaun
-Jackman, Vítor Galvão, Claudia Pellegrino, Seeker, Jan Viljanen, JCount,
-commitay, Dominyk Tiller, Tim Smith, Baptiste Fontaine, Xu Cheng, Martin
+Former maintainers with significant contributions include Miccal Matthews, Misty
+De Méo, Shaun Jackman, Vítor Galvão, Claudia Pellegrino, Seeker, Jan Viljanen,
+JCount, commitay, Dominyk Tiller, Tim Smith, Baptiste Fontaine, Xu Cheng, Martin
 Afanasjew, Brett Koonce, Charlie Sharpsteen, Jack Nagel, Adam Vandenberg, Andrew
 Janke, Alex Dunn, neutric, Tomasz Pajor, Uladzislau Shablinski, Alyssa Ross,
 ilovezfs, Chongyu Zhu and Homebrew's creator: Max Howell.
