@@ -334,7 +334,6 @@ module GitHub
     def self.open_graphql(query, variables: nil, scopes: [].freeze, raise_errors: true)
       data = { query:, variables: }
       result = open_rest("#{API_URL}/graphql", scopes:, data:, request_method: "POST")
-      odebug "GraphQL Query Response", result
 
       if raise_errors
         if result["errors"].present?
