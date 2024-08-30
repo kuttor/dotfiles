@@ -467,7 +467,9 @@ module GitHub
       # This has been reported to GitHub.
       errors += result["errors"] if result["errors"].present?
 
-      current_sponsorships = result["data"]["organization"]["sponsorshipsAsMaintainer"]
+      current_sponsorships = result.dig("data", "organization", "sponsorshipsAsMaintainer")
+      # if `current_sponsorships` is blank, then there should be errors to report.
+      next { "hasNextPage" => false } if current_sponsorships.blank?
 
       # The organisations mentioned above will show up as nil nodes.
       if (nodes = current_sponsorships["nodes"].compact.presence)
