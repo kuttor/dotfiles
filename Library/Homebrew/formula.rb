@@ -2863,14 +2863,21 @@ class Formula
   # @api public
   sig {
     params(
-      paths:        T.any(T::Enumerable[T.any(String, Pathname)], String, Pathname),
-      before:       T.nilable(T.any(Pathname, Regexp, String)),
-      after:        T.nilable(T.any(Pathname, String, Symbol)),
-      audit_result: T::Boolean,
-      block:        T.nilable(T.proc.params(s: StringInreplaceExtension).void),
+      paths:            T.any(T::Enumerable[T.any(String, Pathname)], String, Pathname),
+      before:           T.nilable(T.any(Pathname, Regexp, String)),
+      after:            T.nilable(T.any(Pathname, String, Symbol)),
+      old_audit_result: T.nilable(T::Boolean),
+      audit_result:     T::Boolean,
+      block:            T.nilable(T.proc.params(s: StringInreplaceExtension).void),
     ).void
   }
-  def inreplace(paths, before = nil, after = nil, audit_result = true, &block) # rubocop:disable Style/OptionalBooleanParameter
+  def inreplace(paths, before = nil, after = nil, old_audit_result = nil, audit_result: true, &block)
+    # NOTE: must check for `#nil?` and not `#blank?`.
+    unless old_audit_result.nil?
+      # odeprecated "inreplace(paths, before, after, #{old_audit_result})",
+      #             "inreplace(paths, before, after, audit_result: #{old_audit_result})"
+      audit_result = old_audit_result
+    end
     Utils::Inreplace.inreplace(paths, before, after, audit_result:, &block)
   rescue Utils::Inreplace::Error => e
     onoe e.to_s
