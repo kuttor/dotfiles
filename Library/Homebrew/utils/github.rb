@@ -629,7 +629,17 @@ module GitHub
     pull_requests || []
   end
 
-  def self.check_for_duplicate_pull_requests(name, tap_remote_repo, file:, quiet:, state: nil, version: nil)
+  sig {
+    params(
+      name:            String,
+      tap_remote_repo: String,
+      file:            String,
+      quiet:           T::Boolean,
+      state:           T.nilable(String),
+      version:         T.nilable(String),
+    ).void
+  }
+  def self.check_for_duplicate_pull_requests(name, tap_remote_repo, file:, quiet: false, state: nil, version: nil)
     pull_requests = fetch_pull_requests(name, tap_remote_repo, state:, version:)
 
     pull_requests.select! do |pr|
