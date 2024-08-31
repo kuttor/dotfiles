@@ -467,7 +467,7 @@ module Homebrew
 
       sig {
         params(formula: Formula, tap_remote_repo: String, state: T.nilable(String),
-               version: T.nilable(String)).returns(T.nilable(T::Array[String]))
+               version: T.nilable(String)).void
       }
       def check_pull_requests(formula, tap_remote_repo, state: nil, version: nil)
         tap = formula.tap
