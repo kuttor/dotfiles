@@ -30,6 +30,9 @@ module Homebrew
                description: "Print formulae/casks with fully-qualified names."
         switch "--no-pull-requests",
                description: "Do not retrieve pull requests from GitHub."
+        switch "--auto",
+               description: "Read the list of formulae/casks from .github/autobump.txt.",
+               hidden:      true
         switch "--formula", "--formulae",
                description: "Check only formulae."
         switch "--cask", "--casks",
@@ -52,6 +55,7 @@ module Homebrew
         conflicts "--cask", "--formula"
         conflicts "--tap=", "--installed"
         conflicts "--eval-all", "--installed"
+        conflicts "--installed", "--auto"
         conflicts "--no-pull-requests", "--open-pr"
 
         named_args [:formula, :cask], without_api: true
@@ -64,7 +68,22 @@ module Homebrew
         Homebrew.with_no_api_env do
           eval_all = args.eval_all? || Homebrew::EnvConfig.eval_all?
 
-          formulae_and_casks = if args.tap
+          formulae_and_casks = if args.auto?
+            tap_arg = args.tap
+            raise UsageError, "`--tap=` must be passed with `--auto`." if tap_arg.blank?
+            raise UsageError, "`--formula` or `--cask` must be passed with `--auto`." if !args.formula? && !args.cask?
+
+            tap = Tap.fetch(tap_arg)
+            autobump_list = tap.path/".github/autobump.txt"
+            raise UsageError, "No autobump list at .github/autobump.txt found." unless autobump_list.exist?
+
+            autobump_list.readlines(chomp: true).map do |name|
+              qualified_name = "#{tap.name}/#{name}"
+              next Cask::CaskLoader.load(qualified_name) if args.cask?
+
+              Formulary.factory(qualified_name)
+            end
+          elsif args.tap
             tap = Tap.fetch(T.must(args.tap))
             raise UsageError, "`--tap` cannot be used with official taps." if tap.official?
 
