@@ -18,23 +18,6 @@ homebrew-shellenv() {
     HOMEBREW_SHELL_NAME="$(/bin/ps -p "${PPID}" -c -o comm=)"
   fi
 
-  if [[ -n "${HOMEBREW_MACOS}" ]] &&
-     [[ "${HOMEBREW_MACOS_VERSION_NUMERIC}" -ge "140000" ]] &&
-     [[ -x /usr/libexec/path_helper ]]
-  then
-    HOMEBREW_PATHS_FILE="${HOMEBREW_PREFIX}/etc/paths"
-
-    if [[ ! -f "${HOMEBREW_PATHS_FILE}" ]]
-    then
-      printf '%s/bin\n%s/sbin\n' "${HOMEBREW_PREFIX}" "${HOMEBREW_PREFIX}" >"${HOMEBREW_PATHS_FILE}" 2>/dev/null
-    fi
-
-    if [[ -r "${HOMEBREW_PATHS_FILE}" ]]
-    then
-      PATH_HELPER_ROOT="${HOMEBREW_PREFIX}"
-    fi
-  fi
-
   case "${HOMEBREW_SHELL_NAME}" in
     fish | -fish)
       echo "set -gx HOMEBREW_PREFIX \"${HOMEBREW_PREFIX}\";"
@@ -48,12 +31,7 @@ homebrew-shellenv() {
       echo "setenv HOMEBREW_PREFIX ${HOMEBREW_PREFIX};"
       echo "setenv HOMEBREW_CELLAR ${HOMEBREW_CELLAR};"
       echo "setenv HOMEBREW_REPOSITORY ${HOMEBREW_REPOSITORY};"
-      if [[ -n "${PATH_HELPER_ROOT}" ]]
-      then
-        echo "eval \`/usr/bin/env PATH_HELPER_ROOT=\"${PATH_HELPER_ROOT}\" /usr/libexec/path_helper -c\`;"
-      else
-        echo "setenv PATH ${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:\$PATH;"
-      fi
+      echo "setenv PATH ${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:\$PATH;"
       echo "test \${?MANPATH} -eq 1 && setenv MANPATH :\${MANPATH};"
       echo "setenv INFOPATH ${HOMEBREW_PREFIX}/share/info\`test \${?INFOPATH} -eq 1 && echo :\${INFOPATH}\`;"
       ;;
@@ -69,12 +47,7 @@ homebrew-shellenv() {
       echo "export HOMEBREW_PREFIX=\"${HOMEBREW_PREFIX}\";"
       echo "export HOMEBREW_CELLAR=\"${HOMEBREW_CELLAR}\";"
       echo "export HOMEBREW_REPOSITORY=\"${HOMEBREW_REPOSITORY}\";"
-      if [[ -n "${PATH_HELPER_ROOT}" ]]
-      then
-        echo "eval \"\$(PATH_HELPER_ROOT=\"${PATH_HELPER_ROOT}\" /usr/libexec/path_helper -s)\""
-      else
-        echo "export PATH=\"${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin\${PATH+:\$PATH}\";"
-      fi
+      echo "export PATH=\"${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin\${PATH+:\$PATH}\";"
       echo "[ -z \"\${MANPATH-}\" ] || export MANPATH=\":\${MANPATH#:}\";"
       echo "export INFOPATH=\"${HOMEBREW_PREFIX}/share/info:\${INFOPATH:-}\";"
       ;;
