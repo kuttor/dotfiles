@@ -13,8 +13,14 @@ homebrew-list() {
   local formula=""
   local cask=""
 
+  local first_arg
   for arg in "$@"
   do
+    if [[ -z "${first_arg}" ]]
+    then
+      first_arg=1
+      [[ "${arg}" == "list" ]] && continue
+    fi
     case "${arg}" in
       # check for flags passed to ls
       -1 | -l | -r | -t) ls_args+=("${arg}") ;;
@@ -29,6 +35,7 @@ homebrew-list() {
   if [[ -t 1 ]]
   then
     tty=1
+    source "${HOMEBREW_LIBRARY}/Homebrew/utils/helpers.sh"
   fi
 
   if [[ -z "${cask}" && -d "${HOMEBREW_CELLAR}" ]]
