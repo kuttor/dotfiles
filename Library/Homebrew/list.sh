@@ -4,8 +4,8 @@
 homebrew-list() {
   case "$1" in
     # check we actually have list and not e.g. listsomething
-    list) ;;
-    list*) return 1 ;;
+    list | ls) ;;
+    list* | ls*) return 1 ;;
     *) ;;
   esac
 
@@ -24,23 +24,30 @@ homebrew-list() {
   local formula=""
   local cask=""
 
-  local first_arg
-  for arg in "$@"
+  # `OPTIND` is used internally by `getopts` to track parsing position
+  local OPTIND=2 # skip $1 (and localise OPTIND to this function)
+  while getopts ":1lrt-:" arg
   do
-    if [[ -z "${first_arg}" ]]
-    then
-      first_arg=1
-      [[ "${arg}" == "list" ]] && continue
-    fi
     case "${arg}" in
       # check for flags passed to ls
-      -1 | -l | -r | -t) ls_args+=("${arg}") ;;
-      --formula | --formulae) formula=1 ;;
-      --cask | --casks) cask=1 ;;
+      1 | l | r | t) ls_args+=("-${arg}") ;;
+      -)
+        local parsed_index=$((OPTIND - 1)) # Parse full arg to reject e.g. -r-formula
+        case "${!parsed_index}" in
+          --formula | --formulae) formula=1 ;;
+          --cask | --casks) cask=1 ;;
+          *) return 1 ;;
+        esac
+        ;;
       # reject all other flags
-      -* | *) return 1 ;;
+      *) return 1 ;;
     esac
   done
+  # If we haven't reached the end of the arg list, we have named args.
+  if ((OPTIND - 1 != $#))
+  then
+    return 1
+  fi
 
   if [[ -z "${cask}" && -d "${HOMEBREW_CELLAR}" ]]
   then
