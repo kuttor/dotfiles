@@ -50,7 +50,7 @@ homebrew-shellenv() {
       echo "setenv HOMEBREW_REPOSITORY ${HOMEBREW_REPOSITORY};"
       if [[ -n "${PATH_HELPER_ROOT}" ]]
       then
-        PATH_HELPER_ROOT="${PATH_HELPER_ROOT}" /usr/libexec/path_helper -c
+        PATH_HELPER_ROOT="${PATH_HELPER_ROOT}" PATH="${HOMEBREW_PATH}" /usr/libexec/path_helper -c
       else
         echo "setenv PATH ${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin:\$PATH;"
       fi
@@ -71,7 +71,7 @@ homebrew-shellenv() {
       echo "export HOMEBREW_REPOSITORY=\"${HOMEBREW_REPOSITORY}\";"
       if [[ -n "${PATH_HELPER_ROOT}" ]]
       then
-        PATH_HELPER_ROOT="${PATH_HELPER_ROOT}" /usr/libexec/path_helper -s
+        PATH_HELPER_ROOT="${PATH_HELPER_ROOT}" PATH="${HOMEBREW_PATH}" /usr/libexec/path_helper -s
       else
         echo "export PATH=\"${HOMEBREW_PREFIX}/bin:${HOMEBREW_PREFIX}/sbin\${PATH+:\$PATH}\";"
       fi
