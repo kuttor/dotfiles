@@ -2872,7 +2872,7 @@ class Formula
     ).void
   }
   def inreplace(paths, before = nil, after = nil, old_audit_result = nil, audit_result: true, &block)
-    # NOTE: must check for `#nil?` and not `#blank?`.
+    # NOTE: must check for `#nil?` and not `#blank?`, or else `old_audit_result = false` will not call `odeprecated`.
     unless old_audit_result.nil?
       # odeprecated "inreplace(paths, before, after, #{old_audit_result})",
       #             "inreplace(paths, before, after, audit_result: #{old_audit_result})"
