@@ -9,7 +9,18 @@ homebrew-list() {
     *) ;;
   esac
 
+  local ls_env=()
   local ls_args=()
+
+  local tty
+  if [[ -t 1 ]]
+  then
+    tty=1
+    ls_args+=("-Cq")
+    source "${HOMEBREW_LIBRARY}/Homebrew/utils/helpers.sh"
+    ls_env+=("COLUMNS=$(columns)")
+  fi
+
   local formula=""
   local cask=""
 
@@ -31,13 +42,6 @@ homebrew-list() {
     esac
   done
 
-  local tty
-  if [[ -t 1 ]]
-  then
-    tty=1
-    source "${HOMEBREW_LIBRARY}/Homebrew/utils/helpers.sh"
-  fi
-
   if [[ -z "${cask}" && -d "${HOMEBREW_CELLAR}" ]]
   then
     if [[ -n "${tty}" && -z "${formula}" ]]
@@ -46,7 +50,7 @@ homebrew-list() {
     fi
 
     local formula_output
-    formula_output="$(ls "${ls_args[@]}" "${HOMEBREW_CELLAR}")" || exit 1
+    formula_output="$(/usr/bin/env "${ls_env[@]}" ls "${ls_args[@]}" "${HOMEBREW_CELLAR}")" || exit 1
     if [[ -n "${formula_output}" ]]
     then
       echo "${formula_output}"
@@ -66,7 +70,7 @@ homebrew-list() {
     fi
 
     local cask_output
-    cask_output="$(ls "${ls_args[@]}" "${HOMEBREW_CASKROOM}")" || exit 1
+    cask_output="$(/usr/bin/env "${ls_env[@]}" ls "${ls_args[@]}" "${HOMEBREW_CASKROOM}")" || exit 1
     if [[ -n "${cask_output}" ]]
     then
       echo "${cask_output}"

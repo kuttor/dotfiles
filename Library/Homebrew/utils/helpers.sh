@@ -86,3 +86,21 @@ numeric() {
   IFS=".rc" read -r -a version_array <<<"${1}"
   printf "%01d%02d%02d%03d" "${version_array[@]}" 2>/dev/null
 }
+
+columns() {
+  if [[ -n "${COLUMNS}" ]]
+  then
+    echo "${COLUMNS}"
+    return
+  fi
+
+  local columns
+  read -r _ columns < <(stty size 2>/dev/null)
+
+  if [[ -z "${columns}" ]] && tput cols >/dev/null 2>&1
+  then
+    columns="$(tput cols)"
+  fi
+
+  echo "${columns:-80}"
+}
