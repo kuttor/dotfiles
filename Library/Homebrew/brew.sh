@@ -54,13 +54,6 @@ then
   HOMEBREW_DEFAULT_CACHE="${HOME}/Library/Caches/Homebrew"
   HOMEBREW_DEFAULT_LOGS="${HOME}/Library/Logs/Homebrew"
   HOMEBREW_DEFAULT_TEMP="/private/tmp"
-
-  HOMEBREW_MACOS_VERSION="$(/usr/bin/sw_vers -productVersion)"
-
-  IFS=. read -r -a MACOS_VERSION_ARRAY <<<"${HOMEBREW_MACOS_VERSION}"
-  printf -v HOMEBREW_MACOS_VERSION_NUMERIC "%02d%02d%02d" "${MACOS_VERSION_ARRAY[@]}"
-
-  unset MACOS_VERSION_ARRAY
 else
   CACHE_HOME="${HOMEBREW_XDG_CACHE_HOME:-${HOME}/.cache}"
   HOMEBREW_DEFAULT_CACHE="${CACHE_HOME}/Homebrew"
@@ -530,6 +523,7 @@ then
   HOMEBREW_PRODUCT="Homebrew"
   HOMEBREW_SYSTEM="Macintosh"
   [[ "${HOMEBREW_PROCESSOR}" == "x86_64" ]] && HOMEBREW_PROCESSOR="Intel"
+  HOMEBREW_MACOS_VERSION="$(/usr/bin/sw_vers -productVersion)"
   # Don't change this from Mac OS X to match what macOS itself does in Safari on 10.12
   HOMEBREW_OS_USER_AGENT_VERSION="Mac OS X ${HOMEBREW_MACOS_VERSION}"
 
@@ -539,6 +533,9 @@ then
     # shellcheck disable=SC2034
     HOMEBREW_PHYSICAL_PROCESSOR="arm64"
   fi
+
+  IFS=. read -r -a MACOS_VERSION_ARRAY <<<"${HOMEBREW_MACOS_VERSION}"
+  printf -v HOMEBREW_MACOS_VERSION_NUMERIC "%02d%02d%02d" "${MACOS_VERSION_ARRAY[@]}"
 
   IFS=. read -r -a MACOS_VERSION_ARRAY <<<"${HOMEBREW_MACOS_OLDEST_ALLOWED}"
   printf -v HOMEBREW_MACOS_OLDEST_ALLOWED_NUMERIC "%02d%02d%02d" "${MACOS_VERSION_ARRAY[@]}"
