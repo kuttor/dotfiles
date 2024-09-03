@@ -294,7 +294,6 @@ class Cmd
 
     return args if !refurbish_args? && !configure?
 
-    args << "-pipe"
     args << "-w" unless configure?
     args << "-#{ENV["HOMEBREW_OPTIMIZATION_LEVEL"]}"
     args.concat(optflags) unless runtime_cpu_detection?
