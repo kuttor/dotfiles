@@ -168,7 +168,7 @@ case "$@" in
     homebrew-command-path "$@" && exit 0
     ;;
   # falls back to cmd/list.rb on a non-zero return
-  list*)
+  list* | ls*)
     source "${HOMEBREW_LIBRARY}/Homebrew/list.sh"
     homebrew-list "$@" && exit 0
     ;;
