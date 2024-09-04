@@ -11,14 +11,11 @@ module Homebrew
       require "digest/sha2"
 
       checksum = Digest::SHA256.new
-      begin
-        checksum.file(HOMEBREW_LIBRARY_PATH/"Gemfile.lock")
-      rescue SystemCallError
-        # If it's inaccessible, let's just assume it's empty.
-      end
-      checksum << user_gem_groups.join(",")
+      checksum << RUBY_VERSION
+      checksum << RUBY_PLATFORM
+      checksum << Dir.children(File.join(Gem.paths.path, "gems")).join(",")
 
-      "#{RUBY_VERSION}-#{checksum}"
+      checksum.hexdigest
     end
   end
 end
