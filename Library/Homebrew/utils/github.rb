@@ -680,7 +680,7 @@ module GitHub
 
   private_class_method def self.add_auth_token_to_url!(url)
     if API.credentials_type == :env_token
-      url.sub!(%r{^https://github\.com/}, "https://#{API.credentials}@github.com/")
+      url.sub!(%r{^https://github\.com/}, "https://x-access-token:#{API.credentials}@github.com/")
     end
     url
   end
