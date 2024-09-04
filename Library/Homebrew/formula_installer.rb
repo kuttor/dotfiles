@@ -1254,12 +1254,12 @@ on_request: installed_on_request?, options:)
       formula.fetch_patches
       formula.resources.each(&:fetch)
     end
-    downloader.fetch
+    downloadable.downloader.fetch
 
     self.class.fetched << formula
   end
 
-  def downloader
+  def downloadable
     if (bottle_path = formula.local_bottle_path)
       Resource::Local.new(bottle_path)
     elsif pour_bottle?
@@ -1324,7 +1324,7 @@ on_request: installed_on_request?, options:)
     end
 
     HOMEBREW_CELLAR.cd do
-      downloader.stage
+      downloadable.downloader.stage
     end
 
     Tab.clear_cache

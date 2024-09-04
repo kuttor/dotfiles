@@ -352,7 +352,7 @@ class Bottle
   attr_reader :name, :resource, :tag, :cellar, :rebuild
 
   def_delegators :resource, :url, :verify_download_integrity
-  def_delegators :resource, :cached_download
+  def_delegators :resource, :cached_download, :downloader
 
   def initialize(formula, spec, tag = nil)
     super()
@@ -408,9 +408,7 @@ class Bottle
     @spec.skip_relocation?(tag: @tag)
   end
 
-  def stage
-    resource.downloader.stage
-  end
+  def stage = downloader.stage
 
   def fetch_tab(timeout: nil, quiet: false)
     return unless (resource = github_packages_manifest_resource)

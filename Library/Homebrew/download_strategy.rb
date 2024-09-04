@@ -710,6 +710,17 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# Strategy for extracting local binary packages.
+class LocalBottleDownloadStrategy < AbstractFileDownloadStrategy
+  def initialize(path) # rubocop:disable Lint/MissingSuper
+    @cached_location = path
+  end
+
+  def clear_cache
+    # Path is used directly and not cached.
+  end
+end
+
 # Strategy for downloading a Subversion repository.
 #
 # @api public

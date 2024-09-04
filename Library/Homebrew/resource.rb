@@ -273,26 +273,7 @@ class Resource
   class Local < Resource
     def initialize(path)
       super(File.basename(path))
-      @path = path
-    end
-
-    sig { override.returns(Pathname) }
-    def cached_download
-      @path
-    end
-
-    sig { override.void }
-    def clear_cache; end
-
-    sig {
-      override.params(
-        verify_download_integrity: T::Boolean,
-        timeout:                   T.nilable(T.any(Integer, Float)),
-        quiet:                     T::Boolean,
-      ).returns(Pathname)
-    }
-    def fetch(verify_download_integrity: true, timeout: nil, quiet: false)
-      cached_download
+      @downloader = LocalBottleDownloadStrategy.new(path)
     end
   end
 
