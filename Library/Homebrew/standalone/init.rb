@@ -1,4 +1,4 @@
-# typed: true # rubocop:disable Sorbet/StrictSigil
+# typed: true
 # frozen_string_literal: true
 
 # This file is included before any other files. It intentionally has typing disabled and has minimal use of `require`.
