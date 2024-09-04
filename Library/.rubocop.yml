@@ -278,6 +278,7 @@ Sorbet/StrictSigil:
     - "Taps/**/*"
     - "/**/{Formula,Casks}/**/*.rb"
     - "**/{Formula,Casks}/**/*.rb"
+    - "Homebrew/{standalone,startup}/*.rb" # These are loaded before sorbet-runtime
     - "Homebrew/test/**/*.rb"
 
 Sorbet/TrueSigil:
