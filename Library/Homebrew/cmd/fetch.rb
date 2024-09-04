@@ -282,6 +282,7 @@ module Homebrew
 
                 previous_pending_line_count = 0
                 remaining_downloads.each do |downloadable, future|
+                  # FIXME: Allow printing full terminal height.
                   break if previous_pending_line_count >= [concurrency, (Tty.height - 1)].min
 
                   $stdout.print Tty.clear_to_end
