@@ -286,7 +286,7 @@ RSpec.describe Homebrew::FormulaAuditor do
         class Cask < Formula
           url "https://github.com/cask/cask/archive/v0.8.4.tar.gz"
           head "https://github.com/cask/cask.git"
-          license "GPL-3.0"
+          license "GPL-3.0-or-later"
         end
       RUBY
       fa = formula_auditor "cask", formula_text, spdx_license_data:,

@@ -201,8 +201,12 @@ module Homebrew
 
     # The following licenses are non-free/open based on multiple sources (e.g. Debian, Fedora, FSF, OSI, ...)
     INCOMPATIBLE_LICENSES = [
-      "JSON",    # https://wiki.debian.org/DFSGLicenses#JSON_evil_license
-      "OPL-1.0", # https://wiki.debian.org/DFSGLicenses#Open_Publication_License_.28OPL.29_v1.0
+      "Aladdin",    # https://www.gnu.org/licenses/license-list.html#Aladdin
+      "CPOL-1.02",  # https://www.gnu.org/licenses/license-list.html#cpol
+      "gSOAP-1.3b", # https://salsa.debian.org/ellert/gsoap/-/blob/master/debian/copyright
+      "JSON",       # https://wiki.debian.org/DFSGLicenses#JSON_evil_license
+      "MS-LPL",     # https://github.com/spdx/license-list-XML/issues/1432#issuecomment-1077680709
+      "OPL-1.0",    # https://wiki.debian.org/DFSGLicenses#Open_Publication_License_.28OPL.29_v1.0
     ].freeze
     INCOMPATIBLE_LICENSE_PREFIXES = [
       "BUSL",     # https://spdx.org/licenses/BUSL-1.1.html#notes
@@ -222,7 +226,7 @@ module Homebrew
           problem <<~EOS
             Formula #{formula.name} contains incompatible licenses: #{incompatible_licenses}.
             Formulae in homebrew/core must either use a Debian Free Software Guidelines license
-            or be released into the public domain. See https://docs.brew.sh/License-Guidelines
+            or be released into the public domain. See #{Formatter.url("https://docs.brew.sh/License-Guidelines")}
           EOS
         end
 
@@ -234,7 +238,7 @@ module Homebrew
           EOS
         end
 
-        if @strict
+        if @strict || @core_tap
           deprecated_licenses = licenses.select do |license|
             SPDX.deprecated_license? license
           end
