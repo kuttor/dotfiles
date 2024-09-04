@@ -128,7 +128,7 @@ module Cask
     end
 
     def self.method_missing_message(method, token, section = nil)
-      message = +"Unexpected method '#{method}' called "
+      message = "Unexpected method '#{method}' called "
       message << "during #{section} " if section
       message << "on Cask #{token}."
 

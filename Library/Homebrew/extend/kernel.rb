@@ -156,8 +156,8 @@ module Kernel
 
       require "tap"
 
-      tap = Tap.fetch(match[:user], match[:repository])
-      tap_message = +"\nPlease report this issue to the #{tap.full_name} tap"
+      tap = Tap.fetch(match[:user], match[:repo])
+      tap_message = "\nPlease report this issue to the #{tap.full_name} tap"
       tap_message += " (not Homebrew/brew or Homebrew/homebrew-core)" unless tap.official?
       tap_message += ", or even better, submit a PR to fix it" if replacement
       tap_message << ":\n  #{line.sub(/^(.*:\d+):.*$/, '\1')}\n\n"
@@ -166,7 +166,7 @@ module Kernel
     file, line, = backtrace.first.split(":")
     line = line.to_i if line.present?
 
-    message = +"Calling #{method} is #{verb}! #{replacement_message}"
+    message = "Calling #{method} is #{verb}! #{replacement_message}"
     message << tap_message if tap_message
     message.freeze
 

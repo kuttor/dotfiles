@@ -80,7 +80,7 @@ module GitHub
     class AuthenticationFailedError < Error
       def initialize(credentials_type, github_message)
         @github_message = github_message
-        message = +"GitHub API Error: #{github_message}\n"
+        message = "GitHub API Error: #{github_message}\n"
         message << case credentials_type
         when :github_cli_token
           <<~EOS

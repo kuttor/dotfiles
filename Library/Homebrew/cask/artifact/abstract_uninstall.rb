@@ -125,8 +125,8 @@ module Cask
               sleep 1
             end
             paths = [
-              +"/Library/LaunchAgents/#{service}.plist",
-              +"/Library/LaunchDaemons/#{service}.plist",
+              "/Library/LaunchAgents/#{service}.plist",
+              "/Library/LaunchDaemons/#{service}.plist",
             ]
             paths.each { |elt| elt.prepend(Dir.home).freeze } unless sudo
             paths = paths.map { |elt| Pathname(elt) }.select(&:exist?)
