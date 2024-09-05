@@ -714,6 +714,7 @@ end
 class LocalBottleDownloadStrategy < AbstractFileDownloadStrategy
   def initialize(path) # rubocop:disable Lint/MissingSuper
     @cached_location = path
+    extend Pourable
   end
 
   def clear_cache
