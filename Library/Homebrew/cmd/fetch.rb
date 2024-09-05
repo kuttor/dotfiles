@@ -325,8 +325,10 @@ module Homebrew
       end
 
       def fetch_downloadable(downloadable)
-        tries = args.retry? ? {} : { tries: 1 }
-        downloads[downloadable] ||= download_queue.enqueue(RetryableDownload.new(downloadable, **tries), force: args.force?)
+        downloads[downloadable] ||= begin
+          tries = args.retry? ? {} : { tries: 1 }
+          download_queue.enqueue(RetryableDownload.new(downloadable, **tries), force: args.force?)
+        end
       end
     end
   end
