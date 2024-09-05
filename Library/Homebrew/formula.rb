@@ -571,7 +571,7 @@ class Formula
     if klass.nil?
       active_spec.resource(*name, &block)
     else
-      active_spec.resource(name, klass)
+      active_spec.resource(name, klass, &block)
     end
   end
 
