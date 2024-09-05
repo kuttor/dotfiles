@@ -567,7 +567,13 @@ class Formula
     params(name: String, klass: T.class_of(Resource), block: T.nilable(T.proc.bind(Resource).void))
       .returns(T.nilable(Resource))
   }
-  def resource(name = T.unsafe(nil), klass = T.unsafe(nil), &block) = active_spec.resource(*name, *klass, &block)
+  def resource(name = T.unsafe(nil), klass = T.unsafe(nil), &block)
+    if klass.nil?
+      active_spec.resource(*name, &block)
+    else
+      active_spec.resource(name, klass)
+    end
+  end
 
   # Old names for the formula.
   #
