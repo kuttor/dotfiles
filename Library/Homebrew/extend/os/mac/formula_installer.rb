@@ -1,8 +1,10 @@
 # typed: strict
 # frozen_string_literal: true
 
-class FormulaInstaller
-  undef fresh_install?
+module FormulaInstallerMac
+  extend T::Helpers
+
+  requires_ancestor { FormulaInstaller }
 
   sig { params(formula: Formula).returns(T.nilable(T::Boolean)) }
   def fresh_install?(formula)
@@ -10,3 +12,5 @@ class FormulaInstaller
       (!installed_as_dependency? || !formula.any_version_installed?)
   end
 end
+
+FormulaInstaller.prepend(FormulaInstallerMac)

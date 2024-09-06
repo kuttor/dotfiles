@@ -2,20 +2,17 @@
 # frozen_string_literal: true
 
 module Homebrew
-  class SimulateSystem
-    class << self
-      undef simulating_or_running_on_macos?
-      undef current_os
+  module SimulateSystemMac
+    sig { returns(T::Boolean) }
+    def simulating_or_running_on_macos?
+      SimulateSystem.os.blank? || [:macos, *MacOSVersion::SYMBOLS.keys].include?(SimulateSystem.os)
+    end
 
-      sig { returns(T::Boolean) }
-      def simulating_or_running_on_macos?
-        os.blank? || [:macos, *MacOSVersion::SYMBOLS.keys].include?(os)
-      end
-
-      sig { returns(Symbol) }
-      def current_os
-        os || MacOS.version.to_sym
-      end
+    sig { returns(Symbol) }
+    def current_os
+      SimulateSystem.os || MacOS.version.to_sym
     end
   end
 end
+
+Homebrew::SimulateSystem.singleton_class.prepend(Homebrew::SimulateSystemMac)

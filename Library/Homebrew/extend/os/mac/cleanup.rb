@@ -2,9 +2,7 @@
 # frozen_string_literal: true
 
 module Homebrew
-  class Cleanup
-    undef use_system_ruby?
-
+  module CleanupMac
     sig { returns(T::Boolean) }
     def use_system_ruby?
       return false if Homebrew::EnvConfig.force_vendor_ruby?
@@ -13,3 +11,5 @@ module Homebrew
     end
   end
 end
+
+Homebrew::Cleanup.prepend(Homebrew::CleanupMac)

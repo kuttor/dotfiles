@@ -1,9 +1,7 @@
 # typed: strict
 # frozen_string_literal: true
 
-class LinkageChecker
-  undef system_libraries_exist_in_cache?
-
+module LinkageCheckerMac
   private
 
   sig { returns(T::Boolean) }
@@ -12,3 +10,5 @@ class LinkageChecker
     MacOS.version >= :big_sur
   end
 end
+
+LinkageChecker.prepend(LinkageCheckerMac)

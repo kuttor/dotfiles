@@ -1,12 +1,10 @@
 # typed: true # rubocop:disable Sorbet/StrictSigil
 # frozen_string_literal: true
 
-class Formula
-  undef shared_library
-  undef loader_path
-  undef deuniversalize_machos
-  undef add_global_deps_to_spec
-  undef valid_platform?
+module FormulaLinux
+  extend T::Helpers
+
+  requires_ancestor { Formula }
 
   sig { params(name: String, version: T.nilable(T.any(String, Integer))).returns(String) }
   def shared_library(name, version = nil)
@@ -50,3 +48,5 @@ class Formula
     requirements.none?(MacOSRequirement)
   end
 end
+
+Formula.prepend(FormulaLinux)

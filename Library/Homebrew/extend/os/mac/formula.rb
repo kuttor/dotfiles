@@ -1,9 +1,10 @@
 # typed: strict
 # frozen_string_literal: true
 
-class Formula
-  undef valid_platform?
-  undef std_cmake_args
+module FormulaMac
+  extend T::Helpers
+
+  requires_ancestor { Formula }
 
   sig { returns(T::Boolean) }
   def valid_platform?
@@ -31,3 +32,5 @@ class Formula
     args
   end
 end
+
+Formula.prepend(FormulaMac)

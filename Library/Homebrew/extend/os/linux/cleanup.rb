@@ -2,8 +2,10 @@
 # frozen_string_literal: true
 
 module Homebrew
-  class Cleanup
-    undef use_system_ruby?
+  module CleanupLinux
+    extend T::Helpers
+
+    requires_ancestor { Cleanup }
 
     sig { returns(T::Boolean) }
     def use_system_ruby?
@@ -21,3 +23,5 @@ module Homebrew
     end
   end
 end
+
+Homebrew::Cleanup.prepend(Homebrew::CleanupLinux)

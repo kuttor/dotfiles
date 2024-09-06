@@ -19,9 +19,6 @@ module Homebrew
       sig { returns(T::Array[String]) }
       attr_reader :options_only, :flags_only
 
-      # undefine tap to allow --tap argument
-      undef tap
-
       sig { void }
       def initialize
         require "cli/named_args"
