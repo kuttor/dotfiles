@@ -450,27 +450,6 @@ RSpec.describe FormulaInstaller do
     end
   end
 
-  describe "#fresh_install" do
-    subject(:formula_installer) { described_class.new(Testball.new) }
-
-    it "is false by default" do
-      formula = Testball.new
-      expect(formula_installer.fresh_install?(formula)).to be false
-    end
-
-    it "is false in developer mode" do
-      formula = Testball.new
-      allow(Homebrew::EnvConfig).to receive_messages(developer?: true)
-      expect(formula_installer.fresh_install?(formula)).to be false
-    end
-
-    it "is false on outdated releases" do
-      formula = Testball.new
-      allow(OS::Mac.version).to receive_messages(outdated_release?: true)
-      expect(formula_installer.fresh_install?(formula)).to be false
-    end
-  end
-
   describe "#install_service" do
     it "works if service is set" do
       formula = Testball.new
