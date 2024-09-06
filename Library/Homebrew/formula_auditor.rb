@@ -199,14 +199,34 @@ module Homebrew
       "LGPL-3.0" => ["LGPL-3.0-only", "LGPL-3.0-or-later"],
     }.freeze
 
+    # The following licenses are non-free/open based on multiple sources (e.g. Debian, Fedora, FSF, OSI, ...)
+    INCOMPATIBLE_LICENSES = [
+      "Aladdin",    # https://www.gnu.org/licenses/license-list.html#Aladdin
+      "CPOL-1.02",  # https://www.gnu.org/licenses/license-list.html#cpol
+      "gSOAP-1.3b", # https://salsa.debian.org/ellert/gsoap/-/blob/master/debian/copyright
+      "JSON",       # https://wiki.debian.org/DFSGLicenses#JSON_evil_license
+      "MS-LPL",     # https://github.com/spdx/license-list-XML/issues/1432#issuecomment-1077680709
+      "OPL-1.0",    # https://wiki.debian.org/DFSGLicenses#Open_Publication_License_.28OPL.29_v1.0
+    ].freeze
+    INCOMPATIBLE_LICENSE_PREFIXES = [
+      "BUSL",     # https://spdx.org/licenses/BUSL-1.1.html#notes
+      "CC-BY-NC", # https://people.debian.org/~bap/dfsg-faq.html#no_commercial
+      "Elastic",  # https://www.elastic.co/licensing/elastic-license#Limitations
+      "SSPL",     # https://fedoraproject.org/wiki/Licensing/SSPL#License_Notes
+    ].freeze
+
     def audit_license
       if formula.license.present?
         licenses, exceptions = SPDX.parse_license_expression formula.license
 
-        sspl_licensed = licenses.any? { |license| license.to_s.start_with?("SSPL") }
-        if sspl_licensed && @core_tap
+        incompatible_licenses = licenses.select do |license|
+          license.to_s.start_with?(*INCOMPATIBLE_LICENSE_PREFIXES) || INCOMPATIBLE_LICENSES.include?(license.to_s)
+        end
+        if incompatible_licenses.present? && @core_tap
           problem <<~EOS
-            Formula #{formula.name} is SSPL-licensed. Software under the SSPL must not be packaged in homebrew/core.
+            Formula #{formula.name} contains incompatible licenses: #{incompatible_licenses}.
+            Formulae in homebrew/core must either use a Debian Free Software Guidelines license
+            or be released into the public domain. See #{Formatter.url("https://docs.brew.sh/License-Guidelines")}
           EOS
         end
 
@@ -218,7 +238,7 @@ module Homebrew
           EOS
         end
 
-        if @strict
+        if @strict || @core_tap
           deprecated_licenses = licenses.select do |license|
             SPDX.deprecated_license? license
           end
@@ -255,7 +275,7 @@ module Homebrew
 
         problem "Formula license #{licenses} does not match GitHub license #{Array(github_license)}."
 
-      elsif @new_formula && @core_tap
+      elsif @core_tap && !formula.disabled?
         problem "Formulae in homebrew/core must specify a license."
       end
     end

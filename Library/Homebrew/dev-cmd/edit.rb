@@ -28,6 +28,8 @@ module Homebrew
       sig { override.void }
       def run
         ENV["COLORTERM"] = ENV.fetch("HOMEBREW_COLORTERM", nil)
+        # Recover $TMPDIR for emacsclient
+        ENV["TMPDIR"] = ENV.fetch("HOMEBREW_TMPDIR", nil)
 
         unless (HOMEBREW_REPOSITORY/".git").directory?
           odie <<~EOS

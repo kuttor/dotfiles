@@ -16,6 +16,7 @@ permissions:
 jobs:
   ubuntu:
     if: github.repository_owner == 'Homebrew'
+    name: docker (Ubuntu ${{ matrix.version }})
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
