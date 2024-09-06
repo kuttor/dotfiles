@@ -87,7 +87,7 @@ module Homebrew
             end
           elsif args.tap
             tap = Tap.fetch(T.must(args.tap))
-            raise UsageError, "`--tap` without `--auto` cannot be used with official taps." if tap.official?
+            raise UsageError, "`--tap` requires `--auto` for official taps." if tap.official?
 
             formulae = args.cask? ? [] : tap.formula_files.map { |path| Formulary.factory(path) }
             casks = args.formula? ? [] : tap.cask_files.map { |path| Cask::CaskLoader.load(path) }
