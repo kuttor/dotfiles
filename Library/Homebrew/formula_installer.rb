@@ -1546,3 +1546,5 @@ on_request: installed_on_request?, options:)
     $stderr.puts @requirement_messages
   end
 end
+
+require "extend/os/formula_installer"
