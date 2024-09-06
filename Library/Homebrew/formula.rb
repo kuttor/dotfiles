@@ -3356,7 +3356,7 @@ class Formula
     #
     # @!attribute [w] license
     # @see https://docs.brew.sh/License-Guidelines Homebrew License Guidelines
-    # @see https://spdx.github.io/spdx-spec/appendix-IV-SPDX-license-expressions/ SPDX license expression guide
+    # @see https://spdx.github.io/spdx-spec/latest/annexes/spdx-license-expressions/ SPDX license expression guide
     # @api public
     def license(args = nil)
       if args.nil?
