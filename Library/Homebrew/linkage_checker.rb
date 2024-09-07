@@ -196,7 +196,7 @@ class LinkageChecker
 
   def check_formula_deps
     filter_out = proc do |dep|
-      next true if dep.build?
+      next true if dep.build? || dep.test?
 
       (dep.optional? || dep.recommended?) && formula.build.without?(dep)
     end
