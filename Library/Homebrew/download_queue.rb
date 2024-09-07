@@ -29,8 +29,17 @@ module Homebrew
     end
 
     sig { void }
+    def cancel
+      # FIXME: Implement graceful cancellaction of running downloads based on
+      #        https://ruby-concurrency.github.io/concurrent-ruby/master/Concurrent/Cancellation.html
+      #        instead of killing the whole thread pool.
+      pool.kill
+    end
+
+    sig { void }
     def shutdown
       pool.shutdown
+      pool.wait_for_termination
     end
   end
 end

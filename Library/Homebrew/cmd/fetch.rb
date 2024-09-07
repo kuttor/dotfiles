@@ -301,6 +301,8 @@ module Homebrew
                   # FIXME: Implement cancellation of running downloads.
                 end
 
+                download_queue.cancel
+
                 if previous_pending_line_count.positive?
                   $stdout.print Tty.move_cursor_down(previous_pending_line_count - 1)
                   $stdout.flush
@@ -314,7 +316,7 @@ module Homebrew
             $stdout.flush
           end
         end
-
+      ensure
         download_queue.shutdown
       end
 
