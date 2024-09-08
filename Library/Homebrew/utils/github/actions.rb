@@ -81,6 +81,7 @@ module GitHub
       }
       def initialize(type, message, file: nil, title: nil, line: nil, end_line: nil, column: nil, end_column: nil)
         raise ArgumentError, "Unsupported type: #{type.inspect}" if ANNOTATION_TYPES.exclude?(type)
+        raise ArgumentError, "`title` must not contain `::`" if title.present? && title.include?("::")
 
         require "utils/tty"
         @type = type
@@ -110,7 +111,11 @@ module GitHub
           end
         end
 
-        metadata << ",title=#{Actions.escape(@title)}" if @title
+        if @title
+          metadata << (@file ? "," : " ")
+          metadata << "title=#{Actions.escape(@title)}"
+        end
+        metadata << " " if metadata.end_with?(":")
 
         "::#{metadata}::#{Actions.escape(@message)}"
       end
