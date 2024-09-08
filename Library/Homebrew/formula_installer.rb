@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "formula"
@@ -31,9 +31,17 @@ class FormulaInstaller
   include FormulaCellarChecks
   extend Attrable
 
-  attr_reader :formula, :bottle_tab_runtime_dependencies
+  sig { override.returns(Formula) }
+  attr_reader :formula
 
-  attr_accessor :options, :link_keg
+  sig { returns(T::Hash[String, T::Hash[String, String]]) }
+  attr_reader :bottle_tab_runtime_dependencies
+
+  sig { returns(Options) }
+  attr_accessor :options
+
+  sig { returns(T::Boolean) }
+  attr_accessor :link_keg
 
   attr_predicate :installed_as_dependency?, :installed_on_request?
   attr_predicate :show_summary_heading?, :show_header?
@@ -41,6 +49,16 @@ class FormulaInstaller
   attr_predicate :debug_symbols?
   attr_predicate :verbose?, :debug?, :quiet?
 
+  sig {
+    params(formula: Formula, link_keg: T::Boolean, installed_as_dependency: T::Boolean,
+           installed_on_request: T::Boolean, show_header: T::Boolean, build_bottle: T::Boolean,
+           skip_post_install: T::Boolean, force_bottle: T::Boolean, bottle_arch: T.nilable(String),
+           ignore_deps: T::Boolean, only_deps: T::Boolean, include_test_formulae: T::Array[Formula],
+           build_from_source_formulae: T::Array[Formula], env: T.nilable(String), git: T::Boolean,
+           interactive: T::Boolean, keep_tmp: T::Boolean, debug_symbols: T::Boolean, cc: T.nilable(String),
+           options: Options, force: T::Boolean, overwrite: T::Boolean, debug: T::Boolean, quiet: T::Boolean,
+           verbose: T::Boolean).void
+  }
   def initialize(
     formula,
     link_keg: false,
@@ -74,7 +92,7 @@ class FormulaInstaller
     @overwrite = overwrite
     @keep_tmp = keep_tmp
     @debug_symbols = debug_symbols
-    @link_keg = !formula.keg_only? || link_keg
+    @link_keg = T.let(!formula.keg_only? || link_keg, T::Boolean)
     @show_header = show_header
     @ignore_deps = ignore_deps
     @only_deps = only_deps
@@ -83,7 +101,7 @@ class FormulaInstaller
     @skip_post_install = skip_post_install
     @bottle_arch = bottle_arch
     @formula.force_bottle ||= force_bottle
-    @force_bottle = @formula.force_bottle
+    @force_bottle = T.let(@formula.force_bottle, T::Boolean)
     @include_test_formulae = include_test_formulae
     @interactive = interactive
     @git = git
@@ -94,40 +112,48 @@ class FormulaInstaller
     @installed_as_dependency = installed_as_dependency
     @installed_on_request = installed_on_request
     @options = options
-    @requirement_messages = []
-    @poured_bottle = false
-    @start_time = nil
-    @bottle_tab_runtime_dependencies = {}.freeze
+    @requirement_messages = T.let([], T::Array[String])
+    @poured_bottle = T.let(false, T::Boolean)
+    @start_time = T.let(nil, T.nilable(Time))
+    @bottle_tab_runtime_dependencies = T.let({}.freeze, T::Hash[String, T::Hash[String, String]])
+    @hold_locks = T.let(false, T::Boolean)
+    @show_summary_heading = T.let(false, T::Boolean)
+    @etc_var_dirs = T.let([], T::Array[Pathname])
+    @etc_var_preinstall = T.let([], T::Array[Pathname])
+    @etc_var_postinstall = T.let([], T::Array[Pathname])
 
     # Take the original formula instance, which might have been swapped from an API instance to a source instance
-    @formula = previously_fetched_formula if previously_fetched_formula
+    @formula = T.let(T.must(previously_fetched_formula), Formula) if previously_fetched_formula
   end
 
+  sig { returns(T::Set[Formula]) }
   def self.attempted
-    @attempted ||= Set.new
+    @attempted ||= T.let(Set.new, T.nilable(T::Set[Formula]))
   end
 
   sig { void }
   def self.clear_attempted
-    @attempted = Set.new
+    @attempted = T.let(Set.new, T.nilable(T::Set[Formula]))
   end
 
+  sig { returns(T::Set[Formula]) }
   def self.installed
-    @installed ||= Set.new
+    @installed ||= T.let(Set.new, T.nilable(T::Set[Formula]))
   end
 
   sig { void }
   def self.clear_installed
-    @installed = Set.new
+    @installed = T.let(Set.new, T.nilable(T::Set[Formula]))
   end
 
+  sig { returns(T::Set[Formula]) }
   def self.fetched
-    @fetched ||= Set.new
+    @fetched ||= T.let(Set.new, T.nilable(T::Set[Formula]))
   end
 
   sig { void }
   def self.clear_fetched
-    @fetched = Set.new
+    @fetched = T.let(Set.new, T.nilable(T::Set[Formula]))
   end
 
   sig { returns(T::Boolean) }
@@ -241,10 +267,12 @@ class FormulaInstaller
     raise
   end
 
+  sig { void }
   def check_installation_already_attempted
     raise FormulaInstallationAlreadyAttemptedError, formula if self.class.attempted.include?(formula)
   end
 
+  sig { void }
   def check_install_sanity
     check_installation_already_attempted
 
@@ -368,11 +396,13 @@ class FormulaInstaller
     end
   end
 
+  sig { void }
   def build_bottle_preinstall
-    @etc_var_dirs ||= [HOMEBREW_PREFIX/"etc", HOMEBREW_PREFIX/"var"]
+    @etc_var_dirs = [HOMEBREW_PREFIX/"etc", HOMEBREW_PREFIX/"var"]
     @etc_var_preinstall = Find.find(*@etc_var_dirs.select(&:directory?)).to_a
   end
 
+  sig { void }
   def build_bottle_postinstall
     @etc_var_postinstall = Find.find(*@etc_var_dirs.select(&:directory?)).to_a
     (@etc_var_postinstall - @etc_var_preinstall).each do |file|
@@ -485,6 +515,7 @@ on_request: installed_on_request?, options:)
     Homebrew.messages.package_installed(formula.name, end_time - start_time)
   end
 
+  sig { void }
   def check_conflicts
     return if force?
 
@@ -517,8 +548,9 @@ on_request: installed_on_request?, options:)
 
   # Compute and collect the dependencies needed by the formula currently
   # being installed.
+  sig { params(use_cache: T::Boolean).returns(T::Array[[Dependency, T::Hash[String, Options]]]) }
   def compute_dependencies(use_cache: true)
-    @compute_dependencies = nil unless use_cache
+    @compute_dependencies = T.let(nil, T.nilable(T::Array[[Dependency, T::Hash[String, Options]]])) unless use_cache
     @compute_dependencies ||= begin
       # Needs to be done before expand_dependencies
       fetch_bottle_tab if pour_bottle?
@@ -528,6 +560,7 @@ on_request: installed_on_request?, options:)
     end
   end
 
+  sig { params(deps: T::Array[[Dependency, T::Hash[String, Options]]]).returns(T::Array[Formula]) }
   def unbottled_dependencies(deps)
     deps.map { |(dep, _options)| dep.to_formula }.reject do |dep_f|
       next false unless dep_f.pour_bottle?
@@ -536,18 +569,20 @@ on_request: installed_on_request?, options:)
     end
   end
 
+  sig { void }
   def compute_and_install_dependencies
     deps = compute_dependencies
     install_dependencies(deps)
   end
 
+  sig { params(req_map: T::Hash[Formula, T::Array[Requirement]]).void }
   def check_requirements(req_map)
     @requirement_messages = []
     fatals = []
 
     req_map.each_pair do |dependent, reqs|
       reqs.each do |req|
-        next if dependent.latest_version_installed? && req.name == "macos" && req.comparator == "<="
+        next if dependent.latest_version_installed? && req.is_a?(MacOSRequirement) && req.comparator == "<="
 
         @requirement_messages << "#{dependent}: #{req.message}"
         fatals << req if req.fatal?
@@ -560,6 +595,7 @@ on_request: installed_on_request?, options:)
     raise UnsatisfiedRequirements, fatals
   end
 
+  sig { params(formula: Formula).returns(T::Array[Requirement]) }
   def runtime_requirements(formula)
     runtime_deps = formula.runtime_formula_dependencies(undeclared: false)
     recursive_requirements = formula.recursive_requirements do |dependent, _|
@@ -568,6 +604,7 @@ on_request: installed_on_request?, options:)
     (recursive_requirements.to_a + formula.requirements.to_a).reject(&:build?).uniq
   end
 
+  sig { returns(T::Hash[Formula, T::Array[Requirement]]) }
   def expand_requirements
     unsatisfied_reqs = Hash.new { |h, k| h[k] = [] }
     formulae = [formula]
@@ -600,6 +637,7 @@ on_request: installed_on_request?, options:)
     unsatisfied_reqs
   end
 
+  sig { params(formula: Formula, inherited_options: T::Hash[String, Options]).returns(T::Array[Dependency]) }
   def expand_dependencies_for_formula(formula, inherited_options)
     # Cache for this expansion only. FormulaInstaller has a lot of inputs which can alter expansion.
     cache_key = "FormulaInstaller-#{formula.full_name}-#{Time.now.to_f}"
@@ -607,7 +645,7 @@ on_request: installed_on_request?, options:)
       inherited_options[dep.name] |= inherited_options_for(dep)
       build = effective_build_options_for(
         dependent,
-        inherited_options.fetch(dependent.name, []),
+        inherited_options.fetch(dependent.name, Options.new),
       )
 
       keep_build_test = false
@@ -628,6 +666,7 @@ on_request: installed_on_request?, options:)
     end
   end
 
+  sig { returns(T::Array[[Dependency, T::Hash[String, Options]]]) }
   def expand_dependencies
     inherited_options = Hash.new { |hash, key| hash[key] = Options.new }
 
@@ -636,7 +675,8 @@ on_request: installed_on_request?, options:)
     expanded_deps.map { |dep| [dep, inherited_options[dep.name]] }
   end
 
-  def effective_build_options_for(dependent, inherited_options = [])
+  sig { params(dependent: Formula, inherited_options: Options).returns(BuildOptions) }
+  def effective_build_options_for(dependent, inherited_options = Options.new)
     args  = dependent.build.used_options
     args |= (dependent == formula) ? options : inherited_options
     args |= Tab.for_formula(dependent).used_options
@@ -644,6 +684,7 @@ on_request: installed_on_request?, options:)
     BuildOptions.new(args, dependent.options)
   end
 
+  sig { params(formula: Formula).returns(T::Array[String]) }
   def display_options(formula)
     options = if formula.head?
       ["--HEAD"]
@@ -664,7 +705,7 @@ on_request: installed_on_request?, options:)
     inherited_options
   end
 
-  sig { params(deps: T::Array[[Dependency, Options]]).void }
+  sig { params(deps: T::Array[[Dependency, T::Hash[String, Options]]]).void }
   def install_dependencies(deps)
     if deps.empty? && only_deps?
       puts "All dependencies for #{formula.full_name} are satisfied."
@@ -703,7 +744,7 @@ on_request: installed_on_request?, options:)
     fi.fetch
   end
 
-  sig { params(dep: Dependency, inherited_options: Options).void }
+  sig { params(dep: Dependency, inherited_options: T::Hash[String, Options]).void }
   def install_dependency(dep, inherited_options)
     df = dep.to_formula
 
@@ -842,14 +883,14 @@ on_request: installed_on_request?, options:)
     # use installed ca-certificates when it's needed and available
     if formula.name == "ca-certificates" &&
        !DevelopmentTools.ca_file_handles_most_https_certificates?
-      ENV["SSL_CERT_FILE"] = ENV["GIT_SSL_CAINFO"] = formula.pkgetc/"cert.pem"
-      ENV["GIT_SSL_CAPATH"] = formula.pkgetc
+      ENV["SSL_CERT_FILE"] = ENV["GIT_SSL_CAINFO"] = (formula.pkgetc/"cert.pem").to_s
+      ENV["GIT_SSL_CAPATH"] = formula.pkgetc.to_s
     end
 
     # use installed curl when it's needed and available
     if formula.name == "curl" &&
        !DevelopmentTools.curl_handles_most_https_certificates?
-      ENV["HOMEBREW_CURL"] = formula.opt_bin/"curl"
+      ENV["HOMEBREW_CURL"] = (formula.opt_bin/"curl").to_s
       Utils::Curl.clear_path_cache
     end
 
@@ -872,8 +913,9 @@ on_request: installed_on_request?, options:)
     s.freeze
   end
 
+  sig { returns(T.nilable(Float)) }
   def build_time
-    @build_time ||= Time.now - @start_time if @start_time && !interactive?
+    @build_time ||= T.let(Time.now - @start_time, T.nilable(Float)) if @start_time && !interactive?
   end
 
   sig { returns(T::Array[String]) }
@@ -918,7 +960,7 @@ on_request: installed_on_request?, options:)
   def build
     FileUtils.rm_rf(formula.logs)
 
-    @start_time = Time.now
+    @start_time = T.let(Time.now, T.nilable(Time))
 
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
@@ -1232,7 +1274,7 @@ on_request: installed_on_request?, options:)
                                                 .freeze
       true
     rescue DownloadError, ArgumentError
-      @fetch_bottle_tab = true
+      @fetch_bottle_tab = T.let(true, T.nilable(TrueClass))
     end
   end
 
@@ -1259,13 +1301,14 @@ on_request: installed_on_request?, options:)
     self.class.fetched << formula
   end
 
+  sig { returns(T.any(Bottle, Resource, Resource::Local)) }
   def downloadable
     if (bottle_path = formula.local_bottle_path)
       Resource::Local.new(bottle_path)
     elsif pour_bottle?
-      formula.bottle
+      T.must(formula.bottle)
     else
-      formula.resource
+      T.must(formula.resource)
     end
   end
 
@@ -1281,7 +1324,7 @@ on_request: installed_on_request?, options:)
        formula.local_bottle_path.blank?
       ohai "Verifying attestation for #{formula.name}"
       begin
-        Homebrew::Attestation.check_core_attestation formula.bottle
+        Homebrew::Attestation.check_core_attestation T.must(formula.bottle)
       rescue Homebrew::Attestation::GhAuthInvalid
         # Only raise an error if we explicitly opted-in to verification.
         raise CannotInstallFormulaError, <<~EOS if Homebrew::EnvConfig.verify_attestations?
@@ -1343,7 +1386,7 @@ on_request: installed_on_request?, options:)
     tab.time = Time.now.to_i
     tab.aliases = formula.aliases
     tab.arch = Hardware::CPU.arch
-    tab.source["versions"]["stable"] = formula.stable.version&.to_s
+    tab.source["versions"]["stable"] = T.must(formula.stable).version&.to_s
     tab.source["versions"]["version_scheme"] = formula.version_scheme
     tab.source["path"] = formula.specified_path.to_s
     tab.source["tap_git_head"] = formula.tap&.installed? ? formula.tap&.git_head : nil
@@ -1373,6 +1416,7 @@ on_request: installed_on_request?, options:)
     @show_summary_heading = true
   end
 
+  sig { void }
   def audit_installed
     unless formula.keg_only?
       problem_if_output(check_env_path(formula.bin))
@@ -1381,8 +1425,9 @@ on_request: installed_on_request?, options:)
     super
   end
 
+  sig { returns(T::Array[Formula]) }
   def self.locked
-    @locked ||= []
+    @locked ||= T.let([], T.nilable(T::Array[Formula]))
   end
 
   sig { void }
@@ -1513,8 +1558,6 @@ on_request: installed_on_request?, options:)
 
   private
 
-  attr_predicate :hold_locks?
-
   sig { void }
   def lock
     return unless self.class.locked.empty?
@@ -1532,15 +1575,15 @@ on_request: installed_on_request?, options:)
 
   sig { void }
   def unlock
-    return unless hold_locks?
+    return unless @hold_locks
 
     self.class.locked.each(&:unlock)
     self.class.locked.clear
     @hold_locks = false
   end
 
+  sig { void }
   def puts_requirement_messages
-    return unless @requirement_messages
     return if @requirement_messages.empty?
 
     $stderr.puts @requirement_messages
