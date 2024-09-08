@@ -744,7 +744,7 @@ on_request: installed_on_request?, options:)
     fi.fetch
   end
 
-  sig { params(dep: Dependency, inherited_options: T::Hash[String, Options]).void }
+  sig { params(dep: Dependency, inherited_options: T.any(Options, T::Hash[String, Options])).void }
   def install_dependency(dep, inherited_options)
     df = dep.to_formula
 
@@ -780,7 +780,7 @@ on_request: installed_on_request?, options:)
     fi = FormulaInstaller.new(
       df,
       options:,
-      link_keg:                   keg_had_linked_keg ? keg_was_linked : nil,
+      link_keg:                   keg_had_linked_keg && keg_was_linked,
       installed_as_dependency:    true,
       installed_on_request:       df.any_version_installed? && tab.present? && tab.installed_on_request,
       force_bottle:               false,
@@ -960,7 +960,7 @@ on_request: installed_on_request?, options:)
   def build
     FileUtils.rm_rf(formula.logs)
 
-    @start_time = T.let(Time.now, T.nilable(Time))
+    @start_time = Time.now
 
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
