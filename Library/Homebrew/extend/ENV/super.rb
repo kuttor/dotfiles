@@ -75,6 +75,7 @@ module Superenv
     self["HOMEBREW_TEMP"] = HOMEBREW_TEMP.to_s
     self["HOMEBREW_OPTFLAGS"] = determine_optflags
     self["HOMEBREW_ARCHFLAGS"] = ""
+    self["HOMEBREW_MAKE_JOBS"] = determine_make_jobs.to_s
     self["CMAKE_PREFIX_PATH"] = determine_cmake_prefix_path
     self["CMAKE_FRAMEWORK_PATH"] = determine_cmake_frameworks_path
     self["CMAKE_INCLUDE_PATH"] = determine_cmake_include_path
@@ -313,16 +314,19 @@ module Superenv
   # When passed a block, MAKEFLAGS is removed only for the duration of the block and is restored after its completion.
   sig { params(block: T.nilable(T.proc.returns(T.untyped))).returns(T.untyped) }
   def deparallelize(&block)
-    old = delete("MAKEFLAGS")
+    old_makeflags = delete("MAKEFLAGS")
+    old_make_jobs = delete("HOMEBREW_MAKE_JOBS")
+    self["HOMEBREW_MAKE_JOBS"] = "1"
     if block
       begin
         yield
       ensure
-        self["MAKEFLAGS"] = old
+        self["MAKEFLAGS"] = old_makeflags
+        self["HOMEBREW_MAKE_JOBS"] = old_make_jobs
       end
     end
 
-    old
+    old_makeflags
   end
 
   sig { returns(Integer) }
