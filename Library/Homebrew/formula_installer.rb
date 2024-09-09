@@ -52,14 +52,33 @@ class FormulaInstaller
   attr_predicate :verbose?, :debug?, :quiet?
 
   sig {
-    params(formula: Formula, link_keg: T::Boolean, installed_as_dependency: T::Boolean,
-           installed_on_request: T::Boolean, show_header: T::Boolean, build_bottle: T::Boolean,
-           skip_post_install: T::Boolean, force_bottle: T::Boolean, bottle_arch: T.nilable(String),
-           ignore_deps: T::Boolean, only_deps: T::Boolean, include_test_formulae: T::Array[Formula],
-           build_from_source_formulae: T::Array[Formula], env: T.nilable(String), git: T::Boolean,
-           interactive: T::Boolean, keep_tmp: T::Boolean, debug_symbols: T::Boolean, cc: T.nilable(String),
-           options: Options, force: T::Boolean, overwrite: T::Boolean, debug: T::Boolean, quiet: T::Boolean,
-           verbose: T::Boolean).void
+    params(
+      formula:                    Formula,
+      link_keg:                   T::Boolean,
+      installed_as_dependency:    T::Boolean,
+      installed_on_request:       T::Boolean,
+      show_header:                T::Boolean,
+      build_bottle:               T::Boolean,
+      skip_post_install:          T::Boolean,
+      force_bottle:               T::Boolean,
+      bottle_arch:                T.nilable(String),
+      ignore_deps:                T::Boolean,
+      only_deps:                  T::Boolean,
+      include_test_formulae:      T::Array[Formula],
+      build_from_source_formulae: T::Array[Formula],
+      env:                        T.nilable(String),
+      git:                        T::Boolean,
+      interactive:                T::Boolean,
+      keep_tmp:                   T::Boolean,
+      debug_symbols:              T::Boolean,
+      cc:                         T.nilable(String),
+      options:                    Options,
+      force:                      T::Boolean,
+      overwrite:                  T::Boolean,
+      debug:                      T::Boolean,
+      quiet:                      T::Boolean,
+      verbose:                    T::Boolean,
+    ).void
   }
   def initialize(
     formula,
