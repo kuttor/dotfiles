@@ -31,6 +31,8 @@ class FormulaInstaller
   include FormulaCellarChecks
   extend Attrable
 
+  ETC_VAR_DIRS = T.let([HOMEBREW_PREFIX/"etc", HOMEBREW_PREFIX/"var"].freeze, T::Array[Pathname])
+
   sig { override.returns(Formula) }
   attr_reader :formula
 
@@ -118,7 +120,6 @@ class FormulaInstaller
     @bottle_tab_runtime_dependencies = T.let({}.freeze, T::Hash[String, T::Hash[String, String]])
     @hold_locks = T.let(false, T::Boolean)
     @show_summary_heading = T.let(false, T::Boolean)
-    @etc_var_dirs = T.let([], T::Array[Pathname])
     @etc_var_preinstall = T.let([], T::Array[Pathname])
     @etc_var_postinstall = T.let([], T::Array[Pathname])
 
@@ -379,9 +380,7 @@ class FormulaInstaller
   end
 
   sig { params(_formula: Formula).returns(T.nilable(T::Boolean)) }
-  def fresh_install?(_formula)
-    false
-  end
+  def fresh_install?(_formula) = false
 
   sig { void }
   def install_fetch_deps
@@ -398,13 +397,12 @@ class FormulaInstaller
 
   sig { void }
   def build_bottle_preinstall
-    @etc_var_dirs = [HOMEBREW_PREFIX/"etc", HOMEBREW_PREFIX/"var"]
-    @etc_var_preinstall = Find.find(*@etc_var_dirs.select(&:directory?)).to_a
+    @etc_var_preinstall = Find.find(*ETC_VAR_DIRS.select(&:directory?)).to_a
   end
 
   sig { void }
   def build_bottle_postinstall
-    @etc_var_postinstall = Find.find(*@etc_var_dirs.select(&:directory?)).to_a
+    @etc_var_postinstall = Find.find(*ETC_VAR_DIRS.select(&:directory?)).to_a
     (@etc_var_postinstall - @etc_var_preinstall).each do |file|
       Pathname.new(file).cp_path_sub(HOMEBREW_PREFIX, formula.bottle_prefix)
     end
@@ -954,9 +952,7 @@ on_request: installed_on_request?, options:)
   end
 
   sig { returns(T::Array[String]) }
-  def build_argv
-    sanitized_argv_options + options.as_flags
-  end
+  def build_argv = sanitized_argv_options + options.as_flags
 
   sig { void }
   def build
