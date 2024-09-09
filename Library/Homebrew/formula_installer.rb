@@ -1317,7 +1317,7 @@ on_request: installed_on_request?, options:)
     self.class.fetched << formula
   end
 
-  sig { returns(T.any(Bottle, Resource, Resource::Local)) }
+  sig { returns(Downloadable) }
   def downloadable
     if (bottle_path = formula.local_bottle_path)
       Resource::Local.new(bottle_path)
