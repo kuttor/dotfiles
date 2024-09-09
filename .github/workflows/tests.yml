@@ -221,7 +221,7 @@ jobs:
         include:
           - name: update-test (Ubuntu 22.04)
             runs-on: ubuntu-22.04
-          - name: update-test (macOS 13)
+          - name: update-test (macOS)
             runs-on: macos-14
     steps:
       - name: Set up Homebrew
