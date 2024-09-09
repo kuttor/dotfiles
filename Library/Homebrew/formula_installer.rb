@@ -140,7 +140,6 @@ class FormulaInstaller
     @hold_locks = T.let(false, T::Boolean)
     @show_summary_heading = T.let(false, T::Boolean)
     @etc_var_preinstall = T.let([], T::Array[Pathname])
-    @etc_var_postinstall = T.let([], T::Array[Pathname])
 
     # Take the original formula instance, which might have been swapped from an API instance to a source instance
     @formula = T.let(T.must(previously_fetched_formula), Formula) if previously_fetched_formula
@@ -421,8 +420,8 @@ class FormulaInstaller
 
   sig { void }
   def build_bottle_postinstall
-    @etc_var_postinstall = Find.find(*ETC_VAR_DIRS.select(&:directory?)).to_a
-    (@etc_var_postinstall - @etc_var_preinstall).each do |file|
+    etc_var_postinstall = Find.find(*ETC_VAR_DIRS.select(&:directory?)).to_a
+    (etc_var_postinstall - @etc_var_preinstall).each do |file|
       Pathname.new(file).cp_path_sub(HOMEBREW_PREFIX, formula.bottle_prefix)
     end
   end
