@@ -51,14 +51,54 @@ module Tty
       string.gsub(/\033\[\d+(;\d+)*m/, "")
     end
 
+    sig { params(line_count: Integer).returns(String) }
+    def move_cursor_up(line_count)
+      "\033[#{line_count}A"
+    end
+
+    sig { params(line_count: Integer).returns(String) }
+    def move_cursor_up_beginning(line_count)
+      "\033[#{line_count}F"
+    end
+
+    sig { params(line_count: Integer).returns(String) }
+    def move_cursor_down(line_count)
+      "\033[#{line_count}B"
+    end
+
+    sig { returns(String) }
+    def clear_to_end
+      "\033[K"
+    end
+
+    sig { returns(String) }
+    def hide_cursor
+      "\033[?25l"
+    end
+
+    sig { returns(String) }
+    def show_cursor
+      "\033[?25h"
+    end
+
+    sig { returns(T.nilable([Integer, Integer])) }
+    def size
+      return @size if defined?(@size)
+
+      height, width = `/bin/stty size 2>/dev/null`.presence&.split&.map(&:to_i)
+      return if height.nil? || width.nil?
+
+      @size = [height, width]
+    end
+
+    sig { returns(Integer) }
+    def height
+      @height ||= size&.first || `/usr/bin/tput lines 2>/dev/null`.presence&.to_i || 40
+    end
+
     sig { returns(Integer) }
     def width
-      @width ||= begin
-        _, width = `/bin/stty size 2>/dev/null`.split
-        width, = `/usr/bin/tput cols 2>/dev/null`.split if width.to_i.zero?
-        width ||= 80
-        width.to_i
-      end
+      @width ||= size&.second || `/usr/bin/tput cols 2>/dev/null`.presence&.to_i || 80
     end
 
     sig { params(string: String).returns(String) }

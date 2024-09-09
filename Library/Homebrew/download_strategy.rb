@@ -716,6 +716,10 @@ class LocalBottleDownloadStrategy < AbstractFileDownloadStrategy
     @cached_location = path
     extend Pourable
   end
+
+  def clear_cache
+    # Path is used directly and not cached.
+  end
 end
 
 # Strategy for downloading a Subversion repository.
