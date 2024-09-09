@@ -25,7 +25,7 @@ jobs:
       TEMPORARY_CERTIFICATE_FILE: 'homebrew_developer_id_installer_certificate.p12'
       TEMPORARY_KEYCHAIN_FILE: 'homebrew_installer_signing.keychain-db'
       # Set to the oldest supported version of macOS
-      HOMEBREW_MACOS_OLDEST_SUPPORTED: '12.0'
+      HOMEBREW_MACOS_OLDEST_SUPPORTED: '13.0'
     steps:
       - name: Remove existing API cache (to force update)
         run: rm -rvf ~/Library/Caches/Homebrew/api
