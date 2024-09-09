@@ -22,6 +22,10 @@ module Utils
     # code that is >= 400.
     CURL_HTTP_RETURNED_ERROR_EXIT_CODE = 22
 
+    # Error returned when curl gets an error from the lowest networking layers
+    # that the receiving of data failed.
+    CURL_RECV_ERROR_EXIT_CODE = 56
+
     # This regex is used to extract the part of an ETag within quotation marks,
     # ignoring any leading weak validator indicator (`W/`). This simplifies
     # ETag comparison in `#curl_check_http_content`.
@@ -38,6 +42,7 @@ module Utils
 
     private_constant :CURL_WEIRD_SERVER_REPLY_EXIT_CODE,
                      :CURL_HTTP_RETURNED_ERROR_EXIT_CODE,
+                     :CURL_RECV_ERROR_EXIT_CODE,
                      :ETAG_VALUE_REGEX, :HTTP_RESPONSE_BODY_SEPARATOR,
                      :HTTP_STATUS_LINE_REGEX
 
@@ -237,8 +242,11 @@ module Utils
 
         # We still receive usable headers with certain non-successful exit
         # statuses, so we special case them below.
-        if result.success? ||
-           [CURL_WEIRD_SERVER_REPLY_EXIT_CODE, CURL_HTTP_RETURNED_ERROR_EXIT_CODE].include?(result.exit_status)
+        if result.success? || [
+          CURL_WEIRD_SERVER_REPLY_EXIT_CODE,
+          CURL_HTTP_RETURNED_ERROR_EXIT_CODE,
+          CURL_RECV_ERROR_EXIT_CODE,
+        ].include?(result.exit_status)
           parsed_output = parse_curl_output(result.stdout)
 
           if request_args.empty?
