@@ -548,9 +548,9 @@ on_request: installed_on_request?, options:)
 
   # Compute and collect the dependencies needed by the formula currently
   # being installed.
-  sig { params(use_cache: T::Boolean).returns(T::Array[[Dependency, T::Hash[String, Options]]]) }
+  sig { params(use_cache: T::Boolean).returns(T::Array[[Dependency, Options]]) }
   def compute_dependencies(use_cache: true)
-    @compute_dependencies = T.let(nil, T.nilable(T::Array[[Dependency, T::Hash[String, Options]]])) unless use_cache
+    @compute_dependencies = T.let(nil, T.nilable(T::Array[[Dependency, Options]])) unless use_cache
     @compute_dependencies ||= begin
       # Needs to be done before expand_dependencies
       fetch_bottle_tab if pour_bottle?
@@ -560,7 +560,7 @@ on_request: installed_on_request?, options:)
     end
   end
 
-  sig { params(deps: T::Array[[Dependency, T::Hash[String, Options]]]).returns(T::Array[Formula]) }
+  sig { params(deps: T::Array[[Dependency, Options]]).returns(T::Array[Formula]) }
   def unbottled_dependencies(deps)
     deps.map { |(dep, _options)| dep.to_formula }.reject do |dep_f|
       next false unless dep_f.pour_bottle?
@@ -666,7 +666,7 @@ on_request: installed_on_request?, options:)
     end
   end
 
-  sig { returns(T::Array[[Dependency, T::Hash[String, Options]]]) }
+  sig { returns(T::Array[[Dependency, Options]]) }
   def expand_dependencies
     inherited_options = Hash.new { |hash, key| hash[key] = Options.new }
 
@@ -705,7 +705,7 @@ on_request: installed_on_request?, options:)
     inherited_options
   end
 
-  sig { params(deps: T::Array[[Dependency, T::Hash[String, Options]]]).void }
+  sig { params(deps: T::Array[[Dependency, Options]]).void }
   def install_dependencies(deps)
     if deps.empty? && only_deps?
       puts "All dependencies for #{formula.full_name} are satisfied."
@@ -744,7 +744,7 @@ on_request: installed_on_request?, options:)
     fi.fetch
   end
 
-  sig { params(dep: Dependency, inherited_options: T.any(Options, T::Hash[String, Options])).void }
+  sig { params(dep: Dependency, inherited_options: Options).void }
   def install_dependency(dep, inherited_options)
     df = dep.to_formula
 
@@ -754,6 +754,8 @@ on_request: installed_on_request?, options:)
       keg_had_linked_keg = true
       keg_was_linked = linked_keg.linked?
       linked_keg.unlink
+    else
+      keg_had_linked_keg = false
     end
 
     if df.latest_version_installed?
