@@ -40,7 +40,7 @@ homebrew-shellenv() {
       echo "set -gx HOMEBREW_PREFIX \"${HOMEBREW_PREFIX}\";"
       echo "set -gx HOMEBREW_CELLAR \"${HOMEBREW_CELLAR}\";"
       echo "set -gx HOMEBREW_REPOSITORY \"${HOMEBREW_REPOSITORY}\";"
-      echo "fish_add_path -gP \"${HOMEBREW_PREFIX}/bin\" \"${HOMEBREW_PREFIX}/sbin\";"
+      echo "fish_add_path -gmP \"${HOMEBREW_PREFIX}/bin\" \"${HOMEBREW_PREFIX}/sbin\";"
       echo "if test -n \"\$MANPATH[1]\"; set -gx MANPATH '' \$MANPATH; end;"
       echo "if not contains \"${HOMEBREW_PREFIX}/share/info\" \$INFOPATH; set -gx INFOPATH \"${HOMEBREW_PREFIX}/share/info\" \$INFOPATH; end;"
       ;;
