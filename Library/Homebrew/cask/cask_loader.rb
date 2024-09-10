@@ -612,7 +612,7 @@ module Cask
     end
 
     sig { params(ref: String, config: T.nilable(Config), warn: T::Boolean).returns(Cask) }
-    def self.load_installed_cask(ref, config: nil, warn: true)
+    def self.load_prefer_installed(ref, config: nil, warn: true)
       tap, token = Tap.with_cask_token(ref)
       token ||= ref
       tap ||= Cask.new(ref).tab.tap

@@ -185,7 +185,7 @@ RSpec.describe Cask::CaskLoader, :cask do
     end
   end
 
-  describe "::load_installed_cask" do
+  describe "::load_prefer_installed" do
     let(:foo_tap) { Tap.fetch("user", "foo") }
     let(:bar_tap) { Tap.fetch("user", "bar") }
 
@@ -207,28 +207,28 @@ RSpec.describe Cask::CaskLoader, :cask do
       allow_any_instance_of(Cask::Cask).to receive(:tab).and_return(blank_tab)
       expect(described_class).to receive(:load).with("test-cask", load_args)
 
-      expect(described_class.load_installed_cask("test-cask").tap).to eq(foo_tap)
+      expect(described_class.load_prefer_installed("test-cask").tap).to eq(foo_tap)
     end
 
     it "returns the correct cask when no tap is specified but a tab exists" do
       allow_any_instance_of(Cask::Cask).to receive(:tab).and_return(installed_tab)
       expect(described_class).to receive(:load).with("user/bar/test-cask", load_args)
 
-      expect(described_class.load_installed_cask("test-cask").tap).to eq(bar_tap)
+      expect(described_class.load_prefer_installed("test-cask").tap).to eq(bar_tap)
     end
 
     it "returns the correct cask when a tap is specified and no tab exists" do
       allow_any_instance_of(Cask::Cask).to receive(:tab).and_return(blank_tab)
       expect(described_class).to receive(:load).with("user/bar/test-cask", load_args)
 
-      expect(described_class.load_installed_cask("user/bar/test-cask").tap).to eq(bar_tap)
+      expect(described_class.load_prefer_installed("user/bar/test-cask").tap).to eq(bar_tap)
     end
 
     it "returns the correct cask when no tap is specified and a tab exists" do
       allow_any_instance_of(Cask::Cask).to receive(:tab).and_return(installed_tab)
       expect(described_class).to receive(:load).with("user/foo/test-cask", load_args)
 
-      expect(described_class.load_installed_cask("user/foo/test-cask").tap).to eq(foo_tap)
+      expect(described_class.load_prefer_installed("user/foo/test-cask").tap).to eq(foo_tap)
     end
 
     it "returns the correct cask when no tap is specified and the tab lists an tap that isn't installed" do
@@ -237,7 +237,7 @@ RSpec.describe Cask::CaskLoader, :cask do
                                                .and_raise(Cask::CaskUnavailableError.new("test-cask", bar_tap))
       expect(described_class).to receive(:load).with("test-cask", load_args)
 
-      expect(described_class.load_installed_cask("test-cask").tap).to eq(foo_tap)
+      expect(described_class.load_prefer_installed("test-cask").tap).to eq(foo_tap)
     end
   end
 end
