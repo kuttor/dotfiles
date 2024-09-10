@@ -3445,6 +3445,10 @@ and Linux workers.
 : Use these skipped or failed formulae from formulae steps for a formulae
   dependents step.
 
+`--tested-formulae`
+
+: Use these tested formulae from formulae steps for a formulae dependents step.
+
 ### `unalias` *`alias`* \[...\]
 
 Remove aliases.
