@@ -219,9 +219,6 @@ class FormulaInstaller
 
   sig { returns(T::Boolean) }
   def quiet?; end
-
-  sig { returns(T::Boolean) }
-  def hold_locks?; end
 end
 
 class Livecheck
