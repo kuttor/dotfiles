@@ -517,7 +517,7 @@ module Cask
       end
 
       sig { params(path: T.any(Pathname, String), token: String).void }
-      def initialize(path, token: T.unsafe(nil))
+      def initialize(path, token: "")
         super
 
         installed_tap = Cask.new(@token).tab.tap
