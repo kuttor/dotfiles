@@ -92,6 +92,13 @@ class LinkageChecker
     Regexp.last_match(2)
   end
 
+  sig { params(file: String).returns(T::Boolean) }
+  def broken_dylibs_allowed?(file)
+    return false if formula.name != "julia"
+
+    file.start_with?("#{formula.prefix.realpath}/share/julia/compiled/")
+  end
+
   def check_dylibs(rebuild_cache:)
     keg_files_dylibs = nil
 
@@ -128,7 +135,7 @@ class LinkageChecker
         if !file_has_any_rpath_dylibs && (dylib.start_with? "@rpath/")
           file_has_any_rpath_dylibs = true
           pathname = Pathname(file)
-          @files_missing_rpaths << file if pathname.rpaths.empty?
+          @files_missing_rpaths << file if pathname.rpaths.empty? && !broken_dylibs_allowed?(file.to_s)
         end
 
         next if checked_dylibs.include? dylib
@@ -156,7 +163,7 @@ class LinkageChecker
             # If we cannot associate the dylib with a dependency, then it may be a system library.
             # If dlopen finds the dylib, then the linkage is not broken.
             @system_dylibs << dylib
-          elsif !system_framework?(dylib)
+          elsif !system_framework?(dylib) && !broken_dylibs_allowed?(file.to_s)
             @broken_dylibs << dylib
           end
         else
