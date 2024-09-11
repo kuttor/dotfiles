@@ -1795,7 +1795,7 @@ class Formula
     params(root: T.any(String, Pathname), path: T.any(String, Pathname)).returns(T::Array[String])
   }
   def std_cargo_args(root: prefix, path: ".")
-    ["--locked", "--root=#{root}", "--path=#{path}"]
+    ["--jobs", ENV.make_jobs.to_s, "--locked", "--root=#{root}", "--path=#{path}"]
   end
 
   # Standard parameters for CMake builds.
