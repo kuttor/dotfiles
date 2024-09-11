@@ -316,7 +316,7 @@ class Formula
 
   def determine_active_spec(requested)
     spec = send(requested) || stable || head
-    spec || raise(FormulaSpecificationError, "formulae require at least a URL")
+    spec || raise(FormulaSpecificationError, "#{full_name}: formula requires at least a URL")
   end
 
   def validate_attributes!
