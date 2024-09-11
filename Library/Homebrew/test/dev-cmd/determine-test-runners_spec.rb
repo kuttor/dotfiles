@@ -31,7 +31,8 @@ RSpec.describe Homebrew::DevCmd::DetermineTestRunners do
     out = []
     MacOSVersion::SYMBOLS.each_value do |v|
       macos_version = MacOSVersion.new(v)
-      next if macos_version.unsupported_release?
+      next if macos_version < :monterey
+      next if macos_version > :sonoma
 
       out << "#{v}-x86_64"
       out << "#{v}-arm64"

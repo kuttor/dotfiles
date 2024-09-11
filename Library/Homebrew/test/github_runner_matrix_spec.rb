@@ -11,8 +11,9 @@ RSpec.describe GitHubRunnerMatrix do
     allow(ENV).to receive(:fetch).with("GITHUB_RUN_ID").and_return("12345")
   end
 
+  # FIXME: Avoid changing this every time we change Homebrew/core CI runner macOS versions.
   let(:newest_supported_macos) do
-    MacOSVersion::SYMBOLS.find { |_, v| !MacOSVersion.new(v).prerelease? }
+    MacOSVersion::SYMBOLS.find { |k, _| k == :sonoma }
   end
 
   let(:testball) { TestRunnerFormula.new(Testball.new) }
