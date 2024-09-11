@@ -99,6 +99,16 @@ module Superenv
       MacOS::CLT::PKG_PATH
     end
 
+    # This is a workaround for the missing `m4` in Xcode CLT 15.3, which was
+    # reported in FB13679972. Apple has fixed this in Xcode CLT 16.0.
+    # See https://github.com/Homebrew/homebrew-core/issues/165388
+    if deps.none? { |d| d.name == "m4" } &&
+       MacOS.active_developer_dir == MacOS::CLT::PKG_PATH &&
+       !File.exist?("#{MacOS::CLT::PKG_PATH}/usr/bin/m4") &&
+       (gm4 = DevelopmentTools.locate("gm4").to_s).present?
+      self["M4"] = gm4
+    end
+
     generic_setup_build_environment(formula:, cc:, build_bottle:, bottle_arch:,
                                     testing_formula:, debug_symbols:)
 
