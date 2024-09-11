@@ -1594,8 +1594,7 @@ class Formula
         %w[
           config.log
           CMakeCache.txt
-          CMakeOutput.log
-          CMakeError.log
+          CMakeConfigureLog.yaml
           meson-log.txt
         ].each do |logfile|
           Dir["**/#{logfile}"].each do |logpath|
