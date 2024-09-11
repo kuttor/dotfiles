@@ -431,14 +431,16 @@ class Cmd
     config.include?("D")
   end
 
+  def linker_flags
+    @args.select { |arg| arg.start_with?("-Wl,") }
+         .flat_map { |arg| arg.delete_prefix("-Wl,").split(",") }
+  end
+
   def no_fixup_chains?
     return false unless config.include?("f")
     return false unless calls_ld?
-    return true if @args.include?("-Wl,-undefined,dynamic_lookup")
-
-    args_consecutive_pairs = @args.each_cons(2)
-    return true if args_consecutive_pairs.include?(["-undefined", "dynamic_lookup"])
-    return true if args_consecutive_pairs.include?(["-Wl,-undefined", "-Wl,dynamic_lookup"])
+    return true if @args.each_cons(2).include?(["-undefined", "dynamic_lookup"])
+    return true if linker_flags.each_cons(2).include?(["-undefined", "dynamic_lookup"])
 
     # The next flag would produce an error, but we fix it in `refurbish_arg`.
     @args.include?("-undefineddynamic_lookup")
@@ -449,7 +451,10 @@ class Cmd
   end
 
   def ld_classic?
-    config.include?("c") && calls_ld? && @args.any? { |arg| arg.match?(/^(-Wl,)?-dead_strip_dylibs$/) }
+    return false unless config.include?("c")
+    return false unless calls_ld?
+
+    @args.include?("-dead_strip_dylibs") || linker_flags.include?("-dead_strip_dylibs")
   end
 
   def calls_ld?
