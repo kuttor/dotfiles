@@ -77,8 +77,10 @@ class GitHubRunnerMatrix
   private
 
   SELF_HOSTED_LINUX_RUNNER = "linux-self-hosted-1"
-  GITHUB_ACTIONS_LONG_TIMEOUT = 4320
-  GITHUB_ACTIONS_SHORT_TIMEOUT = 120
+  # ARM macOS timeout, keep this under 1/2 of GitHub's job execution time limit for self-hosted runners.
+  # https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#usage-limits
+  GITHUB_ACTIONS_LONG_TIMEOUT = 2160 # 36 hours
+  GITHUB_ACTIONS_SHORT_TIMEOUT = 60
 
   sig { returns(LinuxRunnerSpec) }
   def linux_runner_spec
@@ -118,6 +120,15 @@ class GitHubRunnerMatrix
     runner.freeze
   end
 
+  NEWEST_HOMEBREW_CORE_MACOS_RUNNER = :sonoma
+  OLDEST_HOMEBREW_CORE_MACOS_RUNNER = :monterey
+  NEWEST_HOMEBREW_CORE_INTEL_MACOS_RUNNER = :sonoma
+
+  sig { params(macos_version: MacOSVersion).returns(T::Boolean) }
+  def runner_enabled?(macos_version)
+    macos_version <= NEWEST_HOMEBREW_CORE_MACOS_RUNNER && macos_version >= OLDEST_HOMEBREW_CORE_MACOS_RUNNER
+  end
+
   NEWEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER = :ventura
   OLDEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER = :big_sur
   NEWEST_GITHUB_ACTIONS_ARM_MACOS_RUNNER = :sonoma
@@ -149,28 +160,7 @@ class GitHubRunnerMatrix
 
     MacOSVersion::SYMBOLS.each_value do |version|
       macos_version = MacOSVersion.new(version)
-      next if macos_version.unsupported_release?
-
-      github_runner_available = macos_version <= NEWEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER &&
-                                macos_version >= OLDEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER
-
-      runner, timeout = if use_github_runner && github_runner_available
-        ["macos-#{version}", GITHUB_ACTIONS_RUNNER_TIMEOUT]
-      else
-        ["#{version}-x86_64#{ephemeral_suffix}", runner_timeout]
-      end
-
-      # macOS 12-x86_64 is usually slower.
-      timeout += 30 if macos_version <= :monterey
-      spec = MacOSRunnerSpec.new(
-        name:    "macOS #{version}-x86_64",
-        runner:,
-        timeout:,
-        cleanup: !runner.end_with?(ephemeral_suffix),
-      )
-      @runners << create_runner(:macos, :x86_64, spec, macos_version)
-
-      next if macos_version < :big_sur
+      next unless runner_enabled?(macos_version)
 
       github_runner_available = macos_version <= NEWEST_GITHUB_ACTIONS_ARM_MACOS_RUNNER &&
                                 macos_version >= OLDEST_GITHUB_ACTIONS_ARM_MACOS_RUNNER
@@ -183,8 +173,6 @@ class GitHubRunnerMatrix
         ["#{version}-arm64", runner_timeout]
       end
 
-      # The ARM runners are typically over twice as fast as the Intel runners.
-      timeout /= 2 if !(use_github_runner && github_runner_available) && timeout < GITHUB_ACTIONS_LONG_TIMEOUT
       spec = MacOSRunnerSpec.new(
         name:    "macOS #{version}-arm64",
         runner:,
@@ -192,6 +180,29 @@ class GitHubRunnerMatrix
         cleanup: !runner.end_with?(ephemeral_suffix),
       )
       @runners << create_runner(:macos, :arm64, spec, macos_version)
+
+      next if macos_version > NEWEST_HOMEBREW_CORE_INTEL_MACOS_RUNNER
+
+      github_runner_available = macos_version <= NEWEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER &&
+                                macos_version >= OLDEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER
+
+      runner, timeout = if use_github_runner && github_runner_available
+        ["macos-#{version}", GITHUB_ACTIONS_RUNNER_TIMEOUT]
+      else
+        ["#{version}-x86_64#{ephemeral_suffix}", runner_timeout]
+      end
+
+      # macOS 12-x86_64 is usually slower.
+      timeout += 30 if macos_version <= :monterey
+      # The ARM runners are typically over twice as fast as the Intel runners.
+      timeout *= 2 if !(use_github_runner && github_runner_available) && timeout < GITHUB_ACTIONS_LONG_TIMEOUT
+      spec = MacOSRunnerSpec.new(
+        name:    "macOS #{version}-x86_64",
+        runner:,
+        timeout:,
+        cleanup: !runner.end_with?(ephemeral_suffix),
+      )
+      @runners << create_runner(:macos, :x86_64, spec, macos_version)
     end
 
     @runners.freeze
