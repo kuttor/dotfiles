@@ -31,11 +31,13 @@ RSpec.describe Homebrew::DevCmd::DetermineTestRunners do
     out = []
     MacOSVersion::SYMBOLS.each_value do |v|
       macos_version = MacOSVersion.new(v)
-      next if macos_version < :monterey
-      next if macos_version > :sonoma
+      next if macos_version < GitHubRunnerMatrix::OLDEST_HOMEBREW_CORE_MACOS_RUNNER
+      next if macos_version > GitHubRunnerMatrix::NEWEST_HOMEBREW_CORE_MACOS_RUNNER
+
+      out << "#{v}-arm64"
+      next if macos_version > GitHubRunnerMatrix::NEWEST_HOMEBREW_CORE_INTEL_MACOS_RUNNER
 
       out << "#{v}-x86_64"
-      out << "#{v}-arm64"
     end
 
     out << linux_runner

@@ -120,8 +120,8 @@ class GitHubRunnerMatrix
     runner.freeze
   end
 
-  NEWEST_HOMEBREW_CORE_MACOS_RUNNER = :sonoma
-  OLDEST_HOMEBREW_CORE_MACOS_RUNNER = :monterey
+  NEWEST_HOMEBREW_CORE_MACOS_RUNNER = :sequoia
+  OLDEST_HOMEBREW_CORE_MACOS_RUNNER = :ventura
   NEWEST_HOMEBREW_CORE_INTEL_MACOS_RUNNER = :sonoma
 
   sig { params(macos_version: MacOSVersion).returns(T::Boolean) }
