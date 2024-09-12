@@ -495,6 +495,8 @@ class BuildError < RuntimeError
 
   sig { returns(T::Array[T.untyped]) }
   def fetch_issues
+    return [] if ENV["HOMEBREW_NO_BUILD_ERROR_ISSUES"].present?
+
     GitHub.issues_for_formula(formula.name, tap: formula.tap, state: "open", type: "issue")
   rescue GitHub::API::Error => e
     opoo "Unable to query GitHub for recent issues on the tap\n#{e.message}"
