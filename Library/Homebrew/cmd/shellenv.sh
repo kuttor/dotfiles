@@ -37,12 +37,12 @@ homebrew-shellenv() {
 
   case "${HOMEBREW_SHELL_NAME}" in
     fish | -fish)
-      echo "set -gx HOMEBREW_PREFIX \"${HOMEBREW_PREFIX}\";"
-      echo "set -gx HOMEBREW_CELLAR \"${HOMEBREW_CELLAR}\";"
-      echo "set -gx HOMEBREW_REPOSITORY \"${HOMEBREW_REPOSITORY}\";"
-      echo "fish_add_path -gmP \"${HOMEBREW_PREFIX}/bin\" \"${HOMEBREW_PREFIX}/sbin\";"
-      echo "if test -n \"\$MANPATH[1]\"; set -gx MANPATH '' \$MANPATH; end;"
-      echo "if not contains \"${HOMEBREW_PREFIX}/share/info\" \$INFOPATH; set -gx INFOPATH \"${HOMEBREW_PREFIX}/share/info\" \$INFOPATH; end;"
+      echo "set --global --export HOMEBREW_PREFIX \"${HOMEBREW_PREFIX}\";"
+      echo "set --global --export HOMEBREW_CELLAR \"${HOMEBREW_CELLAR}\";"
+      echo "set --global --export HOMEBREW_REPOSITORY \"${HOMEBREW_REPOSITORY}\";"
+      echo "fish_add_path --global --move --path \"${HOMEBREW_PREFIX}/bin\" \"${HOMEBREW_PREFIX}/sbin\";"
+      echo "if test -n \"\$MANPATH[1]\"; set --global --export MANPATH '' \$MANPATH; end;"
+      echo "if not contains \"${HOMEBREW_PREFIX}/share/info\" \$INFOPATH; set --global --export INFOPATH \"${HOMEBREW_PREFIX}/share/info\" \$INFOPATH; end;"
       ;;
     csh | -csh | tcsh | -tcsh)
       echo "setenv HOMEBREW_PREFIX ${HOMEBREW_PREFIX};"
