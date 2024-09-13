@@ -1,13 +1,19 @@
 # typed: strict
 # frozen_string_literal: true
 
-module CleanerMac
-  private
+module Homebrew
+  module OS
+    module MacOS
+      module Cleaner
+        private
 
-  sig { params(path: Pathname).returns(T::Boolean) }
-  def executable_path?(path)
-    path.mach_o_executable? || path.text_executable?
+        sig { params(path: Pathname).returns(T::Boolean) }
+        def executable_path?(path)
+          path.mach_o_executable? || path.text_executable?
+        end
+      end
+    end
   end
 end
 
-Cleaner.prepend(CleanerMac)
+Cleaner.prepend(Homebrew::OS::MacOS::Cleaner)

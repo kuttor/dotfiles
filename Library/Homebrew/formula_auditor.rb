@@ -504,9 +504,9 @@ module Homebrew
       return unless @core_tap
       return if formula.name != "glibc"
       # Also allow LINUX_GLIBC_NEXT_CI_VERSION for when we're upgrading.
-      return if [OS::LINUX_GLIBC_CI_VERSION, OS::LINUX_GLIBC_NEXT_CI_VERSION].include?(formula.version.to_s)
+      return if [::OS::LINUX_GLIBC_CI_VERSION, ::OS::LINUX_GLIBC_NEXT_CI_VERSION].include?(formula.version.to_s)
 
-      problem "The glibc version must be #{OS::LINUX_GLIBC_CI_VERSION}, as needed by our CI on Linux. " \
+      problem "The glibc version must be #{::OS::LINUX_GLIBC_CI_VERSION}, as needed by our CI on Linux. " \
               "The glibc formula is for users who have a system glibc with a lower version, " \
               "which allows them to use our Linux bottles, which were compiled against system glibc on CI."
     end
