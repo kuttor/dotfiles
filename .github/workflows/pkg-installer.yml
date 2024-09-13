@@ -133,8 +133,6 @@ jobs:
       matrix:
         include:
           # Intel
-          - runner: macos-12
-            name: macos-12-x86_64
           - runner: macos-13
             name: macos-13-x86_64
           # Apple Silicon
