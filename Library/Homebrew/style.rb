@@ -164,7 +164,9 @@ module Homebrew
 
       args += files
 
-      cache_env = { "XDG_CACHE_HOME" => "#{HOMEBREW_CACHE}/style" }
+      HOMEBREW_CACHE.mkpath
+      cache_dir = HOMEBREW_CACHE.realpath
+      cache_env = { "XDG_CACHE_HOME" => "#{cache_dir}/style" }
 
       FileUtils.rm_rf cache_env["XDG_CACHE_HOME"] if reset_cache
 
