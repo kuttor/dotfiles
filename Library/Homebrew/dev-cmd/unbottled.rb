@@ -156,9 +156,9 @@ module Homebrew
           all_formulae = Formula.all(eval_all: args.eval_all?)
         end
 
-        # Remove deprecated formulae as we do not care if they are unbottled
-        formulae = Array(formulae).reject(&:deprecated?) if formulae.present?
-        all_formulae = Array(all_formulae).reject(&:deprecated?) if all_formulae.present?
+        # Remove deprecated and disabled formulae as we do not care if they are unbottled
+        formulae = Array(formulae).reject { |f| f.deprecated? || f.disabled? } if formulae.present?
+        all_formulae = Array(all_formulae).reject { |f| f.deprecated? || f.disabled? } if all_formulae.present?
 
         [T.let(formulae, T::Array[Formula]), T.let(all_formulae, T::Array[Formula]),
          T.let(formula_installs, T.nilable(T::Hash[Symbol, Integer]))]
@@ -193,12 +193,8 @@ module Homebrew
         return unless @bottle_tag
 
         ohai "Unbottled :#{@bottle_tag} formulae"
-        unbottled_formulae = 0
-
-        formulae.each do |f|
-          next if f.bottle_specification.tag?(@bottle_tag)
-
-          unbottled_formulae += 1
+        unbottled_formulae = formulae.count do |f|
+          !f.bottle_specification.tag?(@bottle_tag, no_older_versions: true)
         end
 
         puts "#{unbottled_formulae}/#{formulae.length} remaining."
