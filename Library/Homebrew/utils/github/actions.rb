@@ -51,7 +51,7 @@ module GitHub
       return unless env_set?
 
       std = (type == :notice) ? $stdout : $stderr
-      std.puts Annotation.new(type, message)
+      std.puts Annotation.new(type, message, file:, line:)
     end
 
     # Helper class for formatting annotations on GitHub Actions.

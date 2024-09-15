@@ -65,8 +65,11 @@ module Kernel
   sig { params(message: T.any(String, Exception)).void }
   def opoo(message)
     Tty.with($stderr) do |stderr|
-      stderr.puts Formatter.warning(message, label: "Warning")
-      GitHub::Actions.puts_annotation_if_env_set(:warning, message.to_s)
+      if ENV["HOMEBREW_GITHUB_ACTIONS"].present?
+        GitHub::Actions.puts_annotation_if_env_set(:warning, message.to_s)
+      else
+        stderr.puts Formatter.warning(message, label: "Warning")
+      end
     end
   end
 
@@ -79,8 +82,11 @@ module Kernel
     require "utils/github/actions"
 
     Tty.with($stderr) do |stderr|
-      stderr.puts Formatter.error(message, label: "Error")
-      GitHub::Actions.puts_annotation_if_env_set(:error, message.to_s)
+      if ENV["HOMEBREW_GITHUB_ACTIONS"].present?
+        GitHub::Actions.puts_annotation_if_env_set(:error, message.to_s)
+      else
+        stderr.puts Formatter.error(message, label: "Error")
+      end
     end
   end
 
