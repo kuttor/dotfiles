@@ -419,7 +419,7 @@ class Bottle
       raise unless fallback_on_error
 
       retry
-    rescue ArgumentError
+    rescue Resource::BottleManifest::Error
       raise if @fetch_tab_retried
 
       @fetch_tab_retried = true
