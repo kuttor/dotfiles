@@ -311,8 +311,6 @@ class Resource
     def verify_download_integrity(_filename)
       # We don't have a checksum, but we can at least try parsing it.
       tab
-    rescue Error => e
-      raise DownloadError.new(self, e)
     end
 
     def tab
