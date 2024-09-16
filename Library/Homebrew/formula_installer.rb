@@ -1314,7 +1314,7 @@ on_request: installed_on_request?, options:)
       formula.fetch_patches
       formula.resources.each(&:fetch)
     end
-    downloadable.downloader.fetch
+    downloadable.fetch
 
     self.class.fetched << formula
   end
