@@ -231,11 +231,13 @@ module Homebrew
                   Failed to load cask: #{name}
                   #{unreadable_error}
                 EOS
-                opoo package_conflicts_message(name, "formula", cask)
+                opoo package_conflicts_message(name, "formula", cask) unless Context.current.quiet?
               end
               return formula_or_kegs
             elsif cask
-              opoo package_conflicts_message(name, "cask", formula_or_kegs) if formula_or_kegs
+              if formula_or_kegs && !Context.current.quiet?
+                opoo package_conflicts_message(name, "cask", formula_or_kegs)
+              end
               return cask
             end
           end
@@ -519,6 +521,7 @@ module Homebrew
           nil
         end
         return unless available
+        return if Context.current.quiet?
 
         opoo package_conflicts_message(ref, loaded_type, cask)
       end
