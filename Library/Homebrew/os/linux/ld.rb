@@ -21,6 +21,7 @@ module OS
         @brewed_ld_so_diagnostics[brewed_ld_so_target].to_s
       rescue TypeError
         # Workaround for intermittent `Error: no implicit conversion of false into String`
+        # https://github.com/Homebrew/brew/issues/17828
         unless @retried_brewed_ld_so_diagnostics&.fetch(brewed_ld_so_target, false)
           @retried_brewed_ld_so_diagnostics ||= T.let({}, T.nilable(T::Hash[Pathname, T::Boolean]))
           @retried_brewed_ld_so_diagnostics[brewed_ld_so_target] = true
