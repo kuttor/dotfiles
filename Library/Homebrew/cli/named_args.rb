@@ -423,7 +423,7 @@ module Homebrew
             keg.tab.tap == requested_tap
           end
 
-          raise NoSuchKegFromTapError.new(requested_formula, requested_tap) if kegs.none?
+          raise NoSuchKegError.new(requested_formula, tap: requested_tap) if kegs.none?
         end
 
         raise NoSuchKegError, name if kegs.none?
