@@ -492,13 +492,13 @@ module Homebrew
           if package.is_a?(Formula) && (tap = package.tap)
             message += "use #{tap.name}/#{package.name} or "
           end
-          message += "specify the `--formula` flag."
+          message += "specify the `--formula` flag. To silence this message, use the `--cask` flag."
         when Cask::Cask
           message += " For the cask, "
           if (tap = package.tap)
             message += "use #{tap.name}/#{package.token} or "
           end
-          message += "specify the `--cask` flag."
+          message += "specify the `--cask` flag. To silence this message, use the `--formula` flag."
         end
         message.freeze
       end
