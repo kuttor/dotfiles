@@ -318,7 +318,7 @@ class Cmd
     args << "-nostdinc" if @deps.include?("glibc@2.13")
     # Ideally this would be -ffile-prefix-map, but that requires a minimum of GCC 8, LLVM Clang 10 or Apple Clang 12
     # and detecting the version dynamically based on what `HOMEBREW_CC` may have been rewritten to point to is awkward
-    args << "-fdebug-prefix-map=#{formula_buildpath}=." if formula_buildpath
+    args << "-fdebug-prefix-map=#{formula_buildpath}=." if formula_buildpath && !debug_symbols?
     args
   end
 
@@ -447,7 +447,7 @@ class Cmd
   end
 
   def oso_prefix?
-    config.include?("o") && !configure?
+    config.include?("o") && !configure? && !debug_symbols?
   end
 
   def ld_classic?
