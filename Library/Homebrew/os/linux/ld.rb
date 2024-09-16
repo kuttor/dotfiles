@@ -7,13 +7,28 @@ module OS
     module Ld
       sig { returns(String) }
       def self.brewed_ld_so_diagnostics
+        @brewed_ld_so_diagnostics ||= T.let({}, T.nilable(T::Hash[Pathname, T.nilable(String)]))
+
         brewed_ld_so = HOMEBREW_PREFIX/"lib/ld.so"
         return "" unless brewed_ld_so.exist?
 
-        ld_so_output = Utils.popen_read(brewed_ld_so, "--list-diagnostics")
-        return "" unless $CHILD_STATUS.success?
+        brewed_ld_so_target = brewed_ld_so.readlink
+        @brewed_ld_so_diagnostics[brewed_ld_so_target] ||= begin
+          ld_so_output = Utils.popen_read(brewed_ld_so, "--list-diagnostics")
+          ld_so_output if $CHILD_STATUS.success?
+        end
 
-        ld_so_output
+        @brewed_ld_so_diagnostics[brewed_ld_so_target].to_s
+      rescue TypeError
+        # Workaround for intermittent `Error: no implicit conversion of false into String`
+        unless @retried_brewed_ld_so_diagnostics&.fetch(brewed_ld_so_target, false)
+          @retried_brewed_ld_so_diagnostics ||= T.let({}, T.nilable(T::Hash[Pathname, T::Boolean]))
+          @retried_brewed_ld_so_diagnostics[brewed_ld_so_target] = true
+          sleep 0.5
+          retry
+        end
+
+        raise
       end
 
       sig { returns(String) }
