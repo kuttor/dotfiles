@@ -53,23 +53,14 @@ class NotAKegError < RuntimeError; end
 
 # Raised when a keg doesn't exist.
 class NoSuchKegError < RuntimeError
-  attr_reader :name
-
-  def initialize(name)
-    @name = name
-    super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
-  end
-end
-
-# Raised when a keg from a specific tap doesn't exist.
-class NoSuchKegFromTapError < RuntimeError
   attr_reader :name, :tap
 
-  sig { params(name: String, tap: Tap).void }
-  def initialize(name, tap)
+  def initialize(name, tap: nil)
     @name = name
     @tap = tap
-    super "No such keg: #{HOMEBREW_CELLAR}/#{name} from tap #{tap}"
+    message = "No such keg: #{HOMEBREW_CELLAR}/#{name}"
+    message += " from tap #{tap}" if tap
+    super message
   end
 end
 

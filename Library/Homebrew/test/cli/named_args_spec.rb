@@ -244,7 +244,7 @@ RSpec.describe Homebrew::CLI::NamedArgs do
       it "raises an error if there is no tap match" do
         stub_formula_loader bar, "other/tap/bar"
 
-        expect { described_class.new("other/tap/bar").to_kegs }.to raise_error(NoSuchKegFromTapError)
+        expect { described_class.new("other/tap/bar").to_kegs }.to raise_error(NoSuchKegError, %r{from tap other/tap})
       end
     end
   end
