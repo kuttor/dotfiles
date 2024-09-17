@@ -7,7 +7,7 @@ module OS
     module Ld
       sig { returns(String) }
       def self.brewed_ld_so_diagnostics
-        @brewed_ld_so_diagnostics ||= T.let({}, T.nilable(T::Hash[Pathname, T.nilable(String)]))
+        @brewed_ld_so_diagnostics ||= T.let({}, T.nilable(T::Hash[Pathname, String]))
 
         brewed_ld_so = HOMEBREW_PREFIX/"lib/ld.so"
         return "" unless brewed_ld_so.exist?
@@ -19,17 +19,6 @@ module OS
         end
 
         @brewed_ld_so_diagnostics[brewed_ld_so_target].to_s
-      rescue TypeError
-        # Workaround for intermittent `Error: no implicit conversion of false into String`
-        # https://github.com/Homebrew/brew/issues/17828
-        unless @retried_brewed_ld_so_diagnostics&.fetch(brewed_ld_so_target, false)
-          @retried_brewed_ld_so_diagnostics ||= T.let({}, T.nilable(T::Hash[Pathname, T::Boolean]))
-          @retried_brewed_ld_so_diagnostics[brewed_ld_so_target] = true
-          sleep 0.5
-          retry
-        end
-
-        raise
       end
 
       sig { returns(String) }
