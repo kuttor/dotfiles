@@ -62,6 +62,10 @@ module RuboCop
             problem %q(use "xcodebuild *args" instead of "system 'xcodebuild', *args")
           end
 
+          if !depends_on?(:xcode) && method_called_ever?(body_node, :xcodebuild)
+            problem "`xcodebuild` needs an Xcode dependency"
+          end
+
           if (method_node = find_method_def(body_node, :install))
             find_method_with_args(method_node, :system, "go", "get") do
               problem "Do not use `go get`. Please ask upstream to implement Go vendoring"
