@@ -20,7 +20,7 @@ RSpec.describe Homebrew::Search do
   end
 
   describe "#search" do
-    let(:collection) { ["with-dashes"] }
+    let(:collection) { ["with-dashes", "with@alpha", "with+plus"] }
 
     context "when given a block" do
       let(:collection) { [["with-dashes", "withdashes"]] }
@@ -40,6 +40,11 @@ RSpec.describe Homebrew::Search do
     context "when given a string" do
       it "simplifies both the query and searched strings" do
         expect(described_class.search(collection, "with dashes")).to eq ["with-dashes"]
+      end
+
+      it "does not simplify strings with @ and + characters" do
+        expect(described_class.search(collection, "with@alpha")).to eq ["with@alpha"]
+        expect(described_class.search(collection, "with+plus")).to eq ["with+plus"]
       end
     end
 

@@ -150,7 +150,7 @@ module Homebrew
     end
 
     def self.simplify_string(string)
-      string.downcase.gsub(/[^a-z\d]/i, "")
+      string.downcase.gsub(/[^a-z\d@+]/i, "")
     end
 
     def self.search_regex(selectable, regex)
