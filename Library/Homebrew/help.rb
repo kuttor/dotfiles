@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "cli/parser"
@@ -7,6 +7,14 @@ require "commands"
 module Homebrew
   # Helper module for printing help output.
   module Help
+    sig {
+      params(
+        cmd:            T.nilable(String),
+        empty_argv:     T::Boolean,
+        usage_error:    T.nilable(String),
+        remaining_args: T::Array[String],
+      ).void
+    }
     def self.help(cmd = nil, empty_argv: false, usage_error: nil, remaining_args: [])
       if cmd.nil?
         # Handle `brew` (no arguments).
@@ -39,6 +47,13 @@ module Homebrew
       exit 0
     end
 
+    sig {
+      params(
+        cmd:            String,
+        path:           Pathname,
+        remaining_args: T::Array[String],
+      ).returns(String)
+    }
     def self.command_help(cmd, path, remaining_args:)
       # Only some types of commands can have a parser.
       output = if Commands.valid_internal_cmd?(cmd) ||
@@ -58,6 +73,12 @@ module Homebrew
     end
     private_class_method :command_help
 
+    sig {
+      params(
+        path:           Pathname,
+        remaining_args: T::Array[String],
+      ).returns(T.nilable(String))
+    }
     def self.parser_help(path, remaining_args:)
       # Let OptionParser generate help text for commands which have a parser.
       cmd_parser = CLI::Parser.from_cmd_path(path)
@@ -69,14 +90,16 @@ module Homebrew
     end
     private_class_method :parser_help
 
+    sig { params(path: Pathname).returns(T::Array[String]) }
     def self.command_help_lines(path)
       path.read
           .lines
           .grep(/^#:/)
-          .map { |line| line.slice(2..-1).delete_prefix("  ") }
+          .filter_map { |line| line.slice(2..-1)&.delete_prefix("  ") }
     end
     private_class_method :command_help_lines
 
+    sig { params(path: Pathname).returns(T.nilable(String)) }
     def self.comment_help(path)
       # Otherwise read #: lines from the file.
       help_lines = command_help_lines(path)

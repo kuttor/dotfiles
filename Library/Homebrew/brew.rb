@@ -144,7 +144,7 @@ begin
   end
 rescue UsageError => e
   require "help"
-  Homebrew::Help.help cmd, remaining_args: args&.remaining, usage_error: e.message
+  Homebrew::Help.help cmd, remaining_args: args&.remaining || [], usage_error: e.message
 rescue SystemExit => e
   onoe "Kernel.exit" if args&.debug? && !e.success?
   if args&.debug? || ARGV.include?("--debug")
