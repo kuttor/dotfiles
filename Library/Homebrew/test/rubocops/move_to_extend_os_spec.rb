@@ -18,18 +18,4 @@ RSpec.describe RuboCop::Cop::Homebrew::MoveToExtendOS do
       ^^^^^^^ Homebrew/MoveToExtendOS: Move `OS.linux?` and `OS.mac?` calls to `extend/os`.
     RUBY
   end
-
-  it "registers an offense when using `::OS.linux?`" do
-    expect_offense(<<~RUBY)
-      ::OS.linux?
-      ^^^^^^^^^^^ Homebrew/MoveToExtendOS: Move `OS.linux?` and `OS.mac?` calls to `extend/os`.
-    RUBY
-  end
-
-  it "registers an offense when using `::OS.mac?`" do
-    expect_offense(<<~RUBY)
-      ::OS.mac?
-      ^^^^^^^^^ Homebrew/MoveToExtendOS: Move `OS.linux?` and `OS.mac?` calls to `extend/os`.
-    RUBY
-  end
 end

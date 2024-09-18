@@ -110,9 +110,9 @@ module Homebrew
         return if ENV["HOMEBREW_INTEGRATION_TEST"]
 
         who = +"We"
-        what = if ::OS::Mac.version.prerelease?
+        what = if OS::Mac.version.prerelease?
           "pre-release version"
-        elsif ::OS::Mac.version.outdated_release?
+        elsif OS::Mac.version.outdated_release?
           who << " (and Apple)"
           "old version"
         end
@@ -149,7 +149,7 @@ module Homebrew
           #{MacOS::Xcode.update_instructions}
         EOS
 
-        if ::OS::Mac.version.prerelease?
+        if OS::Mac.version.prerelease?
           current_path = Utils.popen_read("/usr/bin/xcode-select", "-p")
           message += <<~EOS
             If #{MacOS::Xcode.latest_version} is installed, you may need to:

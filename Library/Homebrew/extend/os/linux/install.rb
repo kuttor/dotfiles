@@ -78,7 +78,7 @@ module Homebrew
     private_class_method :symlink_ld_so
 
     def self.setup_preferred_gcc_libs
-      gcc_opt_prefix = HOMEBREW_PREFIX/"opt/#{::OS::LINUX_PREFERRED_GCC_RUNTIME_FORMULA}"
+      gcc_opt_prefix = HOMEBREW_PREFIX/"opt/#{OS::LINUX_PREFERRED_GCC_RUNTIME_FORMULA}"
       glibc_installed = (HOMEBREW_PREFIX/"opt/glibc/bin/ld.so").readable?
 
       return unless gcc_opt_prefix.readable?

@@ -95,11 +95,11 @@ module Homebrew
       end
 
       def check_glibc_minimum_version
-        return unless ::OS::Linux::Glibc.below_minimum_version?
+        return unless OS::Linux::Glibc.below_minimum_version?
 
         <<~EOS
-          Your system glibc #{::OS::Linux::Glibc.system_version} is too old.
-          We only support glibc #{::OS::Linux::Glibc.minimum_version} or later.
+          Your system glibc #{OS::Linux::Glibc.system_version} is too old.
+          We only support glibc #{OS::Linux::Glibc.minimum_version} or later.
           #{please_create_pull_requests}
           We recommend updating to a newer version via your distribution's
           package manager, upgrading your distribution to the latest version,
@@ -108,11 +108,11 @@ module Homebrew
       end
 
       def check_kernel_minimum_version
-        return unless ::OS::Linux::Kernel.below_minimum_version?
+        return unless OS::Linux::Kernel.below_minimum_version?
 
         <<~EOS
-          Your Linux kernel #{::OS.kernel_version} is too old.
-          We only support kernel #{::OS::Linux::Kernel.minimum_version} or later.
+          Your Linux kernel #{OS.kernel_version} is too old.
+          We only support kernel #{OS::Linux::Kernel.minimum_version} or later.
           You will be unable to use binary packages (bottles).
           #{please_create_pull_requests}
           We recommend updating to a newer version via your distribution's

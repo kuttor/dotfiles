@@ -9,7 +9,7 @@ module RuboCop
         MSG = "Move `OS.linux?` and `OS.mac?` calls to `extend/os`."
 
         def_node_matcher :os_check?, <<~PATTERN
-          (send (const {nil? cbase} :OS) {:mac? | :linux?})
+          (send (const nil? :OS) {:mac? | :linux?})
         PATTERN
 
         def on_send(node)
