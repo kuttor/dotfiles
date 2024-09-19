@@ -181,7 +181,7 @@ class GitHubRunnerMatrix
       )
       @runners << create_runner(:macos, :arm64, spec, macos_version)
 
-      next if macos_version > NEWEST_HOMEBREW_CORE_INTEL_MACOS_RUNNER
+      next if !@all_supported && macos_version > NEWEST_HOMEBREW_CORE_INTEL_MACOS_RUNNER
 
       github_runner_available = macos_version <= NEWEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER &&
                                 macos_version >= OLDEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER
