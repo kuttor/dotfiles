@@ -6,8 +6,9 @@ module OS
     module SimulateSystem
       sig { returns(T::Boolean) }
       def simulating_or_running_on_macos?
-        Homebrew::SimulateSystem.os.blank? || [:macos,
-                                               *MacOSVersion::SYMBOLS.keys].include?(Homebrew::SimulateSystem.os)
+        return true if Homebrew::SimulateSystem.os.blank?
+
+        [:macos, *MacOSVersion::SYMBOLS.keys].include?(Homebrew::SimulateSystem.os)
       end
 
       sig { returns(Symbol) }
