@@ -24,6 +24,9 @@ module Homebrew
       }.freeze, T::Hash[Symbol, String])
       private_constant :ArgType, :HIDDEN_DESC_PLACEHOLDER, :SYMBOL_TO_USAGE_MAPPING
 
+      sig { returns(Args) }
+      attr_reader :args
+
       sig { returns(Args::OptionsType) }
       attr_reader :processed_options
 
