@@ -1290,7 +1290,7 @@ on_request: installed_on_request?, options:)
                                                 .fetch("runtime_dependencies", []).then { |deps| deps || [] }
                                                 .each_with_object({}) { |dep, h| h[dep["full_name"]] = dep }
                                                 .freeze
-    rescue DownloadError, ArgumentError
+    rescue DownloadError, Resource::BottleManifest::Error
       # do nothing
     end
     @fetch_bottle_tab = T.let(true, T.nilable(TrueClass))
