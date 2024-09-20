@@ -20,6 +20,10 @@ permissions:
   contents: read
   pull-requests: read
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 jobs:
   vendor-gems:
     if: github.repository_owner == 'Homebrew'

@@ -13,6 +13,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 jobs:
   ubuntu:
     if: github.repository_owner == 'Homebrew'
@@ -41,7 +45,7 @@ jobs:
           date="$(date --rfc-3339=seconds --utc)"
           brew_version="$(git describe --tags --dirty --abbrev=7)"
 
-          DELIMITER="END_LABELS_$(LC_ALL=C tr -dc '[:alnum:]' </dev/urandom | head -c20)"
+          DELIMITER="END_LABELS_$(uuidgen)"
           cat <<EOS | tee -a "${GITHUB_OUTPUT}"
           labels<<${DELIMITER}
           org.opencontainers.image.created=${date}
@@ -82,7 +86,7 @@ jobs:
 
           {
             if [[ "${#tags[@]}" -ne 0 ]]; then
-              DELIMITER="END_TAGS_$(LC_ALL=C tr -dc '[:alnum:]' </dev/urandom | head -c20)"
+              DELIMITER="END_TAGS_$(uuidgen)"
               echo "tags<<${DELIMITER}"
               printf "%s\n" "${tags[@]}"
               echo "${DELIMITER}"

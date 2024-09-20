@@ -8,6 +8,10 @@ on:
     branches:
       - master
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 jobs:
   analyze:
     name: Analyze

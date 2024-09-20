@@ -16,6 +16,10 @@ env:
   HOMEBREW_BOOTSNAP: 1
   HOMEBREW_NO_INSTALL_CLEANUP: 1
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 jobs:
   rubydoc:
     if: github.repository == 'Homebrew/brew'

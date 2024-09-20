@@ -15,6 +15,11 @@ env:
   PKG_APPLE_DEVELOPER_TEAM_ID: ${{ secrets.PKG_APPLE_DEVELOPER_TEAM_ID }}
   HOMEBREW_NO_ANALYTICS_THIS_RUN: 1
   HOMEBREW_NO_ANALYTICS_MESSAGE_OUTPUT: 1
+
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 jobs:
   build:
     if: github.repository_owner == 'Homebrew' && github.actor != 'dependabot[bot]'
