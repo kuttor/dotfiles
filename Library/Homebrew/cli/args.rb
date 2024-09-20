@@ -6,16 +6,12 @@ require "ostruct"
 module Homebrew
   module CLI
     class Args < OpenStruct
-      # FIXME: Enable cop again when https://github.com/sorbet/sorbet/issues/3532 is fixed.
-      # rubocop:disable Style/MutableConstant
       # Represents a processed option. The array elements are:
       #   0: short option name (e.g. "-d")
       #   1: long option name (e.g. "--debug")
       #   2: option description (e.g. "Print debugging information")
       #   3: whether the option is hidden
       OptionsType = T.type_alias { T::Array[[String, T.nilable(String), String, T::Boolean]] }
-      # rubocop:enable Style/MutableConstant
-
       sig { returns(T::Array[String]) }
       attr_reader :options_only, :flags_only
 
