@@ -1822,7 +1822,6 @@ class Formula
       -DBUILD_TESTING=OFF
     ]
   end
-  alias generic_std_cmake_args std_cmake_args
 
   # Standard parameters for configure builds.
   sig {
