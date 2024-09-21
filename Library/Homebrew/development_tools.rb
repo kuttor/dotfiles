@@ -177,7 +177,6 @@ class DevelopmentTools
         "cpu_family" => Hardware::CPU.family.to_s,
       }
     end
-    alias generic_build_system_info build_system_info
   end
 end
 

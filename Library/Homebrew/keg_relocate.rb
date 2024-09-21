@@ -210,7 +210,6 @@ class Keg
     # for GNU grep; overridden for BSD grep on OS X
     "-lr"
   end
-  alias generic_recursive_fgrep_args recursive_fgrep_args
 
   def egrep_args
     grep_bin = "grep"

@@ -13,7 +13,7 @@ module OS
 
       sig { returns(Symbol) }
       def current_os
-        Homebrew::SimulateSystem.os || MacOS.version.to_sym
+        ::Homebrew::SimulateSystem.os || MacOS.version.to_sym
       end
     end
   end

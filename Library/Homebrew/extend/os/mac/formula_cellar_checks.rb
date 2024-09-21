@@ -97,7 +97,7 @@ module FormulaCellarChecks
     return unless formula.prefix.directory?
     return if formula.tap&.audit_exception(:flat_namespace_allowlist, formula.name)
 
-    keg = Keg.new(formula.prefix)
+    keg = ::Keg.new(formula.prefix)
     flat_namespace_files = keg.mach_o_files.reject do |file|
       next true unless file.dylib?
 

@@ -1,15 +1,12 @@
-# typed: true # rubocop:disable Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
-module Homebrew
-  class SimulateSystem
-    class << self
-      undef os
-      undef simulating_or_running_on_linux?
-      undef current_os
-
+module OS
+  module Linux
+    module SimulateSystem
       sig { returns(T.nilable(Symbol)) }
       def os
+        @os ||= T.let(nil, T.nilable(Symbol))
         return :macos if @os.blank? && Homebrew::EnvConfig.simulate_macos_on_linux?
 
         @os
@@ -27,3 +24,5 @@ module Homebrew
     end
   end
 end
+
+Homebrew::SimulateSystem.singleton_class.prepend(OS::Linux::SimulateSystem)
