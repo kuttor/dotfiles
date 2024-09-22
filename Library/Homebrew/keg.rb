@@ -77,7 +77,7 @@ class Keg
 
   # Locale-specific directories have the form `language[_territory][.codeset][@modifier]`
   LOCALEDIR_RX = %r{(locale|man)/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?}
-  INFOFILE_RX = %r{info/([^.].*?\.info|dir)$}
+  INFOFILE_RX = %r{info/([^.].*?\.info(\.gz)?|dir)$}
   KEG_LINK_DIRECTORIES = %w[
     bin etc include lib sbin share var
   ].freeze
