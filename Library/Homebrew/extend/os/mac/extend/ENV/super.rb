@@ -108,8 +108,7 @@ module OS
           self["M4"] = gm4
         end
 
-        generic_setup_build_environment(formula:, cc:, build_bottle:, bottle_arch:,
-                                        testing_formula:, debug_symbols:)
+        super
 
         # Filter out symbols known not to be defined since GNU Autotools can't
         # reliably figure this out with Xcode 8 and above.

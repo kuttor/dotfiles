@@ -26,8 +26,7 @@ module OS
       }
       def setup_build_environment(formula: nil, cc: nil, build_bottle: false, bottle_arch: nil,
                                   testing_formula: false, debug_symbols: false)
-        generic_setup_build_environment(formula:, cc:, build_bottle:, bottle_arch:,
-                                        testing_formula:, debug_symbols:)
+        super
 
         append "LDFLAGS", "-Wl,-headerpad_max_install_names"
 

@@ -6,6 +6,7 @@ require "system_command"
 class Keg
   include SystemCommand::Mixin
 
+  # TODO: re-implement these as functions, so that we aren't modifying constants:
   GENERIC_KEG_LINK_DIRECTORIES = (remove_const :KEG_LINK_DIRECTORIES).freeze
   KEG_LINK_DIRECTORIES = (GENERIC_KEG_LINK_DIRECTORIES + ["Frameworks"]).freeze
   GENERIC_MUST_EXIST_SUBDIRECTORIES = (remove_const :MUST_EXIST_SUBDIRECTORIES).freeze
