@@ -41,11 +41,5 @@ apt_get_install \
   openssh-server \
   zsh
 
-# Ubuntu 18.04 doesn't include zsh-autosuggestions
-if ! grep -q "Ubuntu 18.04" /etc/issue &>/dev/null
-then
-  apt_get_install zsh-autosuggestions
-fi
-
 # Start the SSH server so that `gh cs ssh` works.
 sudo service ssh start
