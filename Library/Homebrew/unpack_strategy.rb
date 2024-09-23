@@ -11,10 +11,7 @@ module UnpackStrategy
 
   requires_ancestor { Kernel }
 
-  # FIXME: Enable cop again when https://github.com/sorbet/sorbet/issues/3532 is fixed.
-  # rubocop:disable Style/MutableConstant
   UnpackStrategyType = T.type_alias { T.all(T::Class[UnpackStrategy], UnpackStrategy::ClassMethods) }
-  # rubocop:enable Style/MutableConstant
 
   module ClassMethods
     extend T::Helpers
