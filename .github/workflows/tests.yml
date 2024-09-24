@@ -81,7 +81,7 @@ jobs:
     name: tap syntax
     needs: syntax
     if: github.repository_owner == 'Homebrew'
-    runs-on: ubuntu-22.04
+    runs-on: macos-14
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
