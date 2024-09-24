@@ -79,7 +79,9 @@ jobs:
                   "${GITHUB_REF}" == "refs/heads/master" &&
                   "${{ matrix.version }}" == "22.04" ]]; then
             tags+=(
+              "ghcr.io/homebrew/brew:master"
               "ghcr.io/homebrew/ubuntu${{ matrix.version }}:master"
+              "homebrew/brew:master"
               "homebrew/ubuntu${{matrix.version}}:master"
             )
           fi
