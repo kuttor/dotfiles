@@ -108,7 +108,7 @@ jobs:
             COMMITTED=true
           fi
 
-          if [[ -n "$COMMITTED" ]]
+          if [[ -n "${COMMITTED-}" ]]
           then
             echo "committed=true" >> "$GITHUB_OUTPUT"
             PULL_REQUEST_STATE="$(gh pr view --json=state | jq -r ".state")"
