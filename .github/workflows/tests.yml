@@ -142,7 +142,9 @@ jobs:
     name: formula audit
     needs: syntax
     if: github.repository_owner == 'Homebrew'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/homebrew/brew:master
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -251,10 +253,10 @@ jobs:
         include:
           - name: tests (online)
             test-flags: --online --coverage
-            runs-on: ubuntu-22.04
+            runs-on: ubuntu-latest
           - name: tests (generic OS)
             test-flags: --generic --coverage
-            runs-on: ubuntu-22.04
+            runs-on: ubuntu-latest
           - name: tests (Ubuntu 22.04)
             test-flags: --coverage
             runs-on: ubuntu-22.04
@@ -360,13 +362,16 @@ jobs:
     needs: syntax
     if: github.repository_owner == 'Homebrew'
     runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
     strategy:
       matrix:
         include:
           - name: test default formula (Ubuntu 22.04)
-            runs-on: ubuntu-22.04
+            runs-on: ubuntu-latest
+            container: ghcr.io/homebrew/ubuntu22.04:master
           - name: test default formula (Ubuntu 20.04)
-            runs-on: ubuntu-20.04
+            runs-on: ubuntu-latest
+            container: ghcr.io/homebrew/ubuntu20.04
           - name: test default formula (macOS 13 x86_64)
             runs-on: macos-13
           - name: test default formula (macOS 14 arm64)
