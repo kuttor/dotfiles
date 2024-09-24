@@ -12,6 +12,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 jobs:
   spdx:
     if: github.repository == 'Homebrew/brew'

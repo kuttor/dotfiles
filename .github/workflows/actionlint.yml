@@ -18,6 +18,10 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   HOMEBREW_NO_ENV_HINTS: 1
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 concurrency:
   group: "actionlint-${{ github.ref }}"
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}

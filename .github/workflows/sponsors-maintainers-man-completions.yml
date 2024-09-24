@@ -21,6 +21,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 jobs:
   updates:
     runs-on: ubuntu-22.04

@@ -18,6 +18,10 @@ env:
   HOMEBREW_NO_INSTALL_CLEANUP: 1
   HOMEBREW_VERIFY_ATTESTATIONS: 1
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 concurrency:
   group: "${{ github.ref }}"
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -328,7 +332,7 @@ jobs:
 
           # Retry multiple times when using BuildPulse to detect and submit
           # flakiness (because rspec-retry is disabled).
-          if [[ -n "${HOMEBREW_BUILDPULSE_ACCESS_KEY_ID}" ]]
+          if [[ -n "${HOMEBREW_BUILDPULSE_ACCESS_KEY_ID-}" ]]
           then
             brew tests ${{ matrix.test-flags }} ||
             brew tests ${{ matrix.test-flags }}

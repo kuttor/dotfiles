@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
 jobs:
   check-vendor-version:
     runs-on: ubuntu-22.04
