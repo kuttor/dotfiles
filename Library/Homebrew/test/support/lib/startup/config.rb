@@ -5,8 +5,9 @@ raise "HOMEBREW_BREW_FILE was not exported! Please call bin/brew directly!" unle
 
 HOMEBREW_BREW_FILE = Pathname.new(ENV.fetch("HOMEBREW_BREW_FILE")).freeze
 
+homebrew_temp = ENV.fetch("HOMEBREW_TEMP")
 TEST_TMPDIR = ENV.fetch("HOMEBREW_TEST_TMPDIR") do |k|
-  dir = Dir.mktmpdir("homebrew-tests-", ENV.fetch("HOMEBREW_TEMP"))
+  dir = Dir.mktmpdir("homebrew-tests-", homebrew_temp)
   at_exit do
     # Child processes inherit this at_exit handler, but we don't want them
     # to clean TEST_TMPDIR up prematurely (i.e. when they exit early for a test).
@@ -14,6 +15,13 @@ TEST_TMPDIR = ENV.fetch("HOMEBREW_TEST_TMPDIR") do |k|
   end
   ENV[k] = dir
 end.freeze
+
+# Use a shorter HOMEBREW_TEMP path so Sequoia doesn't error out as often on long paths (> 104 bytes).
+# Use the minimal amount of randomness to avoid collisions while allowing parallel tests.
+require "securerandom"
+random_hex = SecureRandom.hex(1)
+HOMEBREW_TEMP = Pathname("#{homebrew_temp}/brewtests#{random_hex}".squeeze("/")).freeze
+HOMEBREW_TEMP.mkpath
 
 # Paths pointing into the Homebrew code base that persist across test runs
 HOMEBREW_SHIMS_PATH = (HOMEBREW_LIBRARY_PATH/"shims").freeze
@@ -32,7 +40,6 @@ HOMEBREW_PINNED_KEGS   = (HOMEBREW_PREFIX.parent/"pinned").freeze
 HOMEBREW_LOCKS         = (HOMEBREW_PREFIX.parent/"locks").freeze
 HOMEBREW_CELLAR        = (HOMEBREW_PREFIX.parent/"cellar").freeze
 HOMEBREW_LOGS          = (HOMEBREW_PREFIX.parent/"logs").freeze
-HOMEBREW_TEMP          = (HOMEBREW_PREFIX.parent/"temp").freeze
 HOMEBREW_TAP_DIRECTORY = (HOMEBREW_LIBRARY/"Taps").freeze
 HOMEBREW_RUBY_EXEC_ARGS = [
   RUBY_PATH,
