@@ -239,7 +239,7 @@ RSpec.describe Cask::Artifact::App, :cask do
     end
 
     it "gives a warning if the source doesn't exist" do
-      source_path.rmtree
+      FileUtils.rm_r(source_path)
 
       message = "It seems the App source '#{source_path}' is not there."
 

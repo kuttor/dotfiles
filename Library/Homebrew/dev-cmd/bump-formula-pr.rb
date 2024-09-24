@@ -507,10 +507,6 @@ module Homebrew
         return if tap.nil?
 
         throttled_rate = formula.livecheck.throttle
-        throttled_rate ||= if (rate = tap.audit_exceptions.dig(:throttled_formulae, formula.name))
-          odisabled "throttled_formulae.json", "Livecheck#throttle"
-          rate
-        end
         return if throttled_rate.blank?
 
         formula_suffix = Version.new(new_version).patch.to_i

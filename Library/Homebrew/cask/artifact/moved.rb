@@ -86,7 +86,7 @@ module Cask
               end
 
               # Remove the source as we don't need to move it to the target location
-              source.rmtree
+              FileUtils.rm_r(source)
 
               return post_move(command)
             end
@@ -112,14 +112,14 @@ module Cask
                                     sudo: true)
           end
           Quarantine.copy_xattrs(source, target, command:)
-          source.rmtree
+          FileUtils.rm_r(source)
         elsif target.dirname.writable?
           FileUtils.move(source, target)
         else
           # default sudo user isn't necessarily able to write to Homebrew's locations
           # e.g. with runas_default set in the sudoers (5) file.
           command.run!("/bin/cp", args: ["-pR", source, target], sudo: true)
-          source.rmtree
+          FileUtils.rm_r(source)
         end
 
         post_move(command)

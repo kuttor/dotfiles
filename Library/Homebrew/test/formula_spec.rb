@@ -63,8 +63,8 @@ RSpec.describe Formula do
     context "when in a Tap" do
       let(:tap) { Tap.fetch("foo", "bar") }
       let(:path) { (tap.path/"Formula/#{name}.rb") }
-      let(:full_name) { "#{tap.user}/#{tap.repo}/#{name}" }
-      let(:full_alias_name) { "#{tap.user}/#{tap.repo}/#{alias_name}" }
+      let(:full_name) { "#{tap.user}/#{tap.repository}/#{name}" }
+      let(:full_alias_name) { "#{tap.user}/#{tap.repository}/#{alias_name}" }
 
       specify "formula instantiation" do
         expect(f.name).to eq(name)
@@ -228,7 +228,7 @@ RSpec.describe Formula do
 
     alias_name = "bar"
     alias_path = tap.alias_dir/alias_name
-    full_alias_name = "#{tap.user}/#{tap.repo}/#{alias_name}"
+    full_alias_name = "#{tap.user}/#{tap.repository}/#{alias_name}"
     tap.alias_dir.mkpath
     FileUtils.ln_sf f.path, alias_path
 
@@ -1545,7 +1545,7 @@ RSpec.describe Formula do
         described_class.clear_cache
         expect(f.outdated_kegs(fetch_head: true)).not_to be_empty
 
-        head_prefix_a.rmtree
+        FileUtils.rm_r(head_prefix_a)
         described_class.clear_cache
         expect(f.outdated_kegs(fetch_head: true)).not_to be_empty
 
@@ -1553,7 +1553,7 @@ RSpec.describe Formula do
         described_class.clear_cache
         expect(f.outdated_kegs(fetch_head: true)).to be_empty
       ensure
-        testball_repo.rmtree if testball_repo.exist?
+        FileUtils.rm_r(testball_repo) if testball_repo.exist?
       end
     end
 
@@ -1632,7 +1632,7 @@ RSpec.describe Formula do
         expect(f.outdated_kegs).not_to be_empty
 
         described_class.clear_cache
-        head_prefix.rmtree
+        FileUtils.rm_r(head_prefix)
 
         setup_tab_for_prefix(head_prefix, versions: { "stable" => "1.0", "version_scheme" => 2 })
         expect(f.outdated_kegs).to be_empty

@@ -560,7 +560,7 @@ module Homebrew
 
       def check_deprecated_official_taps
         tapped_deprecated_taps =
-          Tap.select(&:official?).map(&:repo) & DEPRECATED_OFFICIAL_TAPS
+          Tap.select(&:official?).map(&:repository) & DEPRECATED_OFFICIAL_TAPS
         return if tapped_deprecated_taps.empty?
 
         <<~EOS

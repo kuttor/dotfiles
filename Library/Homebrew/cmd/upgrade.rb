@@ -61,10 +61,6 @@ module Homebrew
                          "formula is outdated. Otherwise, the repository's HEAD will only be checked for " \
                          "updates when a new stable or development version has been released.",
           }],
-          [:switch, "--ignore-pinned", {
-            description: "Set a successful exit status even if pinned formulae are not upgraded.",
-            hidden:      true,
-          }],
           [:switch, "--keep-tmp", {
             description: "Retain the temporary files created during installation.",
           }],
@@ -124,9 +120,6 @@ module Homebrew
 
       sig { override.void }
       def run
-        # Disabled since this is now the default behavior.
-        odisabled "`brew upgrade --ignore-pinned`" if args.ignore_pinned?
-
         formulae, casks = args.named.to_resolved_formulae_to_casks
         # If one or more formulae are specified, but no casks were
         # specified, we want to make note of that so we don't

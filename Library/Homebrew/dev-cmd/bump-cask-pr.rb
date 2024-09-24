@@ -27,8 +27,6 @@ module Homebrew
                             "to the cask file."
         switch "--no-audit",
                description: "Don't run `brew audit` before opening the PR."
-        switch "--online",
-               hidden:      true
         switch "--no-style",
                description: "Don't run `brew style --fix` before opening the PR."
         switch "--no-browse",
@@ -60,8 +58,6 @@ module Homebrew
 
       sig { override.void }
       def run
-        odisabled "brew bump-cask-pr --online" if args.online?
-
         # This will be run by `brew audit` or `brew style` later so run it first to
         # not start spamming during normal output.
         gem_groups = []

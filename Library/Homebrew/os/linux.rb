@@ -6,6 +6,13 @@ require "utils"
 module OS
   # Helper module for querying system information on Linux.
   module Linux
+    raise "Loaded OS::Linux on generic OS!" if ENV["HOMEBREW_TEST_GENERIC_OS"]
+
+    # This check is the only acceptable or necessary one in this file.
+    # rubocop:disable Homebrew/MoveToExtendOS
+    raise "Loaded OS::Linux on macOS!" if OS.mac?
+    # rubocop:enable Homebrew/MoveToExtendOS
+
     # Get the OS version.
     #
     # @api internal
@@ -50,71 +57,4 @@ module OS
       end
     end
   end
-
-  # rubocop:disable Style/Documentation
-  module Mac
-    ::MacOS = OS::Mac
-
-    raise "Loaded OS::Linux on generic OS!" if ENV["HOMEBREW_TEST_GENERIC_OS"]
-
-    def self.version
-      odisabled "`MacOS.version` on Linux"
-      MacOSVersion::NULL
-    end
-
-    def self.full_version
-      odisabled "`MacOS.full_version` on Linux"
-      MacOSVersion::NULL
-    end
-
-    def self.languages
-      odisabled "`MacOS.languages` on Linux"
-      @languages ||= Array(ENV["LANG"]&.slice(/[a-z]+/)).uniq
-    end
-
-    def self.language
-      odisabled "`MacOS.language` on Linux"
-      languages.first
-    end
-
-    def self.sdk_root_needed?
-      odisabled "`MacOS.sdk_root_needed?` on Linux"
-      false
-    end
-
-    def self.sdk_path_if_needed(_version = nil)
-      odisabled "`MacOS.sdk_path_if_needed` on Linux"
-      nil
-    end
-
-    def self.sdk_path(_version = nil)
-      odisabled "`MacOS.sdk_path` on Linux"
-      nil
-    end
-
-    module Xcode
-      def self.version
-        odisabled "`MacOS::Xcode.version` on Linux"
-        ::Version::NULL
-      end
-
-      def self.installed?
-        odisabled "`MacOS::Xcode.installed?` on Linux"
-        false
-      end
-    end
-
-    module CLT
-      def self.version
-        odisabled "`MacOS::CLT.version` on Linux"
-        ::Version::NULL
-      end
-
-      def self.installed?
-        odisabled "`MacOS::CLT.installed?` on Linux"
-        false
-      end
-    end
-  end
-  # rubocop:enable Style/Documentation
 end

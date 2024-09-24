@@ -372,7 +372,7 @@ module Homebrew
       logs_days = [days, CLEANUP_DEFAULT_DAYS].min
 
       HOMEBREW_LOGS.subdirs.each do |dir|
-        cleanup_path(dir) { dir.rmtree } if self.class.prune?(dir, logs_days)
+        cleanup_path(dir) { FileUtils.rm_r(dir) } if self.class.prune?(dir, logs_days)
       end
     end
 
@@ -518,7 +518,7 @@ module Homebrew
       end
 
       portable_rubies_to_remove.each do |portable_ruby|
-        cleanup_path(portable_ruby) { portable_ruby.rmtree }
+        cleanup_path(portable_ruby) { FileUtils.rm_r(portable_ruby) }
       end
     end
 
@@ -531,7 +531,7 @@ module Homebrew
       return unless bootsnap.directory?
 
       bootsnap.each_child do |subdir|
-        cleanup_path(subdir) { subdir.rmtree } if subdir.basename.to_s != Homebrew.bootsnap_key
+        cleanup_path(subdir) { FileUtils.rm_r(subdir) } if subdir.basename.to_s != Homebrew.bootsnap_key
       end
     end
 

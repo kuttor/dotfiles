@@ -39,7 +39,7 @@ RSpec.describe FormulaInstaller do
       keg.uninstall
       formula.clear_cache
       # there will be log files when sandbox is enable.
-      formula.logs.rmtree if formula.logs.directory?
+      FileUtils.rm_r(formula.logs) if formula.logs.directory?
     end
 
     expect(keg).not_to exist
@@ -288,7 +288,7 @@ RSpec.describe FormulaInstaller do
         fi.forbidden_tap_check
       end.to raise_error(CannotInstallFormulaError, /has the tap #{f_tap}/)
     ensure
-      f_path.parent.parent.rmtree
+      FileUtils.rm_r(f_path.parent.parent)
     end
 
     it "raises on not allowed third-party tap on formula" do
@@ -311,7 +311,7 @@ RSpec.describe FormulaInstaller do
         fi.forbidden_tap_check
       end.to raise_error(CannotInstallFormulaError, /has the tap #{f_tap}/)
     ensure
-      f_path.parent.parent.parent.rmtree
+      FileUtils.rm_r(f_path.parent.parent.parent)
     end
 
     it "does not raise on allowed tap on formula" do
@@ -332,7 +332,7 @@ RSpec.describe FormulaInstaller do
 
       expect { fi.forbidden_tap_check }.not_to raise_error
     ensure
-      f_path.parent.parent.parent.rmtree
+      FileUtils.rm_r(f_path.parent.parent.parent)
     end
 
     it "raises on forbidden tap on dependency" do
@@ -366,7 +366,7 @@ RSpec.describe FormulaInstaller do
         fi.forbidden_tap_check
       end.to raise_error(CannotInstallFormulaError, /from the #{dep_tap} tap but/)
     ensure
-      dep_path.parent.parent.rmtree
+      FileUtils.rm_r(dep_path.parent.parent)
     end
   end
 
