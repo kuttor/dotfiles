@@ -274,7 +274,10 @@ jobs:
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
         with:
-          core: true
+          # We only test needs_homebrew_core tests on macOS because
+          # homebrew/core is not available by default on GitHub-hosted Ubuntu
+          # runners, and it's expensive to tap it.
+          core: ${{ runner.os == 'macOS' }}
           cask: false
           test-bot: false
 
