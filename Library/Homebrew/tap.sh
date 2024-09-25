@@ -14,19 +14,6 @@ normalise_tap_name() {
 }
 
 homebrew-tap() {
-  case "$1" in
-    # check we actually have tap and not e.g. tapsomething
-    tap) ;;
-    tap*) return 1 ;;
-    *) ;;
-  esac
-
-  # Named args are handled by the Ruby code.
-  if [[ "$#" -gt 1 ]]
-  then
-    return 1
-  fi
-
   local taplib="${HOMEBREW_LIBRARY}/Taps"
   (
     shopt -s extglob

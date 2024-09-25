@@ -173,7 +173,7 @@ case "$@" in
     homebrew-list "$@" && exit 0
     ;;
   # falls back to cmd/tap.rb on a non-zero return
-  tap*)
+  tap)
     source "${HOMEBREW_LIBRARY}/Homebrew/tap.sh"
     homebrew-tap "$@" && exit 0
     ;;
