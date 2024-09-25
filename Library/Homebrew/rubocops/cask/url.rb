@@ -26,7 +26,12 @@ module RuboCop
         include UrlHelper
 
         def on_url_stanza(stanza)
-          return if stanza.stanza_node.block_type?
+          if stanza.stanza_node.block_type?
+            if cask_tap == "homebrew-cask"
+              add_offense(stanza.stanza_node, message: 'Do not use `url "..." do` blocks in Homebrew/homebrew-cask.')
+            end
+            return
+          end
 
           url_stanza = stanza.stanza_node.first_argument
           hash_node = stanza.stanza_node.last_argument

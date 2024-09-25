@@ -3,6 +3,45 @@
 require "rubocops/rubocop-cask"
 
 RSpec.describe RuboCop::Cop::Cask::Url, :config do
+  it "allows regular `url` blocks in homebrew-cask" do
+    expect_no_offenses <<~CASK, "/homebrew-cask/Casks/f/foo.rb"
+      cask "foo" do
+        url "https://example.com/download/foo-v1.2.0.dmg",
+            verified: "example.com/download/"
+      end
+    CASK
+  end
+
+  it "does not allow `url do` blocks in homebrew-cask" do
+    expect_offense <<~CASK, "/homebrew-cask/Casks/f/foo.rb"
+      cask "foo" do
+        url "https://example.com/download/foo-v1.2.0.dmg" do |url|
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Do not use `url "..." do` blocks in Homebrew/homebrew-cask.
+          url
+        end
+      end
+    CASK
+  end
+
+  it "allows regular `url` blocks in a non-homebrew-cask tap" do
+    expect_no_offenses <<~CASK, "/homebrew-tap/Casks/f/foo.rb"
+      cask "foo" do
+        url "https://example.com/download/foo-v1.2.0.dmg",
+            verified: "example.com/download/"
+      end
+    CASK
+  end
+
+  it "allows `url do` blocks in a non-homebrew-cask tap" do
+    expect_no_offenses <<~CASK, "/homebrew-tap/Casks/f/foo.rb"
+      cask "foo" do
+        url "https://example.com/download/foo-v1.2.0.dmg" do |url|
+          url
+        end
+      end
+    CASK
+  end
+
   it "accepts a `verified` value that does not start with a protocol" do
     expect_no_offenses <<~CASK
       cask "foo" do
