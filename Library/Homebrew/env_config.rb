@@ -515,7 +515,18 @@ module Homebrew
 
       if hash[:boolean]
         define_method(method_name) do
-          ENV[env].present?
+          env_value = ENV.fetch(env, nil)
+
+          falsy_values = %w[false no off nil 0]
+          if falsy_values.include?(env_value&.downcase)
+            odeprecated "#{env}=#{env_value}", <<~EOS
+              If you wish to enable #{env}, #{env}=1
+              If you wish to disable #{env}, #{env}=
+            EOS
+          end
+
+          # TODO: Uncomment the remaining part of the line below after the deprecation/disable cycle.
+          env_value.present? # && !falsy_values.include(env_value.downcase)
         end
       elsif hash[:default].present?
         define_method(method_name) do
