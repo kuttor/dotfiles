@@ -234,7 +234,7 @@ RSpec.describe Tap do
     end
   end
 
-  describe "#remote_repository" do
+  describe "#remote_repo" do
     it "returns the remote https repository" do
       setup_git_repo
 
