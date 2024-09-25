@@ -18,7 +18,7 @@ module UnpackStrategy
       super
 
       # The export command doesn't work on checkouts (see https://bugs.launchpad.net/bzr/+bug/897511).
-      (unpack_dir/".bzr").rmtree
+      FileUtils.rm_r(unpack_dir/".bzr")
     end
   end
 end

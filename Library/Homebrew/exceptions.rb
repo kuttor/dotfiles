@@ -218,12 +218,12 @@ end
 
 # Raised when a formula in a specific tap is unavailable.
 class TapFormulaUnavailableError < FormulaUnavailableError
-  attr_reader :tap, :user, :repo
+  attr_reader :tap, :user, :repository
 
   def initialize(tap, name)
     @tap = tap
     @user = tap.user
-    @repo = tap.repo
+    @repository = tap.repository
     super "#{tap}/#{name}"
   end
 

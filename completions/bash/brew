@@ -341,6 +341,7 @@ _brew_abv() {
       --days
       --debug
       --eval-all
+      --fetch-manifest
       --formula
       --github
       --help
@@ -1229,6 +1230,7 @@ _brew_info() {
       --days
       --debug
       --eval-all
+      --fetch-manifest
       --formula
       --github
       --help

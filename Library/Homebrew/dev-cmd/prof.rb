@@ -41,7 +41,6 @@ module Homebrew
         Homebrew.setup_gem_environment!
 
         if args.stackprof?
-          # odeprecated. vernier is better in every way
           with_env HOMEBREW_STACKPROF: "1" do
             system(*HOMEBREW_RUBY_EXEC_ARGS, brew_rb, *args.named)
           end

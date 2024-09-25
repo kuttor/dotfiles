@@ -129,7 +129,7 @@ module Homebrew
         # spamming during normal output.
         Homebrew.install_bundler_gems!(groups: ["audit", "style"]) unless args.no_audit?
 
-        tap_remote_repo = formula.tap.full_name || formula.tap.remote_repo
+        tap_remote_repo = formula.tap.full_name || formula.tap.remote_repository
         remote = "origin"
         remote_branch = formula.tap.git_repository.origin_branch_name
         previous_branch = "-"
@@ -507,10 +507,6 @@ module Homebrew
         return if tap.nil?
 
         throttled_rate = formula.livecheck.throttle
-        throttled_rate ||= if (rate = tap.audit_exceptions.dig(:throttled_formulae, formula.name))
-          odisabled "throttled_formulae.json", "Livecheck#throttle"
-          rate
-        end
         return if throttled_rate.blank?
 
         formula_suffix = Version.new(new_version).patch.to_i

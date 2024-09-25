@@ -499,6 +499,11 @@ Display brief statistics for your Homebrew installation. If a *`formula`* or
 : Open the GitHub source page for *`formula`* and *`cask`* in a browser. To view
   the history locally: `brew log -p` *`formula`* or *`cask`*
 
+`--fetch-manifest`
+
+: Fetch GitHub Packages manifest for extra information when *`formula`* is not
+  installed.
+
 `--json`
 
 : Print a JSON representation. Currently the default value for *`version`* is

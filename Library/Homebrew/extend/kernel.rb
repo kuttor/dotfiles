@@ -156,7 +156,7 @@ module Kernel
 
       require "tap"
 
-      tap = Tap.fetch(match[:user], match[:repo])
+      tap = Tap.fetch(match[:user], match[:repository])
       tap_message = +"\nPlease report this issue to the #{tap.full_name} tap"
       tap_message += " (not Homebrew/brew or Homebrew/homebrew-core)" unless tap.official?
       tap_message += ", or even better, submit a PR to fix it" if replacement

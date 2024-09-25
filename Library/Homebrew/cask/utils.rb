@@ -47,7 +47,7 @@ module Cask
       gain_permissions(path, permission_flags, command) do |p|
         if p.parent.writable?
           if directory
-            p.rmtree
+            FileUtils.rm_r p
           else
             FileUtils.rm_f p
           end

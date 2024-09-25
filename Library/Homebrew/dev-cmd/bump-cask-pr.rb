@@ -27,8 +27,6 @@ module Homebrew
                             "to the cask file."
         switch "--no-audit",
                description: "Don't run `brew audit` before opening the PR."
-        switch "--online",
-               hidden:      true
         switch "--no-style",
                description: "Don't run `brew style --fix` before opening the PR."
         switch "--no-browse",
@@ -60,8 +58,6 @@ module Homebrew
 
       sig { override.void }
       def run
-        odisabled "brew bump-cask-pr --online" if args.online?
-
         # This will be run by `brew audit` or `brew style` later so run it first to
         # not start spamming during normal output.
         gem_groups = []
@@ -252,7 +248,7 @@ module Homebrew
 
       sig { params(cask: Cask::Cask, new_version: BumpVersionParser).void }
       def check_pull_requests(cask, new_version:)
-        tap_remote_repo = cask.tap.full_name || cask.tap.remote_repo
+        tap_remote_repo = cask.tap.full_name || cask.tap.remote_repository
 
         file = cask.sourcefile_path.relative_path_from(cask.tap.path).to_s
         quiet = args.quiet?

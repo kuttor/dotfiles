@@ -154,7 +154,7 @@ class SoftwareSpec
   end
 
   def go_resource(name, &block)
-    odeprecated "`SoftwareSpec#go_resource`", "Go modules"
+    odisabled "`SoftwareSpec#go_resource`", "Go modules"
     resource name, Resource::Go, &block
   end
 
@@ -434,6 +434,22 @@ class Bottle
     end
 
     {}
+  end
+
+  sig { returns(T.nilable(Integer)) }
+  def bottle_size
+    resource = github_packages_manifest_resource
+    return unless resource&.downloaded?
+
+    resource.bottle_size
+  end
+
+  sig { returns(T.nilable(Integer)) }
+  def installed_size
+    resource = github_packages_manifest_resource
+    return unless resource&.downloaded?
+
+    resource.installed_size
   end
 
   sig { returns(Filename) }
