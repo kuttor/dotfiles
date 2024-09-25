@@ -3,14 +3,14 @@
 # shellcheck disable=SC2154
 
 normalise_tap_name() {
-  local dir="$1"
+  local directory="$1"
   local user
-  local repo
+  local repository
 
-  user="$(tr '[:upper:]' '[:lower:]' <<<"${dir%%/*}")"
-  repo="$(tr '[:upper:]' '[:lower:]' <<<"${dir#*/}")"
-  repo="${repo#@(home|linux)brew-}"
-  echo "${user}/${repo}"
+  user="$(tr '[:upper:]' '[:lower:]' <<<"${directory%%/*}")"
+  repository="$(tr '[:upper:]' '[:lower:]' <<<"${directory#*/}")"
+  repository="${repository#@(home|linux)brew-}"
+  echo "${user}/${repository}"
 }
 
 homebrew-tap() {
@@ -18,11 +18,10 @@ homebrew-tap() {
   (
     shopt -s extglob
 
-    for dir in "${taplib}"/*/*
+    for directory in "${taplib}"/*/*
     do
-      [[ -d "${dir}" ]] || continue
-      dir="${dir#"${taplib}"/}"
-      normalise_tap_name "${dir}"
+      [[ -d "${directory}" ]] || continue
+      normalise_tap_name "${directory#"${taplib}"/}"
     done | sort
   )
 }
