@@ -105,10 +105,19 @@ module Cask
         end
 
         return if %w[.rb .json].exclude?(path.extname)
+        return if path.to_s.include?("/Formula/")
         return unless path.expand_path.exist?
 
-        return if Homebrew::EnvConfig.forbid_packages_from_paths? &&
-                  !path.realpath.to_s.start_with?("#{Caskroom.path}/", "#{HOMEBREW_LIBRARY}/Taps/")
+        unless path.realpath.to_s.start_with?("#{Caskroom.path}/", "#{HOMEBREW_LIBRARY}/Taps/",
+                                              "#{HOMEBREW_LIBRARY_PATH}/test/support/fixtures/")
+          return if Homebrew::EnvConfig.forbid_packages_from_paths?
+
+          # So many tests legimately use casks from paths that we can't warn about them all.
+          # Let's focus on end-users for now.
+          unless ENV["HOMEBREW_TESTS"]
+            odeprecated "installing formulae from paths or URLs", "installing formulae from taps"
+          end
+        end
 
         new(path)
       end
@@ -194,6 +203,8 @@ module Cask
 
       def load(config:)
         path.dirname.mkpath
+
+        odeprecated "installing casks from paths or URLs", "installing casks from taps"
 
         if ALLOWED_URL_SCHEMES.exclude?(url.scheme)
           raise UnsupportedInstallationMethod,
