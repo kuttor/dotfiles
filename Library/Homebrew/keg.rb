@@ -268,7 +268,7 @@ class Keg
       LinkageCacheStore.new(path, db).delete!
     end
 
-    path.rmtree
+    FileUtils.rm_r(path)
     path.parent.rmdir_if_possible
     remove_opt_record if optlinked?
     remove_linked_keg_record if linked?

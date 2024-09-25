@@ -483,7 +483,7 @@ on_request: installed_on_request?, options:)
         # any exceptions must leave us with nothing installed
         ignore_interrupts do
           begin
-            formula.prefix.rmtree if formula.prefix.directory?
+            FileUtils.rm_r(formula.prefix) if formula.prefix.directory?
           rescue Errno::EACCES, Errno::ENOTEMPTY
             odie <<~EOS
               Could not remove #{formula.prefix.basename} keg! Do so manually:
@@ -825,7 +825,7 @@ on_request: installed_on_request?, options:)
     # dependency tree. In that case, don't generate an error, just move on.
     nil
   else
-    ignore_interrupts { tmp_keg.rmtree if tmp_keg&.directory? }
+    ignore_interrupts { FileUtils.rm_r(tmp_keg) if tmp_keg&.directory? }
   end
 
   sig { void }
@@ -1020,7 +1020,7 @@ on_request: installed_on_request?, options:)
     ignore_interrupts do
       # any exceptions must leave us with nothing installed
       formula.update_head_version
-      formula.prefix.rmtree if formula.prefix.directory?
+      FileUtils.rm_r(formula.prefix) if formula.prefix.directory?
       formula.rack.rmdir_if_possible
     end
     raise e

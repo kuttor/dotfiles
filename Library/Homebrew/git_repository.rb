@@ -19,8 +19,13 @@ class GitRepository
   def git_repository?
     pathname.join(".git").exist?
   end
-  # odeprecated: use git_repository? instead
-  alias git_repo? git_repository?
+
+  sig { returns(T::Boolean) }
+  def git_repo?
+    # delete this whole function when removing odisabled
+    odeprecated "GitRepository#git_repo?", "GitRepository#git_repository?"
+    git_repository?
+  end
 
   # Gets the URL of the Git origin remote.
   sig { returns(T.nilable(String)) }
@@ -31,7 +36,7 @@ class GitRepository
   # Sets the URL of the Git origin remote.
   sig { params(origin: String).returns(T.nilable(T::Boolean)) }
   def origin_url=(origin)
-    return if !git_repo? || !Utils::Git.available?
+    return if !git_repository? || !Utils::Git.available?
 
     safe_system Utils::Git.git, "remote", "set-url", "origin", origin, chdir: pathname
   end
@@ -115,7 +120,7 @@ class GitRepository
 
   sig { params(args: T.untyped, safe: T::Boolean, err: T.nilable(Symbol)).returns(T.nilable(String)) }
   def popen_git(*args, safe: false, err: nil)
-    unless git_repo?
+    unless git_repository?
       return unless safe
 
       raise "Not a Git repository: #{pathname}"

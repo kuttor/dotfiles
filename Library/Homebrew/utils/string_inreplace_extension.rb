@@ -39,8 +39,8 @@ class StringInreplaceExtension
   def gsub!(before, after, old_audit_result = nil, audit_result: true)
     # NOTE: must check for `#nil?` and not `#blank?`, or else `old_audit_result = false` will not call `odeprecated`.
     unless old_audit_result.nil?
-      # odeprecated "gsub!(before, after, #{old_audit_result})",
-      #             "gsub!(before, after, audit_result: #{old_audit_result})"
+      odeprecated "gsub!(before, after, #{old_audit_result})",
+                  "gsub!(before, after, audit_result: #{old_audit_result})"
       audit_result = old_audit_result
     end
     before = before.to_s if before.is_a?(Pathname)
@@ -55,7 +55,9 @@ class StringInreplaceExtension
   # @api public
   sig { params(flag: String, new_value: T.any(String, Pathname)).void }
   def change_make_var!(flag, new_value)
-    return if gsub!(/^#{Regexp.escape(flag)}[ \t]*[\\?+:!]?=[ \t]*((?:.*\\\n)*.*)$/, "#{flag}=#{new_value}", false)
+    return if gsub!(/^#{Regexp.escape(flag)}[ \t]*[\\?+:!]?=[ \t]*((?:.*\\\n)*.*)$/,
+                    "#{flag}=#{new_value}",
+                    audit_result: false)
 
     errors << "expected to change #{flag.inspect} to #{new_value.inspect}"
   end
@@ -67,9 +69,11 @@ class StringInreplaceExtension
   def remove_make_var!(flags)
     Array(flags).each do |flag|
       # Also remove trailing \n, if present.
-      unless gsub!(/^#{Regexp.escape(flag)}[ \t]*[\\?+:!]?=(?:.*\\\n)*.*$\n?/, "", false)
-        errors << "expected to remove #{flag.inspect}"
-      end
+      next if gsub!(/^#{Regexp.escape(flag)}[ \t]*[\\?+:!]?=(?:.*\\\n)*.*$\n?/,
+                    "",
+                    audit_result: false)
+
+      errors << "expected to remove #{flag.inspect}"
     end
   end
 

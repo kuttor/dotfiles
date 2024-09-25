@@ -82,18 +82,18 @@ git_init_if_necessary() {
   fi
 }
 
-repo_var_suffix() {
-  local repo_dir="${1}"
-  local repo_var_suffix
+repository_var_suffix() {
+  local repository_directory="${1}"
+  local repository_var_suffix
 
-  if [[ "${repo_dir}" == "${HOMEBREW_REPOSITORY}" ]]
+  if [[ "${repository_directory}" == "${HOMEBREW_REPOSITORY}" ]]
   then
-    repo_var_suffix=""
+    repository_var_suffix=""
   else
-    repo_var_suffix="${repo_dir#"${HOMEBREW_LIBRARY}/Taps"}"
-    repo_var_suffix="$(echo -n "${repo_var_suffix}" | tr -C "A-Za-z0-9" "_" | tr "[:lower:]" "[:upper:]")"
+    repository_var_suffix="${repository_directory#"${HOMEBREW_LIBRARY}/Taps"}"
+    repository_var_suffix="$(echo -n "${repository_var_suffix}" | tr -C "A-Za-z0-9" "_" | tr "[:lower:]" "[:upper:]")"
   fi
-  echo "${repo_var_suffix}"
+  echo "${repository_var_suffix}"
 }
 
 upstream_branch() {
@@ -592,7 +592,7 @@ EOS
       echo "Checking if we need to fetch ${DIR}..."
     fi
 
-    TAP_VAR="$(repo_var_suffix "${DIR}")"
+    TAP_VAR="$(repository_var_suffix "${DIR}")"
     UPSTREAM_BRANCH_DIR="$(upstream_branch)"
     declare UPSTREAM_BRANCH"${TAP_VAR}"="${UPSTREAM_BRANCH_DIR}"
     declare PREFETCH_REVISION"${TAP_VAR}"="$(git rev-parse -q --verify refs/remotes/origin/"${UPSTREAM_BRANCH_DIR}")"
@@ -778,7 +778,7 @@ EOS
       continue
     fi
 
-    TAP_VAR="$(repo_var_suffix "${DIR}")"
+    TAP_VAR="$(repository_var_suffix "${DIR}")"
     UPSTREAM_BRANCH_VAR="UPSTREAM_BRANCH${TAP_VAR}"
     UPSTREAM_BRANCH="${!UPSTREAM_BRANCH_VAR}"
     CURRENT_REVISION="$(read_current_revision)"

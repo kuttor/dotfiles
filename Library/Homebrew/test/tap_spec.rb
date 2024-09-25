@@ -163,7 +163,7 @@ RSpec.describe Tap do
 
   specify "attributes" do
     expect(homebrew_foo_tap.user).to eq("Homebrew")
-    expect(homebrew_foo_tap.repo).to eq("foo")
+    expect(homebrew_foo_tap.repository).to eq("foo")
     expect(homebrew_foo_tap.name).to eq("homebrew/foo")
     expect(homebrew_foo_tap.path).to eq(path)
     expect(homebrew_foo_tap).to be_installed
@@ -186,7 +186,7 @@ RSpec.describe Tap do
     (HOMEBREW_TAP_DIRECTORY/"someone/homebrew-no-git").mkpath
     expect(described_class.fetch("someone", "no-git").issues_url).to be_nil
   ensure
-    path.parent.rmtree
+    FileUtils.rm_rf(path.parent)
   end
 
   specify "files" do
@@ -238,7 +238,7 @@ RSpec.describe Tap do
     it "returns the remote https repository" do
       setup_git_repo
 
-      expect(homebrew_foo_tap.remote_repo).to eq("Homebrew/homebrew-foo")
+      expect(homebrew_foo_tap.remote_repository).to eq("Homebrew/homebrew-foo")
 
       services_tap = described_class.fetch("Homebrew", "services")
       services_tap.path.mkpath
@@ -246,13 +246,13 @@ RSpec.describe Tap do
         system "git", "init"
         system "git", "remote", "add", "origin", "https://github.com/Homebrew/homebrew-bar"
       end
-      expect(services_tap.remote_repo).to eq("Homebrew/homebrew-bar")
+      expect(services_tap.remote_repository).to eq("Homebrew/homebrew-bar")
     end
 
     it "returns the remote ssh repository" do
       setup_git_repo
 
-      expect(homebrew_foo_tap.remote_repo).to eq("Homebrew/homebrew-foo")
+      expect(homebrew_foo_tap.remote_repository).to eq("Homebrew/homebrew-foo")
 
       services_tap = described_class.fetch("Homebrew", "services")
       services_tap.path.mkpath
@@ -260,17 +260,17 @@ RSpec.describe Tap do
         system "git", "init"
         system "git", "remote", "add", "origin", "git@github.com:Homebrew/homebrew-bar"
       end
-      expect(services_tap.remote_repo).to eq("Homebrew/homebrew-bar")
+      expect(services_tap.remote_repository).to eq("Homebrew/homebrew-bar")
     end
 
     it "returns nil if the Tap is not a Git repository" do
-      expect(homebrew_foo_tap.remote_repo).to be_nil
+      expect(homebrew_foo_tap.remote_repository).to be_nil
     end
 
     it "returns nil if Git is not available" do
       setup_git_repo
       allow(Utils::Git).to receive(:available?).and_return(false)
-      expect(homebrew_foo_tap.remote_repo).to be_nil
+      expect(homebrew_foo_tap.remote_repository).to be_nil
     end
   end
 
@@ -412,8 +412,8 @@ RSpec.describe Tap do
     expect(HOMEBREW_PREFIX/"share/zsh/site-functions/_brew-tap-cmd").not_to exist
     expect(HOMEBREW_PREFIX/"share/fish/vendor_completions.d/brew-tap-cmd.fish").not_to exist
   ensure
-    (HOMEBREW_PREFIX/"etc").rmtree if (HOMEBREW_PREFIX/"etc").exist?
-    (HOMEBREW_PREFIX/"share").rmtree if (HOMEBREW_PREFIX/"share").exist?
+    FileUtils.rm_r(HOMEBREW_PREFIX/"etc") if (HOMEBREW_PREFIX/"etc").exist?
+    FileUtils.rm_r(HOMEBREW_PREFIX/"share") if (HOMEBREW_PREFIX/"share").exist?
   end
 
   specify "#link_completions_and_manpages when completions are enabled for non-official tap" do
@@ -433,8 +433,8 @@ RSpec.describe Tap do
     expect(HOMEBREW_PREFIX/"share/fish/vendor_completions.d/brew-tap-cmd.fish").to be_a_file
     tap.uninstall
   ensure
-    (HOMEBREW_PREFIX/"etc").rmtree if (HOMEBREW_PREFIX/"etc").exist?
-    (HOMEBREW_PREFIX/"share").rmtree if (HOMEBREW_PREFIX/"share").exist?
+    FileUtils.rm_r(HOMEBREW_PREFIX/"etc") if (HOMEBREW_PREFIX/"etc").exist?
+    FileUtils.rm_r(HOMEBREW_PREFIX/"share") if (HOMEBREW_PREFIX/"share").exist?
   end
 
   specify "#link_completions_and_manpages when completions are disabled for non-official tap" do
@@ -451,8 +451,8 @@ RSpec.describe Tap do
     expect(HOMEBREW_PREFIX/"share/fish/vendor_completions.d/brew-tap-cmd.fish").not_to be_a_file
     tap.uninstall
   ensure
-    (HOMEBREW_PREFIX/"etc").rmtree if (HOMEBREW_PREFIX/"etc").exist?
-    (HOMEBREW_PREFIX/"share").rmtree if (HOMEBREW_PREFIX/"share").exist?
+    FileUtils.rm_r(HOMEBREW_PREFIX/"etc") if (HOMEBREW_PREFIX/"etc").exist?
+    FileUtils.rm_r(HOMEBREW_PREFIX/"share") if (HOMEBREW_PREFIX/"share").exist?
   end
 
   specify "#link_completions_and_manpages when completions are enabled for official tap" do
@@ -472,8 +472,8 @@ RSpec.describe Tap do
     expect(HOMEBREW_PREFIX/"share/fish/vendor_completions.d/brew-tap-cmd.fish").to be_a_file
     tap.uninstall
   ensure
-    (HOMEBREW_PREFIX/"etc").rmtree if (HOMEBREW_PREFIX/"etc").exist?
-    (HOMEBREW_PREFIX/"share").rmtree if (HOMEBREW_PREFIX/"share").exist?
+    FileUtils.rm_r(HOMEBREW_PREFIX/"etc") if (HOMEBREW_PREFIX/"etc").exist?
+    FileUtils.rm_r(HOMEBREW_PREFIX/"share") if (HOMEBREW_PREFIX/"share").exist?
   end
 
   specify "#config" do
@@ -736,7 +736,7 @@ RSpec.describe Tap do
 
     specify "attributes" do
       expect(core_tap.user).to eq("Homebrew")
-      expect(core_tap.repo).to eq("core")
+      expect(core_tap.repository).to eq("core")
       expect(core_tap.name).to eq("homebrew/core")
       expect(core_tap.command_files).to eq([])
       expect(core_tap).to be_installed
@@ -790,14 +790,16 @@ RSpec.describe Tap do
     end
   end
 
-  describe "#repo_var_suffix" do
+  describe "#repository_var_suffix" do
     it "converts the repo directory to an environment variable suffix" do
-      expect(CoreTap.instance.repo_var_suffix).to eq "_HOMEBREW_HOMEBREW_CORE"
+      expect(CoreTap.instance.repository_var_suffix).to eq "_HOMEBREW_HOMEBREW_CORE"
     end
 
     it "converts non-alphanumeric characters to underscores" do
-      expect(described_class.fetch("my", "tap-with-dashes").repo_var_suffix).to eq "_MY_HOMEBREW_TAP_WITH_DASHES"
-      expect(described_class.fetch("my", "tap-with-@-symbol").repo_var_suffix).to eq "_MY_HOMEBREW_TAP_WITH___SYMBOL"
+      expect(described_class.fetch("my",
+                                   "tap-with-dashes").repository_var_suffix).to eq "_MY_HOMEBREW_TAP_WITH_DASHES"
+      expect(described_class.fetch("my",
+                                   "tap-with-@-symbol").repository_var_suffix).to eq "_MY_HOMEBREW_TAP_WITH___SYMBOL"
     end
   end
 

@@ -69,7 +69,7 @@ module Homebrew
       raise
     else
       begin
-        backup_path(keg).rmtree if backup_path(keg).exist?
+        FileUtils.rm_r(backup_path(keg)) if backup_path(keg).exist?
       rescue Errno::EACCES, Errno::ENOTEMPTY
         odie <<~EOS
           Could not remove #{backup_path(keg).parent.basename} backup keg! Do so manually:
@@ -96,7 +96,7 @@ module Homebrew
 
       return unless path.directory?
 
-      Pathname.new(keg).rmtree if keg.exist?
+      FileUtils.rm_r(Pathname.new(keg)) if keg.exist?
 
       path.rename keg
       keg.link(verbose:) if keg_was_linked

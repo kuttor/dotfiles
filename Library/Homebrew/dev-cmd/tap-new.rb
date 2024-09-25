@@ -39,17 +39,17 @@ module Homebrew
         odie "Tap is already installed!" if tap.installed?
 
         titleized_user = tap.user.dup
-        titleized_repo = tap.repo.dup
+        titleized_repository = tap.repository.dup
         titleized_user[0] = titleized_user[0].upcase
-        titleized_repo[0] = titleized_repo[0].upcase
-        root_url = GitHubPackages.root_url(tap.user, "homebrew-#{tap.repo}") if args.github_packages?
+        titleized_repository[0] = titleized_repository[0].upcase
+        root_url = GitHubPackages.root_url(tap.user, "homebrew-#{tap.repository}") if args.github_packages?
 
         (tap.path/"Formula").mkpath
 
         # FIXME: https://github.com/errata-ai/vale/issues/818
         # <!-- vale off -->
         readme = <<~MARKDOWN
-          # #{titleized_user} #{titleized_repo}
+          # #{titleized_user} #{titleized_repository}
 
           ## How do I install these formulae?
 

@@ -5,7 +5,7 @@
 HOMEBREW_TAP_FORMULA_NAME_REGEX = T.let(/(?<name>[\w+\-.@]+)/, Regexp)
 # Match taps' formulae, e.g. `someuser/sometap/someformula`.
 HOMEBREW_TAP_FORMULA_REGEX = T.let(
-  %r{\A(?<user>[^/]+)/(?<repo>[^/]+)/#{HOMEBREW_TAP_FORMULA_NAME_REGEX.source}\Z},
+  %r{\A(?<user>[^/]+)/(?<repository>[^/]+)/#{HOMEBREW_TAP_FORMULA_NAME_REGEX.source}\Z},
   Regexp,
 )
 # Match default formula taps' formulae, e.g. `homebrew/core/someformula` or `someformula`.
@@ -18,7 +18,7 @@ HOMEBREW_DEFAULT_TAP_FORMULA_REGEX = T.let(
 HOMEBREW_TAP_CASK_TOKEN_REGEX = T.let(/(?<token>[\w+\-.@]+)/, Regexp)
 # Match taps' casks, e.g. `someuser/sometap/somecask`.
 HOMEBREW_TAP_CASK_REGEX = T.let(
-  %r{\A(?<user>[^/]+)/(?<repo>[^/]+)/#{HOMEBREW_TAP_CASK_TOKEN_REGEX.source}\Z},
+  %r{\A(?<user>[^/]+)/(?<repository>[^/]+)/#{HOMEBREW_TAP_CASK_TOKEN_REGEX.source}\Z},
   Regexp,
 )
 # Match default cask taps' casks, e.g. `homebrew/cask/somecask` or `somecask`.
@@ -29,7 +29,7 @@ HOMEBREW_DEFAULT_TAP_CASK_REGEX = T.let(
 
 # Match taps' directory paths, e.g. `HOMEBREW_LIBRARY/Taps/someuser/sometap`.
 HOMEBREW_TAP_DIR_REGEX = T.let(
-  %r{#{Regexp.escape(HOMEBREW_LIBRARY.to_s)}/Taps/(?<user>[^/]+)/(?<repo>[^/]+)},
+  %r{#{Regexp.escape(HOMEBREW_LIBRARY.to_s)}/Taps/(?<user>[^/]+)/(?<repository>[^/]+)},
   Regexp,
 )
 # Match taps' formula paths, e.g. `HOMEBREW_LIBRARY/Taps/someuser/sometap/someformula`.

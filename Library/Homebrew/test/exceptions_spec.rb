@@ -46,7 +46,7 @@ RSpec.describe "Exception" do
   describe TapFormulaOrCaskUnavailableError do
     subject(:error) { described_class.new(tap, "foo") }
 
-    let(:tap) { instance_double(Tap, user: "u", repo: "r", to_s: "u/r", installed?: false) }
+    let(:tap) { instance_double(Tap, user: "u", repository: "r", to_s: "u/r", installed?: false) }
 
     it(:to_s) { expect(error.to_s).to match(%r{Please tap it and then try again: brew tap u/r}) }
   end
@@ -88,7 +88,7 @@ RSpec.describe "Exception" do
   describe TapFormulaUnavailableError do
     subject(:error) { described_class.new(tap, "foo") }
 
-    let(:tap) { instance_double(Tap, user: "u", repo: "r", to_s: "u/r", installed?: false) }
+    let(:tap) { instance_double(Tap, user: "u", repository: "r", to_s: "u/r", installed?: false) }
 
     it(:to_s) { expect(error.to_s).to match(%r{Please tap it and then try again: brew tap u/r}) }
   end

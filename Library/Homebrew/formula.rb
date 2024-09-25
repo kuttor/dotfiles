@@ -1234,7 +1234,7 @@ class Formula
   #
   # @see https://www.unix.com/man-page/all/5/plist/ <code>plist(5)</code> man page
   def plist
-    odeprecated "`Formula#plist`", "`Homebrew::Service`"
+    odisabled "`Formula#plist`", "`Homebrew::Service`"
     nil
   end
 
@@ -2777,12 +2777,12 @@ class Formula
     ).returns(Pathname)
   }
   def fetch(verify_download_integrity: true, timeout: nil, quiet: false)
-    # odeprecated "Formula#fetch", "Resource#fetch on Formula#resource"
+    odeprecated "Formula#fetch", "Resource#fetch on Formula#resource"
     active_spec.fetch(verify_download_integrity:, timeout:, quiet:)
   end
 
   def verify_download_integrity(filename)
-    # odeprecated "Formula#verify_download_integrity", "Resource#verify_download_integrity on Formula#resource"
+    odeprecated "Formula#verify_download_integrity", "Resource#verify_download_integrity on Formula#resource"
     active_spec.verify_download_integrity(filename)
   end
 
@@ -2887,8 +2887,8 @@ class Formula
   def inreplace(paths, before = nil, after = nil, old_audit_result = nil, audit_result: true, &block)
     # NOTE: must check for `#nil?` and not `#blank?`, or else `old_audit_result = false` will not call `odeprecated`.
     unless old_audit_result.nil?
-      # odeprecated "inreplace(paths, before, after, #{old_audit_result})",
-      #             "inreplace(paths, before, after, audit_result: #{old_audit_result})"
+      odeprecated "inreplace(paths, before, after, #{old_audit_result})",
+                  "inreplace(paths, before, after, audit_result: #{old_audit_result})"
       audit_result = old_audit_result
     end
     Utils::Inreplace.inreplace(paths, before, after, audit_result:, &block)
@@ -3749,7 +3749,7 @@ class Formula
     #
     # @api public
     def go_resource(name, &block)
-      odeprecated "`Formula.go_resource`", "Go modules"
+      odisabled "`Formula.go_resource`", "Go modules"
       specs.each { |spec| spec.go_resource(name, &block) }
     end
 
