@@ -19,7 +19,7 @@ end.freeze
 # Use a shorter HOMEBREW_TEMP path so Sequoia doesn't error out as often on long paths (> 104 bytes).
 # Use the minimal amount of randomness to avoid collisions while allowing parallel tests.
 require "securerandom"
-random_hex = SecureRandom.hex(1)
+random_hex = SecureRandom.hex(2)
 HOMEBREW_TEMP = Pathname("#{homebrew_temp}/brewtests#{random_hex}".squeeze("/")).freeze
 HOMEBREW_TEMP.mkpath
 
