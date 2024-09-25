@@ -172,9 +172,11 @@ case "$@" in
     source "${HOMEBREW_LIBRARY}/Homebrew/list.sh"
     homebrew-list "$@" && exit 0
     ;;
+  # homebrew-tap only handles invocations with no arguments
   tap)
     source "${HOMEBREW_LIBRARY}/Homebrew/tap.sh"
-    homebrew-tap "$@" && exit 0
+    homebrew-tap "$@"
+    exit 0
     ;;
   # falls back to cmd/help.rb on a non-zero return
   help | --help | -h | --usage | "-?" | "")
