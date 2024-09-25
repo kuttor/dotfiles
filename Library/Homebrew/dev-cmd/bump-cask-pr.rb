@@ -248,7 +248,7 @@ module Homebrew
 
       sig { params(cask: Cask::Cask, new_version: BumpVersionParser).void }
       def check_pull_requests(cask, new_version:)
-        tap_remote_repo = cask.tap.full_name || cask.tap.remote_repo
+        tap_remote_repo = cask.tap.full_name || cask.tap.remote_repository
 
         file = cask.sourcefile_path.relative_path_from(cask.tap.path).to_s
         quiet = args.quiet?

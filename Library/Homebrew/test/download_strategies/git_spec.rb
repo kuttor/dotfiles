@@ -50,16 +50,16 @@ RSpec.describe GitDownloadStrategy do
   end
 
   describe "#fetch_last_commit" do
-    let(:url) { "file://#{remote_repo}" }
+    let(:url) { "file://#{remote_repository}" }
     let(:version) { Version.new("HEAD") }
-    let(:remote_repo) { HOMEBREW_PREFIX/"remote_repo" }
+    let(:remote_repository) { HOMEBREW_PREFIX/"remote_repository" }
 
-    before { remote_repo.mkpath }
+    before { remote_repository.mkpath }
 
-    after { FileUtils.rm_rf remote_repo }
+    after { FileUtils.rm_rf remote_repository }
 
     it "fetches the hash of the last commit" do
-      remote_repo.cd do
+      remote_repository.cd do
         setup_git_repo
         FileUtils.touch "LICENSE"
         git_commit_all

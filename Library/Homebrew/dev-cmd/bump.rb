@@ -270,7 +270,7 @@ module Homebrew
         ).returns T.nilable(T.any(T::Array[String], String))
       }
       def retrieve_pull_requests(formula_or_cask, name, version: nil)
-        tap_remote_repo = formula_or_cask.tap&.remote_repo || formula_or_cask.tap&.full_name
+        tap_remote_repository = formula_or_cask.tap&.remote_repository || formula_or_cask.tap&.full_name
         pull_requests = begin
           GitHub.fetch_pull_requests(name, tap_remote_repo, version:)
         rescue GitHub::API::ValidationFailedError => e
