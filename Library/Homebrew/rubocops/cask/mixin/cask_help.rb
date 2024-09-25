@@ -26,6 +26,8 @@ module RuboCop
 
           return unless block_node.cask_block?
 
+          @file_path = processed_source.file_path
+
           cask_block = RuboCop::Cask::AST::CaskBlock.new(block_node, comments)
           on_cask(cask_block)
         end
@@ -38,6 +40,13 @@ module RuboCop
           block_contents = block_node.child_nodes.select(&:begin_type?)
           inner_nodes = block_contents.map(&:child_nodes).flatten.select(&:send_type?)
           inner_nodes.map { |n| RuboCop::Cask::AST::Stanza.new(n, comments) }
+        end
+
+        sig { returns(T.nilable(String)) }
+        def cask_tap
+          return unless (match_obj = @file_path.match(%r{/(homebrew-\w+)/}))
+
+          match_obj[1]
         end
       end
     end
