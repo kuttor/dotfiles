@@ -7,8 +7,8 @@ normalise_tap_name() {
   local user
   local repo
 
-  user="$(echo "${dir%%/*}" | tr '[:upper:]' '[:lower:]')"
-  repo="$(echo "${dir#*/}" | tr '[:upper:]' '[:lower:]')"
+  user="$(tr '[:upper:]' '[:lower:]' <<<"${dir%%/*}")"
+  repo="$(tr '[:upper:]' '[:lower:]' <<<"${dir#*/}")"
   repo="${repo#@(home|linux)brew-}"
   echo "${user}/${repo}"
 }
