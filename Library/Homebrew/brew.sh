@@ -520,6 +520,7 @@ esac
 # TODO: bump version when new macOS is released or announced and update references in:
 # - docs/Installation.md
 # - https://github.com/Homebrew/install/blob/HEAD/install.sh
+# - Library/Homebrew/os/mac.rb (latest_sdk_version)
 # and, if needed:
 # - MacOSVersion::SYMBOLS
 HOMEBREW_MACOS_NEWEST_UNSUPPORTED="16"
