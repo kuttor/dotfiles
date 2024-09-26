@@ -253,7 +253,8 @@ on_request: true)
         next if artifact.is_a?(Artifact::Binary) && !binaries?
 
         artifact.install_phase(
-          command: @command, verbose: verbose?, adopt: adopt?, force: force?, predecessor:,
+          command: @command, verbose: verbose?, adopt: adopt?, auto_updates: @cask.auto_updates,
+          force: force?, predecessor:
         )
         already_installed_artifacts.unshift(artifact)
       end

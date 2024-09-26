@@ -5,12 +5,13 @@ RSpec.describe Cask::Artifact::App, :cask do
   let(:command) { NeverSudoSystemCommand }
   let(:adopt) { false }
   let(:force) { false }
+  let(:auto_updates) { false }
   let(:app) { cask.artifacts.find { |a| a.is_a?(described_class) } }
 
   let(:source_path) { cask.staged_path.join("Caffeine.app") }
   let(:target_path) { cask.config.appdir.join("Caffeine.app") }
 
-  let(:install_phase) { app.install_phase(command:, adopt:, force:) }
+  let(:install_phase) { app.install_phase(command:, adopt:, force:, auto_updates:) }
   let(:uninstall_phase) { app.uninstall_phase(command:, force:) }
 
   before do
@@ -83,24 +84,55 @@ RSpec.describe Cask::Artifact::App, :cask do
         let(:adopt) { true }
 
         describe "when the target compares different from the source" do
-          it "avoids clobbering the existing app" do
-            stdout = <<~EOS
-              ==> Adopting existing App at '#{target_path}'
-            EOS
+          describe "when the cask does not auto_updates" do
+            it "avoids clobbering the existing app if brew manages updates" do
+              stdout = <<~EOS
+                ==> Adopting existing App at '#{target_path}'
+              EOS
 
-            expect { install_phase }
-              .to output(stdout).to_stdout
-              .and raise_error(
-                Cask::CaskError,
-                "It seems the existing App is different from the one being installed.",
-              )
+              expect { install_phase }
+                .to output(stdout).to_stdout
+                .and raise_error(
+                  Cask::CaskError,
+                  "It seems the existing App is different from the one being installed.",
+                )
 
-            expect(source_path).to be_a_directory
-            expect(target_path).to be_a_directory
-            expect(File.identical?(source_path, target_path)).to be false
+              expect(source_path).to be_a_directory
+              expect(target_path).to be_a_directory
+              expect(File.identical?(source_path, target_path)).to be false
 
-            contents_path = target_path.join("Contents/Info.plist")
-            expect(contents_path).not_to exist
+              contents_path = target_path.join("Contents/Info.plist")
+              expect(contents_path).not_to exist
+            end
+          end
+
+          describe "when the cask auto_updates" do
+            before do
+              target_path.delete
+              FileUtils.cp_r source_path, target_path
+              File.write(target_path.join("Contents/Info.plist"), "different")
+            end
+
+            let(:auto_updates) { true }
+
+            it "adopts the existing app" do
+              stdout = <<~EOS
+                ==> Adopting existing App at '#{target_path}'
+              EOS
+
+              stderr = ""
+
+              expect { install_phase }
+                .to output(stdout).to_stdout
+                .and output(stderr).to_stderr
+
+              expect(source_path).to be_a_symlink
+              expect(target_path).to be_a_directory
+
+              contents_path = target_path.join("Contents/Info.plist")
+              expect(contents_path).to exist
+              expect(File.read(contents_path)).to eq("different")
+            end
           end
         end
 

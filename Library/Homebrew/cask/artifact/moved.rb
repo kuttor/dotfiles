@@ -31,7 +31,7 @@ module Cask
 
       private
 
-      def move(adopt: false, force: false, verbose: false, predecessor: nil, reinstall: false,
+      def move(adopt: false, auto_updates: false, force: false, verbose: false, predecessor: nil, reinstall: false,
                command: nil, **options)
         unless source.exist?
           raise CaskError, "It seems the #{self.class.english_name} source '#{source}' is not there."
@@ -78,6 +78,8 @@ module Cask
                   print_stdout: verbose,
                 ).success?
               end
+
+              same = true if auto_updates
 
               unless same
                 raise CaskError,
