@@ -89,7 +89,7 @@ module Homebrew
               caveats = Caveats.new(formula)
               opoo <<~EOS
                 Refusing to link macOS provided/shadowed software: #{keg.name}
-                #{caveats.keg_only_text(skip_reason: true).strip}
+                #{T.must(caveats.keg_only_text(skip_reason: true)).strip}
               EOS
               next
             end
