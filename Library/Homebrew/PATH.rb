@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "forwardable"
@@ -7,16 +7,18 @@ require "forwardable"
 class PATH
   include Enumerable
   extend Forwardable
+  extend T::Generic
 
   delegate each: :@paths
 
+  Elem = type_member(:out) { { fixed: String } }
   Element = T.type_alias { T.nilable(T.any(Pathname, String, PATH)) }
   private_constant :Element
   Elements = T.type_alias { T.any(Element, T::Array[Element]) }
   private_constant :Elements
   sig { params(paths: Elements).void }
   def initialize(*paths)
-    @paths = parse(paths)
+    @paths = T.let(parse(paths), T::Array[String])
   end
 
   sig { params(paths: Elements).returns(T.self_type) }
