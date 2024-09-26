@@ -38,9 +38,6 @@ class Homebrew::DevCmd::BumpCaskPr::Args < Homebrew::CLI::Args
   sig { returns(T::Boolean) }
   def no_style?; end
 
-  sig { returns(T::Boolean) }
-  def online?; end
-
   sig { returns(T.nilable(String)) }
   def sha256; end
 
