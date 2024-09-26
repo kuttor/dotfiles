@@ -80,9 +80,6 @@ class Homebrew::Cmd::UpgradeCmd::Args < Homebrew::CLI::Args
   sig { returns(T::Boolean) }
   def i?; end
 
-  sig { returns(T::Boolean) }
-  def ignore_pinned?; end
-
   sig { returns(T.nilable(String)) }
   def input_methoddir; end
 
