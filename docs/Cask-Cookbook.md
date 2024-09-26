@@ -966,7 +966,7 @@ When a plain URL string is insufficient to fetch a file, additional information 
 
 #### When URL and homepage domains differ, add `verified:`
 
-When the domains of `url` and `homepage` differ, the discrepancy should be documented with the `verified:` parameter, repeating the smallest possible portion of the URL that uniquely identifies the app or vendor, excluding the protocol. (Example: [shotcut.rb](https://github.com/Homebrew/homebrew-cask/blob/aa461148bbb5119af26b82cccf5003e2b4e50d95/Casks/s/shotcut.rb#L5-L6))
+When the domains of `url` and `homepage` differ, the discrepancy should be documented with the `verified:` parameter, repeating the smallest possible portion of the URL that uniquely identifies the app or vendor, excluding the protocol. (Example: [1password-cli.rb](https://github.com/Homebrew/homebrew-cask/blob/ec2476459ead02e80391f44d42a2b48a18bf373d/Casks/1/1password-cli.rb#L8-L9))
 
 This must be added so a user auditing the cask knows the URL was verified by the Homebrew Cask team as the one provided by the vendor, even though it may look unofficial. It is our responsibility as Homebrew Cask maintainers to verify both the `url` and `homepage` information when first added (or subsequently modified, apart from versioning).
 
