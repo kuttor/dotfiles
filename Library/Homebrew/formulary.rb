@@ -646,9 +646,6 @@ module Formulary
 
       return unless path.expand_path.exist?
 
-      return if Homebrew::EnvConfig.forbid_packages_from_paths? &&
-                !path.realpath.to_s.start_with?("#{HOMEBREW_CELLAR}/", "#{HOMEBREW_LIBRARY}/Taps/")
-
       options = if (tap = Tap.from_path(path))
         # Only treat symlinks in taps as aliases.
         if path.symlink?
@@ -674,6 +671,17 @@ module Formulary
       end
 
       return if path.extname != ".rb"
+
+      unless path.realpath.to_s.start_with?("#{HOMEBREW_CELLAR}/", "#{HOMEBREW_TAP_DIRECTORY}/",
+                                            "#{HOMEBREW_LIBRARY_PATH}/test/support/fixtures/")
+        return if Homebrew::EnvConfig.forbid_packages_from_paths?
+
+        # So many tests legimately use formulae from paths that we can't warn about them all.
+        # Let's focus on end-users for now.
+        unless ENV["HOMEBREW_TESTS"]
+          odeprecated "installing formulae from paths or URLs", "installing formulae from taps"
+        end
+      end
 
       new(path, **options)
     end
@@ -715,6 +723,8 @@ module Formulary
       uri = URI(uri)
       return unless uri.path
       return unless uri.scheme.present?
+
+      odeprecated "installing formulae from paths or URLs", "installing formulae from taps"
 
       new(uri, from:)
     end
