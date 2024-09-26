@@ -225,7 +225,7 @@ module Homebrew
         PyPI.update_python_resources! formula, ignore_non_pypi_packages: true if args.python?
 
         puts <<~EOS
-          Please run the following command before submitting, thanks.
+          Please run the following command before submitting:
             HOMEBREW_NO_INSTALL_FROM_API=1 brew audit --new #{fc.name}
         EOS
         path
