@@ -1494,8 +1494,8 @@ dependency for their stable builds.
 
 Display Homebrew's download cache. See also `HOMEBREW_CACHE`.
 
-If *`formula`* is provided, display the file or directory used to cache
-*`formula`*.
+If a *`formula`* or *`cask`* is provided, display the file or directory used to
+cache it.
 
 `--os`
 
