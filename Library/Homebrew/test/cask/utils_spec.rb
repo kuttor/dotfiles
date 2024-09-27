@@ -46,7 +46,7 @@ RSpec.describe Cask::Utils do
 
       expect(path).to be_a_file
       expect(link).to be_a_symlink
-      expect(link.realpath).to eq path
+      expect(link.readlink).to eq path
 
       described_class.gain_permissions_remove(link, command:)
 
@@ -64,7 +64,7 @@ RSpec.describe Cask::Utils do
 
       expect(path).to be_a_directory
       expect(link).to be_a_symlink
-      expect(link.realpath).to eq path
+      expect(link.readlink).to eq path
 
       described_class.gain_permissions_remove(link, command:)
 
