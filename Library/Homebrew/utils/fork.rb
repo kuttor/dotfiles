@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require "fcntl"
-require "socket"
+require "utils/socket"
 
 module Utils
   def self.rewrite_child_error(child_error)
@@ -37,7 +37,7 @@ module Utils
     require "json/add/exception"
 
     block = proc do |tmpdir|
-      UNIXServer.open("#{tmpdir}/socket") do |server|
+      UNIXServerExt.open("#{tmpdir}/socket") do |server|
         read, write = IO.pipe
 
         pid = fork do
