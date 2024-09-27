@@ -56,7 +56,7 @@ module UnpackStrategy
         result = loop do
           # We need to use `find` here instead of Ruby in order to properly handle
           # file names containing special characters, such as “e” + “´” vs. “é”.
-          r = system_command("find", args: [".", "-print0"], chdir: pathname, print_stderr: false)
+          r = system_command("find", args: [".", "-print0"], chdir: pathname, print_stderr: false, reset_uid: true)
           tries += 1
 
           # Spurious bug on CI, which in most cases can be worked around by retrying.
