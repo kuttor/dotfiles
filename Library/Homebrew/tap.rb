@@ -886,7 +886,7 @@ class Tap
     hash = {
       "name"          => name,
       "user"          => user,
-      "repository"    => repository,
+      "repo"          => repository,
       "path"          => path.to_s,
       "installed"     => installed?,
       "official"      => official?,
