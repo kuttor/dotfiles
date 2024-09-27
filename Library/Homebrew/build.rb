@@ -13,7 +13,7 @@ require "build_options"
 require "keg"
 require "extend/ENV"
 require "fcntl"
-require "socket"
+require "utils/socket"
 require "cmd/install"
 require "json/add/exception"
 
@@ -221,7 +221,7 @@ begin
   args = Homebrew::Cmd::InstallCmd.new.args
   Context.current = args.context
 
-  error_pipe = UNIXSocket.open(ENV.fetch("HOMEBREW_ERROR_PIPE"), &:recv_io)
+  error_pipe = Utils::UNIXSocketExt.open(ENV.fetch("HOMEBREW_ERROR_PIPE"), &:recv_io)
   error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
 
   trap("INT", old_trap)
