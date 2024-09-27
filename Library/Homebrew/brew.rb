@@ -211,13 +211,8 @@ rescue Exception => e # rubocop:disable Lint/RescueException
     $stderr.puts "If reporting this issue please do so at (not Homebrew/brew or Homebrew/homebrew-core):"
     $stderr.puts "  #{Formatter.url(issues_url)}"
   elsif internal_cmd
-    if e.is_a?(MethodDeprecatedError) && (first_backtrace = e.backtrace&.first.presence) &&
-       (first_backtrace.include?("/formulary.rb") || first_backtrace.include?("/cask_loader.rb"))
-      $stderr.puts Utils::Backtrace.clean(e) if ARGV.include?("--debug") || args.debug?
-    else
-      $stderr.puts "#{Tty.bold}Please report this issue:#{Tty.reset}"
-      $stderr.puts "  #{Formatter.url(OS::ISSUES_URL)}"
-    end
+    $stderr.puts "#{Tty.bold}Please report this issue:#{Tty.reset}"
+    $stderr.puts "  #{Formatter.url(OS::ISSUES_URL)}"
   end
 
   exit 1

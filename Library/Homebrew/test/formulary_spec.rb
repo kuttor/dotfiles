@@ -129,6 +129,11 @@ RSpec.describe Formulary do
         end.to raise_error(FormulaUnavailableError)
       end
 
+      it "returns a Formula when given a URL", :needs_utils_curl, :no_api do
+        formula = described_class.factory("file://#{formula_path}")
+        expect(formula).to be_a(Formula)
+      end
+
       it "errors when given a URL but paths are disabled" do
         ENV["HOMEBREW_FORBID_PACKAGES_FROM_PATHS"] = "1"
         expect do
@@ -541,31 +546,31 @@ RSpec.describe Formulary do
       it "raises an error when given an https URL" do
         expect do
           described_class.factory("https://brew.sh/foo.rb")
-        end.to raise_error(MethodDeprecatedError)
+        end.to raise_error(UnsupportedInstallationMethod)
       end
 
       it "raises an error when given a bottle URL" do
         expect do
           described_class.factory("https://brew.sh/foo-1.0.arm64_catalina.bottle.tar.gz")
-        end.to raise_error(MethodDeprecatedError)
+        end.to raise_error(UnsupportedInstallationMethod)
       end
 
       it "raises an error when given an ftp URL" do
         expect do
           described_class.factory("ftp://brew.sh/foo.rb")
-        end.to raise_error(MethodDeprecatedError)
+        end.to raise_error(UnsupportedInstallationMethod)
       end
 
       it "raises an error when given an sftp URL" do
         expect do
           described_class.factory("sftp://brew.sh/foo.rb")
-        end.to raise_error(MethodDeprecatedError)
+        end.to raise_error(UnsupportedInstallationMethod)
       end
 
-      it "raises an error when given a file URL" do
+      it "does not raise an error when given a file URL" do
         expect do
           described_class.factory("file://#{TEST_FIXTURE_DIR}/testball.rb")
-        end.to raise_error(MethodDeprecatedError)
+        end.not_to raise_error(UnsupportedInstallationMethod)
       end
     end
 
