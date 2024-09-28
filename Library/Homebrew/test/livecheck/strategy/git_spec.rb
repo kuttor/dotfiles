@@ -37,6 +37,91 @@ RSpec.describe Homebrew::Livecheck::Strategy::Git do
     end
   end
 
+  describe "::preprocess_url" do
+    let(:github_git_url_with_extension) { "https://github.com/Homebrew/brew.git" }
+
+    it "returns the unmodified URL for an unparsable URL" do
+      # Modeled after the `head` URL in the `ncp` formula
+      expect(git.preprocess_url(":something:cvs:@cvs.brew.sh:/cvs"))
+        .to eq(":something:cvs:@cvs.brew.sh:/cvs")
+    end
+
+    it "returns the unmodified URL for a GitHub URL ending in .git" do
+      expect(git.preprocess_url(github_git_url_with_extension))
+        .to eq(github_git_url_with_extension)
+    end
+
+    it "returns the Git repository URL for a GitHub URL not ending in .git" do
+      expect(git.preprocess_url("https://github.com/Homebrew/brew"))
+        .to eq(github_git_url_with_extension)
+    end
+
+    it "returns the unmodified URL for a GitHub /releases/latest URL" do
+      expect(git.preprocess_url("https://github.com/Homebrew/brew/releases/latest"))
+        .to eq("https://github.com/Homebrew/brew/releases/latest")
+    end
+
+    it "returns the Git repository URL for a GitHub AWS URL" do
+      expect(git.preprocess_url("https://github.s3.amazonaws.com/downloads/Homebrew/brew/1.0.0.tar.gz"))
+        .to eq(github_git_url_with_extension)
+    end
+
+    it "returns the Git repository URL for a github.com/downloads/... URL" do
+      expect(git.preprocess_url("https://github.com/downloads/Homebrew/brew/1.0.0.tar.gz"))
+        .to eq(github_git_url_with_extension)
+    end
+
+    it "returns the Git repository URL for a GitHub tag archive URL" do
+      expect(git.preprocess_url("https://github.com/Homebrew/brew/archive/1.0.0.tar.gz"))
+        .to eq(github_git_url_with_extension)
+    end
+
+    it "returns the Git repository URL for a GitHub release archive URL" do
+      expect(git.preprocess_url("https://github.com/Homebrew/brew/releases/download/1.0.0/brew-1.0.0.tar.gz"))
+        .to eq(github_git_url_with_extension)
+    end
+
+    it "returns the Git repository URL for a gitlab.com archive URL" do
+      expect(git.preprocess_url("https://gitlab.com/Homebrew/brew/-/archive/1.0.0/brew-1.0.0.tar.gz"))
+        .to eq("https://gitlab.com/Homebrew/brew.git")
+    end
+
+    it "returns the Git repository URL for a self-hosted GitLab archive URL" do
+      expect(git.preprocess_url("https://brew.sh/Homebrew/brew/-/archive/1.0.0/brew-1.0.0.tar.gz"))
+        .to eq("https://brew.sh/Homebrew/brew.git")
+    end
+
+    it "returns the Git repository URL for a Codeberg archive URL" do
+      expect(git.preprocess_url("https://codeberg.org/Homebrew/brew/archive/brew-1.0.0.tar.gz"))
+        .to eq("https://codeberg.org/Homebrew/brew.git")
+    end
+
+    it "returns the Git repository URL for a Gitea archive URL" do
+      expect(git.preprocess_url("https://gitea.com/Homebrew/brew/archive/brew-1.0.0.tar.gz"))
+        .to eq("https://gitea.com/Homebrew/brew.git")
+    end
+
+    it "returns the Git repository URL for an Opendev archive URL" do
+      expect(git.preprocess_url("https://opendev.org/Homebrew/brew/archive/brew-1.0.0.tar.gz"))
+        .to eq("https://opendev.org/Homebrew/brew.git")
+    end
+
+    it "returns the Git repository URL for a tildegit archive URL" do
+      expect(git.preprocess_url("https://tildegit.org/Homebrew/brew/archive/brew-1.0.0.tar.gz"))
+        .to eq("https://tildegit.org/Homebrew/brew.git")
+    end
+
+    it "returns the Git repository URL for a LOL Git archive URL" do
+      expect(git.preprocess_url("https://lolg.it/Homebrew/brew/archive/brew-1.0.0.tar.gz"))
+        .to eq("https://lolg.it/Homebrew/brew.git")
+    end
+
+    it "returns the Git repository URL for a sourcehut archive URL" do
+      expect(git.preprocess_url("https://git.sr.ht/~Homebrew/brew/archive/1.0.0.tar.gz"))
+        .to eq("https://git.sr.ht/~Homebrew/brew")
+    end
+  end
+
   describe "::match?" do
     it "returns true for a Git repository URL" do
       expect(git.match?(git_url)).to be true
