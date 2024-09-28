@@ -68,6 +68,12 @@ module ELFShim
     end
   end
 
+  def arch_compatible?(wanted_arch)
+    return true unless elf?
+
+    wanted_arch == arch
+  end
+
   def elf_type
     return :dunno unless elf?
 

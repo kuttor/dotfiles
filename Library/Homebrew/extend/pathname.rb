@@ -469,6 +469,11 @@ class Pathname
     false
   end
 
+  sig { params(_wanted_arch: Symbol).returns(T::Boolean) }
+  def arch_compatible?(_wanted_arch)
+    false
+  end
+
   sig { returns(T::Array[String]) }
   def rpaths
     []

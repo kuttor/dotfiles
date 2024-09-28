@@ -155,6 +155,13 @@ module MachOShim
     arch == :ppc64
   end
 
+  def arch_compatible?(wanted_arch)
+    return true unless mach_data.present?
+    return arch == wanted_arch unless universal?
+
+    archs.include?(wanted_arch)
+  end
+
   def dylib?
     mach_data.any? { |m| m.fetch(:type) == :dylib }
   end

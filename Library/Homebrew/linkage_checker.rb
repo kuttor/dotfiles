@@ -115,6 +115,7 @@ class LinkageChecker
       @keg.find do |file|
         next if file.symlink? || file.directory?
         next if !file.dylib? && !file.binary_executable? && !file.mach_o_bundle?
+        next unless file.arch_compatible?(Hardware::CPU.arch)
 
         # weakly loaded dylibs may not actually exist on disk, so skip them
         # when checking for broken linkage
