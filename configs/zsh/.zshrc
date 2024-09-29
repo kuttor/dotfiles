@@ -106,16 +106,16 @@ zinit default-ice                                                              \
   wait'0'                                                                      \
   light-mode 
 
-zinit for id-as'zsh-async'              @mafredri/zsh-async                    \
-          id-as'zsh-dot-up'             @toku-sa-n/zsh-dot-up                  \
-          id-as'fzf-tab'                @Aloxaf/fzf-tab                        \
-          id-as'zui'                    @z-shell/zui                           \
-          id-as'zsh-lint'               @z-shell/zsh-lint                      \
-          id-as'zsh-sweep'              @zdharma-continuum/zsh-sweep           \
-          id-as'safe-rm'                mattmc3/zsh-safe-rm                    \
-          id-as'multiple-dots'          momo-lab/zsh-replace-multiple-dots     \
-          id-as'zman'                   mattmc3/zman                           \
-          id-as'delta' sbin'**/delta -> delta' dandavison/delta
+zinit for id-as'zsh-async'     @mafredri/zsh-async                             \
+          id-as'zsh-dot-up'    @toku-sa-n/zsh-dot-up                           \
+          id-as'fzf-tab'       @Aloxaf/fzf-tab                                 \
+          id-as'zui'           @z-shell/zui                                    \
+          id-as'zsh-lint'      @z-shell/zsh-lint                               \
+          id-as'zsh-sweep'     @zdharma-continuum/zsh-sweep                    \
+          id-as'safe-rm'       @mattmc3/zsh-safe-rm                            \
+          id-as'multiple-dots' @momo-lab/zsh-replace-multiple-dots             \
+          id-as'zman'          @mattmc3/zman                                   \
+          id-as'delta' sbin'**/delta -> delta' @dandavison/delta
 
 # ==============================================================================
 # -- fzf -----------------------------------------------------------------------
