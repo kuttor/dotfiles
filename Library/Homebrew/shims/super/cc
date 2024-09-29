@@ -92,8 +92,6 @@ class Cmd
         "#{ENV["HOMEBREW_PREFIX"]}/opt/swift/libexec/bin/clang++"
       when /clang/
         "clang++"
-      when /llvm-gcc/
-        "llvm-g++-4.2"
       when /(g)?cc(-\d+(\.\d)?)?$/
         "g++#{Regexp.last_match(2)}"
       end
