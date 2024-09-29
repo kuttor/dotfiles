@@ -16,7 +16,7 @@
   "editor.defaultFormatter": "Shunqian.prettier-plus",
   "workbench.productIconTheme": "fluent-icons",
   "workbench.colorTheme": "SynthWave '84",
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "file-icons",
   "workbench.preferredDarkColorTheme": "Andromeda Colorizer",
   "synthwave84.brightness": 0.6,
   "[shellscript]": {
@@ -29,5 +29,8 @@
   "editor.experimentalInlineEdit.showToolbar": "always",
   "[markdown]": {
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
   }
 }

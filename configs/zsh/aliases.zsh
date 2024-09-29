@@ -24,44 +24,6 @@ elif command -v ccat >/dev/null 2>&1; then
   alias ccat="cat"
 fi
 
-# -- logs --\
-alias follow="tail -f"
-
-read documents
-alias -s pdf=acroread
-alias -s ps=gv
-alias -s dvi=xdvi
-alias -s chm=xchm
-alias -s djvu=djview
-
-# -- suffix aliases  --
-alias -s zip="unzip -l"
-alias -s rar="unrar l"
-alias -s tar="tar tf"
-alias -s tar.gz="echo "
-alias -s html="bat"
-alias -s conf="bat"
-alias -s zsh="nvim"
-alias -s py="nvim"
-alias -s rb="nvim"
-alias -s js="nvim"
-alias -s css="nvim"
-alias -s md="nvim"
-alias -s txt="bat"
-
-# -- suffix aliases for head and ls --
-alias follow="tail -f"
-alias -g H='| head'
-alias -g T='| tail'
-alias -g G='| grep'
-alias -g L="| less"
-alias -g M="| most"
-alias -g LL="2>&1 | less"
-alias -g CA="2>&1 | cat -A"
-alias -g NE="2> /dev/null"
-alias -g NUL="> /dev/null 2>&1"
-alias -g P="2>&1| pygmentize -l pytb"
-
 # mac specific
 alias pbc="pbcopy"
 alias pbp="pbpaste"
@@ -82,9 +44,9 @@ alias zcp="zmv -C"
 alias zln="zmv -L"
 
 # zint
-alias zinit="zi"
+#alias zinit="zi"
 
 # compaudit for insecure directories
-alias compaudit_secure_directories="compaudit | xargs chmod g-w,o-w"
+#alias compaudit_secure_directories="compaudit | xargs chmod g-w,o-w"
 
-alias manpages_zsh="$LESS +/zmv" man zshcontrib
+#alias manpages_zsh="$LESS +/zmv" man zshcontrib

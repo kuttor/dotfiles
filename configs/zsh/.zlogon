@@ -3,22 +3,21 @@
 #vim: set tabwidth=2 shiftwidth=2 expandtab autoindent smartindent smarttab
 # Execute code in the background to not affect the current session
 
-(
+
     # <https://github.com/zimfw/zimfw/blob/master/login_init.zsh>
     setopt LOCAL_OPTIONS EXTENDED_GLOB
+    
     autoload -U zrecompile
-    ZDOTDIR="${ZDOTDIR:-${HOME}/.dotfiles/configs/zsh}"
+    export ZDOTDIR="${HOME}/.dotfiles/configs/zsh"
 
-    # Compile zcompdump, if modified, to increase startup speed.
-    zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump"
-    [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]] && zrecompile -pq "$zcompdump"
+    # Compile ZCOMPDUMP, if modified, to increase startup speed.
+    ZCOMPDUMP="${HOME}/.cache}/zcompdump"
+    [[ -s "$ZCOMPDUMP" && (! -s "${ZCOMPDUMP}.zwc" || "$ZCOMPDUMP" -nt "${ZCOMPDUMP}.zwc") ]] && zrecompile -pq "$ZCOMPDUMP"
 
     # zcompile .zshrc
-    zrecompile -pq ${ZDOTDIR:-${HOME}}/.zshrc
-    zrecompile -pq ${ZDOTDIR:-${HOME}}/.zprofile
-)
+    zrecompile -pq "${ZDOTDIR}/.zshrc"
+    zrecompile -pq "${ZDOTDIR}/.zprofile"
 
-(
     # Anonymous function for creating symlink
-    ln -sf "${ZDOTDIR:-${HOME}}/.zlogon" "${HOME}/.zlogin"
-) &
+    ln -sf "${ZDOTDIR}/.zlogon" "${HOME}/.zlogin"
+
