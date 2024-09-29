@@ -1,6 +1,0 @@
-export AUTOENV_FILE_ENTER=".env"
-export AUTOENV_FILE_LEAVE=".env.leave"
-export AUTOENV_LOOK_UPWARDS="1"
-export AUTOENV_HANDLE_LEAVE="1"
-export AUTOENV_DISABLED="0"
-export AUTOENV_DEBUG="0"

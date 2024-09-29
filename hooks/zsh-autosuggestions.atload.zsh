@@ -1,7 +1,4 @@
 #! /usr/bin/env zsh
-#FILE: '${HOME}/.dotfiles/hooks/l.autosuggests.zsh'
-#VIM: set filetype=zsh syntax=zsh
-#DESCRIPTION: Contains env-vars/settings for the zsh-autosuggestion plugin.
 
 export _ZSH_HIGHLIGHT_HIGHLIGHTERS=()
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
@@ -9,3 +6,25 @@ export ZSH_AUTOSUGGEST_USE_ASYNC="1"
 export ZSH_AUTOSUGGEST_MANUAL_REBIND="1"
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="1"
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+# Remove forward-char widgets from ACCEPT
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=("${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#forward-char}")
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=("${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#vi-forward-char}")
+
+# Add forward-char widgets to PARTIAL_ACCEPT
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(forward-char)
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(vi-forward-char)
+
+# Add custom widget to complete partial if cursor is at end of buffer
+autosuggest_partial_wordwise () {   
+  if [[ $CURSOR -lt ${#BUFFER} && $KEYMAP != vicmd || $CURSOR -lt $((${#BUFFER} - 1)) ]]; then
+      zle forward-char
+    else
+      zle forward-word
+    fi
+}
+zle -N autosuggest_partial_wordwise 
+bindkey "^[[C" autosuggest_partial_wordwise
+
+# Add autosuggest_partial_wordwise to IGNORE
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(autosuggest_partial_wordwise)

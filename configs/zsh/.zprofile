@@ -1,16 +1,11 @@
 #!/usr/bin/env zsh
-# vim:set filetype=zsh syntax=zs
-# vim:set ft=zsh ts=4 sw=4 sts=0
-# vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
-# vim:set nu clipboard+=unnamedplus foldmethsofttabstop=0
 
 # random tldr
-command -v tldr &>/dev/null && tldr --quiet $(tldr --quiet --list | shuf -n1)
-
+#command -v tldr &>/dev/null && tldr --quiet $(tldr --quiet --list | shuf -n1)
 
 ulimit -c unlimited
 
-export DOTFILES=$0:h
+export DOTFILES="$HOME/.dotfiles"
 
 # skip the creation of global compinit
 export skip_global_compinit=1
@@ -51,6 +46,7 @@ export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
 export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
 export HOMEBREW_NO_ENV_HINT=1
 export HOMEBREW_NO_ANALYTICS=1
+
 
 export PATH="${HOMEBREW_PREFIX}/bin:/opt/homebrew/sbin${PATH+:$PATH}"
 export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
