@@ -266,10 +266,10 @@ module Homebrew
 
     sig { params(command: String, option: String).returns(String) }
     def self.generate_zsh_option_exclusions(command, option)
-      conflicts = Commands.option_conflicts(command, option.gsub(/^--/, ""))
+      conflicts = Commands.option_conflicts(command, option.gsub(/^--?/, ""))
       return "" unless conflicts.presence
 
-      "(#{conflicts.map { |conflict| "--#{conflict}" }.join(" ")})"
+      "(#{conflicts.map { |conflict| "-#{"-" if conflict.size > 1}#{conflict}" }.join(" ")})"
     end
 
     sig { params(commands: T::Array[String]).returns(String) }
