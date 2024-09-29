@@ -16,44 +16,39 @@ source "${ZINIT_HOME}/zinit.zsh"
   [ -d "$ZINIT_HOME" ]|| git clone $URL "$ZINIT_HOME"
 }
 
-
-
-
-
 # ==============================================================================
 # -- local variables -----------------------------------------------------------
 # ==============================================================================
-local alias Z="zinit"
-local COMN="id-as lucid wait for"
+ZCOMN() { echo "id-as lucid wait for" }
 
 # ==============================================================================
 # -- zsh configs ---------------------------------------------------------------
 # ==============================================================================
-zinit $COMN "$ZDOTDIR/paths.zsh"                                               \
-        "$ZDOTDIR/autoload.zsh"                                                \
-        "$ZDOTDIR/options.zsh"                                                 \
-        "$ZDOTDIR/keybind.zsh"                                                 \
-        "$ZDOTDIR/modules.zsh"                                                 \
-        "$ZDOTDIR/aliases.zsh"                                                 \
-        "$ZDOTDIR/history.zsh"
+zinit snippet "$ZDOTDIR/paths.zsh"                                               
+zinit snippet "$ZDOTDIR/autoload.zsh"                                                
+zinit snippet "$ZDOTDIR/options.zsh"                                                 
+zinit snippet "$ZDOTDIR/keybind.zsh"                                                 
+zinit snippet "$ZDOTDIR/aliases.zsh"                                                 
+zinit snippet "$ZDOTDIR/history.zsh"
   
 # ==============================================================================
 # -- annexes -------------------------------------------------------------------
 # ==============================================================================
-zinit $COMN "@zdharma-continuum/zinit-annex-binary-symlink"                    \
-        "@zdharma-continuum/zinit-annex-bin-gem-node"                          \
-        "@zdharma-continuum/zinit-annex-default-ice"                           \
-        "@zdharma-continuum/zinit-annex-link-man"                              \
-        "@zdharma-continuum/zinit-annex-patch-dl"                              \
-        "@zdharma-continuum/zinit-annex-submods"                               \
-        "@zdharma-continuum/zinit-annex-man"
+zinit id-as lucid wait for                                                     \
+  "@zdharma-continuum/zinit-annex-binary-symlink"                              \
+  "@zdharma-continuum/zinit-annex-bin-gem-node"                                \
+  "@zdharma-continuum/zinit-annex-default-ice"                                 \
+  "@zdharma-continuum/zinit-annex-link-man"                                    \
+  "@zdharma-continuum/zinit-annex-patch-dl"                                    \
+  "@zdharma-continuum/zinit-annex-submods"                                     \
+  "@zdharma-continuum/zinit-annex-man"
+
 # ==============================================================================
 # -- core ----------------------------------------------------------------------
 # ==============================================================================
-zinit defaultB-ice -cq lucid id-as light-mode from(gh-r) wait(1)
+zinit default-ice -cq lucid id-as light-mode from"gh-r" wait"0"
 
-
-zinit $commons '@mafredri/zsh-async'
+zinit for "@mafredri/zsh-async"
 
 # ==============================================================================
 # -- autocompletions -----------------------------------------------------------
@@ -70,29 +65,24 @@ zinit pack param='inshellisense → is' for "@any-node"
 #ZSH_HIGHLIGHT_HIGHLIGHTERS+=(regexp)
 #ZSH_HIGHLIGHT_REGEXP+=('^\s*(\.){2,}$' fg=green)
 # -- dot-up --
-zinit $commons "@toku-sa-n/zsh-dot-up"
+zinit $COMN "@toku-sa-n/zsh-dot-up"
 
 # -- zoxide: "smarter jump enhancer for cd" ------------------------------------
-zinit wait'1' from"gh-r" as"program" pick"zoxide-*/zoxide" \
-	    atload"source $ZHOMEDIR/rc/pluginconfig/zoxide_atload.zsh" \
-	    $commons "@ajeetdsouza/zoxide"
-
-# -- zoxide --
-zinit sbin"zoxide -> zoxide" atload"hook zoxide.atload.zsh" $commons "@ajeetdsouza/zoxide"
+zinit sbin"zoxide -> zoxide" atload"hook zoxide.atload.zsh" for "@ajeetdsouza/zoxide"
 
 # ==============================================================================
 # -- fzf -----------------------------------------------------------------------
 # ==============================================================================
 zinit pack"bgn-binary+keys" for "@fzf"
-zinit $commons "@Aloxaf/fzf-tab"
-zinit $commons atload'' as'program' atclone'./install --user' "@BartSte/fzf-help"
+zinit $COMN "@Aloxaf/fzf-tab"
+zinit $COMN atload'' as'program' atclone'./install --user' "@BartSte/fzf-help"
 
 # ==============================================================================
 # -- theming -------------------------------------------------------------------
 # ==============================================================================
 
 # -- powerline10k --
-zinit depth"1" $commons "@romkatv/powerlevel10k"
+zinit depth"1" $COMN "@romkatv/powerlevel10k"
 
 # -- ls_colors --
 zinit pack for "@ls_colors"
@@ -102,12 +92,12 @@ zinit pack for "@ls_colors"
 # ==============================================================================
 
 # -- Zsh linters --
-zinit $commons "@zdharma-continuum/zsh-lint"
-zinit $commons "@@zdharma-continuum/zsh-sweep"
+zinit $COMN "@zdharma-continuum/zsh-lint"
+zinit $COMN "@@zdharma-continuum/zsh-sweep"
 
 # -- syntax shell checkers --
-zinit sbin"*/shellcheck -> shellcheck"  $commons "@koalaman/shellcheck"
-zinit sbin"**/sh* -> shfmt"             $commons "@mvdan/sh"
+zinit sbin"*/shellcheck -> shellcheck"  $COMN "@koalaman/shellcheck"
+zinit sbin"**/sh* -> shfmt"             $COMN "@mvdan/sh"
 
 
 # zurbo mattmc3/zman
@@ -115,7 +105,7 @@ zinit sbin"**/sh* -> shfmt"             $commons "@mvdan/sh"
 # zurbo momo-lab/zsh-replace-multiple-dots
 # zurbo nocompletions compile"*.zsh" atload_hook atinit_hook hlissner/zsh-autopair
 
-zinit $commons "@lsd-rs/lsd"
+zinit $COMN "@lsd-rs/lsd"
 
 # zinit id-as sbin"utilities/*"      for "gnachman/iTerm2-shell-integration"
 # zinit id-as sbin"**/zeno -> zeno" blockf depth"1" for "yuki-yano/zeno.zsh"
@@ -155,11 +145,11 @@ zinit sbin"**/glow -> glow"                                 for "charmbracelet/g
 # ==============================================================================
 
 # -- homebrew --
-i for \
+zinit for \
     as'null' \
     atclone'%atpull' \
     atpull'
-         ./bin/brew update --preinstall \
+      ./bin/brew update --preinstall \
       && ln -sf $PWD/completions/zsh/_brew $ZINIT[COMPLETIONS_DIR] \
       && rm -f brew.zsh \
       && ./bin/brew shellenv --dummy-arg > brew.zsh \
