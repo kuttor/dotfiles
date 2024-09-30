@@ -471,7 +471,7 @@ class Pathname
 
   sig { params(_wanted_arch: Symbol).returns(T::Boolean) }
   def arch_compatible?(_wanted_arch)
-    false
+    true
   end
 
   sig { returns(T::Array[String]) }
