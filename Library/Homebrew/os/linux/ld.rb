@@ -48,6 +48,8 @@ module OS
       sig { params(conf_path: T.any(Pathname, String)).returns(T::Array[String]) }
       def self.library_paths(conf_path = Pathname(sysconfdir)/"ld.so.conf")
         conf_file = Pathname(conf_path)
+        return [] unless conf_file.exist?
+
         paths = Set.new
         directory = conf_file.realpath.dirname
 
