@@ -963,6 +963,11 @@ module Homebrew
       EOS
     end
 
+    def audit_deprecate_disable
+      error = SharedAudits.check_deprecate_disable_reason(formula)
+      problem error if error
+    end
+
     def quote_dep(dep)
       dep.is_a?(Symbol) ? dep.inspect : "'#{dep}'"
     end
