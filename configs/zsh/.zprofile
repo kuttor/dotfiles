@@ -14,27 +14,22 @@ export __CF_USER_TEXT_ENCODING="0x1F5:0x0:0x0"
 # deprecating zshenv in favor for zprofile
 [[ -f /etc/zshenv && -f /etc/zprofile ]] && sudo mv /etc/zshenv /etc/zprofile
 
-# -- dotfiles array --
-typeset -A D
-D=(
-    ZSH "$DOTFILES/configs/zsh"
-    HOOKS "$DOTFILES/hooks"
-    HOME "$DOTFILES/.dotfiles"
-    FUNCTIONS "$DOTFILES/functions"
-    CONFIGS "$DOTFILES/configs"
-)
+# -- dotfiles --
+export DOTFILES="$HOME/.dotfiles"
+export DOTS_CONFIGS_DIR="$DOTFILES/configs"
+export DOTS_FUNCTIONS_DIR="$DOTFILES/functions"
+export DOTS_HOOKS_DIR="$DOTFILES/hooks"
 
-# -- xdg base directory --
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+# -- xdg base --
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-export XDG_BIN_HOME="${XDG_BIN_HOME:-$HOME/.local/bin}"
-
-# -- xdg base arrays --
-export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}:${D[CONFIGS]}:${XDG_CONFIG_DIRS}"
-export XDG_BIN_DIRS="${XDG_BIN_HOME}:${XDG_BIN_DIRS}"
 export XDG_DATA_DIRS="${XDG_DATA_HOME}:${XDG_DATA_DIRS}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME}:${DOTS_CONFIGS_DIR}:${XDG_CONFIG_DIRS}"
+export XDG_BIN_HOME="${XDG_BIN_HOME:-$HOME/.local/bin}"
+export XDG_BIN_DIRS="${XDG_BIN_HOME}:${XDG_BIN_DIRS}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 # -- antidot --
 [[ -f "${XDG_DATA_HOME}/antidot/env.sh" ]] && . "${XDG_DATA_HOME}/antidot/env.sh"
@@ -46,11 +41,6 @@ export HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
 export HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
 export HOMEBREW_NO_ENV_HINT=1
 export HOMEBREW_NO_ANALYTICS=1
-
-
-export PATH="${HOMEBREW_PREFIX}/bin:/opt/homebrew/sbin${PATH+:$PATH}"
-export MANPATH="${HOMEBREW_PREFIX}/share/man${MANPATH+:$MANPATH}:"
-export INFOPATH="${HOMEBREW_PREFIX}/share/info:${INFOPATH:-}"
 
 # -- zshell --
 export ZDOTDIR="${HOME}/.dotfiles/configs/zsh"
@@ -74,6 +64,11 @@ ZINIT[BIN_DIR]="${HOME}/.local/bin"
 # ZINIT[SNIPPETS_DIR]="${DATA}/zinit/snippets"
 # ZINIT[COMPLETIONS_DIR]="${DATA}/zinit/completions"
 # ZINIT[MUTE_WARNINGS]="1"
+
+# -- history --
+HISTFILE="${HISTFILE:-${XDG_CACHE_DIR}/.zsh_history}"
+HISTSIZE=10000
+SAVEHIST=$HISTSIZE
 
 # -- wget --
 export WGETRC="${DOTFILES[CONFIGS]}/wgetrc"

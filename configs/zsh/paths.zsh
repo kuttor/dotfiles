@@ -1,30 +1,36 @@
 #!/usr/bin/env zsh
-# Vim: Set filetype=zsh syntax=zsh
-# File: ${HOME}/.dotfiles/configs/zsh/paths.zsh
-# Description: Configuration file for zsh paths and fpath settings.
 
-# Add paths to PATH
+# ==============================================================================
+# -- paths ---------------------------------------------------------------------
+# ==============================================================================
+
+# add locations to path
 path=(
-  ${HOME}/.local/share/zsh/zinit/polaris/bin
-  ${HOME}/.local/bin
+  $HOME/.local/share/zsh/zinit/polaris/bin
+  $HOME/.local/bin
   /usr/local/bin
   /usr/{sbin,bin}
   /{sbin,bin}
-  ${HOMEBREW_PREFIX}/{sbin,bin}
-  ${HOME}/Library/Python/3.9/bin
-  ${path}
+  $HOMEBREW_PREFIX/{sbin,bin}
+  $path
 )
 
-# Add functions paths to fpath
+# add function paths to fpath
 fpath=(
-  ${HOME}/.local/share/zsh/site-functions
+  $HOME/.local/share/zsh/site-functions
   /usr/local/share/zsh/5.8/site-functions
   /usr/share/zsh/{site-functions,functions}
-  ${HOMEBREW_PREFIX}/opt/zsh-completions/share/zsh-completions
-  ${HOMEBREW_PREFIX}/completions/zsh
-  ${HOMEBREW_PREFIX}/share/zsh-completions
-  ${fpath}
+  $HOMEBREW_PREFIX/opt/zsh-completions/share/zsh-completions
+  $HOMEBREW_PREFIX/completions/zsh
+  $HOMEBREW_PREFIX/share/zsh-completions
+  $fpath
 )
 
-# -- Remove duplicates in FPATH --
+# remove path duplicates
 typeset -Ugx FPATH fpath path PATH
+
+# -- homebrew paths --
+export PATH="$HOMEBREW_PREFIX/bin:/opt/homebrew/sbin${PATH+:$PATH}"
+export MANPATH="$HOMEBREW_PREFIX/share/man${MANPATH+:$MANPATH}:"
+export INFOPATH="$HOMEBREW_PREFIX/share/info:${INFOPATH:-}"
+

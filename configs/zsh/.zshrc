@@ -4,17 +4,12 @@
 local IPATH="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 [[ -r $IPATH ]] && source $IPATH
 
-# --- zinit load ----------------------------------------------------------------
+#--- zinit load ----------------------------------------------------------------
 local ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && \
-    git clone "https://github.com/zdharma-continuum/zinit.git" "$ZINIT_HOME"
+git clone "https://github.com/zdharma-continuum/zinit.git" "$ZINIT_HOME"
 source "$ZINIT_HOME/zinit.zsh"
-
-() {
-  local URL="https://github.com/zdharma-continuum/zinit.git"
-  [ -d "$ZINIT_HOME" ]|| git clone $URL "$ZINIT_HOME"
-}
 
 # ==============================================================================
 # -- local variables -----------------------------------------------------------
@@ -26,12 +21,11 @@ zinit_init() { zinit creinstall ${ZSH}/completions }
 # ==============================================================================
 # -- annexes -------------------------------------------------------------------
 # ==============================================================================
-zinit for id-as'bin-gem-node' '@zdharma-continuum/zinit-annex-bin-gem-node'    \
-          id-as'bin-symlink'  '@zdharma-continuum/zinit-annex-binary-symlink'  \
-          id-as'default-ice'  '@zdharma-continuum/zinit-annex-default-ice'     \
-          id-as'patch-dl'     '@zdharma-continuum/zinit-annex-patch-dl'        \
-          id-as'rust'         '@zdharma-continuum/zinit-annex-rust'
-
+zinit for id-as'gem-node'      @zdharma-continuum/zinit-annex-bin-gem-node     \
+          id-as'bin-symlink'   @zdharma-continuum/zinit-annex-binary-symlink   \
+          id-as'default-ice'   @zdharma-continuum/zinit-annex-default-ice      \
+          id-as'patch-dl'      @zdharma-continuum/zinit-annex-patch-dl         \
+          id-as'rust'          @zdharma-continuum/zinit-annex-rust
 
 # "@zdharma-continuum/zinit-annex-submods" 
 # "@zdharma-continuum/zinit-annex-link-man"
@@ -66,12 +60,11 @@ zinit default-ice                                                              \
   wait'0'                                                                      \
   from'gh-r'                                                                   \
   light-mode 
-
+  sd
 zinit for id-as'lazygit' sbin'lazygit -> lazygit'      @jesseduffield/lazygit  \
           id-as'lemme'   sbin'lemmeknow* -> lemme'     @swanandx/lemmeknow     \
           id-as'rg'      sbin'**/rg -> rg'             @BurntSushi/ripgrep     \
           id-as'glow'    sbin'**/glow'                 @charmbracelet/glow     \
-          id-as'tldr'    sbin'tealdeer* -> tldr'       @dbrgn/tealdeer         \
           id-as'nvim'    sbin'**/nvim -> nvim'         @neovim/neovim          \
           id-as'mcfly'   sbin'mcfly* -> mcfly'         @cantino/mcfly          \
           id-as'deno'    sbin'* -> deno'               @denoland/deno          \
@@ -114,8 +107,7 @@ zinit for id-as'zsh-async'     @mafredri/zsh-async                             \
           id-as'zsh-sweep'     @zdharma-continuum/zsh-sweep                    \
           id-as'safe-rm'       @mattmc3/zsh-safe-rm                            \
           id-as'multiple-dots' @momo-lab/zsh-replace-multiple-dots             \
-          id-as'zman'          @mattmc3/zman                                   \
-          id-as'delta' sbin'**/delta -> delta' @dandavison/delta
+          id-as'zman'          @mattmc3/zman
 
 # ==============================================================================
 # -- fzf -----------------------------------------------------------------------
@@ -127,15 +119,19 @@ zinit default-ice                                                              \
   light-mode                                                                   \
   wait'0'
 
-zinit for id-as'fzf'        pack'bgn-binary+keys'         @fzf                 \
-          id-as'dircolors'  pack                       @dircolors-material     \
+zinit for id-as'fzf'        pack'bgn-binary+keys'           @fzf               \
+          id-as'dircolors'  pack                            @dircolors-material\
           id-as'ls_colors'  pack                            @ls_colors         \
           id-as'shellsence' pack param='inshellisense → is' @any-node
 
-zinit for id-as'p10k' depth'1' '@romkatv/powerlevel10k'
-zinit for id-as'brew'   sbin'bin/brew -> brew' depth'3'       @homebrew/brew
-zinit for id-as'gfuzzy' sbin'bin/git-fuzzy -> gfuzzy'  blockf @bigH/git-fuzzy
-zinit for id-as'zeno'   sbin'**/zeno -> zeno'  depth'1' @yuki-yano/zeno.zsh
+zinit for id-as'p10k'                          depth'1' @romkatv/powerlevel10k \
+          id-as'brew'   sbin'bin/brew -> brew' depth'3' @homebrew/brew         \
+          id-as'zeno'   sbin'**/zeno -> zeno'  depth'1' @yuki-yano/zeno.zsh    \
+          id-as'delta'  sbin'**/delta -> delta'         @dandavison/delta      \
+          id-as'tldr'   sbin'tealdeer* -> tldr'         @dbrgn/tealdeer        
+
+zinit for id-as'gfuzzy' sbin'bin/git-fuzzy -> gfuzzy' blockf @bigH/git-fuzzy
+
 
 #zinit "@Aloxaf/fzf-tab"
 #zinit atclone'./install --user' "@BartSte/fzf-help"

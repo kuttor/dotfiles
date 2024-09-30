@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
-# -*- coding: utf-8 -*-
-#vim:set filetype=zsh syntax=zsh tabstop=2 shiftwidth=2 expandtab:
-#vim:set foldmethod=marker foldlevel=0 foldmarker={{{,}}} foldminlines=100:
+
+# =============================================================================
+# -- aliases ------------------------------------------------------------------
+# =============================================================================
 
 # -- lsd available -
 if command -v lsd >/dev/null 2>&1; then

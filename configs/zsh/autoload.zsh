@@ -1,10 +1,8 @@
 #! /usr/bin/env zsh
-# shellcheck shell=zsh
-# vim:set ft=zsh st=zsh nu clipboard+=unnamedplus foldmethsofttabstop=0
 
-# ------------------------------------------------------------------------------
-# -- Zsh Modules ---------------------------------------------------------------
-# ------------------------------------------------------------------------------
+# ==============================================================================
+# -- zsh modules ---------------------------------------------------------------
+# ==============================================================================
 zmodload zsh/parameter
 zmodload zsh/terminfo
 zmodload zsh/compctl
@@ -18,14 +16,14 @@ zmodload zsh/zutil
 zmodload -a zsh/zpty zpty
 zmodload -ap zsh/mapfile mapfile
 
-# ------------------------------------------------------------------------------
-# -- Zsh Autoloads -------------------------------------------------------------
-# ------------------------------------------------------------------------------
-autoload -U zed
-autoload -U delta
-autoload -U zargs
-autoload -U zcalc
-autoload -U parseopts
+# ==============================================================================
+# -- zsh autoloads -------------------------------------------------------------
+# ==============================================================================
+autoload -u zed
+autoload -u delta
+autoload -u zargs
+autoload -u zcalc
+autoload -u parseopts
 autoload -Uz run-help
 autoload -Uz is-at-least
 autoload -Uz add-zsh-hook
