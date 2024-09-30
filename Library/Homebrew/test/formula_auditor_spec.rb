@@ -1312,4 +1312,35 @@ RSpec.describe Homebrew::FormulaAuditor do
         .to match("Formula foo should also have a conflict declared with bar")
     end
   end
+
+  describe "#audit_deprecate_disable" do
+    specify "it warns when deprecate/disable reason is invalid" do
+      fa = formula_auditor "foo", <<~RUBY
+        class Foo < Formula
+          url "https://brew.sh/foo-1.0.tgz"
+
+        deprecate! date: "2021-01-01", because: :foobar
+        end
+      RUBY
+
+      mkdir_p fa.formula.prefix
+      fa.audit_deprecate_disable
+      expect(fa.problems.first[:message])
+        .to match("foobar is not a valid deprecate! or disable! reason")
+    end
+
+    specify "it does not warn when deprecate/disable reason is valid" do
+      fa = formula_auditor "foo", <<~RUBY
+        class Foo < Formula
+          url "https://brew.sh/foo-1.0.tgz"
+
+        deprecate! date: "2021-01-01", because: :repo_archived
+        end
+      RUBY
+
+      mkdir_p fa.formula.prefix
+      fa.audit_deprecate_disable
+      expect(fa.problems).to be_empty
+    end
+  end
 end
