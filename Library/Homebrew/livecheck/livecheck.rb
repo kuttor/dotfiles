@@ -13,31 +13,6 @@ module Homebrew
   # command. These methods print the requested livecheck information
   # for formulae.
   module Livecheck
-    GITEA_INSTANCES = T.let(%w[
-      codeberg.org
-      gitea.com
-      opendev.org
-      tildegit.org
-    ].freeze, T::Array[String])
-    private_constant :GITEA_INSTANCES
-
-    GOGS_INSTANCES = T.let(%w[
-      lolg.it
-    ].freeze, T::Array[String])
-    private_constant :GOGS_INSTANCES
-
-    STRATEGY_SYMBOLS_TO_SKIP_PREPROCESS_URL = T.let([
-      :extract_plist,
-      :github_latest,
-      :header_match,
-      :json,
-      :page_match,
-      :sparkle,
-      :xml,
-      :yaml,
-    ].freeze, T::Array[Symbol])
-    private_constant :STRATEGY_SYMBOLS_TO_SKIP_PREPROCESS_URL
-
     UNSTABLE_VERSION_KEYWORDS = T.let(%w[
       alpha
       beta
@@ -573,48 +548,6 @@ module Homebrew
       urls.compact.uniq
     end
 
-    # Preprocesses and returns the URL used by livecheck.
-    sig { params(url: String).returns(String) }
-    def self.preprocess_url(url)
-      begin
-        uri = Addressable::URI.parse url
-      rescue Addressable::URI::InvalidURIError
-        return url
-      end
-
-      host = uri.host
-      path = uri.path
-      return url if host.nil? || path.nil?
-
-      host = "github.com" if host == "github.s3.amazonaws.com"
-      path = path.delete_prefix("/").delete_suffix(".git")
-      scheme = uri.scheme
-
-      if host == "github.com"
-        return url if path.match? %r{/releases/latest/?$}
-
-        owner, repo = path.delete_prefix("downloads/").split("/")
-        url = "#{scheme}://#{host}/#{owner}/#{repo}.git"
-      elsif GITEA_INSTANCES.include?(host)
-        return url if path.match? %r{/releases/latest/?$}
-
-        owner, repo = path.split("/")
-        url = "#{scheme}://#{host}/#{owner}/#{repo}.git"
-      elsif GOGS_INSTANCES.include?(host)
-        owner, repo = path.split("/")
-        url = "#{scheme}://#{host}/#{owner}/#{repo}.git"
-      # sourcehut
-      elsif host == "git.sr.ht"
-        owner, repo = path.split("/")
-        url = "#{scheme}://#{host}/#{owner}/#{repo}"
-      # GitLab (gitlab.com or self-hosted)
-      elsif path.include?("/-/archive/")
-        url = url.sub(%r{/-/archive/.*$}i, ".git")
-      end
-
-      url
-    end
-
     # livecheck should fetch a URL using brewed curl if the formula/cask
     # contains a `stable`/`url` or `head` URL `using: :homebrew_curl` that
     # shares the same root domain.
@@ -705,12 +638,7 @@ module Homebrew
 
       checked_urls = []
       urls.each_with_index do |original_url, i|
-        # Only preprocess the URL when it's appropriate
-        url = if STRATEGY_SYMBOLS_TO_SKIP_PREPROCESS_URL.include?(livecheck_strategy)
-          original_url
-        else
-          preprocess_url(original_url)
-        end
+        url = original_url
         next if checked_urls.include?(url)
 
         strategies = Strategy.from_url(
@@ -721,6 +649,11 @@ module Homebrew
         )
         strategy = Strategy.from_symbol(livecheck_strategy) || strategies.first
         strategy_name = livecheck_strategy_names[strategy]
+
+        if strategy.respond_to?(:preprocess_url)
+          url = strategy.preprocess_url(url)
+          next if checked_urls.include?(url)
+        end
 
         if debug
           puts
@@ -921,10 +854,6 @@ module Homebrew
       checked_urls = []
       urls.each_with_index do |original_url, i|
         url = original_url.gsub(Constants::LATEST_VERSION, formula_latest)
-
-        # Only preprocess the URL when it's appropriate
-        url = preprocess_url(url) unless STRATEGY_SYMBOLS_TO_SKIP_PREPROCESS_URL.include?(livecheck_strategy)
-
         next if checked_urls.include?(url)
 
         strategies = Strategy.from_url(
@@ -935,6 +864,11 @@ module Homebrew
         )
         strategy = Strategy.from_symbol(livecheck_strategy) || strategies.first
         strategy_name = livecheck_strategy_names[strategy]
+
+        if strategy.respond_to?(:preprocess_url)
+          url = strategy.preprocess_url(url)
+          next if checked_urls.include?(url)
+        end
 
         if debug
           puts
