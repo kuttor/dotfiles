@@ -1142,5 +1142,52 @@ RSpec.describe Cask::Audit, :cask do
         it { is_expected.to error_with(/a homepage stanza is required/) }
       end
     end
+
+    describe "checking deprecate/disable" do
+      let(:only) { ["deprecate_disable"] }
+      let(:cask_token) { "deprecated-cask" }
+
+      context "when deprecate/disable is used with a valid reason" do
+        let(:cask) do
+          tmp_cask cask_token.to_s, <<~RUBY
+            cask '#{cask_token}' do
+              version "1.0"
+                sha256 "8dd95daa037ac02455435446ec7bc737b34567afe9156af7d20b2a83805c1d8a"
+                url "https://brew.sh/foo.zip"
+                name "Audit"
+                desc "Cask Auditor"
+                homepage "https://brew.sh/"
+                app "Audit.app"
+                deprecate! date: "2021-01-01", because: :foobar
+            end
+          RUBY
+        end
+
+        it "fails" do
+          expect(run).to error_with(/foobar is not a valid deprecate! or disable! reason/)
+        end
+      end
+
+      context "when deprecate/disable is used with an invalid reason" do
+        let(:cask) do
+          tmp_cask cask_token.to_s, <<~RUBY
+            cask '#{cask_token}' do
+              version "1.0"
+                sha256 "8dd95daa037ac02455435446ec7bc737b34567afe9156af7d20b2a83805c1d8a"
+                url "https://brew.sh/foo.zip"
+                name "Audit"
+                desc "Cask Auditor"
+                homepage "https://brew.sh/"
+                app "Audit.app"
+                disable! date: "2021-01-01", because: :discontinued
+            end
+          RUBY
+        end
+
+        it "passes" do
+          expect(run).to pass
+        end
+      end
+    end
   end
 end
