@@ -887,6 +887,7 @@ class Tap
       "name"          => name,
       "user"          => user,
       "repo"          => repository,
+      "repository"    => repository,
       "path"          => path.to_s,
       "installed"     => installed?,
       "official"      => official?,
