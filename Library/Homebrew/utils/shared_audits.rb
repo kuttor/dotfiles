@@ -193,4 +193,20 @@ module SharedAudits
   def self.gitlab_tag_from_url(url)
     url[%r{^https://gitlab\.com/(?:\w[\w.-]*/){2,}-/archive/([^/]+)/}, 1]
   end
+
+  sig { params(formula_or_cask: T.any(Formula, Cask::Cask)).returns(T.nilable(String)) }
+  def self.check_deprecate_disable_reason(formula_or_cask)
+    return if !formula_or_cask.deprecated? && !formula_or_cask.disabled?
+
+    reason = formula_or_cask.deprecated? ? formula_or_cask.deprecation_reason : formula_or_cask.disable_reason
+    return unless reason.is_a?(Symbol)
+
+    reasons = if formula_or_cask.is_a?(Formula)
+      DeprecateDisable::FORMULA_DEPRECATE_DISABLE_REASONS
+    else
+      DeprecateDisable::CASK_DEPRECATE_DISABLE_REASONS
+    end
+
+    "#{reason} is not a valid deprecate! or disable! reason" unless reasons.include?(reason)
+  end
 end
