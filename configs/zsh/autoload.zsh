@@ -19,11 +19,11 @@ zmodload -ap zsh/mapfile mapfile
 # ==============================================================================
 # -- zsh autoloads -------------------------------------------------------------
 # ==============================================================================
-autoload -u zed
-autoload -u delta
-autoload -u zargs
-autoload -u zcalc
-autoload -u parseopts
+autoload -U zed
+autoload -U delta
+autoload -U zargs
+autoload -U zcalc
+autoload -U parseopts
 autoload -Uz run-help
 autoload -Uz is-at-least
 autoload -Uz add-zsh-hook

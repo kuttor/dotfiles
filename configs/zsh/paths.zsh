@@ -6,6 +6,7 @@
 
 # add locations to path
 path=(
+  $ZPFX/bin
   $HOME/.local/share/zsh/zinit/polaris/bin
   $HOME/.local/bin
   /usr/local/bin

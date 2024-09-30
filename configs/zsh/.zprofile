@@ -50,8 +50,8 @@ export ZSH_DATA_DIR="/usr/share/zsh"
 export HELPDIR="${ZSH_DATA_DIR}" && mkdir -p "${HELPDIR}"
 
 # -- zinit  --
-export ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git" && mkdir -p "${ZINIT_HOME}"
-export ZPFX="${XDG_DATA_HOME}/zinit/polaris" && mkdir -p "${ZPFX}"
+export ZINIT_HOME="${XDG_DATA_HOME}/zinit/zinit.git"
+export ZPFX="${XDG_DATA_HOME}/zinit/polaris"x
 
 typeset -A ZINIT
 ZINIT[ZCOMPDUMP_PATH]="${HOME}/.local/cache/zsh/zcompdump"
@@ -71,41 +71,41 @@ HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
 # -- wget --
-export WGETRC="${DOTFILES[CONFIGS]}/wgetrc"
+export WGETRC="${XDG_CONFIG}/wgetrc"
 
 # -- curl --
-export CURL_HOME="${DOTFILES[CONFIGS]}/curl"
+export CURL_HOME="${XDG_CONFIG_HOME}/curl"
 
 # -- gnupg --
-export GNUPGHOME="${DOTFILES[CONFIGS]}/.gnuphg"
+export GNUPGHOME="${XDG_CONFIG_HOME}/.gnuphg"
 
 # -- inputrc --
-export INPUTRC="${DOTFILES[CONFIGS]}/inputrc"
+export INPUTRC="${XDG_CONFIG_HOME}/inputrc"
 
 # -- doocker --
-export DOCKER_CONFIG="${DOTFILES[CONFIGS]}/docker"
+export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 
 # -- exa --
-export EXA_CONFIG_PATH="${DOTFILES[CONFIGS]}/exa.conf"
+export EXA_CONFIG_PATH="${XDG_CONFIG_HOME}/exa.conf"
 
 # -- shellscript --
-export SHELLSCRIPT_RC="${DOTFILES[CONFIGS]}/shellscriptrc"
+export SHELLSCRIPT_RC="${XDG_CONFIG_HOME}/shellscriptrc"
 
 # -- ripgrep --
-export RPGREP_CONFIG_PATH="${DOTFILES[CONFIGS]}/ripgreprc"
+export RPGREP_CONFIG_PATH="${XDG_CONFIG_HOME}/ripgreprc"
 
 # -- editorconfig --
-export EDITORCONFIGRC="${DOTFILES[CONFIGS]}/editorconfigrc"
+export EDITORCONFIGRC="${XDG_CONFIG_HOME}/editorconfigrc"
 
 # -- fuzzy --
-export ZENO_HOME="${DOTFILES[CONFIGS]}/zeno"
+export ZENO_HOME="${XDG_CONFIG_HOME}/zeno"
 
 # -- rust --
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 
 # -- bat --
 export BAT_PAGER="less"
-export BAT_CONFIG_PATH="${DOTFILES[CONFIGS]}/bat.conf"
+export BAT_CONFIG_PATH="${XDG_CONFIG_HOME}/bat.conf"
 
 # -- neovim --
 export MYVIMRC="${XDG_CONFIG_HOME}/nvim"
@@ -117,7 +117,7 @@ export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
 
 # -- tmux --
 export TMUX_TEMPDIR="${XDG_CACHE_HOME}/tmux"
-export ZSH_TMUX_CONFIG="${DOTFILES[CONFIGS]}/tmux.conf"
+export ZSH_TMUX_CONFIG="${XDG_CONFIG_HOME}/tmux.conf"
 export TMUX_PLUGIN_MANAGER_PATH="${XDG_DATA_HOME}/tmux/plugins"
 
 # -- javascript --
@@ -126,12 +126,12 @@ export NPM_CONFIG_CACHE="${XDG_CACHE_HOME}/npm"
 
 # -- less --
 export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
-export LESSKEY="${DOTFILES[CONFIGS]}/less/lesskey"
+export LESSKEY="${XDG_CONFIG_HOME}/less/lesskey"
 #export LESSOPEN='| pygmentize -g %s'
 
 # -- pip --
 export PIP_LOG_FILE="${XDG_CACHE_HOME}/pip/pip.log"
-export PIP_CONFIG_FILE="${DOTFILES[CONFIGS]}/pip/pip.conf"
+export PIP_CONFIG_FILE="${XDG_CONFIG_HOME}/pip/pip.conf"
 
 # -- terminal --
 export TIMEFMT="%U user %S system %P cpu %*Es total"
@@ -159,7 +159,7 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include"
 export GITSTATUS_LOG_LEVEL=DEBUG
 export GITSTATUS_CACHE_DIR="${XDG_CACHE_HOME}/gitstatus"
 export GITSTATUS_SHOW_UNTRACKED_FILES="all"
-export GIT_CONFIG="${DOTFILES[CONFIGS]}/git/config"
+export GIT_CONFIG="${XDG_CONFIG_HOME}/git/config"
 
 # -- fzf --
-export FZF_CONFIG_PATH="${DOTFILES[CONFIGS]}/fzf.conf"
+export FZF_CONFIG_PATH="${XDG_CONFIG_HOME}/fzf.conf"

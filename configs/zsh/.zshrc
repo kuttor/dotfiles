@@ -46,7 +46,6 @@ zinit for id-as'paths'       is-snippet '@$ZDOTDIR/paths.zsh'                  \
           id-as'options'     is-snippet '@$ZDOTDIR/options.zsh'                \
           id-as'keybind'     is-snippet '@$ZDOTDIR/keybind.zsh'                \
           id-as'aliases'     is-snippet '@$ZDOTDIR/aliases.zsh'                \
-          id-as'history'     is-snippet '@$ZDOTDIR/history.zsh'                \
           id-as'snippets'    is-snippet '@$ZDOTDIR/snippets.zsh'               \
           id-as'completions' is-snippet '@$ZDOTDIR/completions.zsh'
           
@@ -60,7 +59,7 @@ zinit default-ice                                                              \
   wait'0'                                                                      \
   from'gh-r'                                                                   \
   light-mode 
-  sd
+ 
 zinit for id-as'lazygit' sbin'lazygit -> lazygit'      @jesseduffield/lazygit  \
           id-as'lemme'   sbin'lemmeknow* -> lemme'     @swanandx/lemmeknow     \
           id-as'rg'      sbin'**/rg -> rg'             @BurntSushi/ripgrep     \
