@@ -165,7 +165,7 @@ jobs:
     name: cask audit
     needs: syntax
     if: github.repository_owner == 'Homebrew'
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -226,7 +226,7 @@ jobs:
           - name: update-test (Ubuntu 22.04)
             runs-on: ubuntu-22.04
           - name: update-test (macOS)
-            runs-on: macos-14
+            runs-on: macos-15
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -264,9 +264,9 @@ jobs:
           - name: tests (macOS 13 x86_64)
             test-flags: --coverage
             runs-on: macos-13
-          - name: tests (macOS 14 arm64)
+          - name: tests (macOS 15 arm64)
             test-flags: --coverage
-            runs-on: macos-14
+            runs-on: macos-15
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -369,8 +369,8 @@ jobs:
             runs-on: ubuntu-20.04
           - name: test default formula (macOS 13 x86_64)
             runs-on: macos-13
-          - name: test default formula (macOS 14 arm64)
-            runs-on: macos-14
+          - name: test default formula (macOS 15 arm64)
+            runs-on: macos-15
     env:
       HOMEBREW_TEST_BOT_ANALYTICS: 1
       HOMEBREW_ENFORCE_SBOM: 1

@@ -27,7 +27,7 @@ defaults:
 jobs:
   vendor-gems:
     if: github.repository_owner == 'Homebrew'
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
