@@ -881,6 +881,9 @@ class Tap
       hash["remote"] = remote
       hash["custom_remote"] = custom_remote?
       hash["private"] = private?
+      hash["HEAD"] = git_head || "(none)"
+      hash["last_commit"] = git_last_commit || "never"
+      hash["branch"] = git_branch || "(none)"
     end
 
     hash
