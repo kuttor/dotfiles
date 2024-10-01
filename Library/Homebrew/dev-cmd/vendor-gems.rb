@@ -33,7 +33,7 @@ module Homebrew
         HOMEBREW_LIBRARY_PATH.cd do
           if args.update
             ohai "bundle update"
-            safe_system "bundle", "update", *args.update
+            run_bundle "update", *args.update
 
             unless args.no_commit?
               ohai "git add Gemfile.lock"
@@ -42,18 +42,18 @@ module Homebrew
           end
 
           ohai "bundle install --standalone"
-          safe_system "bundle", "install", "--standalone"
+          run_bundle "install", "--standalone"
 
           ohai "bundle pristine"
-          safe_system "bundle", "pristine"
+          run_bundle "pristine"
 
           ohai "bundle clean"
-          safe_system "bundle", "clean"
+          run_bundle "clean"
 
           # Workaround Bundler 2.4.21 issue where platforms may be removed.
           # Although we don't use 2.4.21, Dependabot does as it currently ignores your lockfile version.
           # https://github.com/rubygems/rubygems/issues/7169
-          safe_system "bundle", "lock", "--add-platform", "aarch64-linux", "arm-linux"
+          run_bundle "lock", "--add-platform", "aarch64-linux", "arm-linux"
           system "git", "add", "Gemfile.lock" unless args.no_commit?
 
           if args.non_bundler_gems?
@@ -89,6 +89,17 @@ module Homebrew
             system "git", "commit", "--message", "brew vendor-gems: commit updates."
           end
         end
+      end
+
+      sig { params(args: String).void }
+      def run_bundle(*args)
+        Process.wait(fork do
+          # Native build scripts fail if EUID != UID
+          Process::UID.change_privilege(Process.euid) if Process.euid != Process.uid
+          exec "bundle", *args
+        end)
+
+        raise ErrorDuringExecution.new(["bundle", *args], status: $CHILD_STATUS) unless $CHILD_STATUS.success?
       end
     end
   end
