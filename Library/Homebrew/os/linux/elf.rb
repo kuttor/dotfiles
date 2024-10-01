@@ -31,6 +31,8 @@ module ELFShim
   private_constant :ARCHITECTURE_I386
   ARCHITECTURE_POWERPC = 0x14
   private_constant :ARCHITECTURE_POWERPC
+  ARCHITECTURE_POWERPC64 = 0x15
+  private_constant :ARCHITECTURE_POWERPC64
   ARCHITECTURE_ARM = 0x28
   private_constant :ARCHITECTURE_ARM
   ARCHITECTURE_X86_64 = 0x3E
@@ -61,7 +63,8 @@ module ELFShim
     @arch ||= case read_uint16(ARCHITECTURE_OFFSET)
     when ARCHITECTURE_I386 then :i386
     when ARCHITECTURE_X86_64 then :x86_64
-    when ARCHITECTURE_POWERPC then :powerpc
+    when ARCHITECTURE_POWERPC then :ppc32
+    when ARCHITECTURE_POWERPC64 then :ppc64
     when ARCHITECTURE_ARM then :arm
     when ARCHITECTURE_AARCH64 then :arm64
     else :dunno
@@ -70,6 +73,9 @@ module ELFShim
 
   def arch_compatible?(wanted_arch)
     return true unless elf?
+
+    # Treat ppc64le and ppc64 the same
+    wanted_arch = :ppc64 if wanted_arch == :ppc64le
 
     wanted_arch == arch
   end
