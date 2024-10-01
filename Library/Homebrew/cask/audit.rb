@@ -946,6 +946,12 @@ module Cask
       add_error "Cask should be located in '#{expected_path}'"
     end
 
+    sig { void }
+    def audit_deprecate_disable
+      error = SharedAudits.check_deprecate_disable_reason(cask)
+      add_error error if error
+    end
+
     sig {
       params(
         url_to_check: T.any(String, URL),
