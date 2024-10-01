@@ -76,6 +76,10 @@ module Homebrew
               info += "\nPrivate" if tap.private?
               info += "\n#{tap.path} (#{tap.path.abv})"
               info += "\nFrom: #{tap.remote.presence || "N/A"}"
+              info += "\norigin: #{tap.remote}" if tap.remote != tap.default_remote
+              info += "\nHEAD: #{tap.git_head || "(none)"}"
+              info += "\nlast commit: #{tap.git_last_commit || "never"}"
+              info += "\nbranch: #{tap.git_branch || "(none)"}" if tap.git_branch != "master"
             else
               info += "Not installed"
             end
