@@ -39,7 +39,7 @@ RSpec.describe Keg::Relocation do
     relocation.replace_text(text)
     expect(text).to eq "foo"
 
-    text = +<<~TEXT
+    text = <<~TEXT
       #{prefix}/foo
       #{cellar}/foo
       foo#{prefix}/bar

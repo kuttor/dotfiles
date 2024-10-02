@@ -562,7 +562,7 @@ class UnbottledError < RuntimeError
   def initialize(formulae)
     require "utils"
 
-    msg = +<<~EOS
+    msg = <<~EOS
       The following #{Utils.pluralize("formula", formulae.count, plural: "e")} cannot be installed from #{Utils.pluralize("bottle", formulae.count)} and must be
       built from source.
         #{formulae.to_sentence}
@@ -686,7 +686,7 @@ class ErrorDuringExecution < RuntimeError
       raise ArgumentError, "Status neither has `exitstatus` nor `termsig`."
     end
 
-    s = +"Failure while executing; `#{redacted_cmd}` #{reason}."
+    s = "Failure while executing; `#{redacted_cmd}` #{reason}."
 
     if Array(output).present?
       format_output_line = lambda do |type_line|

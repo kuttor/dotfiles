@@ -9,7 +9,7 @@ module Cask
     def self.get_info(cask)
       require "cask/installer"
 
-      output = +"#{title_info(cask)}\n"
+      output = "#{title_info(cask)}\n"
       output << "#{Formatter.url(cask.homepage)}\n" if cask.homepage
       deprecate_disable = DeprecateDisable.message(cask)
       output << "#{deprecate_disable.capitalize}\n" if deprecate_disable

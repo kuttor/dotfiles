@@ -92,7 +92,7 @@ module Homebrew
       sig { params(formula: Formula, with_hostname: T::Boolean).returns(String) }
       def brief_build_info(formula, with_hostname:)
         build_time_string = formula.logs.ctime.strftime("%Y-%m-%d %H:%M:%S")
-        string = +<<~EOS
+        string = <<~EOS
           Homebrew build logs for #{formula.full_name} on #{OS_VERSION}
         EOS
         if with_hostname

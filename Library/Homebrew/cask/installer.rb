@@ -602,8 +602,8 @@ on_request: true)
           next if dep_tap.blank? || (dep_tap.allowed_by_env? && !dep_tap.forbidden_by_env?)
 
           dep_full_name = cask_or_formula.full_name
-          error_message = +"The installation of #{@cask} has a dependency #{dep_full_name}\n" \
-                           "from the #{dep_tap} tap but #{owner} "
+          error_message = "The installation of #{@cask} has a dependency #{dep_full_name}\n" \
+                          "from the #{dep_tap} tap but #{owner} "
           error_message << "has not allowed this tap in `HOMEBREW_ALLOWED_TAPS`" unless dep_tap.allowed_by_env?
           error_message << " and\n" if !dep_tap.allowed_by_env? && dep_tap.forbidden_by_env?
           error_message << "has forbidden this tap in `HOMEBREW_FORBIDDEN_TAPS`" if dep_tap.forbidden_by_env?
@@ -616,8 +616,8 @@ on_request: true)
       cask_tap = @cask.tap
       return if cask_tap.blank? || (cask_tap.allowed_by_env? && !cask_tap.forbidden_by_env?)
 
-      error_message = +"The installation of #{@cask.full_name} has the tap #{cask_tap}\n" \
-                       "but #{owner} "
+      error_message = "The installation of #{@cask.full_name} has the tap #{cask_tap}\n" \
+                      "but #{owner} "
       error_message << "has not allowed this tap in `HOMEBREW_ALLOWED_TAPS`" unless cask_tap.allowed_by_env?
       error_message << " and\n" if !cask_tap.allowed_by_env? && cask_tap.forbidden_by_env?
       error_message << "has forbidden this tap in `HOMEBREW_FORBIDDEN_TAPS`" if cask_tap.forbidden_by_env?

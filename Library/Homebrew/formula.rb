@@ -4196,7 +4196,7 @@ class Formula
       when :default_prefix
         lambda do |_|
           T.bind(self, PourBottleCheck)
-          reason(+<<~EOS)
+          reason(<<~EOS)
             The bottle (and many others) needs to be installed into #{Homebrew::DEFAULT_PREFIX}.
           EOS
           satisfy { HOMEBREW_PREFIX.to_s == Homebrew::DEFAULT_PREFIX }

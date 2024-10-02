@@ -1503,8 +1503,8 @@ on_request: installed_on_request?, options:)
         dep_tap = dep.tap
         next if dep_tap.blank? || (dep_tap.allowed_by_env? && !dep_tap.forbidden_by_env?)
 
-        error_message = +"The installation of #{formula.name} has a dependency #{dep.name}\n" \
-                         "from the #{dep_tap} tap but #{owner} "
+        error_message = "The installation of #{formula.name} has a dependency #{dep.name}\n" \
+                        "from the #{dep_tap} tap but #{owner} "
         error_message << "has not allowed this tap in `HOMEBREW_ALLOWED_TAPS`" unless dep_tap.allowed_by_env?
         error_message << " and\n" if !dep_tap.allowed_by_env? && dep_tap.forbidden_by_env?
         error_message << "has forbidden this tap in `HOMEBREW_FORBIDDEN_TAPS`" if dep_tap.forbidden_by_env?
@@ -1519,8 +1519,8 @@ on_request: installed_on_request?, options:)
     formula_tap = formula.tap
     return if formula_tap.blank? || (formula_tap.allowed_by_env? && !formula_tap.forbidden_by_env?)
 
-    error_message = +"The installation of #{formula.full_name} has the tap #{formula_tap}\n" \
-                     "but #{owner} "
+    error_message = "The installation of #{formula.full_name} has the tap #{formula_tap}\n" \
+                    "but #{owner} "
     error_message << "has not allowed this tap in `HOMEBREW_ALLOWED_TAPS`" unless formula_tap.allowed_by_env?
     error_message << " and\n" if !formula_tap.allowed_by_env? && formula_tap.forbidden_by_env?
     error_message << "has forbidden this tap in `HOMEBREW_FORBIDDEN_TAPS`" if formula_tap.forbidden_by_env?

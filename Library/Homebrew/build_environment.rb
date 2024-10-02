@@ -70,7 +70,7 @@ class BuildEnvironment
     keys.each do |key|
       value = env.fetch(key)
 
-      string = +"#{key}: #{value}"
+      string = "#{key}: #{value}"
       case key
       when "CC", "CXX", "LD"
         string << " => #{Pathname.new(value).realpath}" if value.present? && File.symlink?(value)
