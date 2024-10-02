@@ -2019,22 +2019,25 @@ Read the \fBBrewfile\fP from \fB~/\.Brewfile\fP or the \fBHOMEBREW_BUNDLE_FILE_G
 \fBlist\fP all dependencies\.
 .TP
 \fB\-\-formula\fP
-\fBlist\fP Homebrew formula dependencies\.
+\fBlist\fP or \fBdump\fP Homebrew formula dependencies\.
 .TP
 \fB\-\-cask\fP
-\fBlist\fP Homebrew cask dependencies\.
+\fBlist\fP or \fBdump\fP Homebrew cask dependencies\.
 .TP
 \fB\-\-tap\fP
-\fBlist\fP Homebrew tap dependencies\.
+\fBlist\fP or \fBdump\fP Homebrew tap dependencies\.
 .TP
 \fB\-\-mas\fP
-\fBlist\fP Mac App Store dependencies\.
+\fBlist\fP or \fBdump\fP Mac App Store dependencies\.
 .TP
 \fB\-\-whalebrew\fP
-\fBlist\fP Whalebrew dependencies\.
+\fBlist\fP or \fBdump\fP Whalebrew dependencies\.
 .TP
 \fB\-\-vscode\fP
-\fBlist\fP VSCode extensions\.
+\fBlist\fP or \fBdump\fP VSCode extensions\.
+.TP
+\fB\-\-no\-vscode\fP
+\fBdump\fP without VSCode extensions\. This is enabled by default if \fBHOMEBREW_BUNDLE_DUMP_NO_VSCODE\fP is set\.
 .TP
 \fB\-\-describe\fP
 \fBdump\fP adds a description comment above each line, unless the dependency does not have a description\. This is enabled by default if \fBHOMEBREW_BUNDLE_DUMP_DESCRIBE\fP is set\.
