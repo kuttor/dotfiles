@@ -24,7 +24,6 @@ gem:
     - rspec_junit_formatter
     - rubocop-md
     - rubocop-performance
-    - rubocop-rspec
     - rubocop-sorbet
     - ruby-prof
     - simplecov_json_formatter
