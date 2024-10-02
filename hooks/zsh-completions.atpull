@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+
+#zinit creinstall -q .
+
+!_zsh_autosuggest_start 

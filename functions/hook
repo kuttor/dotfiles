@@ -1,3 +1,0 @@
-#!/usr/bin/env zsh
-
-source "${HOME}/.dotfiles/hooks/$1"
