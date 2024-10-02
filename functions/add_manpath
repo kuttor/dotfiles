@@ -1,0 +1,6 @@
+#! /usr/bin/env zsh
+
+if [ -d "$1" ] && [[ ":$MANPATH:" != *":$1:"* ]]
+then
+  MANPATH="$1${MANPATH:+":$MANPATH"}"
+fi

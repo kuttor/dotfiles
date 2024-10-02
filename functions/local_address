@@ -1,0 +1,47 @@
+#! /usr/bin/env bash
+
+local_address() {
+  # Helper function to get private IP
+  get_private_ip() {
+    ipconfig getifaddr en0
+  }
+
+  # Helper function to get public IP
+  get_public_ip() {
+    curl -s ifconfig.me
+  }
+
+  # Helper function to copy to clipboard
+  copy_to_clipboard() {
+    echo -n "$1" | pbcopy
+  }
+
+  # Display help menu
+  if [[ "$1" == "--help" ]]; then
+    echo "Usage: local_address [public|private]"
+    echo "  no arguments: print both private and public IP addresses"
+    echo "  private: print and copy private IP address to clipboard"
+    echo "  public: print and copy public IP address to clipboard"
+    return
+  fi
+
+  # Get IP addresses
+  private_ip=$(get_private_ip)
+  public_ip=$(get_public_ip)
+
+  # Handle arguments
+  case "$1" in
+    private)
+      echo "$private_ip"
+      copy_to_clipboard "$private_ip"
+      ;;
+    public)
+      echo "$public_ip"
+      copy_to_clipboard "$public_ip"
+      ;;
+    *)
+      echo "private: $private_ip"
+      echo "public: $public_ip"
+      ;;
+  esac
+}

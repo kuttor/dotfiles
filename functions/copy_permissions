@@ -1,0 +1,9 @@
+#! /usr/bin/env sh
+
+if [ $# -ne 2 ]; then
+    echo "Usage: apply_permissions source_file target_file"
+    return 1
+fi
+local source_file=$1
+local target_file=$2
+chmod -- $(stat -f '%Lp' "$source_file") "$target_file"

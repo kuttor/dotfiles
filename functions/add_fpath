@@ -1,0 +1,6 @@
+#! /usr/bin/env zsh
+
+if [ -d "$1" ] && [[ ":$FPATH:" != *":$1:"* ]]
+then
+  FPATH="$1${FPATH:+":$FPATH"}"
+fi
