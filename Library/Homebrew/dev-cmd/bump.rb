@@ -319,7 +319,9 @@ module Homebrew
 
             livecheck_latest = livecheck_result(loaded_formula_or_cask)
 
-            new_version_value = if (livecheck_latest.is_a?(Version) && livecheck_latest >= current_version_value) ||
+            new_version_value = if (livecheck_latest.is_a?(Version) &&
+                                    Livecheck::LivecheckVersion.create(formula_or_cask, livecheck_latest) >=
+                                    Livecheck::LivecheckVersion.create(formula_or_cask, current_version_value)) ||
                                    current_version_value == "latest"
               livecheck_latest
             elsif livecheck_latest.is_a?(String) && livecheck_latest.start_with?("skipped")
