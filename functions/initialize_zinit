@@ -1,7 +1,7 @@
 #! /usr/bin/env zsh
 
 # Set up Zinit environment variables
-typeset -gx ZINIT_HOME="$HOME/.local/share//zinit"
+typeset -gx ZINIT_HOME="$HOME/.local/share/zinit"
 typeset -gx ZPFX="$ZINIT_HOME/polaris"
 typeset -gx ZINIT_BIN_DIR_NAME="$ZINIT_HOME"
 typeset -gx ZINIT_PLUGINS_DIR="$ZINIT_HOME/plugins"
@@ -36,15 +36,3 @@ zinit for id-as'gem-node'      @zdharma-continuum/zinit-annex-bin-gem-node      
           id-as'patch-dl'      @zdharma-continuum/zinit-annex-patch-dl                            \
           id-as'rust'          @zdharma-continuum/zinit-annex-rust
 
-# ==================================================================================================
-# -- modify global zshconfigs ----------------------------------------------------------------------   
-# ==================================================================================================
-# 
-# local f=/etc/zshrc
-# sudo sed -i '/{,SAVE}HIST{FILE,SIZE,}=/d;$a\
-# HISTFILE=${${${(M)USER:#akuttor}:+}:-$HOME/.zsh_history}\
-# HISTSIZE=1000\
-# SAVEHIST=1000\
-# ZDOTDIR=${${(M)USER:#akuttor}:+$HOME/.dotfiles/configs/zsh}' $f
-# 
-# 

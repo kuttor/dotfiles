@@ -31,16 +31,15 @@ zinit for OMZL::completion.zsh                                                  
           OMZL::history.zsh                                                                       \
           OMZL::theme-and-appearance.zsh                                                          \
           OMZP::brew                                                                              \
-          OMZP::gnu-util                                                                          \
+          OMZP::gnu-utils                                                                         \
           OMZP::colorize                                                                          \
           OMZP::web-search                                                                        \
           OMZP::ssh                                                                               \
           OMZP::pip                                                                               \
           OMZP::cp                                                                                \
           OMZP::grc                                                                               \
-          OMZP::gitfast                                                                           \
           OMZP::urltools                                                                          \
-          atload'hook magic-enter.atload.zsh'                                                     \
+          atload'use magic-enter.atload'                                                          \
           OMZP::magic-enter                                               
 
 # =================================================================================================
@@ -56,7 +55,7 @@ zinit default-ice                                                               
 
 zinit for id-as'lazygit'     sbin'lazygit -> lazygit'                   @jesseduffield/lazygit    \
           id-as'lemmeknow'   sbin'lemmeknow* -> lemmeknow'              @swanandx/lemmeknow       \
-          id-as'rg'          sbin'**/rg -> rg' atload'use rg.atload'    @BurntSushi/ripgrep       \
+          id-as'rg'          sbin'**/rg -> rg'                          @BurntSushi/ripgrep       \
           id-as'glow'        sbin'**/glow'                              @charmbracelet/glow       \
           id-as'nvim'        sbin'**/nvim -> nvim'                      @neovim/neovim            \
           id-as'mcfly'       sbin'mcfly* -> mcfly'                      @cantino/mcfly            \
@@ -73,7 +72,6 @@ zinit for id-as'lazygit'     sbin'lazygit -> lazygit'                   @jessedu
           id-as'shellcheck'  sbin'*/shellcheck -> shellcheck'           @koalaman/shellcheck      \
           id-as'fastfetch'   sbin'**/fastfetch -> fastfetch'            @fastfetch-cli/fastfetch  \
           id-as'delta'       sbin'delta -> delta'                       @dandavison/delta         \
-          id-as'tldr'        sbin'tealdeer* -> tldr'                    @dbrgn/tealdeer
         
 # -- zoxide: "smarter jump enhancer for cd" --
 zinit for id-as'zoxide'                                                                           \
@@ -104,7 +102,7 @@ zinit for id-as'zsh-async'                           @mafredri/zsh-async        
           id-as'safe-rm'                             @mattmc3/zsh-safe-rm                         \
           id-as'multiple-dots'                       @momo-lab/zsh-replace-multiple-dots          \
           id-as'zman'                                @mattmc3/zman
-
+          
 # =================================================================================================
 # -- non-gh-rel packages --------------------------------------------------------------------------
 # =================================================================================================
@@ -117,14 +115,13 @@ zinit default-ice                                                               
 
 zinit for id-as'fzf'        pack'bgn-binary+keys'                 @fzf                            \
           id-as'dircolors'  pack                                  @dircolors-material             \
-          id-as'ls_colors'  pack                                  @ls_colors                      \
-          id-as'shellsence' pack param='inshellisense → is'       @any-node
+          id-as'ls_colors'  pack                                  @ls_colors                      
+          #id-as'shellsence' pack param='inshellisense → is'       @any-node
 
 zinit for id-as'p10k'                               depth'1'      @romkatv/powerlevel10k          \
           id-as'brew'       sbin'bin/brew -> brew'  depth'3'      @homebrew/brew                  \
           id-as'zeno'       sbin'**/zeno -> zeno'   depth'1'      @yuki-yano/zeno.zsh             \
-          
-          
+          id-as'tealdeer'   sbin'tealdeer* -> tldr'               @dbrgn/tealdeer                 \
           id-as'git-fuzzy'  sbin'bin/git-fuzzy -> gfuzzy' blockf  @bigH/git-fuzzy                 \
           id-as'url-hl'     sbin'url/url* -> url-highlighter'     atload'use url-hl.atload' @ascii-soup/zsh-url-highlighter
 

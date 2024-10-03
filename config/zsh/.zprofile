@@ -78,16 +78,16 @@ export ZSH_DATA_DIR="/usr/share/zsh"
 export HELPDIR="$ZSH_DATA_DIR" && mkdir -p "$HELPDIR"
 
 # Zinit
-typeset -A ZINIT=(
-    [MUTE_WARNINGS]=1 [COMPINIT_OPTS]="-c"
-    [MAN_DIR]="$ZPFX/man" [BIN_DIR]="$ZPFX/bin"
-    [OPTIMIZE_OUT_DISK_ACCESSES]=1
-    [HOME_DIR]="$XDG_DATA_HOME/zinit"
-    [PLUGIN_DIR]="$XDG_DATA_HOME/zinit/plugins"
-    [SNIPPETS_DIR]="$XDG_DATA_HOME/zinit/snippets"
-    [ZCOMPDUMP_PATH]="$XDG_CACHE_HOME/zsh/zcompdump"
-    [COMPLETIONS_DIR]="$XDG_DATA_HOME/zinit/completions"
-)
+# typeset -A ZINIT=(
+    # [MUTE_WARNINGS]=1 [COMPINIT_OPTS]="-c"
+    # [MAN_DIR]="$ZPFX/man" [BIN_DIR]="$ZPFX/bin"
+    # [OPTIMIZE_OUT_DISK_ACCESSES]=1
+    # [HOME_DIR]="$XDG_DATA_HOME/zinit"
+    # [PLUGIN_DIR]="$XDG_DATA_HOME/zinit/plugins"
+    # [SNIPPETS_DIR]="$XDG_DATA_HOME/zinit/snippets"
+    # [ZCOMPDUMP_PATH]="$XDG_CACHE_HOME/zsh/zcompdump"
+    # [COMPLETIONS_DIR]="$XDG_DATA_HOME/zinit/completions"
+# )
 
 # Terminal and environment
 export TIMEFMT="%u user %s system %p cpu %*es total"
@@ -96,7 +96,6 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=yes TERM=xterm-256color ITERM_24BIT=1
 # Pagers, editors, and tools
 export MANPAGER="sh -c 'col -bx | bat -l man -p'" PAGER=less EDITOR=nvim VISUAL=$EDITOR BAT_PAGER=less
 export LDFLAGS="-L/usr/local/opt/ruby/lib" CPPFLAGS="-I/usr/local/opt/ruby/include"
-export GITSTATUS_{LOG_LEVEL,SHOW_UNTRACKED_FILES}="debug all"
 
 # Paths
 typeset -U path fpath manpath infopath

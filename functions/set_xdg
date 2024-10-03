@@ -35,5 +35,3 @@ if [[ ! -e "${full_path:h}" ]]; then
     fi
 fi
 
-# Debug output
-print -u2 "Exported $var as $full_path"
