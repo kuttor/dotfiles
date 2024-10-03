@@ -51,7 +51,7 @@ GEM
     public_suffix (6.0.1)
     racc (1.8.1)
     rainbow (3.1.1)
-    rbi (0.2.0)
+    rbi (0.2.1)
       prism (~> 1.0)
       sorbet-runtime (>= 0.5.9204)
     rbs (3.6.1)
@@ -154,7 +154,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
