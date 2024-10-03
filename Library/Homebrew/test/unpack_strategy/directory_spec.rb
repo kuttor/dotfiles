@@ -9,6 +9,7 @@ RSpec.describe UnpackStrategy::Directory do
     mktmpdir.tap do |path|
       FileUtils.touch path/"file"
       FileUtils.ln_s "file", path/"symlink"
+      FileUtils.ln path/"file", path/"hardlink"
       FileUtils.mkdir path/"folder"
       FileUtils.ln_s "folder", path/"folderSymlink"
     end
@@ -24,6 +25,11 @@ RSpec.describe UnpackStrategy::Directory do
   it "does not follow top level symlinks to directories" do
     strategy.extract(to: unpack_dir)
     expect(unpack_dir/"folderSymlink").to be_a_symlink
+  end
+
+  it "preserves hardlinks" do
+    strategy.extract(to: unpack_dir)
+    expect((unpack_dir/"file").stat.ino).to eq (unpack_dir/"hardlink").stat.ino
   end
 
   it "preserves permissions of contained files" do
