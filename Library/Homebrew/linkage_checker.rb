@@ -160,9 +160,9 @@ class LinkageChecker
 
           if (dep = dylib_to_dep(dylib))
             @broken_deps[dep] |= [dylib]
-          elsif system_libraries_exist_in_cache? && dylib_found_via_dlopen(dylib)
+          elsif system_libraries_exist_in_cache? && dylib_found_in_shared_cache?(dylib)
             # If we cannot associate the dylib with a dependency, then it may be a system library.
-            # If dlopen finds the dylib, then the linkage is not broken.
+            # Check the dylib shared cache for the library to verify this.
             @system_dylibs << dylib
           elsif !system_framework?(dylib) && !broken_dylibs_allowed?(file.to_s)
             @broken_dylibs << dylib
@@ -195,11 +195,18 @@ class LinkageChecker
   end
   alias generic_system_libraries_exist_in_cache? system_libraries_exist_in_cache?
 
-  def dylib_found_via_dlopen(dylib)
-    Fiddle.dlopen(dylib).close
-    true
-  rescue Fiddle::DLError
-    false
+  def dylib_found_in_shared_cache?(dylib)
+    @dyld_shared_cache_contains_path ||= begin
+      libc = Fiddle.dlopen("/usr/lib/libSystem.B.dylib")
+
+      Fiddle::Function.new(
+        libc["_dyld_shared_cache_contains_path"],
+        [Fiddle::TYPE_CONST_STRING],
+        Fiddle::TYPE_BOOL,
+      )
+    end
+
+    @dyld_shared_cache_contains_path.call(dylib)
   end
 
   def check_formula_deps
