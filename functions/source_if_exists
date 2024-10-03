@@ -1,0 +1,4 @@
+#! /usr/bin/env zsh
+
+# Source a file if it exists
+[[ -f $1 ]] && . $1

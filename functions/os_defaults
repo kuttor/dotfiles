@@ -1,0 +1,27 @@
+#! /usr/bin/env zsh
+local xdg_type="$1"
+local darwin_path
+local other_path
+case "$xdg_type" in
+  XDGCONFIG)
+      darwin_path="$HOME/Library/Preferences"
+      other_path="$HOME/.config"
+      ;;
+  XDGDATA)
+      darwin_path="$HOME/Library/Application Support"
+      other_path="$HOME/.local/share"
+      ;;
+  XDGCACHE)
+      darwin_path="$HOME/Library/Caches"
+      other_path="$HOME/.cache"
+      ;;
+  *)
+      echo "Unknown XDG type: $xdg_type" >&2
+      return 1
+      ;;
+esac
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "$darwin_path"
+else
+    echo "$other_path"
+fi
