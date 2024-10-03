@@ -1,0 +1,81 @@
+#! /user/bin/env vim
+# vim:set filetype=vim syntax=vim
+# vim:set autoindent copyindent preserveindent smarttab
+# vim:set autoindent shiftround smarttab nu clipboard+=unnamedplus foldmethsofttabstop=0
+
+" aliases
+cmdaliases 
+
+
+" enable modelines
+set modeline
+set modelines=5
+
+" backspace for dummies
+set backspace=indent,eol,start
+
+" insensitive lowercase seaerch
+set ignorecase
+set smartcase
+
+# autofold
+set autofold
+
+" Visualize the bell
+set visualball
+
+"Centralized VIM swapfile creation"
+set directory^=${CACHE}/vimswap/
+
+" Set shift width to 4 spaces.
+set shiftwidth=2
+
+" Set tab width to 4 columns.
+set tabstop=2
+
+" Use space characters instead of tabs.
+set expandtab
+
+" Do not save backup files.
+set nobackup
+
+" Do not let cursor scroll below or above N number of lines when scrolling.
+set scrolloff=10
+
+" Do not wrap lines. Allow long lines to extend as far as the line goes.
+set nowrap
+
+" While searching though a file incrementally highlight matching characters as you type.
+set incsearch
+
+" Ignore capital letters during search.
+set ignorecase
+
+" Show partial command you type in the last line of the screen.
+set showcmd
+
+" Show the mode you are on the last line.
+set showmode
+
+" Show matching words during a search.
+set showmatch
+
+" Use highlighting when doing a search.
+set hlsearch
+
+" Set the commands to save in history default number is 20.
+set history=1000
+
+
+
+
+" Append modeline after last line in buffer.
+" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+" files.
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+nnoremap <silent> <Leader>ml :call AppendModeline()<CR>\ 

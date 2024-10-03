@@ -1,0 +1,38 @@
+#! /usr/bin/env yaml
+
+classic: false
+
+blocks:
+  - permission
+  - user
+  - group
+  - size
+  - date
+  - name
+  - links
+  - git
+color:
+  when: auto    
+  theme: custom
+date: relative
+dereference: false
+display: all
+icons:
+  when: always
+  theme: fancy
+  separator: " "
+indicators: true
+layout: oneline
+recursion:
+  enabled: false
+size: default
+permission: rwx
+sorting:
+  column: name
+  reverse: false
+  dir-grouping: first
+no-symlink: false
+total-size: true
+hyperlink: auto
+symlink-arrow: 󰁔
+header: true

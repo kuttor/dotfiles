@@ -4,12 +4,23 @@ ulimit -c unlimited
 
 # Core environment
 export LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-export DOTFILES="${${(%):-%x}:a:h:h}"
-export DOT_{HOOKS,CONFIGS,FUNCTIONS,ZSH}_HOME="$DOTFILES/{hooks,config,functions,config/zsh}"
+#export DOTFILES="${${(%):-%x}:a:h:h}"
+export DOTFILES="$HOME/.dotfiles"
+#export "DOT_{HOOKS,CONFIGS,FUNCTIONS,ZSH}_HOME"="$DOTFILES"/{hooks,config,functions,config/zsh}(N)
 
-# load in the autoload functions
+# Set individual paths correctly
+export DOT_HOOKS_HOME="$DOTFILES/hooks"
+export DOT_CONFIGS_HOME="$DOTFILES/config"
+export DOT_FUNCTIONS_HOME="$DOTFILES/functions"
+export DOT_ZSH_HOME="$DOTFILES/config/zsh"
+
+# Add function directories to fpath
 fpath=($DOT_FUNCTIONS_HOME $fpath)
-autoload -uz $fpath[1]/*(.:t)
+
+# Autoload all functions
+if [[ -d "$DOT_FUNCTIONS_HOME" ]]; then
+    autoload -Uz $DOT_FUNCTIONS_HOME/*(.:t)
+fi
 
 # Set utilities config paths
 set_xdg config BAT_CONFIG_PATH bat.conf
@@ -106,7 +117,7 @@ path=(
 fpath=(
     $HOME/.local/share/zsh/site-functions
     /usr/local/share/zsh/5.8/site-functions
-    /usr/share/zsh/{site-functions,functions}
+    $ZSH_DATA_DIR/{site-functions,functions}
     $HOMEBREW_PREFIX/opt/zsh-completions/share/zsh-completions
     $HOMEBREW_PREFIX/{sbin,bin}
     $HOMEBREW_PREFIX/completions/zsh
@@ -126,3 +137,30 @@ infopath=(
 
 # Source antidot files
 source_if_exists $ANTIDOT_DIR/{env,alias}.sh
+
+set_xdg() {
+    local type=$1 var=$2 path=$3
+    case ${(L)type} in
+        xdgconfig|config) type="CONFIG" ;;
+        xdgdata|data) type="DATA" ;;
+        xdgcache|cache) type="CACHE" ;;
+        *) echo "Unknown XDG type: $1" >&2
+        return 1 ;;
+    esac
+
+    local xdg_var="XDG_${type}_HOME"
+    local xdg_home
+
+    if [[ -n "${(P)xdg_var}" ]]; then
+        xdg_home="${(P)xdg_var}"
+    else
+        case $type in
+            CONFIG) xdg_home="$HOME/.config" ;;
+            DATA)   xdg_home="$HOME/.local/share" ;;
+            CACHE)  xdg_home="$HOME/.cache" ;;
+        esac
+    fi
+
+    local full_path="$xdg_home/$path"
+    export $var="$full_path"
+}

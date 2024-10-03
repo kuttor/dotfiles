@@ -1,0 +1,61 @@
+#!/usr/bin/env zsh
+
+# <https://github.com/zimfw/zimfw/blob/master/login_init.zsh>
+setopt LOCAL_OPTIONS EXTENDED_GLOB
+
+autoload -U zrecompile
+export ZDOTDIR="$HOME/.dotfiles/configs/zsh"
+
+# Compile ZCOMPDUMP, if modified, to increase startup speed.
+ZCOMPDUMP=$XDG_CACHE_HOME/zcompdump
+[[ -s $ZCOMPDUMP && (! -s $ZCOMPDUMP.zwc ||\
+  $ZCOMPDUMP -nt $ZCOMPDUMP.zwc) ]] &&\
+  zrecompile -pq $ZCOMPDUMP
+
+# zcompile .zshrc
+zrecompile -pq "$ZDOTDIR/.zshrc"
+zrecompile -pq "$ZDOTDIR/.zprofile"
+
+# Anonymous function for creating symlink
+ln -sf "${ZDOTDIR}/.zlogon" "${HOME}/.zlogin"
+
+# zsh_default_functions=~/.zsh-default-functions.zwc
+# if ! zcompile -t $zsh_default_functions >&/dev/null
+# then
+#   File is missing or out of date.  Rebuild it.
+#   Removes the file if any function cannot be compiled.
+#   zcompile $zsh_default_functions $^fpath/*(N.:A)
+# fi
+# if [[ -f $zsh_default_functions ]]
+# then
+#   fpath=( $zsh_default_functions )
+#   autoload -w $zsh_default_functions
+# fi
+# Execute code in the background to not affect the current session
+(
+  # <https://github.com/zimfw/zimfw/blob/master/login_init.zsh>
+  setopt LOCAL_OPTIONS EXTENDED_GLOB
+  autoload -U zrecompile
+
+  [[ "$OSTYPE" == "darwin"* ]] &&\
+    local XDG_CONFIG_HOME="$HOME/Library/Application Support" &&\
+    local XDG_DATA_HOME="$HOME/Library/Application Support" &&\
+    local XDG_CACHE_HOME="$HOME/Library/Caches" &&\
+
+  # Compile zcompdump, if modified, to increase startup speed.
+  zcompdump="${XDG_CACHE_HOME}/.zcompdump"
+  if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+      zrecompile -pq "$zcompdump"
+  fi
+  # zcompile .zshrc
+  zrecompile -pq "$ZDOTDIR/.zshrc"
+  zrecompile -pq "$ZDOTDIR/.zprofile"
+  
+  # recompile all zsh or sh
+  for f in "$ZDOTDI/*.zsh"; do
+    zrecompile -pq $f
+    done
+
+    
+
+) &!

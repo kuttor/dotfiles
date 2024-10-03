@@ -4,15 +4,20 @@
 
 emulate -L zsh
 
-local type=$1 var=$2 dir=$3
-: ${XDG_CONFIG_HOME:="$(os_defaults xdgconfig)"}
-: ${XDG_CACHE_HOME:="$(os_defaults xdgcache)"}
-: ${XDG_DATA_HOME:="$(os_defaults xdgdata)"}
-: ${XDG_STATE_HOME:="$HOME/.local/state"}
-case $type in
-    config) export $var="$XDG_CONFIG_HOME/$dir" ;;
-    data)   export $var="$XDG_DATA_HOME/$dir" ;;
-    cache)  export $var="$XDG_CACHE_HOME/$dir" ;;
-    state)  export $var="$XDG_STATE_HOME/$dir" ;;
-    *)      echo "Invalid XDG type: $type" >&2; return 1 ;;
+local type=$1 var=$2 path=$3
+
+case ${(L)type} in
+    xdgconfig|config)
+        type="CONFIG"
+        ;;
+    xdgdata|data)
+        type="DATA"
+        ;;
+    xdgcache|cache)
+        type="CACHE"
+        ;;
+    *)
+        echo "Unknown XDG type: $1" >&2
+        return 1
+        ;;
 esac
