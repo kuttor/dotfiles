@@ -17,7 +17,7 @@ fpath=($DOT_FUNCTIONS_HOME $fpath)
 
 # Autoload all functions
 if [[ -d "$DOT_FUNCTIONS_HOME" ]]; then
-    autoload -Uz $DOT_FUNCTIONS_HOME/*(.:t)
+  autoload -Uz $DOT_FUNCTIONS_HOME/*(.:t)
 fi
 
 # Set utilities config paths
@@ -135,30 +135,3 @@ infopath=(
 
 # Source antidot files
 source_if_exists $ANTIDOT_DIR/{env,alias}.sh
-
-set_xdg() {
-    local type=$1 var=$2 path=$3
-    case ${(L)type} in
-        xdgconfig|config) type="CONFIG" ;;
-        xdgdata|data) type="DATA" ;;
-        xdgcache|cache) type="CACHE" ;;
-        *) echo "Unknown XDG type: $1" >&2
-        return 1 ;;
-    esac
-
-    local xdg_var="XDG_${type}_HOME"
-    local xdg_home
-
-    if [[ -n "${(P)xdg_var}" ]]; then
-        xdg_home="${(P)xdg_var}"
-    else
-        case $type in
-            CONFIG) xdg_home="$HOME/.config" ;;
-            DATA)   xdg_home="$HOME/.local/share" ;;
-            CACHE)  xdg_home="$HOME/.cache" ;;
-        esac
-    fi
-
-    local full_path="$xdg_home/$path"
-    export $var="$full_path"
-}

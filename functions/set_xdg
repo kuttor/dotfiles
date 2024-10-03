@@ -1,23 +1,39 @@
-#! /usr/bin/env zsh
-
-# Usage: set_xdg <config|data|cache> <ENV_VAR> <CONFIG_FILE>
-
 emulate -L zsh
+setopt err_return nounset pipefail
 
 local type=$1 var=$2 path=$3
+local xdg_type xdg_var xdg_home full_path
 
 case ${(L)type} in
-    xdgconfig|config)
-        type="CONFIG"
-        ;;
-    xdgdata|data)
-        type="DATA"
-        ;;
-    xdgcache|cache)
-        type="CACHE"
-        ;;
-    *)
-        echo "Unknown XDG type: $1" >&2
-        return 1
-        ;;
+    xdgconfig|config) xdg_type="CONFIG" ;;
+    xdgdata|data)     xdg_type="DATA" ;;
+    xdgcache|cache)   xdg_type="CACHE" ;;
+    *) print -u2 "Unknown XDG type: $type"
+       return 1 ;;
 esac
+
+xdg_var="XDG_${xdg_type}_HOME"
+
+# Use a default value if the variable is not set
+xdg_home="${(P)xdg_var:-}"
+if [[ -z "$xdg_home" ]]; then
+    case $xdg_type in
+        CONFIG) xdg_home="$HOME/.config" ;;
+        DATA)   xdg_home="$HOME/.local/share" ;;
+        CACHE)  xdg_home="$HOME/.cache" ;;
+    esac
+fi
+
+full_path="$xdg_home/$path"
+export $var="$full_path"
+
+# Ensure the directory exists
+if [[ ! -e "${full_path:h}" ]]; then
+    if ! /bin/mkdir -p "${full_path:h}"; then
+        print -u2 "Error: Failed to create directory ${full_path:h}"
+        return 1
+    fi
+fi
+
+# Debug output
+print -u2 "Exported $var as $full_path"

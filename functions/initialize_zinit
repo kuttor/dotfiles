@@ -1,11 +1,35 @@
 #! /usr/bin/env zsh
 
-# -- # Ensures, installs, and inits Zinit ---------------------------------------------------------
-local Z=${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git/zinit.zsh
-[[ -f $Z ]] || { mkdir -p $Z:h:h && git clone https://github.com/zdharma-continuum/zinit $Z:h:h:t }
-source $Z
+# Set up Zinit environment variables
+typeset -gx ZINIT_HOME="$HOME/.local/share//zinit"
+typeset -gx ZPFX="$ZINIT_HOME/polaris"
+typeset -gx ZINIT_BIN_DIR_NAME="$ZINIT_HOME"
+typeset -gx ZINIT_PLUGINS_DIR="$ZINIT_HOME/plugins"
+typeset -gx ZINIT_COMPLETIONS_DIR="$ZINIT_HOME/completions"
+typeset -gx ZINIT_SNIPPETS_DIR="$ZINIT_HOME/snippets"
 
-# -- enhances zinits abilites via ice-enhancing annexes  -------------------------------------------
+# Set up Zinit environment variables
+typeset -gA ZINIT
+ZINIT[HOME_DIR]="$ZINIT_HOME"
+ZINIT[BIN_DIR]="$ZINIT_HOME"
+ZINIT[PLUGINS_DIR]="${ZINIT[HOME_DIR]}/plugins"
+ZINIT[COMPLETIONS_DIR]="${ZINIT[HOME_DIR]}/completions"
+ZINIT[SNIPPETS_DIR]="${ZINIT[HOME_DIR]}/snippets"
+ZINIT[ZCOMPDUMP_PATH]="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
+
+# Install Zinit if not already installed
+if [[ ! -f $ZINIT_HOME/bin/zinit.zsh ]]; then
+  print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+  command mkdir -p "$ZINIT_HOME/bin" && command chmod g-rwX "$ZINIT_HOME/bin"
+  command git clone https://github.com/zdharma-continuum/zinit "$ZINIT_HOME/bin" && \
+  print -P "%F{33} %F{34}Installation successful.%f%b" || \
+  print -P "%F{160} The clone has failed.%f%b"
+fi
+
+# Source Zinit
+[[ -f "$ZINIT_HOME/bin/zinit.zsh" ]] && . "$ZINIT_HOME/bin/zinit.zsh"
+
+# enhances zinits abilites via ice-enhancing annexes 
 zinit for id-as'gem-node'      @zdharma-continuum/zinit-annex-bin-gem-node                        \
           id-as'bin-symlink'   @zdharma-continuum/zinit-annex-binary-symlink                      \
           id-as'default-ice'   @zdharma-continuum/zinit-annex-default-ice                         \
@@ -15,10 +39,12 @@ zinit for id-as'gem-node'      @zdharma-continuum/zinit-annex-bin-gem-node      
 # ==================================================================================================
 # -- modify global zshconfigs ----------------------------------------------------------------------   
 # ==================================================================================================
-local f=/etc/zshrc
-sudo sed -i '/{,SAVE}HIST{FILE,SIZE,}=/d;$a\
-HISTFILE=${${${(M)USER:#akuttor}:+}:-$HOME/.zsh_history}\
-HISTSIZE=1000\
-SAVEHIST=1000\
-ZDOTDIR=${${(M)USER:#akuttor}:+$HOME/.dotfiles/configs/zsh}' $f
-
+# 
+# local f=/etc/zshrc
+# sudo sed -i '/{,SAVE}HIST{FILE,SIZE,}=/d;$a\
+# HISTFILE=${${${(M)USER:#akuttor}:+}:-$HOME/.zsh_history}\
+# HISTSIZE=1000\
+# SAVEHIST=1000\
+# ZDOTDIR=${${(M)USER:#akuttor}:+$HOME/.dotfiles/configs/zsh}' $f
+# 
+# 

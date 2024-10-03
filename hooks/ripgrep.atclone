@@ -1,1 +1,0 @@
-zinit creinstall -q ripgrep

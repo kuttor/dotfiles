@@ -1,6 +1,0 @@
-#! /usr/bin/env zsh
-
-if [ -d "$1" ] && [[ ":$INFOPATH:" != *":$1:"* ]]
-then
-  INFOPATH="$1${INFOPATH:+":$INFOPATH"}"
-fi
