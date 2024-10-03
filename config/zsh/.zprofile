@@ -4,11 +4,9 @@ ulimit -c unlimited
 
 # Core environment
 export LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-#export DOTFILES="${${(%):-%x}:a:h:h}"
-export DOTFILES="$HOME/.dotfiles"
-#export "DOT_{HOOKS,CONFIGS,FUNCTIONS,ZSH}_HOME"="$DOTFILES"/{hooks,config,functions,config/zsh}(N)
 
 # Set individual paths correctly
+export DOTFILES="$HOME/.dotfiles"
 export DOT_HOOKS_HOME="$DOTFILES/hooks"
 export DOT_CONFIGS_HOME="$DOTFILES/config"
 export DOT_FUNCTIONS_HOME="$DOTFILES/functions"
