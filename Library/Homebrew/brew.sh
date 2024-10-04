@@ -445,13 +445,13 @@ GIT_REVISION=$("${HOMEBREW_GIT}" -C "${HOMEBREW_REPOSITORY}" rev-parse HEAD 2>/d
 # safe fallback in case git rev-parse fails e.g. if this is not considered a safe git directory
 if [[ -z "${GIT_REVISION}" ]]
 then
-  read -r GIT_HEAD <"${HOMEBREW_REPOSITORY}/.git/HEAD" 2>/dev/null
+  read -r GIT_HEAD 2>/dev/null <"${HOMEBREW_REPOSITORY}/.git/HEAD"
   if [[ "${GIT_HEAD}" == "ref: refs/heads/master" ]]
   then
-    read -r GIT_REVISION <"${HOMEBREW_REPOSITORY}/.git/refs/heads/master" 2>/dev/null
+    read -r GIT_REVISION 2>/dev/null <"${HOMEBREW_REPOSITORY}/.git/refs/heads/master"
   elif [[ "${GIT_HEAD}" == "ref: refs/heads/stable" ]]
   then
-    read -r GIT_REVISION <"${HOMEBREW_REPOSITORY}/.git/refs/heads/stable" 2>/dev/null
+    read -r GIT_REVISION 2>/dev/null <"${HOMEBREW_REPOSITORY}/.git/refs/heads/stable"
   fi
   unset GIT_HEAD
 fi
