@@ -179,6 +179,8 @@ module Homebrew
       attestation
     end
 
+    ATTESTATION_MAX_RETRIES = 5
+
     # Verifies the given bottle against a cryptographic attestation of build provenance
     # from homebrew-core's CI, falling back on a "backfill" attestation for older bottles.
     #
@@ -246,6 +248,15 @@ module Homebrew
       end
 
       backfill_attestation
+    rescue InvalidAttestationError
+      @attestation_retry_count ||= T.let(Hash.new(0), T.nilable(T::Hash[Bottle, Integer]))
+      raise if @attestation_retry_count[bottle] >= ATTESTATION_MAX_RETRIES
+
+      sleep_time = 3 ** @attestation_retry_count[bottle]
+      opoo "Failed to verify attestation. Retrying in #{sleep_time}..."
+      sleep sleep_time if ENV["HOMEBREW_TESTS"].blank?
+      @attestation_retry_count[bottle] += 1
+      retry
     end
   end
 end
