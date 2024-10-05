@@ -234,7 +234,11 @@ module Utils
     end
 
     def curl_headers(*args, wanted_headers: [], **options)
-      [[], ["--request", "GET"]].each do |request_args|
+      get_retry_args = ["--request", "GET"]
+      # This is a workaround for https://github.com/Homebrew/brew/issues/18213
+      get_retry_args << "--http1.1" if curl_version >= Version.new("8.7") && curl_version < Version.new("8.10")
+
+      [[], get_retry_args].each do |request_args|
         result = curl_output(
           "--fail", "--location", "--silent", "--head", *request_args, *args,
           **options
@@ -494,9 +498,14 @@ module Utils
       T.must(file).unlink
     end
 
+    def curl_version
+      @curl_version ||= {}
+      @curl_version[curl_path] ||= Version.new(curl_output("-V").stdout[/curl (\d+(\.\d+)+)/, 1])
+    end
+
     def curl_supports_fail_with_body?
       @curl_supports_fail_with_body ||= Hash.new do |h, key|
-        h[key] = Version.new(curl_output("-V").stdout[/curl (\d+(\.\d+)+)/, 1]) >= Version.new("7.76.0")
+        h[key] = curl_version >= Version.new("7.76.0")
       end
       @curl_supports_fail_with_body[curl_path]
     end
