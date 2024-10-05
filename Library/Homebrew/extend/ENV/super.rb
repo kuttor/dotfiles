@@ -119,6 +119,7 @@ module Superenv
     # These flags will also be present:
     # a - apply fix for apr-1-config path
   end
+  alias generic_setup_build_environment setup_build_environment
 
   private
 
