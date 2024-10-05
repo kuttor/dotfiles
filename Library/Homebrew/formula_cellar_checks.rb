@@ -191,7 +191,7 @@ module FormulaCellarChecks
     EOS
   end
 
-  sig { params(lib: Pathname, deps: T::Array[Dependency]).returns(T.nilable(String)) }
+  sig { params(lib: Pathname, deps: Dependencies).returns(T.nilable(String)) }
   def check_python_packages(lib, deps)
     return unless lib.directory?
 
@@ -209,7 +209,8 @@ module FormulaCellarChecks
 
     return if pythons.blank?
 
-    python_deps = deps.map(&:name)
+    python_deps = deps.to_a
+                      .map(&:name)
                       .grep(/^python(@.*)?$/)
                       .filter_map { |d| Formula[d].version.to_s[/^\d+\.\d+/] }
 

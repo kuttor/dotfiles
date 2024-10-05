@@ -39,6 +39,11 @@ class Dependencies < SimpleDelegator
   def inspect
     "#<#{self.class.name}: #{__getobj__}>"
   end
+
+  sig { returns(T::Array[Dependency]) }
+  def to_a
+    __getobj__.to_a
+  end
 end
 
 # A collection of requirements.
