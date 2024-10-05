@@ -3,32 +3,38 @@
 
 require "system_command"
 
-class Keg
-  include SystemCommand::Mixin
-
-  # TODO: re-implement these as functions, so that we aren't modifying constants:
-  GENERIC_KEG_LINK_DIRECTORIES = (remove_const :KEG_LINK_DIRECTORIES).freeze
-  KEG_LINK_DIRECTORIES = (GENERIC_KEG_LINK_DIRECTORIES + ["Frameworks"]).freeze
-  GENERIC_MUST_EXIST_SUBDIRECTORIES = (remove_const :MUST_EXIST_SUBDIRECTORIES).freeze
-  MUST_EXIST_SUBDIRECTORIES = (
-    GENERIC_MUST_EXIST_SUBDIRECTORIES +
-    [HOMEBREW_PREFIX/"Frameworks"]
-  ).sort.uniq.freeze
-  GENERIC_MUST_EXIST_DIRECTORIES = (remove_const :MUST_EXIST_DIRECTORIES).freeze
-  MUST_EXIST_DIRECTORIES = (
-    GENERIC_MUST_EXIST_DIRECTORIES +
-    [HOMEBREW_PREFIX/"Frameworks"]
-  ).sort.uniq.freeze
-  GENERIC_MUST_BE_WRITABLE_DIRECTORIES = (remove_const :MUST_BE_WRITABLE_DIRECTORIES).freeze
-  MUST_BE_WRITABLE_DIRECTORIES = (
-    GENERIC_MUST_BE_WRITABLE_DIRECTORIES +
-    [HOMEBREW_PREFIX/"Frameworks"]
-  ).sort.uniq.freeze
-end
-
 module OS
   module Mac
     module Keg
+      include SystemCommand::Mixin
+
+      module ClassMethods
+        def keg_link_directories
+          @keg_link_directories ||= (super + ["Frameworks"]).freeze
+        end
+
+        def must_exist_subdirectories
+          @must_exist_subdirectories ||= (
+            super +
+            [HOMEBREW_PREFIX/"Frameworks"]
+          ).sort.uniq.freeze
+        end
+
+        def must_exist_directories
+          @must_exist_directories = (
+            super +
+            [HOMEBREW_PREFIX/"Frameworks"]
+          ).sort.uniq.freeze
+        end
+
+        def must_be_writable_directories
+          @must_be_writable_directories ||= (
+            super +
+            [HOMEBREW_PREFIX/"Frameworks"]
+          ).sort.uniq.freeze
+        end
+      end
+
       def binary_executable_or_library_files = mach_o_files
 
       def codesign_patched_binary(file)
@@ -121,4 +127,5 @@ module OS
   end
 end
 
+Keg.singleton_class.prepend(OS::Mac::Keg::ClassMethods)
 Keg.prepend(OS::Mac::Keg)

@@ -555,7 +555,7 @@ module Homebrew
     end
 
     def rm_ds_store(dirs = nil)
-      dirs ||= Keg::MUST_EXIST_DIRECTORIES + [
+      dirs ||= Keg.must_exist_directories + [
         HOMEBREW_PREFIX/"Caskroom",
       ]
       dirs.select(&:directory?)
@@ -623,7 +623,7 @@ module Homebrew
       dirs = []
       children_count = {}
 
-      Keg::MUST_EXIST_SUBDIRECTORIES.each do |dir|
+      Keg.must_exist_subdirectories.each do |dir|
         next unless dir.directory?
 
         dir.find do |path|
@@ -639,7 +639,7 @@ module Homebrew
                 path.unlink
               end
             end
-          elsif path.directory? && Keg::MUST_EXIST_SUBDIRECTORIES.exclude?(path)
+          elsif path.directory? && Keg.must_exist_subdirectories.exclude?(path)
             dirs << path
             children_count[path] = path.children.length if dry_run?
           end

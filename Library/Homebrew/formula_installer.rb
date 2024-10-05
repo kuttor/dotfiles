@@ -1229,7 +1229,7 @@ on_request: installed_on_request?, options:)
       sandbox.deny_write_homebrew_repository
       sandbox.allow_write_cellar(formula)
       sandbox.deny_all_network unless formula.network_access_allowed?(:postinstall)
-      Keg::KEG_LINK_DIRECTORIES.each do |dir|
+      Keg.keg_link_directories.each do |dir|
         sandbox.allow_write_path "#{HOMEBREW_PREFIX}/#{dir}"
       end
       sandbox.run(*args)

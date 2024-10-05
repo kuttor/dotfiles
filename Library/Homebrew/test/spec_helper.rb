@@ -272,7 +272,7 @@ RSpec.configure do |config|
 
       FileUtils.rm_rf [
         *TEST_DIRECTORIES,
-        *Keg::MUST_EXIST_SUBDIRECTORIES,
+        *Keg.must_exist_subdirectories,
         HOMEBREW_LINKED_KEGS,
         HOMEBREW_PINNED_KEGS,
         HOMEBREW_PREFIX/"var",
