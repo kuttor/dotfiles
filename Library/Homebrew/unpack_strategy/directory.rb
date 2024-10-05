@@ -16,33 +16,56 @@ module UnpackStrategy
       path.directory?
     end
 
+    sig {
+      params(
+        path:         T.any(String, Pathname),
+        ref_type:     T.nilable(Symbol),
+        ref:          T.nilable(String),
+        merge_xattrs: T::Boolean,
+        move:         T::Boolean,
+      ).void
+    }
+    def initialize(path, ref_type: nil, ref: nil, merge_xattrs: false, move: false)
+      super(path, ref_type:, ref:, merge_xattrs:)
+      @move = move
+    end
+
     private
 
     sig { override.params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).void }
     def extract_to_dir(unpack_dir, basename:, verbose:)
+      move_to_dir(unpack_dir, verbose:) if @move
       path_children = path.children
       return if path_children.empty?
 
-      existing = unpack_dir.children
+      system_command!("cp", args: ["-pR", *path_children, unpack_dir], verbose:)
+    end
 
-      # We run a few cp attempts in the following order:
-      #
-      # 1. Start with `-al` to create hardlinks rather than copying files if the source and
-      #    target are on the same filesystem. On macOS, this is the only cp option that can
-      #    preserve hardlinks but it is only available since macOS 12.3 (file_cmds-353.100.22).
-      # 2. Try `-a` as GNU `cp -a` preserves hardlinks. macOS `cp -a` is identical to `cp -pR`.
-      # 3. Fall back on `-pR` to handle the case where GNU `cp -a` failed. This may happen if
-      #    installing into a filesystem that doesn't support hardlinks like an exFAT USB drive.
-      cp_arg_attempts = ["-a", "-pR"]
-      cp_arg_attempts.unshift("-al") if path.stat.dev == unpack_dir.stat.dev
+    # Move all files from source `path` to target `unpack_dir`. Any existing
+    # subdirectories are not modified and only the contents are moved.
+    #
+    # @raise [RuntimeError] on unsupported `mv` operation, e.g. overwriting a file with a directory
+    sig { params(unpack_dir: Pathname, verbose: T::Boolean).void }
+    def move_to_dir(unpack_dir, verbose:)
+      path.find do |src|
+        next if src == path
 
-      cp_arg_attempts.each do |arg|
-        args = [arg, *path_children, unpack_dir]
-        must_succeed = print_stderr = (arg == cp_arg_attempts.last)
-        result = system_command("cp", args:, verbose:, must_succeed:, print_stderr:)
-        break if result.success?
+        dst = unpack_dir/src.relative_path_from(path)
+        if dst.exist?
+          dst_real_dir = dst.directory? && !dst.symlink?
+          src_real_dir = src.directory? && !src.symlink?
+          # Avoid moving a directory over an existing non-directory and vice versa.
+          # This outputs the same error message as GNU mv which is more readable than macOS mv.
+          raise "mv: cannot overwrite non-directory '#{dst}' with directory '#{src}'" if src_real_dir && !dst_real_dir
+          raise "mv: cannot overwrite directory '#{dst}' with non-directory '#{src}'" if !src_real_dir && dst_real_dir
+          # Defer writing over existing directories. Handle this later on to copy attributes
+          next if dst_real_dir
 
-        FileUtils.rm_r(unpack_dir.children - existing)
+          FileUtils.rm(dst, verbose:)
+        end
+
+        FileUtils.mv(src, dst, verbose:)
+        Find.prune
       end
     end
   end

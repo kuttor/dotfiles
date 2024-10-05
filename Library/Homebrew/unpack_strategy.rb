@@ -183,7 +183,7 @@ module UnpackStrategy
         FileUtils.chmod "u+w", path, verbose:
       end
 
-      Directory.new(tmp_unpack_dir).extract(to:, verbose:)
+      Directory.new(tmp_unpack_dir, move: true).extract(to:, verbose:)
     end
   end
 
