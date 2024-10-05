@@ -87,7 +87,7 @@ class AbstractTab
         "tap"          => nil,
         "tap_git_head" => nil,
       },
-      "built_on"                => DevelopmentTools.generic_build_system_info,
+      "built_on"                => DevelopmentTools.build_system_info,
     }
 
     new(attributes)

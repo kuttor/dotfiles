@@ -3,54 +3,64 @@
 
 require "macho"
 
+module OS
+  module Mac
+    module Hardware
+      module CPU
+        extend T::Helpers
+
+        # These methods use info spewed out by sysctl.
+        # Look in <mach/machine.h> for decoding info.
+        def type
+          case ::Hardware::CPU.sysctl_int("hw.cputype")
+          when MachO::Headers::CPU_TYPE_I386
+            :intel
+          when MachO::Headers::CPU_TYPE_ARM64
+            :arm
+          else
+            :dunno
+          end
+        end
+
+        def family
+          if ::Hardware::CPU.arm?
+            ::Hardware::CPU.arm_family
+          elsif ::Hardware::CPU.intel?
+            ::Hardware::CPU.intel_family
+          else
+            :dunno
+          end
+        end
+
+        # True when running under an Intel-based shell via Rosetta 2 on an
+        # Apple Silicon Mac. This can be detected via seeing if there's a
+        # conflict between what `uname` reports and the underlying `sysctl` flags,
+        # since the `sysctl` flags don't change behaviour under Rosetta 2.
+        def in_rosetta2?
+          ::Hardware::CPU.sysctl_bool("sysctl.proc_translated")
+        end
+
+        def features
+          @features ||= ::Hardware::CPU.sysctl_n(
+            "machdep.cpu.features",
+            "machdep.cpu.extfeatures",
+            "machdep.cpu.leaf7_features",
+          ).split.map { |s| s.downcase.to_sym }
+        end
+
+        def sse4?
+          ::Hardware::CPU.sysctl_bool("hw.optional.sse4_1")
+        end
+      end
+    end
+  end
+end
+
+Hardware::CPU.singleton_class.prepend(OS::Mac::Hardware::CPU)
+
 module Hardware
   class CPU
     class << self
-      undef type, family, features, sse4?
-
-      # These methods use info spewed out by sysctl.
-      # Look in <mach/machine.h> for decoding info.
-      def type
-        case sysctl_int("hw.cputype")
-        when MachO::Headers::CPU_TYPE_I386
-          :intel
-        when MachO::Headers::CPU_TYPE_ARM64
-          :arm
-        else
-          :dunno
-        end
-      end
-
-      def family
-        if arm?
-          arm_family
-        elsif intel?
-          intel_family
-        else
-          :dunno
-        end
-      end
-
-      # True when running under an Intel-based shell via Rosetta 2 on an
-      # Apple Silicon Mac. This can be detected via seeing if there's a
-      # conflict between what `uname` reports and the underlying `sysctl` flags,
-      # since the `sysctl` flags don't change behaviour under Rosetta 2.
-      def in_rosetta2?
-        sysctl_bool("sysctl.proc_translated")
-      end
-
-      def features
-        @features ||= sysctl_n(
-          "machdep.cpu.features",
-          "machdep.cpu.extfeatures",
-          "machdep.cpu.leaf7_features",
-        ).split.map { |s| s.downcase.to_sym }
-      end
-
-      def sse4?
-        sysctl_bool("hw.optional.sse4_1")
-      end
-
       def extmodel
         sysctl_int("machdep.cpu.extmodel")
       end
@@ -92,8 +102,6 @@ module Hardware
       def virtualized?
         sysctl_bool("kern.hv_vmm_present")
       end
-
-      private
 
       def arm_family
         case sysctl_int("hw.cpufamily")

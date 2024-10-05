@@ -152,11 +152,13 @@ module Superenv
     no_fixup_chains
 
     # Strip build prefixes from linker where supported, for deterministic builds.
-    append_to_cccfg "o" if DevelopmentTools.ld64_version >= 512
+    append_to_cccfg "o" if OS::Mac::DevelopmentTools.ld64_version >= 512
 
     # Pass `-ld_classic` whenever the linker is invoked with `-dead_strip_dylibs`
     # on `ld` versions that don't properly handle that option.
-    append_to_cccfg "c" if DevelopmentTools.ld64_version >= "1015.7" && DevelopmentTools.ld64_version <= "1022.1"
+    if OS::Mac::DevelopmentTools.ld64_version >= "1015.7" && OS::Mac::DevelopmentTools.ld64_version <= "1022.1"
+      append_to_cccfg "c"
+    end
   end
 
   def no_weak_imports

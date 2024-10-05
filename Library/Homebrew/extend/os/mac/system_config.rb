@@ -3,19 +3,25 @@
 
 require "system_command"
 
+module OS
+  module Mac
+    module SystemConfig
+      sig { returns(String) }
+      def describe_clang
+        return "N/A" if ::SystemConfig.clang.null?
+
+        clang_build_info = ::SystemConfig.clang_build.null? ? "(parse error)" : ::SystemConfig.clang_build
+        "#{::SystemConfig.clang} build #{clang_build_info}"
+      end
+    end
+  end
+end
+
+SystemConfig.prepend(OS::Mac::SystemConfig)
+
 module SystemConfig
   class << self
     include SystemCommand::Mixin
-
-    undef describe_clang
-
-    sig { returns(String) }
-    def describe_clang
-      return "N/A" if clang.null?
-
-      clang_build_info = clang_build.null? ? "(parse error)" : clang_build
-      "#{clang} build #{clang_build_info}"
-    end
 
     def xcode
       @xcode ||= if MacOS::Xcode.installed?
