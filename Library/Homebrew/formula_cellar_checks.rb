@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "utils/shell"
@@ -191,6 +191,7 @@ module FormulaCellarChecks
     EOS
   end
 
+  sig { params(lib: Pathname, deps: Dependencies).returns(T.nilable(String)) }
   def check_python_packages(lib, deps)
     return unless lib.directory?
 
@@ -208,7 +209,8 @@ module FormulaCellarChecks
 
     return if pythons.blank?
 
-    python_deps = deps.map(&:name)
+    python_deps = deps.to_a
+                      .map(&:name)
                       .grep(/^python(@.*)?$/)
                       .filter_map { |d| Formula[d].version.to_s[/^\d+\.\d+/] }
 
@@ -250,6 +252,7 @@ module FormulaCellarChecks
     EOS
   end
 
+  sig { params(prefix: Pathname, plist: Pathname).returns(T.nilable(String)) }
   def check_plist(prefix, plist)
     return unless prefix.directory?
 
@@ -412,7 +415,7 @@ module FormulaCellarChecks
 
   sig { void }
   def audit_installed
-    @new_formula ||= false
+    @new_formula ||= T.let(false, T.nilable(T::Boolean))
 
     problem_if_output(check_manpages)
     problem_if_output(check_infopages)
@@ -442,8 +445,9 @@ module FormulaCellarChecks
     File.directory?(dir) ? Dir.chdir(dir) { Dir[pattern] } : []
   end
 
-  def cpuid_instruction?(file, objdump = "objdump")
-    @instruction_column_index ||= {}
+  sig { params(file: T.any(Pathname, String), objdump: Pathname).returns(T::Boolean) }
+  def cpuid_instruction?(file, objdump)
+    @instruction_column_index ||= T.let({}, T.nilable(T::Hash[Pathname, Integer]))
     @instruction_column_index[objdump] ||= begin
       objdump_version = Utils.popen_read(objdump, "--version")
 

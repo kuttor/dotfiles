@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "cask/cask_loader"
@@ -6,6 +6,7 @@ require "utils/inreplace"
 
 module Cask
   class Migrator
+    sig { returns(Cask) }
     attr_reader :old_cask, :new_cask
 
     sig { params(old_cask: Cask, new_cask: Cask).void }
@@ -38,7 +39,10 @@ module Cask
       old_caskroom_path = old_cask.caskroom_path
       new_caskroom_path = new_cask.caskroom_path
 
-      old_installed_caskfile = old_cask.installed_caskfile.relative_path_from(old_caskroom_path)
+      old_caskfile = old_cask.installed_caskfile
+      return if old_caskfile.nil?
+
+      old_installed_caskfile = old_caskfile.relative_path_from(old_caskroom_path)
       new_installed_caskfile = old_installed_caskfile.dirname/old_installed_caskfile.basename.sub(
         old_token,
         new_token,
