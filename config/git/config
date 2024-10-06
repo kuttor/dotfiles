@@ -47,9 +47,6 @@
 	new = green bold
 	whitespace = red reverse
 
-[diff-so-fancy]
-	first-run = false
-
 [core]
   editor = nvim
   whitespace = trailing-space,space-before-tab
@@ -57,7 +54,6 @@
   attributesfile = ~/.gitattributes
   trustctime = false
   untrackedCache = true
-	pager = diff-so-fancy | less --tabs=4 -RFX
 
 [credential]
   helper = cache
@@ -68,8 +64,6 @@
 
 [diff]
   colorMoved = default
-  tool = diff-so-fancy --patch
-  guitool = meld
 
 [github]
   user = kuttor
@@ -77,8 +71,6 @@
 [help]
   autocorrect = 1
 
-[interactive]
-  diffFilter = diff-so-fancy --patch
 
 [merge]
   tool = meld

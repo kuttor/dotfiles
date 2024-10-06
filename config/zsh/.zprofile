@@ -40,7 +40,7 @@ set_xdg config MYVIMRC nvim
 set_xdg config NPM_CONFIG_USERCONFIG npm/npmrc
 set_xdg config PIP_CONFIG_FILE pip/pip.conf
 set_xdg config PYTHONSTARTUP python/startup.py
-set_xdg config RIPGREP_CONFIG_PATH ripgrep/config
+set_xdg config RIPGREP_CONFIG_PATH ripgrep/ripgreprc
 set_xdg config RUSTUP_HOME rustup
 set_xdg config SHELLSCRIPT_RC shellscriptrc
 set_xdg config VIMDOTDIR vim
@@ -97,40 +97,43 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=yes TERM=xterm-256color ITERM_24BIT=1
 export MANPAGER="sh -c 'col -bx | bat -l man -p'" PAGER=less EDITOR=nvim VISUAL=$EDITOR BAT_PAGER=less
 export LDFLAGS="-L/usr/local/opt/ruby/lib" CPPFLAGS="-I/usr/local/opt/ruby/include"
 
-# Paths
-typeset -U path fpath manpath infopath
+# remove duplicate paths from the PATH, MANPATH, INFOPATH, and FPATH
+typeset -Ugx FPATH fpath path PATH MANPATH manpath INFOPATH infopath
 
 path=(
-    $ZPFX/bin
-    /{sbin,bin}
-    /usr/{sbin,bin}
-    $HOME/.local/bin
-    /usr/local/bin
-    $HOME/bin
-    $HOMEBREW_PREFIX/{sbin,bin}
+    $ZPFX/bin(N-/)
+    /{sbin,bin}(N-/)
+    /usr/{sbin,bin}(N-/)
+    $HOME/.local/bin(N-/)
+    /usr/local/bin(N-/)
+    $HOME/bin(N-/)
+    $HOMEBREW_PREFIX/{sbin,bin}(N-/)
     $path
 )
 
 fpath=(
-    $HOME/.local/share/zsh/site-functions
-    /usr/local/share/zsh/5.8/site-functions
-    $ZSH_DATA_DIR/{site-functions,functions}
-    $HOMEBREW_PREFIX/opt/zsh-completions/share/zsh-completions
-    $HOMEBREW_PREFIX/{sbin,bin}
-    $HOMEBREW_PREFIX/completions/zsh
-    $HOMEBREW_PREFIX/share/zsh-completions
+    $HOME/.local/share/zsh/site-functions(N-/)
+    /usr/local/share/zsh/5.8/site-functions(N-/)
+    $ZSH_DATA_DIR/{site-functions,functions}(N-/)
+    /Users/akuttor/.local/share/zinit/plugins/brew/bin(N-/)
+    $HOMEBREW_PREFIX/opt/zsh-completions/share/zsh-completions(N-/)
+    $HOMEBREW_PREFIX/{sbin,bin}(N-/)
+    $HOMEBREW_PREFIX/completions/zsh(N-/)
+    $HOMEBREW_PREFIX/share/zsh-completions(N-/)
     $fpath
 )
 
 manpath=(
-    $HOMEBREW_PREFIX/share/man
+    $HOMEBREW_PREFIX/share/man(N-/)
     $manpath
 )
 
 infopath=(
-    $HOMEBREW_PREFIX/share/info
+    $HOMEBREW_PREFIX/share/info(N-/)
     $infopath
 )
 
 # Source antidot files
 source_if_exists $ANTIDOT_DIR/{env,alias}.sh
+
+

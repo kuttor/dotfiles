@@ -1,5 +1,4 @@
-#!/usr/bin/env
-# -*- coding: utf-8 -*-
+#!/usr/bin/env sh
 
 # you're so pretty
 --pretty
@@ -16,12 +15,16 @@
 # Sort by file path.
 --sort=path
 
-# Configure color settings and styles.
---colors=path:bg:0x3b,0x3b,0x3b
---colors=path:fg:white
---colors=line:fg:0xf2,0xc2,0x60
---colors=match:bg:0x2b,0x83,0xa6
---colors=match:fg:0xff,0xff,0xff
+# ...but not inside .git directories
+--glob=!.git/*
+
+# Mimic ag's color output:
+--colors=line:fg:yellow
+--colors=line:style:bold
+--colors=path:fg:green
+--colors=path:style:bold
+--colors=match:fg:black
+--colors=match:bg:yellow
 --colors=match:style:nobold
 
 # Don't let ripgrep vomit really long lines to my terminal, and show a preview.

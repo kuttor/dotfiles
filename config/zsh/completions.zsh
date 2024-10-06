@@ -1,51 +1,133 @@
 #! /usr/bin/env zsh
 
-# =============================================================================
-# -- completion system customizing --------------------------------------------
-# =============================================================================
-initialize_completions()
+# start the completion system
+initialize_completions
 
+# ==================================================================================================
+# -- load completions ------------------------------------------------------------------------------
+# ==================================================================================================
+zinit lucid as'completion' for 'https://github.com/chmln/sd/blob/master/gen/completions/_sd'
+zinit for atload='use rust.atload' as'null' id-as'rust' rustup sbin='bin/*' wait'1' @zdharma-continuum/nul
+
+# ==================================================================================================
+# -- configure completion system -------------------------------------------------------------------
+# ==================================================================================================
+
+# -- completion options --
+setopt ALWAYS_TO_END AUTO_LIST AUTO_MENU AUTO_PARAM_SLASH AUTO_REMOVE_SLASH
+setopt COMPLETE_IN_WORD GLOB_COMPLETE PATH_DIRS
+unsetopt FLOW_CONTROL MENU_COMPLETE
+
+# Use caching to make completion for commands such as dpkg and apt usable
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
+zstyle ':completion:*' rehash true
+
+# Case-insensitive (all), partial-word, and then substring completion
+if zstyle -t ':omz:completion:*' case-sensitive; then
+    zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+    setopt CASE_GLOB
+else
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+    unsetopt CASE_GLOB
+fi
+
+# General completion settings
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' complete-options true
-zstyle ':completion:*' completer _oldlist _expand _complete _ignored _match _correct _approximate _prefix
 zstyle ':completion:*' condition 0
 zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*' file-list all
 zstyle ':completion:*' file-sort name
-zstyle ':completion:*' format '%d'
+zstyle ':completion:*' format ' %F{8}completion:%f %B%F{yellow}%d%f%b'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' list-separator '→'
 zstyle ':completion:*' list-suffixes true
 zstyle ':completion:*' match-original both
-zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[]=** r:|=**' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*'
 zstyle ':completion:*' menu select=1
 zstyle ':completion:*' original true
 zstyle ':completion:*' preserve-prefix '//[^/]##/'
-zstyle ':completion:*' rehash true
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*' separate-sections true
-zstyle ':completion:*' special-dirs true
-zstyle ':completion:*' squeeze-slashes true
-zstyle ':completion:*' use-cache  true
 zstyle ':completion:*' use-compctl true
 zstyle ':completion:*' verbose true
 
+# Specific completion settings
 zstyle ':completion:*:*:*:*:corrections' format '%F{red}!- %d (errors: %e) -!%f'
-zstyle ':completion:*:cd:*' group-order local-directories path-directories
-zstyle ':completion:*:cd:*' tag-order local-directories path-directories
 zstyle ':completion:*:make:*:targets' call-command true
 zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
-zstyle :compinstall filename "$DOTFILES/configs/zsh/completions.zsh"
+zstyle ':completion:*:default' select-prompt '%B%S%M%b matches, current selection at %p%s'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description ' %F{8}specify:%f %B%F{cyan}%d%f%b'
+zstyle ':completion:*:corrections' format ' %F{8}correction:%f %B%F{green}%d (errors: %f%F{red}%e%f%F{green})%f%b'
+zstyle ':completion:*:descriptions' format ' %F{8}description:%f %B%F{blue}%d%f%b'
 
-# -- completion styles --
-#zstyle ':completion:*:messages'     format '%F{yellow}%d'
-#zstyle ':completion:*:warnings'     format '%B%F{red}No matches for:''%F{white}%d%b'
-#zstyle ':completion:*:descriptions' format '%B%F{white}--- %d ---%f%b'
-#zstyle ':completion:*:corrections'  format ' %F{green}%d (errors: %e) %f'
-#zstyle ':completion:*:options'      description 'yes'
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
+# Don't complete unavailable commands
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+
+# Array completion element sorting
+zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+
+# Ignore multiple entries
+zstyle ':completion:*:(rm|kill|diff):*' ignore-line yes
+zstyle ':completion:*:rm:*' file-patterns '*:all-files'
+
+# Fuzzy match mistyped completions
+zstyle ':completion:*' completer _oldlist _expand _complete _ignored _match _correct _approximate _prefix
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
+# Man
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+
+# ssh, rsync, sftp
+zstyle ':completion:*:(scp|rsync):*' tag-order 'hosts:-host' 'hosts:-domain:domain' 'hosts:-ipaddr:ip\ address' '*'
+zstyle ':completion:*:(scp|rsync):*' group-order users files all-files hosts-domain hosts-host hosts-ipaddr
+zstyle ':completion:*:ssh:*' tag-order users 'hosts:-host hosts:-domain:domain hosts:-ipaddr:ip\ address *'
+zstyle ':completion:*:ssh:*' group-order hosts-domain hosts-host users hosts-ipaddr
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*.*' loopback localhost
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^*.*' '*@*'
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^<->.<->.<->.<->' '127.0.0.<->'
+
+# Directories
+zstyle ':completion:*:cd:*' group-order local-directories path-directories
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+zstyle ':completion:*' squeeze-slashes true
+zstyle ':completion:*' special-dirs true
+
+# History
+zstyle ':completion:*:history-words' stop yes
+zstyle ':completion:*:history-words' remove-all-dups yes
+zstyle ':completion:*:history-words' list false
+zstyle ':completion:*:history-words' menu yes
+
+# Environmental Variables
+zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+
+# Populate hostname completion
+zstyle -e ':completion:*:hosts' hosts 'reply=(
+  ${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) 2>/dev/null)"}%%[#| ]*}//,/ }
+  ${=${(f)"$(cat /etc/hosts(|)(N) <<(ypcat hosts 2>/dev/null))"}%%\#*}
+  ${=${${${${(@M)${(f)"$(cat ~/.ssh/config 2>/dev/null)"}:#Host *}#Host }:#*\**}:#*\?*}}
+)'
+
+# Don't complete uninteresting users
+zstyle ':completion:*:*:*:users' ignored-patterns \
+  adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
+  dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
+  hacluster haldaemon halt hsqldb ident junkbust ldap lp mail \
+  mailman mailnull mldonkey mysql nagios \
+  named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
+  operator pcap postfix postgres privoxy pulse pvm quagga radvd \
+  rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs '_*'
+
+
+# Load completions
+autoload -Uz compinit && compinit -D
+autoload -Uz +X bashcompinit && bashcompinit -D

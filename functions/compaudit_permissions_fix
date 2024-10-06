@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+
+emulate -L zsh
+
+compaudit | xargs chmod g-w,o-w

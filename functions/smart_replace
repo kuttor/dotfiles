@@ -1,0 +1,84 @@
+#!/usr/bin/env zsh
+
+smart_replace() {
+  if [[ $# -lt 2 || $# -gt 3 ]]; then
+    echo "Usage: smart_replace <search_term> <replace_term> [target_folder]"
+    return 1
+  fi
+  local search_term="$1"
+  local replace_term="$2"
+  local target_folder="${3:-.}"  # Default to current directory if not specified
+
+  # Expand the path
+  target_folder=$(realpath "$target_folder")
+
+  echo "Searching in: $target_folder"
+  echo "Search term: $search_term"
+  echo "Replace term: $replace_term"
+
+  # Ensure target folder exists
+  if [[ ! -d "$target_folder" ]]; then
+    echo "Error: Target folder '$target_folder' does not exist."
+    return 1
+  fi
+
+  # Step 1: Find all text files containing the search term
+  echo "Finding files..."
+  local files
+  files=($(fd -t f . "$target_folder" -X file {} | rg "text" | cut -d: -f1))
+  
+  if [[ ${#files[@]} -eq 0 ]]; then
+    echo "No text files found in '$target_folder'."
+    return 0
+  fi
+
+  echo "Found ${#files[@]} text files."
+
+  local matching_files
+  matching_files=($(echo "${files[@]}" | xargs -I {} rg -l "$search_term" {} | sed 's/\x1b\[[0-9;]*m//g'))
+
+  if [[ ${#matching_files[@]} -eq 0 ]]; then
+    echo "No files found containing '$search_term' in '$target_folder'."
+    return 0
+  fi
+
+  echo "Found ${#matching_files[@]} files containing the search term."
+
+  # Step 2: Preview changes
+  local changes=()
+  for file in "${matching_files[@]}"; do
+    file=$(echo "$file" | sed 's/\x1b\[[0-9;]*m//g')  # Remove ANSI color codes
+    echo "Previewing changes in $file"
+    local preview
+    preview=$(sd -p "$search_term" "$replace_term" "$file")
+    if [[ -n "$preview" ]]; then
+      changes+=("$file")
+      echo "\nFile: $file"
+      echo "$preview"
+    fi
+  done
+  if [[ ${#changes[@]} -eq 0 ]]; then
+    echo "No changes to be made."
+    return 0
+  fi
+
+  # Step 3: Ask for confirmation
+  echo "\nDo you want to proceed with these changes? (yes/no): "
+  read -r confirmation
+  if [[ "${confirmation:l}" != "yes" ]]; then
+    echo "Operation cancelled."
+    return 0
+  fi
+
+  # Step 4: Apply changes
+  for file in "${changes[@]}"; do
+    if sd "$search_term" "$replace_term" "$file"; then
+      echo "Changes applied to: $file"
+    else
+      echo "Error: Unable to apply changes to file: $file"
+    fi
+  done
+  echo "Operation completed."
+
+  set +x  # Disable debugging output
+}
