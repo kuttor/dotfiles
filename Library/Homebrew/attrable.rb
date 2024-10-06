@@ -2,6 +2,10 @@
 # frozen_string_literal: true
 
 module Attrable
+  extend T::Helpers
+
+  requires_ancestor { Module }
+
   sig { params(attrs: Symbol).void }
   def attr_predicate(*attrs)
     attrs.each do |attr|

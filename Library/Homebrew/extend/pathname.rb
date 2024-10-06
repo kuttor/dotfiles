@@ -2,6 +2,10 @@
 # frozen_string_literal: true
 
 module DiskUsageExtension
+  extend T::Helpers
+
+  requires_ancestor { Pathname }
+
   sig { returns(Integer) }
   def disk_usage
     return @disk_usage if defined?(@disk_usage)
@@ -524,6 +528,10 @@ require "extend/os/pathname"
 require "context"
 
 module ObserverPathnameExtension
+  extend T::Helpers
+
+  requires_ancestor { Pathname }
+
   class << self
     include Context
 

@@ -11,7 +11,10 @@ require "development_tools"
 # @see Stdenv
 # @see https://www.rubydoc.info/stdlib/Env Ruby's ENV API
 module SharedEnvExtension
+  extend T::Helpers
   include CompilerConstants
+
+  requires_ancestor { Sorbet::Private::Static::ENVClass }
 
   CC_FLAG_VARS = %w[CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS].freeze
   private_constant :CC_FLAG_VARS
