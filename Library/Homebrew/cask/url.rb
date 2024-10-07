@@ -8,11 +8,23 @@ module Cask
   # Class corresponding to the `url` stanza.
   class URL < Delegator
     class DSL
-      attr_reader :uri, :specs,
-                  :verified, :using,
-                  :tag, :branch, :revisions, :revision,
-                  :trust_cert, :cookies, :referer, :header, :user_agent,
-                  :data, :only_path
+      attr_reader :uri, :tag, :branch, :revisions, :revision,
+                  :trust_cert, :cookies, :header, :data, :only_path
+
+      sig { returns(T.nilable(T.any(URI::Generic, String))) }
+      attr_reader :referer
+
+      sig { returns(T::Hash[Symbol, T.untyped]) }
+      attr_reader :specs
+
+      sig { returns(T.nilable(T.any(Symbol, String))) }
+      attr_reader :user_agent
+
+      sig { returns(T.any(T::Class[T.anything], Symbol, NilClass)) }
+      attr_reader :using
+
+      sig { returns(T.nilable(String)) }
+      attr_reader :verified
 
       extend Forwardable
       def_delegators :uri, :path, :scheme, :to_s
@@ -137,6 +149,8 @@ module Cask
         end
       end
 
+      private
+
       # Allows calling a nested `url` stanza in a `url do` block.
       #
       # @api public
@@ -150,7 +164,6 @@ module Cask
       def url(uri, &block)
         self.class.new(uri, dsl: @dsl, &block).call
       end
-      private :url
 
       # This allows calling DSL methods from inside a `url` block.
       #
@@ -162,12 +175,10 @@ module Cask
           super
         end
       end
-      private :method_missing
 
       def respond_to_missing?(method, include_all)
         @dsl.respond_to?(method, include_all) || super
       end
-      private :respond_to_missing?
     end
 
     sig {
@@ -244,29 +255,10 @@ module Cask
       @caller_location = caller_location
     end
 
-    def __getobj__
-      @dsl
-    end
-
-    def __setobj__(dsl)
-      @dsl = dsl
-    end
-
     sig { returns(Homebrew::SourceLocation) }
     def location
       Homebrew::SourceLocation.new(@caller_location.lineno, raw_url_line&.index("url"))
     end
-
-    sig { returns(T.nilable(String)) }
-    def raw_url_line
-      return @raw_url_line if defined?(@raw_url_line)
-
-      @raw_url_line = Pathname(T.must(@caller_location.path))
-                      .each_line
-                      .drop(@caller_location.lineno - 1)
-                      .first
-    end
-    private :raw_url_line
 
     sig { params(ignore_major_version: T::Boolean).returns(T::Boolean) }
     def unversioned?(ignore_major_version: false)
@@ -282,6 +274,24 @@ module Cask
     sig { returns(T::Boolean) }
     def from_block?
       @from_block
+    end
+
+    private
+
+    def __getobj__ = @dsl
+
+    def __setobj__(dsl)
+      @dsl = dsl
+    end
+
+    sig { returns(T.nilable(String)) }
+    def raw_url_line
+      return @raw_url_line if defined?(@raw_url_line)
+
+      @raw_url_line = Pathname(T.must(@caller_location.path))
+                      .each_line
+                      .drop(@caller_location.lineno - 1)
+                      .first
     end
   end
 end
