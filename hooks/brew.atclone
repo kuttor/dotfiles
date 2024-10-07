@@ -1,0 +1,6 @@
+
+# Generate and source Homebrew environment
+BREW_ENV_FILE="$HOME/.cache/brew_env.zsh"
+"$HOMEBREW_PREFIX/bin/brew" shellenv > "$BREW_ENV_FILE"
+zcompile "$BREW_ENV_FILE"
+source "$BREW_ENV_FILE"

@@ -1,16 +1,49 @@
 #!/usr/bin/env zsh
 
-export LSD_COMMONS="\
---almost-all \
---header \
---git \
---group-directories-first \
---config-file=$HOME/.config/lsd/config.yaml \
---icon-theme=fancy \
---color=always \
---human-readable \
---permission=rwx
-"
+local lsd_plugin="$HOME/.local/share/zinit/plugins/lsd"
+local completion_dir="$HOME/.local/share/zinit/completions"
+local lsd_version
+local _lsd
 
-alias ll="lsd $LSD_COMMONS "
-alias lstree="lsd $LSD_COMMONS --tree "
+# Check if lsd is installed and get its version
+if ! lsd_version=$(lsd --version 2>/dev/null | cut -d ' ' -f 2); then
+    echo "lsd is not installed. Please install it first."
+    return 1
+fi
+
+_lsd="$lsd_plugin/lsd-${lsd_version}-aarch64-apple-darwin/autocomplete/_lsd"
+
+# Function to update completion file
+update_completion() {
+    if [[ -f "$_lsd" ]]; then
+        mkdir -p "$completion_dir"
+        cp -f "$_lsd" "$completion_dir/_lsd" && echo "Updated lsd completion file."
+    else
+        echo "Error: lsd completion file not found at $_lsd"
+        return 1
+    fi
+}
+
+# Check if update is needed
+if [[ ! -f "$completion_dir/_lsd" ]]; then
+    update_completion
+elif ! diff -q "$_lsd" "$completion_dir/_lsd" &>/dev/null; then
+    update_completion
+else
+    echo "lsd completion is up to date."
+fi
+
+# Ensure the plugin directory exists
+if [[ ! -d "$lsd_plugin" ]]; then
+    zinit ice wait lucid from"gh-r" as"program" pick"lsd*/lsd"
+    zinit light LukeSmithxyz/lsd
+fi
+
+# Set up aliases
+alias ls='lsd'
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
+
+# ... any additional lsd configuration ...

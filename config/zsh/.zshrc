@@ -121,9 +121,9 @@ zi for                                                                          
 
 zi for                                                                                             \
   id-as'p10k'                              depth'1'                                    @romkatv/powerlevel10k                   \
-  id-as'brew'      sbin'bin/brew -> brew'  depth'3'      atload'use brew.atload'       @homebrew/brew                           \
+  id-as'brew' sbin'bin/brew -> brew'  depth'3' atload'use brew.atload' atclone'use brew.atclone' @homebrew/brew                           \
   id-as'zeno'      sbin'**/zeno -> zeno'   depth'1'      atload'use zeno.atload'       @yuki-yano/zeno.zsh                      \
-  id-as'tealdeer'  sbin'tealdeer* -> tldr'               atload'use tealdeer.atload'   @dbrgn/tealdeer                          \
+  id-as'tealdeer'  sbin'tealdeer* -> tldr'                                             @dbrgn/tealdeer                          \
   id-as'git-fuzzy' sbin'bin/git-fuzzy -> gfuzzy' blockf  atload'use git-fuzzy.atload'  @bigH/git-fuzzy                          \
   id-as'url-hl'    sbin'url/url* -> url-highlighter'     atload'use url-hl.atload'     @ascii-soup/zsh-url-highlighter
 
