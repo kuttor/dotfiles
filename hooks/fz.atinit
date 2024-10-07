@@ -1,3 +1,0 @@
-FZ_HISTORY_CD_CMD=zshz
-FZ_CMD=zd
-FZ_SUBDIR_CMD=zds

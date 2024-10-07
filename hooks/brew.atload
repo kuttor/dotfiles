@@ -1,0 +1,48 @@
+#!/usr/bin/env zsh
+
+# Set up Homebrew environment
+local BREW_PATH="$HOME/.local/share/zinit/plugins/brew"
+eval "$("$BREW_PATH/bin/brew" shellenv)"
+
+# Update Homebrew
+if [[ -z "$HOMEBREW_NO_AUTO_UPDATE" ]]; then
+  "$HOMEBREW_PREFIX/bin/brew" update --preinstall
+fi
+
+# Set up Homebrew completions
+$BREW_PATH/bin/brew generate-man-completions
+local completions_dir="$HOME/.local/share/zinit/completions"
+mkdir -p "$completions_dir"
+ln -fs "$HOMEBREW_PREFIX/share/zsh/site-functions/_brew" "$completions_dir/_brew"
+
+# Generate and source Homebrew environment
+BREW_ENV_FILE="$HOME/.cache/brew_env.zsh"
+"$HOMEBREW_PREFIX/bin/brew" shellenv > "$BREW_ENV_FILE"
+zcompile "$BREW_ENV_FILE"
+source "$BREW_ENV_FILE"
+
+# Update PATH
+path=(
+  "$BREW_PATH/bin"
+  "$BREW_PATH/sbin"
+  $path
+)
+
+# Update MANPATH and INFOPATH
+[[ -z "${MANPATH-}" ]] && export MANPATH=":${MANPATH#:}"
+export INFOPATH="$BREW_PATH/share/info:${INFOPATH:-}"
+
+# Load Homebrew-installed command-not-found handler, if available
+if [[ -f "$HOMEBREW_PREFIX/share/zsh/site-functions/command-not-found.zsh" ]]; then
+  source "$HOMEBREW_PREFIX/share/zsh/site-functions/command-not-found.zsh"
+fi
+
+# Set up Homebrew-specific environment variables
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_INSECURE_REDIRECT=1
+export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
+export HOMEBREW_BAT=1
+export HOMEBREW_BAT_CONFIG_PATH="$XDG_CONFIG_HOME/bat.conf"
+export HOMEBREW_BAT_CONFIG_PATH=1
+

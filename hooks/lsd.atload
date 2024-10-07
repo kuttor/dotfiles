@@ -1,4 +1,16 @@
 #!/usr/bin/env zsh
-# -*- coding: utf-8 -*-
 
-export LSD_COMMONS="--almost-all --header --git --group-directories-first --config-file=$CONFIGS/lsd/config.yaml --icon=always --icon-theme=always --color=always --human-readable --permission=rwx"
+export LSD_COMMONS="\
+--almost-all \
+--header \
+--git \
+--group-directories-first \
+--config-file=$HOME/.config/lsd/config.yaml \
+--icon-theme=fancy \
+--color=always \
+--human-readable \
+--permission=rwx
+"
+
+alias ll="lsd $LSD_COMMONS "
+alias lstree="lsd $LSD_COMMONS --tree "

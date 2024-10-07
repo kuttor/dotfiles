@@ -22,12 +22,22 @@ alias ll=eza \
 --oneline \
 --colour=always
 
+# -- cd --
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+
 # bat or ccat if available
 if command -v bat >/dev/null 2>&1; then
   alias bat="cat"
 elif command -v ccat >/dev/null 2>&1; then
   alias ccat="cat"
 fi
+
+# -- suffix aliases --
+alias -s {md,markdown,rst,toml,json,conf,zsh,py,yaml,yml,sh}=code
 
 # -- mac specific --
 alias pbc="pbcopy"

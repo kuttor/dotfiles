@@ -1,0 +1,27 @@
+#! /usr/bin/env zsh
+
+emulate -L zsh
+
+# We cannot truncate the alias result here:
+# Otherwise, the preview window would not know about it,
+# as the preview is executed in a subshell which does not know the aliases.
+local preview
+
+preview=" \
+echo {} | cut --delimiter='=' --fields=2 \
+        | sed s/^\'// \
+        | sed s/\'$// \
+        | bat --plain \
+              --language bash \
+              --theme ansi \
+              --color always\
+"
+
+alias |\
+  sed 's/alias //g' |\
+  bat --plain \
+      --language bash \
+      --theme ansi \
+      --color always |\
+  fzf-tmux -p90% --preview "${preview}" |\
+  while read -r item; do echo "${item}"; done
