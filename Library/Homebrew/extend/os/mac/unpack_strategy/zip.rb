@@ -6,6 +6,10 @@ require "system_command"
 module UnpackStrategy
   class Zip
     module MacOSZipExtension
+      extend T::Helpers
+
+      requires_ancestor { UnpackStrategy }
+
       private
 
       sig { params(unpack_dir: Pathname, basename: Pathname, verbose: T::Boolean).void }

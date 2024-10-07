@@ -6,6 +6,8 @@ require "os/linux/ld"
 # {Pathname} extension for dealing with ELF files.
 # @see https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header
 module ELFShim
+  extend T::Helpers
+
   MAGIC_NUMBER_OFFSET = 0
   private_constant :MAGIC_NUMBER_OFFSET
   MAGIC_NUMBER_ASCII = "\x7fELF"
@@ -39,6 +41,8 @@ module ELFShim
   private_constant :ARCHITECTURE_X86_64
   ARCHITECTURE_AARCH64 = 0xB7
   private_constant :ARCHITECTURE_AARCH64
+
+  requires_ancestor { Pathname }
 
   def read_uint8(offset)
     read(1, offset).unpack1("C")

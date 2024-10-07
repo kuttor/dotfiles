@@ -1,9 +1,5 @@
 # typed: strict
 
-module AbstractDownloadStrategy::Pourable
-  requires_ancestor { AbstractDownloadStrategy }
-end
-
 # This is a third-party implementation
 # rubocop:disable Lint/StructNewOverride
 class Mechanize::HTTP

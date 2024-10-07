@@ -4,8 +4,12 @@
 module Cask
   # Helper module for reading and writing cask metadata.
   module Metadata
+    extend T::Helpers
+
     METADATA_SUBDIR = ".metadata"
     TIMESTAMP_FORMAT = "%Y%m%d%H%M%S.%L"
+
+    requires_ancestor { Cask }
 
     def metadata_main_container_path(caskroom_path: self.caskroom_path)
       caskroom_path.join(METADATA_SUBDIR)

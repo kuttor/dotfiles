@@ -10,6 +10,7 @@ module Downloadable
   extend T::Helpers
 
   abstract!
+  requires_ancestor { Kernel }
 
   sig { overridable.returns(T.nilable(URL)) }
   attr_reader :url

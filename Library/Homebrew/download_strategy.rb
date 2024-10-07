@@ -31,6 +31,10 @@ class AbstractDownloadStrategy
 
   # Extension for bottle downloads.
   module Pourable
+    extend T::Helpers
+
+    requires_ancestor { AbstractDownloadStrategy }
+
     def stage
       ohai "Pouring #{basename}"
       super

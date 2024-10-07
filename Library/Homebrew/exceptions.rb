@@ -197,6 +197,10 @@ end
 
 # Shared methods for formula unreadable errors.
 module FormulaUnreadableErrorModule
+  extend T::Helpers
+
+  requires_ancestor { FormulaOrCaskUnavailableError }
+
   attr_reader :formula_error
 
   sig { returns(String) }
