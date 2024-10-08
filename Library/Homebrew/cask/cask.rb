@@ -117,7 +117,7 @@ module Cask
       @dsl.language_eval
     end
 
-    DSL::DSL_METHODS.each do |method_name|
+    ::Cask::DSL::DSL_METHODS.each do |method_name|
       define_method(method_name) { |&block| @dsl.send(method_name, &block) }
     end
 

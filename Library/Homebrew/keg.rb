@@ -78,6 +78,32 @@ class Keg
   # Locale-specific directories have the form `language[_territory][.codeset][@modifier]`
   LOCALEDIR_RX = %r{(locale|man)/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?}
   INFOFILE_RX = %r{info/([^.].*?\.info(\.gz)?|dir)$}
+  KEG_LINK_DIRECTORIES = %w[
+    bin etc include lib sbin share var
+  ].freeze
+  MUST_EXIST_SUBDIRECTORIES = (
+    KEG_LINK_DIRECTORIES - %w[var] + %w[
+      opt
+      var/homebrew/linked
+    ]
+  ).map { |dir| HOMEBREW_PREFIX/dir }.sort.uniq.freeze
+  MUST_BE_WRITABLE_DIRECTORIES = (
+    %w[
+      etc/bash_completion.d lib/pkgconfig
+      share/aclocal share/doc share/info share/locale share/man
+      share/man/man1 share/man/man2 share/man/man3 share/man/man4
+      share/man/man5 share/man/man6 share/man/man7 share/man/man8
+      share/zsh share/zsh/site-functions
+      var/log
+    ].map { |dir| HOMEBREW_PREFIX/dir } + MUST_EXIST_SUBDIRECTORIES + [
+      HOMEBREW_CACHE,
+      HOMEBREW_CELLAR,
+      HOMEBREW_LOCKS,
+      HOMEBREW_LOGS,
+      HOMEBREW_REPOSITORY,
+      Language::Python.homebrew_site_packages,
+    ]
+  ).sort.uniq.freeze
 
   # These paths relative to the keg's share directory should always be real
   # directories in the prefix, never symlinks.
