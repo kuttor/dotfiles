@@ -325,7 +325,7 @@ module Homebrew
       end
 
       def attempt_directory_creation
-        Keg::MUST_EXIST_DIRECTORIES.each do |dir|
+        Keg.must_exist_directories.each do |dir|
           FileUtils.mkdir_p(dir) unless dir.exist?
         rescue
           nil
