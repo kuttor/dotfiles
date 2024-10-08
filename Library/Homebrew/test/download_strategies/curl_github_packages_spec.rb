@@ -27,6 +27,8 @@ RSpec.describe CurlGitHubPackagesDownloadStrategy do
     before do
       stub_const("HOMEBREW_GITHUB_PACKAGES_AUTH", authorization) if authorization.present?
 
+      allow(strategy).to receive(:curl_version).and_return(Version.new("8.7.1"))
+
       allow(strategy).to receive(:system_command)
         .with(
           /curl/,
