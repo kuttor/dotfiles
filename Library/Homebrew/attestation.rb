@@ -253,7 +253,7 @@ module Homebrew
       raise if @attestation_retry_count[bottle] >= ATTESTATION_MAX_RETRIES
 
       sleep_time = 3 ** @attestation_retry_count[bottle]
-      opoo "Failed to verify attestation. Retrying in #{sleep_time}..."
+      opoo "Failed to verify attestation. Retrying in #{sleep_time}s..."
       sleep sleep_time if ENV["HOMEBREW_TESTS"].blank?
       @attestation_retry_count[bottle] += 1
       retry
