@@ -32,6 +32,15 @@ RSpec.describe "pkg-config", :needs_ci, type: :system do
 
   let(:sdk) { MacOS.sdk_path_if_needed }
 
+  it "returns the correct version for bzip2" do
+    version = File.foreach("#{sdk}/usr/include/bzlib.h")
+                  .lazy
+                  .grep(%r{^\s*bzip2/libbzip2 version (\S+) of }) { Regexp.last_match(1) }
+                  .first
+
+    expect(pc_version("bzip2")).to eq(version)
+  end
+
   it "returns the correct version for expat" do
     version = File.foreach("#{sdk}/usr/include/expat.h")
                   .lazy
