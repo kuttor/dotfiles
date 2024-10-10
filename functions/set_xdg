@@ -1,37 +1,37 @@
-emulate -L zsh
-setopt err_return nounset pipefail
 
-local type=$1 var=$2 path=$3
-local xdg_type xdg_var xdg_home full_path
+set_xdg() {
+       local TYPE="$1" VAR="$2" PATH="$3"
+       local XDG_TYPE XDG_VAR XDG_HOME FULL_PATH SOURCE_PATH
 
-case ${(L)type} in
-    xdgconfig|config) xdg_type="CONFIG" ;;
-    xdgdata|data)     xdg_type="DATA" ;;
-    xdgcache|cache)   xdg_type="CACHE" ;;
-    *) print -u2 "Unknown XDG type: $type"
-       return 1 ;;
-esac
+       XDG_TYPE="${TYPE:l}"
+       case "${XDG_TYPE}" in
+           xdgconfig|config) XDG_TYPE="config" ;;
+           xdgdata|data)     XDG_TYPE="data" ;;
+           xdgcache|cache)   XDG_TYPE="cache" ;;
+           *) print -u2 "Unknown XDG type: ${TYPE}"; return 1 ;;
+       esac
 
-xdg_var="XDG_${xdg_type}_HOME"
+       XDG_VAR="XDG_${(U)XDG_TYPE}_HOME"
+       XDG_HOME="${(P)${XDG_VAR}:-}"
 
-# Use a default value if the variable is not set
-xdg_home="${(P)xdg_var:-}"
-if [[ -z "$xdg_home" ]]; then
-    case $xdg_type in
-        CONFIG) xdg_home="$HOME/.config" ;;
-        DATA)   xdg_home="$HOME/.local/share" ;;
-        CACHE)  xdg_home="$HOME/.cache" ;;
-    esac
-fi
+       if [[ -z "${XDG_HOME}" ]]; then
+           case "${XDG_TYPE}" in
+               config) XDG_HOME="${HOME}/.config" ;;
+               data)   XDG_HOME="${HOME}/.local/share" ;;
+               cache)  XDG_HOME="${HOME}/.cache" ;;
+               *) print -u2 "Error: Invalid XDG_TYPE '${XDG_TYPE}'"; return 1 ;;
+           esac
+       fi
 
-full_path="$xdg_home/$path"
-export $var="$full_path"
+       FULL_PATH="${XDG_HOME}/${PATH}"
+       SOURCE_PATH="${HOME}/.dotfiles/${XDG_TYPE}/${PATH}"
+       export ${VAR}="${FULL_PATH}"
 
-# Ensure the directory exists
-if [[ ! -e "${full_path:h}" ]]; then
-    if ! /bin/mkdir -p "${full_path:h}"; then
-        print -u2 "Error: Failed to create directory ${full_path:h}"
-        return 1
-    fi
-fi
+      # # Create symbolic link if it doesn't exist
+      # if [[ ! -e "${FULL_PATH}" ]]; then
+      #     print -u2 "Creating symbolic link: ${FULL_PATH} -> ${SOURCE_PATH}"
+      #     /bin/ln -s "${SOURCE_PATH}" "${FULL_PATH}" || { print -u2 "Failed to create symbolic link"; return 1; }
+      #rn  fi
 
+       print "Set ${VAR} to ${FULL_PATH}"
+   }

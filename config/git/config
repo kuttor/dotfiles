@@ -1,5 +1,4 @@
 #! /usr/bin/env gitconfig
-#vim:set syntax=gitconfig filetype=gitconfig 
 
 [alias]
   aliases       = "!git config --get-regexp alias | cut -c 7-"
@@ -14,6 +13,9 @@
   tracked       = "!git ls-tree -r master --name-only"
   uncommit      = "reset --soft HEAD~1"
   users         = "shortlog --summary -"
+  who           = "shortlog --summary --numbered --email" 
+  info          = "status --short --branch"
+  name          = "basename $(git config --get remote.origin.url)"
 
 [advice]
   pushNonFastForward = false

@@ -165,7 +165,3 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 #zstyle -e '*' list-colors 'reply=(${(s[:])LS_COLORS})'
 
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
-
-# Load completions
-autoload -Uz compinit && compinit -D
-autoload -Uz +X bashcompinit && bashcompinit -D

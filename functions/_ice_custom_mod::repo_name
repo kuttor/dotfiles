@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+
+# ~/.dotfiles/zsh/functions/_ice_custom_mod::repo_name
+
+# ice_custom_mod::repo_name
+#
+# A custom function to extract the repository name from a GitHub repository path.
+# This is used to generate consistent and meaningful id-as values for Zinit plugins.
+#
+# Usage:
+#   1. Autoload the function:
+#      autoload -Uz _ice_custom_mod::repo_name
+#
+#   2. Use in Zinit default-ice command:
+#      zi default-ice id-as"$ice_custom_mod::repo_name" ...
+#
+# The function will automatically be called for each plugin,
+# extracting the repo name from the full path.
+# Call the function with the provided arguments
+
+ice_custom_mod::repo_name() {
+    local input="$1"
+    local repo_name="${${input#@}:t}"
+    echo "${repo_name//[^a-zA-Z0-9_]/_}"
+}

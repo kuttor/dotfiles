@@ -25,51 +25,48 @@ if [[ -d "$DOT_FUNCTIONS_HOME" ]]; then
     done
 fi
 
-# Set utilities config paths
-set_xdg config BAT_CONFIG_PATH       bat.conf
-set_xdg config CARGO_HOME            rust
-set_xdg config CURL_HOME             curl
-set_xdg config DOCKER_CONFIG         docker
-set_xdg config EDITORCONFIG_RC       editorconfigrc
-set_xdg config EXA_CONFIG_PATH       exa.conf
-set_xdg config FZF_CONFIG_PATH       fzf.conf
-set_xdg config GIT_CONFIG            git/config
-set_xdg config GNUPGHOME             gnupg
-set_xdg config INPUTRC               inputrc
-set_xdg config LESSKEY               less/lesskey
-set_xdg config MYVIMRC               nvim/nvim.confs
-set_xdg config NPM_CONFIG_USERCONFIG npm/npmrc
-set_xdg config PIP_CONFIG_FILE       pip/pip.conf
-set_xdg config PYTHONSTARTUP 	       python/startup.py
-set_xdg config RIPGREP_CONFIG_PATH   ripgrep/ripgreprc
-set_xdg config RUSTUP_HOME           rustup/
-set_xdg config SHELLSCRIPT_RC        shellscriptrc
-set_xdg config VIMDOTDIR             vim/
-set_xdg config WGETRC                wget/wgetrc
-set_xdg config ZDOTDIR               zsh/
-set_xdg config ZENO_HOME             zeno/
-set_xdg config ZSH_TMUX_CONFIG 	     tmux/tmux.conf
-
-# set utilities data paths
-set_xdg data ANTIDOT_DIR antidot
-set_xdg data GEM_HOME gem
-set_xdg data NODE_PATH node
-set_xdg data TERMINFO terminfo
-set_xdg data TMUX_PLUGIN_MANAGER_PATH tmux/plugins
-set_xdg data ZINIT_HOME zinit/zinit.git
-set_xdg data ZPFX zinit/polaris
-
-# set utilities cache paths
-set_xdg cache HISTFILE zsh/.zsh_history
-set_xdg cache LESSHISTFILE less/history
-set_xdg cache NODE_REPL_HISTORY node_repl_history
-set_xdg cache ZSH_CACHE_DIR zsh
+# Example usage
+set_xdg "config" "BAT_CONFIG_PATH" "bat.conf"
+set_xdg "config" "CARGO_HOME" "rust"
+set_xdg "config" "CURL_HOME" "curl"
+set_xdg "config" "DOCKER_CONFIG" "docker"
+set_xdg "config" "EDITORCONFIG_RC" "editorconfigrc"
+set_xdg "config" "EXA_CONFIG_PATH" "exa.conf"
+set_xdg "config" "FZF_CONFIG_PATH" "fzf.conf"
+set_xdg "config" "GIT_CONFIG" "git/config"
+set_xdg "config" "GNUPGHOME" "gnupg"
+set_xdg "config" "INPUTRC" "inputrc"
+set_xdg "config" "LESSKEY" "less/lesskey"
+set_xdg "config" "MYVIMRC" "nvim/nvim.confs"
+set_xdg "config" "NPM_CONFIG_USERCONFIG" "npm/npmrc"
+set_xdg "config" "PIP_CONFIG_FILE" "pip/pip.conf"
+set_xdg "config" "PYTHONSTARTUP" "python/startup.py"
+set_xdg "config" "RIPGREP_CONFIG_PATH" "ripgrep/ripgreprc"
+set_xdg "config" "RUSTUP_HOME" "rustup/"
+set_xdg "config" "SHELLSCRIPT_RC" "shellscriptrc"
+set_xdg "config" "VIMDOTDIR" "vim/"
+set_xdg "config" "WGETRC" "wget/wgetrc"
+set_xdg "config" "ZDOTDIR" "zsh/"
+set_xdg "config" "ZENO_HOME" "zeno/"
+set_xdg "config" "ZSH_TMUX_CONFIG" "tmux/tmux.conf"
+set_xdg "data" "ANTIDOT_DIR" "antidot"
+set_xdg "data" "GEM_HOME" "gem"
+set_xdg "data" "NODE_PATH" "node"
+set_xdg "data" "TERMINFO" "terminfo"
+set_xdg "data" "TMUX_PLUGIN_MANAGER_PATH" "tmux/plugins"
+set_xdg "data" "ZINIT_HOME" "zinit/zinit.git"
+set_xdg "data" "ZPFX" "zinit/polaris"
+set_xdg "cache" "HISTFILE" "zsh/.zsh_history"
+set_xdg "cache" "LESSHISTFILE" "less/history"
+set_xdg "cache" "NODE_REPL_HISTORY" "node_repl_history"
+set_xdg "cache" "ZSH_CACHE_DIR" "zsh"
 
 # history
 export HISTSIZE=10000 SAVEHIST=$HISTSIZE
 
 # Zsh
-export HELPDIR="/usr/share/zsh" && mkdir -p "$HELPDIR"
+export HELPDIR="/usr/share/zsh"
+# mkdir -p "$HELPDIR"
 
 # Terminal and environment
 export TIMEFMT="%u user %s system %p cpu %*es total"

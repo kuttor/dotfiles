@@ -21,7 +21,7 @@ setopt LOCAL_OPTIONS EXTENDED_GLOB
 
 
   # recompile all zsh or sh
-  for f in "$ZDOTDI/*.zsh"; do
+  for f in "$ZDOTDIRD/*.zsh"; do
     zrecompile -pq $f
     done
 ) &!
