@@ -1343,6 +1343,21 @@ on_request: installed_on_request?, options:)
       ohai "Verifying attestation for #{formula.name}"
       begin
         Homebrew::Attestation.check_core_attestation T.must(formula.bottle)
+      rescue Homebrew::Attestation::GhIncompatible
+        # A small but significant number of users have developer mode enabled
+        # but *also* haven't upgraded in a long time, meaning that their `gh`
+        # version is too old to perform attestations.
+        raise CannotInstallFormulaError, <<~EOS
+          The bottle for #{formula.name} could not be verified.
+
+          This typically indicates an outdated or incompatible `gh` CLI.
+
+          Please confirm that you're running the latest version of `gh`
+          by performing an upgrade before retrying:
+
+            brew update
+            brew upgrade gh
+        EOS
       rescue Homebrew::Attestation::GhAuthInvalid
         # Only raise an error if we explicitly opted-in to verification.
         raise CannotInstallFormulaError, <<~EOS if Homebrew::EnvConfig.verify_attestations?
