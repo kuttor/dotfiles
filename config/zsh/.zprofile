@@ -12,7 +12,6 @@ export DOT_ZSH_HOME="$DOTFILES/config/zsh"
 export DOT_CONFIGS_HOME="$DOTFILES/config"
 export DOT_FUNCTIONS_HOME="$DOTFILES/functions"
 
-
 fpath=($DOT_FUNCTIONS_HOME fpath)
 
 setopt EXTENDED_GLOB
@@ -103,7 +102,8 @@ fpath=(
 )
 
 manpath=(
-    $HOMEBREW_PREFIX/share/man
+    /usr/share/man(/N)
+    $HOME/.local/share/zinit/plugins/brew/manpages(/N)
     $manpath
 )
 

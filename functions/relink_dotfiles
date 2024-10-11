@@ -1,0 +1,46 @@
+#! /usr/bin/env zsh
+
+relink_dotfiles() {
+    local source_dir="$HOME/.dotfiles/config"
+    local target_dir
+
+    if [ ! -d "$source_dir" ]; then
+        echo "Source directory $source_dir does not exist. Please check the path."
+        return 1
+    fi
+
+    echo "Choose your configuration directory:"
+    select choice in "Standard Linux config location ($HOME/.config)" "macOS config location ($HOME/Library/Application Support)"; do
+        case $REPLY in
+            1)
+                target_dir="$HOME/.config"
+                break
+                ;;
+            2)
+                target_dir="$HOME/Library/Application Support"
+                break
+                ;;
+            *)
+                echo "Invalid choice. Please enter 1 or 2."
+                ;;
+        esac
+    done
+
+    if [ ! -d "$target_dir" ]; then
+        read -p "Target directory $target_dir does not exist. Create it? (y/n): " create_choice
+        if [[ "$create_choice" =~ ^[Yy]$ ]]; then
+            mkdir -p "$target_dir"
+            echo "Created directory $target_dir."
+        else
+            echo "Aborting operation."
+            return 1
+        fi
+    fi
+
+    echo "Relinking $source_dir to $target_dir..."
+    ln -sfn "$source_dir" "$target_dir"
+    echo "Relinked successfully."
+}
+
+# Call the function if the script is executed directly
+relink_dotfiles

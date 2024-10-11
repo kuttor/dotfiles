@@ -1,0 +1,35 @@
+#! /usr/bin/env zsh
+
+export GF_GREP_COLOR='1;30;48;5;15'
+export GF_PREFERRED_PAGER="delta --theme=gruvbox --highlight-removed -w __WIDTH__"
+
+# set them for `git fuzzy` only
+export GF_BAT_STYLE=changes
+export GF_BAT_THEME=zenburn
+
+# OR set these globally for all `bat` instances
+export BAT_STYLE=changes
+export BAT_THEME=zenburn
+
+# any non-empty value will result in skipping remotes (including 'no')
+export GF_BRANCH_SKIP_REMOTE_BRANCHES="yes"
+
+# for `git fuzzy log`
+export GF_LOG_MENU_PARAMS='--pretty="%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --topo-order'
+
+# for `git fuzzy reflog`
+export GF_REFLOG_MENU_PARAMS='--pretty=fuzzyformat'
+
+# when diffing with branches or commits for preview
+export GF_DIFF_COMMIT_PREVIEW_DEFAULTS="--patch-with-stat"
+
+# when diffing with branches or commits for preview
+export GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS="--summary"
+
+# when diffing individual files
+export GF_DIFF_FILE_PREVIEW_DEFAULTS="--indent-heuristic"
+
+export GIT_FUZZY_STATUS_ADD_KEY='Ctrl-A'
+
+export GF_SNAPSHOT_DIRECTORY='$XDA_CACHE_HOME/.git-fuzzy-snapshots/'
+mkdir -p $GF_SNAPSHOT_DIRECTORY

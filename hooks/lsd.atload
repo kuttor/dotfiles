@@ -10,4 +10,5 @@ alias lha='lsd -lha'
 alias lha='lsd -lha'
 alias lha='lsd -lha'
 alias lha='lsd -lha'
-o
+
+zinit creinstall lsd

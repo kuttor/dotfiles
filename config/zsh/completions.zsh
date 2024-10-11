@@ -12,6 +12,13 @@ zinit for atload='use rust.atload' as'null' id-as'rust' rustup sbin='bin/*' wait
 # ==================================================================================================
 # -- configure completion system -------------------------------------------------------------------
 # ==================================================================================================
+# generic completions for programs which understand GNU long options(--help)
+zicompdef _gnu_generic aomenc ar aria2c bandwhich curl cwebp cjxl darkhttpd direnv docker \
+  dunst emacs feh ffmpeg ffprobe flask fsck.ext4 fzf gocryptfs hexyl highlight histdb inkscape ktlint light lighttpd \
+  lsd mimeo megadl mkfs.vfat nzbget notify-send pamixer pip pip3 pipx psmem pw-cli rofi rustc \
+  tlmgr tlp tlp-stat \
+  vue zstd
+
 
 # -- completion options --
 setopt ALWAYS_TO_END AUTO_LIST AUTO_MENU AUTO_PARAM_SLASH AUTO_REMOVE_SLASH

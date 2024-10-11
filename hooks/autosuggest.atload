@@ -27,3 +27,5 @@ bindkey "^[[C" autosuggest_partial_wordwise
 
 # Add autosuggest_partial_wordwise to IGNORE
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(autosuggest_partial_wordwise)
+
+_zsh_autosuggest_start

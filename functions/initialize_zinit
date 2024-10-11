@@ -16,23 +16,25 @@ ZINIT[PLUGINS_DIR]="${ZINIT[HOME_DIR]}/plugins"
 ZINIT[COMPLETIONS_DIR]="${ZINIT[HOME_DIR]}/completions"
 ZINIT[SNIPPETS_DIR]="${ZINIT[HOME_DIR]}/snippets"
 ZINIT[ZCOMPDUMP_PATH]="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
+ZINIT[COMPINIT_OPTS]=" -C"
+ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]=1
+ZINIT[NO_ALIASES]=1
+ZINIT[LIST_COMMAND]="lsd"
+ZINIT[INSTALL_URL]="https://github.com/zdharma-continuum/zinit.git"
 
 # Install Zinit if not already installed
-if [[ ! -f $ZINIT_HOME/bin/zinit.zsh ]]; then
-  print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-  command mkdir -p "$ZINIT_HOME/bin" && command chmod g-rwX "$ZINIT_HOME/bin"
-  command git clone https://github.com/zdharma-continuum/zinit "$ZINIT_HOME/bin" && \
-  print -P "%F{33} %F{34}Installation successful.%f%b" || \
-  print -P "%F{160} The clone has failed.%f%b"
-fi
+[[ ! -f $ZINIT_HOME/bin/zinit.zsh ]] &&
+  command mkdir -p "$ZINIT_HOME/bin" &&
+  command chmod g-rwX "$ZINIT_HOME/bin" &&
+  command git clone "${ZINIT[INSTALL_URL]}" "$ZINIT_HOME/bin"
 
 # Source Zinit
 [[ -f "$ZINIT_HOME/bin/zinit.zsh" ]] && . "$ZINIT_HOME/bin/zinit.zsh"
 
-# enhances zinits abilites via ice-enhancing annexes 
-zinit for id-as'gem-node'      @zdharma-continuum/zinit-annex-bin-gem-node                        \
-          id-as'bin-symlink'   @zdharma-continuum/zinit-annex-binary-symlink                      \
-          id-as'default-ice'   @zdharma-continuum/zinit-annex-default-ice                         \
-          id-as'patch-dl'      @zdharma-continuum/zinit-annex-patch-dl                            \
-          id-as'rust'          @zdharma-continuum/zinit-annex-rust
-
+# enhances zinits abilites via ice-enhancing annexes
+zinit for \
+  id-as'gem-node' @zdharma-continuum/zinit-annex-bin-gem-node \
+  id-as'bin-symlink' @zdharma-continuum/zinit-annex-binary-symlink \
+  id-as'default-ice' @zdharma-continuum/zinit-annex-default-ice \
+  id-as'patch-dl' @zdharma-continuum/zinit-annex-patch-dl \
+  id-as'rust' @zdharma-continuum/zinit-annex-rust

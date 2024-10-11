@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-_lsd="$ZINIT_HOME/plugins/lsd/lsd-${lsd_version}-aarch64-apple-darwin/autocomplete/_lsd"
-cp --force --verbose "$_lsd" "$ZINIT_HOME/completions/_lsd"
-
-
