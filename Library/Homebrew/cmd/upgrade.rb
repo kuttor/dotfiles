@@ -154,8 +154,6 @@ module Homebrew
           end
         end
 
-        Install.perform_preinstall_checks
-
         if formulae.blank?
           outdated = Formula.installed.select do |f|
             f.outdated?(fetch_head: args.fetch_HEAD?)
@@ -211,6 +209,8 @@ module Homebrew
           end
           puts formulae_upgrades.join("\n")
         end
+
+        Install.perform_preinstall_checks_once
 
         Upgrade.upgrade_formulae(
           formulae_to_install,

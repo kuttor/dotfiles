@@ -126,16 +126,35 @@ module Homebrew
 
         formulae = Homebrew::Attestation.sort_formulae_for_install(formulae) if Homebrew::Attestation.enabled?
 
-        Install.perform_preinstall_checks
+        unless formulae.empty?
+          Install.perform_preinstall_checks_once
 
-        formulae.each do |formula|
-          if formula.pinned?
-            onoe "#{formula.full_name} is pinned. You must unpin it to reinstall."
-            next
+          formulae.each do |formula|
+            if formula.pinned?
+              onoe "#{formula.full_name} is pinned. You must unpin it to reinstall."
+              next
+            end
+            Migrator.migrate_if_needed(formula, force: args.force?)
+            Homebrew::Reinstall.reinstall_formula(
+              formula,
+              flags:                      args.flags_only,
+              installed_on_request:       args.named.present?,
+              force_bottle:               args.force_bottle?,
+              build_from_source_formulae: args.build_from_source_formulae,
+              interactive:                args.interactive?,
+              keep_tmp:                   args.keep_tmp?,
+              debug_symbols:              args.debug_symbols?,
+              force:                      args.force?,
+              debug:                      args.debug?,
+              quiet:                      args.quiet?,
+              verbose:                    args.verbose?,
+              git:                        args.git?,
+            )
+            Cleanup.install_formula_clean!(formula)
           end
-          Migrator.migrate_if_needed(formula, force: args.force?)
-          Homebrew::Reinstall.reinstall_formula(
-            formula,
+
+          Upgrade.check_installed_dependents(
+            formulae,
             flags:                      args.flags_only,
             installed_on_request:       args.named.present?,
             force_bottle:               args.force_bottle?,
@@ -147,25 +166,8 @@ module Homebrew
             debug:                      args.debug?,
             quiet:                      args.quiet?,
             verbose:                    args.verbose?,
-            git:                        args.git?,
           )
-          Cleanup.install_formula_clean!(formula)
         end
-
-        Upgrade.check_installed_dependents(
-          formulae,
-          flags:                      args.flags_only,
-          installed_on_request:       args.named.present?,
-          force_bottle:               args.force_bottle?,
-          build_from_source_formulae: args.build_from_source_formulae,
-          interactive:                args.interactive?,
-          keep_tmp:                   args.keep_tmp?,
-          debug_symbols:              args.debug_symbols?,
-          force:                      args.force?,
-          debug:                      args.debug?,
-          quiet:                      args.quiet?,
-          verbose:                    args.verbose?,
-        )
 
         if casks.any?
           Cask::Reinstall.reinstall_casks(

@@ -30,11 +30,12 @@ module Homebrew
     ].freeze
     private_constant :GCC_RUNTIME_LIBS
 
-    def self.perform_preinstall_checks(all_fatal: false, cc: nil)
-      generic_perform_preinstall_checks(all_fatal:, cc:)
+    def self.perform_preinstall_checks(all_fatal: false)
+      generic_perform_preinstall_checks(all_fatal:)
       symlink_ld_so
       setup_preferred_gcc_libs
     end
+    private_class_method :perform_preinstall_checks
 
     def self.global_post_install
       generic_global_post_install
