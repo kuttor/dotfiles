@@ -11,6 +11,10 @@ on:
   release:
     types:
       - published
+permissions:
+  contents: read # for code access
+  attestations: write # for actions/attest-build-provenance
+  id-token: write # for actions/attest-build-provenance
 env:
   PKG_APPLE_DEVELOPER_TEAM_ID: ${{ secrets.PKG_APPLE_DEVELOPER_TEAM_ID }}
   HOMEBREW_NO_ANALYTICS_THIS_RUN: 1
@@ -123,6 +127,11 @@ jobs:
           then
             security delete-keychain "${RUNNER_TEMP}/${TEMPORARY_KEYCHAIN_FILE}"
           fi
+
+      - name: Generate build provenance
+        uses: actions/attest-build-provenance@5e9cb68e95676991667494a6a4e59b8a2f13e1d0 # v1.3.3
+        with:
+          subject-path: Homebrew-${{ steps.homebrew-version.outputs.version }}.pkg
 
       - name: Upload installer to GitHub Actions
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
