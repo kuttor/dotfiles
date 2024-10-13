@@ -93,6 +93,11 @@ module Superenv
     # Prevent Go from automatically downloading a newer toolchain than the one that we have.
     # https://tip.golang.org/doc/toolchain
     self["GOTOOLCHAIN"] = "local"
+    # Prevent Python packages from using bundled libraries by default.
+    # Currently for hidapi, pyzmq and pynacl
+    self["HIDAPI_SYSTEM_HIDAPI"] = "1"
+    self["PYZMQ_NO_BUNDLE"] = "1"
+    self["SODIUM_INSTALL"] = "system"
 
     set_debug_symbols if debug_symbols
 
