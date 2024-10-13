@@ -11,15 +11,24 @@ module Homebrew
   # Helper module for performing (pre-)install checks.
   module Install
     class << self
-      def perform_preinstall_checks(all_fatal: false, cc: nil)
-        check_prefix
-        check_cpu
-        attempt_directory_creation
-        check_cc_argv(cc)
-        Diagnostic.checks(:supported_configuration_checks, fatal: all_fatal)
-        Diagnostic.checks(:fatal_preinstall_checks)
+      sig { params(all_fatal: T::Boolean).void }
+      def perform_preinstall_checks_once(all_fatal: false)
+        @perform_preinstall_checks_once ||= {}
+        @perform_preinstall_checks_once[all_fatal] ||= begin
+          perform_preinstall_checks(all_fatal:)
+          true
+        end
       end
-      alias generic_perform_preinstall_checks perform_preinstall_checks
+
+      def check_cc_argv(cc)
+        return unless cc
+
+        @checks ||= Diagnostic::Checks.new
+        opoo <<~EOS
+          You passed `--cc=#{cc}`.
+          #{@checks.please_create_pull_requests}
+        EOS
+      end
 
       def perform_build_from_source_checks(all_fatal: false)
         Diagnostic.checks(:fatal_build_from_source_checks)
@@ -315,15 +324,14 @@ module Homebrew
 
       private
 
-      def check_cc_argv(cc)
-        return unless cc
-
-        @checks ||= Diagnostic::Checks.new
-        opoo <<~EOS
-          You passed `--cc=#{cc}`.
-          #{@checks.please_create_pull_requests}
-        EOS
+      def perform_preinstall_checks(all_fatal: false)
+        check_prefix
+        check_cpu
+        attempt_directory_creation
+        Diagnostic.checks(:supported_configuration_checks, fatal: all_fatal)
+        Diagnostic.checks(:fatal_preinstall_checks)
       end
+      alias generic_perform_preinstall_checks perform_preinstall_checks
 
       def attempt_directory_creation
         Keg.must_exist_directories.each do |dir|

@@ -368,6 +368,7 @@ on_request: true)
             force:                   false,
           ).install
         else
+          Homebrew::Install.perform_preinstall_checks_once
           fi = FormulaInstaller.new(
             cask_or_formula,
             **{
