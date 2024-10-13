@@ -11,10 +11,6 @@ on:
   release:
     types:
       - published
-permissions:
-  contents: read # for code access
-  attestations: write # for actions/attest-build-provenance
-  id-token: write # for actions/attest-build-provenance
 env:
   PKG_APPLE_DEVELOPER_TEAM_ID: ${{ secrets.PKG_APPLE_DEVELOPER_TEAM_ID }}
   HOMEBREW_NO_ANALYTICS_THIS_RUN: 1
@@ -35,6 +31,10 @@ jobs:
       TEMPORARY_KEYCHAIN_FILE: 'homebrew_installer_signing.keychain-db'
       # Set to the oldest supported version of macOS
       HOMEBREW_MACOS_OLDEST_SUPPORTED: '13.0'
+    permissions:
+      contents: read # for code access
+      attestations: write # for actions/attest-build-provenance
+      id-token: write # for actions/attest-build-provenance
     steps:
       - name: Remove existing API cache (to force update)
         run: rm -rvf ~/Library/Caches/Homebrew/api
