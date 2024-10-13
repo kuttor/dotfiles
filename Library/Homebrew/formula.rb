@@ -2804,7 +2804,7 @@ class Formula
 
     mktemp("#{name}-test") do |staging|
       staging.retain! if keep_tmp
-      @testpath = staging.tmpdir
+      @testpath = T.must(staging.tmpdir)
       test_env[:HOME] = @testpath
       setup_home @testpath
       begin
@@ -3125,8 +3125,16 @@ class Formula
   # recursively delete the temporary directory. Passing `opts[:retain]`
   # or calling `do |staging| ... staging.retain!` in the block will skip
   # the deletion and retain the temporary directory's contents.
-  def mktemp(prefix = name, opts = {}, &block)
-    Mktemp.new(prefix, opts).run(&block)
+  sig {
+    params(
+      prefix:          String,
+      retain:          T::Boolean,
+      retain_in_cache: T::Boolean,
+      block:           T.proc.params(arg0: Mktemp).void,
+    ).void
+  }
+  def mktemp(prefix = name, retain: false, retain_in_cache: false, &block)
+    Mktemp.new(prefix, retain:, retain_in_cache:).run(&block)
   end
 
   # A version of `FileUtils.mkdir` that also changes to that folder in
