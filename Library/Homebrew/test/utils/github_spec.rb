@@ -58,7 +58,7 @@ RSpec.describe GitHub do
     it "fails to find artifacts that don't exist" do
       expect do
         described_class.get_artifact_urls(
-          described_class.get_workflow_run("Homebrew", "homebrew-core", "135608",
+          described_class.get_workflow_run("Homebrew", "homebrew-core", "191680",
                                            workflow_id: "triage.yml", artifact_pattern: "false_artifact"),
         )
       end.to raise_error(/No artifacts with the pattern .+ were found/)
@@ -66,10 +66,10 @@ RSpec.describe GitHub do
 
     it "gets artifact URLs" do
       urls = described_class.get_artifact_urls(
-        described_class.get_workflow_run("Homebrew", "homebrew-core", "135608",
+        described_class.get_workflow_run("Homebrew", "homebrew-core", "191680",
                                          workflow_id: "triage.yml", artifact_pattern: "event_payload"),
       )
-      expect(urls).to eq(["https://api.github.com/repos/Homebrew/homebrew-core/actions/artifacts/781984175/zip"])
+      expect(urls).to eq(["https://api.github.com/repos/Homebrew/homebrew-core/actions/artifacts/1969725476/zip"])
     end
 
     it "supports pattern matching" do
