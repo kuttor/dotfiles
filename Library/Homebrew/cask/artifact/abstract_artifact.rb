@@ -12,7 +12,6 @@ module Cask
       abstract!
 
       include Comparable
-      extend Attrable
 
       def self.english_name
         @english_name ||= T.must(name).sub(/^.*:/, "").gsub(/(.)([A-Z])/, '\1 \2')

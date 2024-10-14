@@ -7,7 +7,6 @@ require "dependable"
 #
 # @api internal
 class Dependency
-  extend Forwardable
   include Dependable
   extend Cachable
 

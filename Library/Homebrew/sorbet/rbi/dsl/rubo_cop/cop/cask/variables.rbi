@@ -6,6 +6,9 @@
 
 
 class RuboCop::Cop::Cask::Variables
+  sig { params(args: T.untyped, block: T.untyped).returns(T.untyped) }
+  def cask_node(*args, &block); end
+
   sig do
     params(
       node: RuboCop::AST::Node,

@@ -6,7 +6,7 @@ require "utils/curl"
 
 module Cask
   # Class corresponding to the `url` stanza.
-  class URL < Delegator
+  class URL < SimpleDelegator
     class DSL
       attr_reader :uri, :tag, :branch, :revisions, :revision,
                   :trust_cert, :cookies, :header, :data, :only_path
@@ -277,12 +277,6 @@ module Cask
     end
 
     private
-
-    def __getobj__ = @dsl
-
-    def __setobj__(dsl)
-      @dsl = dsl
-    end
 
     sig { returns(T.nilable(String)) }
     def raw_url_line

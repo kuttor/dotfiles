@@ -21,7 +21,6 @@ module RuboCop
       # ```
       class Url < Base
         extend AutoCorrector
-        extend Forwardable
         include OnUrlStanza
         include UrlHelper
 
