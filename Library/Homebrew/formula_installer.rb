@@ -1306,43 +1306,33 @@ on_request: installed_on_request?, options:)
 
     oh1 "Fetching #{Formatter.identifier(formula.full_name)}".strip
 
-    if pour_bottle?(output_warning: true)
+    downloadable_object = downloadable
+    check_attestation = if pour_bottle?(output_warning: true)
       fetch_bottle_tab
+
+      !downloadable_object.cached_download.exist?
     else
       @formula = Homebrew::API::Formula.source_download(formula) if formula.loaded_from_api?
 
       formula.fetch_patches
       formula.resources.each(&:fetch)
+
+      false
     end
-    downloadable.fetch
+    downloadable_object.fetch
 
-    self.class.fetched << formula
-  end
-
-  sig { returns(Downloadable) }
-  def downloadable
-    if (bottle_path = formula.local_bottle_path)
-      Resource::Local.new(bottle_path)
-    elsif pour_bottle?
-      T.must(formula.bottle)
-    else
-      T.must(formula.resource)
-    end
-  end
-
-  sig { void }
-  def pour
     # We skip `gh` to avoid a bootstrapping cycle, in the off-chance a user attempts
     # to explicitly `brew install gh` without already having a version for bootstrapping.
     # We also skip bottle installs from local bottle paths, as these are done in CI
     # as part of the build lifecycle before attestations are produced.
-    if Homebrew::Attestation.enabled? &&
+    if check_attestation &&
+       Homebrew::Attestation.enabled? &&
        formula.tap&.core_tap? &&
        formula.name != "gh" &&
        formula.local_bottle_path.blank?
       ohai "Verifying attestation for #{formula.name}"
       begin
-        Homebrew::Attestation.check_core_attestation T.must(formula.bottle)
+        Homebrew::Attestation.check_core_attestation T.cast(downloadable_object, Bottle)
       rescue Homebrew::Attestation::GhIncompatible
         # A small but significant number of users have developer mode enabled
         # but *also* haven't upgraded in a long time, meaning that their `gh`
@@ -1399,6 +1389,28 @@ on_request: installed_on_request?, options:)
       end
     end
 
+    self.class.fetched << formula
+  rescue CannotInstallFormulaError
+    if (cached_download = downloadable_object&.cached_download)&.exist?
+      cached_download.unlink
+    end
+
+    raise
+  end
+
+  sig { returns(Downloadable) }
+  def downloadable
+    if (bottle_path = formula.local_bottle_path)
+      Resource::Local.new(bottle_path)
+    elsif pour_bottle?
+      T.must(formula.bottle)
+    else
+      T.must(formula.resource)
+    end
+  end
+
+  sig { void }
+  def pour
     HOMEBREW_CELLAR.cd do
       downloadable.downloader.stage
     end
