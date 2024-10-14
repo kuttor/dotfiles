@@ -43,15 +43,17 @@ module GitHub
         type: Symbol, message: String,
         file: T.nilable(T.any(String, Pathname)),
         line: T.nilable(Integer)
-      ).void
+      ).returns(T::Boolean)
     }
     def self.puts_annotation_if_env_set(type, message, file: nil, line: nil)
       # Don't print annotations during tests, too messy to handle these.
-      return if ENV.fetch("HOMEBREW_TESTS", false)
-      return unless env_set?
+      return false if ENV.fetch("HOMEBREW_TESTS", false)
+      return false unless env_set?
 
       std = (type == :notice) ? $stdout : $stderr
       std.puts Annotation.new(type, message)
+
+      true
     end
 
     # Helper class for formatting annotations on GitHub Actions.

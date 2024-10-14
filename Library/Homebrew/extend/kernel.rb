@@ -64,9 +64,10 @@ module Kernel
   # @api public
   sig { params(message: T.any(String, Exception)).void }
   def opoo(message)
+    return if GitHub::Actions.puts_annotation_if_env_set(:warning, message.to_s)
+
     Tty.with($stderr) do |stderr|
       stderr.puts Formatter.warning(message, label: "Warning")
-      GitHub::Actions.puts_annotation_if_env_set(:warning, message.to_s)
     end
   end
 
@@ -75,12 +76,13 @@ module Kernel
   # @api public
   sig { params(message: T.any(String, Exception)).void }
   def onoe(message)
-    require "utils/formatter"
     require "utils/github/actions"
+    return if GitHub::Actions.puts_annotation_if_env_set(:error, message.to_s)
+
+    require "utils/formatter"
 
     Tty.with($stderr) do |stderr|
       stderr.puts Formatter.error(message, label: "Error")
-      GitHub::Actions.puts_annotation_if_env_set(:error, message.to_s)
     end
   end
 
@@ -178,8 +180,6 @@ module Kernel
       exception.set_backtrace(backtrace)
       raise exception
     elsif !Homebrew.auditing?
-      require "utils/github/actions"
-      GitHub::Actions.puts_annotation_if_env_set(:warning, message, file:, line:)
       opoo message
     end
   end
