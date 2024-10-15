@@ -275,10 +275,9 @@ class Tap
   sig { returns(T.nilable(String)) }
   def remote_repository
     return unless (remote = self.remote)
+    return unless (match = remote.match(HOMEBREW_TAP_REPOSITORY_REGEX))
 
-    @remote_repository ||= remote.delete_prefix("https://github.com/")
-                                 .delete_prefix("git@github.com:")
-                                 .delete_suffix(".git")
+    @remote_repository ||= T.must(match[:remote_repository])
   end
 
   # @deprecated
