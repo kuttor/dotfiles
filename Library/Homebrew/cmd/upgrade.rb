@@ -120,6 +120,10 @@ module Homebrew
 
       sig { override.void }
       def run
+        if args.build_from_source? && args.named.empty?
+          raise ArgumentError, "--build-from-source requires at least one formula"
+        end
+
         formulae, casks = args.named.to_resolved_formulae_to_casks
         # If one or more formulae are specified, but no casks were
         # specified, we want to make note of that so we don't
