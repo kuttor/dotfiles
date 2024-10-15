@@ -6,11 +6,9 @@ gem:
     - json
     # These aren't needed:
     - coderay
-    - commander
     - diff-lcs
     - docile
     - hana
-    - highline
     - language_server-protocol
     - netrc
     - parallel

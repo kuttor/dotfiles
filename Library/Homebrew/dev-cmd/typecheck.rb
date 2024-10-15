@@ -66,7 +66,6 @@ module Homebrew
 
             ohai "Updating Tapioca RBI files..."
             safe_system "bundle", "exec", "tapioca", "gem", *tapioca_args
-            safe_system "bundle", "exec", "parlour"
 
             if args.suggest_typed?
               ohai "Checking if we can bump Sorbet `typed` sigils..."

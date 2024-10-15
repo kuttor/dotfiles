@@ -25,7 +25,6 @@ UNDEFINED_CONSTANTS = %w[
   Minitest
   Nokogiri
   OS::Mac::Version
-  Parlour
   PatchELF
   Pry
   ProgressBar
