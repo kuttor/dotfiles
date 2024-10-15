@@ -13,6 +13,11 @@ HOMEBREW_DEFAULT_TAP_FORMULA_REGEX = T.let(
   %r{\A(?:[Hh]omebrew/(?:homebrew-)?core/)?(?<name>#{HOMEBREW_TAP_FORMULA_NAME_REGEX.source})\Z},
   Regexp,
 )
+# Match taps' remote repository, e.g. `someuser/somerepo`.
+HOMEBREW_TAP_REPOSITORY_REGEX = T.let(
+  %r{\A.+[/:](?<remote_repository>[^/:]+/[^/:]+?(?=\.git/*\Z|/*\Z))},
+  Regexp,
+)
 
 # Match a cask token.
 HOMEBREW_TAP_CASK_TOKEN_REGEX = T.let(/(?<token>[\w+\-.@]+)/, Regexp)
