@@ -12,9 +12,7 @@ module Tapioca
       ConstantType = type_member { { fixed: Module } }
 
       sig { override.returns(T::Enumerable[Module]) }
-      def self.gather_constants
-        ObjectSpace.each_object(Attrable).map { |obj| obj.name.nil? ? obj.attached_object : obj }
-      end
+      def self.gather_constants = Homebrew::Tapioca::Utils.named_objects_with_module(Attrable)
 
       sig { override.void }
       def decorate
