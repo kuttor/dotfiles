@@ -64,7 +64,10 @@ module Kernel
   # @api public
   sig { params(message: T.any(String, Exception)).void }
   def opoo(message)
+    require "utils/github/actions"
     return if GitHub::Actions.puts_annotation_if_env_set(:warning, message.to_s)
+
+    require "utils/formatter"
 
     Tty.with($stderr) do |stderr|
       stderr.puts Formatter.warning(message, label: "Warning")
