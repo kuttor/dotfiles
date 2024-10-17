@@ -3798,8 +3798,8 @@ command execution e.g. `$(cat file)`.
 
 `HOMEBREW_FORBIDDEN_LICENSES`
 
-: A space-separated list of licenses. Homebrew will refuse to install a formula
-  if it or any of its dependencies has a license on this list.
+: A space-separated list of SPDX license identifiers. Homebrew will refuse to
+  install a formula if it or any of its dependencies has a license on this list.
 
 `HOMEBREW_FORBIDDEN_OWNER`
 

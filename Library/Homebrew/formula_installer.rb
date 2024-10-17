@@ -1482,8 +1482,25 @@ on_request: installed_on_request?, options:)
       pattern = /#{s.to_s.tr("_", " ")}/i
       forbidden_licenses.sub!(pattern, s.to_s)
     end
-    forbidden_licenses = forbidden_licenses.split.to_h do |license|
-      [license, SPDX.license_version_info(license)]
+
+    invalid_licenses = []
+    forbidden_licenses = forbidden_licenses.split.each_with_object({}) do |license, hash|
+      unless SPDX.valid_license?(license)
+        invalid_licenses << license
+        next
+      end
+
+      hash[license] = SPDX.license_version_info(license)
+    end
+
+    if invalid_licenses.present?
+      opoo <<~EOS
+        HOMEBREW_FORBIDDEN_LICENSES contains invalid license identifiers: #{invalid_licenses.to_sentence}
+        These licenses will not be forbidden. See the valid SPDX license identifiers at:
+          #{Formatter.url("https://spdx.org/licenses/")}
+        And the licenses for a formula with:
+          brew info <formula>
+      EOS
     end
 
     return if forbidden_licenses.blank?
@@ -1501,7 +1518,7 @@ on_request: installed_on_request?, options:)
         raise CannotInstallFormulaError, <<~EOS
           The installation of #{formula.name} has a dependency on #{dep.name} where all
           its licenses were forbidden by #{owner} in `HOMEBREW_FORBIDDEN_LICENSES`:
-            #{SPDX.license_expression_to_string dep_f.license}.#{owner_contact}
+            #{SPDX.license_expression_to_string dep_f.license}#{owner_contact}
         EOS
       end
     end
@@ -1512,7 +1529,7 @@ on_request: installed_on_request?, options:)
 
     raise CannotInstallFormulaError, <<~EOS
       #{formula.name}'s licenses are all forbidden by #{owner} in `HOMEBREW_FORBIDDEN_LICENSES`:
-        #{SPDX.license_expression_to_string formula.license}.#{owner_contact}
+        #{SPDX.license_expression_to_string formula.license}#{owner_contact}
     EOS
   end
 
