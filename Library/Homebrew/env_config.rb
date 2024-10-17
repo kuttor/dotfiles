@@ -204,7 +204,7 @@ module Homebrew
                      "formula or cask if it or any of its dependencies is on this list.",
       },
       HOMEBREW_FORBIDDEN_LICENSES:               {
-        description: "A space-separated list of licenses. Homebrew will refuse to install a " \
+        description: "A space-separated list of SPDX license identifiers. Homebrew will refuse to install a " \
                      "formula if it or any of its dependencies has a license on this list.",
       },
       HOMEBREW_FORBIDDEN_OWNER:                  {
