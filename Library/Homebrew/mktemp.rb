@@ -1,19 +1,23 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 # Performs {Formula#mktemp}'s functionality and tracks the results.
 # Each instance is only intended to be used once.
+# Can also be used to create a temporary directory with the brew instance's group.
 class Mktemp
   include FileUtils
 
-  # Path to the tmpdir used in this run, as a {Pathname}.
+  # Path to the tmpdir used in this run
+  sig { returns(T.nilable(Pathname)) }
   attr_reader :tmpdir
 
-  def initialize(prefix, opts = {})
+  sig { params(prefix: String, retain: T::Boolean, retain_in_cache: T::Boolean).void }
+  def initialize(prefix, retain: false, retain_in_cache: false)
     @prefix = prefix
-    @retain_in_cache = opts[:retain_in_cache]
-    @retain = opts[:retain] || @retain_in_cache
-    @quiet = false
+    @retain_in_cache = T.let(retain_in_cache, T::Boolean)
+    @retain = T.let(retain || @retain_in_cache, T::Boolean)
+    @quiet = T.let(false, T::Boolean)
+    @tmpdir = T.let(nil, T.nilable(Pathname))
   end
 
   # Instructs this {Mktemp} to retain the staged files.
@@ -23,11 +27,13 @@ class Mktemp
   end
 
   # True if the staged temporary files should be retained.
+  sig { returns(T::Boolean) }
   def retain?
     @retain
   end
 
   # True if the source files should be retained.
+  sig { returns(T::Boolean) }
   def retain_in_cache?
     @retain_in_cache
   end
@@ -43,7 +49,8 @@ class Mktemp
     "[Mktemp: #{tmpdir} retain=#{@retain} quiet=#{@quiet}]"
   end
 
-  def run
+  sig { params(chdir: T::Boolean, _block: T.proc.params(arg0: Mktemp).void).void }
+  def run(chdir: true, &_block)
     prefix_name = @prefix.tr "@", "AT"
     @tmpdir = if retain_in_cache?
       tmp_dir = HOMEBREW_CACHE/"Sources/#{prefix_name}"
@@ -66,13 +73,24 @@ class Mktemp
       Process.gid
     end
     begin
-      chown(nil, group_id, @tmpdir)
+      @tmpdir.chown(nil, group_id)
     rescue Errno::EPERM
-      opoo "Failed setting group \"#{T.must(Etc.getgrgid(group_id)).name}\" on #{@tmpdir}"
+      require "etc"
+      group_name = begin
+        Etc.getgrgid(group_id)&.name
+      rescue ArgumentError
+        # Cover for misconfigured NSS setups
+        nil
+      end
+      opoo "Failed setting group \"#{group_name || group_id}\" on #{@tmpdir}"
     end
 
     begin
-      Dir.chdir(tmpdir) { yield self }
+      if chdir
+        Dir.chdir(@tmpdir) { yield self }
+      else
+        yield self
+      end
     ensure
       ignore_interrupts { chmod_rm_rf(@tmpdir) } unless retain?
     end
@@ -85,6 +103,7 @@ class Mktemp
 
   private
 
+  sig { params(path: Pathname).void }
   def chmod_rm_rf(path)
     if path.directory? && !path.symlink?
       chmod("u+rw", path) if path.owned? # Need permissions in order to see the contents

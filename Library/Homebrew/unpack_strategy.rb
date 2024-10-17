@@ -1,6 +1,7 @@
 # typed: strict
 # frozen_string_literal: true
 
+require "mktemp"
 require "system_command"
 
 # Module containing all available strategies for unpacking archives.
@@ -157,29 +158,8 @@ module UnpackStrategy
     ).returns(T.untyped)
   }
   def extract_nestedly(to: nil, basename: nil, verbose: false, prioritize_extension: false)
-    Dir.mktmpdir("homebrew-unpack", HOMEBREW_TEMP) do |tmp_unpack_dir|
-      tmp_unpack_dir = Pathname(tmp_unpack_dir)
-
-      # Make sure files inside the temporary directory have the same group as the brew instance.
-      #
-      # @see https://github.com/Homebrew/brew/blob/4.4.0/Library/Homebrew/mktemp.rb#L57-L72
-      group_id = if HOMEBREW_BREW_FILE.grpowned?
-        HOMEBREW_BREW_FILE.stat.gid
-      else
-        Process.gid
-      end
-      begin
-        tmp_unpack_dir.chown(nil, group_id)
-      rescue Errno::EPERM
-        require "etc"
-        group_name = begin
-          Etc.getgrgid(group_id)&.name
-        rescue ArgumentError
-          # Cover for misconfigured NSS setups
-          nil
-        end
-        opoo "Failed setting group \"#{group_name || group_id}\" on #{tmp_unpack_dir}"
-      end
+    Mktemp.new("homebrew-unpack").run(chdir: false) do |unpack_dir|
+      tmp_unpack_dir = T.must(unpack_dir.tmpdir)
 
       extract(to: tmp_unpack_dir, basename:, verbose:)
 
