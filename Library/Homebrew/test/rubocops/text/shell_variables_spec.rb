@@ -19,7 +19,7 @@ RSpec.describe RuboCop::Cop::FormulaAudit::ShellVariables do
       expect_correction(<<~RUBY)
         class Foo < Formula
           def install
-            Utils.popen { "SHELL" => "bash" }, "foo"
+            Utils.popen({ "SHELL" => "bash" }, "foo")
           end
         end
       RUBY
@@ -38,7 +38,7 @@ RSpec.describe RuboCop::Cop::FormulaAudit::ShellVariables do
       expect_correction(<<~RUBY)
         class Foo < Formula
           def install
-            Utils.safe_popen_read { "SHELL" => "bash" }, "foo"
+            Utils.safe_popen_read({ "SHELL" => "bash" }, "foo")
           end
         end
       RUBY
@@ -57,7 +57,7 @@ RSpec.describe RuboCop::Cop::FormulaAudit::ShellVariables do
       expect_correction(<<~RUBY)
         class Foo < Formula
           def install
-            Utils.safe_popen_write { "SHELL" => "bash" }, "foo"
+            Utils.safe_popen_write({ "SHELL" => "bash" }, "foo")
           end
         end
       RUBY
@@ -76,7 +76,7 @@ RSpec.describe RuboCop::Cop::FormulaAudit::ShellVariables do
       expect_correction(<<~RUBY)
         class Foo < Formula
           def install
-            Utils.popen { "SHELL" => "bash" }, "\#{bin}/foo"
+            Utils.popen({ "SHELL" => "bash" }, "\#{bin}/foo")
           end
         end
       RUBY

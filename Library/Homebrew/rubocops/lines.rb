@@ -338,8 +338,7 @@ module RuboCop
               good_args = "Utils.#{command}({ \"#{match[1]}\" => \"#{match[2]}\" }, \"#{match[3]}\")"
 
               problem "Use `#{good_args}` instead of `#{method.source}`" do |corrector|
-                corrector.replace(@offensive_node.source_range,
-                                  "{ \"#{match[1]}\" => \"#{match[2]}\" }, \"#{match[3]}\"")
+                corrector.replace(method.source_range, good_args)
               end
             end
           end
