@@ -467,9 +467,15 @@ module Utils
 
       if status.success?
         open_args = {}
+        content_type = headers["content-type"]
+
+        # Use the last `Content-Type` header if there is more than one instance
+        # in the response
+        content_type = content_type.last if content_type.is_a?(Array)
+
         # Try to get encoding from Content-Type header
         # TODO: add guessing encoding by <meta http-equiv="Content-Type" ...> tag
-        if (content_type = headers["content-type"]) &&
+        if content_type &&
            (match = content_type.match(/;\s*charset\s*=\s*([^\s]+)/)) &&
            (charset = match[1])
           begin
