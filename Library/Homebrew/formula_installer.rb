@@ -379,6 +379,7 @@ class FormulaInstaller
       next unless dep.to_formula.pinned?
       next if dep.satisfied?(inherited_options_for(dep))
       next if dep.build? && pour_bottle?
+      next if dep.test?
 
       pinned_unsatisfied_deps << dep
     end
