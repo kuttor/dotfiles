@@ -1,6 +1,0 @@
-#! /usr/bin/env zsh
-
-emulate -L zsh
- 
-command -v $1 > /dev/null 2>&1
-
