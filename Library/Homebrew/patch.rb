@@ -140,8 +140,7 @@ class ExternalPatch
         patch_files.each do |patch_file|
           ohai "Applying #{patch_file}"
           patch_file = patch_dir/patch_file
-          args = %W[-g 0 -f -#{strip}]
-          Utils.safe_popen_write("patch", *args) do |p|
+          Utils.safe_popen_write("patch", "-g", "0", "-f", "-#{strip}") do |p|
             File.foreach(patch_file) do |line|
               data = line.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
               p.write(data)
