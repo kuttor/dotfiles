@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.dotfiles/config/zsh/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 #! /usr/bin/env zsh
 
 # initializes the power10k instant prompt
@@ -18,6 +25,8 @@ ZINIT_COMPLETIONS_DIR="$ZINIT_HOME/completions"
 ZINIT_BIN_DIR_NAME="$ZINIT_HOME/bin"
 ZINIT_BIN_DIR="$ZINIT_HOME/bin"
 ZPFX="$ZINIT_HOME/polaris"
+
+alias zi='zinit '
 
 # =================================================================================================
 # -- zsh-configs -----------------------------------------------------------------------------------
@@ -74,11 +83,6 @@ OMZP::magic-enter
 # from"gh-r" \
 # sbin'!buildx-* -> buildx' \
   # @docker/buildx credential helpers
-
-zi for \
-from"gh-r" \
-sbin'!* -> docker-credential-desktop' \
-  @docker/docker-credential-helpers
 
 # =================================================================================================
 # -- zsh plugins ------------------------------------------------------------------------------
@@ -201,27 +205,5 @@ atload='use rust.atload' \
 # zi for id-as'sd' rustup cargo'!sd' @chmln/sd
 # zi for id-as'delta' rustup cargo'!delta' @zdharma-continuum/null
 
-#zi atclone'./install --user' "@BartSte/fzf-help"
-#zi nocompletions compile"*.zsh" atload_use atinit_use hlissner/zsh-autopair
-
-# ================================================================================================
-# -- form and function enhancers -----------------------------------------------------------------
-# ================================================================================================
-zi default-ice --clear --quiet \
-light-mode \
-lucid \
-wait'0'
-
-# -- zsh-syntax-highlighting, zsh-completions, zsh-autosuggestions --
-zi for \
-id-as'f-s-h' atinit'use f-s-h.atinit' atclone'use f-s-h.atclone' @zdharma-continuum/fast-syntax-highlighting \
-id-as'history-search' atinit'use history-search.atinit' @zsh-users/zsh-history-substring-search \
-id-as'zsh-completions' blockf atpull'use zsh-completions.atpull' @zsh-users/zsh-completions \
-id-as'autosuggest' atload'use autosuggest.atload' @zsh-users/zsh-autosuggestions
-
-# compile'{src/*.zsh,src/strategies/*}' atload'!_zsh_autosuggest_start' nocd \
-
-# -- powerlevel10k --
-[[ ! -f "$XDG_CONFIG_HOME/p10k.zsh" ]] || source "$XDG_CONFIG_HOME/p10k.zsh"
-
-source "$XDG_CONFIG_HOME/broot/launcher/bash/br"
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/config/zsh/.p10k.zsh.
+[[ ! -f ~/.dotfiles/config/zsh/.p10k.zsh ]] || source ~/.dotfiles/config/zsh/.p10k.zsh

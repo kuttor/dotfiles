@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+
+
 # <https://github.com/zimfw/zimfw/blob/master/login_init.zsh>
 setopt LOCAL_OPTIONS EXTENDED_GLOB
 
@@ -11,20 +13,19 @@ setopt LOCAL_OPTIONS EXTENDED_GLOB
 
   # Compile zcompdump if modified or if compiled version is outdated
   zcompdump="${XDG_CACHE_HOME}/.zcompdump"
-  [[ -s $zcompdump && ( ! -s ${zcompdump}.zwc || $zcompdump -nt ${zcompdump}.zwc ) ]] &&
-    zrecompile -pq $zcompdump
+  [[ -s $zcompdump && ( ! -s ${zcompdump}.zwc || $zcompdump -nt ${zcompdump}.zwc ) ]] && zrecompile -pq $zcompdump
 
   # zcompile .zshrc
-  for i in $(ls "$DOTFILES/config/zsh/*.zsh"); do
-
-    zrecompile -pq "$ZDOTDIR/$i"
+  for i in $(ls "$DOTFILES/config/zsh/*.zsh"); do 
+  zrecompile -pq "$ZDOTDIR/$i"
+  done
 
 
   # recompile all zsh or sh
   for f in "$ZDOTDIRD/*.zsh"; do
     zrecompile -pq $f
     done
-) &!
+
 
 local PREFERRED_EDITORS=(nvim vim vi nano)
 # set order of editor preference
@@ -38,13 +39,14 @@ done
 unset editor PREFERRED_EDITORS
 
 
-local PREFERRED_ls=(eza lsd exa ls)
+PREFERRED_LS=(eza lsd exa ls)
 # set order of ls preference
 for LS in $PREFERRED_LS; do
     if command -v "${LS}" >/dev/null 2>&1; then
-        VISUAL="$(command -v "${LS}")"
-        LS="${VISUAL}"
+        LS_COMMAND="$(command -v "${LS}")"
+        alias ls="${LS_COMMAND}"
         break
     fi
 done
 unset editor PREFERRED_LS
+)
