@@ -6,5 +6,5 @@ index bfdda4c..e08d8f4 100755
  #!/bin/bash
 -echo NOOP
 \ No newline at end of file
-+echo HOMEBREW_PREFIX
++echo @@HOMEBREW_PREFIX@@
 \ No newline at end of file

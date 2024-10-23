@@ -47,7 +47,7 @@ RSpec.describe "patching", type: :system do
         formula.patch
         s = File.read("libexec/NOOP")
         expect(s).not_to include("NOOP"), "libexec/NOOP was not patched as expected"
-        expect(s).not_to include("HOMEBREW_PREFIX"), "libexec/NOOP was not patched as expected"
+        expect(s).not_to include("@@HOMEBREW_PREFIX@@"), "libexec/NOOP was not patched as expected"
         expect(s).to include(HOMEBREW_PREFIX.to_s), "libexec/NOOP was not patched as expected"
       end
     end
