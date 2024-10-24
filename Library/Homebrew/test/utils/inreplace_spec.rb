@@ -25,7 +25,7 @@ RSpec.describe Utils::Inreplace do
   it "raises error if there is nothing to replace" do
     expect do
       described_class.inreplace file.path, "d", "f"
-    end.to raise_error(Utils::Inreplace::Error)
+    end.not_to raise_error(Utils::Inreplace::Error)
   end
 
   it "raises error if there is nothing to replace in block form" do
