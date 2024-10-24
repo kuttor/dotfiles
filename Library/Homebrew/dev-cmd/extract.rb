@@ -176,21 +176,21 @@ module Homebrew
         # Since `method_defined?` is not a supported type guard, the use of `alias_method` below is not typesafe:
         BottleSpecification.class_eval do
           T.unsafe(self).alias_method :old_method_missing, :method_missing if method_defined?(:method_missing)
-          define_method(:method_missing) do |*|
+          define_method(:method_missing) do |*_|
             # do nothing
           end
         end
 
         Module.class_eval do
           T.unsafe(self).alias_method :old_method_missing, :method_missing if method_defined?(:method_missing)
-          define_method(:method_missing) do |*|
+          define_method(:method_missing) do |*_|
             # do nothing
           end
         end
 
         Resource.class_eval do
           T.unsafe(self).alias_method :old_method_missing, :method_missing if method_defined?(:method_missing)
-          define_method(:method_missing) do |*|
+          define_method(:method_missing) do |*_|
             # do nothing
           end
         end
@@ -200,7 +200,7 @@ module Homebrew
             T.unsafe(self).alias_method :old_parse_symbol_spec,
                                         :parse_symbol_spec
           end
-          define_method(:parse_symbol_spec) do |*|
+          define_method(:parse_symbol_spec) do |*_|
             # do nothing
           end
         end
