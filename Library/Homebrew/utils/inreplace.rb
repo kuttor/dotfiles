@@ -50,7 +50,7 @@ module Utils
         block:        T.nilable(T.proc.params(s: StringInreplaceExtension).void),
       ).void
     }
-    def self.inreplace(paths, before = nil, after = nil, audit_result: false, &block)
+    def self.inreplace(paths, before = nil, after = nil, audit_result: true, &block)
       paths = Array(paths)
       after &&= after.to_s
       before = before.to_s if before.is_a?(Pathname)
