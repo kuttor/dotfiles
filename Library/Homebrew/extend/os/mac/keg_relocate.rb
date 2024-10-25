@@ -141,6 +141,9 @@ module OS
       end
 
       def dylib_id_for(file)
+        # Swift dylib IDs should be /usr/lib/swift
+        return file.dylib_id if file.dylib_id.start_with?("/usr/lib/swift/libswift")
+
         # The new dylib ID should have the same basename as the old dylib ID, not
         # the basename of the file itself.
         basename = File.basename(file.dylib_id)
