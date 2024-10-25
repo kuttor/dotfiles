@@ -36,6 +36,15 @@ RSpec.describe Homebrew::Livecheck do
     end
   end
 
+  let(:f_stable_url_only) do
+    stable_url_s = stable_url
+
+    formula("test_stable_url_only") do
+      desc "Test formula with only a stable URL"
+      url stable_url_s
+    end
+  end
+
   let(:r) { f.resources.first }
 
   let(:c) do
@@ -52,6 +61,17 @@ RSpec.describe Homebrew::Livecheck do
           url "https://formulae.brew.sh/api/formula/ruby.json"
           regex(/"stable":"(\d+(?:.\d+)+)"/i)
         end
+      end
+    RUBY
+  end
+
+  let(:c_no_checkable_urls) do
+    Cask::CaskLoader.load(+<<-RUBY)
+      cask "test_no_checkable_urls" do
+        version "1.2.3"
+
+        name "Test"
+        desc "Test cask with no checkable URLs"
       end
     RUBY
   end
@@ -134,15 +154,6 @@ RSpec.describe Homebrew::Livecheck do
       end
     end
 
-    let(:f_stable_url_only) do
-      stable_url_s = stable_url
-
-      formula("test_stable_url_only") do
-        desc "Test formula with only a stable URL"
-        url stable_url_s
-      end
-    end
-
     let(:r_livecheck_url) { f_livecheck_url.resources.first }
 
     let(:c_livecheck_url) do
@@ -154,17 +165,6 @@ RSpec.describe Homebrew::Livecheck do
           name "Test"
           desc "Test Livecheck URL cask"
           homepage "https://brew.sh"
-        end
-      RUBY
-    end
-
-    let(:c_no_checkable_urls) do
-      Cask::CaskLoader.load(+<<-RUBY)
-        cask "test_no_checkable_urls" do
-          version "1.2.3"
-
-          name "Test"
-          desc "Test cask with no checkable URLs"
         end
       RUBY
     end
@@ -235,6 +235,8 @@ RSpec.describe Homebrew::Livecheck do
       expect(livecheck.checkable_urls(c)).to eq([cask_url, homepage_url])
       expect(livecheck.checkable_urls(r)).to eq([resource_url])
       expect(livecheck.checkable_urls(f_duplicate_urls)).to eq([stable_url, head_url])
+      expect(livecheck.checkable_urls(f_stable_url_only)).to eq([stable_url])
+      expect(livecheck.checkable_urls(c_no_checkable_urls)).to eq([])
     end
   end
 
