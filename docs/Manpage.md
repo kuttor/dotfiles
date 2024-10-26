@@ -3259,6 +3259,11 @@ If `sudo` is passed, operate on `/Library/LaunchDaemons` or
 
 : When run as root on macOS, run the service(s) as this user.
 
+`--max-wait`
+
+: Wait at most this many seconds for `stop` to finish stopping a service. Omit
+  this flag or set this to zero (0) seconds to wait indefinitely.
+
 `--all`
 
 : Run *`subcommand`* on all services.
