@@ -15,7 +15,7 @@ class Keg
     RELOCATABLE_PATH_REGEX_PREFIX = /(?:(?<=-F|-I|-L|-isystem)|(?<![a-zA-Z0-9]))/
 
     def initialize
-      @replacement_map = {}
+      @replacement_map = T.let({}, T::Hash[Symbol, [T.any(String, Regexp), String]])
     end
 
     def freeze
@@ -29,7 +29,7 @@ class Keg
       @replacement_map[key] = [old_value, new_value]
     end
 
-    sig { params(key: Symbol).returns(T::Array[T.any(String, Regexp)]) }
+    sig { params(key: Symbol).returns([T.any(String, Regexp), String]) }
     def replacement_pair_for(key)
       @replacement_map.fetch(key)
     end
@@ -44,7 +44,7 @@ class Keg
 
       any_changed = T.let(nil, T.nilable(String))
       sorted_keys.each do |key|
-        changed = text.gsub!(key, replacements[key])
+        changed = text.gsub!(key, replacements.fetch(key))
         any_changed ||= changed
       end
       !any_changed.nil?
