@@ -10,10 +10,11 @@ if ENV["HOMEBREW_TESTS_COVERAGE"]
   ]
   SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
 
+  # Needed for outputting coverage reporting only once for parallel_tests
   if RUBY_PLATFORM[/darwin/] && ENV["TEST_ENV_NUMBER"]
     SimpleCov.at_exit do
       result = SimpleCov.result
-      result.format! if ParallelTests.number_of_running_processes <= 1
+      result.format! if ParallelTests.last_process?
     end
   end
 end
