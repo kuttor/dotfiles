@@ -508,10 +508,10 @@ module Homebrew
       params(
         livecheck_url:       T.any(String, Symbol),
         package_or_resource: T.any(Formula, Cask::Cask, Resource),
-      ).returns(T.nilable(String))
+      ).returns(String)
     }
     def self.livecheck_url_to_string(livecheck_url, package_or_resource)
-      case livecheck_url
+      livecheck_url_string = case livecheck_url
       when String
         livecheck_url
       when :url
@@ -521,6 +521,12 @@ module Homebrew
       when :homepage
         package_or_resource.homepage unless package_or_resource.is_a?(Resource)
       end
+
+      if livecheck_url.is_a?(Symbol) && !livecheck_url_string
+        raise ArgumentError, "`url #{livecheck_url.inspect}` does not reference a checkable URL"
+      end
+
+      livecheck_url_string
     end
 
     # Returns an Array containing the formula/cask/resource URLs that can be used by livecheck.
@@ -846,7 +852,7 @@ module Homebrew
       livecheck_strategy = livecheck.strategy
       livecheck_strategy_block = livecheck.strategy_block
 
-      livecheck_url_string = livecheck_url_to_string(livecheck_url, resource)
+      livecheck_url_string = livecheck_url_to_string(livecheck_url, resource) if livecheck_url
 
       urls = [livecheck_url_string] if livecheck_url_string
       urls ||= checkable_urls(resource)
