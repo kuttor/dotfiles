@@ -148,7 +148,7 @@ module Homebrew
         new_mirrors ||= args.mirror
         if new_url.present? && (new_mirror = determine_mirror(new_url))
           new_mirrors ||= [new_mirror]
-          check_for_mirrors(formula, old_mirrors, new_mirrors)
+          check_for_mirrors(formula.name, old_mirrors, new_mirrors)
         end
 
         old_hash = formula_spec.checksum&.hexdigest
