@@ -71,10 +71,6 @@ RSpec.describe Cask::Config, :cask do
     it "returns array of preferred languages" do
       expect(config.explicit[:languages]).to eq(["zh-TW", "en"])
     end
-
-    it "returns string of explicit config keys and values" do
-      expect(config.explicit_s).to eq('appdir: "/explicit/path/to/apps", language: "zh-TW,en"')
-    end
   end
 
   context "when installing a cask and then adding a global default dir" do

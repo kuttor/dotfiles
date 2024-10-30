@@ -188,23 +188,6 @@ module Cask
       self.class.new(explicit: other.explicit.merge(explicit))
     end
 
-    # Get explicit configuration as a string.
-    #
-    # @api internal
-    #
-    # TODO: This is only used by `homebrew/bundle`, so move it there.
-    sig { returns(String) }
-    def explicit_s
-      explicit.map do |key, value|
-        # inverse of #env - converts :languages config key back to --language flag
-        if key == :languages
-          key = "language"
-          value = T.cast(explicit.fetch(:languages, []), T::Array[String]).join(",")
-        end
-        "#{key}: \"#{value.to_s.sub(/^#{Dir.home}/, "~")}\""
-      end.join(", ")
-    end
-
     sig { params(options: T.untyped).returns(String) }
     def to_json(*options)
       {
