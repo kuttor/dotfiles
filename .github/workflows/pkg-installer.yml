@@ -96,12 +96,14 @@ jobs:
         run: security list-keychain -d user -s "${RUNNER_TEMP}/${TEMPORARY_KEYCHAIN_FILE}"
 
       - name: Build Homebrew installer component package
+        env:
+          HOMEBREW_VERSION: ${{ steps.homebrew-version.outputs.version }}
         # Note: `Library/Homebrew/test/support/fixtures/` contains unsigned
         # binaries so it needs to be excluded from notarization.
         run: pkgbuild --root brew
                       --scripts brew/package/scripts
                       --identifier sh.brew.homebrew
-                      --version "${{ steps.homebrew-version.outputs.version }}"
+                      --version "${HOMEBREW_VERSION}"
                       --install-location /opt/homebrew
                       --filter .DS_Store
                       --filter "(.*)/Library/Homebrew/test/support/fixtures/"
@@ -114,11 +116,13 @@ jobs:
               pandoc --from markdown --standalone --output brew/package/resources/LICENSE.rtf
 
       - name: Build Homebrew installer product package
+        env:
+          HOMEBREW_VERSION: ${{ steps.homebrew-version.outputs.version }}
         run: productbuild --resources brew/package/resources
                           --distribution brew/package/Distribution.xml
                           --package-path Homebrew.pkg
                           --sign "${PKG_APPLE_DEVELOPER_TEAM_ID}"
-                          Homebrew-${{ steps.homebrew-version.outputs.version }}.pkg
+                          "Homebrew-${HOMEBREW_VERSION}.pkg"
 
       - name: Clean up temporary macOS keychain
         if: ${{ always() }}
@@ -173,7 +177,9 @@ jobs:
         run: echo | sudo tee /var/log/install.log
 
       - name: Install Homebrew from installer package
-        run: sudo installer -verbose -pkg "${{ needs.build.outputs.installer_path }}" -target /
+        env:
+          INSTALLER_PATH: ${{ needs.build.outputs.installer_path }}
+        run: sudo installer -verbose -pkg "${INSTALLER_PATH}" -target /
 
       - name: Output installer logs
         if: ${{ always() }}
@@ -187,7 +193,9 @@ jobs:
         run: echo | sudo tee /var/log/install.log
 
       - name: Reinstall Homebrew from installer package
-        run: sudo installer -verbose -pkg "${{ needs.build.outputs.installer_path }}" -target /
+        env:
+          INSTALLER_PATH: ${{ needs.build.outputs.installer_path }}
+        run: sudo installer -verbose -pkg "${INSTALLER_PATH}" -target /
 
       - name: Output installer logs (again)
         if: ${{ always() }}
@@ -213,7 +221,8 @@ jobs:
         env:
           PKG_APPLE_ID_EMAIL: ${{ secrets.PKG_APPLE_ID_EMAIL }}
           PKG_APPLE_ID_APP_SPECIFIC_PASSWORD: ${{ secrets.PKG_APPLE_ID_APP_SPECIFIC_PASSWORD }}
-        run: xcrun notarytool submit "${{ needs.build.outputs.installer_path }}"
+          INSTALLER_PATH: ${{ needs.build.outputs.installer_path }}
+        run: xcrun notarytool submit "${INSTALLER_PATH}"
                                     --team-id  "${PKG_APPLE_DEVELOPER_TEAM_ID}"
                                     --apple-id "${PKG_APPLE_ID_EMAIL}"
                                     --password "${PKG_APPLE_ID_APP_SPECIFIC_PASSWORD}"
@@ -226,9 +235,10 @@ jobs:
         if: github.event_name == 'release'
         env:
           GH_TOKEN: ${{ github.token }}
+          INSTALLER_PATH: ${{ needs.build.outputs.installer_path }}
         run: gh release upload --repo Homebrew/brew
                                 "${GITHUB_REF//refs\/tags\//}"
-                                "${{ needs.build.outputs.installer_path }}"
+                                "${INSTALLER_PATH}"
 
   issue:
     needs: [build, test, upload]
