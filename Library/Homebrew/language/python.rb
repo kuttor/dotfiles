@@ -187,17 +187,21 @@ module Language
         venv.create(system_site_packages:, without_pip:)
 
         # Find any Python bindings provided by recursive dependencies
-        formula_deps = formula.recursive_dependencies
-        pth_contents = formula_deps.filter_map do |d|
-          next if d.build? || d.test?
+        pth_contents = []
+        formula.recursive_dependencies do |dependent, dep|
+          Dependency.prune if dep.build? || dep.test?
+          # Apply default filter
+          Dependency.prune if (dep.optional? || dep.recommended?) && !dependent.build.with?(dep)
           # Do not add the main site-package provided by the brewed
           # Python formula, to keep the virtual-env's site-package pristine
-          next if python_names.include? d.name
+          Dependency.prune if python_names.include? dep.name
+          # Skip uses_from_macos dependencies as these imply no Python bindings
+          Dependency.prune if dep.uses_from_macos?
 
-          dep_site_packages = Formula[d.name].opt_prefix/Language::Python.site_packages(python)
-          next unless dep_site_packages.exist?
+          dep_site_packages = dep.to_formula.opt_prefix/Language::Python.site_packages(python)
+          Dependency.prune unless dep_site_packages.exist?
 
-          "import site; site.addsitedir('#{dep_site_packages}')\n"
+          pth_contents << "import site; site.addsitedir('#{dep_site_packages}')\n"
         end
         (venv.site_packages/"homebrew_deps.pth").write pth_contents.join unless pth_contents.empty?
 
