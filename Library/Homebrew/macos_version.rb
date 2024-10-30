@@ -18,6 +18,8 @@ class MacOSVersion < Version
 
   # NOTE: When removing symbols here, ensure that they are added
   #       to `DEPRECATED_MACOS_VERSIONS` in `MacOSRequirement`.
+  #       When adding or removing symbols here, ensure that you
+  #       also update the KERNEL_MAJOR_VERSIONS map below.
   SYMBOLS = {
     sequoia:     "15",
     sonoma:      "14",
@@ -29,6 +31,21 @@ class MacOSVersion < Version
     high_sierra: "10.13",
     sierra:      "10.12",
     el_capitan:  "10.11",
+  }.freeze
+
+  # Map of macOS version strings to kernel major versions.
+  # https://en.wikipedia.org/wiki/MacOS_version_history#Releases
+  KERNEL_MAJOR_VERSIONS = {
+    "15"    => "24",
+    "14"    => "23",
+    "13"    => "22",
+    "12"    => "21",
+    "11"    => "20",
+    "10.15" => "19",
+    "10.14" => "18",
+    "10.13" => "17",
+    "10.12" => "16",
+    "10.11" => "15",
   }.freeze
 
   sig { params(version: Symbol).returns(T.attached_class) }
