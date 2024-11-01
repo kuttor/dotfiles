@@ -169,6 +169,8 @@ class GitHubRunnerMatrix
         ["#{version}-arm64", runner_timeout]
       end
 
+      # We test recursive dependents on ARM macOS, so they can be slower than our Intel runners.
+      timeout *= 2 if @dependent_matrix && timeout < GITHUB_ACTIONS_RUNNER_TIMEOUT
       spec = MacOSRunnerSpec.new(
         name:    "macOS #{version}-arm64",
         runner:,
