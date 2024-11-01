@@ -30,7 +30,7 @@ GEM
     parallel (1.26.3)
     parallel_tests (4.7.2)
       parallel
-    parser (3.3.5.0)
+    parser (3.3.5.1)
       ast (~> 2.4.1)
       racc
     patchelf (1.5.1)
@@ -146,7 +146,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
