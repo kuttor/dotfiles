@@ -21,7 +21,7 @@ jobs:
   ubuntu:
     if: github.repository_owner == 'Homebrew'
     name: docker (Ubuntu ${{ matrix.version }})
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
