@@ -6,18 +6,27 @@ initialize_completions
 # ==================================================================================================
 # -- load completions ------------------------------------------------------------------------------
 # ==================================================================================================
-zinit lucid as'completion' for 'https://github.com/chmln/sd/blob/master/gen/completions/_sd'
-zinit for atload='use rust.atload' as'null' id-as'rust' rustup sbin='bin/*' wait'1' @zdharma-continuum/nul
+zinit default-ice --clear --quiet                                                                  \
+lucid                                                                                              \
+light-mode                                                                                         \
+wait'1'
+
+
+# -- zsh-completions --
+zinit for                                                                                          \
+id-as'zsh-completions'                                                                             \
+atload'use zsh-completions.atload'                      `                                           \
+atpull"use zsh-completions.atpull"                                                                 \
+    @sainnhe/zsh-completions
 
 # ==================================================================================================
 # -- configure completion system -------------------------------------------------------------------
 # ==================================================================================================
 # generic completions for programs which understand GNU long options(--help)
-zicompdef _gnu_generic aomenc ar aria2c bandwhich curl cwebp cjxl darkhttpd direnv docker \
-  dunst emacs feh ffmpeg ffprobe flask fsck.ext4 fzf gocryptfs hexyl highlight histdb inkscape ktlint light lighttpd \
-  lsd mimeo megadl mkfs.vfat nzbget notify-send pamixer pip pip3 pipx psmem pw-cli rofi rustc \
-  tlmgr tlp tlp-stat \
-  vue zstd
+zicompdef _gnu_generic rg git chmod chwown ssh cut which whence type bandwhich curl direnv docker \
+  emacs feh ffmpeg ffprobe fsck.ext4 fzf gocryptfs hexyl highlight histdb light lighttpd \
+  lsd mimeo megadl mkfs.vfat nzbget notify-send  pip pip3 pipx psmem pw-cli rustc \
+  tlmgr tlp tlp-stat zinit mkdir ssh-keygen vue zstd
 
 
 # -- completion options --

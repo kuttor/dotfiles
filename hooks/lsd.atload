@@ -1,14 +1,5 @@
 #!/usr/bin/env zsh
 
-alias ll='lsd'
-alias ls='lsd'
-alias la='lsd -a'
-alias l='lsd'
-alias lh='lsd -lh'
-alias lha='lsd -lha'
-alias lha='lsd -lha'
-alias lha='lsd -lha'
-alias lha='lsd -lha'
 alias lha='lsd -lha'
 
-zinit creinstall lsd
+

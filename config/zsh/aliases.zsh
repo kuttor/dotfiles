@@ -11,7 +11,7 @@ else
   alias ls="ls"
 fi
 
-alias ll=eza \
+alias ll=lsd \
 --group-directories-first \
 --almost-all \
 --git \
@@ -34,6 +34,8 @@ if command -v bat >/dev/null 2>&1; then
   alias bat="cat"
 elif command -v ccat >/dev/null 2>&1; then
   alias ccat="cat"
+else 
+  alias /bin/cat="cat"
 fi
 
 # -- suffix aliases --

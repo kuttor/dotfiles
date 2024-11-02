@@ -11,6 +11,7 @@ zinit for                                                                       
   OMZL::theme-and-appearance.zsh                                                                  \
   OMZP::brew                                                                                      \
   OMZP::colorize                                                                                  \
+  OMZP::git                                                                                       \ 
   OMZP::cp                                                                                        \
   OMZP::grc                                                                                       \
   OMZP::urltools                                                                                  \

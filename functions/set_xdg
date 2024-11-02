@@ -25,8 +25,5 @@ set_xdg() {
   fi
 
   FULL_PATH="${XDG_HOME}/${PATH}"
-  SOURCE_PATH="${HOME}/.dotfiles/${XDG_TYPE}/${PATH}"
   export ${VAR}="${FULL_PATH}"
-
-  print "Set ${VAR} to ${FULL_PATH}"
 }

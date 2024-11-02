@@ -4,22 +4,13 @@
 # source zsh, zinit, and dotfile env-vars
 initialize_environment
 
-# source zsh, zinit, and dotfiles environment
-source "$DOT_FUNCTIONS_HOME/initialize_environment"
 
 # create zinit home dir and clone zinit repo
 [ ! -d $ZINIT_HOME ]      && mkdir -p  "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone "https://github.com/zdharma-continuum/zinit.git" "$ZINIT_HOME"
+
+[ ! -d $ZINIT_HOME/.git ] && git clone "${ZINIT[INSTALL_URL]}" "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# annexes ~ enhances zinit by ices
-zinit for                                                                       \
-id-as'annex-bin-gem-node'    @zdharma-continuum/zinit-annex-bin-gem-node        \
-id-as'annex-binary-symlink'  @zdharma-continuum/zinit-annex-binary-symlink      \
-id-as'annex-default-ice'     @zdharma-continuum/zinit-annex-default-ice         \
-id-as'annex-patch-dl'        @zdharma-continuum/zinit-annex-patch-dl            \
-id-as'annex-vim-syntax'      @zdharma-continuum/zinit-annex-vim-syntax          \
-id-as'annex-rust'            @zdharma-continuum/zinit-annex-rust
