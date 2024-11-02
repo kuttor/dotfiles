@@ -216,11 +216,11 @@ module Cask
       # including both file ownership and whether system permissions are granted.
       # Here we just want to check whether sudo would be needed.
       looks_writable_without_sudo = if app.owned?
-        (app.lstat.mode & 0200) != 0
+        app.lstat.mode.anybits?(0200)
       elsif app.grpowned?
-        (app.lstat.mode & 0020) != 0
+        app.lstat.mode.anybits?(0020)
       else
-        (app.lstat.mode & 0002) != 0
+        app.lstat.mode.anybits?(0002)
       end
 
       if looks_writable_without_sudo
