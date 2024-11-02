@@ -11,7 +11,7 @@ else
   alias ls="ls"
 fi
 
-alias ll=\"
+alias ll="\
 lsd \
 --group-directories-first \
 --almost-all \
