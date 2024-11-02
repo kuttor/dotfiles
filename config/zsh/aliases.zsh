@@ -11,16 +11,19 @@ else
   alias ls="ls"
 fi
 
-alias ll=lsd \
+alias ll=\"
+lsd \
 --group-directories-first \
 --almost-all \
 --git \
 --total-size \
---links \
 --header \
---icons=always \
+--hyperlink=always \
+--icon=always \
 --oneline \
---colour=always
+--color=always
+"
+
 
 # -- cd --
 alias ..="cd .."
