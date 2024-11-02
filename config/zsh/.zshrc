@@ -37,7 +37,7 @@ zi default-ice --clear --quiet lucid light-mode wait'0'
 zi for                                                                                            \
 id-as'annex-man'                              @zdharma-continuum/zinit-annex-man                  \
 id-as'asciidoctor' pack                       @asciidoctor                                        \
-`id-as'zman'                                   @mattmc3/zman
+id-as'zman'                                   @mattmc3/zman
 
 # =================================================================================================
 # -- zsh-configs -----------------------------------------------------------------------------------
@@ -49,6 +49,7 @@ zi for                                                                          
 @$ZDOTDIR/keybind.zsh                                                                             \
 @$ZDOTDIR/aliases.zsh                                                                             \
 @$ZDOTDIR/completions.zsh
+
 
 
 # ==================================================================================================
@@ -109,10 +110,9 @@ id-as'bat' sbin'**/bat -> bat' atload'use bat.atload'                         @s
 id-as'fd'  sbin'**/fd -> fd'   atload'use fd.atload'  atclone'use fd.atclone' @sharkdp/fd  \
 id-as'lsd' sbin'*/lsd -> lsd'  atload'use lsd.atload'                         @lsd-rs/lsd
 
-# -- zoxide: "smarter jump enhancer for cd" --
-zi for id-as'zoxide' \
-sbin'zoxide -> zoxide' \
-atclone'./zoxide init zsh > init.zsh' \
+zi for \
+id-as'zoxide' sbin'zoxide -> zoxide' \
+atclone'' \
 atpull'%atclone' \
 src'init.zsh' \
 nocompile'!' \
@@ -190,4 +190,7 @@ id-as'zsh-autosuggestions'                                                      
     @zsh-users/zsh-autosuggestions
 
 # To customize prompt, run `p10k configure` 
-[[ -f "$DOTFILES/config/.p10k.zsh" ]] && source "$DOTFILES/config/.p10k.zsh"
+[[ -f "$XDG_CONFIG_HOME/p10k.zsh" ]] && source "$XDG_CONFIG_HOME/p10k.zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/config/zsh/.p10k.zsh.
+[[ ! -f ~/.dotfiles/config/zsh/.p10k.zsh ]] || source ~/.dotfiles/config/zsh/.p10k.zsh
