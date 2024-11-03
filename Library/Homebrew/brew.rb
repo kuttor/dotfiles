@@ -83,7 +83,10 @@ begin
   end
 
   if internal_cmd || Commands.external_ruby_v2_cmd_path(cmd)
-    cmd = T.must(cmd)
+    # All internal commands are downcased
+    # Since APFS is case-insensitive by default, Ruby will load the command file
+    # if user passes it mixed-case, but here invoking it will fail.
+    cmd = T.must(cmd).downcase
     cmd_class = Homebrew::AbstractCommand.command(cmd)
     Homebrew.running_command = cmd
     if cmd_class
