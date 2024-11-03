@@ -154,7 +154,7 @@ module Homebrew
 
         stable = formula.stable
         if resource_name == "patch"
-          patch_hashes = stable&.patches&.filter_map { _1.resource.version if _1.external }
+          patch_hashes = stable&.patches&.filter_map { _1.resource.version if _1.external? }
           return true unless patch_hashes&.include?(Checksum.new(version.to_s))
         elsif resource_name && stable && (resource_version = stable.resources[resource_name]&.version)
           return true if resource_version != version
