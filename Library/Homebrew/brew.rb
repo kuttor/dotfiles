@@ -83,10 +83,7 @@ begin
   end
 
   if internal_cmd || Commands.external_ruby_v2_cmd_path(cmd)
-    # All internal commands are downcased
-    # Since APFS is case-insensitive by default, Ruby will load the command file
-    # if user passes it mixed-case, but here invoking it will fail.
-    cmd = T.must(cmd).downcase
+    cmd = T.must(cmd)
     cmd_class = Homebrew::AbstractCommand.command(cmd)
     Homebrew.running_command = cmd
     if cmd_class
@@ -96,7 +93,14 @@ begin
       Utils::Analytics.report_command_run(command_instance)
       command_instance.run
     else
-      Homebrew.public_send Commands.method_name(cmd)
+      begin
+        Homebrew.public_send Commands.method_name(cmd)
+      rescue NoMethodError => e
+        case_error = "undefined method `#{cmd.downcase}' for module Homebrew"
+        odie "Unknown command: brew #{cmd}" if e.message == case_error
+
+        raise
+      end
     end
   elsif (path = Commands.external_ruby_cmd_path(cmd))
     Homebrew.running_command = cmd
