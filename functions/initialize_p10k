@@ -1,0 +1,6 @@
+#! /usr/bin/env zsh
+
+[[ ! -f "${XDG_CONFIG_HOME}/p10k.zsh" ]] && \
+ln -sf "${DOT_CONFIG_DIR}/p10k.zsh" "${XDG_CONFIG_HOME}/p10k.zsh"
+
+source "${XDG_CONFIG_HOME}/p10k.zsh"

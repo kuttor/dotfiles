@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 
-alias lha='lsd -lha'
+verify lsd --alias ls
 
+alias ll="lsd --long --git --human-readable --header --hyperlink=always"
 
+[[ ! -e "$DOT_CONFIG_HOME/lsd" ]] &&\
+ln -sf "$DOTFILES/lsd" "$DOT_CONFIG_HOME/lsd"

@@ -6,57 +6,32 @@ initialize_completions
 # ==================================================================================================
 # -- load completions ------------------------------------------------------------------------------
 # ==================================================================================================
-zinit default-ice --clear --quiet                                                                  \
-lucid                                                                                              \
-light-mode                                                                                         \
-wait'1'
+zi default-ice --clear --quiet lucid light-mode wait'1'
 
-
-# -- zsh-completions --
-zinit for                                                                                          \
+zi for                                                                                             \
 id-as'zsh-completions'                                                                             \
-atload'use zsh-completions.atload'                      `                                           \
+atload'use zsh-completions.atload'                                                                \
 atpull"use zsh-completions.atpull"                                                                 \
-    @sainnhe/zsh-completions
+@sainnhe/zsh-completions
+
+zi for                                                                                             \
+id-as'_sd'                                                                                         \
+as'completion'                                                                                     \
+'https://github.com/chmln/sd/blob/master/gen/completions/_sd'
 
 # ==================================================================================================
 # -- configure completion system -------------------------------------------------------------------
 # ==================================================================================================
 # generic completions for programs which understand GNU long options(--help)
-zicompdef _gnu_generic rg git chmod chwown ssh cut which whence type bandwhich curl direnv docker \
-  emacs feh ffmpeg ffprobe fsck.ext4 fzf gocryptfs hexyl highlight histdb light lighttpd \
-  lsd mimeo megadl mkfs.vfat nzbget notify-send  pip pip3 pipx psmem pw-cli rustc \
-  tlmgr tlp tlp-stat zinit mkdir ssh-keygen vue zstd
+zicompdef _gnu_generic rg git chmod chwown ssh cut which whence type bandwhich curl direnv docker  \
+  emacs feh ffmpeg ffprobe fsck.ext4 fzf gocryptfs hexyl highlight histdb light lighttpd zinit tlp \
+  lsd mimeo megadl mkfs.vfat nzbget notify-send pip pip3 pipx psmem pw-cli rustc \
+  tlmgr tlp-stat zinit mkdir ssh-keygen vue zstd brew ln 
 
 
 # -- completion options --
 setopt ALWAYS_TO_END AUTO_LIST AUTO_MENU AUTO_PARAM_SLASH AUTO_REMOVE_SLASH
 setopt COMPLETE_IN_WORD GLOB_COMPLETE PATH_DIRS
-unsetopt FLOW_CONTROL MENU_COMPLETE
-
-# Use caching to make completion for commands such as dpkg and apt usable
-zstyle ':completion::complete:*' use-cache on
-zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
-zstyle ':completion:*' rehash true
-
-# Case-insensitive (all), partial-word, and then substring completion
-if zstyle -t ':omz:completion:*' case-sensitive; then
-    zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-    setopt CASE_GLOB
-else
-    zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-    unsetopt CASE_GLOB
-fi
-
-# General completion settings
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' complete-options true
-zstyle ':completion:*' condition 0
-zstyle ':completion:*' expand prefix suffix
-zstyle ':completion:*' file-list all
-zstyle ':completion:*' file-sort name
-zstyle ':completion:*' format ' %F{8}completion:%f %B%F{yellow}%d%f%b'
-zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' list-separator '→'
@@ -168,7 +143,7 @@ done'
 # only for git
 zstyle ':completion:*:*:git:*' fzf-search-display true
 # or for everything
-zstyle ':completion:*' fzf-search-display true
+zstyle ':completion:*' fzf-search-display true`
 
 # preview directory's content with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'

@@ -4,43 +4,16 @@
 # -- aliases ------------------------------------------------------------------
 # =============================================================================
 
-# -- lsd available --
-if command -v lsd >/dev/null 2>&1; then
-  alias ls="lsd"
-else
-  alias ls="ls"
-fi
-
-alias ll="\
-lsd \
---group-directories-first \
---almost-all \
---git \
---total-size \
---header \
---hyperlink=always \
---icon=always \
---oneline \
---color=always
-"
-
-
 # -- cd --
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
-
-# bat or ccat if available
-if command -v bat >/dev/null 2>&1; then
-  alias bat="cat"
-elif command -v ccat >/dev/null 2>&1; then
-  alias ccat="cat"
-else 
-  alias /bin/cat="cat"
-fi
-
+# -- pagers --
+verify bat --alias cat
+verify nvim --alias vim
+verify python3 --alias pythonZXX
 # -- suffix aliases --
 alias -s {md,markdown,rst,toml,json,conf,zsh,py,yaml,yml,sh}=code
 
@@ -50,14 +23,12 @@ alias pbp="pbpaste"
 
 # -- navigation --
 alias mkcd="mkdir -p $1 && cd $1"
-alias lsd="lsd --oneline --group-directories-first "
+
+# -- list paths --
 alias fpath_list="echo '$FPATH' | tr ':' '\n'"
 alias path_list="echo '$PATH' | tr ':' '\n'"
-
-# -- editors --
-alias nano="nano --mouse"
-alias vim="nvim"
-alias python="python3"
+alias cdpath_list="echo '$CDPATH' | tr ':' '\n'"
+alias manpath_list="echo '$MANPATH' | tr ':' '\n'"
 
 # -- zmv --
 alias zcp="zmv -C"
