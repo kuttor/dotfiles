@@ -420,6 +420,11 @@ Style/OptionalBooleanParameter:
     - respond_to?
     - respond_to_missing?
 
+# Broken in RuboCop 1.68.0 so tries to fix line continuations in inline patch blocks:
+# https://github.com/Homebrew/brew/actions/runs/11653110391/job/32460881827?pr=18682
+Style/RedundantLineContinuation:
+  Enabled: false
+
 # Rescuing `StandardError` is an understood default.
 Style/RescueStandardError:
   EnforcedStyle: implicit
