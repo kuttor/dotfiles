@@ -240,7 +240,7 @@ module Language
         ).returns(Virtualenv)
       }
       def virtualenv_install_with_resources(using: nil, system_site_packages: true, without_pip: true,
-                                            link_manpages: false, without: nil, start_with: nil, end_with: nil)
+                                            link_manpages: true, without: nil, start_with: nil, end_with: nil)
         python = using
         if python.nil?
           wanted = python_names.select { |py| needs_python?(py) }
@@ -415,7 +415,7 @@ module Language
             build_isolation: T::Boolean,
           ).void
         }
-        def pip_install_and_link(targets, link_manpages: false, build_isolation: true)
+        def pip_install_and_link(targets, link_manpages: true, build_isolation: true)
           bin_before = Dir[@venv_root/"bin/*"].to_set
           man_before = Dir[@venv_root/"share/man/man*/*"].to_set if link_manpages
 

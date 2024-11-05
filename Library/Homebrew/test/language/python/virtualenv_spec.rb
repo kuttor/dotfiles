@@ -49,7 +49,7 @@ RSpec.describe Language::Python::Virtualenv, :needs_python do
         f.libexec, "python", { system_site_packages: true, without_pip: true }
       ).and_return(venv)
       expect(venv).to receive(:pip_install).with([r_a, r_b, r_c, r_d])
-      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: false })
+      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: true })
       f.virtualenv_install_with_resources(using: "python")
     end
 
@@ -58,21 +58,21 @@ RSpec.describe Language::Python::Virtualenv, :needs_python do
         f.libexec, "python3.12", { system_site_packages: true, without_pip: true }
       ).and_return(venv)
       expect(venv).to receive(:pip_install).with([r_a, r_b, r_c, r_d])
-      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: false })
+      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: true })
       f.virtualenv_install_with_resources(using: "python@3.12")
     end
 
     it "skips a `without` resource string and installs remaining resources in order" do
       expect(f).to receive(:virtualenv_create).and_return(venv)
       expect(venv).to receive(:pip_install).with([r_a, r_b, r_d])
-      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: false })
+      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: true })
       f.virtualenv_install_with_resources(using: "python", without: r_c.name)
     end
 
     it "skips all resources in `without` array and installs remaining resources in order" do
       expect(f).to receive(:virtualenv_create).and_return(venv)
       expect(venv).to receive(:pip_install).with([r_b, r_c])
-      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: false })
+      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: true })
       f.virtualenv_install_with_resources(using: "python", without: [r_d.name, r_a.name])
     end
 
@@ -91,14 +91,14 @@ RSpec.describe Language::Python::Virtualenv, :needs_python do
     it "installs a `start_with` resource string and then remaining resources in order" do
       expect(f).to receive(:virtualenv_create).and_return(venv)
       expect(venv).to receive(:pip_install).with([r_c, r_a, r_b, r_d])
-      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: false })
+      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: true })
       f.virtualenv_install_with_resources(using: "python", start_with: r_c.name)
     end
 
     it "installs all resources in `start_with` array and then remaining resources in order" do
       expect(f).to receive(:virtualenv_create).and_return(venv)
       expect(venv).to receive(:pip_install).with([r_d, r_b, r_a, r_c])
-      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: false })
+      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: true })
       f.virtualenv_install_with_resources(using: "python", start_with: [r_d.name, r_b.name])
     end
 
@@ -117,14 +117,14 @@ RSpec.describe Language::Python::Virtualenv, :needs_python do
     it "installs an `end_with` resource string as last resource" do
       expect(f).to receive(:virtualenv_create).and_return(venv)
       expect(venv).to receive(:pip_install).with([r_a, r_c, r_d, r_b])
-      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: false })
+      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: true })
       f.virtualenv_install_with_resources(using: "python", end_with: r_b.name)
     end
 
     it "installs all resources in `end_with` array after other resources are installed" do
       expect(f).to receive(:virtualenv_create).and_return(venv)
       expect(venv).to receive(:pip_install).with([r_a, r_d, r_c, r_b])
-      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: false })
+      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: true })
       f.virtualenv_install_with_resources(using: "python", end_with: [r_c.name, r_b.name])
     end
 
@@ -143,7 +143,7 @@ RSpec.describe Language::Python::Virtualenv, :needs_python do
     it "installs resources in correct order when combining `without`, `start_with` and `end_with" do
       expect(f).to receive(:virtualenv_create).and_return(venv)
       expect(venv).to receive(:pip_install).with([r_d, r_c, r_b])
-      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: false })
+      expect(venv).to receive(:pip_install_and_link).with(buildpath, { link_manpages: true })
       f.virtualenv_install_with_resources(using: "python", without: r_a.name,
                                           start_with: r_d.name, end_with: r_b.name)
     end
@@ -254,7 +254,7 @@ RSpec.describe Language::Python::Virtualenv, :needs_python do
         expect(virtualenv).to receive(:pip_install).with("foo", { build_isolation: true })
         expect(Dir).to receive(:[]).with(src_bin/"*").twice.and_return(bin_before, bin_after)
 
-        virtualenv.pip_install_and_link "foo"
+        virtualenv.pip_install_and_link("foo", link_manpages: false)
 
         expect(src_bin/"kilroy").to exist
         expect(dest_bin/"kilroy").to exist
