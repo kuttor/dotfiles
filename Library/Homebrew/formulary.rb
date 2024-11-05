@@ -418,10 +418,12 @@ module Formulary
 
       @caveats_string = json_formula["caveats"]
       def caveats
-        self.class.instance_variable_get(:@caveats_string)
-            &.gsub(HOMEBREW_PREFIX_PLACEHOLDER, HOMEBREW_PREFIX)
-            &.gsub(HOMEBREW_CELLAR_PLACEHOLDER, HOMEBREW_CELLAR)
-            &.gsub(HOMEBREW_HOME_PLACEHOLDER, Dir.home)
+        caveats_string = self.class.instance_variable_get(:@caveats_string)
+        return unless caveats_string
+
+        caveats_string.gsub(HOMEBREW_PREFIX_PLACEHOLDER, HOMEBREW_PREFIX)
+                      .gsub(HOMEBREW_CELLAR_PLACEHOLDER, HOMEBREW_CELLAR)
+                      .gsub(HOMEBREW_HOME_PLACEHOLDER, Dir.home)
       end
 
       @tap_git_head_string = if Homebrew::API.internal_json_v3?

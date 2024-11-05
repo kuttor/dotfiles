@@ -593,7 +593,11 @@ class Formula
   # @api internal
   sig { returns(T::Array[String]) }
   def aliases
-    @aliases ||= tap&.alias_reverse_table&.dig(full_name)&.map { _1.split("/").last } || []
+    @aliases ||= if (tap = self.tap)
+      tap.alias_reverse_table.fetch(full_name, []).map { _1.split("/").last }
+    else
+      []
+    end
   end
 
   # The {Resource}s for the currently active {SoftwareSpec}.

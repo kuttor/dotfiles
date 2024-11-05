@@ -195,8 +195,13 @@ module Homebrew
       extract_plist = true if formulae_and_casks_total == 1
 
       formulae_checked = formulae_and_casks_to_check.map.with_index do |formula_or_cask, i|
-        formula = formula_or_cask if formula_or_cask.is_a?(Formula)
-        cask = formula_or_cask if formula_or_cask.is_a?(Cask::Cask)
+        case formula_or_cask
+        when Formula
+          formula = formula_or_cask
+          formula.head&.downloader&.quiet!
+        when Cask::Cask
+          cask = formula_or_cask
+        end
 
         use_full_name = full_name || ambiguous_names.include?(formula_or_cask)
         name = package_or_resource_name(formula_or_cask, full_name: use_full_name)
@@ -237,8 +242,6 @@ module Homebrew
           SkipConditions.print_skip_information(skip_info) if !newer_only && !quiet
           next
         end
-
-        formula&.head&.downloader&.quiet!
 
         # Use the `stable` version for comparison except for installed
         # head-only formulae. A formula with `stable` and `head` that's

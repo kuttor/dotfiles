@@ -152,10 +152,11 @@ module Homebrew
 
         resource_name = basename_str[/\A.*?--(.*?)--?(?:#{Regexp.escape(version.to_s)})/, 1]
 
+        stable = formula.stable
         if resource_name == "patch"
-          patch_hashes = formula.stable&.patches&.select(&:external?)&.map(&:resource)&.map(&:version)
+          patch_hashes = stable&.patches&.filter_map { _1.resource.version if _1.external? }
           return true unless patch_hashes&.include?(Checksum.new(version.to_s))
-        elsif resource_name && (resource_version = formula.stable&.resources&.dig(resource_name)&.version)
+        elsif resource_name && stable && (resource_version = stable.resources[resource_name]&.version)
           return true if resource_version != version
         elsif (formula.latest_version_installed? && formula.pkg_version.to_s != version) ||
               formula.pkg_version.to_s > version
