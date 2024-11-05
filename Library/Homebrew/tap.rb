@@ -1116,6 +1116,8 @@ class Tap
       return false unless list.include? formula_or_cask
       return list[formula_or_cask] if value.blank?
 
+      return list[formula_or_cask].include? value if list[formula_or_cask].is_a? Array
+
       list[formula_or_cask] == value
     end
   end
