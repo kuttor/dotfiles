@@ -26,11 +26,15 @@ module Cask
 
     def deprecation_reason; end
 
+    def deprecation_replacement; end
+
     def disabled?; end
 
     def disable_date; end
 
     def disable_reason; end
+
+    def disable_replacement; end
 
     def homepage; end
 

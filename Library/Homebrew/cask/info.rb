@@ -12,7 +12,10 @@ module Cask
       output = "#{title_info(cask)}\n"
       output << "#{Formatter.url(cask.homepage)}\n" if cask.homepage
       deprecate_disable = DeprecateDisable.message(cask)
-      output << "#{deprecate_disable.capitalize}\n" if deprecate_disable
+      if deprecate_disable.present?
+        deprecate_disable.tap { |message| message[0] = message[0].upcase }
+        output << "#{deprecate_disable}\n"
+      end
       output << "#{installation_info(cask)}\n"
       repo = repo_info(cask)
       output << "#{repo}\n" if repo

@@ -1542,6 +1542,13 @@ class Formula
   # @see .deprecate!
   delegate deprecation_reason: :"self.class"
 
+  # The replacement for this deprecated {Formula}.
+  # Returns `nil` if no replacement is specified or the formula is not deprecated.
+  # @!method deprecation_replacement
+  # @return [String]
+  # @see .deprecate!
+  delegate deprecation_replacement: :"self.class"
+
   # Whether this {Formula} is disabled (i.e. cannot be installed).
   # Defaults to false.
   # @!method disabled?
@@ -1562,6 +1569,13 @@ class Formula
   # @return [String, Symbol]
   # @see .disable!
   delegate disable_reason: :"self.class"
+
+  # The replacement for this disabled {Formula}.
+  # Returns `nil` if no replacement is specified or the formula is not disabled.
+  # @!method disable_replacement
+  # @return [String]
+  # @see .disable!
+  delegate disable_replacement: :"self.class"
 
   sig { returns(T::Boolean) }
   def skip_cxxstdlib_check?
@@ -2475,9 +2489,11 @@ class Formula
       "deprecated"               => deprecated?,
       "deprecation_date"         => deprecation_date,
       "deprecation_reason"       => deprecation_reason,
+      "deprecation_replacement"  => deprecation_replacement,
       "disabled"                 => disabled?,
       "disable_date"             => disable_date,
       "disable_reason"           => disable_reason,
+      "disable_replacement"      => disable_replacement,
       "post_install_defined"     => post_install_defined?,
       "service"                  => (service.to_hash if service?),
       "tap_git_head"             => tap_git_head,
@@ -2568,11 +2584,13 @@ class Formula
     if deprecation_date
       api_hash["deprecation_date"] = deprecation_date
       api_hash["deprecation_reason"] = deprecation_reason
+      api_hash["deprecation_replacement"] = deprecation_replacement
     end
 
     if disable_date
       api_hash["disable_date"] = disable_date
       api_hash["disable_reason"] = disable_reason
+      api_hash["disable_replacement"] = disable_replacement
     end
 
     api_hash
@@ -4268,14 +4286,19 @@ class Formula
     # deprecate! date: "2020-08-27", because: "has been replaced by foo"
     # ```
     #
+    # ```ruby
+    # deprecate! date: "2020-08-27", because: "has been replaced by foo", replacement: "foo"
+    # ```
+    #
     # @see https://docs.brew.sh/Deprecating-Disabling-and-Removing-Formulae
     # @see DeprecateDisable::FORMULA_DEPRECATE_DISABLE_REASONS
     # @api public
-    def deprecate!(date:, because:)
+    def deprecate!(date:, because:, replacement: nil)
       @deprecation_date = Date.parse(date)
       return if @deprecation_date > Date.today
 
       @deprecation_reason = because
+      @deprecation_replacement = replacement
       @deprecated = true
     end
 
@@ -4301,6 +4324,13 @@ class Formula
     # @see .deprecate!
     attr_reader :deprecation_reason
 
+    # The replacement for a deprecated {Formula}.
+    #
+    # @return [nil] if no replacement was provided or the formula is not deprecated.
+    # @return [String]
+    # @see .deprecate!
+    attr_reader :deprecation_replacement
+
     # Disables a {Formula} (on the given date) so it cannot be
     # installed. If the date has not yet passed the formula
     # will be deprecated instead of disabled.
@@ -4315,19 +4345,25 @@ class Formula
     # disable! date: "2020-08-27", because: "has been replaced by foo"
     # ```
     #
+    # ```ruby
+    # disable! date: "2020-08-27", because: "has been replaced by foo", replacement: "foo"
+    # ```
+    #
     # @see https://docs.brew.sh/Deprecating-Disabling-and-Removing-Formulae
     # @see DeprecateDisable::FORMULA_DEPRECATE_DISABLE_REASONS
     # @api public
-    def disable!(date:, because:)
+    def disable!(date:, because:, replacement: nil)
       @disable_date = Date.parse(date)
 
       if @disable_date > Date.today
         @deprecation_reason = because
+        @deprecation_replacement = replacement
         @deprecated = true
         return
       end
 
       @disable_reason = because
+      @disable_replacement = replacement
       @disabled = true
     end
 
@@ -4353,6 +4389,13 @@ class Formula
     # @return [String, Symbol]
     # @see .disable!
     attr_reader :disable_reason
+
+    # The replacement for a disabled {Formula}.
+    # Returns `nil` if no reason was provided or the formula is not disabled.
+    #
+    # @return [String]
+    # @see .disable!
+    attr_reader :disable_replacement
 
     # Permit overwriting certain files while linking.
     #

@@ -75,6 +75,20 @@ module DeprecateDisable
       end
     end
 
+    replacement = if formula_or_cask.deprecated?
+      formula_or_cask.deprecation_replacement
+    elsif formula_or_cask.disabled?
+      formula_or_cask.disable_replacement
+    end
+
+    if replacement.present?
+      message << "\n"
+      message << <<~EOS
+        Replacement:
+          brew install #{replacement}
+      EOS
+    end
+
     message
   end
 

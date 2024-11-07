@@ -5,30 +5,61 @@ require "deprecate_disable"
 RSpec.describe DeprecateDisable do
   let(:deprecated_formula) do
     instance_double(Formula, deprecated?: true, disabled?: false, deprecation_reason: :does_not_build,
-                    deprecation_date: nil, disable_date: nil)
+                    deprecation_replacement: nil, deprecation_date: nil, disable_date: nil)
   end
   let(:disabled_formula) do
     instance_double(Formula, deprecated?: false, disabled?: true, disable_reason: "is broken",
-                    deprecation_date: nil, disable_date: nil)
+                    disable_replacement: nil, deprecation_date: nil, disable_date: nil)
   end
   let(:deprecated_cask) do
     instance_double(Cask::Cask, deprecated?: true, disabled?: false, deprecation_reason: :discontinued,
-                   deprecation_date: nil, disable_date: nil)
+                   deprecation_replacement: nil, deprecation_date: nil, disable_date: nil)
   end
   let(:disabled_cask) do
     instance_double(Cask::Cask, deprecated?: false, disabled?: true, disable_reason: nil,
-                    deprecation_date: nil, disable_date: nil)
+                    disable_replacement: nil, deprecation_date: nil, disable_date: nil)
+  end
+  let(:deprecated_formula_with_replacement) do
+    instance_double(Formula, deprecated?: true, disabled?: false, deprecation_reason: :does_not_build,
+                    deprecation_replacement: "foo", deprecation_date: nil, disable_date: nil)
+  end
+  let(:disabled_formula_with_replacement) do
+    instance_double(Formula, deprecated?: false, disabled?: true, disable_reason: "is broken",
+                    disable_replacement: "bar", deprecation_date: nil, disable_date: nil)
+  end
+  let(:deprecated_cask_with_replacement) do
+    instance_double(Cask::Cask, deprecated?: true, disabled?: false, deprecation_reason: :discontinued,
+                    deprecation_replacement: "baz", deprecation_date: nil, disable_date: nil)
+  end
+  let(:disabled_cask_with_replacement) do
+    instance_double(Cask::Cask, deprecated?: false, disabled?: true, disable_reason: nil,
+                    disable_replacement: "qux", deprecation_date: nil, disable_date: nil)
   end
 
   before do
-    allow(deprecated_formula).to receive(:is_a?).with(Formula).and_return(true)
-    allow(deprecated_formula).to receive(:is_a?).with(Cask::Cask).and_return(false)
-    allow(disabled_formula).to receive(:is_a?).with(Formula).and_return(true)
-    allow(disabled_formula).to receive(:is_a?).with(Cask::Cask).and_return(false)
-    allow(deprecated_cask).to receive(:is_a?).with(Formula).and_return(false)
-    allow(deprecated_cask).to receive(:is_a?).with(Cask::Cask).and_return(true)
-    allow(disabled_cask).to receive(:is_a?).with(Formula).and_return(false)
-    allow(disabled_cask).to receive(:is_a?).with(Cask::Cask).and_return(true)
+    formulae = [
+      deprecated_formula,
+      disabled_formula,
+      deprecated_formula_with_replacement,
+      disabled_formula_with_replacement,
+    ]
+
+    casks = [
+      deprecated_cask,
+      disabled_cask,
+      deprecated_cask_with_replacement,
+      disabled_cask_with_replacement,
+    ]
+
+    formulae.each do |f|
+      allow(f).to receive(:is_a?).with(Formula).and_return(true)
+      allow(f).to receive(:is_a?).with(Cask::Cask).and_return(false)
+    end
+
+    casks.each do |c|
+      allow(c).to receive(:is_a?).with(Formula).and_return(false)
+      allow(c).to receive(:is_a?).with(Cask::Cask).and_return(true)
+    end
   end
 
   describe "::type" do
@@ -68,6 +99,26 @@ RSpec.describe DeprecateDisable do
     it "returns a deprecation message with no reason" do
       expect(described_class.message(disabled_cask))
         .to eq "disabled!"
+    end
+
+    it "returns a replacement message for a deprecated formula" do
+      expect(described_class.message(deprecated_formula_with_replacement))
+        .to eq "deprecated because it does not build!\nReplacement:\n  brew install foo\n"
+    end
+
+    it "returns a replacement message for a disabled formula" do
+      expect(described_class.message(disabled_formula_with_replacement))
+        .to eq "disabled because it is broken!\nReplacement:\n  brew install bar\n"
+    end
+
+    it "returns a replacement message for a deprecated cask" do
+      expect(described_class.message(deprecated_cask_with_replacement))
+        .to eq "deprecated because it is discontinued upstream!\nReplacement:\n  brew install baz\n"
+    end
+
+    it "returns a replacement message for a disabled cask" do
+      expect(described_class.message(disabled_cask_with_replacement))
+        .to eq "disabled!\nReplacement:\n  brew install qux\n"
     end
   end
 
