@@ -65,7 +65,9 @@ module Homebrew
             formulae: json_info(formulae),
             casks:    json_info(casks),
           }
-          puts JSON.pretty_generate(json)
+          # json v2.8.1 is inconsistent it how it renders empty arrays,
+          # so we use `[]` for consistency:
+          puts JSON.pretty_generate(json).gsub(/\[\n\n\s*\]/, "[]")
 
           outdated = formulae + casks
         else
