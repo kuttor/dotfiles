@@ -55,7 +55,7 @@ module RBI; end
 
 # source://tapioca//lib/tapioca/rbi_ext/model.rb#5
 class RBI::Tree < ::RBI::NodeWithComments
-  # source://rbi/0.2.0/lib/rbi/model.rb#121
+  # source://rbi/0.2.1/lib/rbi/model.rb#121
   sig do
     params(
       loc: T.nilable(::RBI::Loc),
@@ -65,15 +65,15 @@ class RBI::Tree < ::RBI::NodeWithComments
   end
   def initialize(loc: T.unsafe(nil), comments: T.unsafe(nil), &block); end
 
-  # source://rbi/0.2.0/lib/rbi/model.rb#128
+  # source://rbi/0.2.1/lib/rbi/model.rb#128
   sig { params(node: ::RBI::Node).void }
   def <<(node); end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/add_sig_templates.rb#66
+  # source://rbi/0.2.1/lib/rbi/rewriters/add_sig_templates.rb#66
   sig { params(with_todo_comment: T::Boolean).void }
   def add_sig_templates!(with_todo_comment: T.unsafe(nil)); end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/annotate.rb#49
+  # source://rbi/0.2.1/lib/rbi/rewriters/annotate.rb#49
   sig { params(annotation: ::String, annotate_scopes: T::Boolean, annotate_properties: T::Boolean).void }
   def annotate!(annotation, annotate_scopes: T.unsafe(nil), annotate_properties: T.unsafe(nil)); end
 
@@ -138,35 +138,35 @@ class RBI::Tree < ::RBI::NodeWithComments
   end
   def create_type_variable(name, type:, variance: T.unsafe(nil), fixed: T.unsafe(nil), upper: T.unsafe(nil), lower: T.unsafe(nil)); end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/deannotate.rb#41
+  # source://rbi/0.2.1/lib/rbi/rewriters/deannotate.rb#41
   sig { params(annotation: ::String).void }
   def deannotate!(annotation); end
 
-  # source://rbi/0.2.0/lib/rbi/model.rb#134
+  # source://rbi/0.2.1/lib/rbi/model.rb#134
   sig { returns(T::Boolean) }
   def empty?; end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/filter_versions.rb#118
+  # source://rbi/0.2.1/lib/rbi/rewriters/filter_versions.rb#118
   sig { params(version: ::Gem::Version).void }
   def filter_versions!(version); end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/flatten_singleton_methods.rb#60
+  # source://rbi/0.2.1/lib/rbi/rewriters/flatten_singleton_methods.rb#60
   sig { void }
   def flatten_singleton_methods!; end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/flatten_visibilities.rb#60
+  # source://rbi/0.2.1/lib/rbi/rewriters/flatten_visibilities.rb#60
   sig { void }
   def flatten_visibilities!; end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/group_nodes.rb#81
+  # source://rbi/0.2.1/lib/rbi/rewriters/group_nodes.rb#81
   sig { void }
   def group_nodes!; end
 
-  # source://rbi/0.2.0/lib/rbi/index.rb#68
+  # source://rbi/0.2.1/lib/rbi/index.rb#68
   sig { returns(::RBI::Index) }
   def index; end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/merge_trees.rb#324
+  # source://rbi/0.2.1/lib/rbi/rewriters/merge_trees.rb#324
   sig do
     params(
       other: ::RBI::Tree,
@@ -177,27 +177,27 @@ class RBI::Tree < ::RBI::NodeWithComments
   end
   def merge(other, left_name: T.unsafe(nil), right_name: T.unsafe(nil), keep: T.unsafe(nil)); end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/nest_non_public_members.rb#46
+  # source://rbi/0.2.1/lib/rbi/rewriters/nest_non_public_members.rb#46
   sig { void }
   def nest_non_public_members!; end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/nest_singleton_methods.rb#36
+  # source://rbi/0.2.1/lib/rbi/rewriters/nest_singleton_methods.rb#36
   sig { void }
   def nest_singleton_methods!; end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/nest_top_level_members.rb#63
+  # source://rbi/0.2.1/lib/rbi/rewriters/nest_top_level_members.rb#63
   sig { void }
   def nest_top_level_members!; end
 
-  # source://rbi/0.2.0/lib/rbi/model.rb#112
+  # source://rbi/0.2.1/lib/rbi/model.rb#112
   sig { returns(T::Array[::RBI::Node]) }
   def nodes; end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/attr_to_methods.rb#53
+  # source://rbi/0.2.1/lib/rbi/rewriters/attr_to_methods.rb#53
   sig { void }
   def replace_attributes_with_methods!; end
 
-  # source://rbi/0.2.0/lib/rbi/rewriters/sort_nodes.rb#119
+  # source://rbi/0.2.1/lib/rbi/rewriters/sort_nodes.rb#119
   sig { void }
   def sort_nodes!; end
 
@@ -218,7 +218,7 @@ class RBI::TypedParam < ::T::Struct
   const :type, ::String
 
   class << self
-    # source://sorbet-runtime/0.5.11589/lib/types/struct.rb#13
+    # source://sorbet-runtime/0.5.11641/lib/types/struct.rb#13
     def inherited(s); end
   end
 end
@@ -1141,7 +1141,7 @@ class Tapioca::ConfigHelper::ConfigError < ::T::Struct
   const :message_parts, T::Array[::Tapioca::ConfigHelper::ConfigErrorMessagePart]
 
   class << self
-    # source://sorbet-runtime/0.5.11589/lib/types/struct.rb#13
+    # source://sorbet-runtime/0.5.11641/lib/types/struct.rb#13
     def inherited(s); end
   end
 end
@@ -1152,7 +1152,7 @@ class Tapioca::ConfigHelper::ConfigErrorMessagePart < ::T::Struct
   const :colors, T::Array[::Symbol]
 
   class << self
-    # source://sorbet-runtime/0.5.11589/lib/types/struct.rb#13
+    # source://sorbet-runtime/0.5.11641/lib/types/struct.rb#13
     def inherited(s); end
   end
 end
@@ -2221,7 +2221,7 @@ class Tapioca::GemInfo < ::T::Struct
     sig { params(spec: ::Bundler::LazySpecification).returns(::Tapioca::GemInfo) }
     def from_spec(spec); end
 
-    # source://sorbet-runtime/0.5.11589/lib/types/struct.rb#13
+    # source://sorbet-runtime/0.5.11641/lib/types/struct.rb#13
     def inherited(s); end
   end
 end
@@ -2736,7 +2736,7 @@ module Tapioca::RBIHelper
   sig { params(name: ::String).returns(T::Boolean) }
   def valid_method_name?(name); end
 
-  # source://tapioca//lib/tapioca/helpers/rbi_helper.rb#123
+  # source://tapioca//lib/tapioca/helpers/rbi_helper.rb#114
   sig { params(name: ::String).returns(T::Boolean) }
   def valid_parameter_name?(name); end
 
@@ -2955,7 +2955,7 @@ module Tapioca::Runtime::Reflection
   extend ::Tapioca::Runtime::AttachedClassOf
   extend ::Tapioca::Runtime::Reflection
 
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#201
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#207
   sig { params(constant: ::Module).returns(T.untyped) }
   def abstract_type_of(constant); end
 
@@ -3008,11 +3008,11 @@ module Tapioca::Runtime::Reflection
   end
   def descendants_of(klass); end
 
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#194
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#200
   sig { params(constant: ::Module).returns(T::Set[::String]) }
   def file_candidates_for(constant); end
 
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#207
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#213
   sig { params(constant: ::Module).returns(T::Boolean) }
   def final_module?(constant); end
 
@@ -3053,14 +3053,15 @@ module Tapioca::Runtime::Reflection
   def qualified_name_of(constant); end
 
   # Examines the call stack to identify the closest location where a "require" is performed
-  # by searching for the label "<top (required)>". If none is found, it returns the location
+  # by searching for the label "<top (required)>" or "block in <class:...>" in the
+  # case of an ActiveSupport.on_load hook. If none is found, it returns the location
   # labeled "<main>", which is the original call site.
   #
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#184
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#185
   sig { params(locations: T.nilable(T::Array[::Thread::Backtrace::Location])).returns(::String) }
   def resolve_loc(locations); end
 
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#212
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#218
   sig { params(constant: ::Module).returns(T::Boolean) }
   def sealed_module?(constant); end
 
@@ -3082,23 +3083,23 @@ module Tapioca::Runtime::Reflection
 
   private
 
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#249
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#255
   sig { params(parent: ::Module, name: ::String).returns(T.nilable(::Module)) }
   def child_module_for_parent_with_name(parent, name); end
 
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#265
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#271
   sig { params(name: ::String).returns(T::Boolean) }
   def has_aliased_namespace?(name); end
 
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#260
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#266
   sig { params(method: ::UnboundMethod).returns(T::Boolean) }
   def method_defined_by_forwardable_module?(method); end
 
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#235
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#241
   sig { params(constant: ::Module).returns(T::Array[::UnboundMethod]) }
   def methods_for(constant); end
 
-  # source://tapioca//lib/tapioca/runtime/reflection.rb#219
+  # source://tapioca//lib/tapioca/runtime/reflection.rb#225
   sig { params(constant: ::Module).returns(T::Array[::UnboundMethod]) }
   def relevant_methods_for(constant); end
 end
