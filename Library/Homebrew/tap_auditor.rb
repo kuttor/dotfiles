@@ -10,6 +10,7 @@ module Homebrew
     sig { params(tap: Tap, strict: T.nilable(T::Boolean)).void }
     def initialize(tap, strict:)
       Homebrew.with_no_api_env do
+        tap.clear_cache if Homebrew::EnvConfig.automatically_set_no_install_from_api?
         @name                      = tap.name
         @path                      = tap.path
         @tap_audit_exceptions      = tap.audit_exceptions
@@ -54,6 +55,7 @@ module Homebrew
       check_formula_list_directory "style_exceptions", @tap_style_exceptions
       check_formula_list "pypi_formula_mappings", @tap_pypi_formula_mappings
       check_formula_list ".github/autobump.txt", @tap_autobump
+      check_formula_list "formula_renames", @formula_renames.values
     end
 
     sig { void }
