@@ -62,13 +62,14 @@ module Homebrew
           end
 
           json = {
-            "formulae" => json_info(formulae),
-            "casks"    => json_info(casks),
+            formulae: json_info(formulae),
+            casks:    json_info(casks),
           }
-          puts JSON.pretty_generate(json)
+          # json v2.8.1 is inconsistent it how it renders empty arrays,
+          # so we use `[]` for consistency:
+          puts JSON.pretty_generate(json).gsub(/\[\n\n\s*\]/, "[]")
 
           outdated = formulae + casks
-
         else
           outdated = if args.formula?
             outdated_formulae
@@ -170,10 +171,7 @@ module Homebrew
           "v1" => :v1,
           "v2" => :v2,
         }
-
-        raise UsageError, "invalid JSON version: #{version}" unless version_hash.include?(version)
-
-        version_hash[version]
+        version_hash.fetch(version) { raise UsageError, "invalid JSON version: #{version}" }
       end
 
       sig { returns(T::Array[Formula]) }

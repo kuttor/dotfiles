@@ -1,9 +1,7 @@
 {
   "token": "everything",
   "full_token": "everything",
-  "old_tokens": [
-
-  ],
+  "old_tokens": [],
   "tap": "homebrew/cask",
   "name": [
     "Everything"
