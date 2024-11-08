@@ -649,6 +649,8 @@ class Formula
   end
 
   # If at least one version of {Formula} is installed.
+  #
+  # @api public
   sig { returns(T::Boolean) }
   def any_version_installed?
     installed_prefixes.any? { |keg| (keg/AbstractTab::FILENAME).file? }
@@ -1783,6 +1785,8 @@ class Formula
   end
 
   # Standard parameters for cabal-v2 builds.
+  #
+  # @api public
   sig { returns(T::Array[String]) }
   def std_cabal_v2_args
     # cabal-install's dependency-resolution backtracking strategy can
@@ -1795,6 +1799,8 @@ class Formula
   end
 
   # Standard parameters for cargo builds.
+  #
+  # @api public
   sig {
     params(root: T.any(String, Pathname), path: T.any(String, Pathname)).returns(T::Array[String])
   }
@@ -1807,6 +1813,8 @@ class Formula
   # Setting `CMAKE_FIND_FRAMEWORK` to "LAST" tells CMake to search for our
   # libraries before trying to utilize Frameworks, many of which will be from
   # 3rd party installs.
+  #
+  # @api public
   sig {
     params(
       install_prefix: T.any(String, Pathname),
@@ -1828,6 +1836,8 @@ class Formula
   end
 
   # Standard parameters for configure builds.
+  #
+  # @api public
   sig {
     params(
       prefix: T.any(String, Pathname),
@@ -1840,6 +1850,8 @@ class Formula
   end
 
   # Standard parameters for Go builds.
+  #
+  # @api public
   sig {
     params(
       output:  T.any(String, Pathname),
@@ -1855,12 +1867,16 @@ class Formula
   end
 
   # Standard parameters for meson builds.
+  #
+  # @api public
   sig { returns(T::Array[String]) }
   def std_meson_args
     ["--prefix=#{prefix}", "--libdir=#{lib}", "--buildtype=release", "--wrap-mode=nofallback"]
   end
 
   # Standard parameters for npm builds.
+  #
+  # @api public
   sig { params(prefix: T.any(String, Pathname, FalseClass)).returns(T::Array[String]) }
   def std_npm_args(prefix: libexec)
     require "language/node"
@@ -1871,6 +1887,8 @@ class Formula
   end
 
   # Standard parameters for pip builds.
+  #
+  # @api public
   sig {
     params(prefix:          T.any(String, Pathname, FalseClass),
            build_isolation: T::Boolean).returns(T::Array[String])
@@ -1897,6 +1915,8 @@ class Formula
   # shared_library("foo", "*") #=> foo.2.dylib, foo.1.dylib, foo.dylib
   # shared_library("*")        #=> foo.dylib, bar.dylib
   # ```
+  #
+  # @api public
   sig { params(name: String, version: T.nilable(T.any(String, Integer))).returns(String) }
   def shared_library(name, version = nil)
     return "*.dylib" if name == "*" && (version.blank? || version == "*")
@@ -1921,6 +1941,8 @@ class Formula
   # rpath(target: frameworks) #=> "@loader_path/../Frameworks"
   # rpath(source: libexec/"bin") #=> "@loader_path/../../lib"
   # ```
+  #
+  # @api public
   sig { params(source: Pathname, target: Pathname).returns(String) }
   def rpath(source: bin, target: lib)
     unless target.to_s.start_with?(HOMEBREW_PREFIX)
@@ -1930,6 +1952,9 @@ class Formula
     "#{loader_path}/#{target.relative_path_from(source)}"
   end
 
+  # Linker variable for the directory containing the program or shared object.
+  #
+  # @api public
   sig { returns(String) }
   def loader_path
     "@loader_path"
@@ -1951,6 +1976,8 @@ class Formula
   #
   # If called with no parameters, does this with all compatible
   # universal binaries in a {Formula}'s {Keg}.
+  #
+  # @api public
   sig { params(targets: T.nilable(T.any(Pathname, String))).void }
   def deuniversalize_machos(*targets)
     if targets.none?
@@ -2057,13 +2084,14 @@ class Formula
   #                                                     "completions", "--selected-shell=bash")
   # ```
   #
-  # @param commands [Pathname, String]
+  # @api public
+  # @param commands
   #   the path to the executable and any passed subcommand(s) to use for generating the completion scripts.
-  # @param base_name [String]
+  # @param base_name
   #   the base name of the generated completion script. Defaults to the formula name.
-  # @param shells [Array<Symbol>]
+  # @param shells
   #   the shells to generate completion scripts for. Defaults to `[:bash, :zsh, :fish]`.
-  # @param shell_parameter_format [String, Symbol]
+  # @param shell_parameter_format
   #   specify how `shells` should each be passed to the `executable`. Takes either a String representing a
   #   prefix, or one of `[:flag, :arg, :none, :click]`. Defaults to plainly passing the shell.
   sig {
@@ -2982,6 +3010,8 @@ class Formula
   # ```ruby
   # system "make", "install"
   # ```
+  #
+  # @api public
   sig { params(cmd: T.any(String, Pathname), args: T.any(String, Integer, Pathname, Symbol)).void }
   def system(cmd, *args)
     verbose_using_dots = Homebrew::EnvConfig.verbose_using_dots?
