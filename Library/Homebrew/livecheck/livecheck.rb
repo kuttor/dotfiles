@@ -195,8 +195,13 @@ module Homebrew
       extract_plist = true if formulae_and_casks_total == 1
 
       formulae_checked = formulae_and_casks_to_check.map.with_index do |formula_or_cask, i|
-        formula = formula_or_cask if formula_or_cask.is_a?(Formula)
-        cask = formula_or_cask if formula_or_cask.is_a?(Cask::Cask)
+        case formula_or_cask
+        when Formula
+          formula = formula_or_cask
+          formula.head&.downloader&.quiet!
+        when Cask::Cask
+          cask = formula_or_cask
+        end
 
         use_full_name = full_name || ambiguous_names.include?(formula_or_cask)
         name = package_or_resource_name(formula_or_cask, full_name: use_full_name)
@@ -237,8 +242,6 @@ module Homebrew
           SkipConditions.print_skip_information(skip_info) if !newer_only && !quiet
           next
         end
-
-        formula&.head&.downloader&.quiet!
 
         # Use the `stable` version for comparison except for installed
         # head-only formulae. A formula with `stable` and `head` that's
@@ -508,10 +511,10 @@ module Homebrew
       params(
         livecheck_url:       T.any(String, Symbol),
         package_or_resource: T.any(Formula, Cask::Cask, Resource),
-      ).returns(T.nilable(String))
+      ).returns(String)
     }
     def self.livecheck_url_to_string(livecheck_url, package_or_resource)
-      case livecheck_url
+      livecheck_url_string = case livecheck_url
       when String
         livecheck_url
       when :url
@@ -521,6 +524,12 @@ module Homebrew
       when :homepage
         package_or_resource.homepage unless package_or_resource.is_a?(Resource)
       end
+
+      if livecheck_url.is_a?(Symbol) && !livecheck_url_string
+        raise ArgumentError, "`url #{livecheck_url.inspect}` does not reference a checkable URL"
+      end
+
+      livecheck_url_string
     end
 
     # Returns an Array containing the formula/cask/resource URLs that can be used by livecheck.
@@ -846,7 +855,7 @@ module Homebrew
       livecheck_strategy = livecheck.strategy
       livecheck_strategy_block = livecheck.strategy_block
 
-      livecheck_url_string = livecheck_url_to_string(livecheck_url, resource)
+      livecheck_url_string = livecheck_url_to_string(livecheck_url, resource) if livecheck_url
 
       urls = [livecheck_url_string] if livecheck_url_string
       urls ||= checkable_urls(resource)

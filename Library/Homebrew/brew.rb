@@ -93,7 +93,14 @@ begin
       Utils::Analytics.report_command_run(command_instance)
       command_instance.run
     else
-      Homebrew.public_send Commands.method_name(cmd)
+      begin
+        Homebrew.public_send Commands.method_name(cmd)
+      rescue NoMethodError => e
+        case_error = "undefined method `#{cmd.downcase}' for module Homebrew"
+        odie "Unknown command: brew #{cmd}" if e.message == case_error
+
+        raise
+      end
     end
   elsif (path = Commands.external_ruby_cmd_path(cmd))
     Homebrew.running_command = cmd

@@ -272,7 +272,7 @@ module PyPI
     else
       stable = T.must(formula.stable)
       url = if stable.specs[:tag].present?
-        url = "git+#{stable.url}@#{stable.specs[:tag]}"
+        "git+#{stable.url}@#{stable.specs[:tag]}"
       else
         stable.url
       end

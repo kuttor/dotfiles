@@ -62,20 +62,6 @@ module OS
           f&.unlink
         end
 
-        def check_xdg_data_dirs
-          xdg_data_dirs = ENV.fetch("HOMEBREW_XDG_DATA_DIRS", nil)
-          return if xdg_data_dirs.blank?
-          return if xdg_data_dirs.split(":").include?("#{HOMEBREW_PREFIX}/share")
-
-          <<~EOS
-            Homebrew's share was not found in your XDG_DATA_DIRS but you have
-            this variable set to include other locations.
-            Some programs like `vapigen` may not work correctly.
-            Consider adding Homebrew's share directory to XDG_DATA_DIRS like so:
-              echo 'export XDG_DATA_DIRS="#{HOMEBREW_PREFIX}/share:$XDG_DATA_DIRS"' >> #{Utils::Shell.profile}
-          EOS
-        end
-
         def check_umask_not_zero
           return unless File.umask.zero?
 

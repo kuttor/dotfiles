@@ -593,7 +593,11 @@ class Formula
   # @api internal
   sig { returns(T::Array[String]) }
   def aliases
-    @aliases ||= tap&.alias_reverse_table&.dig(full_name)&.map { _1.split("/").last } || []
+    @aliases ||= if (tap = self.tap)
+      tap.alias_reverse_table.fetch(full_name, []).map { _1.split("/").last }
+    else
+      []
+    end
   end
 
   # The {Resource}s for the currently active {SoftwareSpec}.
@@ -1849,12 +1853,16 @@ class Formula
   #
   # @api public
   sig {
-    params(output:  T.any(String, Pathname),
-           ldflags: T.nilable(T.any(String, T::Array[String]))).returns(T::Array[String])
+    params(
+      output:  T.any(String, Pathname),
+      ldflags: T.nilable(T.any(String, T::Array[String])),
+      gcflags: T.nilable(T.any(String, T::Array[String])),
+    ).returns(T::Array[String])
   }
-  def std_go_args(output: bin/name, ldflags: nil)
+  def std_go_args(output: bin/name, ldflags: nil, gcflags: nil)
     args = ["-trimpath", "-o=#{output}"]
     args += ["-ldflags=#{Array(ldflags).join(" ")}"] if ldflags
+    args += ["-gcflags=#{Array(gcflags).join(" ")}"] if gcflags
     args
   end
 

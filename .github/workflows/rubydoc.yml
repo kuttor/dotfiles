@@ -23,7 +23,7 @@ defaults:
 jobs:
   rubydoc:
     if: github.repository == 'Homebrew/brew'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/rubydoc/Gemfile
     steps:
@@ -36,13 +36,14 @@ jobs:
           test-bot: false
 
       - name: Checkout Homebrew/rubydoc.brew.sh
-        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           repository: Homebrew/rubydoc.brew.sh
           path: rubydoc
+          persist-credentials: false
 
       - name: Install Ruby
-        uses: ruby/setup-ruby@f26937343756480a8cb3ae1f623b9c8d89ed6984 # v1.196.0
+        uses: ruby/setup-ruby@46ca53beb334a2329bcd0e46a694816a6ae6d173 # v1.201.0
         with:
           bundler-cache: true
           working-directory: rubydoc

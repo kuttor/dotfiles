@@ -154,7 +154,9 @@ module SPDX
       if with_parts.length > 1
         { with_parts.first => { with: with_parts.second } }
       else
-        license_sym = result[/^#{LICENSEREF_PREFIX}(.+)/o, 1]&.downcase&.tr("-", "_")&.to_sym
+        return result unless result.start_with?(LICENSEREF_PREFIX)
+
+        license_sym = result.delete_prefix(LICENSEREF_PREFIX).downcase.tr("-", "_").to_sym
         ALLOWED_LICENSE_SYMBOLS.include?(license_sym) ? license_sym : result
       end
     end

@@ -173,8 +173,8 @@ module Cask
     sig { returns(T.nilable(Time)) }
     def install_time
       # <caskroom_path>/.metadata/<version>/<timestamp>/Casks/<token>.{rb,json} -> <timestamp>
-      time = installed_caskfile&.dirname&.dirname&.basename&.to_s
-      Time.strptime(time, Metadata::TIMESTAMP_FORMAT) if time
+      caskfile = installed_caskfile
+      Time.strptime(caskfile.dirname.dirname.basename.to_s, Metadata::TIMESTAMP_FORMAT) if caskfile
     end
 
     sig { returns(T.nilable(Pathname)) }
