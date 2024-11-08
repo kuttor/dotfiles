@@ -195,10 +195,15 @@ module OS
 
     sig { params(ids: String).returns(T.nilable(Pathname)) }
     def self.app_with_bundle_id(*ids)
-      path = mdfind(*ids)
-             .reject { |p| p.include?("/Backups.backupdb/") }
-             .first
-      Pathname.new(path) if path.present?
+      require "bundle_version"
+
+      paths = mdfind(*ids).filter_map do |bundle_path|
+        Pathname.new(bundle_path) if bundle_path.exclude?("/Backups.backupdb/")
+      end
+      return paths.first unless paths.all? { |bp| (bp/"Contents/Info.plist").exist? }
+
+      # Prefer newest one, if we can find it.
+      paths.max_by { |bundle_path| Homebrew::BundleVersion.from_info_plist(bundle_path/"Contents/Info.plist") }
     end
 
     sig { params(ids: String).returns(T::Array[String]) }
