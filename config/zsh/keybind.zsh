@@ -10,6 +10,19 @@
 #stty susp '^Z'        # Ctrl+Z suspend
 #stty stop undef
 
+# Mac keyboard specific keybindings
+
+# The host is using OSX terminal, as set in
+# 89-ssh-enhancements
+if [[ "$LC_TERM_PROGRAM" == "iTerm.app" ]]
+then
+  bindkey "\e\e[D" backward-word # alt + <-
+  bindkey "\e\e[C" forward-word  # alt + -> 
+  bindkey '^[[H'   beginning-of-line
+  bindkey '^[[F' end-of-line
+fi
+
+
 typeset -g -A key
 key[End]="${terminfo[kend]}"
 key[Up]="${terminfo[kcuu1]}"

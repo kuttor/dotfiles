@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+[[ -n "$ZINIT[COMPLETIONS_DIR]/_antidot" ]] && \
+antidot completion zsh > "$ZINIT[COMPLETIONS_DIR]/_antidot"
+
+verify antidot && \
+  antidot update && \
+  eval "$(antidot init)"

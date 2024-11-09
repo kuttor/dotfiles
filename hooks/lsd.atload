@@ -2,7 +2,8 @@
 
 verify lsd --alias ls
 
-alias ll="lsd --long --git --human-readable --header --hyperlink=always"
+alias ll="lsd --long --git --human-readable --header --hyperlink=always "
+alias l="ll "
 
 [[ ! -e "$DOT_CONFIG_HOME/lsd" ]] &&\
 ln -sf "$DOTFILES/lsd" "$DOT_CONFIG_HOME/lsd"

@@ -3,7 +3,6 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
 # installs zinit if missing and sources it
 ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
 [ ! -d "${ZINIT_HOME}" ] && mkdir -p "$(dirname "${ZINIT_HOME}")"
@@ -46,7 +45,7 @@ zi for                                                                          
 @$ZDOTDIR/completions.zsh
 
 # -- omz plugins and libraries ----------------------------------------------------------------------
-zi default-ice --clear --quiet light-mode lucid wait'0' id-as'oh-my-zsh'
+zi default-ice --clear --quiet light-mode lucid wait'0' id-as'omz-snippets'
 zi for                                                                                          \
 OMZL::theme-and-appearance.zsh                                                                  \
 OMZL::key-bindings.zsh                                                                          \
@@ -80,8 +79,10 @@ id-as'diff-so-fancy'                                    sbin'**/diff-so-fancy->d
 id-as'shellcheck'                                       sbin'*/shellcheck->shellcheck'        @koalaman/shellcheck     \
 id-as'tree-sitter'                        nocompile     sbin'*->tree-sitter->tree-sitter'     @tree-sitter/tree-sitter \
 id-as'direnv'                                           sbin'direnv*->direnv'                 @direnv/direnv           \
+id-as'antidot'        atload'use antidot.atload'        sbin'antidot*->antidot'               @doron-cohen/antidot     \
 id-as'fd' atload'use fd.atload' atclone'use fd.atclone' sbin'**/fd->fd'                       @sharkdp/fd         
 
+❯
 #-- pop, pop, fzf, fzf oh wut a relief itis -----------------------------------------------------
 zi default-ice --clear --quiet light-mode lucid wait'0'
 zi for                                                                                             \
@@ -130,7 +131,7 @@ id-as'zsh-history-substring-search'                                             
     @zsh-users/zsh-history-substring-search
 
 # -- romper prompter ------------------------------------------------------------------------------
-[[ ! -f "${HOME}/.dotfiles/config/zsh/.p10k.zsh" ]] || source "${HOME}/.dotfiles/config/zsh/.p10k.zsh"
+[[ ! -f "${HOME}/.p10k.zsh" ]] || source "${HOME}/.p10k.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/config/zsh/.p10k.zsh.
 [[ ! -f ~/.dotfiles/config/zsh/.p10k.zsh ]] || source ~/.dotfiles/config/zsh/.p10k.zsh

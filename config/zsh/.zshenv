@@ -28,9 +28,14 @@ ZINIT[LIST_COMMAND]="ls"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
 ZINIT[COMPINIT_OPTS]=" -C"
 
-# Core environment
+# core environment
 export LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
+# private git config stored in .localrc 
+export GIT_AUTHOR_NAME="$LOCAL_GIT_AUTHOR_NAME"
+export GIT_AUTHOR_EMAIL="$LOCAL_GIT_AUTHOR_EMAIL"
+#export GIT_COMMITTER_NAME="Your Name"
+#export GIT_COMMITTER_EMAIL="your@email.com"
 # =================================================================================================
 # -- autoload functions ---------------------------------------------------------------------------
 # =================================================================================================

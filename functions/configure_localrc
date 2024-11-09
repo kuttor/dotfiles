@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+echo "Generating localrc file..."
+echo -n "Enter your Git author name: "
+read LOCAL_GIT_AUTHOR_NAME
+echo -n "Enter your Git author email: "
+read LOCAL_GIT_AUTHOR_EMAIL
+
+# Default XFH_CONFIG_HOME if not set
+: ${XFH_CONFIG_HOME:="$HOME/.config"}
+
+# Create the localrc file
+local localrc="${XFH_CONFIG_HOME}/localrc"
+echo "export LOCAL_GIT_AUTHOR_NAME='$LOCAL_GIT_AUTHOR_NAME'" >"$localrc"
+echo "export LOCAL_GIT_AUTHOR_EMAIL='$LOCAL_GIT_AUTHOR_EMAIL'" >>"$localrc"
+
+echo "Configuration saved to $localrc"

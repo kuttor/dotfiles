@@ -1,6 +1,5 @@
 #! /usr/bin/env zsh
 
-
 zsh-history-substring-search configuration
 bindkey '^[[A' history-substring-search-up # or '\eOA'
 bindkey '^[[B' history-substring-search-down # or '\eOB'
