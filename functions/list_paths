@@ -1,0 +1,20 @@
+#! /usr/bin/env zsh
+
+path_vars=("FPATH" "PATH" "MANPATH" "CDPATH")
+header_color="\033[1;35m"
+path_color="\033[1;36m"
+reset_color="\033[0m"
+bullet="📁"
+
+for var in "${path_vars[@]}"; do
+  echo -e "${header_color}=== $var ===${reset_color}"
+
+  paths=("${(s/:/)${(P)var}}")
+  for path in "${paths[@]}"; do
+    if [[ -n "$path" ]]; then
+        echo -e "${path_color}${bullet} $path${reset_color}"
+    fi
+  done
+
+  echo
+done
