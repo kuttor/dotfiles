@@ -10,11 +10,12 @@ ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh" && autoload -Uz _zinit &&(( ${+_comps} )) && _comps[zinit]=_zinit
 
 # -- ice ice baby ---------------------------------------------------------------------------------
-zi lucid light-mode for                                                                                            \
-id-as'annex-bin-gem-node'   @zdharma-continuum/zinit-annex-bin-gem-node                           \
-id-as'annex-binary-symlink' @zdharma-continuum/zinit-annex-binary-symlink                         \
-id-as'annex-default-ice'    @zdharma-continuum/zinit-annex-default-ice                            \
-id-as'annex-patch-dl'       @zdharma-continuum/zinit-annex-patch-dl                               \
+zi lucid light-mode for                                                                            \
+id-as'annex-bin-gem-node'   @zdharma-continuum/zinit-annex-bin-gem-node                            \
+id-as'annex-binary-symlink' @zdharma-continuum/zinit-annex-binary-symlink                          \
+id-as'annex-default-ice'    @zdharma-continuum/zinit-annex-default-ice                             \
+id-as'annex-patch-dl'       @zdharma-continuum/zinit-annex-patch-dl                                \
+id-as'annex-link-man'       @zdharma-continuum/zinit-annex-link-man                                \
 id-as'annex-rust'           @zdharma-continuum/zinit-annex-rust
 
 # -- fargo cargo ---------------------------------------------------------------------------------
@@ -22,18 +23,28 @@ zi default-ice --clear --quiet lucid light-mode wait'0' rustup
 zi for                                                                                             \
 id-as'tre'    sbin'bin/tre->tre'       cargo'tre'    atload'use tre.atload'    @dduan/tre          \
 id-as'lsd'    sbin'bin/lsd->lsd'       cargo'lsd'    atload'use lsd.atload'    @lsd-rs/lsd         \
-id-as'zoxide' sbin'bin/zoxide->zoxide' cargo'zoxide' atload'use zoxide.atload' @ajeetdsouza/zoxide \
 id-as'sd'     sbin'bin/sd->sd'         cargo'sd'                               @chmln/sd           \
-id-as'tlrc'   sbin'bin/tlrc->tlrc'     cargo'tlrc'                             @tldr-pages/tlrc    \
 id-as'rip'    sbin'bin/rip->rip'       cargo'rm-improved'                      @nivekuil/rip       \
-id-as'dog'    sbin'bin/dog->dog'       cargo'dog'                              @ogham/dog
+id-as'tlrc'   sbin'bin/tlrc->tlrc'     cargo'tlrc'                             @tldr-pages/tlrc    \
+id-as'zoxide' sbin'bin/zoxide->zoxide' cargo'zoxide' atload'use zoxide.atload' @ajeetdsouza/zoxide
 
 # -- manpage renovations --------------------------------------------------------------------------
 zi default-ice --clear --quiet lucid light-mode wait'0'
-zi for                                                                                            \
-id-as'annex-man'        @zdharma-continuum/zinit-annex-man                                        \
-id-as'asciidoctor' pack @asciidoctor                                                              \
-id-as'zman'             @mattmc3/zman
+
+zi for                                                                                             \
+id-as'zshelldoc'                                                                                   \
+  lbin make"PREFIX=$ZPFX install"                                                                  \
+  reset                                                                                            \
+  atpull'%atclone'                                                                                 \
+  atdelete"PREFIX=$ZPFX make uninstall"                                                            \
+  @zdharma-continuum/zshelldoc                                                                     \
+id-as'annex-man'                                                                                   \
+  @zdharma-continuum/zinit-annex-man                                                               \
+id-as'asciidoctor'                                                                                 \
+  pack                                                                                             \
+  @asciidoctor                                                                                     \
+id-as'zman'                                                                                        \
+  @mattmc3/zman
 
 # -- con-air, con-artist, con-man and now con-fig-------------------------------------------------c
 zi default-ice --clear --quiet id-as'zsh-configs' light-mode lucid wait'0' is-snippet
@@ -59,30 +70,33 @@ OMZP::brew                                                                      
 OMZP::git                                                                                       \
 OMZP::cp                                                                                        \
 OMZP::grc                                                                                       \
-atload'use magic-enter.atload' OMZP::magic-enter                                               
+atload'use magic-enter.atload' OMZP::magic-enter
 
 # rub a dub dub there's gits in my hubs -------------------------------------------------------------------------
 zi default-ice --clear --quiet light-mode lucid wait'0' from'gh-r'
-zi for                                                                                                                         \
+zi for                                                                                                                 \
 id-as'lazygit'                                          sbin'lazygit->lazygit'                @jesseduffield/lazygit   \
 id-as'lemmeknow'                                        sbin'lemmeknow*->lemmeknow'           @swanandx/lemmeknow      \
-id-as'rg'                                               sbin'**/rg->rg'                       @BurntSushi/ripgrep      \
+id-as'gh'                                               sbin'gh_*/bin/gh*->gh'                @cli/cli                 \
+id-as'fx'                                               sbin'fx*->fx'                         @antonmedv/fx            \
+id-as'rg'  binary lbin lman atclone'mv rip*/* .'          atpull'%atclone'                    @BurntSushi/ripgrep      \
+id-as'dog' binary lbin lman atclone'mv -f **/**.zsh _dog' atpull'%atclone'                    @ogham/dog               \
+id-as'bat' binary lbin lman atclone'mv -f **/*.zsh _bat'  atpull'%atclone'                    @sharkdp/bat             \
 id-as'glow'                                             sbin'**/glow->glow'                   @charmbracelet/glow      \
+id-as'just' binary lbin lman  atclone'./just --completions zsh > _just' atpull'%atclone'      @casey/just              \
 id-as'nvim'                                             sbin'**/nvim->nvim'                   @neovim/neovim           \
 id-as'mcfly'                                            sbin'mcfly*->mcfly'                   @cantino/mcfly           \
 id-as'deno'                                             sbin'*->deno'                         @denoland/deno           \
-id-as'fx'                                               sbin'fx*->fx'                         @antonmedv/fx            \
 id-as'assh'                                             sbin'assh*->assh'                     @moul/assh               \
 id-as'shfmt'                                            sbin'**/sh*->shfmt'                   @mvdan/sh                \
-id-as'gh'                                               sbin'gh_*/bin/gh*->gh'                @cli/cli                 \
+id-as'direnv'                                           sbin'direnv*->direnv'                 @direnv/direnv           \
 id-as'diff-so-fancy'                                    sbin'**/diff-so-fancy->diff-so-fancy' @so-fancy/diff-so-fancy  \
 id-as'shellcheck'                                       sbin'*/shellcheck->shellcheck'        @koalaman/shellcheck     \
 id-as'tree-sitter'                        nocompile     sbin'*->tree-sitter->tree-sitter'     @tree-sitter/tree-sitter \
-id-as'direnv'                                           sbin'direnv*->direnv'                 @direnv/direnv           \
 id-as'antidot'        atload'use antidot.atload'        sbin'antidot*->antidot'               @doron-cohen/antidot     \
-id-as'fd' atload'use fd.atload' atclone'use fd.atclone' sbin'**/fd->fd'                       @sharkdp/fd         
+id-as'fd' binary lbin lman atpull'%atclone' atload'use fd.atload' atclone'use fd.atclone'     @sharkdp/fd
 
-❯
+
 #-- pop, pop, fzf, fzf oh wut a relief itis -----------------------------------------------------
 zi default-ice --clear --quiet light-mode lucid wait'0'
 zi for                                                                                             \
