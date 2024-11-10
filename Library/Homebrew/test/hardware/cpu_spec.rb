@@ -21,6 +21,7 @@ RSpec.describe Hardware::CPU do
   describe "::family" do
     let(:cpu_families) do
       [
+        :alderlake,
         :amd_k7,
         :amd_k8,
         :amd_k8_k10_hybrid,
@@ -38,6 +39,7 @@ RSpec.describe Hardware::CPU do
         :arm_twister,
         :arm_typhoon,
         :arm_vortex_tempest,
+        :arrowlake,
         :atom,
         :bobcat,
         :broadwell,
@@ -47,6 +49,7 @@ RSpec.describe Hardware::CPU do
         :core,
         :core2,
         :dothan,
+        :graniterapids,
         :haswell,
         :icelake,
         :ivybridge,
@@ -54,15 +57,22 @@ RSpec.describe Hardware::CPU do
         :kabylake,
         :merom,
         :nehalem,
+        :pantherlake,
         :penryn,
         :ppc,
         :prescott,
         :presler,
+        :rocketlake,
         :sandybridge,
+        :sapphirerapids,
         :skylake,
+        :tigerlake,
         :westmere,
         :zen,
+        :zen2,
         :zen3,
+        :zen4,
+        :zen5,
         :dunno,
       ]
     end

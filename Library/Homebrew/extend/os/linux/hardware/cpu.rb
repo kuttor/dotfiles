@@ -28,7 +28,7 @@ module Hardware
         when "GenuineIntel"
           intel_family(cpu_family, cpu_model)
         when "AuthenticAMD"
-          amd_family(cpu_family)
+          amd_family(cpu_family, cpu_model)
         end || unknown
       end
 
@@ -87,7 +87,7 @@ module Hardware
         end
       end
 
-      def amd_family(family)
+      def amd_family(family, cpu_model)
         case family
         when 0x06
           :amd_k7
@@ -106,9 +106,21 @@ module Hardware
         when 0x16
           :jaguar
         when 0x17
-          :zen
+          case cpu_model
+          when 0x10..0x2f
+            :zen
+          when 0x30..0x3f, 0x47, 0x60..0x7f, 0x84..0x87, 0x90..0xaf
+            :zen2
+          end
         when 0x19
-          :zen3
+          case cpu_model
+          when ..0x0f, 0x20..0x5f
+            :zen3
+          when 0x10..0x1f, 0x60..0x7f, 0xa0..0xaf
+            :zen4
+          end
+        when 0x1a
+          :zen5
         end
       end
 
