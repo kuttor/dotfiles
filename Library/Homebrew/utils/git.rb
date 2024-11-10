@@ -119,10 +119,19 @@ module Utils
         ENV["GIT_COMMITTER_NAME"] = Homebrew::EnvConfig.git_name if committer
       end
 
-      return unless Homebrew::EnvConfig.git_email
+      if Homebrew::EnvConfig.git_committer_name && committer
+        ENV["GIT_COMMITTER_NAME"] = Homebrew::EnvConfig.git_committer_name
+      end
 
-      ENV["GIT_AUTHOR_EMAIL"] = Homebrew::EnvConfig.git_email if author
-      ENV["GIT_COMMITTER_EMAIL"] = Homebrew::EnvConfig.git_email if committer
+      if Homebrew::EnvConfig.git_email
+        ENV["GIT_AUTHOR_EMAIL"] = Homebrew::EnvConfig.git_email if author
+        ENV["GIT_COMMITTER_EMAIL"] = Homebrew::EnvConfig.git_email if committer
+      end
+
+      return unless committer
+      return unless Homebrew::EnvConfig.git_committer_email
+
+      ENV["GIT_COMMITTER_EMAIL"] = Homebrew::EnvConfig.git_committer_email
     end
 
     def self.setup_gpg!
