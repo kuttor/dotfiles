@@ -87,10 +87,12 @@ module Cask
       :deprecated?,
       :deprecation_date,
       :deprecation_reason,
+      :deprecation_replacement,
       :disable!,
       :disabled?,
       :disable_date,
       :disable_reason,
+      :disable_replacement,
       :discontinued?, # TODO: remove once discontinued? is removed (4.5.0)
       :livecheck,
       :livecheckable?,
@@ -105,8 +107,8 @@ module Cask
     extend Attrable
     include OnSystem::MacOSOnly
 
-    attr_reader :cask, :token, :deprecation_date, :deprecation_reason, :disable_date, :disable_reason,
-                :on_system_block_min_os
+    attr_reader :cask, :token, :deprecation_date, :deprecation_reason, :deprecation_replacement, :disable_date,
+                :disable_reason, :disable_replacement, :on_system_block_min_os
 
     attr_predicate :deprecated?, :disabled?, :livecheckable?, :on_system_blocks_exist?, :depends_on_set_in_block?
 
@@ -442,11 +444,12 @@ module Cask
     # NOTE: A warning will be shown when trying to install this cask.
     #
     # @api public
-    def deprecate!(date:, because:)
+    def deprecate!(date:, because:, replacement: nil)
       @deprecation_date = Date.parse(date)
       return if @deprecation_date > Date.today
 
       @deprecation_reason = because
+      @deprecation_replacement = replacement
       @deprecated = true
     end
 
@@ -455,16 +458,18 @@ module Cask
     # NOTE: An error will be thrown when trying to install this cask.
     #
     # @api public
-    def disable!(date:, because:)
+    def disable!(date:, because:, replacement: nil)
       @disable_date = Date.parse(date)
 
       if @disable_date > Date.today
         @deprecation_reason = because
+        @deprecation_replacement = replacement
         @deprecated = true
         return
       end
 
       @disable_reason = because
+      @disable_replacement = replacement
       @disabled = true
     end
 
