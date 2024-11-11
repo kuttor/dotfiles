@@ -756,6 +756,7 @@ module GitHub
 
         safe_system "git", "add", *changed_files
         safe_system "git", "checkout", "--no-track", "-b", branch, "#{remote}/#{remote_branch}" unless args.commit?
+        Utils::Git.set_name_email!
         safe_system "git", "commit", "--no-edit", "--verbose",
                     "--message=#{commit_message}",
                     "--", *changed_files

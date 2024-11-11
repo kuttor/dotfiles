@@ -161,6 +161,12 @@ module Homebrew::EnvConfig
     def ftp_proxy; end
 
     sig { returns(T.nilable(::String)) }
+    def git_committer_email; end
+
+    sig { returns(T.nilable(::String)) }
+    def git_committer_name; end
+
+    sig { returns(T.nilable(::String)) }
     def git_email; end
 
     sig { returns(T.nilable(::String)) }

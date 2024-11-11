@@ -273,11 +273,19 @@ module Homebrew
       HOMEBREW_GITHUB_PACKAGES_USER:             {
         description: "Use this username when accessing the GitHub Packages Registry (where bottles may be stored).",
       },
+      HOMEBREW_GIT_COMMITTER_EMAIL:              {
+        description: "Set the Git committer email to this value.",
+      },
+      HOMEBREW_GIT_COMMITTER_NAME:               {
+        description: "Set the Git committer name to this value.",
+      },
       HOMEBREW_GIT_EMAIL:                        {
-        description: "Set the Git author and committer email to this value.",
+        description: "Set the Git author name and, if `HOMEBREW_GIT_COMMITTER_EMAIL` is unset, committer email to " \
+                     "this value.",
       },
       HOMEBREW_GIT_NAME:                         {
-        description: "Set the Git author and committer name to this value.",
+        description: "Set the Git author name and, if `HOMEBREW_GIT_COMMITTER_NAME` is unset, committer name to " \
+                     "this value.",
       },
       HOMEBREW_GIT_PATH:                         {
         description: "Linux only: Set this value to a new enough `git` executable for Homebrew to use.",
