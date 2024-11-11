@@ -2529,11 +2529,17 @@ Use this GitHub personal access token when accessing the GitHub Packages Registr
 \fBHOMEBREW_GITHUB_PACKAGES_USER\fP
 Use this username when accessing the GitHub Packages Registry (where bottles may be stored)\.
 .TP
+\fBHOMEBREW_GIT_COMMITTER_EMAIL\fP
+Set the Git committer email to this value\.
+.TP
+\fBHOMEBREW_GIT_COMMITTER_NAME\fP
+Set the Git committer name to this value\.
+.TP
 \fBHOMEBREW_GIT_EMAIL\fP
-Set the Git author and committer email to this value\.
+Set the Git author name and, if \fBHOMEBREW_GIT_COMMITTER_EMAIL\fP is unset, committer email to this value\.
 .TP
 \fBHOMEBREW_GIT_NAME\fP
-Set the Git author and committer name to this value\.
+Set the Git author name and, if \fBHOMEBREW_GIT_COMMITTER_NAME\fP is unset, committer name to this value\.
 .TP
 \fBHOMEBREW_GIT_PATH\fP
 Linux only: Set this value to a new enough \fBgit\fP executable for Homebrew to use\.

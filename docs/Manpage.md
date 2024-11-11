@@ -3887,13 +3887,23 @@ command execution e.g. `$(cat file)`.
 : Use this username when accessing the GitHub Packages Registry (where bottles
   may be stored).
 
+`HOMEBREW_GIT_COMMITTER_EMAIL`
+
+: Set the Git committer email to this value.
+
+`HOMEBREW_GIT_COMMITTER_NAME`
+
+: Set the Git committer name to this value.
+
 `HOMEBREW_GIT_EMAIL`
 
-: Set the Git author and committer email to this value.
+: Set the Git author name and, if `HOMEBREW_GIT_COMMITTER_EMAIL` is unset,
+  committer email to this value.
 
 `HOMEBREW_GIT_NAME`
 
-: Set the Git author and committer name to this value.
+: Set the Git author name and, if `HOMEBREW_GIT_COMMITTER_NAME` is unset,
+  committer name to this value.
 
 `HOMEBREW_GIT_PATH`
 
