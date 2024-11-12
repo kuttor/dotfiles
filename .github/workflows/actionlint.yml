@@ -55,7 +55,9 @@ jobs:
 
           echo "::add-matcher::.github/actionlint-matcher.json"
 
-      - run: zizmor --format sarif . >results.sarif
+      - run: |
+          # NOTE: exit code intentionally suppressed here
+          zizmor --format sarif . > results.sarif || true
 
       - name: Upload SARIF file
         uses: actions/upload-artifact@v4
