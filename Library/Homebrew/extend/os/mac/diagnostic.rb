@@ -128,6 +128,20 @@ module OS
           EOS
         end
 
+        def check_for_opencore
+          has_opencore =
+            File.exist?("/Library/PrivilegedHelperTools/com.dortania.opencore-legacy-patcher.privileged-helper")
+          has_opencore ||= File.exist?("/Library/Application Support/Dortania/OpenCore-Patcher.app")
+          has_opencore ||= MacOS.pkgutil_info("com.dortania.opencore-legacy-patcher").present?
+          return unless has_opencore
+
+          <<~EOS
+            You have installed macOS using OpenCore Legacy Patcher.
+            We do not provide support for this configuration.
+            #{please_create_pull_requests}
+          EOS
+        end
+
         def check_xcode_up_to_date
           return unless MacOS::Xcode.outdated?
 
