@@ -130,6 +130,7 @@ module OS
 
         def check_for_opencore
           return if ::Hardware::CPU.physical_cpu_arm64?
+          return if ENV["CI"]
 
           # https://dortania.github.io/OpenCore-Legacy-Patcher/UPDATE.html#checking-oclp-and-opencore-versions
           begin
@@ -141,7 +142,7 @@ module OS
           end
 
           <<~EOS
-            You have installed macOS using OpenCore Legacy Patcher, version #{opencore_version}.
+            You have installed macOS using OpenCore Legacy Patcher.
             We do not provide support for this configuration.
             #{please_create_pull_requests}
           EOS
