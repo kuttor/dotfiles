@@ -136,7 +136,7 @@ module OS
             opencore_version = Utils.safe_popen_read("/usr/sbin/nvram",
                                                      "4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version").split[1]
             oclp_version = Utils.safe_popen_read("/usr/sbin/nvram",
-                                                 "4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:oclp-version").split[1]
+                                                 "4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:OCLP-Version").split[1]
             return if opencore_version.blank? || oclp_version.blank?
           rescue ErrorDuringExecution
             return
