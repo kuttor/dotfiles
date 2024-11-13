@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+
+FILELISTER='ls --color=always --group-directories-first {2})'
+
+export _ZO_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zoxide"
+export _ZO_ECHO=1
+export _ZO_RESOLVE_SYMLINKS=1
+export _ZO_FZF_OPTS="\
+  --scheme=path \
+  --tiebreak=end,chunk,index \
+  --bind=ctrl-z:ignore,btab:up,tab:down \
+  --cycle \
+  --keep-right \
+  --border=sharp \
+  --height=45% \
+  --info=inline \
+  --layout=reverse \
+  --tabstop=1 \
+  --exit-0 \
+  --select-1 \
+  --preview '(eza --tree --icons --level 3 --color=always \
+  --group-directories-first {2} || \
+    tree -NC {2} || $FILELISTER 2>/dev/null | head -200"
+
+verify zoxide && eval "$(zoxide init zsh)"

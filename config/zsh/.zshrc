@@ -16,7 +16,15 @@ id-as'annex-binary-symlink' @zdharma-continuum/zinit-annex-binary-symlink       
 id-as'annex-default-ice'    @zdharma-continuum/zinit-annex-default-ice                                                 \
 id-as'annex-patch-dl'       @zdharma-continuum/zinit-annex-patch-dl                                                    \
 id-as'annex-link-man'       @zdharma-continuum/zinit-annex-link-man                                                    \
-id-as'annex-rust'           @zdharma-continuum/zinit-annex-rust
+id-as'annex-rust'           @zdharma-continuum/zinit-annex-rust                                                        \
+id-as'annex-man'            @zdharma-continuum/zinit-annex-man     
+
+# -- manpage renovations -----------------------------------------------------------------------------------------------
+zi default-ice --clear --quiet lucid light-mode wait'0'
+zi for                                                                                                                 \                                                    \
+id-as'asciidoctor' pack @asciidoctor                                                                                   \
+id-as'zman'             @mattmc3/zman
+
 
 # -- fargo cargo -------------------------------------------------------------------------------------------------------
 zi default-ice --clear --quiet lucid light-mode wait'0' rustup
@@ -29,20 +37,13 @@ zi default-ice --clear --quiet lucid light-mode wait'0' rustup
 
 zi for                                                                                                                 \
 id-as'cargo-apps'                                                                                                      \
-cargo'lsd;sd;tre;tlrc;rm-improved'                                                                                     \
-lbin'bin/(lsd|sd|tre|tlrc|rip)'                                                                                        \
-atload'use tre.atload;use lsd.atload'                                                                                  \
+cargo'lsd;sd;tre;tlrc;rm-improved;choose;mcfly'                                                                                     \
+lbin'bin/(lsd|sd|tre|tlrc|rip|rust*|carg*|choose|mcfly)'                                                                            \
+atload'use tre.atload;use lsd.atload; use rust.atload'                                                                 \
 @zdharma-continuum/null
-
 
 #id-as'zoxide' sbin'bin/zoxide->zoxide' cargo'zoxide' atload'use zoxide.atload' @ajeetdsouza/zoxide                     \
 
-# -- manpage renovations -----------------------------------------------------------------------------------------------
-zi default-ice --clear --quiet lucid light-mode wait'0'
-zi for                                                                                                                 \
-id-as'annex-man'        @zdharma-continuum/zinit-annex-man                                                             \
-id-as'asciidoctor' pack @asciidoctor                                                                                   \
-id-as'zman'             @mattmc3/zman
 
 # -- con-air, con-artist, con-man and now con-fig-----------------------------------------------------------------------
 zi default-ice --clear --quiet id-as'zsh-configs' light-mode lucid wait'0' is-snippet
@@ -76,7 +77,7 @@ zi for                                                                          
 id-as'lazygit'                                          sbin'lazygit->lazygit'                @jesseduffield/lazygit   \
 id-as'lemmeknow'                                        sbin'lemmeknow*->lemmeknow'           @swanandx/lemmeknow      \
 id-as'glow'                                             sbin'**/glow->glow'                   @charmbracelet/glow      \
-id-as'nvim'                                             sbin'**/nvim->nvim'                   @neovim/neovim           \
+id-as'nvim'          atload'use neovim.atload'          sbin'nvim*/bin/nvim->nvim'            @neovim/neovim           \
 id-as'mcfly'                                            sbin'mcfly*->mcfly'                   @cantino/mcfly           \
 id-as'deno'                                             sbin'*->deno'                         @denoland/deno           \
 id-as'fx'                                               sbin'fx*->fx'                         @antonmedv/fx            \
@@ -90,14 +91,15 @@ id-as'direnv'                                           sbin'direnv*->direnv'   
 id-as'antidot'        atload'use antidot.atload'        sbin'antidot*->antidot'               @doron-cohen/antidot
 
 # -- ineedz a mans -----------------------------------------------------------------------------------------------------
-zi default-ice --clear --quiet light-mode binary lbin lman lucid wait'0'
+zi default-ice --clear --quiet light-mode binary lbin lman lucid wait'0' from'gh-r'
 zi for                                                                                                                 \
 id-as'bat'    atclone'mv -f **/*.zsh _bat'              atpull'%atclone' @sharkdp/bat                                  \
 id-as'fd'     atclone'./fd --gen-completions zsh > _fd' atpull'%atclone' @sharkdp/fd                                   \
 id-as'dog'    atclone'mv -f **/**.zsh _dog'             atpull'%atclone' @ogham/dog                                    \
 id-as'rg'     atclone'mv rip*/* .'                      atpull'%atclone' @BurntSushi/ripgrep                           \
 id-as'just'   atclone'./just --completions zsh > _just' atpull'%atclone' @casey/just                                   \
-id-as'zoxide' atinit'use zoxide.atinit'  lman'*/**.1'                    @ajeetdsouza/zoxide
+id-as'zoxide' atinit'use zoxide.atinit'  lman'*/**.1'                    @ajeetdsouza/zoxide                           \
+
 
 #-- pop, pop, fzf, fzf oh wut a relief itis ----------------------------------------------------------------------------
 zi default-ice --clear --quiet light-mode lucid wait'0'
@@ -145,6 +147,5 @@ id-as'zsh-autosuggestions'                                                      
     # atload'use zsh-history-substring-search.atload'                                                                    \
     # @zsh-users/zsh-history-substring-search                                                                            \
 
-
-# -- load p10k ---------------------------------------------------------------------------------------------------------
-[[ ! -f "${DOT_CONFIG_HOME}/.p10k.zsh" ]] || source" ${DOT_CONFIG_HOME}/.p10k.zsh"
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/config/zsh/.p10k.zsh.
+[[ ! -f ~/.dotfiles/config/zsh/.p10k.zsh ]] || source ~/.dotfiles/config/zsh/.p10k.zsh
