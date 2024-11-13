@@ -129,11 +129,16 @@ module OS
         end
 
         def check_for_opencore
-          has_opencore =
-            File.exist?("/Library/PrivilegedHelperTools/com.dortania.opencore-legacy-patcher.privileged-helper")
-          has_opencore ||= File.exist?("/Library/Application Support/Dortania/OpenCore-Patcher.app")
-          has_opencore ||= MacOS.pkgutil_info("com.dortania.opencore-legacy-patcher").present?
-          return unless has_opencore
+          return if ::Hardware::CPU.physical_cpu_arm64?
+
+          # https://dortania.github.io/OpenCore-Legacy-Patcher/UPDATE.html#checking-oclp-and-opencore-versions
+          begin
+            opencore_version = Utils.safe_popen_read("/usr/sbin/nvram",
+                                                     "4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version")
+            return if opencore_version.blank?
+          rescue ErrorDuringExecution
+            return
+          end
 
           <<~EOS
             You have installed macOS using OpenCore Legacy Patcher.
