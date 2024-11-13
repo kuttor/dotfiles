@@ -17,7 +17,7 @@ id-as'annex-default-ice'    @zdharma-continuum/zinit-annex-default-ice          
 id-as'annex-patch-dl'       @zdharma-continuum/zinit-annex-patch-dl                               \
 id-as'annex-rust'           @zdharma-continuum/zinit-annex-rust
 
-# -- fargo cargo ---------------------------------------------------------------------------------
+# -- fargo cargo ----------------------------------------------------------------------------------
 zi default-ice --clear --quiet lucid light-mode wait'0' rustup
 zi for                                                                                             \
 id-as'tre'    sbin'bin/tre->tre'       cargo'tre'    atload'use tre.atload'    @dduan/tre          \
@@ -76,13 +76,13 @@ id-as'assh'                                             sbin'assh*->assh'       
 id-as'shfmt'                                            sbin'**/sh*->shfmt'                   @mvdan/sh                \
 id-as'gh'                                               sbin'gh_*/bin/gh*->gh'                @cli/cli                 \
 id-as'diff-so-fancy'                                    sbin'**/diff-so-fancy->diff-so-fancy' @so-fancy/diff-so-fancy  \
-id-as'shellcheck'                                       sbin'*/shellcheck->shellcheck'        @koalaman/shellcheck     \
+id-as'shellcheck'                                       sbin'*/shel`lcheck->shellcheck'       @koalaman/shellcheck     \
 id-as'tree-sitter'                        nocompile     sbin'*->tree-sitter->tree-sitter'     @tree-sitter/tree-sitter \
 id-as'direnv'                                           sbin'direnv*->direnv'                 @direnv/direnv           \
 id-as'antidot'        atload'use antidot.atload'        sbin'antidot*->antidot'               @doron-cohen/antidot     \
 id-as'fd' atload'use fd.atload' atclone'use fd.atclone' sbin'**/fd->fd'                       @sharkdp/fd         
 
-❯
+
 #-- pop, pop, fzf, fzf oh wut a relief itis -----------------------------------------------------
 zi default-ice --clear --quiet light-mode lucid wait'0'
 zi for                                                                                             \
