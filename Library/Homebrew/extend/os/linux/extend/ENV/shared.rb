@@ -7,8 +7,10 @@ module SharedEnvExtension
       @bottle_arch.to_sym
     elsif @build_bottle
       Hardware.oldest_cpu
-    else
+    elsif Hardware::CPU.intel? || Hardware::CPU.arm?
       :native
+    else
+      :none
     end
   end
 end
