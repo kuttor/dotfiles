@@ -135,14 +135,14 @@ module OS
           # https://dortania.github.io/OpenCore-Legacy-Patcher/UPDATE.html#checking-oclp-and-opencore-versions
           begin
             opencore_version = Utils.safe_popen_read("/usr/sbin/nvram",
-                                                     "4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version")
+                                                     "4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version").split[1]
             return if opencore_version.blank?
           rescue ErrorDuringExecution
             return
           end
 
           <<~EOS
-            You have installed macOS using OpenCore Legacy Patcher.
+            You have booted macOS using OpenCore Legacy Patcher.
             We do not provide support for this configuration.
             #{please_create_pull_requests}
           EOS
