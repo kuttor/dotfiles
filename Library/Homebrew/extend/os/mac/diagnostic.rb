@@ -141,7 +141,7 @@ module OS
           end
 
           <<~EOS
-            You have installed macOS using OpenCore Legacy Patcher.
+            You have installed macOS using OpenCore Legacy Patcher, version #{opencore_version}.
             We do not provide support for this configuration.
             #{please_create_pull_requests}
           EOS
