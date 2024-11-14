@@ -86,7 +86,7 @@ GEM
       parser (>= 3.3.1.0)
     rubocop-md (1.2.4)
       rubocop (>= 1.45)
-    rubocop-performance (1.22.1)
+    rubocop-performance (1.23.0)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-rspec (3.2.0)
@@ -146,6 +146,7 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
