@@ -138,7 +138,6 @@ module Homebrew
             Homebrew::Reinstall.reinstall_formula(
               formula,
               flags:                      args.flags_only,
-              installed_on_request:       args.named.present?,
               force_bottle:               args.force_bottle?,
               build_from_source_formulae: args.build_from_source_formulae,
               interactive:                args.interactive?,
@@ -156,7 +155,6 @@ module Homebrew
           Upgrade.check_installed_dependents(
             formulae,
             flags:                      args.flags_only,
-            installed_on_request:       args.named.present?,
             force_bottle:               args.force_bottle?,
             build_from_source_formulae: args.build_from_source_formulae,
             interactive:                args.interactive?,
