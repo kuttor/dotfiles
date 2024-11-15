@@ -103,7 +103,7 @@ jobs:
             fi
           } | tee -a "${GITHUB_OUTPUT}"
 
-      - name: Log in to GitHub Packages
+      - name: Log in to GitHub Packages (github-actions[bot])
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
         with:
           registry: ghcr.io
@@ -123,7 +123,7 @@ jobs:
       - name: Run brew test-bot --only-setup
         run: docker run --rm brew brew test-bot --only-setup
 
-      - name: Log in to GitHub Packages (again)
+      - name: Log in to GitHub Packages (BrewTestBot)
         if: steps.attributes.outputs.push == 'true'
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
         with:
