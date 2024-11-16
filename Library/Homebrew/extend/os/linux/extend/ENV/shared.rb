@@ -10,7 +10,7 @@ module SharedEnvExtension
     elsif Hardware::CPU.intel? || Hardware::CPU.arm?
       :native
     else
-      :none
+      :dunno
     end
   end
 end
