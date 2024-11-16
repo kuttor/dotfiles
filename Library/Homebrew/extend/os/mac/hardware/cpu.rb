@@ -127,6 +127,8 @@ module Hardware
           :arm_lobos
         when 0x72015832             # ARMv8.6-A (M3 Max, Palma)
           :arm_palma
+        when 0x6f5129ac             # ARMv9.2-A (M4, Donan)
+          :arm_donan
         else
           # When adding new ARM CPU families, please also update
           # test/hardware/cpu_spec.rb to include the new families.
