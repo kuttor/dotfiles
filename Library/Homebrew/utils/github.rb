@@ -921,7 +921,6 @@ module GitHub
       }
     EOS
     puts
-    puts "In too_many_open_prs"
 
     homebrew_prs_count = 0
 
