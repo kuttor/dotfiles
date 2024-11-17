@@ -944,7 +944,7 @@ module GitHub
       end
     rescue => e
       # Ignore SAML access errors (https://github.com/Homebrew/brew/issues/18610)
-      raise unless e.message.include?("SAML")
+      raise unless e.message.include?("Resource protected by organization SAML enforcement")
     end
 
     false
