@@ -44,6 +44,7 @@ fetch
 formula
 formulae
 generate-cask-api
+generate-cask-ci-matrix
 generate-formula-api
 generate-man-completions
 gist-logs
