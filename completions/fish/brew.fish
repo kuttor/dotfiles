@@ -786,6 +786,19 @@ __fish_brew_complete_arg 'generate-cask-api' -l quiet -d 'Make some output more 
 __fish_brew_complete_arg 'generate-cask-api' -l verbose -d 'Make some output more verbose'
 
 
+__fish_brew_complete_cmd 'generate-cask-ci-matrix' 'Generate a GitHub Actions matrix for a given pull request URL or list of cask names'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -l cask -d 'Treat all named arguments as cask tokens'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -l help -d 'Show this message'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -l new -d 'Run new cask checks'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -l skip-install -d 'Skip installing casks'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -l syntax-only -d 'Only run syntax checks'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -l url -d 'Treat named argument as a pull request URL'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -l verbose -d 'Make some output more verbose'
+__fish_brew_complete_arg 'generate-cask-ci-matrix' -a '(__fish_brew_suggest_casks_all)'
+
+
 __fish_brew_complete_cmd 'generate-formula-api' 'Generate `homebrew/core` API data files for https://formulae.brew.sh'
 __fish_brew_complete_arg 'generate-formula-api' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'generate-formula-api' -l dry-run -d 'Generate API data without writing it to files'

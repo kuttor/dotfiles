@@ -171,6 +171,7 @@ __brew_internal_commands() {
     'formula:Display the path where formula is located'
     'formulae:List all locally installable formulae including short names'
     'generate-cask-api:Generate `homebrew/cask` API data files for https://formulae.brew.sh'
+    'generate-cask-ci-matrix:Generate a GitHub Actions matrix for a given pull request URL or list of cask names'
     'generate-formula-api:Generate `homebrew/core` API data files for https://formulae.brew.sh'
     'generate-man-completions:Generate Homebrew'\''s manpages and shell completions'
     'gist-logs:Upload logs for a failed build of formula to a new Gist'
@@ -993,6 +994,22 @@ _brew_generate_cask_api() {
     '--help[Show this message]' \
     '--quiet[Make some output more quiet]' \
     '--verbose[Make some output more verbose]'
+}
+
+# brew generate-cask-ci-matrix
+_brew_generate_cask_ci_matrix() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '(--syntax-only)--new[Run new cask checks]' \
+    '--quiet[Make some output more quiet]' \
+    '(--syntax-only)--skip-install[Skip installing casks]' \
+    '(--skip-install --new)--syntax-only[Only run syntax checks]' \
+    '(--cask)--url[Treat named argument as a pull request URL]' \
+    '--verbose[Make some output more verbose]' \
+    - cask \
+    '(--url)--cask[Treat all named arguments as cask tokens]' \
+    '*::cask:__brew_casks'
 }
 
 # brew generate-formula-api
