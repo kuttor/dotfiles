@@ -27,7 +27,7 @@ module Hardware
       sig { returns(T::Hash[Symbol, String]) }
       def optimization_flags
         @optimization_flags ||= T.let({
-          none:               "",
+          dunno:              "",
           native:             arch_flag("native"),
           ivybridge:          "-march=ivybridge",
           sandybridge:        "-march=sandybridge",
