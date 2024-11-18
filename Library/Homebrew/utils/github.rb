@@ -924,22 +924,27 @@ module GitHub
 
     homebrew_prs_count = 0
 
-    API.paginate_graphql(query) do |result|
-      data = result.fetch("viewer")
-      github_user = data.fetch("login")
+    begin
+      API.paginate_graphql(query) do |result|
+        data = result.fetch("viewer")
+        github_user = data.fetch("login")
 
-      # BrewTestBot can open as many PRs as it wants.
-      return false if github_user.casecmp?("brewtestbot")
+        # BrewTestBot can open as many PRs as it wants.
+        return false if github_user.casecmp?("brewtestbot")
 
-      pull_requests = data.fetch("pullRequests")
-      return false if pull_requests.fetch("totalCount") < MAXIMUM_OPEN_PRS
+        pull_requests = data.fetch("pullRequests")
+        return false if pull_requests.fetch("totalCount") < MAXIMUM_OPEN_PRS
 
-      homebrew_prs_count += pull_requests.fetch("nodes").count do |node|
-        node.dig("baseRepository", "owner", "login").casecmp?("homebrew")
+        homebrew_prs_count += pull_requests.fetch("nodes").count do |node|
+          node.dig("baseRepository", "owner", "login").casecmp?("homebrew")
+        end
+        return true if homebrew_prs_count >= MAXIMUM_OPEN_PRS
+
+        pull_requests.fetch("pageInfo")
       end
-      return true if homebrew_prs_count >= MAXIMUM_OPEN_PRS
-
-      pull_requests.fetch("pageInfo")
+    rescue => e
+      # Ignore SAML access errors (https://github.com/Homebrew/brew/issues/18610)
+      raise unless e.message.include?("Resource protected by organization SAML enforcement")
     end
 
     false
