@@ -47,17 +47,7 @@ RSpec.describe Homebrew::Uninstall do
   end
 
   describe "::handle_unsatisfied_dependents" do
-    specify "when developer" do
-      ENV["HOMEBREW_DEVELOPER"] = "1"
-
-      expect do
-        described_class.handle_unsatisfied_dependents(kegs_by_rack)
-      end.to output(/Warning/).to_stderr
-
-      expect(Homebrew).not_to have_failed
-    end
-
-    specify "when not developer" do
+    specify "when `ignore_dependencies` is false" do
       expect do
         described_class.handle_unsatisfied_dependents(kegs_by_rack)
       end.to output(/Error/).to_stderr
@@ -65,7 +55,7 @@ RSpec.describe Homebrew::Uninstall do
       expect(Homebrew).to have_failed
     end
 
-    specify "when not developer and `ignore_dependencies` is true" do
+    specify "when `ignore_dependencies` is true" do
       expect do
         described_class.handle_unsatisfied_dependents(kegs_by_rack, ignore_dependencies: true)
       end.not_to output.to_stderr
