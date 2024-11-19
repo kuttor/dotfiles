@@ -44,7 +44,7 @@ module Homebrew
         conflicts "--syntax-only", "--skip-install"
         conflicts "--syntax-only", "--new"
 
-        named_args [:cask, :url], min: 1
+        named_args [:cask, :url], min: 0
         hide_from_man_page!
       end
 
@@ -61,7 +61,10 @@ module Homebrew
 
         tap = T.let(Tap.fetch(repository), Tap)
 
-        raise UsageError, "Either `--cask` or `--url` must be specified." if casks.blank? && pr_url.blank?
+        unless syntax_only
+          raise UsageError, "Either `--cask` or `--url` must be specified." if !args.casks? && !args.url?
+          raise UsageError, "Please provide a cask or url argument" if casks.blank? && pr_url.blank?
+        end
         raise UsageError, "Only one url can be specified" if pr_url&.count&.> 1
 
         labels = if pr_url
