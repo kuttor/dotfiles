@@ -1,0 +1,15 @@
+#! /usr/bin/env zsh
+
+# required
+mv $HOME/.config/nvim{,.bak}
+
+# optional but recommended
+mv $HOME/.local/share/nvim{,.bak}
+mv $HOME/.local/state/nvim{,.bak}
+mv $HOME/.cache/nvim{,.bak}
+
+git clone https://github.com/LazyVim/starter $HOME/.config/nvim
+
+rm -rf $HOME/.config/nvim/.git
+
+

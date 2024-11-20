@@ -1,4 +1,5 @@
 #! /usr/bin/env zsh
 
-export CARGO_HOME=$PWD
+[[ ! -f ${ZINIT[COMPLETIONS_DIR]}/_cargo ]] && zi creinstall rust
+export CARGO_HOME=\$PWD
 export RUSTUP_HOME=$PWD/rustup
