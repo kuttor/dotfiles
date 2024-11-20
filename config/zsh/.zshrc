@@ -75,10 +75,9 @@ atload'use magic-enter.atload' OMZP::magic-enter
 # rub a dub dub there's gits in my hubs -------------------------------------------------------------------------
 zi default-ice --clear --quiet light-mode lucid wait'0' from'gh-r'
 zi for                                                                                                                 \
-id-as'lazygit'                                          sbin'lazygit->lazygit'                @jesseduffield/lazygit   \
 id-as'lemmeknow'                                        sbin'lemmeknow*->lemmeknow'           @swanandx/lemmeknow      \
 id-as'gh'                                               sbin'gh_*/bin/gh*->gh'                @cli/cli                 \
-id-as'fx'                                               sbin'fx*->fx'                         @antonmedv/fx            \
+id-as'fx'  binary lbin lman atclone'mv rip*/* .'                                              @antonmedv/fx            \
 id-as'rg'  binary lbin lman atclone'mv rip*/* .'          atpull'%atclone'                    @BurntSushi/ripgrep      \
 id-as'dog' binary lbin lman atclone'mv -f **/**.zsh _dog' atpull'%atclone'                    @ogham/dog               \
 id-as'bat' binary lbin lman atclone'mv -f **/*.zsh _bat'  atpull'%atclone'                    @sharkdp/bat             \
@@ -101,8 +100,7 @@ id-as'fd' binary lbin lman atpull'%atclone' atload'use fd.atload' atclone'use fd
 zi default-ice --clear --quiet light-mode lucid wait'0'
 zi for                                                                                             \
 id-as'fzf-tab'            atload'use fzf-tab.atload'            @Aloxaf/fzf-tab                    \
-id-as'fzf-tab-completion' atload'use fzf-tab-completion.atload' @lincheney/fzf-tab-completion      \
-id-as'git-fuzzy' sbin'bin/git-fuzzy -> gfuzzy' blockf atload'use git-fuzzy.atload' @bigH/git-fuzzy
+id-as'fzf-tab-completion' atload'use fzf-tab-completion.atload' @lincheney/fzf-tab-completion
 
 # -- loners and boners -----------------------------------------------------------------------------
 zi for                                                                                             \
