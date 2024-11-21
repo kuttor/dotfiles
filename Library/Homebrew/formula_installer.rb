@@ -1317,6 +1317,7 @@ on_request: installed_on_request?, options:)
 
       formula.fetch_patches
       formula.resources.each(&:fetch)
+      downloadable_object = downloadable
 
       false
     end
