@@ -10,6 +10,13 @@ RSpec.describe Requirement do
 
   let(:klass) { Class.new(described_class) }
 
+  describe "base class" do
+    it "raises an error when instantiated" do
+      expect { described_class.new }
+        .to raise_error(RuntimeError, "Requirement is declared as abstract; it cannot be instantiated")
+    end
+  end
+
   describe "#tags" do
     subject(:req) { klass.new(tags) }
 
@@ -51,6 +58,17 @@ RSpec.describe Requirement do
 
     describe "#fatal is omitted" do
       it { is_expected.not_to be_fatal }
+    end
+
+    describe "in subclasses" do
+      it "raises an error when instantiated" do
+        expect do
+          Class.new(described_class) do
+            def fatal? = false
+          end
+        end
+        .to raise_error(RuntimeError, /\AThe method `fatal\?` on #{described_class.name} was declared as final/)
+      end
     end
   end
 

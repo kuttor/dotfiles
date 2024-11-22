@@ -77,6 +77,9 @@ class Formula
   extend Cachable
   extend Attrable
   extend APIHashable
+  extend T::Helpers
+
+  abstract!
 
   SUPPORTED_NETWORK_ACCESS_PHASES = [:build, :test, :postinstall].freeze
   private_constant :SUPPORTED_NETWORK_ACCESS_PHASES
@@ -1596,7 +1599,11 @@ class Formula
 
   # Yields |self,staging| with current working directory set to the uncompressed tarball
   # where staging is a {Mktemp} staging context.
-  def brew(fetch: true, keep_tmp: false, debug_symbols: false, interactive: false)
+  sig(:final) {
+    params(fetch: T::Boolean, keep_tmp: T::Boolean, debug_symbols: T::Boolean, interactive: T::Boolean,
+           _blk: T.proc.params(arg0: Formula, arg1: Mktemp).void).void
+  }
+  def brew(fetch: true, keep_tmp: false, debug_symbols: false, interactive: false, &_blk)
     @prefix_returns_versioned_prefix = true
     active_spec.fetch if fetch
     stage(interactive:, debug_symbols:) do |staging|
@@ -3344,12 +3351,7 @@ class Formula
     def method_added(method)
       super
 
-      case method
-      when :brew
-        raise "You cannot override Formula#brew in class #{name}"
-      when :test
-        define_method(:test_defined?) { true }
-      end
+      define_method(:test_defined?) { true } if method == :test
     end
 
     def freeze

@@ -13,14 +13,15 @@ require "build_environment"
 class Requirement
   include Dependable
   extend Cachable
+  extend T::Helpers
+
+  # This base class enforces no constraints on its own.
+  # Individual subclasses use the `satisfy` DSL to define those constraints.
+  abstract!
 
   attr_reader :name, :cask, :download
 
   def initialize(tags = [])
-    # Only allow instances of subclasses. This base class enforces no constraints on its own.
-    # Individual subclasses use the `satisfy` DSL to define those constraints.
-    raise "Do not call `Requirement.new' directly without a subclass." unless self.class < Requirement
-
     @cask = self.class.cask
     @download = self.class.download
     tags.each do |tag|
