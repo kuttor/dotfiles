@@ -116,12 +116,15 @@ module Cask
               print_stderr: false,
             ).stdout
             if plist_status.start_with?("{")
-              command.run!(
+              result = command.run(
                 "/bin/launchctl",
                 args:         ["remove", service],
+                must_succeed: sudo,
                 sudo:,
                 sudo_as_root: sudo,
               )
+              next if !sudo && !result.success?
+
               sleep 1
             end
             paths = [
