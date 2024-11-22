@@ -559,14 +559,6 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
 
     args += meta.fetch(:headers, []).flat_map { |h| ["--header", h.strip] }
 
-    if meta[:insecure]
-      unless @insecure_warning_shown
-        opoo DevelopmentTools.insecure_download_warning("an updated certificates file")
-        @insecure_warning_shown = true
-      end
-      args += ["--insecure"]
-    end
-
     args
   end
 
