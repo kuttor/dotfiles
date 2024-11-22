@@ -60,6 +60,11 @@ RSpec.describe Formula do
       expect { klass.new }.to raise_error(ArgumentError)
     end
 
+    specify "formula instantiation without a subclass" do
+      expect { described_class.new(name, path, spec) }
+        .to raise_error(RuntimeError, "Do not call `Formula.new' directly without a subclass.")
+    end
+
     context "when in a Tap" do
       let(:tap) { Tap.fetch("foo", "bar") }
       let(:path) { (tap.path/"Formula/#{name}.rb") }
