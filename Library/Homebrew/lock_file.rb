@@ -15,19 +15,30 @@ class LockFile
     @lockfile = nil
   end
 
+  sig { void }
   def lock
-    @path.parent.mkpath
-    create_lockfile
-    return if @lockfile.flock(File::LOCK_EX | File::LOCK_NB)
+    ignore_interrupts do
+      create_lockfile
 
-    raise OperationInProgressError, @locked_path
+      next if @lockfile.flock(File::LOCK_EX | File::LOCK_NB)
+
+      raise OperationInProgressError, @locked_path
+    end
   end
 
-  def unlock
-    return if @lockfile.nil? || @lockfile.closed?
+  sig { params(unlink: T::Boolean).void }
+  def unlock(unlink: false)
+    ignore_interrupts do
+      next if @lockfile.nil? || @lockfile.closed?
 
-    @lockfile.flock(File::LOCK_UN)
-    @lockfile.close
+      @lockfile.flock(File::LOCK_UN)
+      @lockfile.close
+
+      if unlink
+        @path.unlink if @path.exist?
+        @lockfile = nil
+      end
+    end
   end
 
   def with_lock
@@ -41,6 +52,8 @@ class LockFile
 
   def create_lockfile
     return if @lockfile.present? && !@lockfile.closed?
+
+    @path.dirname.mkpath
 
     begin
       @lockfile = @path.open(File::RDWR | File::CREAT)
