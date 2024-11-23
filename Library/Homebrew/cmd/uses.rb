@@ -5,7 +5,6 @@ require "abstract_command"
 require "formula"
 require "cask/caskroom"
 require "dependencies_helpers"
-require "ostruct"
 
 module Homebrew
   module Cmd
@@ -14,6 +13,11 @@ module Homebrew
     # The intersection is harder to achieve with shell tools.
     class Uses < AbstractCommand
       include DependenciesHelpers
+
+      class UnavailableFormula < T::Struct
+        const :name, String
+        const :full_name, String
+      end
 
       cmd_args do
         description <<~EOS
@@ -64,10 +68,7 @@ module Homebrew
           opoo e
           used_formulae_missing = true
           # If the formula doesn't exist: fake the needed formula object name.
-          # This is a legacy use of OpenStruct that should be refactored.
-          # rubocop:disable Style/OpenStructUse
-          args.named.map { |name| OpenStruct.new name:, full_name: name }
-          # rubocop:enable Style/OpenStructUse
+          args.named.map { |name| UnavailableFormula.new name:, full_name: name }
         end
 
         use_runtime_dependents = args.installed? &&
