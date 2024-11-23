@@ -88,7 +88,10 @@ module Homebrew
 
       private
 
-      sig { params(use_runtime_dependents: T::Boolean, used_formulae: T::Array[Formula]).returns(T::Array[Formula]) }
+      sig {
+        params(use_runtime_dependents: T::Boolean, used_formulae: T::Array[T.any(Formula, UnavailableFormula)])
+          .returns(T::Array[Formula])
+      }
       def intersection_of_dependents(use_runtime_dependents, used_formulae)
         recursive = args.recursive?
         show_formulae_and_casks = !args.formula? && !args.cask?
@@ -96,6 +99,8 @@ module Homebrew
 
         deps = []
         if use_runtime_dependents
+          # We can only get here if `used_formulae_missing` is false, thus there are no UnavailableFormula.
+          used_formulae = T.cast(used_formulae, T::Array[Formula])
           if show_formulae_and_casks || args.formula?
             deps += used_formulae.map(&:runtime_installed_formula_dependents)
                                  .reduce(&:&)
@@ -141,8 +146,8 @@ module Homebrew
 
       sig {
         params(
-          dependents: T::Array[Formula], used_formulae: T::Array[Formula], recursive: T::Boolean,
-          includes: T::Array[Symbol], ignores: T::Array[Symbol]
+          dependents: T::Array[Formula], used_formulae: T::Array[T.any(Formula, UnavailableFormula)],
+          recursive: T::Boolean, includes: T::Array[Symbol], ignores: T::Array[Symbol]
         ).returns(
           T::Array[Formula],
         )
