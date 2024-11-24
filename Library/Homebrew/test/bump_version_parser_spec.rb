@@ -11,41 +11,61 @@ RSpec.describe Homebrew::BumpVersionParser do
     it "raises a usage error" do
       expect do
         described_class.new
-      end.to raise_error(UsageError, "Invalid usage: `--version` must not be empty.")
+      end.to raise_error(UsageError,
+                         "Invalid usage: `--version` must not be empty.")
     end
   end
 
-  context "when initializing with valid versions" do
+  context "when initializing with only an intel version" do
+    it "raises a UsageError" do
+      expect do
+        described_class.new(intel: intel_version)
+      end.to raise_error(UsageError,
+                         "Invalid usage: `--version-arm` must not be empty.")
+    end
+  end
+
+  context "when initializing with only an arm version" do
+    it "raises a UsageError" do
+      expect do
+        described_class.new(arm: arm_version)
+      end.to raise_error(UsageError,
+                         "Invalid usage: `--version-intel` must not be empty.")
+    end
+  end
+
+  context "when initializing with arm and intel versions" do
+    let(:new_version_arm_intel) { described_class.new(arm: arm_version, intel: intel_version) }
+
+    it "correctly parses arm and intel versions" do
+      expect(new_version_arm_intel.arm).to eq(Cask::DSL::Version.new(arm_version.to_s))
+      expect(new_version_arm_intel.intel).to eq(Cask::DSL::Version.new(intel_version.to_s))
+    end
+  end
+
+  context "when initializing with all versions" do
     let(:new_version) { described_class.new(general: general_version, arm: arm_version, intel: intel_version) }
+    let(:new_version_version) do
+      described_class.new(
+        general: Version.new(general_version),
+        arm:     Version.new(arm_version),
+        intel:   Version.new(intel_version),
+      )
+    end
 
     it "correctly parses general version" do
       expect(new_version.general).to eq(Cask::DSL::Version.new(general_version.to_s))
+      expect(new_version_version.general).to eq(Cask::DSL::Version.new(general_version.to_s))
     end
 
     it "correctly parses arm version" do
       expect(new_version.arm).to eq(Cask::DSL::Version.new(arm_version.to_s))
+      expect(new_version_version.arm).to eq(Cask::DSL::Version.new(arm_version.to_s))
     end
 
     it "correctly parses intel version" do
       expect(new_version.intel).to eq(Cask::DSL::Version.new(intel_version.to_s))
-    end
-
-    context "when only the intel version is provided" do
-      it "raises a UsageError" do
-        expect do
-          described_class.new(intel: intel_version)
-        end.to raise_error(UsageError,
-                           "Invalid usage: `--version-arm` must not be empty.")
-      end
-    end
-
-    context "when only the arm version is provided" do
-      it "raises a UsageError" do
-        expect do
-          described_class.new(arm: arm_version)
-        end.to raise_error(UsageError,
-                           "Invalid usage: `--version-intel` must not be empty.")
-      end
+      expect(new_version_version.intel).to eq(Cask::DSL::Version.new(intel_version.to_s))
     end
 
     context "when the version is latest" do
