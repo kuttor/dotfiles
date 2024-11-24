@@ -51,20 +51,6 @@ class Resource
   def owner=(owner)
     @owner = owner
     patches.each { |p| p.owner = owner }
-
-    return if !owner.respond_to?(:full_name) || owner.full_name != "ca-certificates"
-    return if Homebrew::EnvConfig.no_insecure_redirect?
-
-    @insecure = !specs[:bottle] && (DevelopmentTools.ca_file_substitution_required? ||
-                                    DevelopmentTools.curl_substitution_required?)
-    return if @url.nil?
-
-    specs = if @insecure
-      @url.specs.merge({ insecure: true })
-    else
-      @url.specs.except(:insecure)
-    end
-    @url = URL.new(@url.to_s, specs)
   end
 
   # Removes /s from resource names; this allows Go package names
