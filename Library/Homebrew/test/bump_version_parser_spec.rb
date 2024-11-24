@@ -69,4 +69,39 @@ RSpec.describe Homebrew::BumpVersionParser do
       end
     end
   end
+
+  describe "#==" do
+    let(:new_version) { described_class.new(general: general_version, arm: arm_version, intel: intel_version) }
+
+    context "when other object is not a `BumpVersionParser`" do
+      it "returns false" do
+        expect(new_version == Version.new("1.2.3")).to be(false)
+      end
+    end
+
+    context "when comparing objects with equal versions" do
+      it "returns true" do
+        same_version = described_class.new(general: general_version, arm: arm_version, intel: intel_version)
+        expect(new_version == same_version).to be(true)
+      end
+    end
+
+    context "when comparing objects with different versions" do
+      it "returns false" do
+        different_general_version = described_class.new(general: "3.2.1", arm: arm_version, intel: intel_version)
+        different_arm_version = described_class.new(general: general_version, arm: "4.3.2", intel: intel_version)
+        different_intel_version = described_class.new(general: general_version, arm: arm_version, intel: "5.4.3")
+        different_general_arm_versions = described_class.new(general: "3.2.1", arm: "4.3.2", intel: intel_version)
+        different_arm_intel_versions = described_class.new(general: general_version, arm: "4.3.2", intel: "5.4.3")
+        different_general_intel_versions = described_class.new(general: "3.2.1", arm: arm_version, intel: "5.4.3")
+
+        expect(new_version == different_general_version).to be(false)
+        expect(new_version == different_arm_version).to be(false)
+        expect(new_version == different_intel_version).to be(false)
+        expect(new_version == different_general_arm_versions).to be(false)
+        expect(new_version == different_arm_intel_versions).to be(false)
+        expect(new_version == different_general_intel_versions).to be(false)
+      end
+    end
+  end
 end

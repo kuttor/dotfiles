@@ -277,8 +277,9 @@ module Homebrew
           odebug "Error fetching pull requests for #{formula_or_cask} #{name}: #{e}"
           nil
         end
+        return if pull_requests.blank?
 
-        pull_requests&.map { |pr| "#{pr["title"]} (#{Formatter.url(pr["html_url"])})" }&.join(", ")
+        pull_requests.map { |pr| "#{pr["title"]} (#{Formatter.url(pr["html_url"])})" }.join(", ")
       end
 
       sig {
@@ -373,13 +374,17 @@ module Homebrew
           new_version.general.to_s
         end
 
-        duplicate_pull_requests = unless args.no_pull_requests?
-          retrieve_pull_requests(formula_or_cask, name, version: pull_request_version)
-        end.presence
+        if !args.no_pull_requests? && (new_version != current_version)
+          duplicate_pull_requests = retrieve_pull_requests(
+            formula_or_cask,
+            name,
+            version: pull_request_version,
+          )
 
-        maybe_duplicate_pull_requests = if !args.no_pull_requests? && duplicate_pull_requests.blank?
-          retrieve_pull_requests(formula_or_cask, name)
-        end.presence
+          maybe_duplicate_pull_requests = if duplicate_pull_requests.nil?
+            retrieve_pull_requests(formula_or_cask, name)
+          end
+        end
 
         VersionBumpInfo.new(
           type:,
@@ -411,9 +416,7 @@ module Homebrew
         repology_latest = version_info.repology_latest
 
         # Check if all versions are equal
-        versions_equal = [:arm, :intel, :general].all? do |key|
-          current_version.send(key) == new_version.send(key)
-        end
+        versions_equal = (new_version == current_version)
 
         title_name = ambiguous_cask ? "#{name} (cask)" : name
         title = if (repology_latest == current_version.general || !repology_latest.is_a?(Version)) && versions_equal
@@ -439,8 +442,8 @@ module Homebrew
         end
 
         version_label = version_info.version_name
-        duplicate_pull_requests = version_info.duplicate_pull_requests.presence
-        maybe_duplicate_pull_requests = version_info.maybe_duplicate_pull_requests.presence
+        duplicate_pull_requests = version_info.duplicate_pull_requests
+        maybe_duplicate_pull_requests = version_info.maybe_duplicate_pull_requests
 
         ohai title
         puts <<~EOS
@@ -457,10 +460,22 @@ module Homebrew
                                       #{outdated_synced_formulae.join(", ")}.
           EOS
         end
-        puts <<~EOS unless args.no_pull_requests?
-          Duplicate pull requests:       #{duplicate_pull_requests       || "none"}
-          Maybe duplicate pull requests: #{maybe_duplicate_pull_requests || "none"}
-        EOS
+        if !args.no_pull_requests? && !versions_equal
+          if duplicate_pull_requests
+            duplicate_pull_requests_text = duplicate_pull_requests
+          elsif maybe_duplicate_pull_requests
+            duplicate_pull_requests_text = "none"
+            maybe_duplicate_pull_requests_text = maybe_duplicate_pull_requests
+          else
+            duplicate_pull_requests_text = "none"
+            maybe_duplicate_pull_requests_text = "none"
+          end
+
+          puts "Duplicate pull requests:  #{duplicate_pull_requests_text}"
+          if maybe_duplicate_pull_requests_text
+            puts "Maybe duplicate pull requests: #{maybe_duplicate_pull_requests_text}"
+          end
+        end
 
         return unless args.open_pr?
 
