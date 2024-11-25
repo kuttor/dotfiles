@@ -59,17 +59,6 @@ RSpec.describe Requirement do
     describe "#fatal is omitted" do
       it { is_expected.not_to be_fatal }
     end
-
-    describe "in subclasses" do
-      it "raises an error when instantiated" do
-        expect do
-          Class.new(described_class) do
-            def fatal? = false
-          end
-        end
-        .to raise_error(RuntimeError, /\AThe method `fatal\?` on #{described_class.name} was declared as final/)
-      end
-    end
   end
 
   describe "#satisfied?" do

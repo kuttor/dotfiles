@@ -60,8 +60,9 @@ class Requirement
     s
   end
 
-  # Pass a block or boolean to the satisfy DSL method instead of overriding.
-  sig(:final) {
+  # Overriding {#satisfied?} is unsupported.
+  # Pass a block or boolean to the satisfy DSL method instead.
+  sig {
     params(
       env:          T.nilable(String),
       cc:           T.nilable(String),
@@ -82,8 +83,9 @@ class Requirement
     true
   end
 
-  # Pass a boolean to the fatal DSL method instead of overriding.
-  sig(:final) { returns(T::Boolean) }
+  # Overriding {#fatal?} is unsupported.
+  # Pass a boolean to the fatal DSL method instead.
+  sig { returns(T::Boolean) }
   def fatal?
     self.class.fatal || false
   end
