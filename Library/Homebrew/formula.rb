@@ -2886,7 +2886,7 @@ class Formula
 
   sig { returns(T::Boolean) }
   def test_defined?
-    false
+    method(:test).owner != Formula
   end
 
   def test; end
@@ -3346,12 +3346,6 @@ class Formula
           [phase, DEFAULT_NETWORK_ACCESS_ALLOWED]
         end
       end
-    end
-
-    def method_added(method)
-      super
-
-      define_method(:test_defined?) { true } if method == :test
     end
 
     def freeze

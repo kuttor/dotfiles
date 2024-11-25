@@ -55,7 +55,7 @@ module Homebrew
       sig {
         params(
           only:               T.nilable(Symbol),
-          ignore_unavailable: T.nilable(T::Boolean),
+          ignore_unavailable: T::Boolean,
           method:             T.nilable(Symbol),
           uniq:               T::Boolean,
           warn:               T::Boolean,
@@ -63,7 +63,7 @@ module Homebrew
       }
       def to_formulae_and_casks(
         only: parent&.only_formula_or_cask,
-        ignore_unavailable: nil,
+        ignore_unavailable: false,
         method: T.unsafe(nil),
         uniq: true,
         warn: T.unsafe(nil)
@@ -367,10 +367,10 @@ module Homebrew
       end
 
       sig {
-        params(only: T.nilable(Symbol), ignore_unavailable: T.nilable(T::Boolean), all_kegs: T.nilable(T::Boolean))
+        params(only: T.nilable(Symbol), ignore_unavailable: T::Boolean, all_kegs: T.nilable(T::Boolean))
           .returns([T::Array[Keg], T::Array[Cask::Cask]])
       }
-      def to_kegs_to_casks(only: parent&.only_formula_or_cask, ignore_unavailable: nil, all_kegs: nil)
+      def to_kegs_to_casks(only: parent&.only_formula_or_cask, ignore_unavailable: false, all_kegs: nil)
         method = all_kegs ? :kegs : :default_kegs
         @to_kegs_to_casks ||= {}
         @to_kegs_to_casks[method] ||=
