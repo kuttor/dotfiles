@@ -366,15 +366,17 @@ module Homebrew
           new_version = BumpVersionParser.new(general: "unable to get versions")
         end
 
-        # We use the arm version for the pull request version. This is consistent
-        # with the behavior of bump-cask-pr.
-        pull_request_version = if multiple_versions && new_version.general != "unable to get versions"
-          new_version.arm.to_s
-        else
-          new_version.general.to_s
-        end
+        if !args.no_pull_requests? &&
+           (new_version.general != "unable to get versions") &&
+           (new_version != current_version)
+          # We use the ARM version for the pull request version. This is
+          # consistent with the behavior of bump-cask-pr.
+          pull_request_version = if multiple_versions
+            new_version.arm.to_s
+          else
+            new_version.general.to_s
+          end
 
-        if !args.no_pull_requests? && (new_version != current_version)
           duplicate_pull_requests = retrieve_pull_requests(
             formula_or_cask,
             name,
@@ -460,7 +462,9 @@ module Homebrew
                                       #{outdated_synced_formulae.join(", ")}.
           EOS
         end
-        if !args.no_pull_requests? && !versions_equal
+        if !args.no_pull_requests? &&
+           (new_version.general != "unable to get versions") &&
+           !versions_equal
           if duplicate_pull_requests
             duplicate_pull_requests_text = duplicate_pull_requests
           elsif maybe_duplicate_pull_requests
