@@ -177,7 +177,6 @@ class Livecheck
 
   delegate version: :@package_or_resource
   delegate arch: :@package_or_resource
-  # FIXME: false positive: https://github.com/rubocop/rubocop/issues/13453
   private :version, :arch
   # Returns a `Hash` of all instance variable values.
   # @return [Hash]
