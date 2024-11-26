@@ -2942,17 +2942,18 @@ class Formula
       after:            T.nilable(T.any(Pathname, String, Symbol)),
       old_audit_result: T.nilable(T::Boolean),
       audit_result:     T::Boolean,
+      global:           T::Boolean,
       block:            T.nilable(T.proc.params(s: StringInreplaceExtension).void),
     ).void
   }
-  def inreplace(paths, before = nil, after = nil, old_audit_result = nil, audit_result: true, &block)
+  def inreplace(paths, before = nil, after = nil, old_audit_result = nil, audit_result: true, global: true, &block)
     # NOTE: must check for `#nil?` and not `#blank?`, or else `old_audit_result = false` will not call `odeprecated`.
     unless old_audit_result.nil?
       odeprecated "inreplace(paths, before, after, #{old_audit_result})",
                   "inreplace(paths, before, after, audit_result: #{old_audit_result})"
       audit_result = old_audit_result
     end
-    Utils::Inreplace.inreplace(paths, before, after, audit_result:, &block)
+    Utils::Inreplace.inreplace(paths, before, after, audit_result:, global:, &block)
   rescue Utils::Inreplace::Error => e
     onoe e.to_s
     raise BuildError.new(self, "inreplace", Array(paths), {})
