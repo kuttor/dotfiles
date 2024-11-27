@@ -72,3 +72,7 @@ if (( $+commands[vivid] )); then
 fi
 
 alias manpages_zsh="$LESS +/zmv" man zshcontrib
+
+# -- tree --
+alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
+

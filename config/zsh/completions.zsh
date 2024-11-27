@@ -3,58 +3,47 @@
 # start the completion system
 initialize_completions
 
-# ==================================================================================================
-# -- load completions ------------------------------------------------------------------------------
-# ==================================================================================================
-zi default-ice --clear --quiet lucid light-mode wait'1'
-
-zi for                                                                                             \
-id-as'zsh-completions'                                                                             \
-atload'use zsh-completions.atload'                                                                \
-atpull"use zsh-completions.atpull"                                                                 \
+# -- load completions ---------------------------------------------------------------------------------------------------
+zi wait'1' id-as'auto' for                                                                                             \
+atload'use zsh-completions.atload'                                                                                     \
+atpull'use zsh-completions.atpull'                                                                                     \
 @sainnhe/zsh-completions
 
-zi for                                                                                             \
-id-as'_sd'                                                                                         \
-as'completion'                                                                                     \
-'https://github.com/chmln/sd/blob/master/gen/completions/_sd'
+zi wait'1' id-as'auto' as'completion' for 'https://github.com/chmln/sd/blob/master/gen/completions/_sd'
 
-# ==================================================================================================
-# -- configure completion system -------------------------------------------------------------------
-# ==================================================================================================
-# generic completions for programs which understand GNU long options(--help)
-zicompdef _gnu_generic rg git chmod chwown ssh cut which whence type bandwhich curl direnv docker  \
-  emacs feh ffmpeg ffprobe fsck.ext4 fzf gocryptfs hexyl highlight histdb light lighttpd zinit tlp \
-  lsd mimeo megadl mkfs.vfat nzbget notify-send pip pip3 pipx psmem pw-cli rustc \
-  tlmgr tlp-stat zinit mkdir ssh-keygen vue zstd brew ln 
-
+# -- configure completion system ---------------------------------------------------------------------------------------
+zicompdef                                                                                                              \
+  _gnu_generic rg git chmod chwown ssh cut which whence type bandwhich curl direnv docker lighttpd                     \
+  emacs feh ffmpeg ffprobe fsck.ext4 fzf gocryptfs hexyl highlight histdb light zinit tlp brew vue                     \
+  mkdir ssh-keygen zstd
 
 # -- completion options --
 setopt ALWAYS_TO_END AUTO_LIST AUTO_MENU AUTO_PARAM_SLASH AUTO_REMOVE_SLASH
 setopt COMPLETE_IN_WORD GLOB_COMPLETE PATH_DIRS
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' list-separator '→'
-zstyle ':completion:*' list-suffixes true
-zstyle ':completion:*' match-original both
+
+zstyle ':completion:*' list-colors='${(s.:.)LS_COLORS}'
+zstyle ':completion:*' list-prompt='%SAt %p: Hit TAB for more, or the character to insert%s'
+zstyle ':completion:*' list-separator='→'
+zstyle ':completion:*' list-suffixes=true
+zstyle ':completion:*' match-original=both
 zstyle ':completion:*' menu select=1
-zstyle ':completion:*' original true
-zstyle ':completion:*' preserve-prefix '//[^/]##/'
-zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
-zstyle ':completion:*' use-compctl true
-zstyle ':completion:*' verbose true
+zstyle ':completion:*' original=true
+zstyle ':completion:*' preserve-prefix='//[^/]##/'
+zstyle ':completion:*' select-prompt='%SScrolling active: current selection at %p%s'
+zstyle ':completion:*' use-compctl=true
+zstyle ':completion:*' verbose=true
 
 # Specific completion settings
 zstyle ':completion:*:*:*:*:corrections' format '%F{red}!- %d (errors: %e) -!%f'
-zstyle ':completion:*:make:*:targets' call-command true
-zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
-zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
-zstyle ':completion:*:default' select-prompt '%B%S%M%b matches, current selection at %p%s'
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:options' auto-description ' %F{8}specify:%f %B%F{cyan}%d%f%b'
-zstyle ':completion:*:corrections' format ' %F{8}correction:%f %B%F{green}%d (errors: %f%F{red}%e%f%F{green})%f%b'
-zstyle ':completion:*:descriptions' format ' %F{8}description:%f %B%F{blue}%d%f%b'
+zstyle ':completion:*:make:*:targets'    call-command true
+zstyle ':completion:*:messages'          format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:sudo:*'            command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
+zstyle ':completion:*:warnings'          format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default'           select-prompt '%B%S%M%b matches, current selection at %p%s'
+zstyle ':completion:*:options'           description 'yes'
+zstyle ':completion:*:options'           auto-description ' %F{8}specify:%f %B%F{cyan}%d%f%b'
+zstyle ':completion:*:corrections'       format ' %F{8}correction:%f %B%F{green}%d (errors: %f%F{red}%e%f%F{green})%f%b'
+zstyle ':completion:*:descriptions'      format ' %F{8}description:%f %B%F{blue}%d%f%b'
 
 # Don't complete unavailable commands
 zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'

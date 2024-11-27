@@ -111,6 +111,7 @@ path=(
   /usr/local/bin
   $HOME/bin
   $HOMEBREW_PREFIX/{sbin,bin}
+  $ZINIT[PLUGINS_DIR]/brew/bin
   $path
 )
 
