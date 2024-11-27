@@ -29,7 +29,7 @@ class Resource
     @name = name
     @patches = []
     @livecheck = Livecheck.new(self)
-    @livecheckable = false
+    @livecheck_defined = false
     @insecure = false
     instance_eval(&block) if block
   end
@@ -160,15 +160,28 @@ class Resource
   def livecheck(&block)
     return @livecheck unless block
 
-    @livecheckable = true
+    @livecheck_defined = true
     @livecheck.instance_eval(&block)
   end
 
   # Whether a livecheck specification is defined or not.
-  # It returns true when a `livecheck` block is present in the {Resource} and
-  # false otherwise and is used by livecheck.
+  #
+  # It returns `true` when a `livecheck` block is present in the {Resource}
+  # and `false` otherwise.
+  sig { returns(T::Boolean) }
+  def livecheck_defined?
+    @livecheck_defined == true
+  end
+
+  # Whether a livecheck specification is defined or not. This is a legacy alias
+  # for `#livecheck_defined?`.
+  #
+  # It returns `true` when a `livecheck` block is present in the {Resource}
+  # and `false` otherwise.
+  sig { returns(T::Boolean) }
   def livecheckable?
-    @livecheckable == true
+    # odeprecated "`livecheckable?`", "`livecheck_defined?`"
+    @livecheck_defined == true
   end
 
   def sha256(val)

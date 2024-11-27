@@ -71,13 +71,13 @@ RSpec.describe Resource do
     end
   end
 
-  describe "#livecheckable?" do
+  describe "#livecheck_defined?" do
     it "returns false if livecheck block is not set in resource" do
-      expect(resource.livecheckable?).to be false
+      expect(resource.livecheck_defined?).to be false
     end
 
     specify "livecheck block defined in resources" do
-      expect(livecheck_resource.livecheckable?).to be true
+      expect(livecheck_resource.livecheck_defined?).to be true
     end
   end
 

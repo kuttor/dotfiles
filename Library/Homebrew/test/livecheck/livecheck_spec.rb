@@ -111,7 +111,7 @@ RSpec.describe Homebrew::Livecheck do
           status:   "error",
           messages: ["Unable to get versions"],
           meta:     {
-            livecheckable: true,
+            livecheck_defined: true,
           },
         })
     end
@@ -123,7 +123,7 @@ RSpec.describe Homebrew::Livecheck do
           status:   "error",
           messages: ["Unable to get versions"],
           meta:     {
-            livecheckable: true,
+            livecheck_defined: true,
           },
         })
     end

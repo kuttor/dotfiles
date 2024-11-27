@@ -455,6 +455,11 @@ class Formula
   delegate livecheck: :"self.class"
 
   # Is a livecheck specification defined for the software?
+  # @!method livecheck_defined?
+  # @see .livecheck_defined?
+  delegate livecheck_defined?: :"self.class"
+
+  # Is a livecheck specification defined for the software?
   # @!method livecheckable?
   # @see .livecheckable?
   delegate livecheckable?: :"self.class"
@@ -3537,8 +3542,19 @@ class Formula
     # It returns `true` when a `livecheck` block is present in the {Formula}
     # and `false` otherwise.
     sig { returns(T::Boolean) }
+    def livecheck_defined?
+      @livecheck_defined == true
+    end
+
+    # Checks whether a `livecheck` specification is defined or not. This is a
+    # legacy alias for `#livecheck_defined?`.
+    #
+    # It returns `true` when a `livecheck` block is present in the {Formula}
+    # and `false` otherwise.
+    sig { returns(T::Boolean) }
     def livecheckable?
-      @livecheckable == true
+      # odeprecated "`livecheckable?`", "`livecheck_defined?`"
+      @livecheck_defined == true
     end
 
     # Checks whether a service specification is defined or not.
@@ -4183,7 +4199,7 @@ class Formula
     def livecheck(&block)
       return @livecheck unless block
 
-      @livecheckable = true
+      @livecheck_defined = true
       @livecheck.instance_eval(&block)
     end
 
