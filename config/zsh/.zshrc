@@ -1,15 +1,12 @@
 #! /usr/bin/env zsh
 
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-# installs zinit if missing and sources it
-ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
-[ ! -d "${ZINIT_HOME}" ] && mkdir -p "$(dirname "${ZINIT_HOME}")"
-[ ! -d "${ZINIT_HOME}/.git" ] && git clone https://github.com/zdharma-continuum/zinit.git "${ZINIT_HOME}"
-source "${ZINIT_HOME}/zinit.zsh" && autoload -Uz _zinit &&(( ${+_comps} )) && _comps[zinit]=_zinit
+# -- prompt and zinit prep ---------------------------------------------------------------------------------------------  
+p10k_instant_prompt
+clone-if-missing zdharma-continuum/zinit.git $ZINIT[HOME_DIR]
+source-and-autoload $ZINIT[HOME_DIR]/zinit.git/zinit.zsh _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-# -- ice ice baby ------------------------------------------------------------------------------------------------------
+# -- panic and the annex -----------------------------------------------------------------------------------------------
 zi lucid light-mode for                                                                                                \
 id-as'annex-bin-gem-node'   @zdharma-continuum/zinit-annex-bin-gem-node                                                \
 id-as'annex-binary-symlink' @zdharma-continuum/zinit-annex-binary-symlink                                              \
@@ -21,30 +18,26 @@ id-as'annex-man'            @zdharma-continuum/zinit-annex-man
 
 # -- manpage renovations -----------------------------------------------------------------------------------------------
 zi default-ice --clear --quiet lucid light-mode wait'0'
-zi for                                                                                                                 \                                                    \
+zi for                                                                                                                 \
 id-as'asciidoctor' pack @asciidoctor                                                                                   \
 id-as'zman'             @mattmc3/zman
 
 # -- fargo cargo -------------------------------------------------------------------------------------------------------
-zi default-ice --clear --quiet lucid light-mode wait'0' rustup
-
+zi default-ice --clear --quiet light-mode lucid wait'0' rustup &&                                                      \
 zi for                                                                                                                 \
 id-as'cargo-apps'                                                                                                      \
-cargo'lsd;sd;tre;tlrc;rm-improved;choose;mcfly'                                                                                     \
-lbin'bin/(lsd|sd|tre|tlrc|rip|rust*|carg*|choose|mcfly)'                                                                            \
+cargo'lsd;sd;tre;tlrc;rm-improved;choose;mcfly'                                                                        \
+lbin'bin/(lsd|sd|tre|tlrc|rip|rust*|carg*|choose|mcfly)'                                                               \
 atload'use tre.atload;use lsd.atload; use rust.atload'                                                                 \
 @zdharma-continuum/null
 
-#id-as'zoxide' sbin'bin/zoxide->zoxide' cargo'zoxide' atload'use zoxide.atload' @ajeetdsouza/zoxide                     \
-
-
-# -- con-air, con-artist, con-man and now con-fig-----------------------------------------------------------------------
+# -- con-air, con-artist, con-man and now con-fig ----------------------------------------------------------------------
 zi default-ice --clear --quiet id-as'zsh-configs' light-mode lucid wait'0' is-snippet
 zi for                                                                                                                 \
 @$ZDOTDIR/autoload.zsh                                                                                                 \
 @$ZDOTDIR/options.zsh                                                                                                  \
 @$ZDOTDIR/keybind.zsh                                                                                                  \
-@$ZDOTDIR/alixases.zsh                                                                                                 \
+@$ZDOTDIR/aliases.zsh                                                                                                  \
 @$ZDOTDIR/completions.zsh
 
 # -- omz plugins and libraries -----------------------------------------------------------------------------------------
@@ -55,27 +48,28 @@ OMZL::theme-and-appearance.zsh                                                  
 OMZL::key-bindings.zsh                                                                                                 \
 OMZL::completion.zsh                                                                                                   \
 OMZL::correction.zsh                                                                                                   \
-OMZL::compfix.zsh                                                                               \
-OMZL::history.zsh                                                                               \
-OMZP::colorize                                                                                  \
-OMZP::urltools                                                                                  \
-OMZP::brew                                                                                      \
-OMZP::git                                                                                       \
-OMZP::cp                                                                                        \
+OMZL::compfix.zsh                       		                                                               \
+OMZL::history.zsh			                                                                               \
+OMZP::colorize                                                 			                                       \
+OMZP::urltools                                                                        			               \
+OMZP::brew                                                                  			                       \
+OMZP::git                                                                                       	               \
+OMZP::cp  			                                                                                       \
+OMZP::grc                                                                                                              \
 atload'use magic-enter.atload' OMZP::magic-enter
 
-# -- rub a dub dub there's gits in my hubs ----------------------------------------------------------------------------
+# -- rub a dub dub there's gits in my hubs -----------------------------------------------------------------------------
 zi default-ice --clear --quiet light-mode lucid wait'0' from'gh-r'
 zi for                                                                                                                 \
 id-as'lemmeknow'                                        sbin'lemmeknow*->lemmeknow'           @swanandx/lemmeknow      \
 id-as'gh'                                               sbin'gh_*/bin/gh*->gh'                @cli/cli                 \
-id-as'fx'  binary lbin lman atclone'mv */* .'                                              @antonmedv/fx            \
+id-as'fx'  binary lbin lman atclone'mv */* .'                                                 @antonmedv/fx            \
 id-as'rg'  binary lbin lman atclone'mv rip*/* .'          atpull'%atclone'                    @BurntSushi/ripgrep      \
 id-as'dog' binary lbin lman atclone'mv -f **/**.zsh _dog' atpull'%atclone'                    @ogham/dog               \
 id-as'bat' binary lbin lman atclone'mv -f **/*.zsh _bat'  atpull'%atclone'                    @sharkdp/bat             \
 id-as'glow'                                             sbin'**/glow->glow'                   @charmbracelet/glow      \
 id-as'just' binary lbin lman  atclone'./just --completions zsh > _just' atpull'%atclone'      @casey/just              \
-id-as'nvim'                                             sbin'**/nvim->nvim'                   @neovim/neovim           \
+id-as'nvim'          atclone'use neovim.atclone'        sbin'nvim*/bin/nvim->nvim'            @neovim/neovim           \
 id-as'mcfly'                                            sbin'mcfly*->mcfly'                   @cantino/mcfly           \
 id-as'deno'                                             sbin'*->deno'                         @denoland/deno           \
 id-as'assh'                                             sbin'assh*->assh'                     @moul/assh               \
@@ -87,37 +81,27 @@ id-as'tree-sitter'                        nocompile     sbin'*->tree-sitter->tre
 id-as'antidot'        atload'use antidot.atload'        sbin'antidot*->antidot'               @doron-cohen/antidot     \
 id-as'fd' binary lbin lman atpull'%atclone' atload'use fd.atload' atclone'use fd.atclone'     @sharkdp/fd
 
-
-#-- pop, pop, fzf, fzf oh wut a relief itis -----------------------------------------------------
-zi default-ice --clear --quiet light-mode lucid wait'0'
-zi for                                                                                             \
-id-as'fzf-tab'            atload'use fzf-tab.atload'            @Aloxaf/fzf-tab                    \
-id-as'fzf-tab-completion' atload'use fzf-tab-completion.atload' @lincheney/fzf-tab-completion
-id-as'direnv'                                           sbin'direnv*->direnv'                 @direnv/direnv           \
-id-as'antidot'        atload'use antidot.atload'        sbin'antidot*->antidot'               @doron-cohen/antidot
-
 # -- ineedz a mans -----------------------------------------------------------------------------------------------------
-zi default-ice --clear --quiet light-mode binary lbin lman lucid wait'0' from'gh-r'
+zi default-ice --clear --quiet light-mode lucid wait'0' from'gh-r' binary lbin lman
 zi for                                                                                                                 \
-id-as'bat'    atclone'mv -f **/*.zsh _bat'              atpull'%atclone' @sharkdp/bat                                  \
-id-as'fd'     atclone'./fd --gen-completions zsh > _fd' atpull'%atclone' @sharkdp/fd                                   \
-id-as'dog'    atclone'mv -f **/**.zsh _dog'             atpull'%atclone' @ogham/dog                                    \
-id-as'rg'     atclone'mv rip*/* .'                      atpull'%atclone' @BurntSushi/ripgrep                           \
-id-as'just'   atclone'./just --completions zsh > _just' atpull'%atclone' @casey/just                                   \
-id-as'zoxide' atinit'use zoxide.atinit'  lman'*/**.1'                    @ajeetdsouza/zoxide                           \
-
+id-as'bat'      atclone'mv -f **/*.zsh _bat'              atpull'%atclone' @sharkdp/bat                                \
+id-as'fd'       atclone'./fd --gen-completions zsh > _fd' atpull'%atclone' @sharkdp/fd                                 \
+id-as'dog'      atclone'mv -f **/**.zsh _dog'             atpull'%atclone' @ogham/dog                                  \
+id-as'rg'       atclone'mv rip*/* .'                      atpull'%atclone' @BurntSushi/ripgrep                         \
+id-as'just'     atclone'./just --completions zsh > _just' atpull'%atclone' @casey/just                                 \
+id-as'zoxide'   atinit'use zoxide.atinit'  lman'*/**.1'                    @ajeetdsouza/zoxide                         \
+id-as'zsh-lint'                                                            @z-shell/zsh-lint
 
 #-- pop, pop, fzf, fzf oh wut a relief itis ----------------------------------------------------------------------------
 zi default-ice --clear --quiet light-mode lucid wait'0'
 zi for                                                                                                                 \
-id-as'fzf-tab'            atload'use fzf-tab.atload'            @Aloxaf/fzf-tab                                        \
-id-as'fzf-tab-completion' atload'use fzf-tab-completion.atload' @lincheney/fzf-tab-completion                          \
+id-as'fzf'                pack"bgn+keys"                                           @fzf                                \
+id-as'fzf-tab'            atload'use fzf-tab.atload'                               @Aloxaf/fzf-tab                     \
+id-as'fzf-tab-completion' atload'use fzf-tab-completion.atload'                    @lincheney/fzf-tab-completion       \
 
 # -- loners and boners -------------------------------------------------------------------------------------------------
 zi for                                                                                                                 \
-id-as'zsh-lint'       @z-shell/zsh-lint                                                                                \
 id-as'zsh-sweep'      @zdharma-continuum/zsh-sweep                                                                     \
-id-as'safe-rm'        @mattmc3/zsh-safe-rm                                                                             \
 id-as'multiple-dots'  @momo-lab/zsh-replace-multiple-dots                                                              \
 id-as'zsh-async'      @mafredri/zsh-async                                                                              \
 id-as'zui'            @z-shell/zui                                                                                     \
@@ -126,9 +110,9 @@ id-as'zsh-dot-up'     @toku-sa-n/zsh-dot-up
 # -- regular packages --------------------------------------------------------------------------------------------------
 zi default-ice --clear --quiet lucid light-mode wait'0'
 zi for                                                                                                                 \
-id-as'dircolors' pack @dircolors-material                                                                              \
-id-as'ls_colors' pack @ls_colors                                                                                       \
-id-as'p10k' depth'1' @romkatv/powerlevel10k                                                                            \
+id-as'dircolors'        pack  @dircolors-material                                                                      \
+id-as'ls_colors'        pack  @ls_colors                                                                               \
+id-as'p10k' depth'1'                                @romkatv/powerlevel10k                                             \
 id-as'zeno' sbin'**/zeno -> zeno' depth'1' atload'use zeno.atload' @yuki-yano/zeno.zsh                                 \
 id-as'brew' sbin'bin/brew' depth'3' atload'use brew.atload' atclone'use brew.atclone' @homebrew/brew
 
