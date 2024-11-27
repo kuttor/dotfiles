@@ -177,11 +177,7 @@ class Livecheck
 
   delegate version: :@package_or_resource
   delegate arch: :@package_or_resource
-  # FIXME: false positive: https://github.com/rubocop/rubocop/issues/13453
-  # rubocop:disable Style/AccessModifierDeclarations
   private :version, :arch
-  # rubocop:enable Style/AccessModifierDeclarations
-
   # Returns a `Hash` of all instance variable values.
   # @return [Hash]
   sig { returns(T::Hash[String, T.untyped]) }
