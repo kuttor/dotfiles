@@ -298,10 +298,10 @@ class Vernier::Output::Firefox::Thread
 
   private
 
-  # source://vernier//lib/vernier/output/firefox.rb#533
+  # source://vernier//lib/vernier/output/firefox.rb#549
   def gc_category; end
 
-  # source://vernier//lib/vernier/output/firefox.rb#537
+  # source://vernier//lib/vernier/output/firefox.rb#553
   def thread_category; end
 end
 
