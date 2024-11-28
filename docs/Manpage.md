@@ -3068,16 +3068,6 @@ to one or more of the following environment variables:
 `HOMEBREW_BUNDLE_MAS_SKIP`, `HOMEBREW_BUNDLE_WHALEBREW_SKIP`,
 `HOMEBREW_BUNDLE_TAP_SKIP`.
 
-`brew bundle` will output a `Brewfile.lock.json` in the same directory as the
-`Brewfile` if all dependencies are installed successfully. This contains
-dependency and system status information which can be useful for debugging `brew
-bundle` failures and replicating a "last known good build" state. You can
-opt-out of this behaviour by setting the `HOMEBREW_BUNDLE_NO_LOCK` environment
-variable or passing the `--no-lock` option. You may wish to check this file into
-the same version control system as your `Brewfile` (or ensure your version
-control system ignores it if you'd prefer to rely on debugging information from
-a local machine).
-
 `brew bundle dump`
 
 : Write all installed casks/formulae/images/taps into a `Brewfile` in the
@@ -3147,10 +3137,6 @@ flags which will help with finding keg-only dependencies like `openssl`,
 : `install` performs cleanup operation, same as running `cleanup --force`. This
   is enabled by default if `HOMEBREW_BUNDLE_INSTALL_CLEANUP` is set and
   `--global` is passed.
-
-`--no-lock`
-
-: `install` does not output a `Brewfile.lock.json`.
 
 `--all`
 
