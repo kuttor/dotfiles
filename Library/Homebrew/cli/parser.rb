@@ -252,7 +252,7 @@ module Homebrew
         description = option_description(description, name, hidden:)
         process_option(name, description, type: :comma_array, hidden:)
         @parser.on(name, OptionParser::REQUIRED_ARGUMENT, Array, *wrap_option_desc(description)) do |list|
-          @args[option_to_name(name)] = list
+          @args.define_singleton_method(option_to_name(name)) { list }
         end
       end
 
@@ -277,7 +277,7 @@ module Homebrew
           # This odisabled should stick around indefinitely.
           odisabled "the `#{names.first}` flag", replacement unless replacement.nil?
           names.each do |name|
-            @args[option_to_name(name)] = option_value
+            @args.define_singleton_method(option_to_name(name)) { option_value }
           end
         end
 
@@ -558,24 +558,27 @@ module Homebrew
       def set_switch(*names, value:, from:)
         names.each do |name|
           @switch_sources[option_to_name(name)] = from
-          @args["#{option_to_name(name)}?"] = value
+          @args.define_singleton_method(:"#{option_to_name(name)}?") { value }
         end
       end
 
       sig { params(args: String).void }
       def disable_switch(*args)
         args.each do |name|
-          @args["#{option_to_name(name)}?"] = if name.start_with?("--[no-]")
+          result = if name.start_with?("--[no-]")
             nil
           else
             false
           end
+          @args.define_singleton_method(:"#{option_to_name(name)}?") { result }
         end
       end
 
       sig { params(name: String).returns(T::Boolean) }
       def option_passed?(name)
-        !!(@args[name.to_sym] || @args[:"#{name}?"])
+        [name.to_sym, :"#{name}?"].any? do |method|
+          @args.public_send(method) if @args.respond_to?(method)
+        end
       end
 
       sig { params(desc: String).returns(T::Array[String]) }
@@ -676,7 +679,7 @@ module Homebrew
           disable_switch(*args)
         else
           args.each do |name|
-            @args[option_to_name(name)] = nil
+            @args.define_singleton_method(option_to_name(name)) { nil }
           end
         end
 

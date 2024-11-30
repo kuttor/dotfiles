@@ -1,25 +1,22 @@
 # typed: strict
 # frozen_string_literal: true
 
-require "ostruct"
-
 module Homebrew
   module CLI
-    class Args < OpenStruct
+    class Args
       # Represents a processed option. The array elements are:
       #   0: short option name (e.g. "-d")
       #   1: long option name (e.g. "--debug")
       #   2: option description (e.g. "Print debugging information")
       #   3: whether the option is hidden
       OptionsType = T.type_alias { T::Array[[String, T.nilable(String), String, T::Boolean]] }
+
       sig { returns(T::Array[String]) }
-      attr_reader :options_only, :flags_only
+      attr_reader :options_only, :flags_only, :remaining
 
       sig { void }
       def initialize
         require "cli/named_args"
-
-        super
 
         @cli_args = T.let(nil, T.nilable(T::Array[String]))
         @processed_options = T.let([], OptionsType)
@@ -30,29 +27,45 @@ module Homebrew
 
         # Can set these because they will be overwritten by freeze_named_args!
         # (whereas other values below will only be overwritten if passed).
-        self[:named] = NamedArgs.new(parent: self)
-        self[:remaining] = []
+        @named = T.let(NamedArgs.new(parent: self), T.nilable(NamedArgs))
+        @remaining = T.let([], T::Array[String])
       end
 
       sig { params(remaining_args: T::Array[T.any(T::Array[String], String)]).void }
-      def freeze_remaining_args!(remaining_args)
-        self[:remaining] = remaining_args.freeze
-      end
+      def freeze_remaining_args!(remaining_args) = @remaining.replace(remaining_args).freeze
 
       sig { params(named_args: T::Array[String], cask_options: T::Boolean, without_api: T::Boolean).void }
       def freeze_named_args!(named_args, cask_options:, without_api:)
         options = {}
-        options[:force_bottle] = true if self[:force_bottle?]
-        options[:override_spec] = :head if self[:HEAD?]
+        options[:force_bottle] = true if force_bottle?
+        options[:override_spec] = :head if self.HEAD?
         options[:flags] = flags_only unless flags_only.empty?
-        self[:named] = NamedArgs.new(
-          *named_args.freeze,
-          parent:       self,
-          cask_options:,
-          without_api:,
-          **options,
+        @named = T.let(
+          NamedArgs.new(*named_args.freeze, parent: self, cask_options:, without_api:, **options),
+          T.nilable(NamedArgs),
         )
       end
+
+      sig { returns(T.nilable(String)) }
+      def arch = nil
+
+      sig { returns(T::Boolean) }
+      def build_bottle? = false
+
+      sig { returns(T::Boolean) }
+      def build_from_source? = false
+
+      sig { returns(T::Boolean) }
+      def force_bottle? = false
+
+      sig { returns(T::Boolean) }
+      def HEAD? = false
+
+      sig { returns(T::Boolean) }
+      def include_test? = false
+
+      sig { returns(T.nilable(String)) }
+      def os = nil
 
       sig { params(processed_options: OptionsType).void }
       def freeze_processed_options!(processed_options)
@@ -69,7 +82,7 @@ module Homebrew
       sig { returns(NamedArgs) }
       def named
         require "formula"
-        self[:named]
+        T.must(@named)
       end
 
       sig { returns(T::Boolean) }
@@ -77,7 +90,7 @@ module Homebrew
 
       sig { returns(T::Array[String]) }
       def build_from_source_formulae
-        if build_from_source? || self[:HEAD?] || self[:build_bottle?]
+        if build_from_source? || self.HEAD? || build_bottle?
           named.to_formulae.map(&:full_name)
         else
           []
@@ -109,9 +122,9 @@ module Homebrew
 
       sig { returns(T.nilable(Symbol)) }
       def only_formula_or_cask
-        if formula? && !cask?
+        if invoke_if_respond_to(:formula?) && !invoke_if_respond_to(:cask?)
           :formula
-        elsif cask? && !formula?
+        elsif invoke_if_respond_to(:cask?) && !invoke_if_respond_to(:formula?)
           :cask
         end
       end
@@ -173,24 +186,6 @@ module Homebrew
             "#{option}=#{@table[flag].join(",")}"
           end
         end.freeze
-      end
-
-      sig { params(method_name: Symbol, _include_private: T::Boolean).returns(T::Boolean) }
-      def respond_to_missing?(method_name, _include_private = false)
-        @table.key?(method_name)
-      end
-
-      sig { params(method_name: Symbol, args: T.untyped).returns(T.untyped) }
-      def method_missing(method_name, *args)
-        return_value = super
-
-        # Once we are frozen, verify any arg method calls are already defined in the table.
-        # The default OpenStruct behaviour is to return nil for anything unknown.
-        if frozen? && args.empty? && !@table.key?(method_name)
-          raise NoMethodError, "CLI arg for `#{method_name}` is not declared for this command"
-        end
-
-        return_value
       end
     end
   end
