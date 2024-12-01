@@ -10,14 +10,8 @@ module OS
         requires_ancestor { Homebrew::CLI::Parser }
 
         sig { void }
-        def set_default_options
-          args.define_singleton_method(:formula?) { true } if args.respond_to?(:formula?)
-        end
-
-        sig { void }
         def validate_options
-          return unless args.respond_to?(:cask?)
-          return unless T.unsafe(args).cask?
+          return unless args.cask?
 
           # NOTE: We don't raise an error here because we don't want
           #       to print the help page or a stack trace.
