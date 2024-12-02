@@ -142,7 +142,7 @@ class Resource
   end
 
   # {Livecheck} can be used to check for newer versions of the software.
-  # This method evaluates the DSL specified in the livecheck block of the
+  # This method evaluates the DSL specified in the `livecheck` block of the
   # {Resource} (if it exists) and sets the instance variables of a {Livecheck}
   # object accordingly. This is used by `brew livecheck` to check for newer
   # versions of the software.

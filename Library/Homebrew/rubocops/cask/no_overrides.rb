@@ -40,7 +40,8 @@ module RuboCop
           method_nodes.select(&:block_type?).each do |node|
             node.child_nodes.each do |child|
               child.each_node(:send) do |send_node|
-                # Skip (nested) livecheck blocks as its `url` is different to a download `url`.
+                # Skip (nested) `livecheck` block as its `url` is different
+                # from a download `url`.
                 next if send_node.method_name == :livecheck || inside_livecheck_defined?(send_node)
                 # Skip string interpolations.
                 if send_node.ancestors.drop_while { |a| !a.begin_type? }.any? { |a| a.dstr_type? || a.regexp_type? }

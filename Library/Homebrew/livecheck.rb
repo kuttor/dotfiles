@@ -37,7 +37,7 @@ class Livecheck
   # Sets the `@referenced_cask_name` instance variable to the provided `String`
   # or returns the `@referenced_cask_name` instance variable when no argument
   # is provided. Inherited livecheck values from the referenced cask
-  # (e.g. regex) can be overridden in the livecheck block.
+  # (e.g. regex) can be overridden in the `livecheck` block.
   sig {
     params(
       # Name of cask to inherit livecheck info from.
@@ -56,7 +56,7 @@ class Livecheck
   # Sets the `@referenced_formula_name` instance variable to the provided
   # `String` or returns the `@referenced_formula_name` instance variable when
   # no argument is provided. Inherited livecheck values from the referenced
-  # formula (e.g. regex) can be overridden in the livecheck block.
+  # formula (e.g. regex) can be overridden in the `livecheck` block.
   sig {
     params(
       # Name of formula to inherit livecheck info from.

@@ -79,7 +79,7 @@ module Homebrew
       full_name: false,
       debug: false
     )
-      # Check the livecheck block for a formula or cask reference
+      # Check the `livecheck` block for a formula or cask reference
       livecheck = formula_or_cask.livecheck
       livecheck_formula = livecheck.formula
       livecheck_cask = livecheck.cask

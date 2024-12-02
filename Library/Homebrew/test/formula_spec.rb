@@ -705,7 +705,7 @@ RSpec.describe Formula do
   end
 
   describe "#livecheck_defined?" do
-    specify "no livecheck block defined" do
+    specify "no `livecheck` block defined" do
       f = formula do
         url "https://brew.sh/test-1.0.tbz"
       end
@@ -713,7 +713,7 @@ RSpec.describe Formula do
       expect(f.livecheck_defined?).to be false
     end
 
-    specify "livecheck block defined" do
+    specify "`livecheck` block defined" do
       f = formula do
         url "https://brew.sh/test-1.0.tbz"
         livecheck do
