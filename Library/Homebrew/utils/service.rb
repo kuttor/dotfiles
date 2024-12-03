@@ -58,26 +58,16 @@ module Utils
       # quoting the entire string.
       str.each_char do |char|
         result << case char
-        when "\a"
-          "\\a"
-        when "\b"
-          "\\b"
-        when "\f"
-          "\\f"
-        when "\n"
-          "\\n"
-        when "\r"
-          "\\r"
-        when "\t"
-          "\\t"
-        when "\v"
-          "\\v"
-        when "\\"
-          "\\\\"
-        when "\""
-          "\\\""
-        else
-          char
+        when "\a" then "\\a"
+        when "\b" then "\\b"
+        when "\f" then "\\f"
+        when "\n" then "\\n"
+        when "\r" then "\\r"
+        when "\t" then "\\t"
+        when "\v" then "\\v"
+        when "\\" then "\\\\"
+        when "\"" then "\\\""
+        else char
         end
       end
       result << "\""
