@@ -137,7 +137,7 @@ module Homebrew
       def skip_repology?(formula_or_cask)
         return true unless args.repology?
 
-        (ENV["CI"].present? && args.open_pr? && formula_or_cask.livecheckable?) ||
+        (ENV["CI"].present? && args.open_pr? && formula_or_cask.livecheck_defined?) ||
           (formula_or_cask.is_a?(Formula) && formula_or_cask.versioned_formula?)
       end
 
@@ -329,7 +329,7 @@ module Homebrew
               "skipped"
             elsif repology_latest.is_a?(Version) &&
                   repology_latest > current_version_value &&
-                  !loaded_formula_or_cask.livecheckable? &&
+                  !loaded_formula_or_cask.livecheck_defined? &&
                   current_version_value != "latest"
               repology_latest
             end.presence
@@ -490,8 +490,8 @@ module Homebrew
         if repology_latest.is_a?(Version) &&
            repology_latest > current_version.general &&
            repology_latest > new_version.general &&
-           formula_or_cask.livecheckable?
-          puts "#{title_name} was not bumped to the Repology version because it's livecheckable."
+           formula_or_cask.livecheck_defined?
+          puts "#{title_name} was not bumped to the Repology version because it has a `livecheck` block."
         end
         if new_version.blank? || versions_equal ||
            (!new_version.general.is_a?(Version) && !version_info.multiple_versions)

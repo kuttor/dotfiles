@@ -704,16 +704,16 @@ RSpec.describe Formula do
     expect(f.livecheck.regex).to eq(/test-v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  describe "#livecheckable?" do
-    specify "no livecheck block defined" do
+  describe "#livecheck_defined?" do
+    specify "no `livecheck` block defined" do
       f = formula do
         url "https://brew.sh/test-1.0.tbz"
       end
 
-      expect(f.livecheckable?).to be false
+      expect(f.livecheck_defined?).to be false
     end
 
-    specify "livecheck block defined" do
+    specify "`livecheck` block defined" do
       f = formula do
         url "https://brew.sh/test-1.0.tbz"
         livecheck do
@@ -721,7 +721,7 @@ RSpec.describe Formula do
         end
       end
 
-      expect(f.livecheckable?).to be true
+      expect(f.livecheck_defined?).to be true
     end
 
     specify "livecheck references Formula URL" do
