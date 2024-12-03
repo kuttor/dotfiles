@@ -375,7 +375,7 @@ EOS
 
   if [[ -z "${HOMEBREW_UPDATE_TO_TAG}" ]]
   then
-    if [[ -n "${HOMEBREW_DEVELOPER}" || -n "${HOMEBREW_DEV_CMD_RUN}" ]] && [[ -n "${HOMEBREW_NO_INSTALL_CLEANUP}" ]]
+    if [[ -n "${HOMEBREW_DEVELOPER}" || -n "${HOMEBREW_DEV_CMD_RUN}" ]]
     then
       export HOMEBREW_NO_UPDATE_CLEANUP="1"
     else
