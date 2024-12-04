@@ -108,10 +108,7 @@ module Homebrew
 
       sig { override.void }
       def run
-        formulae, casks = T.cast(
-          args.named.to_resolved_formulae_to_casks,
-          [T::Array[Formula], T::Array[Cask::Cask]],
-        )
+        formulae, casks = args.named.to_resolved_formulae_to_casks
 
         if args.build_from_source?
           unless DevelopmentTools.installed?

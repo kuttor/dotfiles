@@ -162,12 +162,6 @@ module Homebrew
             info_formula(obj)
           when Cask::Cask
             info_cask(obj)
-          when FormulaUnreadableError, FormulaClassUnavailableError,
-             TapFormulaUnreadableError, TapFormulaClassUnavailableError,
-             Cask::CaskUnreadableError
-            # We found the formula/cask, but failed to read it
-            $stderr.puts obj.backtrace if Homebrew::EnvConfig.developer?
-            ofail obj.message
           when FormulaOrCaskUnavailableError
             # The formula/cask could not be found
             ofail obj.message
