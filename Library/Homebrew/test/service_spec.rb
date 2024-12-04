@@ -727,7 +727,7 @@ RSpec.describe Homebrew::Service do
 
         [Service]
         Type=simple
-        ExecStart=#{HOMEBREW_PREFIX}/opt/#{name}/bin/beanstalkd test
+        ExecStart="#{HOMEBREW_PREFIX}/opt/#{name}/bin/beanstalkd" "test"
         Restart=always
         RestartSec=30
         WorkingDirectory=#{HOMEBREW_PREFIX}/var
@@ -760,7 +760,7 @@ RSpec.describe Homebrew::Service do
 
         [Service]
         Type=oneshot
-        ExecStart=#{HOMEBREW_PREFIX}/opt/#{name}/bin/beanstalkd
+        ExecStart="#{HOMEBREW_PREFIX}/opt/#{name}/bin/beanstalkd"
       SYSTEMD
       expect(unit).to eq(unit_expect)
     end
@@ -783,7 +783,7 @@ RSpec.describe Homebrew::Service do
 
         [Service]
         Type=simple
-        ExecStart=#{HOMEBREW_PREFIX}/opt/#{name}/bin/beanstalkd
+        ExecStart="#{HOMEBREW_PREFIX}/opt/#{name}/bin/beanstalkd"
         WorkingDirectory=#{Dir.home}
       SYSTEMD
       expect(unit).to eq(unit_expect)

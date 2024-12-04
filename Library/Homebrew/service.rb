@@ -455,7 +455,7 @@ module Homebrew
     sig { returns(String) }
     def to_systemd_unit
       # command needs to be first because it initializes all other values
-      cmd = command&.map { |arg| Utils::Shell.sh_quote(arg) }
+      cmd = command&.map { |arg| Utils::Service.systemd_quote(arg) }
                    &.join(" ")
 
       options = []
