@@ -454,16 +454,6 @@ module Homebrew
     # @return [String]
     sig { returns(String) }
     def to_systemd_unit
-      unit = <<~EOS
-        [Unit]
-        Description=Homebrew generated unit for #{@formula.name}
-
-        [Install]
-        WantedBy=default.target
-
-        [Service]
-      EOS
-
       # command needs to be first because it initializes all other values
       cmd = command&.map { |arg| Utils::Shell.sh_quote(arg) }
                    &.join(" ")
@@ -481,24 +471,22 @@ module Homebrew
       options << "StandardError=append:#{File.expand_path(@error_log_path)}" if @error_log_path.present?
       options += @environment_variables.map { |k, v| "Environment=\"#{k}=#{v}\"" } if @environment_variables.present?
 
-      unit + options.join("\n")
+      <<~SYSTEMD
+        [Unit]
+        Description=Homebrew generated unit for #{@formula.name}
+
+        [Install]
+        WantedBy=default.target
+
+        [Service]
+        #{options.join("\n")}
+      SYSTEMD
     end
 
     # Returns a `String` systemd unit timer.
     # @return [String]
     sig { returns(String) }
     def to_systemd_timer
-      timer = <<~EOS
-        [Unit]
-        Description=Homebrew generated timer for #{@formula.name}
-
-        [Install]
-        WantedBy=timers.target
-
-        [Timer]
-        Unit=#{service_name}
-      EOS
-
       options = []
       options << "Persistent=true" if @run_type == RUN_TYPE_CRON
       options << "OnUnitActiveSec=#{@interval}" if @run_type == RUN_TYPE_INTERVAL
@@ -509,7 +497,17 @@ module Homebrew
         options << "OnCalendar=#{@cron[:Weekday]}-*-#{@cron[:Month]}-#{@cron[:Day]} #{hours}:#{minutes}:00"
       end
 
-      timer + options.join("\n")
+      <<~SYSTEMD
+        [Unit]
+        Description=Homebrew generated timer for #{@formula.name}
+
+        [Install]
+        WantedBy=timers.target
+
+        [Timer]
+        Unit=#{service_name}
+        #{options.join("\n")}
+      SYSTEMD
     end
 
     # Prepare the service hash for inclusion in the formula API JSON.
