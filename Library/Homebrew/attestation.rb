@@ -168,6 +168,8 @@ module Homebrew
       # As of 2024-12-04 GitHub's Artifact Attestation feature can put multiple subjects
       # in a single attestation, so we check every subject in each attestation
       # and select the first attestation with a matching subject.
+      # In particular, this happens with v2.0.0 and later of the
+      # `actions/attest-build-provenance` action.
       subject = bottle.filename.to_s if subject.blank?
 
       attestation = if bottle.tag.to_sym == :all
