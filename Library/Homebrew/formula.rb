@@ -722,8 +722,10 @@ class Formula
   # This directory points to {#opt_prefix} if it exists and if {#prefix} is not
   # called from within the same formula's {#install} or {#post_install} methods.
   # Otherwise, return the full path to the formula's versioned cellar.
+  sig { params(version: T.any(String, PkgVersion)).returns(Pathname) }
   def prefix(version = pkg_version)
     versioned_prefix = versioned_prefix(version)
+    version = PkgVersion.parse(version) if version.is_a?(String)
     if !@prefix_returns_versioned_prefix && version == pkg_version &&
        versioned_prefix.directory? && Keg.new(versioned_prefix).optlinked?
       opt_prefix
