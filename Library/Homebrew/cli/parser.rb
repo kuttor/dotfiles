@@ -252,7 +252,7 @@ module Homebrew
         description = option_description(description, name, hidden:)
         process_option(name, description, type: :comma_array, hidden:)
         @parser.on(name, OptionParser::REQUIRED_ARGUMENT, Array, *wrap_option_desc(description)) do |list|
-          @args.define_singleton_method(option_to_name(name)) { list }
+          set_args_method(option_to_name(name).to_sym, list)
         end
       end
 
@@ -277,12 +277,23 @@ module Homebrew
           # This odisabled should stick around indefinitely.
           odisabled "the `#{names.first}` flag", replacement unless replacement.nil?
           names.each do |name|
-            @args.define_singleton_method(option_to_name(name)) { option_value }
+            set_args_method(option_to_name(name).to_sym, option_value)
           end
         end
 
         names.each do |name|
           set_constraints(name, depends_on:)
+        end
+      end
+
+      sig { params(name: Symbol, value: T.untyped).void }
+      def set_args_method(name, value)
+        @args.table[name] = value
+        return if @args.respond_to?(name)
+
+        @args.define_singleton_method(name) do
+          T.bind(self, Args)
+          table.fetch(name)
         end
       end
 
@@ -552,7 +563,7 @@ module Homebrew
       def set_switch(*names, value:, from:)
         names.each do |name|
           @switch_sources[option_to_name(name)] = from
-          @args.define_singleton_method(:"#{option_to_name(name)}?") { value }
+          set_args_method(:"#{option_to_name(name)}?", value)
         end
       end
 
@@ -564,7 +575,7 @@ module Homebrew
           else
             false
           end
-          @args.define_singleton_method(:"#{option_to_name(name)}?") { result }
+          set_args_method(:"#{option_to_name(name)}?", result)
         end
       end
 
@@ -673,7 +684,7 @@ module Homebrew
           disable_switch(*args)
         else
           args.each do |name|
-            @args.define_singleton_method(option_to_name(name)) { nil }
+            set_args_method(option_to_name(name).to_sym, nil)
           end
         end
 

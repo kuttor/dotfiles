@@ -14,6 +14,9 @@ module Homebrew
       sig { returns(T::Array[String]) }
       attr_reader :options_only, :flags_only, :remaining
 
+      sig { returns(T::Hash[Symbol, T.untyped]) }
+      attr_accessor :table
+
       sig { void }
       def initialize
         require "cli/named_args"
@@ -56,13 +59,7 @@ module Homebrew
       def build_from_source? = false
 
       sig { returns(T::Boolean) }
-      def cask? = false
-
-      sig { returns(T::Boolean) }
       def force_bottle? = false
-
-      # Defined in extend/os:
-      # def formula; end
 
       sig { returns(T::Boolean) }
       def HEAD? = false
@@ -128,9 +125,11 @@ module Homebrew
 
       sig { returns(T.nilable(Symbol)) }
       def only_formula_or_cask
-        if formula? && !cask?
+        return if !respond_to?(:formula?) && !respond_to?(:cask?)
+
+        if T.unsafe(self).formula? && !T.unsafe(self).cask?
           :formula
-        elsif cask? && !formula?
+        elsif T.unsafe(self).cask? && !T.unsafe(self).formula?
           :cask
         end
       end
@@ -191,7 +190,8 @@ module Homebrew
           elsif @table[flag].instance_of? Array
             "#{option}=#{@table[flag].join(",")}"
           end
-        end.freeze
+        end
+        @cli_args.freeze
       end
     end
   end
