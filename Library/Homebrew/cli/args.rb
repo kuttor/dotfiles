@@ -70,6 +70,13 @@ module Homebrew
       sig { returns(T.nilable(String)) }
       def os = nil
 
+      sig { params(_blk: T.untyped).returns(T.untyped) }
+      def tap(&_blk)
+        return super if block_given? # Object#tap
+
+        @table[:tap]
+      end
+
       sig { params(processed_options: OptionsType).void }
       def freeze_processed_options!(processed_options)
         # Reset cache values reliant on processed_options
