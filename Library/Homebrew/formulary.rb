@@ -671,7 +671,7 @@ module Formulary
 
       alias_path = nil if alias_dir != tap&.alias_dir
 
-      super(name, path, alias_path:, tap: tap)
+      super(name, path, alias_path:, tap:)
     end
   end
 
@@ -916,7 +916,7 @@ module Formulary
 
       name, tap, type = name_tap_type
 
-      alias_name = alias_name.downcase if type == :alias
+      alias_name = (type == :alias) ? alias_name.downcase : nil
 
       new(name, tap:, alias_name:)
     end
