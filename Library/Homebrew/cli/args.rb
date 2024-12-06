@@ -73,7 +73,7 @@ module Homebrew
       end
 
       sig { returns(T::Boolean) }
-      def no_named? = named.blank?
+      def no_named? = named.empty?
 
       sig { returns(T::Array[String]) }
       def build_from_source_formulae

@@ -18,7 +18,7 @@ module Homebrew
         params(
           args:          String,
           parent:        Args,
-          override_spec: Symbol,
+          override_spec: T.nilable(Symbol),
           force_bottle:  T::Boolean,
           flags:         T::Array[String],
           cask_options:  T::Boolean,
@@ -28,9 +28,9 @@ module Homebrew
       def initialize(
         *args,
         parent: Args.new,
-        override_spec: T.unsafe(nil),
-        force_bottle: T.unsafe(nil),
-        flags: T.unsafe(nil),
+        override_spec: nil,
+        force_bottle: false,
+        flags: [],
         cask_options: false,
         without_api: false
       )
@@ -73,11 +73,7 @@ module Homebrew
         ).returns(T::Array[T.any(Formula, Keg, Cask::Cask)])
       }
       def to_formulae_and_casks(
-        only: parent.only_formula_or_cask,
-        ignore_unavailable: false,
-        method: T.unsafe(nil),
-        uniq: true,
-        warn: T.unsafe(nil)
+        only: parent.only_formula_or_cask, ignore_unavailable: false, method: nil, uniq: true, warn: false
       )
         @to_formulae_and_casks ||= T.let(
           {}, T.nilable(T::Hash[T.nilable(Symbol), T::Array[T.any(Formula, Keg, Cask::Cask)]])
@@ -127,7 +123,7 @@ module Homebrew
             T.cast(formula_or_cask, T.any(Formula, Cask::Cask)).tap&.installed?
           end
 
-        return formulae_and_casks_with_taps if formulae_and_casks_without_taps.blank?
+        return formulae_and_casks_with_taps if formulae_and_casks_without_taps.empty?
 
         types = []
         types << "formulae" if formulae_and_casks_without_taps.any?(Formula)
@@ -369,7 +365,7 @@ module Homebrew
               options = { warn: }.compact
               candidate_cask = Cask::CaskLoader.load(name, config:, **options)
 
-              if unreadable_error.present?
+              if unreadable_error
                 onoe <<~EOS
                   Failed to load formula: #{name}
                   #{unreadable_error}
@@ -435,7 +431,7 @@ module Homebrew
             end
           end
 
-          raise unreadable_error if unreadable_error.present?
+          raise unreadable_error if unreadable_error
 
           user, repo, short_name = name.downcase.split("/", 3)
           if repo.present? && short_name.present?
