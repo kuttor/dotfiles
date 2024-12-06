@@ -458,11 +458,9 @@ module Homebrew
         ).void
       }
       def named_args(type = nil, number: nil, min: nil, max: nil, without_api: false)
-        if number.present? && (min.present? || max.present?)
-          raise ArgumentError, "Do not specify both `number` and `min` or `max`"
-        end
+        raise ArgumentError, "Do not specify both `number` and `min` or `max`" if number && (min || max)
 
-        if type == :none && (number.present? || min.present? || max.present?)
+        if type == :none && (number || min || max)
           raise ArgumentError, "Do not specify both `number`, `min` or `max` with `named_args :none`"
         end
 
@@ -527,9 +525,9 @@ module Homebrew
             "<#{@named_args_type}>"
           end
 
-          named_args = if @min_named_args.blank? && @max_named_args == 1
+          named_args = if @min_named_args.nil? && @max_named_args == 1
             " [#{arg_type}]"
-          elsif @min_named_args.blank?
+          elsif @min_named_args.nil?
             " [#{arg_type} ...]"
           elsif @min_named_args == 1 && @max_named_args == 1
             " #{arg_type}"
