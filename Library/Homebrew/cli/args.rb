@@ -55,7 +55,7 @@ module Homebrew
         @table[name] = value
       end
 
-      sig { params(_blk: T.nilable(T.proc.params(x: T.untyped).void)).returns(T.untyped) }
+      sig { override.params(_blk: T.nilable(T.proc.params(x: T.untyped).void)).returns(T.untyped) }
       def tap(&_blk)
         return super if block_given? # Object#tap
 
