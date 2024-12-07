@@ -3,6 +3,7 @@
 
 require "ipaddr"
 require "extend/on_system"
+require "utils/service"
 
 module Homebrew
   # The {Service} class implements the DSL methods used in a formula's
