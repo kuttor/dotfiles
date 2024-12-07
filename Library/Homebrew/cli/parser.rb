@@ -288,12 +288,12 @@ module Homebrew
 
       sig { params(name: Symbol, value: T.untyped).void }
       def set_args_method(name, value)
-        @args.table[name] = value
+        @args.set_arg(name, value)
         return if @args.respond_to?(name)
 
         @args.define_singleton_method(name) do
-          T.bind(self, Args)
-          table.fetch(name)
+          # We cannot reference the ivar directly due to https://github.com/sorbet/sorbet/issues/8106
+          instance_variable_get(:@table).fetch(name)
         end
       end
 

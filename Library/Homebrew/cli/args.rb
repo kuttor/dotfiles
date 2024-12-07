@@ -14,9 +14,6 @@ module Homebrew
       sig { returns(T::Array[String]) }
       attr_reader :options_only, :flags_only, :remaining
 
-      sig { returns(T::Hash[Symbol, T.untyped]) }
-      attr_accessor :table
-
       sig { void }
       def initialize
         require "cli/named_args"
@@ -26,7 +23,13 @@ module Homebrew
         @options_only = T.let([], T::Array[String])
         @flags_only = T.let([], T::Array[String])
         @cask_options = T.let(false, T::Boolean)
-        @table = T.let({}, T::Hash[Symbol, T.untyped])
+        @table = T.let({
+          build_bottle?:      false,
+          build_from_source?: false,
+          force_bottle?:      false,
+          HEAD?:              false,
+          include_test?:      false,
+        }, T::Hash[Symbol, T.untyped])
 
         # Can set these because they will be overwritten by freeze_named_args!
         # (whereas other values below will only be overwritten if passed).
@@ -39,38 +42,47 @@ module Homebrew
 
       sig { params(named_args: T::Array[String], cask_options: T::Boolean, without_api: T::Boolean).void }
       def freeze_named_args!(named_args, cask_options:, without_api:)
-        options = {}
-        options[:force_bottle] = true if force_bottle?
-        options[:override_spec] = :head if self.HEAD?
-        options[:flags] = flags_only unless flags_only.empty?
         @named = T.let(
-          NamedArgs.new(*named_args.freeze, parent: self, cask_options:, without_api:, **options),
+          NamedArgs.new(
+            *named_args.freeze,
+            cask_options:,
+            flags:         flags_only,
+            force_bottle:  force_bottle?,
+            override_spec: self.HEAD? ? :head : nil,
+            parent:        self,
+            without_api:,
+          ),
           T.nilable(NamedArgs),
         )
       end
 
       sig { returns(T.nilable(String)) }
-      def arch = table[:arch]
+      def arch = @table[:arch]
 
       sig { returns(T::Boolean) }
-      def build_bottle? = table[:build_bottle?] || false
+      def build_bottle? = @table.fetch(:build_bottle?)
 
       sig { returns(T::Boolean) }
-      def build_from_source? = table[:build_from_source?] || false
+      def build_from_source? = @table.fetch(:build_from_source?)
 
       sig { returns(T::Boolean) }
-      def force_bottle? = table[:force_bottle?] || false
+      def force_bottle? = @table.fetch(:force_bottle?)
 
       sig { returns(T::Boolean) }
-      def HEAD? = table[:HEAD?] || false
+      def HEAD? = @table.fetch(:HEAD?)
 
       sig { returns(T::Boolean) }
-      def include_test? = table[:include_test?] || false
+      def include_test? = @table.fetch(:include_test?)
 
       sig { returns(T.nilable(String)) }
-      def os = table[:os]
+      def os = @table[:os]
 
-      sig { params(_blk: T.untyped).returns(T.untyped) }
+      sig { params(name: Symbol, value: T.untyped).void }
+      def set_arg(name, value)
+        @table[name] = value
+      end
+
+      sig { params(_blk: T.nilable(T.proc.params(x: T.untyped).void)).returns(T.untyped) }
       def tap(&_blk)
         return super if block_given? # Object#tap
 
@@ -132,11 +144,9 @@ module Homebrew
 
       sig { returns(T.nilable(Symbol)) }
       def only_formula_or_cask
-        return if !respond_to?(:formula?) && !respond_to?(:cask?)
-
-        if T.unsafe(self).formula? && !T.unsafe(self).cask?
+        if @table[:formula?] && !@table[:cask?]
           :formula
-        elsif T.unsafe(self).cask? && !T.unsafe(self).formula?
+        elsif @table[:cask?] && !@table[:formula?]
           :cask
         end
       end
