@@ -50,25 +50,25 @@ module Homebrew
       end
 
       sig { returns(T.nilable(String)) }
-      def arch = nil
+      def arch = table[:arch]
 
       sig { returns(T::Boolean) }
-      def build_bottle? = false
+      def build_bottle? = table[:build_bottle?] || false
 
       sig { returns(T::Boolean) }
-      def build_from_source? = false
+      def build_from_source? = table[:build_from_source?] || false
 
       sig { returns(T::Boolean) }
-      def force_bottle? = false
+      def force_bottle? = table[:force_bottle?] || false
 
       sig { returns(T::Boolean) }
-      def HEAD? = false
+      def HEAD? = table[:HEAD?] || false
 
       sig { returns(T::Boolean) }
-      def include_test? = false
+      def include_test? = table[:include_test?] || false
 
       sig { returns(T.nilable(String)) }
-      def os = nil
+      def os = table[:os]
 
       sig { params(_blk: T.untyped).returns(T.untyped) }
       def tap(&_blk)
