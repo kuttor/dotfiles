@@ -23,13 +23,7 @@ module Homebrew
         @options_only = T.let([], T::Array[String])
         @flags_only = T.let([], T::Array[String])
         @cask_options = T.let(false, T::Boolean)
-        @table = T.let({
-          build_bottle?:      false,
-          build_from_source?: false,
-          force_bottle?:      false,
-          HEAD?:              false,
-          include_test?:      false,
-        }, T::Hash[Symbol, T.untyped])
+        @table = T.let({}, T::Hash[Symbol, T.untyped])
 
         # Can set these because they will be overwritten by freeze_named_args!
         # (whereas other values below will only be overwritten if passed).
@@ -47,35 +41,14 @@ module Homebrew
             *named_args.freeze,
             cask_options:,
             flags:         flags_only,
-            force_bottle:  force_bottle?,
-            override_spec: self.HEAD? ? :head : nil,
+            force_bottle:  @table[:force_bottle?] || false,
+            override_spec: @table[:HEAD?] ? :head : nil,
             parent:        self,
             without_api:,
           ),
           T.nilable(NamedArgs),
         )
       end
-
-      sig { returns(T.nilable(String)) }
-      def arch = @table[:arch]
-
-      sig { returns(T::Boolean) }
-      def build_bottle? = @table.fetch(:build_bottle?)
-
-      sig { returns(T::Boolean) }
-      def build_from_source? = @table.fetch(:build_from_source?)
-
-      sig { returns(T::Boolean) }
-      def force_bottle? = @table.fetch(:force_bottle?)
-
-      sig { returns(T::Boolean) }
-      def HEAD? = @table.fetch(:HEAD?)
-
-      sig { returns(T::Boolean) }
-      def include_test? = @table.fetch(:include_test?)
-
-      sig { returns(T.nilable(String)) }
-      def os = @table[:os]
 
       sig { params(name: Symbol, value: T.untyped).void }
       def set_arg(name, value)
@@ -112,7 +85,7 @@ module Homebrew
 
       sig { returns(T::Array[String]) }
       def build_from_source_formulae
-        if build_from_source? || self.HEAD? || build_bottle?
+        if @table[:build_from_source?] || @table[:HEAD?] || @table[:build_bottle?]
           named.to_formulae.map(&:full_name)
         else
           []
@@ -121,7 +94,7 @@ module Homebrew
 
       sig { returns(T::Array[String]) }
       def include_test_formulae
-        if include_test?
+        if @table[:include_test?]
           named.to_formulae.map(&:full_name)
         else
           []
@@ -155,7 +128,7 @@ module Homebrew
       def os_arch_combinations
         skip_invalid_combinations = false
 
-        oses = case (os_sym = os&.to_sym)
+        oses = case (os_sym = @table[:os]&.to_sym)
         when nil
           [SimulateSystem.current_os]
         when :all
@@ -166,7 +139,7 @@ module Homebrew
           [os_sym]
         end
 
-        arches = case (arch_sym = arch&.to_sym)
+        arches = case (arch_sym = @table[:arch]&.to_sym)
         when nil
           [SimulateSystem.current_arch]
         when :all
