@@ -404,7 +404,10 @@ module Homebrew
         end
 
         unless ignore_invalid_options
-          validate_options unless @is_dev_cmd
+          unless @is_dev_cmd
+            set_default_options
+            validate_options
+          end
           check_constraint_violations
           check_named_args(named_args)
         end
@@ -423,6 +426,9 @@ module Homebrew
 
         @args
       end
+
+      sig { void }
+      def set_default_options; end
 
       sig { void }
       def validate_options; end

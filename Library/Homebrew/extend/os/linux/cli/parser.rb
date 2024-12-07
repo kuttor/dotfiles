@@ -11,7 +11,7 @@ module OS
 
         sig { void }
         def set_default_options
-          args.table[:formula?] = true if args.respond_to?(:formula?)
+          args.table[:formula?] = true
         end
 
         sig { void }
