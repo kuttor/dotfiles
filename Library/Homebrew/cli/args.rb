@@ -161,22 +161,18 @@ module Homebrew
 
       sig { returns(T::Array[String]) }
       def cli_args
-        return @cli_args if @cli_args
-
-        @cli_args = []
-        @processed_options.each do |short, long|
+        @cli_args ||= @processed_options.filter_map do |short, long|
           option = long || short
           switch = :"#{option_to_name(option)}?"
           flag = option_to_name(option).to_sym
           if @table[switch] == true || @table[flag] == true
-            @cli_args << option
+            option
           elsif @table[flag].instance_of? String
-            @cli_args << "#{option}=#{@table[flag]}"
+            "#{option}=#{@table[flag]}"
           elsif @table[flag].instance_of? Array
-            @cli_args << "#{option}=#{@table[flag].join(",")}"
+            "#{option}=#{@table[flag].join(",")}"
           end
-        end
-        @cli_args.freeze
+        end.freeze
       end
 
       sig { params(method_name: Symbol, _include_private: T::Boolean).returns(T::Boolean) }
