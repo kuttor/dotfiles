@@ -10,8 +10,7 @@ RSpec.describe Homebrew::Livecheck::Strategy::Pypi do
 
   let(:generated) do
     {
-      url:   "https://pypi.org/project/example-package/#files",
-      regex: %r{href=.*?/packages.*?/example-package[._-]v?(\d+(?:\.\d+)*(?:[._-]post\d+)?)\.t}i,
+      url: "https://pypi.org/pypi/example-package/json",
     }
   end
 

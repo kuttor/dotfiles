@@ -1,25 +1,30 @@
 # typed: strict
 # frozen_string_literal: true
 
-require "json"
-require "utils/curl"
-
 module Homebrew
   module Livecheck
     module Strategy
-      # The {Pypi} strategy identifies versions of software at pypi.org by
-      # using the JSON API endpoint.
+      # The {Pypi} strategy identifies the newest version of a PyPI package by
+      # checking the JSON API endpoint for the project and using the
+      # `info.version` field from the response.
       #
       # PyPI URLs have a standard format:
+      #   `https://files.pythonhosted.org/packages/<hex>/<hex>/<long_hex>/example-1.2.3.tar.gz`
       #
-      # * `https://files.pythonhosted.org/packages/<hex>/<hex>/<long_hex>/example-1.2.3.tar.gz`
-      #
-      # This method uses the `info.version` field in the JSON response to
-      # determine the latest stable version.
+      # Upstream documentation for the PyPI JSON API can be found at:
+      #   https://docs.pypi.org/api/json/#get-a-project
       #
       # @api public
       class Pypi
         NICE_NAME = "PyPI"
+
+        # The default `strategy` block used to extract version information when
+        # a `strategy` block isn't provided.
+        DEFAULT_BLOCK = T.let(proc do |json|
+          json.dig("info", "version").presence
+        end.freeze, T.proc.params(
+          arg0: T::Hash[String, T.untyped],
+        ).returns(T.nilable(String)))
 
         # The `Regexp` used to extract the package name and suffix (e.g. file
         # extension) from the URL basename.
@@ -46,8 +51,8 @@ module Homebrew
           URL_MATCH_REGEX.match?(url)
         end
 
-        # Extracts the package name from the provided URL and generates the
-        # PyPI JSON API endpoint.
+        # Extracts the package name from the provided URL and uses it to
+        # generate the PyPI JSON API URL for the project.
         #
         # @param url [String] the URL used to generate values
         # @return [Hash]
@@ -58,48 +63,41 @@ module Homebrew
           match = File.basename(url).match(FILENAME_REGEX)
           return values if match.blank?
 
-          package_name = T.must(match[:package_name]).gsub(/[_-]/, "-")
-          values[:url] = "https://pypi.org/project/#{package_name}/#files"
-          values[:regex] = %r{href=.*?/packages.*?/#{package_name}[._-]v?(\d+(?:\.\d+)*(?:[._-]post\d+)?)\.t}i
+          values[:url] = "https://pypi.org/pypi/#{T.must(match[:package_name]).gsub(/%20|_/, "-")}/json"
 
           values
         end
 
-        # Fetches the latest version of the package from the PyPI JSON API.
+        # Generates a PyPI JSON API URL for the project and identifies new
+        # versions using {Json#find_versions} with a block.
         #
         # @param url [String] the URL of the content to check
-        # @param regex [Regexp] a regex used for matching versions in content (optional)
+        # @param regex [Regexp] a regex used for matching versions in content
+        # @param provided_content [String, nil] content to check instead of
+        #   fetching
         # @return [Hash]
         sig {
           params(
-            url:     String,
-            regex:   T.nilable(Regexp),
-            _unused: T.untyped,
-            _block:  T.nilable(Proc),
+            url:              String,
+            regex:            T.nilable(Regexp),
+            provided_content: T.nilable(String),
+            unused:           T.untyped,
+            block:            T.nilable(Proc),
           ).returns(T::Hash[Symbol, T.untyped])
         }
-        def self.find_versions(url:, regex: nil, **_unused, &_block)
+        def self.find_versions(url:, regex: nil, provided_content: nil, **unused, &block)
           match_data = { matches: {}, regex:, url: }
 
           generated = generate_input_values(url)
           return match_data if generated.blank?
 
-          match_data[:url] = generated[:url]
-
-          # Parse JSON and get the latest version
-          begin
-            response = Utils::Curl.curl_output(generated[:url])
-            data = JSON.parse(response.stdout, symbolize_names: true)
-            latest_version = data.dig(:info, :version)
-          rescue => e
-            puts "Error fetching version from PyPI: #{e.message}"
-            return {}
-          end
-
-          # Return the version if found
-          return {} if latest_version.blank?
-
-          { matches: { latest_version => Version.new(latest_version) } }
+          Json.find_versions(
+            url:              generated[:url],
+            regex:,
+            provided_content:,
+            **unused,
+            &block || DEFAULT_BLOCK
+          )
         end
       end
     end
