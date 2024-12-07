@@ -180,8 +180,7 @@ module Homebrew
           elsif @table[flag].instance_of? Array
             "#{option}=#{@table[flag].join(",")}"
           end
-        end
-        @cli_args.freeze
+        end.freeze
       end
     end
   end
