@@ -1,34 +1,26 @@
-#!/usr/bin/env zsh
-# Generate and source Homebrew environment
-BREW_ENV_FILE="$HOME/.cache/brew_env.zsh"
-"$HOMEBREW_PREFIX/bin/brew" shellenv > "$BREW_ENV_FILE"
-zcompile "$BREW_ENV_FILE"
-source "$BREW_ENV_FILE"
-
-# Update PATH
-path=(
-  "$BREW_PATH/bin"
-  "$BREW_PATH/sbin"
-  $path
-)
-
-# Update MANPATH and INFOPATH
-[[ -z "${MANPATH-}" ]] && export MANPATH=":${MANPATH#:}"
-export INFOPATH="$BREW_PATH/share/info:${INFOPATH:-}"
+#! /usr/bin/env zsh
 
 # Load Homebrew-installed command-not-found handler, if available
-if [[ -f "$HOMEBREW_PREFIX/share/zsh/site-functions/command-not-found.zsh" ]]; then
-  source "$HOMEBREW_PREFIX/share/zsh/site-functions/command-not-found.zsh"
-fi
+[[ -f "command-not-found.zsh" ]] && source command-not-found.zsh
 
 # Set up Homebrew-specific environment variables
+export HOMEBREW_BAT=1
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_BAT_CONFIG_PATH=1
 export HOMEBREW_NO_INSECURE_REDIRECT=1
 export HOMEBREW_CASK_OPTS="--appdir=$HOME/Applications"
-export HOMEBREW_BAT=1
 export HOMEBREW_BAT_CONFIG_PATH="$XDG_CONFIG_HOME/bat.conf"
-export HOMEBREW_BAT_CONFIG_PATH=1
+export HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS=30
+export HOMEBREW_CLEANUP_PERIODIC_OUTDATED=true
+export HOMEBREW_PREFIX="$ZINIT[PLUGINS_DIR]/brew"
+export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/brew/Cellar"
 
-brew install --force tree go 
-
+[[ -z "${MANPATH-}" ]] && \
+export MANPATH=":${MANPATH#:}"
+[[ -z "${INFOPATH-}" ]] && \
+export INFOPATH="{$ZINIT[PLUGINS_DIR]}/brew/share/info:$INFOPATH"
+#[[ -z "${PATH-}" ]] && \
+export PATH="$HOMEBREW_PREFIX/bin:$PATH"
+[[ -z "${FPATH-}" ]] && \
+export FPATH="{$ZINIT[PLUGINS_DIR]}/brew/share/zsh/{site-functions,vendor-completions,completions,man/man}:$FPATH"

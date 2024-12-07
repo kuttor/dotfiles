@@ -1,0 +1,3 @@
+#! /usr/bin/env zsh
+
+source $1 && autoload -Uz $2

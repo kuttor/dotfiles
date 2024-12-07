@@ -1,7 +1,20 @@
 #! /usr/bin/env zsh
-# Generate and source Homebrew environment
-export BREW_ENV_FILE="$HOME/.cache/brew_env.zsh"
 
-$ZINIT[PLUGINS_DIR]/bin/brew shellenv > $BREW_ENV_FILE
-zcompile $BREW_ENV_FILE
-source $BREW_ENV_FILE
+export BREW_ENV_FILE="$HOME/.cache/brew_env.zsh"
+$ZINIT[PLUGINS_DIR]/brew/bin/brew shellenv > $BREW_ENV_FILE
+zcompile $BREW_ENV_FILE && source $BREW_ENV_FILE
+
+# Load Homebrew-installed command-not-found handler, if available
+[[ -f "command-not-found.zsh" ]] && source command-not-found.zsh
+
+brew install --force    \
+tree                    \
+hg                      \
+go                      \
+tmux                    \
+tmuxinator              \
+tmuxinator-completion   \
+eza                     \
+coreutils               \
+gsed                   
+

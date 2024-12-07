@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+mv -f **/**.zsh _dog

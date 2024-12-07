@@ -1,100 +1,86 @@
 #! /usr/bin/env zsh
 
-# -- prompt and zinit prep ---------------------------------------------------------------------------------------------
+# ~~ prompt and zinit prep ---------------------------------------------------------------------------------------------
 p10k_instant_prompt
 clone-if-missing zdharma-continuum/zinit.git $ZINIT[HOME_DIR]
 source-and-autoload $ZINIT[HOME_DIR]/zinit.git/zinit.zsh _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# -- panic and the annex -----------------------------------------------------------------------------------------------
-zi id-as'auto' lucid light-mode for                                                                                    \
-@zdharma-continuum/zinit-annex-{bin-gem-node,binary-symlink,default-ice,patch-dl,link-man,rust,man}
+# ~~ enhancing zinit ---------------------------------------------------------------------------------------------------
+zi id-as lucid light-mode for                                                                                          \
+   atload'use --atload zinit-annex-default-ice'                                                                        \
+   @zdharma-continuum/zinit-annex-{default-ice,bin-gem-node,binary-symlink,patch-dl,link-man,linkman,rust}
 
-# -- default-ice -------------------------------------------------------------------------------------------------------
-zi default-ice --clear --quiet lucid light-mode wait'0' id-as'auto'
+# ~~ tree inwt----------------------------------------------------------------------------------------------------------
+zi wait lman id-as depth'3' nocompile sbin'bin/brew' atclone'use --atclone brew'  atload'use --atload brew' for        \
+   @homebrew/brew
 
-# -- con-air, con-artist, con-man and now con-fig ----------------------------------------------------------------------
-zi id-as'zsh-configs' is-snippet for@$ZDOTDIR/{autoload,options,keybind,aliases,completions}.zsh
+zi lucid light-mode depth'1' for @romkatv/powerlevel10k
+# ~~ sourcing zsh configs as snippets ----------------------------------------------------------------------------------
+zi wait id-as is-snippet for @$ZDOTDIR/{autoload,options,keybinds,aliases,completions}.zsh
 
-# -- manpage renovations -----------------------------------------------------------------------------------------------
-zi for                                                                                                                 \
-pack @asciidoctor                                                                                                      \
-@mattmc3/zman
+# ~~ oh-my-zsh snippets ------------------------------------------------------------------------------------------------
+zi wait is-snippet id-as'oh-my-snippets' for                                                                           \
+   OMZL::{theme-and-appearance,key-bindings,correction,compfix,history}.zsh                                            \
+   OMZP::{colorize,extract,urltools,brew,git,cp,grc}
 
-# -rustup - fargo cargo ------------------------------------------------------------------------------------------------
-zi rustup id-as'auto'for                                                                                               \
-cargo'lsd;sd;tre;tlrc;rm-improved;choose;mcfly'                                                                        \
-lbin'bin/(lsd|sd|tre|tlrc|rip|rust*|carg*|choose|mcfly)'                                                               \
-atload'use tre.atload;use lsd.atload; use rust.atload'                                                                 \
-@zdharma-continuum/null
+# ~~ zinit tweaks ------------------------------------------------------------------------------------------------------
+zi wait id-as atclone"use --atclone zsh-smartcache" for                                                                \
+   atclone"use --atclone zsh-smartcache"                                                                               \
+   @QuarticCat/zsh-smartcache
 
-# -- omz plugins and libraries -----------------------------------------------------------------------------------------
-zi id-as'Oh-my-snippets' for                                                                                           \
-OMZL::{theme-and-appearance,key-bindings,correction,compfix,history}.zsh                                               \
-OMZP::{colorize,urltools,brew,git,cp,grc}                                                                              \
-  atload'use magic-enter.atload'                                                                                       \
-OMZP::magic-enter
+# ~~ russells cargo ---------------------------------------------------------------------------------------------------
+zi wait lman rustup binary sbin'bin/*' id-as'cargo-apps' for                                                          \
+   atload'use --atload rust'                                                                                          \
+   cargo'cargo-edit;cargo-outdated;cargo-tree;cargo-update;cargo-expand;cargo-modules;
+         cargo-audit;cargo-clone;lsd;sd;tre;tlrc;rm-improved;choose;mcfly;mchdir;skim'                                \
+   @zdharma-continuum/null
 
-# -- rub a dub dub there's gits in my hubs -----------------------------------------------------------------------------
-zi from'gh-r' id-as'auto' for                                                                                          \
-sbin'lemmeknow*->lemmeknow'                              @swanandx/lemmeknow                                           \
-sbin'gh_*/bin/gh*->gh'                                   @cli/cli                                                      \
-sbin'**/glow->glow'                                      @charmbracelet/glow                                           \
-sbin'nvim*/bin/nvim->nvim'  atclone'use neovim.atclone'  @neovim/neovim                                                \
-sbin'mcfly*->mcfly'                                      @cantino/mcfly                                                \
-sbin'*->deno'                                            @denoland/deno                                                \
-sbin'assh*->assh'                                        @moul/assh                                                    \
+# ~~ rub a dub dub there's gits in my hubs -----------------------------------------------------------------------------
+zi wait from'gh-r' lman sbin id-as for                                                                                 \
+sbin'nvim*/bin/nvim->nvim' atclone'use --atclone neovim' @neovim/neovim                                                \
 sbin'**/sh*->shfmt'                                      @mvdan/sh                                                     \
-sbin'direnv*->direnv'                                    @direnv/direnv                                                \
-sbin'**/diff-so-fancy->diff-so-fancy'                    @so-fancy/diff-so-fancy                                       \
-sbin'*/shellcheck->shellcheck'                           @koalaman/shellcheck                                          \
-sbin'*->tree-sitter->tree-sitter'  nocompile             @tree-sitter/tree-sitter                                      \
-sbin'antidot*->antidot' atload'use antidot.atload'       @doron-cohen/antidot
+sbin'**/diff-so-fancy'                                   @so-fancy/diff-so-fancy                                       \
+sbin'*/shellcheck'                                       @koalaman/shellcheck                                          \
+sbin'*/tree-sitter'  nocompile                           @tree-sitter/tree-sitter
 
-# -- ineedz a mans -----------------------------------------------------------------------------------------------------
-zi from'gh-r' binary lbin lman id-as'auto' for                                                                         \
-atclone'mv */* .'                                          @antonmedv/fx                                               \
-atclone'mv -f **/*.zsh _bat'              atpull'%atclone' @sharkdp/bat                                                \
-atclone'./fd --gen-completions zsh > _fd' atpull'%atclone' @sharkdp/fd                                                 \
-atclone'mv -f **/**.zsh _dog'             atpull'%atclone' @ogham/dog                                                  \
-atclone'mv rip*/* .'                      atpull'%atclone' @BurntSushi/ripgrep                                         \
-atclone'./just --completions zsh > _just' atpull'%atclone' @casey/just                                                 \
-atinit'use zoxide.atinit'  lman'*/**.1'                    @ajeetdsouza/zoxide                                         \
+# ~~ ineedz a mans -----------------------------------------------------------------------------------------------------
+zi wait lbin lman id-as binary from'gh-r' atpull'%atclone' for                                                         \
+   atclone'use --atclone dog'      @ogham/dog                                                                          \
+   atclone'use --atclone just'     @casey/just                                                                         \
+   atclone'use --atclone fd'       @sharkdp/fd                                                                         \
+   atclone'use --atclone fx'       @antonmedv/fx                                                                       \
+   atclone'use --atclone ripgrep'  @BurntSushi/ripgrep
+
+zi binary lbin id-as wait for                                                                                          \
+atinit'use --atinit zoxide'  lman'*/**.1' @ajeetdsouza/zoxide                                                          \
+sbin'bin/zsweep'                          @zdharma-continuum/zsh-sweep
 
 #-- pop, pop, fzf, fzf oh wut a relief itis ----------------------------------------------------------------------------
-zi for                                                                                                                 \
-pack'bgn+keys'                                           @fzf                                                          \
-atload'use fzf-tab.atload'                               @Aloxaf/fzf-tab                                               \
-atload'use fzf-tab-completion.atload'                    @lincheney/fzf-tab-completion
-
-# -- loners and boners -------------------------------------------------------------------------------------------------
-zi for                                                                                                                 \
-@zdharma-continuum/zsh-sweep                                                                                           \
-@momo-lab/zsh-replace-multiple-dots                                                                                    \
-@mafredri/zsh-async                                                                                                    \
-@z-shell/zui                                                                                                           \
-@toku-sa-n/zsh-dot-up
+zi id-as wait for                                                                                                      \
+pack'bgn+keys'                           @fzf                                                                          \
+atload'use --atload fzf-tab'             @Aloxaf/fzf-tab
+# atload'use --atload fzf-tab-completion'  @lincheney/fzf-tab-completion
 
 # -- regular packages --------------------------------------------------------------------------------------------------
-zi for                                                                                                                 \
+zi wait id-as for                                                                                                      \
 pack                                                                      @dircolors-material                          \
-pack                                                                      @ls_colors                                   \
-depth'1'                                                                  @romkatv/powerlevel10k                       \
-sbin'**/zeno -> zeno'   depth'1'                atload'use zeno.atload'   @yuki-yano/zeno.zsh                          \
-sbin'bin/brew' depth'3' atload'use brew.atload' atclone'use brew.atclone' @homebrew/brew
+pack                                                                      @ls_colors
 
 # -- prompt up the jam, prompt it up,p-p-prompt it up ------------------------------------------------------------------
-zi wait'1' for                                                                                                         \
-  atinit'use fast-syntax-highlighting.atinit'                                                                          \
-  atclone'use fast-syntax-highlighting.atclone'                                                                        \
-@zdharma-continuum/fast-syntax-highlighting                                                                            \
-  blockf                                                                                                               \
-  atload'use zsh-completions.atload'                                                                                   \
-  atpull'use zsh-completions.atpull'                                                                                   \
-@zsh-users/zsh-completions                                                                                             \
-  atinit'use zsh-autosuggestions.atinit'                                                                               \
- atload'use zsh-autosuggestions.atload'                                                                                \
-@zsh-users/zsh-autosuggestions
+zi wait id-as for                                                                                                      \
+   atinit'use --atinit fast-syntax-highlighting'                                                                       \
+   @zdharma-continuum/fast-syntax-highlighting                                                                         \
+   blockf                                                                                                              \
+   atload'use --atload zsh-completions'                                                                                \
+   atpull'use --atpull zsh-completions'                                                                                \
+   @zsh-users/zsh-completions                                                                                          \
+   atinit'use --atinit zsh-autosuggestions'                                                                            \
+   atload'use --atload zsh-autosuggestions'                                                                            \
+   @zsh-users/zsh-autosuggestions
 
-# To customize prompt, run `p10k configure` or edit ~/.dotfiles/config/zsh/.p10k.zsh.
-[[ ! -f ~/.dotfiles/config/zsh/.p10k.zsh ]] || source ~/.dotfiles/config/zsh/.p10k.zsh
+# source if files exist``
+[[ ! -f "$DOT_CONFIG_HOME/.iterm2_shell_integration.zsh" ]] || source "$DOT_CONFIG_HOME/.iterm2_shell_integration.zsh"
+[[ ! -f "$DOT_CONFIG_HOME/.p10k.zsh" ]] || source "$DOT_CONFIG_HOME/.p10k.zsh"
+
+

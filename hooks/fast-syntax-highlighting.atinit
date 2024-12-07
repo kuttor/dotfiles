@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
 
 #FAST_HIGHLIGHT[use_brackets]=1
-
 ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay

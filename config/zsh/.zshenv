@@ -24,7 +24,6 @@ ZINIT[PLUGINS_DIR]="${ZINIT[HOME_DIR]}/plugins"
 ZINIT[COMPLETIONS_DIR]="${ZINIT[HOME_DIR]}/completions"
 ZINIT[SNIPPETS_DIR]="${ZINIT[HOME_DIR]}/snippets"
 ZINIT[ZCOMPDUMP_PATH]="${XDG_CACHE_HOME}/zcompdump-$ZSH_VERSION"
-ZINIT[LIST_COMMAND]="ls"
 ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
 ZINIT[COMPINIT_OPTS]=" -C"
 
@@ -32,20 +31,17 @@ ZINIT[COMPINIT_OPTS]=" -C"
 export LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
 # private git config stored in .localrc 
-export GIT_AUTHOR_NAME="$LOCAL_GIT_AUTHOR_NAME"
-export GIT_AUTHOR_EMAIL="$LOCAL_GIT_AUTHOR_EMAIL"
-#export GIT_COMMITTER_NAME="Your Name"
-#export GIT_COMMITTER_EMAIL="your@email.com"
-# =================================================================================================
+export GIT_AUTHOR_NAME="Andrew Kuttor"
+export GIT_AUTHOR_EMAIL="andrew.kuttor@gmail.com"
+export GIT_COMMITTER_NAME="Andrew Kuttor"
+export GIT_COMMITTER_EMAIL="andrew.kuttor@gmail.com"
+
 # -- autoload functions ---------------------------------------------------------------------------
-# =================================================================================================
 setopt EXTENDED_GLOB
 fpath=("$DOT_FUNCTIONS_HOME" "${fpath}")
 autoload -Uz $DOT_FUNCTIONS_HOME/*(.:t)
 
-# =================================================================================================
 # -- XDG based variables --------------------------------------------------------------------------
-# =================================================================================================
 set_xdg "config" "NPM_CONFIG_USERCONFIG"    "npm/npmrc"
 set_xdg "config" "RIPGREP_CONFIG_PATH"      "ripgrep.conf"
 set_xdg "config" "PIP_CONFIG_FILE"          "pip.conf"
@@ -74,8 +70,8 @@ set_xdg "data"   "GEM_HOME"                 "gem"
 set_xdg "data"   "TERMINFO"                 "terminfo"
 set_xdg "data"   "TMUX_PLUGIN_MANAGER_PATH" "tmux/plugins"
 set_xdg "cache"  "NODE_REPL_HISTORY"        "node_repl_history"
-set_xdg "cache"  "HISTFILE"                 "zsh.history"
-set_xdg "cache"  "LESSHISTFILE"             "less.history"
+set_xdg "cache"  "HISTFILE"                 "history.zsh"
+set_xdg "cache"  "LESSHISTFILE"             "history.less"
 set_xdg "cache"  "ZSH_CACHE_DIR"            "zsh"
 
 # history
@@ -84,7 +80,6 @@ export SAVEHIST=$HISTSIZE
 
 # Zsh
 export HELPDIR="/usr/share/zsh"
-# mkdir -p "$HELPDIR"
 
 # Terminal and environment
 export TIMEFMT="%u user %s system %p cpu %*es total"
@@ -99,30 +94,28 @@ export VISUAL=$EDITOR
 export BAT_PAGER=less
 export LDFLAGS="-L/usr/local/opt/ruby/lib"
 export CPPFLAGS="-I/usr/local/opt/ruby/include"
+check nvim && alias vim=nvim
+
+# antidot
+# [ -f "$XDG_DATA_HOME/antidot/env.sh" ] && . "$XDG_DATA_HOME/antidot/env.sh"
+# [ -f "$XDG_DATA_HOME/antidot/alias.sh" ] && . "$XDG_DATA_HOME/antidot/alias.sh"
 
 # remove duplicate paths from the PATH, MANPATH, INFOPATH, and FPATH
-typeset -Ugx FPATH fpath path PATH MANPATH manpath INFOPATH infopath
+typeset -Ugx PATH FPATH MANPATH INFOPATH path fpath manpath infopath
 
 path=(
   $ZPFX/bin
+  $HOMEBREW_PREFIX/bin
   /{sbin,bin}
   /usr/{sbin,bin}
-  $HOME/.local/bin
   /usr/local/bin
-  $HOME/bin
-  $HOMEBREW_PREFIX/{sbin,bin}
-  $ZINIT[PLUGINS_DIR]/brew/bin
   $path
 )
 
 fpath=(
    $DOT_FUNCTIONS_HOME
    /usr/share/zsh/5.9/functions
-   ${ZINIT[PLUGINS_DIR]}/brew/share/zsh/site-functions
-   $HOMEBREW_PREFIX/share/zsh/site-functions
-   $HOMEBREW_PREFIX/share/zsh/vendor-completions
-   $HOMEBREW_PREFIX/share/zsh/completions
-   $HOMEBREW_PREFIX/share/zsh/man/man1
+   $ZINIT[PLUGINS_DIR]/brew/share/zsh/site-functions
    $fpath
 )
 
@@ -133,9 +126,9 @@ manpath=(
 )
 
 infopath=(
-   $HOMEBREW_PREFIX/share/info
+   $HOMEBREW_PREFIX/share/info(/N)
    $infopath
 )
 
 # Source antidot files
-source_if_exists "$ANTIDOT_DIR/{env,alias}.sh"
+# source_if_exists "$ANTIDOT_DIR/{env,alias}.sh"

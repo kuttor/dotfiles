@@ -9,7 +9,7 @@ bullet="📁"
 for var in "${path_vars[@]}"; do
   echo -e "${header_color}=== $var ===${reset_color}"
 
-  paths=("${(s/:/)${(P)var}}")
+  IFS=':' read -rA paths <<< "${(P)var}"
   for path in "${paths[@]}"; do
     if [[ -n "$path" ]]; then
         echo -e "${path_color}${bullet} $path${reset_color}"

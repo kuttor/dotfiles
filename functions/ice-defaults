@@ -1,0 +1,54 @@
+# shellcheck disable=SC1090
+#! /usr/bin/env zsh
+
+function ice-defaults() {
+  # Base command setup
+  local base_command="zinit default-ice --quiet --clear"
+  local options="lucid light-mode"
+  local extra_options=""
+  local wait_option=""
+  local turbo_used=0  # Flag to track usage of turbo
+  local github_option=""
+  
+  # Help message
+  local help_message="Usage: ice-defaults [--help|-h] [turbo|turbo(n)] [--no-commons] [github|gh] [extra options...]"
+  
+  # Parse arguments
+  for arg in "$@"; do
+      case "$arg" in
+          --help|-h)
+              echo "$help_message"
+              return
+              ;;
+          turbo*)
+              if [[ $turbo_used -eq 1 ]]; then
+                  echo "Error: 'turbo' can only be used once and not with 'turbo(n)'."
+                  return 1
+              fi
+              turbo_used=1
+              if [[ "$arg" =~ ^turbo([0-9]+)$ ]]; then
+                  wait_option="wait'$BASH_REMATCH[1]'"
+              else
+                  wait_option="wait'0'"
+              fi
+              ;;
+          --no-commons)
+              options=""
+              ;;
+          github|gh)
+              github_option="from\"gh-r\""
+              ;;
+          *)
+              extra_options+="$arg "
+              ;;
+      esac
+  done
+  
+  # Construct the final command
+  local final_command="$base_command $options $wait_option $extra_options $github_option"
+  final_command=$(echo $final_command | xargs)  # Clean up extra spaces
+  $final_command
+ 
+  #example usage:
+  #default-ices turbo2 --no-commons github extra_arg1 extra_arg2
+}

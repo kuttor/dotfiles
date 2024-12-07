@@ -1,0 +1,22 @@
+#! /usr/bin/env zsh
+
+# 
+# [ ! -d "${ZINIT_HOME}/.git" ] && git clone https://github.com/zdharma-continuum/zinit.git "${ZINIT_HOME}"
+# [ ! -d "${ZINIT_HOME}" ] && mkdir -p "$(dirname "${ZINIT_HOME}")"
+# ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
+# installs zinit if missing and sources it
+
+# Define the function
+local REPO="${1:t}"
+
+# Construct the full path to the target directory
+local FOLDER="$2/$REPO"
+
+# Check and create the parent directory if it does not exist
+[[ ! -d "$2" ]] && mkdir -p "$2"
+
+# Check if the .git directory exists in the target directory
+[[ ! -d "$FOLDER/.git" ]] &&\git clone "https://github.com/$1" $FOLDER
+ 
+# Usage example:
+# clone_if_missing username/repo /path/to/parent/folder
