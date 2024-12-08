@@ -51,7 +51,8 @@
 	whitespace = red reverse
 
 [core]
-  pager = "diff-so-fancy | less --tabs=4 -RFX"
+  #pager = "diff-so-fancy | less --tabs=4 -RFX"
+  pager = delta
   editor = nvim
   whitespace = trailing-space,space-before-tab
   excludesfile = ~/.gitignore
@@ -63,8 +64,8 @@
   helper = cache
 
 [delta]
-  navigate = true # use n and N to move between diff sections
-  theme = One Half Dark
+  navigate = true  # use n and N to move between diff sections
+  dark = true      # or light = true, or omit for auto-detection
 
 [diff]
   colorMoved = default
@@ -75,8 +76,12 @@
 [help]
   autocorrect = 1
 
+[interactive]
+    diffFilter = delta --color-only
+
 [merge]
   tool = meld
+  conflictstyle = zdiff3
 
 [mergetool "Sublime Merge"]
   cmd = meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
@@ -105,5 +110,5 @@
   browser = safari
 
 
-[interactive]
-	diffFilter = diff-so-fancy --patch
+
+

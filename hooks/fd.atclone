@@ -1,6 +1,9 @@
 #!/usr/bin/env zsh
 
+# autocomplete
 cp -vf fd-*/autocomplete/_fd _fd
-cp -vf fd-*/fd.1 ${ZINIT[MAN_DIR]}/man1
+
+# manpage
+cp -fp fd-*/fd.1 ${ZINIT[MAN_DIR]}/man1
 
 zinit creinstall -q fd

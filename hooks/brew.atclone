@@ -1,6 +1,9 @@
 #! /usr/bin/env zsh
+export HOMEBREW_PREFIX="$ZINIT[PLUGINS_DIR]/brew"
+export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/brew/Cellar"
 
 export BREW_ENV_FILE="$HOME/.cache/brew_env.zsh"
+
 $ZINIT[PLUGINS_DIR]/brew/bin/brew shellenv > $BREW_ENV_FILE
 zcompile $BREW_ENV_FILE && source $BREW_ENV_FILE
 
@@ -11,10 +14,18 @@ brew install --force    \
 tree                    \
 hg                      \
 go                      \
+xz                      \
 tmux                    \
 tmuxinator              \
 tmuxinator-completion   \
-eza                     \
 coreutils               \
-gsed                   
+eza                     \
+gawk                    \
+gnu-sed                 \
+grep                    \
+gsed                    \
+wget                    \
+curl                    \
+zoxide
+
 

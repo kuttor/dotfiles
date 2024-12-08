@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+smartcache eval rbenv init -
+smartcache comp rustup completions zsh

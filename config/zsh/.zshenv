@@ -97,38 +97,33 @@ export CPPFLAGS="-I/usr/local/opt/ruby/include"
 check nvim && alias vim=nvim
 
 # antidot
-# [ -f "$XDG_DATA_HOME/antidot/env.sh" ] && . "$XDG_DATA_HOME/antidot/env.sh"
-# [ -f "$XDG_DATA_HOME/antidot/alias.sh" ] && . "$XDG_DATA_HOME/antidot/alias.sh"
+[ -f "$XDG_DATA_HOME/antidot/env.sh" ] && . "$XDG_DATA_HOME/antidot/env.sh"
+[ -f "$XDG_DATA_HOME/antidot/alias.sh" ] && . "$XDG_DATA_HOME/antidot/alias.sh"
 
 # remove duplicate paths from the PATH, MANPATH, INFOPATH, and FPATH
 typeset -Ugx PATH FPATH MANPATH INFOPATH path fpath manpath infopath
 
 path=(
-  $ZPFX/bin
-  $HOMEBREW_PREFIX/bin
   /{sbin,bin}
-  /usr/{sbin,bin}
   /usr/local/bin
+  /usr/{sbin,bin}
   $path
 )
 
 fpath=(
    $DOT_FUNCTIONS_HOME
-   /usr/share/zsh/5.9/functions
-   $ZINIT[PLUGINS_DIR]/brew/share/zsh/site-functions
-   $fpath
+  /usr/share/zsh/5.9/functions
+  $fpath
 )
 
 manpath=(
-  /usr/share/man(/N)
-  ${ZINIT[PLUGINS_DIR]}/brew/manpages(/N)
+  /usr/share/man
   $manpath
 )
 
 infopath=(
-   $HOMEBREW_PREFIX/share/info(/N)
    $infopath
 )
 
 # Source antidot files
-# source_if_exists "$ANTIDOT_DIR/{env,alias}.sh"
+source_if_exists "$ANTIDOT_DIR/{env,alias}.sh"

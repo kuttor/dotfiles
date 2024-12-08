@@ -1,3 +1,9 @@
 #!/usr/bin/env zsh
 
-mv */* .
+# autocomplete
+cp -vf fx-*/autocomplete/_fx _fd
+
+# manpage
+cp -fp fx-*/fx.1 ${ZINIT[MAN_DIR]}/man1
+
+zinit creinstall -q fx

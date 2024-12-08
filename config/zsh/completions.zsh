@@ -3,13 +3,13 @@
 # start the completion system
 initialize_completions
 
-# -- load completions ---------------------------------------------------------------------------------------------------
-zi wait'1' id-as'auto' for                                                                                             \
+# -- load completions ------------------------------------------------------------------------------------------------
+zinit wait'1' id-as'auto' for                                                                                          \
 atload'use zsh-completions.atload'                                                                                     \
 atpull'use zsh-completions.atpull'                                                                                     \
 @sainnhe/zsh-completions
 
-zi wait'1' id-as'auto' as'completion' for 'https://github.com/chmln/sd/blob/master/gen/completions/_sd'
+zinit wait'1' id-as'auto' as'completion' for 'https://github.com/chmln/sd/blob/master/gen/completions/_sd'
 
 # -- configure completion system ---------------------------------------------------------------------------------------
 zicompdef                                                                                                              \

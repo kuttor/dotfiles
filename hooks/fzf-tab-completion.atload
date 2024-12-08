@@ -3,7 +3,7 @@
 FZF_COMPLETION_AUTO_COMMON_PREFIX=true
 FZF_COMPLETION_AUTO_COMMON_PREFIX_PART=true
 
-bindkey '^I' fzf_completion
+#bindkey '^I' fzf_completion
 
 # press ctrl-r to repeat completion *without* accepting i.e. reload the completion
 # press right to accept the completion and retrigger it

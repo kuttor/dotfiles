@@ -16,11 +16,8 @@ export HOMEBREW_CLEANUP_PERIODIC_OUTDATED=true
 export HOMEBREW_PREFIX="$ZINIT[PLUGINS_DIR]/brew"
 export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/brew/Cellar"
 
-[[ -z "${MANPATH-}" ]] && \
-export MANPATH=":${MANPATH#:}"
-[[ -z "${INFOPATH-}" ]] && \
-export INFOPATH="{$ZINIT[PLUGINS_DIR]}/brew/share/info:$INFOPATH"
-#[[ -z "${PATH-}" ]] && \
-export PATH="$HOMEBREW_PREFIX/bin:$PATH"
-[[ -z "${FPATH-}" ]] && \
-export FPATH="{$ZINIT[PLUGINS_DIR]}/brew/share/zsh/{site-functions,vendor-completions,completions,man/man}:$FPATH"
+export MANPATH=":$HOMEBREW_PREFIX/man/man{1,2,3,4}:$MANPATH"
+export INFOPATH="$HOMEBREW_PREFIX/share/info:$INFOPATH"
+export PATH="$HOMEBREW_PREFIX/bin:$PATH"    
+export FPATH="$HOMEBREW_PREFIX/share/zsh/{site-functions,vendor-completions,completions,man/man}:$FPATH"
+

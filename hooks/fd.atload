@@ -1,6 +1,6 @@
 #! /usr/bin/env zsh
 
-export FD_DEFAULTS="                                                                                      \
+export FD_DEFAULTS="                                                                               \
 --one-file-system                                                                                  \
 --follow                                                                                           \
 --color always                                                                                     \
@@ -9,12 +9,12 @@ export FD_DEFAULTS="                                                            
 --exclude node_modules                                                                             \
 " && alias fd="fd $FD_DEFAULTS"
 
-export FZF_FD_OPTS="         \
---color='always'      \
---hidden 	      \
---follow 	      \
---exclude='.git'      \`
---exclude='.vscode'   \
+export FZF_FD_OPTS="                                                                               \
+--color='always'                                                                                   \
+--hidden                                                                                           \
+--follow                                                                                           \
+--exclude='.git'                                                                                   \
+--exclude='.vscode'                                                                                \
 "
 
 #fd --gen-completions zsh > _fd

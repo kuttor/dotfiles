@@ -1,6 +1,4 @@
 #!/usr/bin/env zsh
-# vim:set filetype=zsh syntax=zsh
-# vim:set ft=zsh ts=2 sw=2 sts=0
 
 # Color for different groups and their descriptions.
 FZF_TAB_GROUP_COLORS=(
@@ -10,20 +8,28 @@ FZF_TAB_GROUP_COLORS=(
 )
 zstyle ':fzf-tab:*' group-colors $FZF_TAB_GROUP_COLORS
 
+# man preview
+zstyle ':fzf-tab:complete:(\\|)run-help:*' fzf-preview 'run-help $word'
+zstyle ':fzf-tab:complete:(\\|*/|)man:*'   fzf-preview 'man $word'
+
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
+
 # set descriptions format to enable group support
 # NOTE: don't use escape sequences here, fzf-tab will ignore them
 zstyle ':completion:*:descriptions' format '[%d]'
+
 # set list-colors to enable filename colorizing
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
 # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
 zstyle ':completion:*' menu no
+
 # preview directory's content with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd -1 --color=always $realpath'
-# switch group using `<` and `>`
-zstyle ':fzf-tab:*' switch-group '<' '>'
 
+# switch group using < and >
+zstyle ':fzf-tab:*' switch-group '<' '>'
 
 # Main completion configuration for fzf-tab
 zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
@@ -39,30 +45,31 @@ zstyle ':fzf-tab:*' popup-min-size 50 8
 zstyle ':fzf-tab:complete:diff:*' popup-min-size 80 12
 
 # file preview - keep adding commands we might need preview for
-function PREVIEW_SNIPPET() {
+
+preview_snippet() {
   local RPATH=$(realpath $1)
   [[ -d $RPATH ]] && lsd -1 --color="always" $RPATH;
   [[ -f $RPATH ]] && bat -pp --color="always" --line-range :30 $RPATH || exit;
 }
 
 # Apply preview for commands
-zstyle ':fzf-tab:complete:bat:*'  fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:c:*'    fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:cat:*'  fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:cd:*'   fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:cp:*'   fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:exa:*'  fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:ls:*'   fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:lsd:*'  fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:mv:*'   fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:nvim:*' fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:rg:*'   fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:rm:*'   fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:v:*'    fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:vi:*'   fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:vim:*'  fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:z:*'    fzf-preview $(PREVIEW_SNIPPET)
-zstyle ':fzf-tab:complete:zd:*'   fzf-preview $(PREVIEW_SNIPPET)
+zstyle ':fzf-tab:complete:bat:*'  fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:c:*'    fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:cat:*'  fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:cd:*'   fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:cp:*'   fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:exa:*'  fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:ls:*'   fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:lsd:*'  fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:mv:*'   fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:nvim:*' fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:rg:*'   fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:rm:*'   fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:v:*'    fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:vi:*'   fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:vim:*'  fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:z:*'    fzf-preview $(preview_snippet)
+zstyle ':fzf-tab:complete:zd:*'   fzf-preview $(preview_snippet)
 
 
 # use input as query string when completing zlua
@@ -75,5 +82,5 @@ zstyle ':fzf-tab:*' accept-line enter
 # Prefix color
 zstyle ':fzf-tab:*' prefix '·'
 
-# Enable fzf completion
-# enable-fzf-tab
+# enable fzf completion
+enable-fzf-tab

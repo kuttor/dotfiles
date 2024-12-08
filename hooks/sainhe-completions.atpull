@@ -1,0 +1,3 @@
+#! /usr/bin/env zsh
+
+ zinit cclear && zinit creinstall sainnhe/zsh-completions
