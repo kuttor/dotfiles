@@ -2005,6 +2005,8 @@ class Formula
   # If called with no parameters, does this with all compatible
   # universal binaries in a {Formula}'s {Keg}.
   #
+  # Raises an error if no universal binaries are found to deuniversalize.
+  #
   # @api public
   sig { params(targets: T.nilable(T.any(Pathname, String))).void }
   def deuniversalize_machos(*targets)
@@ -2013,6 +2015,8 @@ class Formula
         file.arch == :universal && file.archs.include?(Hardware::CPU.arch)
       end
     end
+
+    raise "No universal binaries found to deuniversalize" if targets.blank?
 
     targets&.each do |target|
       extract_macho_slice_from(Pathname(target), Hardware::CPU.arch)
