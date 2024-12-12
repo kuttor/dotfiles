@@ -382,7 +382,7 @@ module Homebrew
       def info_cask(cask)
         require "cask/info"
 
-        Cask::Info.info(cask)
+        Cask::Info.info(cask, args:)
       end
     end
   end
