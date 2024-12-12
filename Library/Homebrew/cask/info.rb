@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "json"
+require "cmd/info"
 
 module Cask
   class Info
