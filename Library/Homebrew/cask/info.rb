@@ -31,12 +31,12 @@ module Cask
       output
     end
 
-    sig { params(cask: Cask).void }
-    def self.info(cask)
+    sig { params(cask: Cask, args: Homebrew::Cmd::Info::Args).void }
+    def self.info(cask, args:)
       puts get_info(cask)
 
       require "utils/analytics"
-      ::Utils::Analytics.cask_output(cask, args: Homebrew::CLI::Args.new)
+      ::Utils::Analytics.cask_output(cask, args:)
     end
 
     sig { params(cask: Cask).returns(String) }
