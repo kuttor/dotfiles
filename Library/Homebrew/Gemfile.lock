@@ -23,7 +23,7 @@ GEM
     kramdown (2.5.1)
       rexml (>= 3.3.9)
     language_server-protocol (3.17.0.3)
-    logger (1.6.2)
+    logger (1.6.3)
     method_source (1.1.0)
     minitest (5.25.4)
     netrc (0.11.0)
