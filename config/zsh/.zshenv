@@ -17,15 +17,18 @@ export ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
 
 # setup zinit env-vars
 export ZINIT
-typeset -A ZINIT
-ZINIT[HOME_DIR]="${XDG_DATA_HOME}/zinit"
-ZINIT[BIN_DIR]="${ZINIT[HOME_DIR]}/bin"
-ZINIT[PLUGINS_DIR]="${ZINIT[HOME_DIR]}/plugins"
-ZINIT[COMPLETIONS_DIR]="${ZINIT[HOME_DIR]}/completions"
-ZINIT[SNIPPETS_DIR]="${ZINIT[HOME_DIR]}/snippets"
-ZINIT[ZCOMPDUMP_PATH]="${XDG_CACHE_HOME}/zcompdump-$ZSH_VERSION"
-ZINIT[OPTIMIZE_OUT_DISK_ACCESSES]="1"
-ZINIT[COMPINIT_OPTS]=" -C"
+typeset -A ZINIT=(
+  HOME_DIR                   $XDG_DATA_HOME/zinit
+  BIN_DIR                    $XDG_DATA_HOME/zinit/bin
+  PLUGINS_DIR                $XDG_DATA_HOME/zinit/plugins
+  MODULES_DIR                $XDG_DATA_HOME/zinit/modules
+  SNIPPETS_DIR               $XDG_DATA_HOME/zinit/snippets
+  COMPLETIONS_DIR            $XDG_DATA_HOME/zinit/completions
+  ZCOMPDUMP_PATH             $XDG_CACHE_HOME/zcompdump-${HOST/.*/}-$ZSH_VERSION
+  OPTIMIZE_OUT_DISK_ACCESSES "1"
+  COMPINIT_OPTS              " -C"
+  LIST_COMMAND               "exa --color=always --tree --icons -L3"
+)
 
 # core environment
 export LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
@@ -43,7 +46,6 @@ autoload -Uz $DOT_FUNCTIONS_HOME/*(.:t)
 
 # -- XDG based variables --------------------------------------------------------------------------
 set_xdg "config" "NPM_CONFIG_USERCONFIG"    "npm/npmrc"
-set_xdg "config" "RIPGREP_CONFIG_PATH"      "ripgrep.conf"
 set_xdg "config" "PIP_CONFIG_FILE"          "pip.conf"
 set_xdg "config" "BAT_CONFIG_PATH"          "bat.conf"
 set_xdg "config" "EXA_CONFIG_PATH"          "exa.conf"
@@ -87,11 +89,9 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=yes
 export TERM=xterm-256color ITERM_24BIT=1 KEYTIMEOUT=1 REPORTTIME=2
 
 # Pagers, editors, and tools
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PAGER=less
 export EDITOR=nvim
 export VISUAL=$EDITOR
-export BAT_PAGER=less
 export LDFLAGS="-L/usr/local/opt/ruby/lib"
 export CPPFLAGS="-I/usr/local/opt/ruby/include"
 check nvim && alias vim=nvim

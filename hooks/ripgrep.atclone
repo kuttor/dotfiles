@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-
-# autocomplete
-cp -f ripgrep-*/complete/_rg _rg
-
-# manpage
-cp -f ripgrep-*/doc/rg.1 $ZINIT[MAN_DIR]/man1/rg.1

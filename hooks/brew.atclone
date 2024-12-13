@@ -1,23 +1,23 @@
 #! /usr/bin/env zsh
+
+
 export HOMEBREW_PREFIX="$ZINIT[PLUGINS_DIR]/brew"
 export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/brew/Cellar"
+export HOMEBREW_BUNDLE_FILE="$DOT_CONFIG_HOME/Brewfile"
 
-export BREW_ENV_FILE="$HOME/.cache/brew_env.zsh"
+$HOMEBREW_PREFIX/bin/brew shellenv > "$XDG_CONFIG_HOME/brew.conf"
+zcompile "$XDG_CONFIG_HOME/brew.conf" && source "$XDG_CONFIG_HOME/brew.conf"
 
-$ZINIT[PLUGINS_DIR]/brew/bin/brew shellenv > $BREW_ENV_FILE
-zcompile $BREW_ENV_FILE && source $BREW_ENV_FILE
-
-# Load Homebrew-installed command-not-found handler, if available
+# load Homebrew-installed command-not-found handler, if available
 [[ -f "command-not-found.zsh" ]] && source command-not-found.zsh
 
-brew install --force    \
+# install brew maintained packages
+brew bundle install --force-bottle \
 tree                    \
 hg                      \
 go                      \
 xz                      \
 tmux                    \
-tmuxinator              \
-tmuxinator-completion   \
 coreutils               \
 eza                     \
 gawk                    \
@@ -25,7 +25,6 @@ gnu-sed                 \
 grep                    \
 gsed                    \
 wget                    \
-curl                    \
-zoxide
+curl
 
-
+brew cleanup && brew doctor

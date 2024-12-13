@@ -3,20 +3,37 @@
 # you're so pretty
 --pretty
 
-# Search hidden files and directories.
+# search hidden files and directories.
 --hidden
 
-# Follow symbolic links.
+# follow symbolic links.
 --follow
 
-# Because who cares about case!?
+# because who cares about case!?
 --smart-case
 
 # Sort by file path.
 --sort=path
 
-# ...but not inside .git directories
---glob=!.git/*
+# report match count
+--count
+
+# permit match to cross multiple lines
+--multiline
+
+# don't let ripgrep vomit really long lines
+--max-columns=150
+--max-columns-preview
+
+# add my 'web' type.
+--type-add
+web:*.{html,css,js}*
+
+# Search compressed files (gzip, bzip2, lzma, xz, lz4, brotli, zstd). This is disabled by default.
+--search-zip
+
+# show line numbers
+--line-number
 
 # Mimic ag's color output:
 --colors=line:fg:yellow
@@ -26,10 +43,6 @@
 --colors=match:fg:black
 --colors=match:bg:yellow
 --colors=match:style:nobold
-
-# Don't let ripgrep vomit really long lines to my terminal, and show a preview.
---max-columns=250
---max-columns-preview
 
 # Files/folders to ignore
 --glob=!**/*.js.map

@@ -1,0 +1,3 @@
+#! /usr/bin/env zsh
+
+export COMPLETION_WAITING_DOTS=1

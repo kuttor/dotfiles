@@ -83,4 +83,4 @@ zstyle ':fzf-tab:*' accept-line enter
 zstyle ':fzf-tab:*' prefix '·'
 
 # enable fzf completion
-enable-fzf-tab
+# enable-fzf-tab

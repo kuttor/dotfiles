@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+# data dir for fzf
+export FZF_BASE=$ZINIT[PLUGINS_DIR]/brew/opt/fzf/0.56.3
 
 # Default options for fzf that u
 export FZF_DEFAULT_OPTS="
@@ -9,15 +11,13 @@ export FZF_DEFAULT_OPTS="
 --border
 --preview 'file {}' --preview-window up,1,border-horizontal \
 --bind 'ctrl-/:change-preview-window(50%|hidden|)' \
---color 'fg:#bbccdd,fg+:#ddeeff,bg:#334455,preview-bg:#223344,border:#778899'
-"
+--color 'fg:#bbccdd,fg+:#ddeeff,bg:#334455,preview-bg:#223344,border:#778899'"
 
 # Preview file content using bat (https://github.com/sharkdp/bat)
-export FZF_CTRL_T_OPTS="
-  --walker-skip .git,node_modules,target
-  --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'
-"
+# export FZF_CTRL_T_OPTS="
+#   --walker-skip .git,node_modules,target
+#   --preview 'bat -n --color=always {}'
+#   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 # Print tree structure in the preview window
 export FZF_ALT_C_OPTS="

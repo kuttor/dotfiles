@@ -1,0 +1,46 @@
+#! /usr/bin/env zsh
+
+link_config() {
+    # Check if argument is provided
+    if [[ -z "$1" ]]; then
+        echo "Error: Please provide a config name"
+        echo "Usage: link_config <config_name>"
+        return 1
+    fi
+
+    local config_name="${1:l}"  # Convert to lowercase
+    local source_dir="$DOT_CONFIG_HOME/$config_name"
+    local target_dir="$HOME/.config/$config_name"
+
+    # Check if source directory exists
+    if [[ ! -d "$source_dir" ]]; then
+        echo "Error: Source directory $source_dir does not exist"
+        return 1
+    fi
+
+    # Create target directory if it doesn't exist
+    if [[ ! -d "$target_dir" ]]; then
+        mkdir -p "$target_dir"
+        echo "Created directory: $target_dir"
+    fi
+
+    # Find all files in source directory and create symlinks
+    local files=("$source_dir"/*(.))
+    if (( ${#files} > 0 )); then
+        for src in "$files[@]"; do
+            local filename="${src:t}"  # Get basename of file
+            local target="$target_dir/$filename"
+            
+            # Create symlink (forced)
+            ln -sf "$src" "$target"
+            echo "Linked: $src → $target"
+        done
+    else
+        echo "Warning: No configuration files found in $source_dir"
+        return 1
+    fi
+
+    echo "Successfully linked all configs for $config_name"
+}
+
+link_config $1

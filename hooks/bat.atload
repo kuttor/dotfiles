@@ -1,9 +1,16 @@
 #! /usr/bin/env zsh
 
-export BAT_THEME=Catppuccin
+export BAT_THEME=OneHalfDark
 export BAT_STYLE=header,numbers,grid
-export BAT_PAGER='less -R -F -+X --mouse'
-export MANPAGER='sh -c \"col -bx | bat --color=always --style=plain --language=man\"'
+export BAT_PAGER="less -R -F -+X --mouse"
+export MANPAGER="sh -c 'col -bx | bat --color=always --style=plain --language=man'"
+
 alias cat='bat --paging=never --color=auto --style=numbers,changes'
 alias cats='bat --paging=always --color=always --style=numbers,changes'
 alias catcat='\cat --paging=never --color=auto --style=plain'
+
+# colored help 
+alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
+alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+
+# man 2 select

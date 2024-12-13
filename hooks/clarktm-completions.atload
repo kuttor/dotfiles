@@ -1,0 +1,5 @@
+#!v/usr/bin/env zsh
+
+fpath=(~/.zsh/osx-zsh-completions/ $fpath)
+autoload -Uz compinit
+compinit -d ~/.zcompdump

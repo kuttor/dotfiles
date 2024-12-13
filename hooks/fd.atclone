@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 
+# rename fd-* to fd
+mv -vf fd-* fd
+
 # autocomplete
 cp -vf fd-*/autocomplete/_fd _fd
 

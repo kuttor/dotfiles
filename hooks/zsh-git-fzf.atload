@@ -1,0 +1,7 @@
+#! /usr/bin/env zsh
+
+export ZSH_GIT_FZF_REMOVE_STALLED_BRANCHES=true
+
+bindkey -s ^o "git-fzf checkout\n"
+bindkey -s ^l "git-fzf log\n"
+bindkey -s ^d "git-fzf diff\n"

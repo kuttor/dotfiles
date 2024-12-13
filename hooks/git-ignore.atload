@@ -1,0 +1,5 @@
+#! /usr/bin/env  zsh
+
+alias gi="git-ignore"
+
+export GI_TEMPLATE=$GIT_CONFIG

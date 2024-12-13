@@ -1,9 +1,8 @@
 #! /usr/bin/env zsh
 
-export FZF_COMPLETION_AUTO_COMMON_PREFIX=true
-export FZF_COMPLETION_AUTO_COMMON_PREFIX_PART=true
+FZF_COMPLETION_AUTO_COMMON_PREFIX=true
+FZF_COMPLETION_AUTO_COMMON_PREFIX_PART=true
 
-source $ZINIT[PLUGINS_DIR]/fzf-zsh-completions/fzf-zsh-completions.plugin.zsh 
 #bindkey '^I' fzf_completion
 
 # press ctrl-r to repeat completion *without* accepting i.e. reload the completion
@@ -15,7 +14,6 @@ keys=(
     alt-enter:accept:'zle accept-line'
 )
 
-zstyle ':completion:*' fzf-search-display true
 zstyle ':completion:*' fzf-completion-keybindings "${keys[@]}"
 # also accept and retrigger completion when pressing / when completing cd
 zstyle ':completion::*:cd:*' fzf-completion-keybindings "${keys[@]}" /:accept:'repeat-fzf-completion'

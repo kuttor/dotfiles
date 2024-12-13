@@ -1,113 +1,166 @@
 #! /usr/bin/env gitconfig
 
 [alias]
-  aliases       = "!git config --get-regexp alias | cut -c 7-"
-  branches      = "branch --all"
-  co            = "checkout"
-  doit          = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
-  info          = "status --short --branch"
-  remotes       = "remote -v"
-  state         = "!git status --show-stash --verbose --verbose; git stash list --color=always --pretty='%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%C'"
-  status-select = "!git-status-select"1
-  tags          = "tag --list"
-  tracked       = "!git ls-tree -r master --name-only"
-  uncommit      = "reset --soft HEAD~1"
-  users         = "shortlog --summary -"
-  who           = "shortlog --summary --numbered --email" 
-  info          = "status --short --branch"
-  name          = "basename $(git config --get remote.origin.url)"
-
-[advice]
-  pushNonFastForward = false
-  statusHints = false
+  aliases                      = "!git config --get-regexp alias | cut -c 7-"
+  branches                     = "branch --all"
+  co                           = "checkout"
+  doit                         = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
+  info                         = "status --short --branch"
+  info                         = "status --short --branch"
+  name                         = "basename $(git config --get remote.origin.url)"
+  remotes                      = "remote -v"
+  state                        = "!git status --show-stash --verbose --verbose; git stash list --color=always --pretty='%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%C'"
+  status-select                = "!git-status-select"1
+  tags                         = "tag --list"
+  tracked                      = "!git ls-tree -r master --name-only"
+  uncommit                     = "reset --soft HEAD~1"
+  url                          = "git config --get remote.origin.url"
+  users                        = "shortlog --summary -"
+  who                          = "shortlog --summary --numbered --email"
+   
+[advice]   
+  pushNonFastForward           = false
+  statusHints                  = false
 
 [apply]
-  whitespace = fix
+  whitespace                   = "fix"
 
 [branch]
-  autosetupmerge = true
+  autosetupmerge               = true
 
 [color]
-  branch = auto
-  diff = auto
-  interactive = auto
-  pager = true
-  status = auto
-	ui = true
+  advice                       = "always"
+  branch                       = "always"
+  #pager = "diff-so-fancy | less --tabs=4 -RFX"
+  pager                        = "delta --color-only"
+  editor                       = "nvim"
+  whitespace                   = "trailing-space,space-before-tab"
+  excludesfile                 = "$DOT_CONFIG_HOME/git/gitignore"
+  attributesfile               = "$DOT_CONFIG_HOME/git/gitattributes"
+  preloadIndex                 = true
+  precomposeunicode            = true
+  ignorecase                   = true
+  trustctime                   = false
+  untrackedCache               = true
 
-[color "diff-highlight"]
-	oldNormal    = red bold
-	oldHighlight = red bold 52
-	newNormal    = green bold
-	newHighlight = green bold 22
-
-[color "diff"]
-	old        = red bold
-	new        = green bold
-	func       = 146 bold
-	meta 	   = 11
-	frag 	   = magenta bold
-	commit     = yellow bold
-	whitespace = red reverse
+[columns]
+  ui                           = "always"
+  status                       = "always"
 
 [core]
-  #pager = "diff-so-fancy | less --tabs=4 -RFX"
-  pager = delta
-  editor = nvim
-  whitespace = trailing-space,space-before-tab
-  excludesfile = ~/.gitignore
-  attributesfile = ~/.gitattributes
-  trustctime = false
-  untrackedCache = true
+  fsmonitor                    = true
+  untrackedCache               = true
+  commitGraph                  = true
+  pager                        = "delta --color-only"
 
 [credential]
-  helper = cache
+  helper                       = "cache"
 
 [delta]
-  navigate = true  # use n and N to move between diff sections
-  dark = true      # or light = true, or omit for auto-detection
+  navigate                     = true
+  dark                         = true
+  hyperlinks                   = true
+  line-numbers                 = true
+  features                     = "side-by-side unobtrusive-line-numbers decorations"
+  whitespace-error-style       = "22 reverse"
+  true-color                   = "always"
+  syntax-theme                 = "Dracula"
+  plus-style                   = "syntax '#003800'"
+  minus-style                  = "syntax '#3f0001'"
+
+[delta "unobtrusive-line-numbers"]
+  line-numbers                 = true
+  line-numbers-minus-style     = "#444444"
+  line-numbers-zero-style      = "#444444"
+  line-numbers-plus-style      = "#444444"
+  line-numbers-left-format     = "{nm:>4}┊"
+  line-numbers-right-format    = "{np:>4}│"
+  line-numbers-left-style      = "blue"
+  line-numbers-right-style     = "blue"
+
+[delta "decorations"]
+  commit-decoration-style      = "bold yellow box ul"
+  file-style                   = "bold yellow ul"
+  file-decoration-style        = "none"
+  hunk-header-decoration-style = "yellow box"
+
+[delta "line-numbers"]
+  line-numbers-left-style      = "cyan"
+  line-numbers-right-style     = "cyan"
+  line-numbers-minus-style     = 12
+  line-numbers-plus-style      = 28
 
 [diff]
-  colorMoved = default
+  tool                         = delta
+  1external                    = "$ZINIT[PLUGINS_DIR]/brew/bin/delta"
+  colorMoved                   = true
+  renames                      = true
+  
+[feature]
+  experimental                 = true
+  manyFiles                    = true
+  
+[fetch]
+  writeCommitGraph             = true
+[format]
+  pretty                       = true
 
 [github]
-  user = kuttor
+  user                         = "kuttor"
+
+[grep]
+  lineNumbers                  = true
+
 
 [help]
-  autocorrect = 1
+  autocorrect                  = 1
 
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter                   = "delta --color-only"
+
+[include]
+  path                         = "$DOT_CONFIG_HOME/git/themes.gitconfig"
+
+[index]
+  skipHaves                    = true
+  version                      = 4
+  untrackedCache               = true 
+
+[log]
+  decorate                     = "full"
+  showRoot                     = true
+
+  showSignature                = true
 
 [merge]
-  tool = meld
-  conflictstyle = zdiff3
+  tool                         = "meld"
+  conflictstyle                = "zdiff3"
 
 [mergetool "Sublime Merge"]
-  cmd = meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
+  cmd                          = "meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"  "
 
 [pager]
-  difftool = true
+  difftool                     = true
 
 [pull]
-	rebase = false
-	ff = true
+	rebase                       = false
+	ff                           = true
 
 [push]
-  followTags = true
-  default = current
-  autoSetupRemote = true
+  followTags                   = true
+  default                      = "upstream"
+  autoSetupRemote              = true
 
 [rerere]
-  enabled = true
-  eautoupdate = 1
+  enabled                      = true
+  eautoupdate                  = 1
 
 [user]
-	name = Andrew Kuttor
-	email = andrew.kuttor@gmail.com
+	name                         = "Andrew Kuttor"
+	email                        = "andrew.kuttor@gmail.com"
 
 [web]
-  browser = safari
+  browser                      = "safari"
 
 
 
