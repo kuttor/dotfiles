@@ -13,7 +13,7 @@ zi id-as lucid light-mode for @zdharma-continuum/zinit-annex-{bin-gem-node,binar
 # -- dependencies --
 zi id-as lman lucid light-mode completions for                                                                         \
    depth'1' @romkatv/powerlevel10k                                                                                     \
-   wait atclone'use --atload zsh-smartcache' @QuarticCat/zsh-smartcache
+   wait atload'use --atload zsh-smartcache' @QuarticCat/zsh-smartcache
 
 # -- zinit-packages --
 zi id-as wait lman lucid light-mode pack for                                                                           \
@@ -30,16 +30,21 @@ zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid
    atclone'use --atclone just'                                                            @casey/just                  \
    atclone'use --atclone fd'     atload'use --atload fd'     lbin'fd/fd'                  @sharkdp/fd                  \
    atclone'use --atclone bat'    atload'use --atload bat'    lbin'bat-*/bat'              @sharkdp/bat                 \
+                                                             lbin                         @ClementTsang/bottom         \
                                                              lbin'bin/*'                  @eth-p/bat-extras            \
    atclone'use --atclone rg'     atload'use --atload rg'     lbin'ripgrep-*/rg'           @BurntSushi/ripgrep          \
    atclone'use --atclone delta'  atload'use --atload delta'  lbin'*/delta'                @dandavison/delta            \
-   atclone'use --atclone zoxide' atload'use --atload zoxide' lbin'*/zoxide'  lman'*/**.1' @ajeetdsouza/zoxide          \
+   atclone'use --atclone zoxide' atload'use --atload zoxide' lbin'zoxide'  lman'*/**.1'   @ajeetdsouza/zoxide          \
                                                              lbin'rush/rush'              @shenwei356/rush             \
-                                                                                          @chmln/sd
+   atclone'use --atclone glow'                                                            @charmbracelet/glow          \
+   atclone'use --atclone moar'                               lbin'moar-*->moar'           @walles/moar                 \
+   atclone'use --atclone sd'                                                              @chmln/sd                    \
+   atclone'use --atclone zeno'                                                            @orf/gping
+   
 
 # -- non-github-releases --
-zi id-as wait binary light-mode lbin lman lucid wait for                                                               \
-   atload'use --atload brew' atclone'use --atclone brew' depth'3' nocompile lbin'bin/brew' @homebrew/brew              \
+zi id-as wait binary light-mode lbin lman lucid for                                                                    \
+   atload'use --atload brew' atclone'use --atclone brew' depth'3' nocompile sbin'*/brew' @homebrew/brew                \
    atload'use --atload fzf-tab'                                                          @Aloxaf/fzf-tab               \
    atload'use --atload fzf-tab-completion'                                               @lincheney/fzf-tab-completion \
    atload'use --atload git-ignore' pick'init.zsh' lbin'bin/git-ignore'                   @laggardkernel/git-ignore     \
@@ -48,19 +53,17 @@ zi id-as wait binary light-mode lbin lman lucid wait for                        
                                                   lbin'shellcheck*/shellcheck'           @koalaman/shellcheck
 
 # ~~ snippets loading --------------------------------------------------------------------------------------------------
-zi wait"2" lucid is-snippet for                                                                                        \
-   id-as'zsh-configs' @$ZDOTDIR/{autoload,options,keybinds,aliases}.zsh                                                \
-   OMZL::{key-bindings,correction,completion,compfix,history,git,grep}.zsh                                             \
+zi id-as wait"2" lucid is-snippet for                                                                                        \
+   @$ZDOTDIR/{autoload,options,keybinds,aliases}.zsh                                                \
+   OMZL::{key-bindings,correction,completion,compfix,git,grep}.zsh                                             \
    OMZP::{colorize,extract,urltools,brew,cp,grc,git,fzf}
 
 # ~~ completions -------------------------------------------------------------------------------------------------------
-zi id-as wait'1' lucid light-mode lman lbin binary from'gh-r' for @rsteube/lazycomplete
-
-zi id-as wait'1' is-snippet for @$ZDOTDIR/completions.zsh
+zi wait pack atload=+"zicompinit; zicdreplay" for system-completions
+zi id-as wait lucid light-mode lman lbin binary from'gh-r' for @rsteube/lazycomplete
+zi id-as wait'1' lucid is-snippet for @$ZDOTDIR/completions.zsh
 
 zi id-as wait'1' lman lucid light-mode for                                                                             \
-   completions 'https://github.com/ajeetdsouza/zoxide/blob/main/contrib/completions/_zoxide'                           \
-   completions 'https://github.com/chmln/sd/blob/master/gen/completions/_sd'                                           \
    nocompletions nocompile completions id-as'clarketm-completions'                @clarketm/zsh-completions            \
                                                                                   @lincheney/fzf-tab-completion        \
                                                                                   @chitoku-k/fzf-zsh-completions       \

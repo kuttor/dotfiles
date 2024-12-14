@@ -1,7 +1,10 @@
 #! /usr/bin/env zsh
 
+# symlink config file 
+link_file bat
+
 # autocomplete
-cp -vf bat-*/autocomplete/bat.zsh _bat
+cp -vf bat-*/autocomplete/bat.zsh $ZINIT[COMPLETIONS_DIR]/_bat
 
 # manpage
 cp -vf bat-*/bat.1 ${ZINIT[MAN_DIR]}/man1

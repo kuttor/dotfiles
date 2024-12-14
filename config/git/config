@@ -132,15 +132,11 @@
 
   showSignature                = true
 
-[merge]
-  tool                         = "meld"
-  conflictstyle                = "zdiff3"
-
-[mergetool "Sublime Merge"]
-  cmd                          = "meld mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"  "
-
 [pager]
-  difftool                     = true
+  log                          = delta
+  show                         = delta
+  diff                         = delta
+
 
 [pull]
 	rebase                       = false

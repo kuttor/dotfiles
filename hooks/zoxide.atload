@@ -1,6 +1,8 @@
-#!/usr/bin/env zsh
+#! /usr/bin/env zsh
 
 FILELISTER='ls --color=always --group-directories-first {2})'
+
+alias z='zoxide'
 
 export _ZO_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zoxide"
 export _ZO_ECHO=1
@@ -22,4 +24,4 @@ export _ZO_FZF_OPTS="\
   --group-directories-first {2} || \
     tree -NC {2} || $FILELISTER 2>/dev/null | head -200"
 
-verify zoxide && eval "$(zoxide init zsh)"
+verify zoxide && eval "$(zoxide init --cmd z zsh)"

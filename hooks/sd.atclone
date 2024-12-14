@@ -1,0 +1,7 @@
+#! /usr/bin/env zsh
+
+
+# autocomplete
+cp -vf sd-*/completions/_sd $ZINIT[COMPLETIONS_DIR]/_sd
+
+zinit creinstall -q sd

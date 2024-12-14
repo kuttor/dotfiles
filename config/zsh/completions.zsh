@@ -9,7 +9,6 @@ atload'use zsh-completions.atload'                                              
 atpull'use zsh-completions.atpull'                                                                                     \
 @sainnhe/zsh-completions
 
-zinit wait'1' id-as'auto' as'completion' for 'https://github.com/chmln/sd/blob/master/gen/completions/_sd'
 
 # -- configure completion system ---------------------------------------------------------------------------------------
 zicompdef                                                                                                              \
