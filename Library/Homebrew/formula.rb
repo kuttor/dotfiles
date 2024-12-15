@@ -2120,7 +2120,8 @@ class Formula
   # @param commands
   #   the path to the executable and any passed subcommand(s) to use for generating the completion scripts.
   # @param base_name
-  #   the base name of the generated completion script. Defaults to the formula name.
+  #   the base name of the generated completion script. Defaults to the name of the executable if installed
+  #   within formula's bin or sbin. Otherwise falls back to the formula name.
   # @param shells
   #   the shells to generate completion scripts for. Defaults to `[:bash, :zsh, :fish]`.
   # @param shell_parameter_format
@@ -2128,15 +2129,20 @@ class Formula
   #   prefix, or one of `[:flag, :arg, :none, :click]`. Defaults to plainly passing the shell.
   sig {
     params(
-      commands: T.any(Pathname, String),
-      base_name: String, shells: T::Array[Symbol],
-      shell_parameter_format: T.nilable(T.any(Symbol, String))
+      commands:               T.any(Pathname, String),
+      base_name:              T.nilable(String),
+      shells:                 T::Array[Symbol],
+      shell_parameter_format: T.nilable(T.any(Symbol, String)),
     ).void
   }
   def generate_completions_from_executable(*commands,
-                                           base_name: name,
+                                           base_name: nil,
                                            shells: [:bash, :zsh, :fish],
                                            shell_parameter_format: nil)
+    executable = commands.first.to_s
+    base_name ||= File.basename(executable) if executable.start_with?(bin.to_s, sbin.to_s)
+    base_name ||= name
+
     completion_script_path_map = {
       bash: bash_completion/base_name,
       zsh:  zsh_completion/"_#{base_name}",
@@ -2155,7 +2161,7 @@ class Formula
       elsif shell_parameter_format == :none
         nil
       elsif shell_parameter_format == :click
-        prog_name = File.basename(commands.first.to_s).upcase.tr("-", "_")
+        prog_name = File.basename(executable).upcase.tr("-", "_")
         popen_read_env["_#{prog_name}_COMPLETE"] = "#{shell}_source"
         nil
       else
