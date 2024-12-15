@@ -50,7 +50,7 @@ GEM
       logger
     redcarpet (3.6.0)
     regexp_parser (2.9.3)
-    rexml (3.3.9)
+    rexml (3.4.0)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -148,7 +148,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
