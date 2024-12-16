@@ -1,3 +1,3 @@
 #!/usr/bin/env zsh
 
-mv -f **/**.zsh _dog
+mv -f **/**.zsh $ZINIT[COMPLETIONS_DIR]/_dog

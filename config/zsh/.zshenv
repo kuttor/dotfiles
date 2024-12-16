@@ -45,38 +45,35 @@ fpath=("$DOT_FUNCTIONS_HOME" "${fpath}")
 autoload -Uz $DOT_FUNCTIONS_HOME/*(.:t)
 
 # -- XDG based variables --------------------------------------------------------------------------
-set_xdg "config" "NPM_CONFIG_USERCONFIG"    "npm/npmrc"
-set_xdg "config" "PIP_CONFIG_FILE"          "pip/pip.conf"
-set_xdg "config" "BAT_CONFIG_PATH"          "bat/bat.conf"
-set_xdg "config" "EXA_CONFIG_PATH"          "eza/eza.conf"
-set_xdg "config" "FZF_CONFIG_PATH"          "fzf/fzf.conf"
-set_xdg "config" "EDITORCONFIG_RC"          "editorconfig/editorconfigrc"
-set_xdg "config" "SHELLSCRIPT_RC"           "shellscript/shellscriptrc"
-set_xdg "config" "ZSH_TMUX_CONFIG"          "tmux/tmux.conf"
-set_xdg "config" "DOCKER_CONFIG"            "docker/docker.conf"
-set_xdg "config" "PYTHONSTARTUP"            "python/startup.py"
-set_xdg "config" "GIT_CONFIG"               "git/config"
-set_xdg "config" "RUSTUP_HOME"              "rustup/"
-set_xdg "config" "CARGO_HOME"               "rust/"
-set_xdg "config" "ZENO_HOME"                "zeno/"
-set_xdg "config" "CURL_HOME"                "curl"
-set_xdg "config" "VIMDOTDIR"                "vim/"
-set_xdg "config" "GNUPGHOME"                "gnupg"
-set_xdg "config" "LESSKEY"                  "less/lesskey"
-set_xdg "config" "MYVIMRC"                  "nvim/nvim.confs"
-set_xdg "config" "INPUTRC"                  "inputrc"
-set_xdg "config" "WGETRC"                   "wget/wgetrc"
-set_xdg "config" "RBENV_ROOT"               "rbenv/.rbenv"
-set_xdg "data"   "ANTIDOT_DIR"              "antidot"
-set_xdg "data"   "NODE_PATH"                "node/"
-set_xdg "data"   "GEM_HOME"                 "gem/"
-set_xdg "cache"  "GEM_SPEC_CACHE"           "gem/"
-set_xdg "data"   "TERMINFO"                 "terminfo/terminfo"
-set_xdg "data"   "TMUX_PLUGIN_MANAGER_PATH" "tmux/plugins"
-set_xdg "cache"  "NODE_REPL_HISTORY"        "node_repl_history"
-set_xdg "cache"  "HISTFILE"                 "zsh/history.zsh"
-set_xdg "cache"  "LESSHISTFILE"             "less/history.less"
-set_xdg "cache"  "ZSH_CACHE_DIR"            "zsh/"
+set_xdg "config" "NPM_CONFIG_USERCONFIG"                  "npm/npmrc"
+set_xdg "config" "PIP_CONFIG_FILE"                        "pip/pip.conf"
+set_xdg "config" "BAT_CONFIG_PATH"                        "bat/bat.conf"
+set_xdg "config" "FZF_CONFIG_PATH"                        "fzf/fzf.conf"
+set_xdg "config" "EDITORCONFIG_RC"                        "editorconfig/editorconfigrc"
+set_xdg "config" "SHELLSCRIPT_RC"                         "shellscript/shellscriptrc"
+set_xdg "config" "ZSH_TMUX_CONFIG"                        "tmux/tmux.conf"
+set_xdg "config" "DOCKER_CONFIG"                          "docker/docker.conf"
+set_xdg "config" "PYTHONSTARTUP"                          "python/startup.py"
+set_xdg "config" "GIT_CONFIG"                             "git/config"
+set_xdg "config" "RUSTUP_HOME"              "create path" "rust/rustup"
+set_xdg "config" "CARGO_HOME"               "create path" "rust/cargo"
+set_xdg "config" "CURL_HOME"                "create path" "curl/"
+set_xdg "config" "VIMDOTDIR"                "create path" "vim/"
+set_xdg "config" "LESSKEY"                                "less/lesskey"
+set_xdg "config" "MYVIMRC"                                "nvim/nvim.confs"
+set_xdg "config" "INPUTRC"                                "inputrc/inputrc"
+set_xdg "config" "WGETRC"                                 "wget/wgetrc"
+set_xdg "config" "RBENV_ROOT"               "create path" "rbenv/"
+set_xdg "data"   "ANTIDOT_DIR"              "create path" "antidot/"
+set_xdg "data"   "NODE_PATH"                "create path" "node/"
+set_xdg "data"   "GEM_HOME"                 "create path" "gem/"
+set_xdg "cache"  "GEM_SPEC_CACHE"           "create path" "gem/"
+set_xdg "config" "TERMINFO"                 "create path" "terminfo/"
+set_xdg "data"   "TMUX_PLUGIN_MANAGER_PATH"               "tmux/plugins"
+set_xdg "cache"  "NODE_REPL_HISTORY"                      "node_repl_history"
+set_xdg "cache"  "HISTFILE"                               "zsh/history.zsh"
+set_xdg "cache"  "LESSHISTFILE"                           "less/history.less"
+set_xdg "cache"  "ZSH_CACHE_DIR"            "create path" "zsh/"
 # histzsh
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
@@ -103,11 +100,12 @@ check nvim && alias vim=nvim
 
 # remove duplicate paths from the PATH, MANPATH, INFOPATH, and FPATH
 typeset -Ugx PATH FPATH MANPATH INFOPATH path fpath manpath infopath
-
+ 
 path=(
   /{sbin,bin}
   /usr/local/bin
   /usr/{sbin,bin}
+  $CARGO_HOME/bin
   $path
 )
 
@@ -128,3 +126,4 @@ infopath=(
 
 # Source antidot files
 source_if_exists "$ANTIDOT_DIR/{env,alias}.sh"
+. "/Users/akuttor/.config/rust//env"

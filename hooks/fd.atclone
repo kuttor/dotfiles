@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+link_config fd
+
 # rename fd-* to fd
 mv -vf fd-* fd
 

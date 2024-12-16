@@ -1,12 +1,13 @@
 #! /usr/bin/env zsh
-link_config homebrew
 
-export HOMEBREW_PREFIX="/opt/homebrew" && mkdir -p "$HOMEBREW_PREFIX"
+link_config homebrew 
+
+export HOMEBREW_PREFIX="$ZINIT[PLUGINS_DIR]/brew" && mkdir -p "$HOMEBREW_PREFIX"
 export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar" && mkdir -p "$HOMEBREW_CELLAR"
 export HOMEBREW_CACHE="$XDG_CACHE_HOME/homebrew" && mkdir -p "$HOMEBREW_CACHE"
-export HOMEBREW_BUNDLE_FILE="$DOT_CONFIG_HOME/homebrewBrewfile"
+export HOMEBREW_BUNDLE_FILE="$DOT_CONFIG_HOME/homebrew/Brewfile"
 
-$ZINIT[PLUGINS_DIR]/brew/bin/brew shellenv > "$XDG_CONFIG_HOME/homebrew/brew.conf"
+$HOMEBREW_PREFIX/bin/brew shellenv >> "$XDG_CONFIG_HOME/homebrew/brew.conf"
 zcompile "$XDG_CONFIG_HOME/homebrew/brew.conf" && source "$XDG_CONFIG_HOME/homebrew/brew.conf"
 
 # install brew maintained packages

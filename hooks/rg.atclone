@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
+#! /usr/bin/env zsh
 
 # autocomplete
-cp -f ripgrep-*/complete/_rg _rg
+rg --generate complete-zsh > "$ZINIT[COMPLETIONS_DIR]/_rg"
 
 # link config
-mkdir -p $XDG_CONFIG_HOME/ripgrep
-ln -fs $DOT_CONFIG_HOME/ripgrep/ripgreprc $XDG_CONFIG_HOME/ripgrep/.ripgreprc
+link_config ripgrep
 

@@ -1,3 +1,7 @@
 #! /usr/bin/env zsh
 
+# export ripgrep config path
 export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgrep/.ripgreprc
+
+# export ripgrep cache path
+export RIPGREP_CACHE_PATH=$XDG_CACHE_HOME/ripgrep/.ripgreprc

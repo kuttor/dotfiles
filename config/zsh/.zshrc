@@ -53,9 +53,9 @@ zi id-as wait binary light-mode lbin lman lucid for                             
                                                   lbin'shellcheck*/shellcheck'           @koalaman/shellcheck
 
 # ~~ snippets loading --------------------------------------------------------------------------------------------------
-zi id-as wait"2" lucid is-snippet for                                                                                        \
-   @$ZDOTDIR/{autoload,options,keybinds,aliases}.zsh                                                \
-   OMZL::{key-bindings,correction,completion,compfix,git,grep}.zsh                                             \
+zi id-as wait"2" lucid is-snippet for                                                                                  \
+   @$ZDOTDIR/{autoload,options,keybinds,aliases}.zsh                                                                   \
+   OMZL::{key-bindings,correction,completion,compfix,git,grep}.zsh                                                      \
    OMZP::{colorize,extract,urltools,brew,cp,grc,git,fzf}
 
 # ~~ completions -------------------------------------------------------------------------------------------------------

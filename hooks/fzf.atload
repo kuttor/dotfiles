@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+link_config fzf
+
 # data dir for fzf
 export FZF_BASE=$ZINIT[PLUGINS_DIR]/brew/opt/fzf/0.56.3
 

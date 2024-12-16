@@ -2,6 +2,7 @@
 
 export DELTA_FEATURES=+side-by-side 
 
-
 alias dgrep="rg --json -C 2 handle | delta"     
 
+export GIT_PAGER="delta"
+export DELTA_PAGER='less -R'

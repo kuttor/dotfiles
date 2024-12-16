@@ -1,14 +1,14 @@
 #! /usr/bin/env zsh
 
 set_xdg() {
-  local TYPE="$1" VAR="$2" PATH="$3"
+  local TYPE="$1" VAR="$2" CREATE="$3" PATH="$4"
   local XDG_TYPE XDG_VAR XDG_HOME FULL_PATH SOURCE_PATH
 
   XDG_TYPE="${TYPE:l}"
   case "${XDG_TYPE}" in
-    xdgconfig|config)   XDG_TYPE="config" ;;
-    xdgdata|data)     XDG_TYPE="data" ;;
-    xdgcache|cache)   XDG_TYPE="cache" ;;
+    xdgconfig|config)   XDG_TYPE="config"              ;;
+    xdgdata|data)       XDG_TYPE="data"                ;;
+    xdgcache|cache)     XDG_TYPE="cache"               ;;
     *) print -u2 "Unknown XDG type: ${TYPE}"; return 1 ;;
   esac
 
@@ -17,13 +17,17 @@ set_xdg() {
 
   if [[ -z "${XDG_HOME}" ]]; then
     case "${XDG_TYPE}" in
-      config)  XDG_HOME="${HOME}/.config" ;;
-      data)   XDG_HOME="${HOME}/.local/share" ;;
-      cache)  XDG_HOME="${HOME}/.cache" ;;
+      config)  XDG_HOME="${HOME}/.config"                            ;;
+      data)    XDG_HOME="${HOME}/.local/share"                       ;;
+      cache)   XDG_HOME="${HOME}/.cache"                             ;;
       *) print -u2 "Error: Invalid XDG_TYPE '${XDG_TYPE}'"; return 1 ;;
     esac
   fi
 
   FULL_PATH="${XDG_HOME}/${PATH}"
   export ${VAR}="${FULL_PATH}"
+
+  if [[ "${CREATE}" == "create path" ]]; then
+    /bin/mkdir -p "${FULL_PATH}"
+  fi
 }
