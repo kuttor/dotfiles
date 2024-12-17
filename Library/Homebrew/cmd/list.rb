@@ -214,7 +214,15 @@ module Homebrew
       sig { void }
       def list_casks
         casks = if args.no_named?
-          Cask::Caskroom.casks
+          cask_paths = Cask::Caskroom.path.children.map do |path|
+            if path.symlink?
+              real_path = path.realpath
+              real_path.basename.to_s
+            else
+              path.basename.to_s
+            end
+          end.uniq
+          cask_paths.map { |name| Cask::CaskLoader.load(name) }
         else
           filtered_args = args.named.dup.delete_if do |n|
             Homebrew.failed = true unless Cask::Caskroom.path.join(n).exist?
