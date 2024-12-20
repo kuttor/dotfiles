@@ -1,6 +1,9 @@
 name: CI
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
   merge_group:
 
@@ -138,7 +141,7 @@ jobs:
   formula-audit:
     name: formula audit
     needs: syntax
-    if: github.repository_owner == 'Homebrew'
+    if: github.repository_owner == 'Homebrew' && github.event_name != 'push'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/homebrew/brew:master
@@ -163,7 +166,7 @@ jobs:
   cask-audit:
     name: cask audit
     needs: syntax
-    if: github.repository_owner == 'Homebrew'
+    if: github.repository_owner == 'Homebrew' && github.event_name != 'push'
     runs-on: macos-15
     steps:
       - name: Set up Homebrew
@@ -218,7 +221,7 @@ jobs:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
     needs: syntax
-    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
+    if: github.event_name != 'push'
     strategy:
       matrix:
         include:
@@ -242,6 +245,7 @@ jobs:
           brew update-test --commit=HEAD
 
   tests:
+    if: github.event_name != 'push'
     name: ${{ matrix.name }}
     needs: syntax
     runs-on: ${{ matrix.runs-on }}
@@ -378,7 +382,7 @@ jobs:
   test-default-formula:
     name: ${{ matrix.name }}
     needs: syntax
-    if: github.repository_owner == 'Homebrew'
+    if: github.repository_owner == 'Homebrew' && github.event_name != 'push'
     runs-on: ${{ matrix.runs-on }}
     container: ${{ matrix.container }}
     strategy:
