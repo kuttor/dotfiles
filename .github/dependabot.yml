@@ -21,6 +21,10 @@ updates:
       interval: daily
     allow:
       - dependency-type: all
+    groups:
+      sorbet:
+        patterns:
+          - "sorbet*"
 
   - package-ecosystem: npm
     directory: /
