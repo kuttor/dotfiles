@@ -14,7 +14,7 @@ module Homebrew
           Check for newer versions of formulae and/or casks from upstream.
           If no formula or cask argument is passed, the list of formulae and
           casks to check is taken from `HOMEBREW_LIVECHECK_WATCHLIST` or
-          `~/.homebrew/livecheck_watchlist.txt`.
+          `~/.homebrew/livecheck_watchlist.txt`, excluding autobumped formulae.
         EOS
         switch "--full-name",
                description: "Print formulae and casks with fully-qualified names."
@@ -87,6 +87,19 @@ module Homebrew
             end
           else
             raise UsageError, "A watchlist file is required when no arguments are given."
+          end
+        end
+
+        # Skip formulae that are autobumped by BrewTestBot.
+        formulae_and_casks_to_check = formulae_and_casks_to_check.reject do |formula_or_cask|
+          next false if formula_or_cask.respond_to?(:token) # Only formulae are autobumped.
+
+          autobump_file = formula_or_cask.tap.path/".github/autobump.txt"
+          next false unless File.exist?(autobump_file)
+
+          if File.read(autobump_file).include?(formula_or_cask.name)
+            odebug "Skipping #{formula_or_cask.name} as it is autobumped."
+            true
           end
         end
 
