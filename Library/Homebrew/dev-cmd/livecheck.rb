@@ -90,7 +90,7 @@ module Homebrew
           end
         end
 
-        # Skip formulae that are autobumped by BrewTestBot.
+        # Skip formulae that are autobumped by BrewTestBot.
         formulae_and_casks_to_check = formulae_and_casks_to_check.reject do |formula_or_cask|
           next false if formula_or_cask.respond_to?(:token) # Only formulae are autobumped.
 
