@@ -1229,7 +1229,7 @@ HTTPS, e.g. SSH, git, HTTP, FTP(S), rsync.
 : Evaluate all the formulae, casks and aliases in the new tap to check validity.
   Implied if `HOMEBREW_EVAL_ALL` is set.
 
-`--force`
+`-f`, `--force`
 
 : Force install core taps even under API mode.
 
