@@ -90,16 +90,17 @@ module Homebrew
           end
         end
 
-        # Skip formulae that are autobumped by BrewTestBot.
-        formulae_and_casks_to_check = formulae_and_casks_to_check.reject do |formula_or_cask|
-          next false if formula_or_cask.respond_to?(:token) # Only formulae are autobumped.
+        # Skip packages that are autobumped by BrewTestBot, if there are any.
+        if autobump_core_path.exist? && autobump_cask_path.exist?
+          autobump_core = File.read(autobump_core_path).lines.map(&:strip)
+          autobump_cask = File.read(autobump_cask_path).lines.map(&:strip)
 
-          autobump_file = formula_or_cask.tap.path/".github/autobump.txt"
-          next false unless File.exist?(autobump_file)
-
-          if File.read(autobump_file).include?(formula_or_cask.name)
-            odebug "Skipping #{formula_or_cask.name} as it is autobumped."
-            true
+          formulae_and_casks_to_check = formulae_and_casks_to_check.reject do |formula_or_cask|
+            name = formula_or_cask.respond_to?(:token) ? formula_or_cask.token : formula_or_cask.name
+            if (autobump_core + autobump_cask).include?(name)
+              odebug "Skipping #{name} as it is autobumped."
+              true
+            end
           end
         end
 
@@ -129,6 +130,16 @@ module Homebrew
       sig { returns(String) }
       def watchlist_path
         @watchlist_path ||= T.let(File.expand_path(Homebrew::EnvConfig.livecheck_watchlist), T.nilable(String))
+      end
+
+      sig { returns(Pathname) }
+      def autobump_core_path
+        @autobump_core_path ||= T.let(Tap.fetch("homebrew/core").path/".github/autobump.txt", T.nilable(Pathname))
+      end
+
+      sig { returns(Pathname) }
+      def autobump_cask_path
+        @autobump_cask_path ||= T.let(Tap.fetch("homebrew/cask").path/".github/autobump.txt", T.nilable(Pathname))
       end
     end
   end
