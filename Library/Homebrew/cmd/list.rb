@@ -221,7 +221,7 @@ module Homebrew
             else
               path.basename.to_s
             end
-          end.uniq
+          end.uniq.sort
           cask_paths.map { |name| Cask::CaskLoader.load(name) }
         else
           filtered_args = args.named.dup.delete_if do |n|
