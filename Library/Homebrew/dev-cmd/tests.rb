@@ -137,13 +137,6 @@ module Homebrew
 
           ENV["HOMEBREW_DEBUG"] = "1" if args.debug? # Used in spec_helper.rb to require the "debug" gem.
 
-          # Submit test flakiness information using BuildPulse
-          # BUILDPULSE used in spec_helper.rb
-          if use_buildpulse?
-            ENV["BUILDPULSE"] = "1"
-            ohai "Running tests with BuildPulse-friendly settings"
-          end
-
           # Workaround for:
           #
           # ```
@@ -158,8 +151,6 @@ module Homebrew
           end
           success = $CHILD_STATUS.success?
 
-          run_buildpulse if use_buildpulse?
-
           return if success
 
           Homebrew.failed = true
@@ -167,38 +158,6 @@ module Homebrew
       end
 
       private
-
-      sig { returns(T.nilable(T::Boolean)) }
-      def use_buildpulse?
-        return @use_buildpulse if defined?(@use_buildpulse)
-
-        @use_buildpulse = T.let(ENV["HOMEBREW_BUILDPULSE_ACCESS_KEY_ID"].present? &&
-                          ENV["HOMEBREW_BUILDPULSE_SECRET_ACCESS_KEY"].present? &&
-                          ENV["HOMEBREW_BUILDPULSE_ACCOUNT_ID"].present? &&
-                          ENV["HOMEBREW_BUILDPULSE_REPOSITORY_ID"].present?, T.nilable(T::Boolean))
-      end
-
-      sig { void }
-      def run_buildpulse
-        require "formula"
-
-        with_env(HOMEBREW_NO_AUTO_UPDATE: "1", HOMEBREW_NO_BOOTSNAP: "1") do
-          ensure_formula_installed!("buildpulse-test-reporter",
-                                    reason: "reporting test flakiness")
-        end
-
-        ENV["BUILDPULSE_ACCESS_KEY_ID"] = ENV.fetch("HOMEBREW_BUILDPULSE_ACCESS_KEY_ID")
-        ENV["BUILDPULSE_SECRET_ACCESS_KEY"] = ENV.fetch("HOMEBREW_BUILDPULSE_SECRET_ACCESS_KEY")
-
-        ohai "Sending test results to BuildPulse"
-
-        system_command Formula["buildpulse-test-reporter"].opt_bin/"buildpulse-test-reporter",
-                       args: [
-                         "submit", "#{HOMEBREW_LIBRARY_PATH}/test/junit",
-                         "--account-id", ENV.fetch("HOMEBREW_BUILDPULSE_ACCOUNT_ID"),
-                         "--repository-id", ENV.fetch("HOMEBREW_BUILDPULSE_REPOSITORY_ID")
-                       ]
-      end
 
       sig { returns(T::Array[String]) }
       def changed_test_files

@@ -307,10 +307,6 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.test-flags }}-parallel_runtime_rspec-${{ github.sha }}
           restore-keys: ${{ runner.os }}-${{ matrix.test-flags }}-parallel_runtime_rspec-
 
-      - name: Install brew tests dependencies
-        if: matrix.name != 'tests (generic OS)'
-        run: brew install buildpulse-test-reporter
-
       - name: Install brew tests --online dependencies
         if: matrix.name == 'tests (online)'
         run: brew install subversion curl
@@ -330,18 +326,8 @@ jobs:
       - name: Run brew tests
         if: github.event_name == 'pull_request' || matrix.name != 'tests (online)'
         run: |
-          # brew tests
-
-          # Don't attempt to use BuildPulse for generic tests.
-          # Fails for no apparent reason.
-          if [[ "${{ matrix.name }}" =~ "generic" ]]
-          then
-            unset HOMEBREW_BUILDPULSE_ACCESS_KEY_ID
-          fi
-
-          # Retry multiple times when using BuildPulse to detect and submit
-          # flakiness (because rspec-retry is disabled).
-          if [[ -n "${HOMEBREW_BUILDPULSE_ACCESS_KEY_ID-}" ]]
+          # Retry multiple times to detect and submit flakiness to CodeCov (because rspec-retry is disabled).
+          if [[ -n "${CODECOV_TOKEN-}" ]]
           then
             brew tests ${{ matrix.test-flags }} ||
             brew tests ${{ matrix.test-flags }}
@@ -352,10 +338,7 @@ jobs:
           HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # These cannot be queried at the macOS level on GitHub Actions.
           HOMEBREW_LANGUAGES: en-GB
-          HOMEBREW_BUILDPULSE_ACCESS_KEY_ID: ${{ secrets.BUILDPULSE_ACCESS_KEY_ID }}
-          HOMEBREW_BUILDPULSE_SECRET_ACCESS_KEY: ${{ secrets.BUILDPULSE_SECRET_ACCESS_KEY }}
-          HOMEBREW_BUILDPULSE_ACCOUNT_ID: 1503512
-          HOMEBREW_BUILDPULSE_REPOSITORY_ID: 53238813
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Get RSpec JUnit XML filenames
         id: junit_xml

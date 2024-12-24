@@ -91,9 +91,9 @@ RSpec.configure do |config|
   # Use rspec-retry to handle flaky tests.
   config.default_sleep_interval = 1
 
-  # Don't want the nicer default retry behaviour when using BuildPulse to
+  # Don't want the nicer default retry behaviour when using CodeCov to
   # identify flaky tests.
-  config.default_retry_count = 2 unless ENV["BUILDPULSE"]
+  config.default_retry_count = 2 unless ENV["CODECOV_TOKEN"]
 
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`
@@ -122,9 +122,9 @@ RSpec.configure do |config|
   config.around(:each, :needs_network) do |example|
     example.metadata[:timeout] ||= 120
 
-    # Don't want the nicer default retry behaviour when using BuildPulse to
+    # Don't want the nicer default retry behaviour when using CodeCov to
     # identify flaky tests.
-    example.metadata[:retry] ||= 4 unless ENV["BUILDPULSE"]
+    example.metadata[:retry] ||= 4 unless ENV["CODECOV_TOKEN"]
 
     example.metadata[:retry_wait] ||= 2
     example.metadata[:exponential_backoff] ||= true
