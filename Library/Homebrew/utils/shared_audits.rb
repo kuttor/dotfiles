@@ -56,17 +56,13 @@ module SharedAudits
     release = github_release_data(user, repo, tag)
     return unless release
 
-    exception, name, version = if formula
-      [formula.tap&.audit_exception(:github_prerelease_allowlist, formula.name), formula.name, formula.version]
+    exception, version = if formula
+      [formula.tap&.audit_exception(:github_prerelease_allowlist, formula.name), formula.version]
     elsif cask
-      [cask.tap&.audit_exception(:github_prerelease_allowlist, cask.token), cask.token, cask.version]
+      [cask.tap&.audit_exception(:github_prerelease_allowlist, cask.token), cask.version]
     end
 
     return "#{tag} is a GitHub pre-release." if release["prerelease"] && [version, "all"].exclude?(exception)
-
-    if !release["prerelease"] && exception
-      return "#{tag} is not a GitHub pre-release but '#{name}' is in the GitHub prerelease allowlist."
-    end
 
     "#{tag} is a GitHub draft." if release["draft"]
   end
