@@ -14,6 +14,7 @@ module Homebrew
       # * `https://www.x.org/archive/individual/lib/libexample-1.2.3.tar.bz2`
       # * `https://ftp.x.org/archive/individual/lib/libexample-1.2.3.tar.bz2`
       # * `https://www.x.org/pub/individual/doc/example-1.2.3.tar.gz`
+      # * `https://xorg.freedesktop.org/archive/individual/util/example-1.2.3.tar.xz`
       #
       # The notable differences between URLs are as follows:
       #
@@ -50,8 +51,10 @@ module Homebrew
         # The `Regexp` used to determine if the strategy applies to the URL.
         URL_MATCH_REGEX = %r{
           ^https?://(?:[^/]+?\.)* # Scheme and any leading subdomains
-          (?:x\.org/(?:[^/]+/)*individual/(?:[^/]+/)*#{MODULE_REGEX.source.strip}
-          |freedesktop\.org/(?:archive|dist|software)/(?:[^/]+/)*#{MODULE_REGEX.source.strip})
+          (?:x\.org/(?:[^/]+/)*individual
+            |freedesktop\.org/(?:archive|dist|software)
+            |archive\.mesa3d\.org)
+          /(?:[^/]+/)*#{MODULE_REGEX.source.strip}
         }ix
 
         # Used to cache page content, so we don't fetch the same pages
