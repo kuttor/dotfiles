@@ -14,7 +14,7 @@ module RuboCop
       # # bad
       # def caveats
       #   <<~EOS
-      #     Use `setuid` to allow running the exeutable by non-root users.
+      #     Use `setuid` to allow running the executable by non-root users.
       #   EOS
       # end
       #

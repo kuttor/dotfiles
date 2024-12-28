@@ -22,7 +22,7 @@ RSpec.describe Utils do
       it { is_expected.to be true }
     end
 
-    describe "succeeds on newer mismatched major/minor required Ruby version and configurated environment" do
+    describe "succeeds on newer mismatched major/minor required Ruby version and configured environment" do
       let(:required_ruby_version) { "2.0.0" }
 
       before do
