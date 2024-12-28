@@ -65,7 +65,7 @@ parser = Homebrew::CLI::Parser.new(Homebrew::Cmd::VerifyUndefined) do
     Verifies that the following constants have not been defined
     at startup to make sure that startup times stay consistent.
 
-    Contants:
+    Constants:
     #{UNDEFINED_CONSTANTS.join("\n")}
   EOS
 end

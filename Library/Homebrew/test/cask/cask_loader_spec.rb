@@ -83,7 +83,7 @@ RSpec.describe Cask::CaskLoader, :cask do
         end
 
         context "to a cask in an other tap" do
-          # Can't use local-caffeine. It is a fixture in the :core_cask_tap and would take precendence over :new_tap.
+          # Can't use local-caffeine. It is a fixture in the :core_cask_tap and would take precedence over :new_tap.
           let(:token) { "some-cask" }
 
           let(:old_tap) { Tap.fetch("homebrew", "foo") }
