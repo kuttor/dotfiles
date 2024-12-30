@@ -134,6 +134,9 @@ Show the union of dependencies for multiple \fIformula\fP, instead of the inters
 \fB\-\-full\-name\fP
 List dependencies by their full name\.
 .TP
+\fB\-\-include\-implicit\fP
+Include implicit dependencies used to download and unpack source files
+.TP
 \fB\-\-include\-build\fP
 Include \fB:build\fP dependencies for \fIformula\fP\&\.
 .TP
@@ -917,6 +920,9 @@ Only list formulae and casks that are not currently installed\.
 .TP
 \fB\-\-eval\-all\fP
 Evaluate all available formulae and casks, whether installed or not, to show their dependents\.
+.TP
+\fB\-\-include\-implicit\fP
+Include formulae that have \fIformula\fP as an implicit dependency to download and unpack source files
 .TP
 \fB\-\-include\-build\fP
 Include formulae that specify \fIformula\fP as a \fB:build\fP dependency\.
