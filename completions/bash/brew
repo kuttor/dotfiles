@@ -843,6 +843,7 @@ _brew_deps() {
       --graph
       --help
       --include-build
+      --include-implicit
       --include-optional
       --include-requirements
       --include-test
@@ -2841,6 +2842,7 @@ _brew_uses() {
       --formula
       --help
       --include-build
+      --include-implicit
       --include-optional
       --include-test
       --installed

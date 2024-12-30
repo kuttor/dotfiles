@@ -775,6 +775,7 @@ _brew_deps() {
     '(--tree)--graph[Show dependencies as a directed graph]' \
     '--help[Show this message]' \
     '--include-build[Include `:build` dependencies for formula]' \
+    '--include-implicit[Include implicit dependencies used to download and unpack source files]' \
     '--include-optional[Include `:optional` dependencies for formula]' \
     '--include-requirements[Include requirements in addition to dependencies for formula]' \
     '--include-test[Include `:test` dependencies for formula (non-recursive)]' \
@@ -2244,6 +2245,7 @@ _brew_uses() {
     '--eval-all[Evaluate all available formulae and casks, whether installed or not, to show their dependents]' \
     '--help[Show this message]' \
     '--include-build[Include formulae that specify formula as a `:build` dependency]' \
+    '--include-implicit[Include formulae that have formula as an implicit dependency to download and unpack source files]' \
     '--include-optional[Include formulae that specify formula as an `:optional` dependency]' \
     '--include-test[Include formulae that specify formula as a `:test` dependency]' \
     '(--all --missing)--installed[Only list formulae and casks that are currently installed]' \
