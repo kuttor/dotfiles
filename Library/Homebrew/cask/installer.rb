@@ -107,7 +107,8 @@ module Cask
       backup if force? && @cask.staged_path.exist? && @cask.metadata_versioned_path.exist?
 
       oh1 "Installing Cask #{Formatter.identifier(@cask)}"
-      opoo "macOS's Gatekeeper has been disabled for this Cask" unless quarantine?
+      # GitHub Actions globally disables Gatekeeper.
+      opoo "macOS's Gatekeeper has been disabled for this Cask" if !quarantine? && !GitHub::Actions.env_set?
       stage
 
       @cask.config = @cask.default_config.merge(old_config)
