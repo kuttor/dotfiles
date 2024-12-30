@@ -4,7 +4,8 @@ RSpec.describe Cask::Download, :cask do
   describe "#verify_download_integrity" do
     subject(:verification) { described_class.new(cask).verify_download_integrity(downloaded_path) }
 
-    let(:cask) { instance_double(Cask::Cask, token: "cask", sha256: expected_sha256) }
+    let(:tap) { nil }
+    let(:cask) { instance_double(Cask::Cask, token: "cask", sha256: expected_sha256, tap:) }
     let(:cafebabe) { "cafebabecafebabecafebabecafebabecafebabecafebabecafebabecafebabe" }
     let(:deadbeef) { "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef" }
     let(:computed_sha256) { cafebabe }
@@ -17,8 +18,16 @@ RSpec.describe Cask::Download, :cask do
     context "when the expected checksum is :no_check" do
       let(:expected_sha256) { :no_check }
 
-      it "skips the check" do
+      it "warns about skipping the check" do
         expect { verification }.to output(/skipping verification/).to_stderr
+      end
+
+      context "with an official tap" do
+        let(:tap) { CoreCaskTap.instance }
+
+        it "does not warn about skipping the check" do
+          expect { verification }.not_to output(/skipping verification/).to_stderr
+        end
       end
     end
 

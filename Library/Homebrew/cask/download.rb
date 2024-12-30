@@ -82,7 +82,8 @@ module Cask
 
     sig { override.params(filename: Pathname).void }
     def verify_download_integrity(filename)
-      if @cask.sha256 == :no_check
+      official_cask_tap = @cask.tap&.official?
+      if @cask.sha256 == :no_check && !official_cask_tap
         opoo "No checksum defined for cask '#{@cask}', skipping verification."
         return
       end
