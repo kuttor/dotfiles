@@ -65,7 +65,7 @@ module Superenv
     self["RUSTFLAGS"] = Hardware.rustflags_target_cpu(effective_arch)
     self["PATH"] = determine_path
     self["PKG_CONFIG_PATH"] = determine_pkg_config_path
-    self["PKG_CONFIG_LIBDIR"] = determine_pkg_config_libdir
+    self["PKG_CONFIG_LIBDIR"] = determine_pkg_config_libdir || ""
     self["HOMEBREW_CCCFG"] = determine_cccfg
     self["HOMEBREW_OPTIMIZATION_LEVEL"] = "Os"
     self["HOMEBREW_BREW_FILE"] = HOMEBREW_BREW_FILE.to_s
