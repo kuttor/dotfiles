@@ -14,7 +14,7 @@ module Homebrew
           Check for newer versions of formulae and/or casks from upstream.
           If no formula or cask argument is passed, the list of formulae and
           casks to check is taken from `HOMEBREW_LIVECHECK_WATCHLIST` or
-          `~/.homebrew/livecheck_watchlist.txt`, excluding autobumped formulae.
+          `~/.homebrew/livecheck_watchlist.txt`.
         EOS
         switch "--full-name",
                description: "Print formulae and casks with fully-qualified names."
@@ -38,6 +38,8 @@ module Homebrew
                description: "Only check casks."
         switch "--extract-plist",
                description: "Enable checking multiple casks with ExtractPlist strategy."
+        switch "--autobump",
+               description: "Include packages that are autobumped by BrewTestBot. By default these are skipped."
 
         conflicts "--debug", "--json"
         conflicts "--tap=", "--eval-all", "--installed"
@@ -90,8 +92,9 @@ module Homebrew
           end
         end
 
-        # Skip packages that are autobumped by BrewTestBot, if there are any.
-        if autobump_core_path.exist? && autobump_cask_path.exist?
+        # Skip packages that are autobumped by BrewTestBot, unless `--autobump`
+        # or `HOMEBREW_LIVECHECK_AUTOBUMP` are set.
+        if skip_autobump? && autobump_core_path.exist? && autobump_cask_path.exist?
           autobump_core = File.read(autobump_core_path).lines.map(&:strip)
           autobump_cask = File.read(autobump_cask_path).lines.map(&:strip)
 
@@ -140,6 +143,11 @@ module Homebrew
       sig { returns(Pathname) }
       def autobump_cask_path
         @autobump_cask_path ||= T.let(Tap.fetch("homebrew/cask").path/".github/autobump.txt", T.nilable(Pathname))
+      end
+
+      sig { returns(T::Boolean) }
+      def skip_autobump?
+        !(args.autobump? || Homebrew::EnvConfig.livecheck_autobump?)
       end
     end
   end
