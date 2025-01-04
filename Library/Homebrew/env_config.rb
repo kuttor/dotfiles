@@ -296,16 +296,16 @@ module Homebrew
         default_text: 'The "Beer Mug" emoji.',
         default:      "🍺",
       },
+      HOMEBREW_LIVECHECK_AUTOBUMP:               {
+        description: "If set, `brew livecheck` will include data for packages that are autobumped by BrewTestBot.",
+        boolean:     true,
+      },
       HOMEBREW_LIVECHECK_WATCHLIST:              {
         description:  "Consult this file for the list of formulae to check by default when no formula argument " \
                       "is passed to `brew livecheck`.",
         default_text: "`$XDG_CONFIG_HOME/homebrew/livecheck_watchlist.txt` if `$XDG_CONFIG_HOME` is set " \
                       "or `$HOME/.homebrew/livecheck_watchlist.txt` otherwise.",
         default:      "#{ENV.fetch("HOMEBREW_USER_CONFIG_HOME")}/livecheck_watchlist.txt",
-      },
-      HOMEBREW_LIVECHECK_AUTOBUMP:               {
-        description: "If set, `brew livecheck` will include data for packages that are autobumped by BrewTestBot.",
-        boolean:     true,
       },
       HOMEBREW_LOCK_CONTEXT:                     {
         description: "If set, Homebrew will add this output as additional context for locking errors. " \
