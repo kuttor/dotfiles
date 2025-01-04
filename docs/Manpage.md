@@ -2385,6 +2385,11 @@ from `HOMEBREW_LIVECHECK_WATCHLIST` or `~/.homebrew/livecheck_watchlist.txt`.
 
 : Enable checking multiple casks with ExtractPlist strategy.
 
+`--autobump`
+
+: Include packages that are autobumped by BrewTestBot. By default these are
+  skipped.
+
 ### `pr-automerge` \[*`options`*\]
 
 Find pull requests that can be automatically merged using `brew pr-publish`.
@@ -3912,6 +3917,11 @@ command execution e.g. `$(cat file)`.
 : Print this text before the installation summary of each successful build.
   
   *Default:* The "Beer Mug" emoji.
+
+`HOMEBREW_LIVECHECK_AUTOBUMP`
+
+: If set, `brew livecheck` will include data for packages that are autobumped by
+  BrewTestBot.
 
 `HOMEBREW_LIVECHECK_WATCHLIST`
 
