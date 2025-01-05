@@ -994,6 +994,7 @@ __fish_brew_complete_arg 'irb' -l verbose -d 'Make some output more verbose'
 
 
 __fish_brew_complete_cmd 'lc' 'Check for newer versions of formulae and/or casks from upstream'
+__fish_brew_complete_arg 'lc' -l autobump -d 'Include packages that are autobumped by BrewTestBot. By default these are skipped'
 __fish_brew_complete_arg 'lc' -l cask -d 'Only check casks'
 __fish_brew_complete_arg 'lc' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'lc' -l eval-all -d 'Evaluate all available formulae and casks, whether installed or not, to check them'
@@ -1069,6 +1070,7 @@ __fish_brew_complete_arg 'list; and not __fish_seen_argument -l formula -l formu
 
 
 __fish_brew_complete_cmd 'livecheck' 'Check for newer versions of formulae and/or casks from upstream'
+__fish_brew_complete_arg 'livecheck' -l autobump -d 'Include packages that are autobumped by BrewTestBot. By default these are skipped'
 __fish_brew_complete_arg 'livecheck' -l cask -d 'Only check casks'
 __fish_brew_complete_arg 'livecheck' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'livecheck' -l eval-all -d 'Evaluate all available formulae and casks, whether installed or not, to check them'

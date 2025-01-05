@@ -1241,6 +1241,7 @@ _brew_irb() {
 # brew lc
 _brew_lc() {
   _arguments \
+    '--autobump[Include packages that are autobumped by BrewTestBot. By default these are skipped]' \
     '(--json)--debug[Display any debugging information]' \
     '(--tap --installed)--eval-all[Evaluate all available formulae and casks, whether installed or not, to check them]' \
     '(--formula)--extract-plist[Enable checking multiple casks with ExtractPlist strategy]' \
@@ -1332,6 +1333,7 @@ _brew_list() {
 # brew livecheck
 _brew_livecheck() {
   _arguments \
+    '--autobump[Include packages that are autobumped by BrewTestBot. By default these are skipped]' \
     '(--json)--debug[Display any debugging information]' \
     '(--tap --installed)--eval-all[Evaluate all available formulae and casks, whether installed or not, to check them]' \
     '(--formula)--extract-plist[Enable checking multiple casks with ExtractPlist strategy]' \
