@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 module RuboCop
@@ -9,6 +9,7 @@ module RuboCop
         MSG = "Only use `Homebrew.install_bundler_gems!` in dev-cmd."
         RESTRICT_ON_SEND = [:install_bundler_gems!].freeze
 
+        sig { params(node: RuboCop::AST::Node).void }
         def on_send(node)
           file_path = processed_source.file_path
           return if file_path.match?(%r{/(dev-cmd/.+|standalone/init|startup/bootsnap)\.rb\z})

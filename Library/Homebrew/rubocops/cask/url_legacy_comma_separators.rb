@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 module RuboCop
@@ -12,6 +12,7 @@ module RuboCop
         MSG_CSV = "Use `version.csv.first` instead of `version.before_comma` " \
                   "and `version.csv.second` instead of `version.after_comma`."
 
+        sig { override.params(stanza: RuboCop::Cask::AST::Stanza).void }
         def on_url_stanza(stanza)
           return if stanza.stanza_node.type == :block
 

@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "forwardable"
@@ -34,8 +34,9 @@ module RuboCop
 
         FLIGHT_STANZA_NAMES = [:preflight, :postflight, :uninstall_preflight, :uninstall_postflight].freeze
 
+        sig { override.params(cask_block: RuboCop::Cask::AST::CaskBlock).void }
         def on_cask(cask_block)
-          @cask_block = cask_block
+          @cask_block = T.let(cask_block, T.nilable(RuboCop::Cask::AST::CaskBlock))
 
           toplevel_stanzas.each do |stanza|
             next unless FLIGHT_STANZA_NAMES.include? stanza.stanza_name
@@ -50,10 +51,12 @@ module RuboCop
 
         private
 
+        sig { returns(T.nilable(RuboCop::Cask::AST::CaskBlock)) }
         attr_reader :cask_block
 
         def_delegators :cask_block, :toplevel_stanzas, :cask_body
 
+        sig { void }
         def simplify_sha256_stanzas
           nodes = {}
 

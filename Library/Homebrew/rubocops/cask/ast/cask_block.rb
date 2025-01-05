@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "forwardable"
@@ -33,10 +33,13 @@ module RuboCop
             ->(node) { node.parent == block_node }
           end
 
-          @stanzas ||= block_body.each_node
-                                 .select(&:stanza?)
-                                 .select(&is_stanza)
-                                 .map { |node| Stanza.new(node, comments) }
+          @stanzas ||= T.let(
+            block_body.each_node
+                      .select(&:stanza?)
+                      .select(&is_stanza)
+                      .map { |node| Stanza.new(node, comments) },
+            T.nilable(T::Array[Stanza]),
+          )
         end
       end
 
@@ -46,17 +49,20 @@ module RuboCop
       class CaskBlock < StanzaBlock
         extend Forwardable
 
+        sig { returns(RuboCop::AST::BlockNode) }
         def cask_node
           block_node
         end
 
         def_delegator :cask_node, :block_body, :cask_body
 
+        sig { returns(CaskHeader) }
         def header
-          @header ||= CaskHeader.new(block_node.method_node)
+          @header ||= T.let(CaskHeader.new(block_node.method_node), T.nilable(CaskHeader))
         end
 
         # TODO: Use `StanzaBlock#stanzas` for all cops, where possible.
+        sig { returns(T::Array[Stanza]) }
         def stanzas
           return [] unless cask_body
 
@@ -65,6 +71,7 @@ module RuboCop
                                 .map { |node| Stanza.new(node, comments) }
         end
 
+        sig { returns(T::Array[Stanza]) }
         def toplevel_stanzas
           # If a `cask` block only contains one stanza, it is that stanza's direct parent,
           # otherwise stanzas are grouped in a block and `cask` is that block's parent.
@@ -74,7 +81,7 @@ module RuboCop
             ->(stanza) { stanza.parent_node.cask_block? }
           end
 
-          @toplevel_stanzas ||= stanzas.select(&is_toplevel_stanza)
+          @toplevel_stanzas ||= T.let(stanzas.select(&is_toplevel_stanza), T.nilable(T::Array[Stanza]))
         end
       end
     end
