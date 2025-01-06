@@ -54,9 +54,9 @@ class Livecheck
   end
 
   # Sets the `@referenced_formula_name` instance variable to the provided
-  # `String` or returns the `@referenced_formula_name` instance variable when
-  # no argument is provided. Inherited livecheck values from the referenced
-  # formula (e.g. regex) can be overridden in the `livecheck` block.
+  # `String`/`Symbol` or returns the `@referenced_formula_name` instance
+  # variable when no argument is provided. Inherited livecheck values from the
+  # referenced formula (e.g. regex) can be overridden in the `livecheck` block.
   sig {
     params(
       # Name of formula to inherit livecheck info from.
