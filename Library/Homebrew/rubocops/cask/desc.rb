@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "rubocops/cask/mixin/on_desc_stanza"
@@ -14,8 +14,9 @@ module RuboCop
         include DescHelper
         extend AutoCorrector
 
+        sig { params(stanza: RuboCop::Cask::AST::Stanza).void }
         def on_desc_stanza(stanza)
-          @name = cask_block.header.cask_token
+          @name = T.let(cask_block.header.cask_token, T.nilable(String))
           desc_call = stanza.stanza_node
           audit_desc(:cask, @name, desc_call)
         end

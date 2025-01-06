@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "forwardable"
@@ -17,8 +17,9 @@ module RuboCop
 
         MSG_NO_SLASH = "'%<url>s' must have a slash after the domain."
 
+        sig { params(stanza: RuboCop::Cask::AST::Stanza).void }
         def on_homepage_stanza(stanza)
-          @name = cask_block.header.cask_token
+          @name = T.let(cask_block.header.cask_token, T.nilable(String))
           desc_call = stanza.stanza_node
           url_node = desc_call.first_argument
 

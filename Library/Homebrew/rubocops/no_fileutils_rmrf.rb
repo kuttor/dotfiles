@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 module RuboCop
@@ -30,6 +30,7 @@ module RuboCop
           (send !nil? :rmtree ...)
         PATTERN
 
+        sig { params(node: RuboCop::AST::SendNode).void }
         def on_send(node)
           return if neither_rm_rf_nor_rmtree?(node)
 
@@ -51,6 +52,7 @@ module RuboCop
           end
         end
 
+        sig { params(node: RuboCop::AST::SendNode).returns(T::Boolean) }
         def neither_rm_rf_nor_rmtree?(node)
           !any_receiver_rm_r_f?(node) && !no_receiver_rm_r_f?(node) &&
             !any_receiver_rmtree?(node) && !no_receiver_rmtree?(node)
