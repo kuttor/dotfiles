@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "system_command"
@@ -51,14 +51,15 @@ module Homebrew
       # Remove version from short version, if present.
       short_version = short_version&.sub(/\s*\(#{Regexp.escape(version)}\)\Z/, "") if version
 
-      @short_version = short_version.presence
-      @version = version.presence
+      @short_version = T.let(short_version.presence, T.nilable(String))
+      @version = T.let(version.presence, T.nilable(String))
 
       return if @short_version || @version
 
       raise ArgumentError, "`short_version` and `version` cannot both be `nil` or empty"
     end
 
+    sig { params(other: BundleVersion).returns(T.any(Integer, NilClass)) }
     def <=>(other)
       return super unless instance_of?(other.class)
 
@@ -82,6 +83,7 @@ module Homebrew
       difference
     end
 
+    sig { params(other: BundleVersion).returns(T::Boolean) }
     def ==(other)
       instance_of?(other.class) && short_version == other.short_version && version == other.version
     end

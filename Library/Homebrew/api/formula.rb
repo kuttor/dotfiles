@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "extend/cachable"
@@ -15,7 +15,7 @@ module Homebrew
 
       private_class_method :cache
 
-      sig { params(name: String).returns(Hash) }
+      sig { params(name: String).returns(T::Hash[String, T.untyped]) }
       def self.fetch(name)
         Homebrew::API.fetch "formula/#{name}.json"
       end
@@ -41,6 +41,7 @@ module Homebrew
         end
       end
 
+      sig { returns(Pathname) }
       def self.cached_json_file_path
         if Homebrew::API.internal_json_v3?
           HOMEBREW_CACHE_API/INTERNAL_V3_API_FILENAME
@@ -75,7 +76,7 @@ module Homebrew
       end
       private_class_method :download_and_cache_data!
 
-      sig { returns(T::Hash[String, Hash]) }
+      sig { returns(T::Hash[String, T.untyped]) }
       def self.all_formulae
         unless cache.key?("formulae")
           json_updated = download_and_cache_data!
@@ -105,7 +106,7 @@ module Homebrew
         cache["renames"]
       end
 
-      sig { returns(Hash) }
+      sig { returns(T::Hash[String, T.untyped]) }
       def self.tap_migrations
         # Not sure that we need to reload here.
         unless cache.key?("tap_migrations")
