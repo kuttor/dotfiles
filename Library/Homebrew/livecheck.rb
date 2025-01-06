@@ -60,14 +60,14 @@ class Livecheck
   sig {
     params(
       # Name of formula to inherit livecheck info from.
-      formula_name: String,
-    ).returns(T.nilable(String))
+      formula_name: T.any(String, Symbol),
+    ).returns(T.nilable(T.any(String, Symbol)))
   }
   def formula(formula_name = T.unsafe(nil))
     case formula_name
     when nil
       @referenced_formula_name
-    when String
+    when String, :parent
       @referenced_formula_name = formula_name
     end
   end
