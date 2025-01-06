@@ -283,6 +283,7 @@ module Homebrew
                 resource,
                 latest.to_s,
                 json:,
+                full_name: use_full_name,
                 debug:,
                 quiet:,
                 verbose:,
@@ -826,6 +827,7 @@ module Homebrew
         resource:       Resource,
         formula_latest: String,
         json:           T::Boolean,
+        full_name:      T::Boolean,
         debug:          T::Boolean,
         quiet:          T::Boolean,
         verbose:        T::Boolean,
@@ -835,6 +837,7 @@ module Homebrew
       resource,
       formula_latest,
       json: false,
+      full_name: false,
       debug: false,
       quiet: false,
       verbose: false
@@ -895,7 +898,9 @@ module Homebrew
           end
           puts "Strategy:         #{strategy.blank? ? "None" : strategy_name}"
           puts "Regex:            #{livecheck_regex.inspect}" if livecheck_regex.present?
-          puts "Formula Ref:      #{resource.owner.name} (parent)" if livecheck_reference == :parent
+          if livecheck_reference == :parent
+            puts "Formula Ref:      #{full_name ? resource.owner.full_name : resource.owner.name} (parent)"
+          end
         end
 
         if livecheck_strategy.present?
@@ -992,10 +997,15 @@ module Homebrew
           livecheck_defined: livecheck_defined,
           url:               {},
         }
+        if livecheck_reference.presence == :parent
+          resource_version_info[:meta][:references] =
+            { formula: full_name ? resource.owner.full_name : resource.owner.name }
+          resource_version_info[:meta][:references][:parent] = true
+        end
         if livecheck_url.is_a?(Symbol) && livecheck_url_string
           resource_version_info[:meta][:url][:symbol] = livecheck_url
         end
-        resource_version_info[:meta][:url][:original] = original_url
+        resource_version_info[:meta][:url][:original] = original_url if livecheck_reference != :parent
         resource_version_info[:meta][:url][:processed] = url if url != original_url
         if strategy_data&.dig(:url).present? && strategy_data[:url] != url
           resource_version_info[:meta][:url][:strategy] = strategy_data[:url]
