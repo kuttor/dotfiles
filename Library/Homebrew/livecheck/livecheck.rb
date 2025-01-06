@@ -995,22 +995,23 @@ module Homebrew
 
         resource_version_info[:meta] = {
           livecheck_defined: livecheck_defined,
-          url:               {},
         }
-        if livecheck_reference.presence == :parent
+        if livecheck_reference == :parent
           resource_version_info[:meta][:references] =
-            { formula: full_name ? resource.owner.full_name : resource.owner.name }
-          resource_version_info[:meta][:references][:parent] = true
+            [{ formula: full_name ? resource.owner.full_name : resource.owner.name }]
         end
-        if livecheck_url.is_a?(Symbol) && livecheck_url_string
-          resource_version_info[:meta][:url][:symbol] = livecheck_url
+        if url != "None"
+          resource_version_info[:meta][:url] = {}
+          if livecheck_url.is_a?(Symbol) && livecheck_url_string
+            resource_version_info[:meta][:url][:symbol] = livecheck_url
+          end
+          resource_version_info[:meta][:url][:original] = original_url
+          resource_version_info[:meta][:url][:processed] = url if url != original_url
+          if strategy_data&.dig(:url).present? && strategy_data[:url] != url
+            resource_version_info[:meta][:url][:strategy] = strategy_data[:url]
+          end
+          resource_version_info[:meta][:url][:final] = strategy_data[:final_url] if strategy_data&.dig(:final_url)
         end
-        resource_version_info[:meta][:url][:original] = original_url if livecheck_reference != :parent
-        resource_version_info[:meta][:url][:processed] = url if url != original_url
-        if strategy_data&.dig(:url).present? && strategy_data[:url] != url
-          resource_version_info[:meta][:url][:strategy] = strategy_data[:url]
-        end
-        resource_version_info[:meta][:url][:final] = strategy_data[:final_url] if strategy_data&.dig(:final_url)
         resource_version_info[:meta][:strategy] = strategy.present? ? strategy_name : nil
         if strategies.present?
           resource_version_info[:meta][:strategies] = strategies.map { |s| livecheck_strategy_names[s] }
