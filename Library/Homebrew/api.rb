@@ -60,7 +60,7 @@ module Homebrew
       skip_download = target.exist? &&
                       !target.empty? &&
                       (!Homebrew.auto_update_command? ||
-                        Homebrew::EnvConfig.no_auto_update? ||
+                        (Homebrew::EnvConfig.no_auto_update? && !Homebrew::EnvConfig.force_api_auto_update?) ||
                       ((Time.now - stale_seconds) < target.mtime))
       skip_download ||= Homebrew.running_as_root_but_not_owned_by_root?
 
