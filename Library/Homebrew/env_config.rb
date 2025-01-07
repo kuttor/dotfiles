@@ -87,6 +87,9 @@ module Homebrew
         description: "Use this URL as the Homebrew/brew `git`(1) remote.",
         default:     HOMEBREW_BREW_DEFAULT_GIT_REMOTE,
       },
+      HOMEBREW_BREW_WRAPPER:                     {
+        description: "If set, use wrapper to call `brew` rather than auto-detecting it.",
+      },
       HOMEBREW_BROWSER:                          {
         description:  "Use this as the browser when opening project homepages.",
         default_text: "`$BROWSER` or the OS's default browser.",
@@ -241,6 +244,10 @@ module Homebrew
         description: "If set, always use a Homebrew-installed `git`(1) rather than the system version. " \
                      "Automatically set if the system version of `git` is too old.",
         boolean:     true,
+      },
+      HOMEBREW_FORCE_BREW_WRAPPER:               {
+        description: "If set, require `HOMEBREW_BREW_WRAPPER` to be set to the same value as " \
+                     "`HOMEBREW_FORCE_BREW_WRAPPER` for non-trivial `brew` commands.",
       },
       HOMEBREW_FORCE_VENDOR_RUBY:                {
         description: "If set, always use Homebrew's vendored, relocatable Ruby version even if the system version " \

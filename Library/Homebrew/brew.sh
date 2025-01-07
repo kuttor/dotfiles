@@ -127,12 +127,6 @@ case "$1" in
     homebrew-shellenv "$1"
     exit 0
     ;;
-  setup-ruby)
-    source "${HOMEBREW_LIBRARY}/Homebrew/cmd/setup-ruby.sh"
-    shift
-    homebrew-setup-ruby "$1"
-    exit 0
-    ;;
 esac
 
 source "${HOMEBREW_LIBRARY}/Homebrew/help.sh"
@@ -184,10 +178,55 @@ case "$@" in
     ;;
 esac
 
-#####
-##### Next, define all helper functions.
-#####
+# Include some helper functions.
 source "${HOMEBREW_LIBRARY}/Homebrew/utils/helpers.sh"
+
+# Require HOMEBREW_BREW_WRAPPER to be set if HOMEBREW_FORCE_BREW_WRAPPER is set
+# for all non-trivial commands (i.e. not run above).
+if [[ -n "${HOMEBREW_FORCE_BREW_WRAPPER}" ]]
+then
+  if [[ -z "${HOMEBREW_BREW_WRAPPER:-}" ]]
+  then
+    odie <<EOS
+HOMEBREW_FORCE_BREW_WRAPPER was set to
+  ${HOMEBREW_FORCE_BREW_WRAPPER}
+but HOMEBREW_BREW_WRAPPER was unset. This indicates that you are running
+  ${HOMEBREW_BREW_FILE}
+directly but should instead run
+  ${HOMEBREW_FORCE_BREW_WRAPPER}
+EOS
+  elif [[ "${HOMEBREW_FORCE_BREW_WRAPPER:-}" != "${HOMEBREW_BREW_WRAPPER:-}" ]]
+  then
+    odie <<EOS
+HOMEBREW_FORCE_BREW_WRAPPER was set to
+  ${HOMEBREW_FORCE_BREW_WRAPPER}
+but HOMEBREW_BREW_WRAPPER was set to
+  ${HOMEBREW_BREW_WRAPPER}
+This indicates that you are running
+  ${HOMEBREW_BREW_FILE}
+directly but should instead run:
+  ${HOMEBREW_FORCE_BREW_WRAPPER}
+EOS
+  fi
+fi
+
+# commands that take a single or no arguments and need to write to HOMEBREW_PREFIX.
+# HOMEBREW_LIBRARY set by bin/brew
+# shellcheck disable=SC2154
+# doesn't need a default case as other arguments handled elsewhere.
+# shellcheck disable=SC2249
+case "$1" in
+  setup-ruby)
+    source "${HOMEBREW_LIBRARY}/Homebrew/cmd/setup-ruby.sh"
+    shift
+    homebrew-setup-ruby "$1"
+    exit 0
+    ;;
+esac
+
+#####
+##### Next, define all other helper functions.
+#####
 
 check-run-command-as-root() {
   [[ "${EUID}" == 0 || "${UID}" == 0 ]] || return
