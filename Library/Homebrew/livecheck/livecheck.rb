@@ -670,14 +670,14 @@ module Homebrew
           if livecheck_url.is_a?(Symbol)
             # This assumes the URL symbol will fit within the available space
             puts "URL (#{livecheck_url}):".ljust(18, " ") + original_url
-          else
+          elsif original_url.present? && original_url != "None"
             puts "URL:              #{original_url}"
           end
           puts "URL (processed):  #{url}" if url != original_url
           if strategies.present? && verbose
             puts "Strategies:       #{strategies.map { |s| livecheck_strategy_names[s] }.join(", ")}"
           end
-          puts "Strategy:         #{strategy.blank? ? "None" : strategy_name}"
+          puts "Strategy:         #{strategy_name}" if strategy.present?
           puts "Regex:            #{livecheck_regex.inspect}" if livecheck_regex.present?
         end
 
@@ -798,17 +798,18 @@ module Homebrew
             end
           end
 
-          version_info[:meta][:url] = {}
-          version_info[:meta][:url][:symbol] = livecheck_url if livecheck_url.is_a?(Symbol) && livecheck_url_string
-          version_info[:meta][:url][:original] = original_url
-          version_info[:meta][:url][:processed] = url if url != original_url
-          if strategy_data[:url].present? && strategy_data[:url] != url
-            version_info[:meta][:url][:strategy] = strategy_data[:url]
+          if url != "None"
+            version_info[:meta][:url] = {}
+            version_info[:meta][:url][:symbol] = livecheck_url if livecheck_url.is_a?(Symbol) && livecheck_url_string
+            version_info[:meta][:url][:original] = original_url
+            version_info[:meta][:url][:processed] = url if url != original_url
+            if strategy_data[:url].present? && strategy_data[:url] != url
+              version_info[:meta][:url][:strategy] = strategy_data[:url]
+            end
+            version_info[:meta][:url][:final] = strategy_data[:final_url] if strategy_data[:final_url]
+            version_info[:meta][:url][:homebrew_curl] = homebrew_curl if homebrew_curl.present?
           end
-          version_info[:meta][:url][:final] = strategy_data[:final_url] if strategy_data[:final_url]
-          version_info[:meta][:url][:homebrew_curl] = homebrew_curl if homebrew_curl.present?
-
-          version_info[:meta][:strategy] = strategy.present? ? strategy_name : nil
+          version_info[:meta][:strategy] = strategy_name if strategy.present?
           version_info[:meta][:strategies] = strategies.map { |s| livecheck_strategy_names[s] } if strategies.present?
           version_info[:meta][:regex] = regex.inspect if regex.present?
           version_info[:meta][:cached] = true if strategy_data[:cached] == true
@@ -889,14 +890,14 @@ module Homebrew
           if livecheck_url.is_a?(Symbol)
             # This assumes the URL symbol will fit within the available space
             puts "URL (#{livecheck_url}):".ljust(18, " ") + original_url
-          else
+          elsif original_url.present? && original_url != "None"
             puts "URL:              #{original_url}"
           end
           puts "URL (processed):  #{url}" if url != original_url
           if strategies.present? && verbose
             puts "Strategies:       #{strategies.map { |s| livecheck_strategy_names[s] }.join(", ")}"
           end
-          puts "Strategy:         #{strategy.blank? ? "None" : strategy_name}"
+          puts "Strategy:         #{strategy_name}" if strategy.present?
           puts "Regex:            #{livecheck_regex.inspect}" if livecheck_regex.present?
           if livecheck_reference == :parent
             puts "Formula Ref:      #{full_name ? resource.owner.full_name : resource.owner.name} (parent)"
@@ -998,7 +999,7 @@ module Homebrew
         }
         if livecheck_reference == :parent
           resource_version_info[:meta][:references] =
-            [{ formula: full_name ? resource.owner.full_name : resource.owner.name }]
+            [{ formula: full_name ? resource.owner.full_name : resource.owner.name, symbol: :parent }]
         end
         if url != "None"
           resource_version_info[:meta][:url] = {}
@@ -1012,7 +1013,7 @@ module Homebrew
           end
           resource_version_info[:meta][:url][:final] = strategy_data[:final_url] if strategy_data&.dig(:final_url)
         end
-        resource_version_info[:meta][:strategy] = strategy.present? ? strategy_name : nil
+        resource_version_info[:meta][:strategy] = strategy_name if strategy.present?
         if strategies.present?
           resource_version_info[:meta][:strategies] = strategies.map { |s| livecheck_strategy_names[s] }
         end
