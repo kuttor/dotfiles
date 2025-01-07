@@ -137,6 +137,9 @@ module Homebrew::EnvConfig
     def forbidden_taps; end
 
     sig { returns(T::Boolean) }
+    def force_api_auto_update?; end
+
+    sig { returns(T::Boolean) }
     def force_brewed_ca_certificates?; end
 
     sig { returns(T::Boolean) }

@@ -223,6 +223,10 @@ module Homebrew
                      "e.g. `brew install ./package.rb`.",
         boolean:     true,
       },
+      HOMEBREW_FORCE_API_AUTO_UPDATE:            {
+        description: "If set, update the Homebrew API formula or cask data even if `HOMEBREW_NO_AUTO_UPDATE` is set.",
+        boolean:     true,
+      },
       HOMEBREW_FORCE_BREWED_CA_CERTIFICATES:     {
         description: "If set, always use a Homebrew-installed `ca-certificates` rather than the system version. " \
                      "Automatically set if the system version is too old.",
