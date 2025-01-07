@@ -169,6 +169,8 @@ DEPENDENCIES
   redcarpet
   rexml
   rspec
+  rspec-core
+  rspec-expectations
   rspec-github
   rspec-retry
   rspec-sorbet
