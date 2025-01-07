@@ -6536,9 +6536,6 @@ module RSpec::Core::HashImitatable
   def reverse_each(*args, &block); end
 
   # source://rspec-core//lib/rspec/core/metadata.rb#367
-  def save_plist(*args, &block); end
-
-  # source://rspec-core//lib/rspec/core/metadata.rb#367
   def select(*args, &block); end
 
   # source://rspec-core//lib/rspec/core/metadata.rb#367
@@ -6591,9 +6588,6 @@ module RSpec::Core::HashImitatable
 
   # source://rspec-core//lib/rspec/core/metadata.rb#367
   def to_hash(*args, &block); end
-
-  # source://rspec-core//lib/rspec/core/metadata.rb#367
-  def to_plist(*args, &block); end
 
   # source://rspec-core//lib/rspec/core/metadata.rb#367
   def to_proc(*args, &block); end

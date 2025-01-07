@@ -53,6 +53,8 @@ end
 group :tests, optional: true do
   gem "parallel_tests", require: false
   gem "rspec", require: false
+  gem "rspec-core", require: false
+  gem "rspec-expectations", require: false
   gem "rspec-github", require: false
   gem "rspec_junit_formatter", require: false
   gem "rspec-retry", require: false
