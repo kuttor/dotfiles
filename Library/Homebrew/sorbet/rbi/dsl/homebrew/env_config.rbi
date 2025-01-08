@@ -142,8 +142,8 @@ module Homebrew::EnvConfig
     sig { returns(T::Boolean) }
     def force_api_auto_update?; end
 
-    sig { returns(T::Boolean) }
-    def force_brew_wrapper?; end
+    sig { returns(T.nilable(::String)) }
+    def force_brew_wrapper; end
 
     sig { returns(T::Boolean) }
     def force_brewed_ca_certificates?; end
@@ -237,6 +237,9 @@ module Homebrew::EnvConfig
 
     sig { returns(T::Boolean) }
     def no_env_hints?; end
+
+    sig { returns(T::Boolean) }
+    def no_force_brew_wrapper?; end
 
     sig { returns(T::Boolean) }
     def no_github_api?; end
