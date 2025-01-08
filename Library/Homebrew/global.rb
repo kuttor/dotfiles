@@ -100,7 +100,7 @@ module Homebrew
     end
 
     def owner_uid
-      @owner_uid ||= HOMEBREW_BREW_FILE.stat.uid
+      @owner_uid ||= HOMEBREW_ORIGINAL_BREW_FILE.stat.uid
     end
 
     def running_as_root_but_not_owned_by_root?

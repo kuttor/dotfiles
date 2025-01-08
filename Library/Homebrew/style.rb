@@ -304,7 +304,7 @@ module Homebrew
 
     def self.shell_scripts
       [
-        HOMEBREW_BREW_FILE,
+        HOMEBREW_ORIGINAL_BREW_FILE,
         HOMEBREW_REPOSITORY/"completions/bash/brew",
         HOMEBREW_REPOSITORY/"Dockerfile",
         *HOMEBREW_REPOSITORY.glob(".devcontainer/**/*.sh"),

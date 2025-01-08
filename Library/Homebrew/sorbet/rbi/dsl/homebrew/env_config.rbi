@@ -50,6 +50,9 @@ module Homebrew::EnvConfig
     def brew_git_remote; end
 
     sig { returns(T.nilable(::String)) }
+    def brew_wrapper; end
+
+    sig { returns(T.nilable(::String)) }
     def browser; end
 
     sig { returns(T.nilable(::String)) }
@@ -138,6 +141,9 @@ module Homebrew::EnvConfig
 
     sig { returns(T::Boolean) }
     def force_api_auto_update?; end
+
+    sig { returns(T::Boolean) }
+    def force_brew_wrapper?; end
 
     sig { returns(T::Boolean) }
     def force_brewed_ca_certificates?; end
