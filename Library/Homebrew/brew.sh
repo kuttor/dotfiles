@@ -182,8 +182,9 @@ esac
 source "${HOMEBREW_LIBRARY}/Homebrew/utils/helpers.sh"
 
 # Require HOMEBREW_BREW_WRAPPER to be set if HOMEBREW_FORCE_BREW_WRAPPER is set
-# for all non-trivial commands (i.e. not run above).
-if [[ -n "${HOMEBREW_FORCE_BREW_WRAPPER}" ]]
+# (and HOMEBREW_NO_FORCE_BREW_WRAPPER is not set) for all non-trivial commands
+# (i.e. not defined above this line e.g. formulae or --cellar).
+if [[ -z "${HOMEBREW_NO_FORCE_BREW_WRAPPER:-}" && -n "${HOMEBREW_FORCE_BREW_WRAPPER:-}" ]]
 then
   if [[ -z "${HOMEBREW_BREW_WRAPPER:-}" ]]
   then
@@ -195,7 +196,7 @@ but HOMEBREW_BREW_WRAPPER was unset. This indicates that you are running
 directly but should instead run
   ${HOMEBREW_FORCE_BREW_WRAPPER}
 EOS
-  elif [[ "${HOMEBREW_FORCE_BREW_WRAPPER:-}" != "${HOMEBREW_BREW_WRAPPER:-}" ]]
+  elif [[ "${HOMEBREW_FORCE_BREW_WRAPPER}" != "${HOMEBREW_BREW_WRAPPER}" ]]
   then
     odie <<EOS
 HOMEBREW_FORCE_BREW_WRAPPER was set to
