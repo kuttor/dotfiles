@@ -6,11 +6,10 @@
   co                           = "checkout"
   doit                         = "!f() { git add \"$1\"; git commit -am \"$2\"; git push; }; f"
   info                         = "status --short --branch"
-  info                         = "status --short --branch"
   name                         = "basename $(git config --get remote.origin.url)"
   remotes                      = "remote -v"
   state                        = "!git status --show-stash --verbose --verbose; git stash list --color=always --pretty='%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%C'"
-  status-select                = "!git-status-select"1
+  status-select                = "!git-status-select"
   tags                         = "tag --list"
   tracked                      = "!git ls-tree -r master --name-only"
   uncommit                     = "reset --soft HEAD~1"
@@ -114,7 +113,7 @@
 
 [help]
   autocorrect                  = 1
-
+                              M                      ,,,,,,,,,,,,,,,,,,,
 [interactive]
   diffFilter                   = "delta --color-only"
 

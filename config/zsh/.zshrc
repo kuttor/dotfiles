@@ -39,8 +39,8 @@ zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid
    atclone'use --atclone glow'                                                            @charmbracelet/glow          \
    atclone'use --atclone moar'                               lbin'moar-*->moar'           @walles/moar                 \
    atclone'use --atclone sd'                                                              @chmln/sd                    \
-   atclone'use --atclone zeno'                                                            @orf/gping
-   
+   atclone'use --atclone zeno'                                                            @orf/gping                   \
+   atclone'use --atclone mc'                                 lbin'mc-*->mc'               @thewh1teagle/mc
 
 # -- non-github-releases --
 zi id-as wait binary light-mode lbin lman lucid for                                                                    \

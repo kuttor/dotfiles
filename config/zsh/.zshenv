@@ -38,6 +38,9 @@ export GIT_AUTHOR_NAME="Andrew Kuttor"
 export GIT_AUTHOR_EMAIL="andrew.kuttor@gmail.com"
 export GIT_COMMITTER_NAME="Andrew Kuttor"
 export GIT_COMMITTER_EMAIL="andrew.kuttor@gmail.com"
+export GIT_CONFIG_GLOBAL="$HOME/.config/git/config"
+export GIT_CONFIG_SYSTEM="$HOME/.config/git/config"
+export GIT_CONFIG="$HOME/.config/git/config"
 
 # -- autoload functions ---------------------------------------------------------------------------
 setopt EXTENDED_GLOB

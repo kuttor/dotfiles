@@ -1,50 +1,19 @@
-#!/usr/bin/env conf
-
-# Don't let ripgrep vomit really long lines to my terminal, and show a preview.
---max-columns=150
---max-columns-preview
-
-# Add my 'web' type.
---type-add
-web:*.{html,css,js}*
-
-# Search hidden files / directories (e.g. dotfiles) by default
---hidden
-
-# Using glob patterns to include/exclude files or folders
---glob=!.git/*
-
-# or
---glob
-!.git/*
-
-# Set the colors.
---colors=line:none
---colors=line:style:bold
-
-# Because who cares about case!?
---smart-case
-
-# you're so pretty
---pretty
-
-# search hidden files and directories.
---hidden
-
-# Set the colors to match the Catpuccin theme
---colors 'path:fg:173,129,168'  # Catpuccin Mauve
---colors 'path:bg:45,45,45'     # Dark background
---colors 'path:style:bold'
---colors 'line:fg:129,161,193'  # Catpuccin Blue
---colors 'line:bg:45,45,45'     # Uniform background with path
---colors 'line:style:normal'
---colors 'match:fg:255,184,108' # Catpuccin Peach
---colors 'match:bg:65,65,65'    # Slightly lighter background for matches
---colors 'match:style:bold'
---colors 'match:style:underline' # Underline matches for emphasis
-
-# Files/folders to ignore
---glob=!**/*.js.map
---glob=!**/__snapshots__/*
---glob=!.DS_Store
-
+--max-columns=150                 # Limit the width of the output
+--max-columns-preview             # Show a preview of the file
+--type-add="web:*.{html,css,js}*" # Add my 'web' type.
+--glob="!.git/*"                  # Ignore git files
+--glob="!**/*.js.map"             # Ignore js.map files
+--glob="!**/__snapshots__/*"      # Ignore __snapshots__ folders
+--glob="!.DS_Store"               # Ignore .DS_Store files
+--smart-case                      # Case-insensitive search
+--pretty                          # Pretty output
+--colors="path:fg:173,129,168"    # Catpuccin Mauve
+--colors="path:bg:45,45,45"       # Dark background
+--colors="path:style:bold"        # Bold path
+--colors="line:fg:129,161,193"    # Catpuccin Blue
+--colors="line:bg:45,45,45"       # Uniform background with path
+--colors="line:style:normal"      # Normal line style
+--colors="match:fg:255,184,108"   # Catpuccin Peach
+--colors="match:bg:65,65,65"      # Slightly lighter background for matches
+--colors="match:style:bold"       # Bold matches
+--colors="match:style:underline"  # Underline matches for emphasis
