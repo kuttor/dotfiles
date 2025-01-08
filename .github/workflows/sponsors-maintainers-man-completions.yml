@@ -70,13 +70,13 @@ jobs:
 
           if git ls-remote --exit-code --heads origin "${BRANCH}"
           then
-            git checkout "${BRANCH}"
+            git checkout --force "${BRANCH}"
             git checkout "README.md" \
                          "docs/Manpage.md" \
                          "manpages/brew.1" \
                          "completions"
           else
-            git checkout --no-track -B "${BRANCH}" origin/master
+            git checkout --force --no-track -B "${BRANCH}" origin/master
           fi
 
           if brew update-sponsors
