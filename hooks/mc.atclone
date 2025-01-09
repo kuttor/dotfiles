@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+verify mc --alias cp && alias cc="mc "

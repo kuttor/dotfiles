@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+
+# oneper - A function to print each item on a new line based on a specified delimiter
+
+oneper() {
+    local delimiter="$1"
+    local input_source="$2"
+
+    # Determine the delimiter based on the input argument
+    case "$delimiter" in
+        --line=space)
+            delimiter=' '
+            ;;
+        --line=comma)
+            delimiter=','
+            ;;
+        --line=colon)
+            delimiter=':'
+            ;;
+        --line=semicolon)
+            delimiter=';'
+            ;;
+        *)
+            echo "Unsupported delimiter"
+            return 1
+            ;;
+    esac
+
+    # Read from the input source and replace the delimiter with newlines
+    if [[ -f "$input_source" ]]; then
+        # Input source is a file
+        cat "$input_source" | tr "$delimiter" '\n'
+    else
+        # Assume input source is a variable or piped input
+        echo "$input_source" | tr "$delimiter" '\n'
+    fi
+}
