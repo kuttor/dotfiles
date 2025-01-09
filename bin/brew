@@ -150,7 +150,7 @@ export_homebrew_env_file() {
     do
       [[ "${line}" = "${VAR}"* ]] && invalid_variable="${VAR}"
     done
-    [[ -n "${invalid_variable}" ]] && continue
+    [[ -n "${invalid_variable:-}" ]] && continue
 
     export "${line?}"
   done <"${env_file}"
