@@ -29,7 +29,8 @@ module Superenv
     self["HOMEBREW_OPTIMIZATION_LEVEL"] = "O2"
     self["HOMEBREW_DYNAMIC_LINKER"] = determine_dynamic_linker_path
     self["HOMEBREW_RPATH_PATHS"] = determine_rpath_paths(@formula)
-    self["M4"] = "#{HOMEBREW_PREFIX}/opt/m4/bin/m4" if deps.any? { |d| ["libtool", "bison"].include?(d.name) }
+    m4_path_deps = ["libtool", "bison"]
+    self["M4"] = "#{HOMEBREW_PREFIX}/opt/m4/bin/m4" if deps.any? { m4_path_deps.include?(_1.name) }
   end
 
   def homebrew_extra_paths
