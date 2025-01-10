@@ -252,7 +252,7 @@ module Homebrew
           when "lib"
             print_dir pn do |pnn|
               # dylibs have multiple symlinks and we don't care about them
-              (pnn.extname == ".dylib" || pnn.extname == ".pc") && !pnn.symlink?
+              [".dylib", ".pc"].include?(pnn.extname) && !pnn.symlink?
             end
           when ".brew"
             next # Ignore .brew
