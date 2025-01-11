@@ -12,8 +12,8 @@ module SharedAudits
   def self.eol_data(product, cycle)
     @eol_data ||= T.let({}, T.nilable(T::Hash[String, T.untyped]))
     @eol_data["#{product}/#{cycle}"] ||= begin
-      out, _, status = Utils::Curl.curl_output("--location", "https://endoflife.date/api/#{product}/#{cycle}.json")
-      json = JSON.parse(out) if status.success?
+      result = Utils::Curl.curl_output("--location", "https://endoflife.date/api/#{product}/#{cycle}.json")
+      json = JSON.parse(result.stdout) if result.status.success?
       json = nil if json&.dig("message")&.include?("Product not found")
       json
     end
@@ -75,8 +75,8 @@ module SharedAudits
   def self.gitlab_repo_data(user, repo)
     @gitlab_repo_data ||= T.let({}, T.nilable(T::Hash[String, T.untyped]))
     @gitlab_repo_data["#{user}/#{repo}"] ||= begin
-      out, _, status = Utils::Curl.curl_output("https://gitlab.com/api/v4/projects/#{user}%2F#{repo}")
-      json = JSON.parse(out) if status.success?
+      result = Utils::Curl.curl_output("https://gitlab.com/api/v4/projects/#{user}%2F#{repo}")
+      json = JSON.parse(result.stdout) if result.status.success?
       json = nil if json&.dig("message")&.include?("404 Project Not Found")
       json
     end
@@ -87,10 +87,10 @@ module SharedAudits
     id = "#{user}/#{repo}/#{tag}"
     @gitlab_release_data ||= T.let({}, T.nilable(T::Hash[String, T.untyped]))
     @gitlab_release_data[id] ||= begin
-      out, _, status = Utils::Curl.curl_output(
+      result = Utils::Curl.curl_output(
         "https://gitlab.com/api/v4/projects/#{user}%2F#{repo}/releases/#{tag}", "--fail"
       )
-      JSON.parse(out) if status.success?
+      JSON.parse(result.stdout) if result.status.success?
     end
   end
 
@@ -154,10 +154,10 @@ module SharedAudits
   sig { params(user: String, repo: String).returns(T.nilable(String)) }
   def self.bitbucket(user, repo)
     api_url = "https://api.bitbucket.org/2.0/repositories/#{user}/#{repo}"
-    out, _, status = Utils::Curl.curl_output("--request", "GET", api_url)
-    return unless status.success?
+    result = Utils::Curl.curl_output("--request", "GET", api_url)
+    return unless result.status.success?
 
-    metadata = JSON.parse(out)
+    metadata = JSON.parse(result.stdout)
     return if metadata.nil?
 
     return "Uses deprecated Mercurial support in Bitbucket" if metadata["scm"] == "hg"
@@ -166,16 +166,16 @@ module SharedAudits
 
     return "Bitbucket repository too new (<30 days old)" if Date.parse(metadata["created_on"]) >= (Date.today - 30)
 
-    forks_out, _, forks_status = Utils::Curl.curl_output("--request", "GET", "#{api_url}/forks")
-    return unless forks_status.success?
+    forks_result = Utils::Curl.curl_output("--request", "GET", "#{api_url}/forks")
+    return unless forks_result.status.success?
 
-    watcher_out, _, watcher_status = Utils::Curl.curl_output("--request", "GET", "#{api_url}/watchers")
-    return unless watcher_status.success?
+    watcher_result = Utils::Curl.curl_output("--request", "GET", "#{api_url}/watchers")
+    return unless watcher_result.status.success?
 
-    forks_metadata = JSON.parse(forks_out)
+    forks_metadata = JSON.parse(forks_result.stdout)
     return if forks_metadata.nil?
 
-    watcher_metadata = JSON.parse(watcher_out)
+    watcher_metadata = JSON.parse(watcher_result.stdout)
     return if watcher_metadata.nil?
 
     return if forks_metadata["size"] >= 30 || watcher_metadata["size"] >= 75

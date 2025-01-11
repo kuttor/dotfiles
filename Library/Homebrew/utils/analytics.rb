@@ -289,7 +289,7 @@ module Utils
         formula_version_urls = output.stdout
                                      .scan(%r{/orgs/Homebrew/packages/#{formula_url_suffix}\d+\?tag=[^"]+})
                                      .map do |url|
-          url.sub("/orgs/Homebrew/packages/", "/Homebrew/homebrew-core/pkgs/")
+          T.cast(url, String).sub("/orgs/Homebrew/packages/", "/Homebrew/homebrew-core/pkgs/")
         end
         return if formula_version_urls.empty?
 
@@ -304,9 +304,9 @@ module Utils
           )
           next if last_thirty_days_match.blank?
 
-          last_thirty_days_downloads = last_thirty_days_match.captures.first.tr(",", "")
+          last_thirty_days_downloads = T.must(last_thirty_days_match.captures.first).tr(",", "")
           thirty_day_download_count += if (millions_match = last_thirty_days_downloads.match(/(\d+\.\d+)M/).presence)
-            millions_match.captures.first.to_f * 1_000_000
+            (millions_match.captures.first.to_f * 1_000_000).to_i
           else
             last_thirty_days_downloads.to_i
           end

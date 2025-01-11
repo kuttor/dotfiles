@@ -15,14 +15,16 @@ module Repology
     last_package_in_response += "/" if last_package_in_response.present?
     url = "https://repology.org/api/v1/projects/#{last_package_in_response}?inrepo=#{repository}&outdated=1"
 
-    output, errors, = Utils::Curl.curl_output(url.to_s, "--silent",
-                                              use_homebrew_curl: !Utils::Curl.curl_supports_tls13?)
-    JSON.parse(output)
+    result = Utils::Curl.curl_output(
+      "--silent", url.to_s,
+      use_homebrew_curl: !Utils::Curl.curl_supports_tls13?
+    )
+    JSON.parse(result.stdout)
   rescue
     if Homebrew::EnvConfig.developer?
-      $stderr.puts errors
+      $stderr.puts result&.stderr
     else
-      odebug errors
+      odebug result&.stderr
     end
 
     raise
@@ -32,14 +34,16 @@ module Repology
   def self.single_package_query(name, repository:)
     url = "https://repology.org/api/v1/project/#{name}"
 
-    output, errors, = Utils::Curl.curl_output("--location", "--silent", url.to_s,
-                                              use_homebrew_curl: !Utils::Curl.curl_supports_tls13?)
+    result = Utils::Curl.curl_output(
+      "--location", "--silent", url.to_s,
+      use_homebrew_curl: !Utils::Curl.curl_supports_tls13?
+    )
 
-    data = JSON.parse(output)
+    data = JSON.parse(result.stdout)
     { name => data }
   rescue => e
     require "utils/backtrace"
-    error_output = [errors, "#{e.class}: #{e}", Utils::Backtrace.clean(e)].compact
+    error_output = [result&.stderr, "#{e.class}: #{e}", Utils::Backtrace.clean(e)].compact
     if Homebrew::EnvConfig.developer?
       $stderr.puts(*error_output)
     else

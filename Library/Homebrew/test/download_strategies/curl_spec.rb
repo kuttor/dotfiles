@@ -37,7 +37,7 @@ RSpec.describe CurlDownloadStrategy do
     it "calls curl with default arguments" do
       expect(strategy).to receive(:curl).with(
         "--remote-time",
-        "--output", an_instance_of(Pathname),
+        "--output", an_instance_of(String),
         # example.com supports partial requests.
         "--continue-at", "-",
         "--location",
