@@ -3,8 +3,11 @@
 gem:
   exclude:
     # These conflict with the rbi files provided by sorbet:
+    - base64
     - benchmark
+    - bigdecimal
     - json
+    - logger
     # These aren't needed:
     - coderay
     - diff-lcs
