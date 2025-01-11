@@ -138,6 +138,12 @@ RSpec.describe "Utils::Curl" do
       },
     }
 
+    response_hash[:ok_no_status_text] = response_hash[:ok].deep_dup
+    response_hash[:ok_no_status_text].delete(:status_text)
+
+    response_hash[:ok_blank_header_value] = response_hash[:ok].deep_dup
+    response_hash[:ok_blank_header_value][:headers]["range"] = ""
+
     response_hash[:redirection] = {
       status_code: "301",
       status_text: "Moved Permanently",
@@ -257,6 +263,16 @@ RSpec.describe "Utils::Curl" do
       \r
     EOS
 
+    response_text[:ok_no_status_text] = response_text[:ok].sub(" #{response_hash[:ok][:status_text]}", "")
+    response_text[:ok_blank_header_name] = response_text[:ok].sub(
+      "#{response_hash[:ok][:headers]["date"]}\r\n",
+      "#{response_hash[:ok][:headers]["date"]}\r\n: Test\r\n",
+    )
+    response_text[:ok_blank_header_value] = response_text[:ok].sub(
+      "#{response_hash[:ok][:headers]["date"]}\r\n",
+      "#{response_hash[:ok][:headers]["date"]}\r\nRange:\r\n",
+    )
+
     response_text[:redirection] = response_text[:ok].sub(
       "HTTP/1.1 #{response_hash[:ok][:status_code]} #{response_hash[:ok][:status_text]}\r",
       "HTTP/1.1 #{response_hash[:redirection][:status_code]} #{response_hash[:redirection][:status_text]}\r\n" \
@@ -306,7 +322,27 @@ RSpec.describe "Utils::Curl" do
     body
   end
 
-  describe "curl_args" do
+  describe "::curl_executable" do
+    it "returns `HOMEBREW_BREWED_CURL_PATH` when `use_homebrew_curl` is `true`" do
+      expect(curl_executable(use_homebrew_curl: true)).to eq(HOMEBREW_BREWED_CURL_PATH)
+    end
+
+    it "returns curl shim path when `use_homebrew_curl` is `false` or omitted" do
+      curl_shim_path = HOMEBREW_SHIMS_PATH/"shared/curl"
+      expect(curl_executable(use_homebrew_curl: false)).to eq(curl_shim_path)
+      expect(curl_executable).to eq(curl_shim_path)
+    end
+  end
+
+  describe "::curl_path" do
+    it "returns a curl path string" do
+      expect(curl_path).to match(%r{[^/]+(?:/[^/]+)*})
+    end
+  end
+
+  describe "::curl_args" do
+    include Context
+
     let(:args) { ["foo"] }
     let(:user_agent_string) { "Lorem ipsum dolor sit amet" }
 
@@ -388,6 +424,11 @@ RSpec.describe "Utils::Curl" do
       expect { curl_args(*args, retry_max_time: "test") }.to raise_error(TypeError)
     end
 
+    it "uses `--show-error` when :show_error is `true`" do
+      expect(curl_args(*args, show_error: true)).to include("--show-error")
+      expect(curl_args(*args, show_error: false)).not_to include("--show-error")
+    end
+
     it "uses `--referer` when :referer is present" do
       expect(curl_args(*args, referer: "https://brew.sh").join(" ")).to include("--referer https://brew.sh")
     end
@@ -426,9 +467,62 @@ RSpec.describe "Utils::Curl" do
       expect(curl_args(*args).join(" ")).to include("--fail")
       expect(curl_args(*args, show_output: true).join(" ")).not_to include("--fail")
     end
+
+    it "uses `--progress-bar` outside of a `--verbose` context" do
+      expect(curl_args(*args).join(" ")).to include("--progress-bar")
+      with_context verbose: true do
+        expect(curl_args(*args).join(" ")).not_to include("--progress-bar")
+      end
+    end
+
+    context "when `EnvConfig.curl_verbose?` is `true`" do
+      before do
+        allow(Homebrew::EnvConfig).to receive(:curl_verbose?).and_return(true)
+      end
+
+      it "uses `--verbose`" do
+        expect(curl_args(*args).join(" ")).to include("--verbose")
+      end
+    end
+
+    context "when `EnvConfig.curl_verbose?` is `false`" do
+      before do
+        allow(Homebrew::EnvConfig).to receive(:curl_verbose?).and_return(false)
+      end
+
+      it "doesn't use `--verbose`" do
+        expect(curl_args(*args).join(" ")).not_to include("--verbose")
+      end
+    end
+
+    context "when `$stdout.tty?` is `false`" do
+      before do
+        allow($stdout).to receive(:tty?).and_return(false)
+      end
+
+      it "uses `--silent`" do
+        expect(curl_args(*args).join(" ")).to include("--silent")
+      end
+    end
+
+    context "when `$stdout.tty?` is `true`" do
+      before do
+        allow($stdout).to receive(:tty?).and_return(true)
+      end
+
+      it "doesn't use `--silent` outside of a `--quiet` context" do
+        with_context quiet: false do
+          expect(curl_args(*args).join(" ")).not_to include("--silent")
+        end
+
+        with_context quiet: true do
+          expect(curl_args(*args).join(" ")).to include("--silent")
+        end
+      end
+    end
   end
 
-  describe "url_protected_by_cloudflare?" do
+  describe "::url_protected_by_cloudflare?" do
     it "returns `true` when a URL is protected by Cloudflare" do
       expect(url_protected_by_cloudflare?(details[:cloudflare][:single_cookie])).to be(true)
       expect(url_protected_by_cloudflare?(details[:cloudflare][:multiple_cookies])).to be(true)
@@ -448,7 +542,7 @@ RSpec.describe "Utils::Curl" do
     end
   end
 
-  describe "url_protected_by_incapsula?" do
+  describe "::url_protected_by_incapsula?" do
     it "returns `true` when a URL is protected by Cloudflare" do
       expect(url_protected_by_incapsula?(details[:incapsula][:single_cookie_visid_incap])).to be(true)
       expect(url_protected_by_incapsula?(details[:incapsula][:single_cookie_incap_ses])).to be(true)
@@ -468,7 +562,54 @@ RSpec.describe "Utils::Curl" do
     end
   end
 
-  describe "#parse_curl_output" do
+  describe "::curl_version" do
+    it "returns a curl version string" do
+      expect(curl_version).to match(/^v?(\d+(?:\.\d+)+)$/)
+    end
+  end
+
+  describe "::curl_supports_fail_with_body?" do
+    it "returns `true` if curl version is 7.76.0 or higher" do
+      allow_any_instance_of(Utils::Curl).to receive(:curl_version).and_return(Version.new("7.76.0"))
+      expect(curl_supports_fail_with_body?).to be(true)
+
+      allow_any_instance_of(Utils::Curl).to receive(:curl_version).and_return(Version.new("7.76.1"))
+      expect(curl_supports_fail_with_body?).to be(true)
+    end
+
+    it "returns `false` if curl version is lower than 7.76.0" do
+      allow_any_instance_of(Utils::Curl).to receive(:curl_version).and_return(Version.new("7.75.0"))
+      expect(curl_supports_fail_with_body?).to be(false)
+    end
+  end
+
+  describe "::curl_supports_tls13?" do
+    it "returns `true` if curl command is successful" do
+      allow_any_instance_of(Kernel).to receive(:quiet_system).and_return(true)
+      expect(curl_supports_tls13?).to be(true)
+    end
+
+    it "returns `false` if curl command is not successful" do
+      allow_any_instance_of(Kernel).to receive(:quiet_system).and_return(false)
+      expect(curl_supports_tls13?).to be(false)
+    end
+  end
+
+  describe "::http_status_ok?" do
+    it "returns `true` when `status` is 1xx or 2xx" do
+      expect(http_status_ok?("200")).to be(true)
+    end
+
+    it "returns `false` when `status` is not 1xx or 2xx" do
+      expect(http_status_ok?("301")).to be(false)
+    end
+
+    it "returns `false` when `status` is `nil`" do
+      expect(http_status_ok?(nil)).to be(false)
+    end
+  end
+
+  describe "::parse_curl_output" do
     it "returns a correct hash when curl output contains response(s) and body" do
       expect(parse_curl_output("#{response_text[:ok]}#{body[:default]}"))
         .to eq({ responses: [response_hash[:ok]], body: body[:default] })
@@ -505,13 +646,25 @@ RSpec.describe "Utils::Curl" do
     it "returns correct hash when curl output is blank" do
       expect(parse_curl_output("")).to eq({ responses: [], body: "" })
     end
+
+    it "errors if response count exceeds `max_iterations`" do
+      expect do
+        parse_curl_output(response_text[:redirections_to_ok], max_iterations: 1)
+      end.to raise_error("Too many redirects (max = 1)")
+    end
   end
 
-  describe "#parse_curl_response" do
+  describe "::parse_curl_response" do
     it "returns a correct hash when given HTTP response text" do
       expect(parse_curl_response(response_text[:ok])).to eq(response_hash[:ok])
+      expect(parse_curl_response(response_text[:ok_no_status_text])).to eq(response_hash[:ok_no_status_text])
+      expect(parse_curl_response(response_text[:ok_blank_header_value])).to eq(response_hash[:ok_blank_header_value])
       expect(parse_curl_response(response_text[:redirection])).to eq(response_hash[:redirection])
       expect(parse_curl_response(response_text[:duplicate_header])).to eq(response_hash[:duplicate_header])
+    end
+
+    it "skips over response header lines with blank header name" do
+      expect(parse_curl_response(response_text[:ok_blank_header_name])).to eq(response_hash[:ok])
     end
 
     it "returns an empty hash when given an empty string" do
@@ -519,7 +672,7 @@ RSpec.describe "Utils::Curl" do
     end
   end
 
-  describe "#curl_response_last_location" do
+  describe "::curl_response_last_location" do
     it "returns the last location header when given an array of HTTP response hashes" do
       expect(curl_response_last_location([
         response_hash[:redirection],
@@ -577,12 +730,20 @@ RSpec.describe "Utils::Curl" do
       ).to eq(response_hash[:redirection_parent_relative][:headers]["location"].sub(/^\./, "https://brew.sh/test1"))
     end
 
+    it "skips response hashes without a `:headers` value" do
+      expect(curl_response_last_location([
+        response_hash[:redirection],
+        { status_code: "404", status_text: "Not Found" },
+        response_hash[:ok],
+      ])).to eq(response_hash[:redirection][:headers]["location"])
+    end
+
     it "returns nil when the response hash doesn't contain a location header" do
       expect(curl_response_last_location([response_hash[:ok]])).to be_nil
     end
   end
 
-  describe "#curl_response_follow_redirections" do
+  describe "::curl_response_follow_redirections" do
     it "returns the original URL when there are no location headers" do
       expect(
         curl_response_follow_redirections(
@@ -633,6 +794,19 @@ RSpec.describe "Utils::Curl" do
           "https://brew.sh/test1/test2",
         ),
       ).to eq("#{location_urls[0]}example/")
+    end
+
+    it "skips response hashes without a `:headers` value" do
+      expect(
+        curl_response_follow_redirections(
+          [
+            response_hash[:redirection_root_relative],
+            { status_code: "404", status_text: "Not Found" },
+            response_hash[:ok],
+          ],
+          "https://brew.sh/test1/test2",
+        ),
+      ).to eq("https://brew.sh/example/")
     end
   end
 end

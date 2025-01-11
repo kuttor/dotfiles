@@ -702,11 +702,10 @@ module Utils
     sig { params(response_text: String).returns(T::Hash[Symbol, T.untyped]) }
     def parse_curl_response(response_text)
       response = {}
-      return response unless response_text.match?(HTTP_STATUS_LINE_REGEX)
+      return response unless (match = response_text.match(HTTP_STATUS_LINE_REGEX))
 
       # Parse the status line and remove it
-      match = T.must(response_text.match(HTTP_STATUS_LINE_REGEX))
-      response[:status_code] = match["code"] if match["code"].present?
+      response[:status_code] = match["code"]
       response[:status_text] = match["text"] if match["text"].present?
       response_text = response_text.sub(%r{^HTTP/.* (\d+).*$\s*}, "")
 
@@ -714,18 +713,18 @@ module Utils
       response[:headers] = {}
       response_text.split("\r\n").each do |line|
         header_name, header_value = line.split(/:\s*/, 2)
-        next if header_name.blank?
+        next if header_name.blank? || header_value.nil?
 
         header_name = header_name.strip.downcase
-        header_value&.strip!
+        header_value.strip!
 
         case response[:headers][header_name]
-        when nil
-          response[:headers][header_name] = header_value
         when String
           response[:headers][header_name] = [response[:headers][header_name], header_value]
         when Array
           response[:headers][header_name].push(header_value)
+        else
+          response[:headers][header_name] = header_value
         end
 
         response[:headers][header_name]
