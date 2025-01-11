@@ -186,8 +186,8 @@ module Homebrew
           cask:              Cask::Cask,
           new_hash:          T.any(NilClass, String, Symbol),
           new_version:       BumpVersionParser,
-          replacement_pairs: T::Array[[T.any(Regexp, String), T.any(Regexp, String)]],
-        ).returns(T::Array[[T.any(Regexp, String), T.any(Regexp, String)]])
+          replacement_pairs: T::Array[[T.any(Regexp, String), T.any(Pathname, String)]],
+        ).returns(T::Array[[T.any(Regexp, String), T.any(Pathname, String)]])
       }
       def replace_version_and_checksum(cask, new_hash, new_version, replacement_pairs)
         # When blocks are absent, arch is not relevant. For consistency, we simulate the arm architecture.
