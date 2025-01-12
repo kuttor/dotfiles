@@ -1061,6 +1061,7 @@ class Tap
     cache[:all] ||= begin
       core_taps = [
         CoreTap.instance,
+        # The conditional is valid here because we only want the cask tap on macOS.
         (CoreCaskTap.instance if OS.mac?), # rubocop:disable Homebrew/MoveToExtendOS
       ].compact
 

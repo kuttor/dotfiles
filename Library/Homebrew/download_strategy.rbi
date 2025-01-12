@@ -1,6 +1,6 @@
 # typed: strict
 
-# This is a third-party implementation
+# This is a third-party implementation.
 # rubocop:disable Lint/StructNewOverride
 class Mechanize::HTTP
   ContentDisposition = Struct.new :type, :filename, :creation_date,
@@ -8,6 +8,7 @@ class Mechanize::HTTP
 end
 # rubocop:enable Lint/StructNewOverride
 
+# This is a third-party implementation.
 # rubocop:disable Style/OptionalBooleanParameter
 class Mechanize::HTTP::ContentDispositionParser
   sig {

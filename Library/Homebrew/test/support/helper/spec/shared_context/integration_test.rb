@@ -6,6 +6,7 @@ require "formula_installer"
 
 RSpec::Matchers.define_negated_matcher :be_a_failure, :be_a_success
 
+# These shared contexts starting with `when` don't make sense.
 RSpec.shared_context "integration test" do # rubocop:disable RSpec/ContextWording
   extend RSpec::Matchers::DSL
 

@@ -2,7 +2,8 @@
 
 require "commands"
 
-RSpec.shared_context "custom internal commands" do # rubocop:disable RSpec/ContextWording
+# These shared contexts starting with `when` don't make sense.
+RSpec.shared_context "in custom internal commands" do # rubocop:disable RSpec/ContextWording
   let(:cmds) do
     [
       # internal commands

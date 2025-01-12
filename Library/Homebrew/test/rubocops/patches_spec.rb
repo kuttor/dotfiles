@@ -67,6 +67,7 @@ RSpec.describe RuboCop::Cop::FormulaAudit::Patches do
           expect_offense_hash(message: <<~EOS.chomp, severity: :convention, line: 5, column: 4, source:)
             FormulaAudit/Patches: Patches from Debian should be https://, not http: #{patch_url}
           EOS
+        # GitHub patch diff regexps can't be any shorter.
         # rubocop:disable Layout/LineLength
         elsif patch_url.match?(%r{https?://patch-diff\.githubusercontent\.com/raw/(.+)/(.+)/pull/(.+)\.(?:diff|patch)})
           # rubocop:enable Layout/LineLength
@@ -232,6 +233,7 @@ RSpec.describe RuboCop::Cop::FormulaAudit::Patches do
           expect_offense_hash(message: <<~EOS.chomp, severity: :convention, line: 5, column: 8, source:)
             FormulaAudit/Patches: GitLab patches should end with .diff, not .patch: #{patch_url}
           EOS
+        # GitHub patch diff regexps can't be any shorter.
         # rubocop:disable Layout/LineLength
         elsif patch_url.match?(%r{https?://patch-diff\.githubusercontent\.com/raw/(.+)/(.+)/pull/(.+)\.(?:diff|patch)})
           # rubocop:enable Layout/LineLength

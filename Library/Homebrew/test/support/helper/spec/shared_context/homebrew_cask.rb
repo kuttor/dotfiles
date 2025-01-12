@@ -31,6 +31,7 @@ module Cask
   end
 end
 
+# These shared contexts starting with `when` don't make sense.
 RSpec.shared_context "Homebrew Cask", :needs_macos do # rubocop:disable RSpec/ContextWording
   around do |example|
     third_party_tap = Tap.fetch("third-party", "tap")

@@ -70,6 +70,7 @@ module Homebrew
       fi.finish
     rescue FormulaInstallationAlreadyAttemptedError
       nil
+    # Any other exceptions we want to restore the previous keg and report the error.
     rescue Exception # rubocop:disable Lint/RescueException
       ignore_interrupts { restore_backup(keg, link_keg, verbose:) }
       raise
