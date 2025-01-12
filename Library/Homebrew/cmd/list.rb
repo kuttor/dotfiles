@@ -245,6 +245,7 @@ module Homebrew
     class PrettyListing
       sig { params(path: T.any(String, Pathname, Keg)).void }
       def initialize(path)
+        valid_lib_extensions = [".dylib", ".pc"]
         Pathname.new(path).children.sort_by { |p| p.to_s.downcase }.each do |pn|
           case pn.basename.to_s
           when "bin", "sbin"
@@ -252,7 +253,7 @@ module Homebrew
           when "lib"
             print_dir pn do |pnn|
               # dylibs have multiple symlinks and we don't care about them
-              (pnn.extname == ".dylib" || pnn.extname == ".pc") && !pnn.symlink?
+              valid_lib_extensions.include?(pnn.extname) && !pnn.symlink?
             end
           when ".brew"
             next # Ignore .brew

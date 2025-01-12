@@ -176,7 +176,7 @@ class Tab < AbstractTab
     tab.source ||= {}
 
     tab.tap = tab.tapped_from if !tab.tapped_from.nil? && tab.tapped_from != "path or URL"
-    tab.tap = "homebrew/core" if tab.tap == "mxcl/master" || tab.tap == "Homebrew/homebrew"
+    tab.tap = "homebrew/core" if ["mxcl/master", "Homebrew/homebrew"].include?(tab.tap)
 
     if tab.source["spec"].nil?
       version = PkgVersion.parse(File.basename(File.dirname(path)))
