@@ -352,7 +352,11 @@ homebrew-update() {
         HOMEBREW_SIMULATE_FROM_CURRENT_BRANCH=1
         ;;
       --auto-update) export HOMEBREW_UPDATE_AUTO=1 ;;
-      --*) ;;
+      --*)
+        onoe "Unknown option: ${option}"
+        brew help update
+        exit 1
+        ;;
       -*)
         [[ "${option}" == *v* ]] && HOMEBREW_VERBOSE=1
         [[ "${option}" == *q* ]] && HOMEBREW_QUIET=1
