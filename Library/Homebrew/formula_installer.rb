@@ -484,8 +484,8 @@ on_request: installed_on_request?, options:)
     if pour_bottle?
       begin
         pour
+      # Catch any other types of exceptions as they leave us with nothing installed.
       rescue Exception # rubocop:disable Lint/RescueException
-        # any exceptions must leave us with nothing installed
         ignore_interrupts do
           begin
             FileUtils.rm_r(formula.prefix) if formula.prefix.directory?
@@ -825,6 +825,7 @@ on_request: installed_on_request?, options:)
     oh1 "Installing #{formula.full_name} dependency: #{Formatter.identifier(dep.name)}"
     fi.install
     fi.finish
+  # Handle all possible exceptions installing deps.
   rescue Exception => e # rubocop:disable Lint/RescueException
     ignore_interrupts do
       tmp_keg.rename(installed_keg.to_path) if tmp_keg && !installed_keg.directory?
@@ -1022,6 +1023,7 @@ on_request: installed_on_request?, options:)
     formula.update_head_version
 
     raise "Empty installation" if !formula.prefix.directory? || Keg.new(formula.prefix).empty_installation?
+  # Handle all possible exceptions when building.
   rescue Exception => e # rubocop:disable Lint/RescueException
     if e.is_a? BuildError
       e.formula = formula
@@ -1099,6 +1101,7 @@ on_request: installed_on_request?, options:)
       puts "You can try again using:"
       puts "  brew link #{formula.name}"
       @show_summary_heading = true
+    # Handle all other possible exceptions when linking.
     rescue Exception => e # rubocop:disable Lint/RescueException
       ofail "An unexpected error occurred during the `brew link` step"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
@@ -1151,6 +1154,7 @@ on_request: installed_on_request?, options:)
     launchd_service_path.chmod 0644
     log = formula.var/"log"
     log.mkpath if service.include? log.to_s
+  # Handle all possible exceptions when installing service files.
   rescue Exception => e # rubocop:disable Lint/RescueException
     puts e
     ofail "Failed to install service files"
@@ -1162,6 +1166,7 @@ on_request: installed_on_request?, options:)
   sig { params(keg: Keg).void }
   def fix_dynamic_linkage(keg)
     keg.fix_dynamic_linkage
+  # Rescue all possible exceptions when fixing linkage.
   rescue Exception => e # rubocop:disable Lint/RescueException
     ofail "Failed to fix install linkage"
     puts "The formula built, but you may encounter issues using it or linking other"
@@ -1177,6 +1182,7 @@ on_request: installed_on_request?, options:)
   def clean
     ohai "Cleaning" if verbose?
     Cleaner.new(formula).clean
+  # Handle all possible exceptions when cleaning does not complete.
   rescue Exception => e # rubocop:disable Lint/RescueException
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix."
@@ -1249,6 +1255,7 @@ on_request: installed_on_request?, options:)
         exec(*args)
       end
     end
+  # Handle all possible exceptions when postinstall does not complete.
   rescue Exception => e # rubocop:disable Lint/RescueException
     opoo "The post-install step did not complete successfully"
     puts "You can try again using:"

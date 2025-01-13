@@ -22,6 +22,7 @@ RSpec.describe MacOSVersion do
   specify "comparison with Symbol" do
     expect(version).to be > :high_sierra
     expect(version).to eq :mojave
+    # We're explicitly testing the `===` operator results here.
     expect(version).to be === :mojave # rubocop:disable Style/CaseEquality
     expect(version).to be < :catalina
   end
@@ -34,6 +35,7 @@ RSpec.describe MacOSVersion do
   specify "comparison with String" do
     expect(version).to be > "10.3"
     expect(version).to eq "10.14"
+    # We're explicitly testing the `===` operator results here.
     expect(version).to be === "10.14" # rubocop:disable Style/CaseEquality
     expect(version).to be < "10.15"
   end
@@ -41,6 +43,7 @@ RSpec.describe MacOSVersion do
   specify "comparison with Version" do
     expect(version).to be > Version.new("10.3")
     expect(version).to eq Version.new("10.14")
+    # We're explicitly testing the `===` operator results here.
     expect(version).to be === Version.new("10.14") # rubocop:disable Style/CaseEquality
     expect(version).to be < Version.new("10.15")
   end

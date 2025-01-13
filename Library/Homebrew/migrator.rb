@@ -223,6 +223,7 @@ class Migrator
     EOS
   rescue Interrupt
     ignore_interrupts { backup_oldname }
+  # Any exception means the migration did not complete.
   rescue Exception => e # rubocop:disable Lint/RescueException
     onoe "The migration did not complete successfully."
     puts e
@@ -357,6 +358,7 @@ class Migrator
       puts
       puts "You can try again using:"
       puts "  brew link #{formula.name}"
+    # Any exception means the `brew link` step did not complete.
     rescue Exception => e # rubocop:disable Lint/RescueException
       onoe "An unexpected error occurred during linking"
       puts e

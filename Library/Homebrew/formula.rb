@@ -2903,6 +2903,7 @@ class Formula
             test
           end
         end
+      # Handle all possible exceptions running formula tests.
       rescue Exception # rubocop:disable Lint/RescueException
         staging.retain! if debug?
         raise

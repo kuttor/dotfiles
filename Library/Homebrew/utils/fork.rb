@@ -52,6 +52,7 @@ module Utils
           Process::UID.change_privilege(Process.euid) if Process.euid != Process.uid
 
           yield(error_pipe)
+        # This could be any type of exception, so rescue them all.
         rescue Exception => e # rubocop:disable Lint/RescueException
           error_hash = JSON.parse e.to_json
 

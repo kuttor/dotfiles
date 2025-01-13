@@ -53,6 +53,7 @@ begin
     timeout = ENV["HOMEBREW_TEST_TIMEOUT_SECS"]&.to_i || DEFAULT_TEST_TIMEOUT_SECONDS
     Timeout.timeout(timeout, &run_test)
   end
+# Any exceptions during the test run are reported.
 rescue Exception => e # rubocop:disable Lint/RescueException
   error_pipe.puts e.to_json
   error_pipe.close

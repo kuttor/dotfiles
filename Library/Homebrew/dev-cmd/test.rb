@@ -99,6 +99,7 @@ module Homebrew
                 exec(*exec_args)
               end
             end
+          # Rescue any possible exception types.
           rescue Exception => e # rubocop:disable Lint/RescueException
             retry if retry_test?(f)
 

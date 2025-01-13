@@ -200,6 +200,7 @@ rescue RuntimeError, SystemCallError => e
   end
 
   exit 1
+# Catch any other types of exceptions.
 rescue Exception => e # rubocop:disable Lint/RescueException
   onoe e
 

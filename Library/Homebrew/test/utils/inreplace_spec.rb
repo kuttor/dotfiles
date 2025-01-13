@@ -33,6 +33,7 @@ RSpec.describe Utils::Inreplace do
     it "raises error if there is nothing to replace in block form" do
       expect do
         described_class.inreplace(file.path) do |s|
+          # Using `gsub!` here is what we want, and it's only a test.
           s.gsub!("d", "f") # rubocop:disable Performance/StringReplacement
         end
       end.to raise_error(Utils::Inreplace::Error)

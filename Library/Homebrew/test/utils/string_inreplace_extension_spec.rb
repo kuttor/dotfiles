@@ -269,6 +269,7 @@ RSpec.describe StringInreplaceExtension do
     let(:string) { "foo" }
 
     it "replaces all occurrences" do
+      # Using `gsub!` here is what we want, and it's only a test.
       string_extension.gsub!("o", "e") # rubocop:disable Performance/StringReplacement
       expect(string_extension.inreplace_string).to eq("fee")
     end

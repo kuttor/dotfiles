@@ -626,6 +626,7 @@ class Reporter
           unless Formulary.factory(new_full_name).keg_only?
             system HOMEBREW_BREW_FILE, "link", new_full_name, "--overwrite"
           end
+        # Rescue any possible exception types.
         rescue Exception => e # rubocop:disable Lint/RescueException
           if Homebrew::EnvConfig.developer?
             require "utils/backtrace"

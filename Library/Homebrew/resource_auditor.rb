@@ -91,7 +91,8 @@ module Homebrew
 
     def audit_checksum
       return if spec_name == :head
-      # rubocop:disable Style/InvertibleUnlessCondition (non-invertible)
+      # This condition is non-invertible.
+      # rubocop:disable Style/InvertibleUnlessCondition
       return unless DownloadStrategyDetector.detect(url, using) <= CurlDownloadStrategy
       # rubocop:enable Style/InvertibleUnlessCondition
 

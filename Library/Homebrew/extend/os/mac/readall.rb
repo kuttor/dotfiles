@@ -31,6 +31,7 @@ module OS
           raise "Missing URL" if cask.url.nil?
         rescue Interrupt
           raise
+        # Handle all possible exceptions reading Casks.
         rescue Exception => e # rubocop:disable Lint/RescueException
           os_and_arch = "macOS #{current_macos_version} on #{arch}"
           onoe "Invalid cask (#{os_and_arch}): #{file}"

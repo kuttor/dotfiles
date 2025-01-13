@@ -74,6 +74,7 @@ module Readall
       end
     rescue Interrupt
       raise
+    # Handle all possible exceptions reading formulae.
     rescue Exception => e # rubocop:disable Lint/RescueException
       onoe "Invalid formula (#{bottle_tag}): #{file}"
       $stderr.puts e
