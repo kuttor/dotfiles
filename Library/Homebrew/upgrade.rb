@@ -132,8 +132,8 @@ module Homebrew
       if keg
         tab = keg.tab
         link_keg = keg.linked?
-        installed_as_dependency = tab.installed_as_dependency
-        installed_on_request = tab.installed_on_request
+        installed_as_dependency = tab.installed_as_dependency == true
+        installed_on_request = tab.installed_on_request == true
         build_bottle = tab.built_bottle?
       else
         link_keg = nil

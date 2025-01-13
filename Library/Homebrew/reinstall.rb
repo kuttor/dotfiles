@@ -25,8 +25,8 @@ module Homebrew
         keg = Keg.new(formula.opt_prefix.resolved_path)
         tab = keg.tab
         link_keg = keg.linked?
-        installed_as_dependency = tab.installed_as_dependency
-        installed_on_request = tab.installed_on_request
+        installed_as_dependency = tab.installed_as_dependency == true
+        installed_on_request = tab.installed_on_request == true
         build_bottle = tab.built_bottle?
         backup keg
       else

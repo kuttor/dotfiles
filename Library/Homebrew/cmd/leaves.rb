@@ -41,12 +41,12 @@ module Homebrew
 
       sig { params(formula: Formula).returns(T::Boolean) }
       def installed_on_request?(formula)
-        formula.any_installed_keg&.tab&.installed_on_request
+        formula.any_installed_keg&.tab&.installed_on_request == true
       end
 
       sig { params(formula: Formula).returns(T::Boolean) }
       def installed_as_dependency?(formula)
-        formula.any_installed_keg&.tab&.installed_as_dependency
+        formula.any_installed_keg&.tab&.installed_as_dependency == true
       end
     end
   end
