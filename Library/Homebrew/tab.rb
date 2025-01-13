@@ -16,11 +16,13 @@ class AbstractTab
   # Check whether the formula or cask was installed as a dependency.
   #
   # @api internal
+  sig { returns(T.nilable(T::Boolean)) } # TODO: change this to always return a boolean
   attr_accessor :installed_as_dependency
 
   # Check whether the formula or cask was installed on request.
   #
   # @api internal
+  sig { returns(T.nilable(T::Boolean)) } # TODO: change this to always return a boolean
   attr_accessor :installed_on_request
 
   attr_accessor :homebrew_version, :tabfile, :loaded_from_api, :time, :arch, :source, :built_on

@@ -800,12 +800,18 @@ on_request: installed_on_request?, options:)
     options |= inherited_options
     options &= df.options
 
+    installed_on_request = if df.any_version_installed? && tab.present? && tab.installed_on_request
+      true
+    else
+      false
+    end
+
     fi = FormulaInstaller.new(
       df,
       options:,
       link_keg:                   keg_had_linked_keg && keg_was_linked,
       installed_as_dependency:    true,
-      installed_on_request:       df.any_version_installed? && tab.present? && tab.installed_on_request,
+      installed_on_request:,
       force_bottle:               false,
       include_test_formulae:      @include_test_formulae,
       build_from_source_formulae: @build_from_source_formulae,
