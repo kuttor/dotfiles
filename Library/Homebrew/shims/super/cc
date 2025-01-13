@@ -40,7 +40,9 @@ class Cmd
 
   def initialize(arg0, args)
     @arg0 = arg0
-    @args = args.freeze
+    split_args = split_args_at_double_dash(args)
+    @args = split_args[0].freeze
+    @positional_args = split_args[1].freeze
     @config = ENV.fetch("HOMEBREW_CCCFG", "")
     @prefix = ENV["HOMEBREW_PREFIX"]
     @cellar = ENV["HOMEBREW_CELLAR"]
@@ -55,6 +57,15 @@ class Cmd
     @formula_buildpath = ENV["HOMEBREW_FORMULA_BUILDPATH"]
     # matches opt or cellar prefix and formula name
     @keg_regex = %r{(#{Regexp.escape(opt)}|#{Regexp.escape(cellar)})/([\w+-.@]+)}
+  end
+
+  def split_args_at_double_dash(args)
+    double_dash_index = args.find_index("--")
+    if double_dash_index
+      [args[...double_dash_index], args[double_dash_index..]]
+    else
+      [args, []]
+    end
   end
 
   def mode
@@ -130,7 +141,7 @@ class Cmd
       end
     end
 
-    case mode
+    optional_args = case mode
     when :ccld
       cflags + args + cppflags + ldflags
     when :cxxld
@@ -146,6 +157,8 @@ class Cmd
     when :ld
       ldflags + args
     end
+
+    optional_args + @positional_args
   end
 
   def refurbished_args
