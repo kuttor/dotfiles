@@ -260,6 +260,8 @@ class GitHubPackages
     # We run the preupload check twice to prevent TOCTOU bugs.
     result = preupload_check(user, token, skopeo, formula_full_name, bottle_hash,
                              keep_old:, dry_run:, warn_on_error:)
+    # Skip upload if preupload check returned early.
+    return if result.nil?
 
     formula_name, org, repo, version, rebuild, version_rebuild, image_name, image_uri, keep_old = *result
 
