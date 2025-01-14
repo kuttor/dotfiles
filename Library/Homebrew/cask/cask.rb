@@ -515,7 +515,7 @@ module Cask
     sig { returns(T.nilable(Homebrew::BundleVersion)) }
     def bundle_version
       @bundle_version ||= if (bundle = artifacts.find { |a| a.is_a?(Artifact::App) }&.target) &&
-                             (plist = Pathname("#{bundle}/Contents/Info.plist")) && plist.exist?
+                             (plist = Pathname("#{bundle}/Contents/Info.plist")) && plist.exist? && plist.readable?
         Homebrew::BundleVersion.from_info_plist(plist)
       end
     end
