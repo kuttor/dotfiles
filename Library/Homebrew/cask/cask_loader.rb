@@ -204,7 +204,7 @@ module Cask
 
         begin
           ohai "Downloading #{url}"
-          ::Utils::Curl.curl_download url, to: path
+          ::Utils::Curl.curl_download url.to_s, to: path
         rescue ErrorDuringExecution
           raise CaskUnavailableError.new(token, "Failed to download #{Formatter.url(url)}.")
         end

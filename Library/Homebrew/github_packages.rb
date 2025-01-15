@@ -169,7 +169,7 @@ class GitHubPackages
     # Going forward, this should probably be pinned to tags.
     # We currently use features newer than the last one (v1.0.2).
     url = "https://raw.githubusercontent.com/opencontainers/image-spec/170393e57ed656f7f81c3070bfa8c3346eaa0a5a/schema/#{basename}.json"
-    out, = Utils::Curl.curl_output(url)
+    out = Utils::Curl.curl_output(url).stdout
     json = JSON.parse(out)
 
     @schema_json ||= {}

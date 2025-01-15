@@ -723,7 +723,7 @@ module Formulary
       end
       HOMEBREW_CACHE_FORMULA.mkpath
       FileUtils.rm_f(path)
-      Utils::Curl.curl_download url, to: path
+      Utils::Curl.curl_download url.to_s, to: path
       super
     rescue MethodDeprecatedError => e
       if (match_data = url.match(%r{github.com/(?<user>[\w-]+)/(?<repo>[\w-]+)/}).presence)

@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "open3"
@@ -48,23 +48,29 @@ module Utils
 
     module_function
 
+    sig { params(use_homebrew_curl: T::Boolean).returns(T.any(Pathname, String)) }
     def curl_executable(use_homebrew_curl: false)
       return HOMEBREW_BREWED_CURL_PATH if use_homebrew_curl
 
-      @curl_executable ||= HOMEBREW_SHIMS_PATH/"shared/curl"
+      @curl_executable ||= T.let(HOMEBREW_SHIMS_PATH/"shared/curl", T.nilable(T.any(Pathname, String)))
     end
 
+    sig { returns(String) }
     def curl_path
-      @curl_path ||= Utils.popen_read(curl_executable, "--homebrew=print-path").chomp.presence
+      @curl_path ||= T.let(
+        Utils.popen_read(curl_executable, "--homebrew=print-path").chomp.presence,
+        T.nilable(String),
+      )
     end
 
+    sig { void }
     def clear_path_cache
       @curl_path = nil
     end
 
     sig {
       params(
-        extra_args:      T.untyped,
+        extra_args:      String,
         connect_timeout: T.any(Integer, Float, NilClass),
         max_time:        T.any(Integer, Float, NilClass),
         retries:         T.nilable(Integer),
@@ -140,9 +146,23 @@ module Utils
       (args + extra_args).map(&:to_s)
     end
 
+    sig {
+      params(
+        args:              String,
+        secrets:           T.any(String, T::Array[String]),
+        print_stdout:      T.any(T::Boolean, Symbol),
+        print_stderr:      T.any(T::Boolean, Symbol),
+        debug:             T.nilable(T::Boolean),
+        verbose:           T.nilable(T::Boolean),
+        env:               T::Hash[String, String],
+        timeout:           T.nilable(T.any(Integer, Float)),
+        use_homebrew_curl: T::Boolean,
+        options:           T.untyped,
+      ).returns(SystemCommand::Result)
+    }
     def curl_with_workarounds(
       *args,
-      secrets: nil, print_stdout: nil, print_stderr: nil, debug: nil,
+      secrets: [], print_stdout: false, print_stderr: false, debug: nil,
       verbose: nil, env: {}, timeout: nil, use_homebrew_curl: false, **options
     )
       end_time = Time.now + timeout if timeout
@@ -190,13 +210,28 @@ module Utils
       result
     end
 
+    sig {
+      params(
+        args:         String,
+        print_stdout: T.any(T::Boolean, Symbol),
+        options:      T.untyped,
+      ).returns(SystemCommand::Result)
+    }
     def curl(*args, print_stdout: true, **options)
       result = curl_with_workarounds(*args, print_stdout:, **options)
       result.assert_success!
       result
     end
 
-    def curl_download(*args, to: nil, try_partial: false, **options)
+    sig {
+      params(
+        args:        String,
+        to:          T.any(Pathname, String),
+        try_partial: T::Boolean,
+        options:     T.untyped,
+      ).returns(T.nilable(SystemCommand::Result))
+    }
+    def curl_download(*args, to:, try_partial: false, **options)
       destination = Pathname(to)
       destination.dirname.mkpath
 
@@ -224,15 +259,23 @@ module Utils
         end
       end
 
-      args = ["--remote-time", "--output", destination, *args]
+      args = ["--remote-time", "--output", destination.to_s, *args]
 
       curl(*args, **options)
     end
 
+    sig { params(args: String, options: T.untyped).returns(SystemCommand::Result) }
     def curl_output(*args, **options)
       curl_with_workarounds(*args, print_stderr: false, show_output: true, **options)
     end
 
+    sig {
+      params(
+        args:           String,
+        wanted_headers: T::Array[String],
+        options:        T.untyped,
+      ).returns(T::Hash[Symbol, T.untyped])
+    }
     def curl_headers(*args, wanted_headers: [], **options)
       get_retry_args = ["--request", "GET"]
       # This is a workaround for https://github.com/Homebrew/brew/issues/18213
@@ -268,6 +311,8 @@ module Utils
 
         result.assert_success!
       end
+
+      {}
     end
 
     # Check if a URL is protected by CloudFlare (e.g. badlion.net and jaxx.io).
@@ -295,6 +340,18 @@ module Utils
       set_cookie_header.compact.any? { |cookie| cookie.match?(/^(visid_incap|incap_ses)_/i) }
     end
 
+    sig {
+      params(
+        url:               String,
+        url_type:          String,
+        specs:             T::Hash[Symbol, String],
+        user_agents:       T::Array[Symbol],
+        referer:           T.nilable(String),
+        check_content:     T::Boolean,
+        strict:            T::Boolean,
+        use_homebrew_curl: T::Boolean,
+      ).returns(T.nilable(String))
+    }
     def curl_check_http_content(url, url_type, specs: {}, user_agents: [:default], referer: nil,
                                 check_content: false, strict: false, use_homebrew_curl: false)
       return unless url.start_with? "http"
@@ -325,7 +382,7 @@ module Utils
         end
       end
 
-      details = T.let(nil, T.nilable(T::Hash[Symbol, T.untyped]))
+      details = T.let({}, T::Hash[Symbol, T.untyped])
       attempts = 0
       user_agents.each do |user_agent|
         loop do
@@ -373,7 +430,9 @@ module Utils
           return "The #{url_type} #{url} is not reachable (HTTP status code #{details[:status_code]})"
         end
 
-        "Unable to find homepage" if SharedAudits.github_repo_data(repo_details[:user], repo_details[:repo]).nil?
+        if SharedAudits.github_repo_data(T.must(repo_details[:user]), T.must(repo_details[:repo])).nil?
+          "Unable to find homepage"
+        end
       end
 
       if url.start_with?("https://") && Homebrew::EnvConfig.no_insecure_redirect? &&
@@ -425,6 +484,16 @@ module Utils
       "The #{url_type} #{url} may be able to use HTTPS rather than HTTP. Please verify it in a browser."
     end
 
+    sig {
+      params(
+        url:               String,
+        specs:             T::Hash[Symbol, String],
+        hash_needed:       T::Boolean,
+        use_homebrew_curl: T::Boolean,
+        user_agent:        Symbol,
+        referer:           T.nilable(String),
+      ).returns(T::Hash[Symbol, T.untyped])
+    }
     def curl_http_content_headers_and_checksum(
       url, specs: {}, hash_needed: false,
       use_homebrew_curl: false, user_agent: :default, referer: nil
@@ -504,26 +573,32 @@ module Utils
       T.must(file).unlink
     end
 
+    sig { returns(Version) }
     def curl_version
-      @curl_version ||= {}
-      @curl_version[curl_path] ||= Version.new(curl_output("-V").stdout[/curl (\d+(\.\d+)+)/, 1])
+      @curl_version ||= T.let({}, T.nilable(T::Hash[String, Version]))
+      @curl_version[curl_path] ||= Version.new(T.must(curl_output("-V").stdout[/curl (\d+(\.\d+)+)/, 1]))
     end
 
+    sig { returns(T::Boolean) }
     def curl_supports_fail_with_body?
-      @curl_supports_fail_with_body ||= Hash.new do |h, key|
+      @curl_supports_fail_with_body ||= T.let(Hash.new do |h, key|
         h[key] = curl_version >= Version.new("7.76.0")
-      end
+      end, T.nilable(T::Hash[T.any(Pathname, String), T::Boolean]))
       @curl_supports_fail_with_body[curl_path]
     end
 
+    sig { returns(T::Boolean) }
     def curl_supports_tls13?
-      @curl_supports_tls13 ||= Hash.new do |h, key|
+      @curl_supports_tls13 ||= T.let(Hash.new do |h, key|
         h[key] = quiet_system(curl_executable, "--tlsv1.3", "--head", "https://brew.sh/")
-      end
+      end, T.nilable(T::Hash[T.any(Pathname, String), T::Boolean]))
       @curl_supports_tls13[curl_path]
     end
 
+    sig { params(status: T.nilable(String)).returns(T::Boolean) }
     def http_status_ok?(status)
+      return false if status.nil?
+
       (100..299).cover?(status.to_i)
     end
 
@@ -627,11 +702,10 @@ module Utils
     sig { params(response_text: String).returns(T::Hash[Symbol, T.untyped]) }
     def parse_curl_response(response_text)
       response = {}
-      return response unless response_text.match?(HTTP_STATUS_LINE_REGEX)
+      return response unless (match = response_text.match(HTTP_STATUS_LINE_REGEX))
 
       # Parse the status line and remove it
-      match = T.must(response_text.match(HTTP_STATUS_LINE_REGEX))
-      response[:status_code] = match["code"] if match["code"].present?
+      response[:status_code] = match["code"]
       response[:status_text] = match["text"] if match["text"].present?
       response_text = response_text.sub(%r{^HTTP/.* (\d+).*$\s*}, "")
 
@@ -639,18 +713,18 @@ module Utils
       response[:headers] = {}
       response_text.split("\r\n").each do |line|
         header_name, header_value = line.split(/:\s*/, 2)
-        next if header_name.blank?
+        next if header_name.blank? || header_value.nil?
 
         header_name = header_name.strip.downcase
-        header_value&.strip!
+        header_value.strip!
 
         case response[:headers][header_name]
-        when nil
-          response[:headers][header_name] = header_value
         when String
           response[:headers][header_name] = [response[:headers][header_name], header_value]
         when Array
           response[:headers][header_name].push(header_value)
+        else
+          response[:headers][header_name] = header_value
         end
 
         response[:headers][header_name]

@@ -65,12 +65,12 @@ module PyPI
       else
         "https://pypi.org/pypi/#{name}/json"
       end
-      out, _, status = Utils::Curl.curl_output metadata_url, "--location", "--fail"
+      result = Utils::Curl.curl_output(metadata_url, "--location", "--fail")
 
-      return unless status.success?
+      return unless result.status.success?
 
       begin
-        json = JSON.parse out
+        json = JSON.parse(result.stdout)
       rescue JSON::ParserError
         return
       end
