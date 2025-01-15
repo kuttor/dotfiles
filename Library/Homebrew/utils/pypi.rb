@@ -98,7 +98,9 @@ module PyPI
     def to_s
       if valid_pypi_package?
         out = T.must(name)
-        out += "[#{extras&.join(",")}]" if extras.present?
+        if (pypi_extras = extras.presence)
+          out += "[#{pypi_extras.join(",")}]"
+        end
         out += "==#{version}" if version.present?
         out
       else
@@ -328,12 +330,16 @@ module PyPI
     # Resolve the dependency tree of all input packages
     show_info = !print_only && !silent
     ohai "Retrieving PyPI dependencies for \"#{input_packages.join(" ")}\"..." if show_info
-    found_packages = pip_report(input_packages, python_name:, print_stderr: !(verbose && show_info).nil?)
+    print_stderr = !(verbose && show_info).nil?
+    found_packages = pip_report(input_packages, python_name:, print_stderr:)
     # Resolve the dependency tree of excluded packages to prune the above
     exclude_packages.delete_if { |package| found_packages.exclude? package }
     ohai "Retrieving PyPI dependencies for excluded \"#{exclude_packages.join(" ")}\"..." if show_info
-    exclude_packages = pip_report(exclude_packages, python_name:, print_stderr: !(verbose && show_info).nil?)
-    exclude_packages += [Package.new(T.must(main_package.name))] unless main_package.nil?
+    print_stderr = !(verbose && show_info).nil?
+    exclude_packages = pip_report(exclude_packages, python_name:, print_stderr:)
+    if (main_package_name = main_package&.name)
+      exclude_packages += [Package.new(main_package_name)]
+    end
 
     new_resource_blocks = ""
     found_packages.sort.each do |package|

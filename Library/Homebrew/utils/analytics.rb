@@ -168,9 +168,10 @@ module Utils
 
       sig { returns(T::Boolean) }
       def messages_displayed?
-        !!(config_true?(:analyticsmessage) &&
-          config_true?(:caskanalyticsmessage) &&
-          influx_message_displayed?)
+        return false unless config_true?(:analyticsmessage)
+        return false unless config_true?(:caskanalyticsmessage)
+
+        influx_message_displayed?
       end
 
       sig { returns(T::Boolean) }
