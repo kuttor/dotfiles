@@ -161,8 +161,9 @@ module Tty
 
       return false if Homebrew::EnvConfig.no_color?
       return true if Homebrew::EnvConfig.color?
+      return false if @stream.blank?
 
-      !!@stream&.tty?
+      @stream.tty?
     end
   end
 end
