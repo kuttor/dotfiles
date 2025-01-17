@@ -2011,7 +2011,7 @@ Read the \fBBrewfile\fP from \fB~/\.Brewfile\fP or the \fBHOMEBREW_BUNDLE_FILE_G
 \fBinstall\fP prints output from commands as they are run\. \fBcheck\fP lists all missing dependencies\.
 .TP
 \fB\-\-no\-upgrade\fP
-\fBinstall\fP does not run \fBbrew upgrade\fP on outdated dependencies\. Note they may still be upgraded by \fBbrew install\fP if needed\.
+\fBinstall\fP does not run \fBbrew upgrade\fP on outdated dependencies\. \fBcheck\fP does not check for outdated dependencies\. Note they may still be upgraded by \fBbrew install\fP if needed\.
 .TP
 \fB\-f\fP, \fB\-\-force\fP
 \fBinstall\fP runs with \fB\-\-force\fP/\fB\-\-overwrite\fP\&\. \fBdump\fP overwrites an existing \fBBrewfile\fP\&\. \fBcleanup\fP actually performs its cleanup operations\.
@@ -2355,6 +2355,9 @@ Use this URL as the Homebrew/brew \fBgit\fP(1) remote\.
 \fIDefault:\fP \fBhttps://github\.com/Homebrew/brew\fP\&\.
 .RE
 .TP
+\fBHOMEBREW_BREW_WRAPPER\fP
+If set, use wrapper to call \fBbrew\fP rather than auto\-detecting it\.
+.TP
 \fBHOMEBREW_BROWSER\fP
 Use this as the browser when opening project homepages\.
 .RS
@@ -2495,6 +2498,9 @@ A space\-separated list of taps\. Homebrew will refuse to install a formula if i
 \fBHOMEBREW_FORBID_PACKAGES_FROM_PATHS\fP
 If set, Homebrew will refuse to read formulae or casks provided from file paths, e\.g\. \fBbrew install \./package\.rb\fP\&\.
 .TP
+\fBHOMEBREW_FORCE_API_AUTO_UPDATE\fP
+If set, update the Homebrew API formula or cask data even if \fBHOMEBREW_NO_AUTO_UPDATE\fP is set\.
+.TP
 \fBHOMEBREW_FORCE_BREWED_CA_CERTIFICATES\fP
 If set, always use a Homebrew\-installed \fBca\-certificates\fP rather than the system version\. Automatically set if the system version is too old\.
 .TP
@@ -2503,6 +2509,9 @@ If set, always use a Homebrew\-installed \fBcurl\fP(1) rather than the system ve
 .TP
 \fBHOMEBREW_FORCE_BREWED_GIT\fP
 If set, always use a Homebrew\-installed \fBgit\fP(1) rather than the system version\. Automatically set if the system version of \fBgit\fP is too old\.
+.TP
+\fBHOMEBREW_FORCE_BREW_WRAPPER\fP
+If set, require \fBHOMEBREW_BREW_WRAPPER\fP to be set to the same value as \fBHOMEBREW_FORCE_BREW_WRAPPER\fP for non\-trivial \fBbrew\fP commands\.
 .TP
 \fBHOMEBREW_FORCE_VENDOR_RUBY\fP
 If set, always use Homebrew\[u2019]s vendored, relocatable Ruby version even if the system version of Ruby is new enough\.
@@ -2615,6 +2624,9 @@ If set, do not print \fBHOMEBREW_INSTALL_BADGE\fP on a successful build\.
 .TP
 \fBHOMEBREW_NO_ENV_HINTS\fP
 If set, do not print any hints about changing Homebrew\[u2019]s behaviour with environment variables\.
+.TP
+\fBHOMEBREW_NO_FORCE_BREW_WRAPPER\fP
+If set, disables \fBHOMEBREW_FORCE_BREW_WRAPPER\fP behaviour, even if set\.
 .TP
 \fBHOMEBREW_NO_GITHUB_API\fP
 If set, do not use the GitHub API, e\.g\. for searches or fetching relevant issues after a failed install\.
