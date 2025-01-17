@@ -3138,8 +3138,9 @@ flags which will help with finding keg-only dependencies like `openssl`,
 
 `--no-upgrade`
 
-: `install` does not run `brew upgrade` on outdated dependencies. Note they may
-  still be upgraded by `brew install` if needed.
+: `install` does not run `brew upgrade` on outdated dependencies. `check` does
+  not check for outdated dependencies. Note they may still be upgraded by `brew
+  install` if needed.
 
 `-f`, `--force`
 
@@ -3655,6 +3656,10 @@ command execution e.g. `$(cat file)`.
   
   *Default:* `https://github.com/Homebrew/brew`.
 
+`HOMEBREW_BREW_WRAPPER`
+
+: If set, use wrapper to call `brew` rather than auto-detecting it.
+
 `HOMEBREW_BROWSER`
 
 : Use this as the browser when opening project homepages.
@@ -3826,6 +3831,11 @@ command execution e.g. `$(cat file)`.
 : If set, Homebrew will refuse to read formulae or casks provided from file
   paths, e.g. `brew install ./package.rb`.
 
+`HOMEBREW_FORCE_API_AUTO_UPDATE`
+
+: If set, update the Homebrew API formula or cask data even if
+  `HOMEBREW_NO_AUTO_UPDATE` is set.
+
 `HOMEBREW_FORCE_BREWED_CA_CERTIFICATES`
 
 : If set, always use a Homebrew-installed `ca-certificates` rather than the
@@ -3840,6 +3850,11 @@ command execution e.g. `$(cat file)`.
 
 : If set, always use a Homebrew-installed `git`(1) rather than the system
   version. Automatically set if the system version of `git` is too old.
+
+`HOMEBREW_FORCE_BREW_WRAPPER`
+
+: If set, require `HOMEBREW_BREW_WRAPPER` to be set to the same value as
+  `HOMEBREW_FORCE_BREW_WRAPPER` for non-trivial `brew` commands.
 
 `HOMEBREW_FORCE_VENDOR_RUBY`
 
@@ -3993,6 +4008,10 @@ command execution e.g. `$(cat file)`.
 
 : If set, do not print any hints about changing Homebrew's behaviour with
   environment variables.
+
+`HOMEBREW_NO_FORCE_BREW_WRAPPER`
+
+: If set, disables `HOMEBREW_FORCE_BREW_WRAPPER` behaviour, even if set.
 
 `HOMEBREW_NO_GITHUB_API`
 
