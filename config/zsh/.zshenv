@@ -130,3 +130,4 @@ infopath=(
 # Source antidot files
 source_if_exists "$ANTIDOT_DIR/{env,alias}.sh"
 . "/Users/akuttor/.config/rust//env"
+. "/Users/akuttor/.config/rust/cargo/env"

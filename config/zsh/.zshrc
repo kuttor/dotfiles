@@ -23,7 +23,6 @@ zi id-as wait lman lucid light-mode pack for                                    
 # -- github-releases --
 zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid binary for                            \
                                                              lman'autocomplete/_lsd'      @lsd-rs/lsd                  \
-   atload'use --atload tre'                                                               @tre/dduan/tre               \
    atload'use --atload fx'                                   lbin'fx_*->fx'               @antonmedv/fx                \
    atclone'use --atclone nvim'                               lbin'**/nvim'                @neovim/neovim               \
    atclone'use --atclone dog'                                                             @ogham/dog                   \
@@ -34,7 +33,6 @@ zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid
                                                              lbin'bin/*'                  @eth-p/bat-extras            \
    atclone'use --atclone rg'     atload'use --atload rg'     lbin'ripgrep-*/rg'           @BurntSushi/ripgrep          \
    atclone'use --atclone delta'  atload'use --atload delta'  lbin'*/delta'                @dandavison/delta            \
-   atclone'use --atclone zoxide' atload'use --atload zoxide' lbin'zoxide'  lman'*/**.1'   @ajeetdsouza/zoxide          \
                                                              lbin'rush/rush'              @shenwei356/rush             \
    atclone'use --atclone glow'                                                            @charmbracelet/glow          \
    atclone'use --atclone moar'                               lbin'moar-*->moar'           @walles/moar                 \
@@ -44,6 +42,7 @@ zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid
 
 # -- non-github-releases --
 zi id-as wait binary light-mode lbin lman lucid for                                                                    \
+   atload'use --atload tre'                                                              @dduan/tre                    \
    atload'use --atload brew' atclone'use --atclone brew' depth'3' nocompile sbin'*/brew' @homebrew/brew                \
    atload'use --atload fzf-tab'                                                          @Aloxaf/fzf-tab               \
    atload'use --atload fzf-tab-completion'                                               @lincheney/fzf-tab-completion \
@@ -55,11 +54,11 @@ zi id-as wait binary light-mode lbin lman lucid for                             
 # ~~ snippets loading --------------------------------------------------------------------------------------------------
 zi id-as wait"2" lucid is-snippet for                                                                                  \
    @$ZDOTDIR/{autoload,options,keybinds,aliases}.zsh                                                                   \
-   OMZL::{key-bindings,correction,completion,compfix,git,grep}.zsh                                                      \
+   OMZL::{key-bindings,correction,completion,compfix,git,grep}.zsh                                                     \
    OMZP::{colorize,extract,urltools,brew,cp,grc,git,fzf}
 
 # ~~ completions -------------------------------------------------------------------------------------------------------
-zi wait pack atload=+"zicompinit; zicdreplay" for system-completions
+zi wait pack atload=+'zicompinit; zicdreplay' fortune system-completions
 zi id-as wait lucid light-mode lman lbin binary from'gh-r' for @rsteube/lazycomplete
 zi id-as wait'1' lucid is-snippet for @$ZDOTDIR/completions.zsh
 
@@ -68,7 +67,6 @@ zi id-as wait'1' lman lucid light-mode for                                      
                                                                                   @lincheney/fzf-tab-completion        \
                                                                                   @chitoku-k/fzf-zsh-completions       \
    atload'use --atload zsh-fancy-completions'                                     @z-shell/zsh-fancy-completions       \
-                                                                                  @jnooree/zoxide-zsh-completion       \
    atload='use --atload bash-completions-fallback' nocd depth'1'                  @3v1n0/zsh-bash-completions-fallback \
    id-as'sainhe' atload'use --atload sainhe' atpull'use --atpull sainhe' depth'1' @sainnhe/zsh-completions
    
