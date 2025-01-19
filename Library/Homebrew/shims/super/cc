@@ -326,8 +326,8 @@ class Cmd
   def cppflags
     args = []
     args += path_flags("-isystem", isystem_paths) + path_flags("-I", include_paths)
-    # Add -nostdinc when building against glibc@2.13 to avoid mixing system and brewed glibc headers.
-    args << "-nostdinc" if @deps.include?("glibc@2.13")
+    # Add -nostdinc when building against versioned glibc to avoid mixing system and brewed glibc headers.
+    args << "-nostdinc" if @deps.any? { |dep| dep.match?(/^glibc@.+$/) }
     # Ideally this would be -ffile-prefix-map, but that requires a minimum of GCC 8, LLVM Clang 10 or Apple Clang 12
     # and detecting the version dynamically based on what `HOMEBREW_CC` may have been rewritten to point to is awkward
     args << "-fdebug-prefix-map=#{formula_buildpath}=." if formula_buildpath && !debug_symbols?
@@ -353,19 +353,20 @@ class Cmd
   end
 
   def ldflags_linux(args)
+    versioned_glibc_dep = @deps.find { |dep| dep.match?(/^glibc@.+$/) }
     unless mode == :ld
       wl = "-Wl,"
-      if @deps.include?("glibc@2.13")
-        args << "-B#{@opt}/glibc@2.13/lib"
+      if versioned_glibc_dep
+        args << "-B#{@opt}/#{versioned_glibc_dep}/lib"
       else
         args << "-B#{@opt}/glibc/lib"
       end
     end
     args += rpath_flags("#{wl}-rpath=", rpath_paths)
     args += ["#{wl}--dynamic-linker=#{dynamic_linker_path}"] if dynamic_linker_path
-    # Use -rpath-link to make sure linker uses glibc@2.13 rather than the system glibc for indirect
+    # Use -rpath-link to make sure linker uses versioned glibc rather than the system glibc for indirect
     # dependencies because -L will only handle direct dependencies.
-    args << "#{wl}-rpath-link=#{@opt}/glibc@2.13/lib" if @deps.include?("glibc@2.13")
+    args << "#{wl}-rpath-link=#{@opt}/#{versioned_glibc_dep}/lib" if versioned_glibc_dep
     args
   end
 
