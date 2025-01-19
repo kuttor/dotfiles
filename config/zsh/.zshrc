@@ -58,7 +58,6 @@ zi id-as wait"2" lucid is-snippet for                                           
    OMZP::{colorize,extract,urltools,brew,cp,grc,git,fzf}
 
 # ~~ completions -------------------------------------------------------------------------------------------------------
-zi wait pack atload=+'zicompinit; zicdreplay' fortune system-completions
 zi id-as wait lucid light-mode lman lbin binary from'gh-r' for @rsteube/lazycomplete
 zi id-as wait'1' lucid is-snippet for @$ZDOTDIR/completions.zsh
 
@@ -85,3 +84,4 @@ zi wait id-as lman lucid light-mode for                                         
 # source if files exist
 [[ ! -f "$DOT_CONFIG_HOME/iterm2_shell_integration.zsh" ]] || source "$DOT_CONFIG_HOME/iterm2_shell_integration.zsh"
 [[ ! -f "$DOT_CONFIG_HOME/p10k/p10k.zsh" ]] || source "$DOT_CONFIG_HOME/p10k/p10k.zsh"
+source /Users/akuttor/.config/rust/cargo/env
