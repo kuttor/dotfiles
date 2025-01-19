@@ -63,10 +63,23 @@ module OS
     def self.languages
       return @languages if @languages.present?
 
-      os_langs = Utils.popen_read("localectl", "list-locales")
-      os_langs = os_langs.scan(/[^ \n"(),]+/).map { |item| item.split(".").first.tr("_", "-") }
+      locale_variables = ENV.keys.grep(/^(?:LC_\S+|LANG|LANGUAGE)\Z/).sort
+      ctl_ret = Utils.popen_read("localectl", "list-locales")
+      if ctl_ret.present?
+        list = ctl_ret.scan(/[^ \n"(),]+/)
+      elsif locale_variables.present?
+        keys = locale_variables.select { |var| ENV.fetch(var) }
+        list = keys.map { |key| ENV.fetch(key) }
+      else
+        list = ["en_US.utf8"]
+      end
 
-      @languages = os_langs
+      @languages = list.map { |item| item.split(".").first.tr("_", "-") }
+    end
+
+    sig { returns(T.nilable(String)) }
+    def self.language
+      languages.first
     end
   end
 end
