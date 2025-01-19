@@ -13,6 +13,8 @@ module OS
     raise "Loaded OS::Linux on macOS!" if OS.mac?
     # rubocop:enable Homebrew/MoveToExtendOS
 
+    @languages = T.let([], T::Array[String])
+
     # Get the OS version.
     #
     # @api internal
@@ -55,6 +57,29 @@ module OS
       else
         Version::NULL
       end
+    end
+
+    sig { returns(T::Array[String]) }
+    def self.languages
+      return @languages if @languages.present?
+
+      locale_variables = ENV.keys.grep(/^(?:LC_\S+|LANG|LANGUAGE)\Z/).sort
+      ctl_ret = Utils.popen_read("localectl", "list-locales")
+      if ctl_ret.present?
+        list = ctl_ret.scan(/[^ \n"(),]+/)
+      elsif locale_variables.present?
+        keys = locale_variables.select { |var| ENV.fetch(var) }
+        list = keys.map { |key| ENV.fetch(key) }
+      else
+        list = ["en_US.utf8"]
+      end
+
+      @languages = list.map { |item| item.split(".").first.tr("_", "-") }
+    end
+
+    sig { returns(T.nilable(String)) }
+    def self.language
+      languages.first
     end
   end
 end

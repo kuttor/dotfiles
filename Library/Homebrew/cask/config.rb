@@ -33,10 +33,10 @@ module Cask
       T::Hash[Symbol, String],
     )
 
-    sig { returns(T::Hash[Symbol, T.untyped]) }
+    sig { returns(T::Hash[Symbol, String]) }
     def self.defaults
       {
-        languages: LazyObject.new { MacOS.languages },
+        languages: LazyObject.new { ::OS::Mac.languages },
       }.merge(DEFAULT_DIRS).freeze
     end
 
@@ -223,3 +223,5 @@ module Cask
     end
   end
 end
+
+require "extend/os/cask/config"
