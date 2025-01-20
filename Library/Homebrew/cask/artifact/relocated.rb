@@ -89,11 +89,14 @@ module Cask
         altnames = "(#{altnames})"
 
         # Some packages are shipped as u=rx (e.g. Bitcoin Core)
-        command.run!("/bin/chmod", args: ["--", "u+rw", file, file.realpath])
+        command.run!("/bin/chmod",
+                     args: ["--", "u+rw", file, file.realpath],
+                     sudo: !file.writable? || !file.realpath.writable?)
 
         command.run!("/usr/bin/xattr",
                      args:         ["-w", ALT_NAME_ATTRIBUTE, altnames, file],
-                     print_stderr: false)
+                     print_stderr: false,
+                     sudo:         !file.writable?)
       end
 
       def printable_target
