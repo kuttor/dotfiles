@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 module RuboCop
@@ -11,6 +11,7 @@ module RuboCop
 
         MESSAGE = "Use `deprecate!` instead of `caveats { discontinued }`."
 
+        sig { override.params(stanza_block: RuboCop::Cask::AST::StanzaBlock).void }
         def on_cask_stanza_block(stanza_block)
           stanza_block.stanzas.select(&:caveats?).each do |stanza|
             find_discontinued_method_call(stanza.stanza_node) do |node|

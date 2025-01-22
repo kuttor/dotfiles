@@ -19,7 +19,7 @@ module RuboCop
 
         sig { params(stanza: RuboCop::Cask::AST::Stanza).void }
         def on_homepage_stanza(stanza)
-          @name = T.let(cask_block.header.cask_token, T.nilable(String))
+          @name = T.let(cask_block&.header&.cask_token, T.nilable(String))
           desc_call = stanza.stanza_node
           url_node = desc_call.first_argument
 

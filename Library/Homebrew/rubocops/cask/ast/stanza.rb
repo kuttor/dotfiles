@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "forwardable"
@@ -12,23 +12,34 @@ module RuboCop
       class Stanza
         extend Forwardable
 
+        sig {
+          params(
+            method_node:  T.any(RuboCop::AST::SendNode, RuboCop::AST::BlockNode),
+            all_comments: T::Array[T.any(String, Parser::Source::Comment)],
+          ).void
+        }
         def initialize(method_node, all_comments)
-          @method_node = method_node
-          @all_comments = all_comments
+          @method_node = T.let(method_node, T.any(RuboCop::AST::SendNode, RuboCop::AST::BlockNode))
+          @all_comments = T.let(all_comments, T::Array[T.any(String, Parser::Source::Comment)])
         end
 
-        attr_reader :method_node, :all_comments
-
+        sig { returns(T.any(RuboCop::AST::SendNode, RuboCop::AST::BlockNode)) }
+        attr_reader :method_node
         alias stanza_node method_node
+
+        sig { returns(T::Array[T.any(Parser::Source::Comment, String)]) }
+        attr_reader :all_comments
 
         def_delegator :stanza_node, :parent, :parent_node
         def_delegator :stanza_node, :arch_variable?
         def_delegator :stanza_node, :on_system_block?
 
+        sig { returns(Parser::Source::Range) }
         def source_range
           stanza_node.location_expression
         end
 
+        sig { returns(Parser::Source::Range) }
         def source_range_with_comments
           comments.reduce(source_range) do |range, comment|
             range.join(comment.loc.expression)
@@ -39,34 +50,47 @@ module RuboCop
         def_delegator :source_range_with_comments, :source,
                       :source_with_comments
 
+        sig { returns(Symbol) }
         def stanza_name
           return :on_arch_conditional if arch_variable?
 
           stanza_node.method_name
         end
 
+        sig { returns(T.nilable(T::Array[Symbol])) }
         def stanza_group
           Constants::STANZA_GROUP_HASH[stanza_name]
         end
 
+        sig { returns(T.nilable(Integer)) }
         def stanza_index
           Constants::STANZA_ORDER.index(stanza_name)
         end
 
+        sig { params(other: Stanza).returns(T::Boolean) }
         def same_group?(other)
           stanza_group == other.stanza_group
         end
 
+        sig { returns(T::Array[Parser::Source::Comment]) }
         def comments
-          @comments ||= stanza_node.each_node.reduce([]) do |comments, node|
-            comments | comments_hash[node.loc]
-          end
+          @comments ||= T.let(
+            stanza_node.each_node.reduce([]) do |comments, node|
+              comments | comments_hash[node.loc]
+            end,
+            T.nilable(T::Array[Parser::Source::Comment]),
+          )
         end
 
+        sig { returns(T::Hash[Parser::Source::Range, T::Array[Parser::Source::Comment]]) }
         def comments_hash
-          @comments_hash ||= Parser::Source::Comment.associate_locations(stanza_node.parent, all_comments)
+          @comments_hash ||= T.let(
+            Parser::Source::Comment.associate_locations(stanza_node.parent, all_comments),
+            T.nilable(T::Hash[Parser::Source::Range, T::Array[Parser::Source::Comment]]),
+          )
         end
 
+        sig { params(other: T.untyped).returns(T::Boolean) }
         def ==(other)
           self.class == other.class && stanza_node == other.stanza_node
         end

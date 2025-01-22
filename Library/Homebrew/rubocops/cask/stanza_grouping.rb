@@ -26,7 +26,7 @@ module RuboCop
           return if (on_blocks = on_system_methods(cask_stanzas)).none?
 
           on_blocks.map(&:method_node).select(&:block_type?).each do |on_block|
-            stanzas = inner_stanzas(on_block, processed_source.comments)
+            stanzas = inner_stanzas(T.cast(on_block, RuboCop::AST::BlockNode), processed_source.comments)
             add_offenses(stanzas)
           end
         end

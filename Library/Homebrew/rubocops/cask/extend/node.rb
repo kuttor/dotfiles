@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 module RuboCop
@@ -20,6 +20,7 @@ module RuboCop
         (on_system_block? && each_ancestor.any?(&:cask_block?)) || false
       end
 
+      sig { returns(T::Boolean) }
       def stanza?
         return true if arch_variable?
 
@@ -30,10 +31,12 @@ module RuboCop
         end
       end
 
+      sig { returns(T::Boolean) }
       def heredoc?
         loc.is_a?(Parser::Source::Map::Heredoc)
       end
 
+      sig { returns(Parser::Source::Range) }
       def location_expression
         base_expression = loc.expression
         descendants.select(&:heredoc?).reduce(base_expression) do |expr, node|
