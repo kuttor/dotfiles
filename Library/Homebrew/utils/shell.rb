@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 module Utils
@@ -67,7 +67,10 @@ module Utils
         return "#{ENV["HOMEBREW_ZDOTDIR"]}/.zshrc" if ENV["HOMEBREW_ZDOTDIR"].present?
       end
 
-      SHELL_PROFILE_MAP.fetch(preferred, "~/.profile")
+      shell = preferred
+      return "~/.profile" if shell.nil?
+
+      SHELL_PROFILE_MAP.fetch(shell, "~/.profile")
     end
 
     sig { params(variable: String, value: String).returns(T.nilable(String)) }
@@ -98,17 +101,20 @@ module Utils
       end
     end
 
-    SHELL_PROFILE_MAP = {
-      bash: "~/.profile",
-      csh:  "~/.cshrc",
-      fish: "~/.config/fish/config.fish",
-      ksh:  "~/.kshrc",
-      mksh: "~/.kshrc",
-      rc:   "~/.rcrc",
-      sh:   "~/.profile",
-      tcsh: "~/.tcshrc",
-      zsh:  "~/.zshrc",
-    }.freeze
+    SHELL_PROFILE_MAP = T.let(
+      {
+        bash: "~/.profile",
+        csh:  "~/.cshrc",
+        fish: "~/.config/fish/config.fish",
+        ksh:  "~/.kshrc",
+        mksh: "~/.kshrc",
+        rc:   "~/.rcrc",
+        sh:   "~/.profile",
+        tcsh: "~/.tcshrc",
+        zsh:  "~/.zshrc",
+      }.freeze,
+      T::Hash[Symbol, String],
+    )
 
     UNSAFE_SHELL_CHAR = %r{([^A-Za-z0-9_\-.,:/@~+\n])}
 
