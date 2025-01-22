@@ -67,7 +67,10 @@ module Utils
         return "#{ENV["HOMEBREW_ZDOTDIR"]}/.zshrc" if ENV["HOMEBREW_ZDOTDIR"].present?
       end
 
-      SHELL_PROFILE_MAP.fetch(preferred, "~/.profile")
+      shell = preferred
+      return "~/.profile" if shell.nil?
+
+      SHELL_PROFILE_MAP.fetch(shell, "~/.profile")
     end
 
     sig { params(variable: String, value: String).returns(T.nilable(String)) }
@@ -110,7 +113,7 @@ module Utils
         tcsh: "~/.tcshrc",
         zsh:  "~/.zshrc",
       }.freeze,
-      T::Hash[T.nilable(Symbol), String],
+      T::Hash[Symbol, String],
     )
 
     UNSAFE_SHELL_CHAR = %r{([^A-Za-z0-9_\-.,:/@~+\n])}
