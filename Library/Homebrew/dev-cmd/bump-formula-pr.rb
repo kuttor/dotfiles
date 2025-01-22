@@ -346,12 +346,17 @@ module Homebrew
                                                             install_dependencies:     args.install_dependencies?,
                                                             silent:                   args.quiet?,
                                                             ignore_non_pypi_packages: true
+
+          update_matching_version_resources! formula,
+                                             version: new_formula_version.to_s
         end
 
         run_audit(formula, alias_rename, old_contents)
 
         pr_message = "Created with `brew bump-formula-pr`."
-        if resources_checked.nil? && formula.resources.any? { |resource| !resource.name.start_with?("homebrew-") }
+        if resources_checked.nil? && formula.resources.any? do |resource|
+          resource.livecheck.formula != :parent && !resource.name.start_with?("homebrew-")
+        end
           pr_message += <<~EOS
 
 
@@ -441,17 +446,83 @@ module Homebrew
       end
 
       sig {
-        params(formula: Formula, new_version: T.nilable(String), url: String,
+        params(formula_or_resource: T.any(Formula, Resource), new_version: T.nilable(String), url: String,
                specs: String).returns(T::Array[T.untyped])
       }
-      def fetch_resource_and_forced_version(formula, new_version, url, **specs)
+      def fetch_resource_and_forced_version(formula_or_resource, new_version, url, **specs)
         resource = Resource.new
         resource.url(url, **specs)
-        resource.owner = Resource.new(formula.name)
+        resource.owner = if formula_or_resource.is_a?(Formula)
+          Resource.new(formula_or_resource.name)
+        else
+          Resource.new(formula_or_resource.owner.name)
+        end
         forced_version = new_version && new_version != resource.version.to_s
         resource.version(new_version) if forced_version
         odie "Couldn't identify version, specify it using `--version=`." if resource.version.blank?
         [resource.fetch, forced_version]
+      end
+
+      sig {
+        params(
+          formula: Formula,
+          version: String,
+        ).void
+      }
+      def update_matching_version_resources!(formula, version:)
+        formula.resources.select { |r| r.livecheck.formula == :parent }.each do |resource|
+          new_url = update_url(resource.url, resource.version.to_s, version)
+
+          if new_url == resource.url
+            opoo <<~EOS
+              You need to bump resource "#{resource.name}" manually since the new URL
+              and old URL are both:
+                #{new_url}
+            EOS
+            next
+          end
+
+          new_mirrors = resource.mirrors.map do |mirror|
+            update_url(mirror, resource.version.to_s, version)
+          end
+          resource_path, forced_version = fetch_resource_and_forced_version(resource, version, new_url)
+          Utils::Tar.validate_file(resource_path)
+          new_hash = resource_path.sha256
+
+          inreplace_regex = /
+            [ ]+resource\ "#{resource.name}"\ do\s+
+              url\ .*\s+
+              (mirror\ .*\s+)*
+              sha256\ .*\s+
+              (version\ .*\s+)?
+              (\#.*\s+)*
+              livecheck\ do\s+
+                formula\ :parent\s+
+              end\s+
+              ((\#.*\s+)*
+              patch\ (.*\ )?do\s+
+                url\ .*\s+
+                sha256\ .*\s+
+              end\s+)*
+            end\s
+          /x
+
+          leading_spaces = T.must(formula.path.read.match(/^([ ]+)resource "#{resource.name}"/)).captures.first
+          new_resource_block = <<~EOS
+            #{leading_spaces}resource "#{resource.name}" do
+            #{leading_spaces}  url "#{new_url}"#{new_mirrors.map { |m| "\n#{leading_spaces}  mirror \"#{m}\"" }.join}
+            #{leading_spaces}  sha256 "#{new_hash}"
+            #{forced_version ? "#{leading_spaces}  version \"#{version}\"\n" : ""}
+            #{leading_spaces}  livecheck do
+            #{leading_spaces}    formula :parent
+            #{leading_spaces}  end
+            #{leading_spaces}end
+          EOS
+
+          Utils::Inreplace.inreplace formula.path do |s|
+            s.sub! inreplace_regex, new_resource_block
+          end
+        end
       end
 
       sig { params(formula: Formula, contents: T.nilable(String)).returns(Version) }
