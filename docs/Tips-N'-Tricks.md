@@ -121,3 +121,18 @@ If you're using Homebrew on macOS Intel, you should also fix permissions afterwa
 ```sh
 sudo chown -R "${USER}" /usr/local/etc
 ```
+
+## Use a caching proxy or mirror for Homebrew bottles
+
+You can configure Homebrew to retrieve bottles from a caching proxy or mirror.
+
+For example, in JFrog's Artifactory, accessible at `https://artifacts.example.com`,
+configure a new "remote" repository with `homebrew` as the "repository key" and `https://ghcr.io` as the URL.
+
+Then, set these environment variables for Homebrew to retrieve from the caching proxy.
+
+```sh
+export HOMEBREW_ARTIFACT_DOMAIN=https://artifacts.example.com/artifactory/homebrew/
+export HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK=1
+export HOMEBREW_DOCKER_REGISTRY_BASIC_AUTH_TOKEN="$(printf 'anonymous:' | base64)"
+```
