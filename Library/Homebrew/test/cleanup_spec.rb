@@ -417,6 +417,8 @@ RSpec.describe Homebrew::Cleanup do
         FileUtils.touch testball
         FileUtils.touch testball_resource
         (HOMEBREW_CELLAR/"testball"/"0.0.1").mkpath
+        # Create the latest version of testball so the older version is eligible for cleanup.
+        (HOMEBREW_CELLAR/"testball"/"0.1/bin").mkpath
         FileUtils.touch(CoreTap.instance.new_formula_path("testball"))
       end
 
