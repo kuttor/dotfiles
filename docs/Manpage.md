@@ -644,6 +644,10 @@ upgrade *`formula`* if it is already installed but outdated.
 
 : Install but skip any post-install steps.
 
+`--skip-link`
+
+: Install but skip linking the keg into the prefix.
+
 `--bottle-arch`
 
 : Optimise bottles for the specified architecture rather than the oldest

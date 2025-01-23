@@ -153,6 +153,9 @@ class Homebrew::Cmd::InstallCmd::Args < Homebrew::CLI::Args
   def skip_cask_deps?; end
 
   sig { returns(T::Boolean) }
+  def skip_link?; end
+
+  sig { returns(T::Boolean) }
   def skip_post_install?; end
 
   sig { returns(T.nilable(String)) }

@@ -1342,6 +1342,7 @@ _brew_instal() {
       --screen-saverdir
       --servicedir
       --skip-cask-deps
+      --skip-link
       --skip-post-install
       --verbose
       --vst-plugindir
@@ -1405,6 +1406,7 @@ _brew_install() {
       --screen-saverdir
       --servicedir
       --skip-cask-deps
+      --skip-link
       --skip-post-install
       --verbose
       --vst-plugindir

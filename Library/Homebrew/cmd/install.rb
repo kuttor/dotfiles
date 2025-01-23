@@ -101,6 +101,9 @@ module Homebrew
           [:switch, "--skip-post-install", {
             description: "Install but skip any post-install steps.",
           }],
+          [:switch, "--skip-link", {
+            description: "Install but skip linking the keg into the prefix.",
+          }],
           [:flag, "--bottle-arch=", {
             depends_on:  "--build-bottle",
             description: "Optimise bottles for the specified architecture rather than the oldest " \
@@ -289,6 +292,7 @@ module Homebrew
             only_dependencies: args.only_dependencies?,
             force:             args.force?,
             quiet:             args.quiet?,
+            skip_link:         args.skip_link?,
             overwrite:         args.overwrite?,
           )
         end
@@ -319,6 +323,7 @@ module Homebrew
           verbose:                    args.verbose?,
           dry_run:                    args.dry_run?,
           skip_post_install:          args.skip_post_install?,
+          skip_link:                  args.skip_link?,
         )
 
         Upgrade.check_installed_dependents(
