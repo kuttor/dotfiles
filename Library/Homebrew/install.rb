@@ -70,6 +70,7 @@ module Homebrew
         only_dependencies: false,
         force: false,
         quiet: false,
+        skip_link: false,
         overwrite: false
       )
         # head-only without --HEAD is an error
@@ -201,7 +202,7 @@ module Homebrew
               To upgrade to #{formula.pkg_version}, run:
                 #{unpin_cmd_if_needed}brew upgrade #{formula.full_name}
             EOS
-          elsif only_dependencies
+          elsif only_dependencies || skip_link
             return true
           else
             onoe <<~EOS
@@ -250,7 +251,8 @@ module Homebrew
         quiet: false,
         verbose: false,
         dry_run: false,
-        skip_post_install: false
+        skip_post_install: false,
+        skip_link: false
       )
         formula_installers = formulae_to_install.filter_map do |formula|
           Migrator.migrate_if_needed(formula, force:, dry_run:)
@@ -279,6 +281,7 @@ module Homebrew
             quiet:,
             verbose:,
             skip_post_install:,
+            skip_link:,
           )
 
           begin

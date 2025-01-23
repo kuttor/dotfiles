@@ -60,6 +60,7 @@ class FormulaInstaller
       show_header:                T::Boolean,
       build_bottle:               T::Boolean,
       skip_post_install:          T::Boolean,
+      skip_link:                  T::Boolean,
       force_bottle:               T::Boolean,
       bottle_arch:                T.nilable(String),
       ignore_deps:                T::Boolean,
@@ -88,6 +89,7 @@ class FormulaInstaller
     show_header: false,
     build_bottle: false,
     skip_post_install: false,
+    skip_link: false,
     force_bottle: false,
     bottle_arch: nil,
     ignore_deps: false,
@@ -120,6 +122,7 @@ class FormulaInstaller
     @build_from_source_formulae = build_from_source_formulae
     @build_bottle = build_bottle
     @skip_post_install = skip_post_install
+    @skip_link = skip_link
     @bottle_arch = bottle_arch
     @formula.force_bottle ||= force_bottle
     @force_bottle = T.let(@formula.force_bottle, T::Boolean)
@@ -193,6 +196,11 @@ class FormulaInstaller
   sig { returns(T::Boolean) }
   def skip_post_install?
     @skip_post_install.present?
+  end
+
+  sig { returns(T::Boolean) }
+  def skip_link?
+    @skip_link.present?
   end
 
   sig { params(output_warning: T::Boolean).returns(T::Boolean) }
@@ -866,7 +874,15 @@ on_request: installed_on_request?, options:)
     ohai "Finishing up" if verbose?
 
     keg = Keg.new(formula.prefix)
-    link(keg)
+    if skip_link?
+      unless quiet?
+        ohai "Skipping 'link' on request"
+        puts "You can run it manually using:"
+        puts "  brew link #{formula.full_name}"
+      end
+    else
+      link(keg)
+    end
 
     install_service
 
