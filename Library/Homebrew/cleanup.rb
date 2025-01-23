@@ -101,6 +101,15 @@ module Homebrew
         package.tap_git_head != git_head
       end
 
+      sig { params(formula: Formula).returns(T::Set[String]) }
+      def excluded_versions_from_cleanup(formula)
+        @excluded_versions_from_cleanup ||= {}
+        @excluded_versions_from_cleanup[formula.name] ||= begin
+          eligible_kegs_for_cleanup = formula.eligible_kegs_for_cleanup(quiet: true)
+          Set.new((formula.installed_kegs - eligible_kegs_for_cleanup).map { |keg| keg.version.to_s })
+        end
+      end
+
       sig { params(pathname: Pathname, scrub: T::Boolean).returns(T::Boolean) }
       def stale_formula?(pathname, scrub)
         return false unless HOMEBREW_CELLAR.directory?
@@ -131,6 +140,7 @@ module Homebrew
           nil
         end
 
+        formula_excluded_versions_from_cleanup = nil
         if formula.blank? && formula_name.delete_suffix!("_bottle_manifest")
           formula = begin
             Formulary.from_rack(HOMEBREW_CELLAR/formula_name)
@@ -139,6 +149,9 @@ module Homebrew
           end
 
           return false if formula.blank?
+
+          formula_excluded_versions_from_cleanup = excluded_versions_from_cleanup(formula)
+          return false if formula_excluded_versions_from_cleanup.include?(version.to_s)
 
           # We can't determine an installed rebuild and parsing manifest version cannot be reliably done.
           return false unless formula.latest_version_installed?
@@ -158,6 +171,9 @@ module Homebrew
           return true unless patch_hashes&.include?(Checksum.new(version.to_s))
         elsif resource_name && stable && (resource_version = stable.resources[resource_name]&.version)
           return true if resource_version != version
+        elsif (formula_excluded_versions_from_cleanup ||= excluded_versions_from_cleanup(formula).presence) &&
+              formula_excluded_versions_from_cleanup.include?(version.to_s)
+          return false
         elsif (formula.latest_version_installed? && formula.pkg_version.to_s != version) ||
               formula.pkg_version.to_s > version
           return true
