@@ -3174,6 +3174,7 @@ class Formula
     end
   end
 
+  sig { params(quiet: T::Boolean).returns(T::Array[Keg]) }
   def eligible_kegs_for_cleanup(quiet: false)
     eligible_for_cleanup = []
     if latest_version_installed?
@@ -3201,6 +3202,9 @@ class Formula
             opoo "Skipping (old) #{keg} due to it being linked" unless quiet
           elsif pinned? && keg == Keg.new(@pin.path.resolved_path)
             opoo "Skipping (old) #{keg} due to it being pinned" unless quiet
+          elsif (keepme = keg/".keepme") && keepme.exist? && keepme.readable? &&
+                (keepme_refs = keepme.readlines.map(&:strip).select { |ref| Pathname(ref).exist? }.presence)
+            opoo "Skipping #{keg} as it needed by #{keepme_refs.join(", ")}" unless quiet
           else
             eligible_for_cleanup << keg
           end
