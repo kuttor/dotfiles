@@ -3086,6 +3086,10 @@ to one or more of the following environment variables:
 `HOMEBREW_BUNDLE_MAS_SKIP`, `HOMEBREW_BUNDLE_WHALEBREW_SKIP`,
 `HOMEBREW_BUNDLE_TAP_SKIP`.
 
+`brew bundle upgrade`
+
+: Shorthand for `brew bundle install --upgrade`.
+
 `brew bundle dump`
 
 : Write all installed casks/formulae/images/taps into a `Brewfile` in the
@@ -3114,6 +3118,10 @@ useful for scripting.
 
 By default, only Homebrew formula dependencies are listed.
 
+`brew bundle edit`
+
+: Edit the `Brewfile` in your editor.
+
 `brew bundle exec` *`command`*
 
 : Run an external command in an isolated build environment based on the
@@ -3124,6 +3132,15 @@ sure that things you didn't specify in your `Brewfile` won't get picked up by
 commands like `bundle install`, `npm install`, etc. It will also add compiler
 flags which will help with finding keg-only dependencies like `openssl`,
 `icu4c`, etc.
+
+`brew bundle sh`
+
+: Run your shell in a `brew bundle exec` environment.
+
+`brew bundle env`
+
+: Print the environment variables that would be set in a `brew bundle exec`
+  environment.
 
 `--file`
 
@@ -3144,7 +3161,13 @@ flags which will help with finding keg-only dependencies like `openssl`,
 
 : `install` does not run `brew upgrade` on outdated dependencies. `check` does
   not check for outdated dependencies. Note they may still be upgraded by `brew
-  install` if needed.
+  install` if needed.This is enabled by default if `HOMEBREW_BUNDLE_NO_UPGRADE`
+  is set.
+
+`--upgrade`
+
+: `install` runs `brew upgrade` on outdated dependencies, even if
+  `HOMEBREW_BUNDLE_NO_UPGRADE` is set.
 
 `-f`, `--force`
 

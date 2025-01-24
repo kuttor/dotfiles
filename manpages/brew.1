@@ -1979,6 +1979,9 @@ You can specify the \fBBrewfile\fP location using \fB\-\-file\fP or by setting t
 .P
 You can skip the installation of dependencies by adding space\-separated values to one or more of the following environment variables: \fBHOMEBREW_BUNDLE_BREW_SKIP\fP, \fBHOMEBREW_BUNDLE_CASK_SKIP\fP, \fBHOMEBREW_BUNDLE_MAS_SKIP\fP, \fBHOMEBREW_BUNDLE_WHALEBREW_SKIP\fP, \fBHOMEBREW_BUNDLE_TAP_SKIP\fP\&\.
 .TP
+\fBbrew bundle upgrade\fP
+Shorthand for \fBbrew bundle install \-\-upgrade\fP\&\.
+.TP
 \fBbrew bundle dump\fP
 Write all installed casks/formulae/images/taps into a \fBBrewfile\fP in the current directory\.
 .TP
@@ -1999,10 +2002,19 @@ List all dependencies present in the \fBBrewfile\fP\&\.
 .P
 By default, only Homebrew formula dependencies are listed\.
 .TP
+\fBbrew bundle edit\fP
+Edit the \fBBrewfile\fP in your editor\.
+.TP
 \fBbrew bundle exec\fP \fIcommand\fP
 Run an external command in an isolated build environment based on the \fBBrewfile\fP dependencies\.
 .P
 This sanitized build environment ignores unrequested dependencies, which makes sure that things you didn\[u2019]t specify in your \fBBrewfile\fP won\[u2019]t get picked up by commands like \fBbundle install\fP, \fBnpm install\fP, etc\. It will also add compiler flags which will help with finding keg\-only dependencies like \fBopenssl\fP, \fBicu4c\fP, etc\.
+.TP
+\fBbrew bundle sh\fP
+Run your shell in a \fBbrew bundle exec\fP environment\.
+.TP
+\fBbrew bundle env\fP
+Print the environment variables that would be set in a \fBbrew bundle exec\fP environment\.
 .TP
 \fB\-\-file\fP
 Read the \fBBrewfile\fP from this location\. Use \fB\-\-file=\-\fP to pipe to stdin/stdout\.
@@ -2014,7 +2026,10 @@ Read the \fBBrewfile\fP from \fB~/\.Brewfile\fP or the \fBHOMEBREW_BUNDLE_FILE_G
 \fBinstall\fP prints output from commands as they are run\. \fBcheck\fP lists all missing dependencies\.
 .TP
 \fB\-\-no\-upgrade\fP
-\fBinstall\fP does not run \fBbrew upgrade\fP on outdated dependencies\. \fBcheck\fP does not check for outdated dependencies\. Note they may still be upgraded by \fBbrew install\fP if needed\.
+\fBinstall\fP does not run \fBbrew upgrade\fP on outdated dependencies\. \fBcheck\fP does not check for outdated dependencies\. Note they may still be upgraded by \fBbrew install\fP if needed\.This is enabled by default if \fBHOMEBREW_BUNDLE_NO_UPGRADE\fP is set\.
+.TP
+\fB\-\-upgrade\fP
+\fBinstall\fP runs \fBbrew upgrade\fP on outdated dependencies, even if \fBHOMEBREW_BUNDLE_NO_UPGRADE\fP is set\.
 .TP
 \fB\-f\fP, \fB\-\-force\fP
 \fBinstall\fP runs with \fB\-\-force\fP/\fB\-\-overwrite\fP\&\. \fBdump\fP overwrites an existing \fBBrewfile\fP\&\. \fBcleanup\fP actually performs its cleanup operations\.
