@@ -3161,7 +3161,7 @@ flags which will help with finding keg-only dependencies like `openssl`,
 
 : `install` does not run `brew upgrade` on outdated dependencies. `check` does
   not check for outdated dependencies. Note they may still be upgraded by `brew
-  install` if needed.This is enabled by default if `HOMEBREW_BUNDLE_NO_UPGRADE`
+  install` if needed. This is enabled by default if `HOMEBREW_BUNDLE_NO_UPGRADE`
   is set.
 
 `--upgrade`
