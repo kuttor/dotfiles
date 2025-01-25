@@ -33,8 +33,9 @@ module RuboCop
             return
           end
 
-          url_stanza = stanza.stanza_node.first_argument
-          hash_node = stanza.stanza_node.last_argument
+          stanza_node = T.cast(stanza.stanza_node, RuboCop::AST::SendNode)
+          url_stanza = stanza_node.first_argument
+          hash_node = stanza_node.last_argument
 
           audit_url(:cask, [stanza.stanza_node], [], livecheck_url: false)
 

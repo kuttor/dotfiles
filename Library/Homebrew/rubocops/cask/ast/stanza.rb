@@ -53,8 +53,9 @@ module RuboCop
         sig { returns(Symbol) }
         def stanza_name
           return :on_arch_conditional if arch_variable?
+          return stanza_node.method_node&.method_name if stanza_node.block_type?
 
-          stanza_node.method_name
+          T.cast(stanza_node, RuboCop::AST::SendNode).method_name
         end
 
         sig { returns(T.nilable(T::Array[Symbol])) }
