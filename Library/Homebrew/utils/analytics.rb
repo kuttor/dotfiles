@@ -270,7 +270,7 @@ module Utils
               next if args.days.present? && args.days&.to_i != days
               next if args.category.present? && args.category != category
 
-              table_output(category, days, results)
+              table_output(category, days.to_s, results)
             else
               total_count = results.values.inject("+")
               analytics << "#{number_readable(total_count)} (#{days} days)"
