@@ -61,6 +61,7 @@ begin
   ENV["PATH"] = path.to_s
 
   require "commands"
+  require "warnings"
 
   internal_cmd = Commands.valid_internal_cmd?(cmd) || Commands.valid_internal_dev_cmd?(cmd) if cmd
 
@@ -96,8 +97,10 @@ begin
       begin
         Homebrew.public_send Commands.method_name(cmd)
       rescue NoMethodError => e
-        case_error = "undefined method `#{cmd.downcase}' for module Homebrew"
-        odie "Unknown command: brew #{cmd}" if e.message == case_error
+        converted_cmd = cmd.downcase.tr("-", "_")
+        case_error = "undefined method `#{converted_cmd}' for module Homebrew"
+        private_method_error = "private method `#{converted_cmd}' called for module Homebrew"
+        odie "Unknown command: brew #{cmd}" if [case_error, private_method_error].include?(e.message)
 
         raise
       end
