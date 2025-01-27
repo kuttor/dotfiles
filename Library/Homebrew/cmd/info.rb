@@ -27,8 +27,8 @@ module Homebrew
         EOS
         switch "--analytics",
                description: "List global Homebrew analytics data or, if specified, installation and " \
-                            "build error data for <formula> (provided neither `HOMEBREW_NO_ANALYTICS` " \
-                            "nor `HOMEBREW_NO_GITHUB_API` are set)."
+                            "build error data for <formula> (provided neither `$HOMEBREW_NO_ANALYTICS` " \
+                            "nor `$HOMEBREW_NO_GITHUB_API` are set)."
         flag   "--days=",
                depends_on:  "--analytics",
                description: "How many days of analytics data to retrieve. " \
@@ -57,7 +57,7 @@ module Homebrew
         switch "--eval-all",
                depends_on:  "--json",
                description: "Evaluate all available formulae and casks, whether installed or not, to print their " \
-                            "JSON. Implied if `HOMEBREW_EVAL_ALL` is set."
+                            "JSON. Implied if `$HOMEBREW_EVAL_ALL` is set."
         switch "--variations",
                depends_on:  "--json",
                description: "Include the variations hash in each formula's JSON output."

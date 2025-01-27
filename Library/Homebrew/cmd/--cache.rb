@@ -15,7 +15,7 @@ module Homebrew
 
       cmd_args do
         description <<~EOS
-          Display Homebrew's download cache. See also `HOMEBREW_CACHE`.
+          Display Homebrew's download cache. See also `$HOMEBREW_CACHE`.
 
           If a <formula> or <cask> is provided, display the file or directory used to cache it.
         EOS

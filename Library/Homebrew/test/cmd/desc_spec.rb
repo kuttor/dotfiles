@@ -19,7 +19,7 @@ RSpec.describe Homebrew::Cmd::Desc do
     setup_test_formula "testball"
 
     expect { brew "desc", "--search", "testball" }
-      .to output(/`brew desc --search` needs `--eval-all` passed or `HOMEBREW_EVAL_ALL` set!/).to_stderr
+      .to output(/`brew desc --search` needs `--eval-all` passed or `\$HOMEBREW_EVAL_ALL` set!/).to_stderr
       .and be_a_failure
   end
 

@@ -122,7 +122,7 @@ module Homebrew
           all = args.eval_all?
 
           if !args.installed? && !(all || Homebrew::EnvConfig.eval_all?)
-            raise UsageError, "`brew uses` needs `--installed` or `--eval-all` passed or `HOMEBREW_EVAL_ALL` set!"
+            raise UsageError, "`brew uses` needs `--installed` or `--eval-all` passed or `$HOMEBREW_EVAL_ALL` set!"
           end
 
           if show_formulae_and_casks || args.formula?
