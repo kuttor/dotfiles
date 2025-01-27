@@ -16,8 +16,8 @@ module Homebrew
       },
       HOMEBREW_API_AUTO_UPDATE_SECS:             {
         description: "Check Homebrew's API for new formulae or cask data every " \
-                     "`HOMEBREW_API_AUTO_UPDATE_SECS` seconds. Alternatively, disable API auto-update " \
-                     "checks entirely with `HOMEBREW_NO_AUTO_UPDATE`.",
+                     "`$HOMEBREW_API_AUTO_UPDATE_SECS` seconds. Alternatively, disable API auto-update " \
+                     "checks entirely with `$HOMEBREW_NO_AUTO_UPDATE`.",
         default:     450,
       },
       HOMEBREW_API_DOMAIN:                       {
@@ -33,7 +33,7 @@ module Homebrew
       },
       HOMEBREW_ARTIFACT_DOMAIN:                  {
         description: "Prefix all download URLs, including those for bottles, with this value. " \
-                     "For example, `HOMEBREW_ARTIFACT_DOMAIN=http://localhost:8080` will cause a " \
+                     "For example, `export HOMEBREW_ARTIFACT_DOMAIN=http://localhost:8080` will cause a " \
                      "formula with the URL `https://example.com/foo.tar.gz` to instead download from " \
                      "`http://localhost:8080/https://example.com/foo.tar.gz`. " \
                      "Bottle URLs however, have their domain replaced with this prefix. " \
@@ -43,17 +43,17 @@ module Homebrew
                      "`http://localhost:8080/v2/homebrew/core/gettext/manifests/0.21`",
       },
       HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK:      {
-        description: "If `HOMEBREW_ARTIFACT_DOMAIN` and `HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK` are both set, " \
-                     "if the request to `HOMEBREW_ARTIFACT_DOMAIN` fails then it Homebrew will error rather than " \
+        description: "If `$HOMEBREW_ARTIFACT_DOMAIN` and `$HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK` are both set, " \
+                     "if the request to `$HOMEBREW_ARTIFACT_DOMAIN` fails then it Homebrew will error rather than " \
                      "trying any other/default URLs.",
         boolean:     true,
       },
       HOMEBREW_AUTO_UPDATE_SECS:                 {
-        description:  "Run `brew update` once every `HOMEBREW_AUTO_UPDATE_SECS` seconds before some commands, " \
+        description:  "Run `brew update` once every `$HOMEBREW_AUTO_UPDATE_SECS` seconds before some commands, " \
                       "e.g. `brew install`, `brew upgrade` and `brew tap`. Alternatively, " \
-                      "disable auto-update entirely with `HOMEBREW_NO_AUTO_UPDATE`.",
+                      "disable auto-update entirely with `$HOMEBREW_NO_AUTO_UPDATE`.",
         default_text: "`86400` (24 hours), `3600` (1 hour) if a developer command has been run " \
-                      "or `300` (5 minutes) if `HOMEBREW_NO_INSTALL_FROM_API` is set.",
+                      "or `300` (5 minutes) if `$HOMEBREW_NO_INSTALL_FROM_API` is set.",
       },
       HOMEBREW_BAT:                              {
         description: "If set, use `bat` for the `brew cat` command.",
@@ -76,9 +76,9 @@ module Homebrew
         description:  "Use this URL as the download mirror for bottles. " \
                       "If bottles at that URL are temporarily unavailable, " \
                       "the default bottle domain will be used as a fallback mirror. " \
-                      "For example, `HOMEBREW_BOTTLE_DOMAIN=http://localhost:8080` will cause all bottles to " \
-                      "download from the prefix `http://localhost:8080/`. " \
-                      "If bottles are not available at `HOMEBREW_BOTTLE_DOMAIN` " \
+                      "For example, `export HOMEBREW_BOTTLE_DOMAIN=http://localhost:8080` will cause all bottles " \
+                      "to download from the prefix `http://localhost:8080/`. " \
+                      "If bottles are not available at `$HOMEBREW_BOTTLE_DOMAIN` " \
                       "they will be downloaded from the default bottle domain.",
         default_text: "`https://ghcr.io/v2/homebrew/core`.",
         default:      HOMEBREW_BOTTLE_DEFAULT_DOMAIN,
@@ -107,8 +107,8 @@ module Homebrew
         description: "Append these options to all `cask` commands. All `--*dir` options, " \
                      "`--language`, `--require-sha`, `--no-quarantine` and `--no-binaries` are supported. " \
                      "For example, you might add something like the following to your " \
-                     "`~/.profile`, `~/.bash_profile`, or `~/.zshenv`:" \
-                     "\n\n    `export HOMEBREW_CASK_OPTS=\"--appdir=~/Applications --fontdir=/Library/Fonts\"`",
+                     "`${HOME}/.profile`, `${HOME}/.bash_profile`, or `${HOME}/.zshenv`:" \
+                     "\n\n    `export HOMEBREW_CASK_OPTS=\"--appdir=${HOME}/Applications --fontdir=/Library/Fonts\"`",
       },
       HOMEBREW_CLEANUP_MAX_AGE_DAYS:             {
         description: "Cleanup all cached files older than this many days.",
@@ -175,11 +175,12 @@ module Homebrew
       },
       HOMEBREW_DOCKER_REGISTRY_BASIC_AUTH_TOKEN: {
         description: "Use this base64 encoded username and password for authenticating with a Docker registry " \
-                     "proxying GitHub Packages. If `HOMEBREW_DOCKER_REGISTRY_TOKEN` is set, it will be used instead.",
+                     "proxying GitHub Packages. " \
+                     "If `$HOMEBREW_DOCKER_REGISTRY_TOKEN` is set, it will be used instead.",
       },
       HOMEBREW_DOCKER_REGISTRY_TOKEN:            {
         description: "Use this bearer token for authenticating with a Docker registry proxying GitHub Packages. " \
-                     "Preferred over `HOMEBREW_DOCKER_REGISTRY_BASIC_AUTH_TOKEN`.",
+                     "Preferred over `$HOMEBREW_DOCKER_REGISTRY_BASIC_AUTH_TOKEN`.",
       },
       HOMEBREW_EDITOR:                           {
         description:  "Use this editor when editing a single formula, or several formulae in the " \
@@ -211,11 +212,11 @@ module Homebrew
                      "formula if it or any of its dependencies has a license on this list.",
       },
       HOMEBREW_FORBIDDEN_OWNER:                  {
-        description: "The person who has set any `HOMEBREW_FORBIDDEN_*` variables.",
+        description: "The person who has set any `$HOMEBREW_FORBIDDEN_*` variables.",
         default:     "you",
       },
       HOMEBREW_FORBIDDEN_OWNER_CONTACT:          {
-        description: "How to contact the `HOMEBREW_FORBIDDEN_OWNER`, if set and necessary.",
+        description: "How to contact the `$HOMEBREW_FORBIDDEN_OWNER`, if set and necessary.",
       },
       HOMEBREW_FORBIDDEN_TAPS:                   {
         description: "A space-separated list of taps. Homebrew will refuse to install a " \
@@ -227,7 +228,8 @@ module Homebrew
         boolean:     true,
       },
       HOMEBREW_FORCE_API_AUTO_UPDATE:            {
-        description: "If set, update the Homebrew API formula or cask data even if `HOMEBREW_NO_AUTO_UPDATE` is set.",
+        description: "If set, update the Homebrew API formula or cask data even if " \
+                     "`$HOMEBREW_NO_AUTO_UPDATE` is set.",
         boolean:     true,
       },
       HOMEBREW_FORCE_BREWED_CA_CERTIFICATES:     {
@@ -246,8 +248,8 @@ module Homebrew
         boolean:     true,
       },
       HOMEBREW_FORCE_BREW_WRAPPER:               {
-        description: "If set, require `HOMEBREW_BREW_WRAPPER` to be set to the same value as " \
-                     "`HOMEBREW_FORCE_BREW_WRAPPER` for non-trivial `brew` commands.",
+        description: "If set, require `$HOMEBREW_BREW_WRAPPER` to be set to the same value as " \
+                     "`$HOMEBREW_FORCE_BREW_WRAPPER` for non-trivial `brew` commands.",
       },
       HOMEBREW_FORCE_VENDOR_RUBY:                {
         description: "If set, always use Homebrew's vendored, relocatable Ruby version even if the system version " \
@@ -291,11 +293,11 @@ module Homebrew
         description: "Set the Git committer name to this value.",
       },
       HOMEBREW_GIT_EMAIL:                        {
-        description: "Set the Git author name and, if `HOMEBREW_GIT_COMMITTER_EMAIL` is unset, committer email to " \
+        description: "Set the Git author name and, if `$HOMEBREW_GIT_COMMITTER_EMAIL` is unset, committer email to " \
                      "this value.",
       },
       HOMEBREW_GIT_NAME:                         {
-        description: "Set the Git author name and, if `HOMEBREW_GIT_COMMITTER_NAME` is unset, committer name to " \
+        description: "Set the Git author name and, if `$HOMEBREW_GIT_COMMITTER_NAME` is unset, committer name to " \
                      "this value.",
       },
       HOMEBREW_GIT_PATH:                         {
@@ -314,8 +316,8 @@ module Homebrew
       HOMEBREW_LIVECHECK_WATCHLIST:              {
         description:  "Consult this file for the list of formulae to check by default when no formula argument " \
                       "is passed to `brew livecheck`.",
-        default_text: "`$XDG_CONFIG_HOME/homebrew/livecheck_watchlist.txt` if `$XDG_CONFIG_HOME` is set " \
-                      "or `$HOME/.homebrew/livecheck_watchlist.txt` otherwise.",
+        default_text: "`${XDG_CONFIG_HOME}/homebrew/livecheck_watchlist.txt` if `$XDG_CONFIG_HOME` is set " \
+                      "or `${HOME}/.homebrew/livecheck_watchlist.txt` otherwise.",
         default:      "#{ENV.fetch("HOMEBREW_USER_CONFIG_HOME")}/livecheck_watchlist.txt",
       },
       HOMEBREW_LOCK_CONTEXT:                     {
@@ -324,8 +326,8 @@ module Homebrew
       },
       HOMEBREW_LOGS:                             {
         description:  "Use this directory to store log files.",
-        default_text: "macOS: `$HOME/Library/Logs/Homebrew`, " \
-                      "Linux: `$XDG_CACHE_HOME/Homebrew/Logs` or `$HOME/.cache/Homebrew/Logs`.",
+        default_text: "macOS: `${HOME}/Library/Logs/Homebrew`, " \
+                      "Linux: `${XDG_CACHE_HOME}/Homebrew/Logs` or `${HOME}/.cache/Homebrew/Logs`.",
         default:      HOMEBREW_DEFAULT_LOGS,
       },
       HOMEBREW_MAKE_JOBS:                        {
@@ -350,7 +352,7 @@ module Homebrew
       HOMEBREW_NO_AUTO_UPDATE:                   {
         description: "If set, do not automatically update before running some commands, e.g. " \
                      "`brew install`, `brew upgrade` and `brew tap`. Preferably, " \
-                     "run this less often by setting `HOMEBREW_AUTO_UPDATE_SECS` to a value higher than the " \
+                     "run this less often by setting `$HOMEBREW_AUTO_UPDATE_SECS` to a value higher than the " \
                      "default. Note that setting this and e.g. tapping new taps may result in a broken  " \
                      "configuration. Please ensure you always run `brew update` before reporting any issues.",
         boolean:     true,
@@ -369,7 +371,7 @@ module Homebrew
         boolean:      true,
       },
       HOMEBREW_NO_EMOJI:                         {
-        description: "If set, do not print `HOMEBREW_INSTALL_BADGE` on a successful build.",
+        description: "If set, do not print `$HOMEBREW_INSTALL_BADGE` on a successful build.",
         boolean:     true,
       },
       HOMEBREW_NO_ENV_HINTS:                     {
@@ -377,7 +379,7 @@ module Homebrew
         boolean:     true,
       },
       HOMEBREW_NO_FORCE_BREW_WRAPPER:            {
-        description: "If set, disables `HOMEBREW_FORCE_BREW_WRAPPER` behaviour, even if set.",
+        description: "If set, disables `$HOMEBREW_FORCE_BREW_WRAPPER` behaviour, even if set.",
         boolean:     true,
       },
       HOMEBREW_NO_GITHUB_API:                    {
@@ -401,7 +403,7 @@ module Homebrew
       HOMEBREW_NO_INSTALL_CLEANUP:               {
         description: "If set, `brew install`, `brew upgrade` and `brew reinstall` will never automatically " \
                      "cleanup installed/upgraded/reinstalled formulae or all formulae every " \
-                     "`HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS` days. Alternatively, `HOMEBREW_NO_CLEANUP_FORMULAE` " \
+                     "`$HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS` days. Alternatively, `$HOMEBREW_NO_CLEANUP_FORMULAE` " \
                      "allows specifying specific formulae to not clean up.",
         boolean:     true,
       },
@@ -438,19 +440,19 @@ module Homebrew
         boolean:     true,
       },
       HOMEBREW_SKIP_OR_LATER_BOTTLES:            {
-        description: "If set along with `HOMEBREW_DEVELOPER`, do not use bottles from older versions " \
+        description: "If set along with `$HOMEBREW_DEVELOPER`, do not use bottles from older versions " \
                      "of macOS. This is useful in development on new macOS versions.",
         boolean:     true,
       },
       HOMEBREW_SORBET_RUNTIME:                   {
         description: "If set, enable runtime typechecking using Sorbet. " \
-                     "Set by default for `HOMEBREW_DEVELOPER` or when running some developer commands.",
+                     "Set by default for `$HOMEBREW_DEVELOPER` or when running some developer commands.",
         boolean:     true,
       },
       HOMEBREW_SSH_CONFIG_PATH:                  {
-        description:  "If set, Homebrew will use the given config file instead of `~/.ssh/config` when fetching " \
-                      "Git repositories over SSH.",
-        default_text: "`$HOME/.ssh/config`",
+        description:  "If set, Homebrew will use the given config file instead of `${HOME}/.ssh/config` when " \
+                      "fetching Git repositories over SSH.",
+        default_text: "`${HOME}/.ssh/config`",
       },
       HOMEBREW_SUDO_THROUGH_SUDO_USER:           {
         description: "If set, Homebrew will use the `SUDO_USER` environment variable to define the user to " \

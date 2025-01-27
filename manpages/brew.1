@@ -80,7 +80,7 @@ List what would be uninstalled, but do not actually uninstall anything\.
 .SS "\fBcasks\fP"
 List all locally installable casks including short names\.
 .SS "\fBcleanup\fP \fR[\fIoptions\fP] \fR[\fIformula\fP|\fIcask\fP \.\.\.]"
-Remove stale lock files and outdated downloads for all formulae and casks, and remove old versions of installed formulae\. If arguments are specified, only do this for the given formulae and casks\. Removes all downloads more than 120 days old\. This can be adjusted with \fBHOMEBREW_CLEANUP_MAX_AGE_DAYS\fP\&\.
+Remove stale lock files and outdated downloads for all formulae and casks, and remove old versions of installed formulae\. If arguments are specified, only do this for the given formulae and casks\. Removes all downloads more than 120 days old\. This can be adjusted with \fB$HOMEBREW_CLEANUP_MAX_AGE_DAYS\fP\&\.
 .TP
 \fB\-\-prune\fP
 Remove all cache files older than specified \fIdays\fP\&\. If you want to remove everything, use \fB\-\-prune=all\fP\&\.
@@ -203,7 +203,7 @@ Search just names for \fItext\fP\&\. If \fItext\fP is flanked by slashes, it is 
 Search just descriptions for \fItext\fP\&\. If \fItext\fP is flanked by slashes, it is interpreted as a regular expression\.
 .TP
 \fB\-\-eval\-all\fP
-Evaluate all available formulae and casks, whether installed or not, to search their descriptions\. Implied if \fBHOMEBREW_EVAL_ALL\fP is set\.
+Evaluate all available formulae and casks, whether installed or not, to search their descriptions\. Implied if \fB$HOMEBREW_EVAL_ALL\fP is set\.
 .TP
 \fB\-\-formula\fP
 Treat all named arguments as formulae\.
@@ -304,7 +304,7 @@ Treat all named arguments as casks\.
 Display brief statistics for your Homebrew installation\. If a \fIformula\fP or \fIcask\fP is provided, show summary of information about it\.
 .TP
 \fB\-\-analytics\fP
-List global Homebrew analytics data or, if specified, installation and build error data for \fIformula\fP (provided neither \fBHOMEBREW_NO_ANALYTICS\fP nor \fBHOMEBREW_NO_GITHUB_API\fP are set)\.
+List global Homebrew analytics data or, if specified, installation and build error data for \fIformula\fP (provided neither \fB$HOMEBREW_NO_ANALYTICS\fP nor \fB$HOMEBREW_NO_GITHUB_API\fP are set)\.
 .TP
 \fB\-\-days\fP
 How many days of analytics data to retrieve\. The value for \fIdays\fP must be \fB30\fP, \fB90\fP or \fB365\fP\&\. The default is \fB30\fP\&\.
@@ -327,7 +327,7 @@ Print a JSON representation\. Currently the default value for \fIversion\fP is \
 Print JSON of formulae that are currently installed\.
 .TP
 \fB\-\-eval\-all\fP
-Evaluate all available formulae and casks, whether installed or not, to print their JSON\. Implied if \fBHOMEBREW_EVAL_ALL\fP is set\.
+Evaluate all available formulae and casks, whether installed or not, to print their JSON\. Implied if \fB$HOMEBREW_EVAL_ALL\fP is set\.
 .TP
 \fB\-\-variations\fP
 Include the variations hash in each formula\[u2019]s JSON output\.
@@ -343,11 +343,11 @@ Treat all named arguments as casks\.
 .SS "\fBinstall\fP \fR[\fIoptions\fP] \fIformula\fP|\fIcask\fP \fR[\.\.\.]"
 Install a \fIformula\fP or \fIcask\fP\&\. Additional options specific to a \fIformula\fP may be appended to the command\.
 .P
-Unless \fBHOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK\fP is set, \fBbrew upgrade\fP or \fBbrew reinstall\fP will be run for outdated dependents and dependents with broken linkage, respectively\.
+Unless \fB$HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK\fP is set, \fBbrew upgrade\fP or \fBbrew reinstall\fP will be run for outdated dependents and dependents with broken linkage, respectively\.
 .P
-Unless \fBHOMEBREW_NO_INSTALL_CLEANUP\fP is set, \fBbrew cleanup\fP will then be run for the installed formulae or, every 30 days, for all formulae\.
+Unless \fB$HOMEBREW_NO_INSTALL_CLEANUP\fP is set, \fBbrew cleanup\fP will then be run for the installed formulae or, every 30 days, for all formulae\.
 .P
-Unless \fBHOMEBREW_NO_INSTALL_UPGRADE\fP is set, \fBbrew install\fP \fIformula\fP will upgrade \fIformula\fP if it is already installed but outdated\.
+Unless \fB$HOMEBREW_NO_INSTALL_UPGRADE\fP is set, \fBbrew install\fP \fIformula\fP will upgrade \fIformula\fP if it is already installed but outdated\.
 .TP
 \fB\-d\fP, \fB\-\-debug\fP
 If brewing fails, open an interactive debugging session with access to IRB or a shell inside the temporary build directory\.
@@ -547,7 +547,7 @@ Check the given \fIformula\fP kegs for missing dependencies\. If no \fIformula\f
 \fB\-\-hide\fP
 Act as if none of the specified \fIhidden\fP are installed\. \fIhidden\fP should be a comma\-separated list of formulae\.
 .SS "\fBnodenv\-sync\fP"
-Create symlinks for Homebrew\[u2019]s installed NodeJS versions in \fB~/\.nodenv/versions\fP\&\.
+Create symlinks for Homebrew\[u2019]s installed NodeJS versions in \fB${HOME}/\.nodenv/versions\fP\&\.
 .P
 Note that older version symlinks will also be created so e\.g\. NodeJS 19\.1\.0 will also be symlinked to 19\.0\.0\.
 .SS "\fBoptions\fP \fR[\fIoptions\fP] \fR[\fIformula\fP \.\.\.]"
@@ -600,11 +600,11 @@ Pin the specified \fIformula\fP, preventing them from being upgraded when issuin
 .SS "\fBpostinstall\fP, \fBpost_install\fP \fIinstalled_formula\fP \fR[\.\.\.]"
 Rerun the post\-install steps for \fIformula\fP\&\.
 .SS "\fBpyenv\-sync\fP"
-Create symlinks for Homebrew\[u2019]s installed Python versions in \fB~/\.pyenv/versions\fP\&\.
+Create symlinks for Homebrew\[u2019]s installed Python versions in \fB${HOME}/\.pyenv/versions\fP\&\.
 .P
 Note that older patch version symlinks will be created and linked to the minor version so e\.g\. Python 3\.11\.0 will also be symlinked to 3\.11\.3\.
 .SS "\fBrbenv\-sync\fP"
-Create symlinks for Homebrew\[u2019]s installed Ruby versions in \fB~/\.rbenv/versions\fP\&\.
+Create symlinks for Homebrew\[u2019]s installed Ruby versions in \fB${HOME}/\.rbenv/versions\fP\&\.
 .P
 Note that older version symlinks will also be created so e\.g\. Ruby 3\.2\.1 will also be symlinked to 3\.2\.0\.
 .SS "\fBreadall\fP \fR[\fIoptions\fP] \fR[\fItap\fP \.\.\.]"
@@ -623,16 +623,16 @@ Verify any alias symlinks in each tap\.
 Syntax\-check all of Homebrew\[u2019]s Ruby files (if no \fItap\fP is passed)\.
 .TP
 \fB\-\-eval\-all\fP
-Evaluate all available formulae and casks, whether installed or not\. Implied if \fBHOMEBREW_EVAL_ALL\fP is set\.
+Evaluate all available formulae and casks, whether installed or not\. Implied if \fB$HOMEBREW_EVAL_ALL\fP is set\.
 .TP
 \fB\-\-no\-simulate\fP
 Don\[u2019]t simulate other system configurations when checking formulae and casks\.
 .SS "\fBreinstall\fP \fR[\fIoptions\fP] \fIformula\fP|\fIcask\fP \fR[\.\.\.]"
 Uninstall and then reinstall a \fIformula\fP or \fIcask\fP using the same options it was originally installed with, plus any appended options specific to a \fIformula\fP\&\.
 .P
-Unless \fBHOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK\fP is set, \fBbrew upgrade\fP or \fBbrew reinstall\fP will be run for outdated dependents and dependents with broken linkage, respectively\.
+Unless \fB$HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK\fP is set, \fBbrew upgrade\fP or \fBbrew reinstall\fP will be run for outdated dependents and dependents with broken linkage, respectively\.
 .P
-Unless \fBHOMEBREW_NO_INSTALL_CLEANUP\fP is set, \fBbrew cleanup\fP will then be run for the reinstalled formulae or, every 30 days, for all formulae\.
+Unless \fB$HOMEBREW_NO_INSTALL_CLEANUP\fP is set, \fBbrew cleanup\fP will then be run for the reinstalled formulae or, every 30 days, for all formulae\.
 .TP
 \fB\-d\fP, \fB\-\-debug\fP
 If brewing fails, open an interactive debugging session with access to IRB or a shell inside the temporary build directory\.
@@ -700,7 +700,7 @@ Search for casks\.
 Search for formulae with a description matching \fItext\fP and casks with a name or description matching \fItext\fP\&\.
 .TP
 \fB\-\-eval\-all\fP
-Evaluate all available formulae and casks, whether installed or not, to search their descriptions\. Implied if \fBHOMEBREW_EVAL_ALL\fP is set\.
+Evaluate all available formulae and casks, whether installed or not, to search their descriptions\. Implied if \fB$HOMEBREW_EVAL_ALL\fP is set\.
 .TP
 \fB\-\-pull\-request\fP
 Search for GitHub pull requests containing \fItext\fP\&\.
@@ -741,7 +741,7 @@ Valid shells: bash|csh|fish|pwsh|sh|tcsh|zsh
 .P
 Print export statements\. When run in a shell, this installation of Homebrew will be added to your \fBPATH\fP, \fBMANPATH\fP, and \fBINFOPATH\fP\&\.
 .P
-The variables \fBHOMEBREW_PREFIX\fP, \fBHOMEBREW_CELLAR\fP and \fBHOMEBREW_REPOSITORY\fP are also exported to avoid querying them multiple times\. To help guarantee idempotence, this command produces no output when Homebrew\[u2019]s \fBbin\fP and \fBsbin\fP directories are first and second respectively in your \fBPATH\fP\&\. Consider adding evaluation of this command\[u2019]s output to your dotfiles (e\.g\. \fB~/\.bash_profile\fP or \fB~/\.zprofile\fP on macOS and \fB~/\.bashrc\fP or \fB~/\.zshrc\fP on Linux) with: \fBeval "$(brew shellenv)"\fP
+The variables \fB$HOMEBREW_PREFIX\fP, \fB$HOMEBREW_CELLAR\fP and \fB$HOMEBREW_REPOSITORY\fP are also exported to avoid querying them multiple times\. To help guarantee idempotence, this command produces no output when Homebrew\[u2019]s \fBbin\fP and \fBsbin\fP directories are first and second respectively in your \fBPATH\fP\&\. Consider adding evaluation of this command\[u2019]s output to your dotfiles (e\.g\. \fB${HOME}/\.bash_profile\fP or \fB${HOME}/\.zprofile\fP on macOS and \fB${HOME}/\.bashrc\fP or \fB${HOME}/\.zshrc\fP on Linux) with: \fBeval "$(brew shellenv)"\fP
 .P
 The shell can be specified explicitly with a supported shell name parameter\. Unknown shells will output POSIX exports\.
 .SS "\fBtab\fP \fR[\fIoptions\fP] \fIinstalled_formula\fP|\fIinstalled_cask\fP \fR[\.\.\.]"
@@ -774,7 +774,7 @@ Install or change a tap with a custom remote\. Useful for mirrors\.
 Migrate tapped formulae from symlink\-based to directory\-based structure\.
 .TP
 \fB\-\-eval\-all\fP
-Evaluate all the formulae, casks and aliases in the new tap to check validity\. Implied if \fBHOMEBREW_EVAL_ALL\fP is set\.
+Evaluate all the formulae, casks and aliases in the new tap to check validity\. Implied if \fB$HOMEBREW_EVAL_ALL\fP is set\.
 .TP
 \fB\-f\fP, \fB\-\-force\fP
 Force install core taps even under API mode\.
@@ -841,9 +841,9 @@ Fetch and reset Homebrew and all tap repositories (or any specified \fIrepositor
 .SS "\fBupgrade\fP \fR[\fIoptions\fP] \fR[\fIinstalled_formula\fP|\fIinstalled_cask\fP \.\.\.]"
 Upgrade outdated casks and outdated, unpinned formulae using the same options they were originally installed with, plus any appended brew formula options\. If \fIcask\fP or \fIformula\fP are specified, upgrade only the given \fIcask\fP or \fIformula\fP kegs (unless they are pinned; see \fBpin\fP, \fBunpin\fP)\.
 .P
-Unless \fBHOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK\fP is set, \fBbrew upgrade\fP or \fBbrew reinstall\fP will be run for outdated dependents and dependents with broken linkage, respectively\.
+Unless \fB$HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK\fP is set, \fBbrew upgrade\fP or \fBbrew reinstall\fP will be run for outdated dependents and dependents with broken linkage, respectively\.
 .P
-Unless \fBHOMEBREW_NO_INSTALL_CLEANUP\fP is set, \fBbrew cleanup\fP will then be run for the upgraded formulae or, every 30 days, for all formulae\.
+Unless \fB$HOMEBREW_NO_INSTALL_CLEANUP\fP is set, \fBbrew cleanup\fP will then be run for the upgraded formulae or, every 30 days, for all formulae\.
 .TP
 \fB\-d\fP, \fB\-\-debug\fP
 If brewing fails, open an interactive debugging session with access to IRB or a shell inside the temporary build directory\.
@@ -945,7 +945,7 @@ Include only formulae\.
 \fB\-\-cask\fP
 Include only casks\.
 .SS "\fB\-\-cache\fP \fR[\fIoptions\fP] \fR[\fIformula\fP|\fIcask\fP \.\.\.]"
-Display Homebrew\[u2019]s download cache\. See also \fBHOMEBREW_CACHE\fP\&\.
+Display Homebrew\[u2019]s download cache\. See also \fB$HOMEBREW_CACHE\fP\&\.
 .P
 If a \fIformula\fP or \fIcask\fP is provided, display the file or directory used to cache it\.
 .TP
@@ -1488,7 +1488,7 @@ For every library that a keg references, print its dylib path followed by the bi
 \fB\-\-cached\fP
 Print the cached linkage values stored in \fBHOMEBREW_CACHE\fP, set by a previous \fBbrew linkage\fP run\.
 .SS "\fBlivecheck\fP, \fBlc\fP \fR[\fIoptions\fP] \fR[\fIformula\fP|\fIcask\fP \.\.\.]"
-Check for newer versions of formulae and/or casks from upstream\. If no formula or cask argument is passed, the list of formulae and casks to check is taken from \fBHOMEBREW_LIVECHECK_WATCHLIST\fP or \fB~/\.homebrew/livecheck_watchlist\.txt\fP\&\.
+Check for newer versions of formulae and/or casks from upstream\. If no formula or cask argument is passed, the list of formulae and casks to check is taken from \fBHOMEBREW_LIVECHECK_WATCHLIST\fP or \fB${HOME}/\.homebrew/livecheck_watchlist\.txt\fP\&\.
 .TP
 \fB\-\-full\-name\fP
 Print formulae and casks with fully\-qualified names\.
@@ -1909,43 +1909,43 @@ Target location for Applications (default: \fB/Applications\fP)\.
 Target location for Keyboard Layouts (default: \fB/Library/Keyboard Layouts\fP)\.
 .TP
 \fB\-\-colorpickerdir\fP
-Target location for Color Pickers (default: \fB~/Library/ColorPickers\fP)\.
+Target location for Color Pickers (default: \fB${HOME}/Library/ColorPickers\fP)\.
 .TP
 \fB\-\-prefpanedir\fP
-Target location for Preference Panes (default: \fB~/Library/PreferencePanes\fP)\.
+Target location for Preference Panes (default: \fB${HOME}/Library/PreferencePanes\fP)\.
 .TP
 \fB\-\-qlplugindir\fP
-Target location for Quick Look Plugins (default: \fB~/Library/QuickLook\fP)\.
+Target location for Quick Look Plugins (default: \fB${HOME}/Library/QuickLook\fP)\.
 .TP
 \fB\-\-mdimporterdir\fP
-Target location for Spotlight Plugins (default: \fB~/Library/Spotlight\fP)\.
+Target location for Spotlight Plugins (default: \fB${HOME}/Library/Spotlight\fP)\.
 .TP
 \fB\-\-dictionarydir\fP
-Target location for Dictionaries (default: \fB~/Library/Dictionaries\fP)\.
+Target location for Dictionaries (default: \fB${HOME}/Library/Dictionaries\fP)\.
 .TP
 \fB\-\-fontdir\fP
-Target location for Fonts (default: \fB~/Library/Fonts\fP)\.
+Target location for Fonts (default: \fB${HOME}/Library/Fonts\fP)\.
 .TP
 \fB\-\-servicedir\fP
-Target location for Services (default: \fB~/Library/Services\fP)\.
+Target location for Services (default: \fB${HOME}/Library/Services\fP)\.
 .TP
 \fB\-\-input\-methoddir\fP
-Target location for Input Methods (default: \fB~/Library/Input Methods\fP)\.
+Target location for Input Methods (default: \fB${HOME}/Library/Input Methods\fP)\.
 .TP
 \fB\-\-internet\-plugindir\fP
-Target location for Internet Plugins (default: \fB~/Library/Internet Plug\-Ins\fP)\.
+Target location for Internet Plugins (default: \fB${HOME}/Library/Internet Plug\-Ins\fP)\.
 .TP
 \fB\-\-audio\-unit\-plugindir\fP
-Target location for Audio Unit Plugins (default: \fB~/Library/Audio/Plug\-Ins/Components\fP)\.
+Target location for Audio Unit Plugins (default: \fB${HOME}/Library/Audio/Plug\-Ins/Components\fP)\.
 .TP
 \fB\-\-vst\-plugindir\fP
-Target location for VST Plugins (default: \fB~/Library/Audio/Plug\-Ins/VST\fP)\.
+Target location for VST Plugins (default: \fB${HOME}/Library/Audio/Plug\-Ins/VST\fP)\.
 .TP
 \fB\-\-vst3\-plugindir\fP
-Target location for VST3 Plugins (default: \fB~/Library/Audio/Plug\-Ins/VST3\fP)\.
+Target location for VST3 Plugins (default: \fB${HOME}/Library/Audio/Plug\-Ins/VST3\fP)\.
 .TP
 \fB\-\-screen\-saverdir\fP
-Target location for Screen Savers (default: \fB~/Library/Screen Savers\fP)\.
+Target location for Screen Savers (default: \fB${HOME}/Library/Screen Savers\fP)\.
 .TP
 \fB\-\-language\fP
 Comma\-separated list of language codes to prefer for cask installation\. The first matching language is used, otherwise it reverts to the cask\[u2019]s default language\. The default value is the language of your system\.
@@ -1975,9 +1975,9 @@ Bundler for non\-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store, 
 \fBbrew bundle\fP [\fBinstall\fP]
 Install and upgrade (by default) all dependencies from the \fBBrewfile\fP\&\.
 .P
-You can specify the \fBBrewfile\fP location using \fB\-\-file\fP or by setting the \fBHOMEBREW_BUNDLE_FILE\fP environment variable\.
+You can specify the \fBBrewfile\fP location using \fB\-\-file\fP or by setting the \fB$HOMEBREW_BUNDLE_FILE\fP environment variable\.
 .P
-You can skip the installation of dependencies by adding space\-separated values to one or more of the following environment variables: \fBHOMEBREW_BUNDLE_BREW_SKIP\fP, \fBHOMEBREW_BUNDLE_CASK_SKIP\fP, \fBHOMEBREW_BUNDLE_MAS_SKIP\fP, \fBHOMEBREW_BUNDLE_WHALEBREW_SKIP\fP, \fBHOMEBREW_BUNDLE_TAP_SKIP\fP\&\.
+You can skip the installation of dependencies by adding space\-separated values to one or more of the following environment variables: \fB$HOMEBREW_BUNDLE_BREW_SKIP\fP, \fB$HOMEBREW_BUNDLE_CASK_SKIP\fP, \fB$HOMEBREW_BUNDLE_MAS_SKIP\fP, \fB$HOMEBREW_BUNDLE_WHALEBREW_SKIP\fP, \fB$HOMEBREW_BUNDLE_TAP_SKIP\fP\&\.
 .TP
 \fBbrew bundle upgrade\fP
 Shorthand for \fBbrew bundle install \-\-upgrade\fP\&\.
@@ -2020,22 +2020,22 @@ Print the environment variables that would be set in a \fBbrew bundle exec\fP en
 Read the \fBBrewfile\fP from this location\. Use \fB\-\-file=\-\fP to pipe to stdin/stdout\.
 .TP
 \fB\-\-global\fP
-Read the \fBBrewfile\fP from \fB~/\.Brewfile\fP, in the \fBHOMEBREW_USER_CONFIG_HOME\fP directory, or the \fBHOMEBREW_BUNDLE_FILE_GLOBAL\fP environment variable, if set\.
+Read the \fBBrewfile\fP from \fB$HOMEBREW_BUNDLE_FILE_GLOBAL\fP (if set), \fB${XDG_CONFIG_HOME}/homebrew/Brewfile\fP (if \fB$XDG_CONFIG_HOME\fP is set), \fB${HOME}/\.homebrew/Brewfile\fP or \fB${HOME}/\.Brewfile\fP otherwise\.
 .TP
 \fB\-v\fP, \fB\-\-verbose\fP
 \fBinstall\fP prints output from commands as they are run\. \fBcheck\fP lists all missing dependencies\.
 .TP
 \fB\-\-no\-upgrade\fP
-\fBinstall\fP does not run \fBbrew upgrade\fP on outdated dependencies\. \fBcheck\fP does not check for outdated dependencies\. Note they may still be upgraded by \fBbrew install\fP if needed\. This is enabled by default if \fBHOMEBREW_BUNDLE_NO_UPGRADE\fP is set\.
+\fBinstall\fP does not run \fBbrew upgrade\fP on outdated dependencies\. \fBcheck\fP does not check for outdated dependencies\. Note they may still be upgraded by \fBbrew install\fP if needed\. This is enabled by default if \fB$HOMEBREW_BUNDLE_NO_UPGRADE\fP is set\.
 .TP
 \fB\-\-upgrade\fP
-\fBinstall\fP runs \fBbrew upgrade\fP on outdated dependencies, even if \fBHOMEBREW_BUNDLE_NO_UPGRADE\fP is set\.
+\fBinstall\fP runs \fBbrew upgrade\fP on outdated dependencies, even if \fB$HOMEBREW_BUNDLE_NO_UPGRADE\fP is set\.
 .TP
 \fB\-f\fP, \fB\-\-force\fP
 \fBinstall\fP runs with \fB\-\-force\fP/\fB\-\-overwrite\fP\&\. \fBdump\fP overwrites an existing \fBBrewfile\fP\&\. \fBcleanup\fP actually performs its cleanup operations\.
 .TP
 \fB\-\-cleanup\fP
-\fBinstall\fP performs cleanup operation, same as running \fBcleanup \-\-force\fP\&\. This is enabled by default if \fBHOMEBREW_BUNDLE_INSTALL_CLEANUP\fP is set and \fB\-\-global\fP is passed\.
+\fBinstall\fP performs cleanup operation, same as running \fBcleanup \-\-force\fP\&\. This is enabled by default if \fB$HOMEBREW_BUNDLE_INSTALL_CLEANUP\fP is set and \fB\-\-global\fP is passed\.
 .TP
 \fB\-\-all\fP
 \fBlist\fP all dependencies\.
@@ -2059,10 +2059,10 @@ Read the \fBBrewfile\fP from \fB~/\.Brewfile\fP, in the \fBHOMEBREW_USER_CONFIG_
 \fBlist\fP or \fBdump\fP VSCode extensions\.
 .TP
 \fB\-\-no\-vscode\fP
-\fBdump\fP without VSCode extensions\. This is enabled by default if \fBHOMEBREW_BUNDLE_DUMP_NO_VSCODE\fP is set\.
+\fBdump\fP without VSCode extensions\. This is enabled by default if \fB$HOMEBREW_BUNDLE_DUMP_NO_VSCODE\fP is set\.
 .TP
 \fB\-\-describe\fP
-\fBdump\fP adds a description comment above each line, unless the dependency does not have a description\. This is enabled by default if \fBHOMEBREW_BUNDLE_DUMP_DESCRIBE\fP is set\.
+\fBdump\fP adds a description comment above each line, unless the dependency does not have a description\. This is enabled by default if \fB$HOMEBREW_BUNDLE_DUMP_DESCRIBE\fP is set\.
 .TP
 \fB\-\-no\-restart\fP
 \fBdump\fP does not add \fBrestart_service\fP to formula lines\.
@@ -2074,7 +2074,7 @@ Print instructions for setting up the command\-not\-found hook for your shell\. 
 .SS "\fBservices\fP \fR[\fIsubcommand\fP]"
 Manage background services with macOS\[u2019] \fBlaunchctl\fP(1) daemon manager or Linux\[u2019]s \fBsystemctl\fP(1) service manager\.
 .P
-If \fBsudo\fP is passed, operate on \fB/Library/LaunchDaemons\fP or \fB/usr/lib/systemd/system\fP (started at boot)\. Otherwise, operate on \fB~/Library/LaunchAgents\fP or \fB~/\.config/systemd/user\fP (started at login)\.
+If \fBsudo\fP is passed, operate on \fB/Library/LaunchDaemons\fP or \fB/usr/lib/systemd/system\fP (started at boot)\. Otherwise, operate on \fB${HOME}/Library/LaunchAgents\fP or \fB${HOME}/\.config/systemd/user\fP (started at login)\.
 .TP
 [\fBsudo\fP] \fBbrew services\fP [\fBlist\fP] (\fB\-\-json\fP) (\fB\-\-debug\fP)
 List information about all managed services for the current user (or root)\. Provides more output from Homebrew and \fBlaunchctl\fP(1) or \fBsystemctl\fP(1) if run with \fB\-\-debug\fP\&\.
@@ -2306,7 +2306,7 @@ Note that these files do not support shell variable expansion e\.g\. \fB$HOME\fP
 A space\-separated list of taps\. Homebrew will refuse to install a formula unless it and all of its dependencies are in an official tap or in a tap on this list\.
 .TP
 \fBHOMEBREW_API_AUTO_UPDATE_SECS\fP
-Check Homebrew\[u2019]s API for new formulae or cask data every \fBHOMEBREW_API_AUTO_UPDATE_SECS\fP seconds\. Alternatively, disable API auto\-update checks entirely with \fBHOMEBREW_NO_AUTO_UPDATE\fP\&\.
+Check Homebrew\[u2019]s API for new formulae or cask data every \fB$HOMEBREW_API_AUTO_UPDATE_SECS\fP seconds\. Alternatively, disable API auto\-update checks entirely with \fB$HOMEBREW_NO_AUTO_UPDATE\fP\&\.
 .RS
 .P
 \fIDefault:\fP \fB450\fP\&\.
@@ -2327,16 +2327,16 @@ Linux only: Pass this value to a type name representing the compiler\[u2019]s \f
 .RE
 .TP
 \fBHOMEBREW_ARTIFACT_DOMAIN\fP
-Prefix all download URLs, including those for bottles, with this value\. For example, \fBHOMEBREW_ARTIFACT_DOMAIN=http://localhost:8080\fP will cause a formula with the URL \fBhttps://example\.com/foo\.tar\.gz\fP to instead download from \fBhttp://localhost:8080/https://example\.com/foo\.tar\.gz\fP\&\. Bottle URLs however, have their domain replaced with this prefix\. This results in e\.g\. \fBhttps://ghcr\.io/v2/homebrew/core/gettext/manifests/0\.21\fP to instead be downloaded from \fBhttp://localhost:8080/v2/homebrew/core/gettext/manifests/0\.21\fP
+Prefix all download URLs, including those for bottles, with this value\. For example, \fBexport HOMEBREW_ARTIFACT_DOMAIN=http://localhost:8080\fP will cause a formula with the URL \fBhttps://example\.com/foo\.tar\.gz\fP to instead download from \fBhttp://localhost:8080/https://example\.com/foo\.tar\.gz\fP\&\. Bottle URLs however, have their domain replaced with this prefix\. This results in e\.g\. \fBhttps://ghcr\.io/v2/homebrew/core/gettext/manifests/0\.21\fP to instead be downloaded from \fBhttp://localhost:8080/v2/homebrew/core/gettext/manifests/0\.21\fP
 .TP
 \fBHOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK\fP
-If \fBHOMEBREW_ARTIFACT_DOMAIN\fP and \fBHOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK\fP are both set, if the request to \fBHOMEBREW_ARTIFACT_DOMAIN\fP fails then it Homebrew will error rather than trying any other/default URLs\.
+If \fB$HOMEBREW_ARTIFACT_DOMAIN\fP and \fB$HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK\fP are both set, if the request to \fB$HOMEBREW_ARTIFACT_DOMAIN\fP fails then it Homebrew will error rather than trying any other/default URLs\.
 .TP
 \fBHOMEBREW_AUTO_UPDATE_SECS\fP
-Run \fBbrew update\fP once every \fBHOMEBREW_AUTO_UPDATE_SECS\fP seconds before some commands, e\.g\. \fBbrew install\fP, \fBbrew upgrade\fP and \fBbrew tap\fP\&\. Alternatively, disable auto\-update entirely with \fBHOMEBREW_NO_AUTO_UPDATE\fP\&\.
+Run \fBbrew update\fP once every \fB$HOMEBREW_AUTO_UPDATE_SECS\fP seconds before some commands, e\.g\. \fBbrew install\fP, \fBbrew upgrade\fP and \fBbrew tap\fP\&\. Alternatively, disable auto\-update entirely with \fB$HOMEBREW_NO_AUTO_UPDATE\fP\&\.
 .RS
 .P
-\fIDefault:\fP \fB86400\fP (24 hours), \fB3600\fP (1 hour) if a developer command has been run or \fB300\fP (5 minutes) if \fBHOMEBREW_NO_INSTALL_FROM_API\fP is set\.
+\fIDefault:\fP \fB86400\fP (24 hours), \fB3600\fP (1 hour) if a developer command has been run or \fB300\fP (5 minutes) if \fB$HOMEBREW_NO_INSTALL_FROM_API\fP is set\.
 .RE
 .TP
 \fBHOMEBREW_BAT\fP
@@ -2360,7 +2360,7 @@ Use this as the \fBbat\fP theme for syntax highlighting\.
 If set, use Bootsnap to speed up repeated \fBbrew\fP calls\. A no\-op on Linux when not using Homebrew\[u2019]s vendored, relocatable Ruby\.
 .TP
 \fBHOMEBREW_BOTTLE_DOMAIN\fP
-Use this URL as the download mirror for bottles\. If bottles at that URL are temporarily unavailable, the default bottle domain will be used as a fallback mirror\. For example, \fBHOMEBREW_BOTTLE_DOMAIN=http://localhost:8080\fP will cause all bottles to download from the prefix \fBhttp://localhost:8080/\fP\&\. If bottles are not available at \fBHOMEBREW_BOTTLE_DOMAIN\fP they will be downloaded from the default bottle domain\.
+Use this URL as the download mirror for bottles\. If bottles at that URL are temporarily unavailable, the default bottle domain will be used as a fallback mirror\. For example, \fBexport HOMEBREW_BOTTLE_DOMAIN=http://localhost:8080\fP will cause all bottles to download from the prefix \fBhttp://localhost:8080/\fP\&\. If bottles are not available at \fB$HOMEBREW_BOTTLE_DOMAIN\fP they will be downloaded from the default bottle domain\.
 .RS
 .P
 \fIDefault:\fP \fBhttps://ghcr\.io/v2/homebrew/core\fP\&\.
@@ -2394,10 +2394,10 @@ Use this directory as the download cache\.
 .RE
 .TP
 \fBHOMEBREW_CASK_OPTS\fP
-Append these options to all \fBcask\fP commands\. All \fB\-\-*dir\fP options, \fB\-\-language\fP, \fB\-\-require\-sha\fP, \fB\-\-no\-quarantine\fP and \fB\-\-no\-binaries\fP are supported\. For example, you might add something like the following to your \fB~/\.profile\fP, \fB~/\.bash_profile\fP, or \fB~/\.zshenv\fP:
+Append these options to all \fBcask\fP commands\. All \fB\-\-*dir\fP options, \fB\-\-language\fP, \fB\-\-require\-sha\fP, \fB\-\-no\-quarantine\fP and \fB\-\-no\-binaries\fP are supported\. For example, you might add something like the following to your \fB${HOME}/\.profile\fP, \fB${HOME}/\.bash_profile\fP, or \fB${HOME}/\.zshenv\fP:
 .RS
 .P
-\fBexport HOMEBREW_CASK_OPTS="\-\-appdir=~/Applications \-\-fontdir=/Library/Fonts"\fP
+\fBexport HOMEBREW_CASK_OPTS="\-\-appdir=${HOME}/Applications \-\-fontdir=/Library/Fonts"\fP
 .RE
 .TP
 \fBHOMEBREW_CLEANUP_MAX_AGE_DAYS\fP
@@ -2467,10 +2467,10 @@ Use this X11 display when opening a page in a browser, for example with \fBbrew 
 If set, print install times for each formula at the end of the run\.
 .TP
 \fBHOMEBREW_DOCKER_REGISTRY_BASIC_AUTH_TOKEN\fP
-Use this base64 encoded username and password for authenticating with a Docker registry proxying GitHub Packages\. If \fBHOMEBREW_DOCKER_REGISTRY_TOKEN\fP is set, it will be used instead\.
+Use this base64 encoded username and password for authenticating with a Docker registry proxying GitHub Packages\. If \fB$HOMEBREW_DOCKER_REGISTRY_TOKEN\fP is set, it will be used instead\.
 .TP
 \fBHOMEBREW_DOCKER_REGISTRY_TOKEN\fP
-Use this bearer token for authenticating with a Docker registry proxying GitHub Packages\. Preferred over \fBHOMEBREW_DOCKER_REGISTRY_BASIC_AUTH_TOKEN\fP\&\.
+Use this bearer token for authenticating with a Docker registry proxying GitHub Packages\. Preferred over \fB$HOMEBREW_DOCKER_REGISTRY_BASIC_AUTH_TOKEN\fP\&\.
 .TP
 \fBHOMEBREW_EDITOR\fP
 Use this editor when editing a single formula, or several formulae in the same directory\.
@@ -2501,14 +2501,14 @@ A space\-separated list of formulae\. Homebrew will refuse to install a formula 
 A space\-separated list of SPDX license identifiers\. Homebrew will refuse to install a formula if it or any of its dependencies has a license on this list\.
 .TP
 \fBHOMEBREW_FORBIDDEN_OWNER\fP
-The person who has set any \fBHOMEBREW_FORBIDDEN_*\fP variables\.
+The person who has set any \fB$HOMEBREW_FORBIDDEN_*\fP variables\.
 .RS
 .P
 \fIDefault:\fP \fByou\fP\&\.
 .RE
 .TP
 \fBHOMEBREW_FORBIDDEN_OWNER_CONTACT\fP
-How to contact the \fBHOMEBREW_FORBIDDEN_OWNER\fP, if set and necessary\.
+How to contact the \fB$HOMEBREW_FORBIDDEN_OWNER\fP, if set and necessary\.
 .TP
 \fBHOMEBREW_FORBIDDEN_TAPS\fP
 A space\-separated list of taps\. Homebrew will refuse to install a formula if it or any of its dependencies is in a tap on this list\.
@@ -2517,7 +2517,7 @@ A space\-separated list of taps\. Homebrew will refuse to install a formula if i
 If set, Homebrew will refuse to read formulae or casks provided from file paths, e\.g\. \fBbrew install \./package\.rb\fP\&\.
 .TP
 \fBHOMEBREW_FORCE_API_AUTO_UPDATE\fP
-If set, update the Homebrew API formula or cask data even if \fBHOMEBREW_NO_AUTO_UPDATE\fP is set\.
+If set, update the Homebrew API formula or cask data even if \fB$HOMEBREW_NO_AUTO_UPDATE\fP is set\.
 .TP
 \fBHOMEBREW_FORCE_BREWED_CA_CERTIFICATES\fP
 If set, always use a Homebrew\-installed \fBca\-certificates\fP rather than the system version\. Automatically set if the system version is too old\.
@@ -2529,7 +2529,7 @@ If set, always use a Homebrew\-installed \fBcurl\fP(1) rather than the system ve
 If set, always use a Homebrew\-installed \fBgit\fP(1) rather than the system version\. Automatically set if the system version of \fBgit\fP is too old\.
 .TP
 \fBHOMEBREW_FORCE_BREW_WRAPPER\fP
-If set, require \fBHOMEBREW_BREW_WRAPPER\fP to be set to the same value as \fBHOMEBREW_FORCE_BREW_WRAPPER\fP for non\-trivial \fBbrew\fP commands\.
+If set, require \fB$HOMEBREW_BREW_WRAPPER\fP to be set to the same value as \fB$HOMEBREW_FORCE_BREW_WRAPPER\fP for non\-trivial \fBbrew\fP commands\.
 .TP
 \fBHOMEBREW_FORCE_VENDOR_RUBY\fP
 If set, always use Homebrew\[u2019]s vendored, relocatable Ruby version even if the system version of Ruby is new enough\.
@@ -2567,10 +2567,10 @@ Set the Git committer email to this value\.
 Set the Git committer name to this value\.
 .TP
 \fBHOMEBREW_GIT_EMAIL\fP
-Set the Git author name and, if \fBHOMEBREW_GIT_COMMITTER_EMAIL\fP is unset, committer email to this value\.
+Set the Git author name and, if \fB$HOMEBREW_GIT_COMMITTER_EMAIL\fP is unset, committer email to this value\.
 .TP
 \fBHOMEBREW_GIT_NAME\fP
-Set the Git author name and, if \fBHOMEBREW_GIT_COMMITTER_NAME\fP is unset, committer name to this value\.
+Set the Git author name and, if \fB$HOMEBREW_GIT_COMMITTER_NAME\fP is unset, committer name to this value\.
 .TP
 \fBHOMEBREW_GIT_PATH\fP
 Linux only: Set this value to a new enough \fBgit\fP executable for Homebrew to use\.
@@ -2593,7 +2593,7 @@ If set, \fBbrew livecheck\fP will include data for packages that are autobumped 
 Consult this file for the list of formulae to check by default when no formula argument is passed to \fBbrew livecheck\fP\&\.
 .RS
 .P
-\fIDefault:\fP \fB$XDG_CONFIG_HOME/homebrew/livecheck_watchlist\.txt\fP if \fB$XDG_CONFIG_HOME\fP is set or \fB$HOME/\.homebrew/livecheck_watchlist\.txt\fP otherwise\.
+\fIDefault:\fP \fB${XDG_CONFIG_HOME}/homebrew/livecheck_watchlist\.txt\fP if \fB$XDG_CONFIG_HOME\fP is set or \fB${HOME}/\.homebrew/livecheck_watchlist\.txt\fP otherwise\.
 .RE
 .TP
 \fBHOMEBREW_LOCK_CONTEXT\fP
@@ -2603,7 +2603,7 @@ If set, Homebrew will add this output as additional context for locking errors\.
 Use this directory to store log files\.
 .RS
 .P
-\fIDefault:\fP macOS: \fB$HOME/Library/Logs/Homebrew\fP, Linux: \fB$XDG_CACHE_HOME/Homebrew/Logs\fP or \fB$HOME/\.cache/Homebrew/Logs\fP\&\.
+\fIDefault:\fP macOS: \fB${HOME}/Library/Logs/Homebrew\fP, Linux: \fB${XDG_CACHE_HOME}/Homebrew/Logs\fP or \fB${HOME}/\.cache/Homebrew/Logs\fP\&\.
 .RE
 .TP
 \fBHOMEBREW_MAKE_JOBS\fP
@@ -2622,7 +2622,7 @@ If set, do not send analytics\. Google Analytics were destroyed\. For more infor
 If set, calls to \fBbrew cleanup\fP and \fBbrew uninstall\fP will not automatically remove unused formula dependents\.
 .TP
 \fBHOMEBREW_NO_AUTO_UPDATE\fP
-If set, do not automatically update before running some commands, e\.g\. \fBbrew install\fP, \fBbrew upgrade\fP and \fBbrew tap\fP\&\. Preferably, run this less often by setting \fBHOMEBREW_AUTO_UPDATE_SECS\fP to a value higher than the default\. Note that setting this and e\.g\. tapping new taps may result in a broken configuration\. Please ensure you always run \fBbrew update\fP before reporting any issues\.
+If set, do not automatically update before running some commands, e\.g\. \fBbrew install\fP, \fBbrew upgrade\fP and \fBbrew tap\fP\&\. Preferably, run this less often by setting \fB$HOMEBREW_AUTO_UPDATE_SECS\fP to a value higher than the default\. Note that setting this and e\.g\. tapping new taps may result in a broken configuration\. Please ensure you always run \fBbrew update\fP before reporting any issues\.
 .TP
 \fBHOMEBREW_NO_BOOTSNAP\fP
 If set, do not use Bootsnap to speed up repeated \fBbrew\fP calls\.
@@ -2638,13 +2638,13 @@ If set, do not print text with colour added\.
 .RE
 .TP
 \fBHOMEBREW_NO_EMOJI\fP
-If set, do not print \fBHOMEBREW_INSTALL_BADGE\fP on a successful build\.
+If set, do not print \fB$HOMEBREW_INSTALL_BADGE\fP on a successful build\.
 .TP
 \fBHOMEBREW_NO_ENV_HINTS\fP
 If set, do not print any hints about changing Homebrew\[u2019]s behaviour with environment variables\.
 .TP
 \fBHOMEBREW_NO_FORCE_BREW_WRAPPER\fP
-If set, disables \fBHOMEBREW_FORCE_BREW_WRAPPER\fP behaviour, even if set\.
+If set, disables \fB$HOMEBREW_FORCE_BREW_WRAPPER\fP behaviour, even if set\.
 .TP
 \fBHOMEBREW_NO_GITHUB_API\fP
 If set, do not use the GitHub API, e\.g\. for searches or fetching relevant issues after a failed install\.
@@ -2660,7 +2660,7 @@ If set, forbid redirects from secure HTTPS to insecure HTTP\.
 If set, do not check for broken linkage of dependents or outdated dependents after installing, upgrading or reinstalling formulae\. This will result in fewer dependents (and their dependencies) being upgraded or reinstalled but may result in more breakage from running \fBbrew install\fP \fIformula\fP or \fBbrew upgrade\fP \fIformula\fP\&\.
 .TP
 \fBHOMEBREW_NO_INSTALL_CLEANUP\fP
-If set, \fBbrew install\fP, \fBbrew upgrade\fP and \fBbrew reinstall\fP will never automatically cleanup installed/upgraded/reinstalled formulae or all formulae every \fBHOMEBREW_CLEANUP_PERIODIC_FULL_DAYS\fP days\. Alternatively, \fBHOMEBREW_NO_CLEANUP_FORMULAE\fP allows specifying specific formulae to not clean up\.
+If set, \fBbrew install\fP, \fBbrew upgrade\fP and \fBbrew reinstall\fP will never automatically cleanup installed/upgraded/reinstalled formulae or all formulae every \fB$HOMEBREW_CLEANUP_PERIODIC_FULL_DAYS\fP days\. Alternatively, \fB$HOMEBREW_NO_CLEANUP_FORMULAE\fP allows specifying specific formulae to not clean up\.
 .TP
 \fBHOMEBREW_NO_INSTALL_FROM_API\fP
 If set, do not install formulae and casks in homebrew/core and homebrew/cask taps using Homebrew\[u2019]s API and instead use (large, slow) local checkouts of these repositories\.
@@ -2688,16 +2688,16 @@ If set, use Pry for the \fBbrew irb\fP command\.
 If set, running Homebrew on Linux will simulate certain macOS code paths\. This is useful when auditing macOS formulae while on Linux\.
 .TP
 \fBHOMEBREW_SKIP_OR_LATER_BOTTLES\fP
-If set along with \fBHOMEBREW_DEVELOPER\fP, do not use bottles from older versions of macOS\. This is useful in development on new macOS versions\.
+If set along with \fB$HOMEBREW_DEVELOPER\fP, do not use bottles from older versions of macOS\. This is useful in development on new macOS versions\.
 .TP
 \fBHOMEBREW_SORBET_RUNTIME\fP
-If set, enable runtime typechecking using Sorbet\. Set by default for \fBHOMEBREW_DEVELOPER\fP or when running some developer commands\.
+If set, enable runtime typechecking using Sorbet\. Set by default for \fB$HOMEBREW_DEVELOPER\fP or when running some developer commands\.
 .TP
 \fBHOMEBREW_SSH_CONFIG_PATH\fP
-If set, Homebrew will use the given config file instead of \fB~/\.ssh/config\fP when fetching Git repositories over SSH\.
+If set, Homebrew will use the given config file instead of \fB${HOME}/\.ssh/config\fP when fetching Git repositories over SSH\.
 .RS
 .P
-\fIDefault:\fP \fB$HOME/\.ssh/config\fP
+\fIDefault:\fP \fB${HOME}/\.ssh/config\fP
 .RE
 .TP
 \fBHOMEBREW_SUDO_THROUGH_SUDO_USER\fP

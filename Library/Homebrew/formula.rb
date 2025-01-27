@@ -1109,7 +1109,7 @@ class Formula
   end
 
   # A subdirectory of `etc` with the formula name suffixed.
-  # e.g. `$HOMEBREW_PREFIX/etc/openssl@1.1`
+  # e.g. `${HOMEBREW_PREFIX}/etc/openssl@1.1`
   # Anything using `pkgetc.install` will not overwrite other files on
   # e.g. upgrades but will write a new file named `*.default`.
   #

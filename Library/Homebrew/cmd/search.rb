@@ -40,7 +40,7 @@ module Homebrew
         switch "--eval-all",
                depends_on:  "--desc",
                description: "Evaluate all available formulae and casks, whether installed or not, to search their " \
-                            "descriptions. Implied if `HOMEBREW_EVAL_ALL` is set."
+                            "descriptions. Implied if `$HOMEBREW_EVAL_ALL` is set."
         switch "--pull-request",
                description: "Search for GitHub pull requests containing <text>."
         switch "--open",
@@ -71,7 +71,7 @@ module Homebrew
 
         if args.desc?
           if !args.eval_all? && !Homebrew::EnvConfig.eval_all? && Homebrew::EnvConfig.no_install_from_api?
-            raise UsageError, "`brew search --desc` needs `--eval-all` passed or `HOMEBREW_EVAL_ALL` set!"
+            raise UsageError, "`brew search --desc` needs `--eval-all` passed or `$HOMEBREW_EVAL_ALL` set!"
           end
 
           Search.search_descriptions(string_or_regex, args)
