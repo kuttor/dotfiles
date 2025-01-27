@@ -547,7 +547,7 @@ Check the given \fIformula\fP kegs for missing dependencies\. If no \fIformula\f
 \fB\-\-hide\fP
 Act as if none of the specified \fIhidden\fP are installed\. \fIhidden\fP should be a comma\-separated list of formulae\.
 .SS "\fBnodenv\-sync\fP"
-Create symlinks for Homebrew\[u2019]s installed NodeJS versions in \fB${HOME}/\.nodenv/versions\fP\&\.
+Create symlinks for Homebrew\[u2019]s installed NodeJS versions in \fB~/\.nodenv/versions\fP\&\.
 .P
 Note that older version symlinks will also be created so e\.g\. NodeJS 19\.1\.0 will also be symlinked to 19\.0\.0\.
 .SS "\fBoptions\fP \fR[\fIoptions\fP] \fR[\fIformula\fP \.\.\.]"
@@ -600,11 +600,11 @@ Pin the specified \fIformula\fP, preventing them from being upgraded when issuin
 .SS "\fBpostinstall\fP, \fBpost_install\fP \fIinstalled_formula\fP \fR[\.\.\.]"
 Rerun the post\-install steps for \fIformula\fP\&\.
 .SS "\fBpyenv\-sync\fP"
-Create symlinks for Homebrew\[u2019]s installed Python versions in \fB${HOME}/\.pyenv/versions\fP\&\.
+Create symlinks for Homebrew\[u2019]s installed Python versions in \fB~/\.pyenv/versions\fP\&\.
 .P
 Note that older patch version symlinks will be created and linked to the minor version so e\.g\. Python 3\.11\.0 will also be symlinked to 3\.11\.3\.
 .SS "\fBrbenv\-sync\fP"
-Create symlinks for Homebrew\[u2019]s installed Ruby versions in \fB${HOME}/\.rbenv/versions\fP\&\.
+Create symlinks for Homebrew\[u2019]s installed Ruby versions in \fB~/\.rbenv/versions\fP\&\.
 .P
 Note that older version symlinks will also be created so e\.g\. Ruby 3\.2\.1 will also be symlinked to 3\.2\.0\.
 .SS "\fBreadall\fP \fR[\fIoptions\fP] \fR[\fItap\fP \.\.\.]"
@@ -741,7 +741,7 @@ Valid shells: bash|csh|fish|pwsh|sh|tcsh|zsh
 .P
 Print export statements\. When run in a shell, this installation of Homebrew will be added to your \fBPATH\fP, \fBMANPATH\fP, and \fBINFOPATH\fP\&\.
 .P
-The variables \fB$HOMEBREW_PREFIX\fP, \fB$HOMEBREW_CELLAR\fP and \fB$HOMEBREW_REPOSITORY\fP are also exported to avoid querying them multiple times\. To help guarantee idempotence, this command produces no output when Homebrew\[u2019]s \fBbin\fP and \fBsbin\fP directories are first and second respectively in your \fBPATH\fP\&\. Consider adding evaluation of this command\[u2019]s output to your dotfiles (e\.g\. \fB${HOME}/\.bash_profile\fP or \fB${HOME}/\.zprofile\fP on macOS and \fB${HOME}/\.bashrc\fP or \fB${HOME}/\.zshrc\fP on Linux) with: \fBeval "$(brew shellenv)"\fP
+The variables \fB$HOMEBREW_PREFIX\fP, \fB$HOMEBREW_CELLAR\fP and \fB$HOMEBREW_REPOSITORY\fP are also exported to avoid querying them multiple times\. To help guarantee idempotence, this command produces no output when Homebrew\[u2019]s \fBbin\fP and \fBsbin\fP directories are first and second respectively in your \fBPATH\fP\&\. Consider adding evaluation of this command\[u2019]s output to your dotfiles (e\.g\. \fB~/\.bash_profile\fP or ~/\.zprofile\fB on macOS and ~/\.bashrc\fP or ~/\.zshrc\fB on Linux) with: \fPeval \[u201c]$(brew shellenv)\[u201d]`
 .P
 The shell can be specified explicitly with a supported shell name parameter\. Unknown shells will output POSIX exports\.
 .SS "\fBtab\fP \fR[\fIoptions\fP] \fIinstalled_formula\fP|\fIinstalled_cask\fP \fR[\.\.\.]"
@@ -1488,7 +1488,7 @@ For every library that a keg references, print its dylib path followed by the bi
 \fB\-\-cached\fP
 Print the cached linkage values stored in \fBHOMEBREW_CACHE\fP, set by a previous \fBbrew linkage\fP run\.
 .SS "\fBlivecheck\fP, \fBlc\fP \fR[\fIoptions\fP] \fR[\fIformula\fP|\fIcask\fP \.\.\.]"
-Check for newer versions of formulae and/or casks from upstream\. If no formula or cask argument is passed, the list of formulae and casks to check is taken from \fBHOMEBREW_LIVECHECK_WATCHLIST\fP or \fB${HOME}/\.homebrew/livecheck_watchlist\.txt\fP\&\.
+Check for newer versions of formulae and/or casks from upstream\. If no formula or cask argument is passed, the list of formulae and casks to check is taken from \fBHOMEBREW_LIVECHECK_WATCHLIST\fP or \fB~/\.homebrew/livecheck_watchlist\.txt\fP\&\.
 .TP
 \fB\-\-full\-name\fP
 Print formulae and casks with fully\-qualified names\.
@@ -1909,43 +1909,43 @@ Target location for Applications (default: \fB/Applications\fP)\.
 Target location for Keyboard Layouts (default: \fB/Library/Keyboard Layouts\fP)\.
 .TP
 \fB\-\-colorpickerdir\fP
-Target location for Color Pickers (default: \fB${HOME}/Library/ColorPickers\fP)\.
+Target location for Color Pickers (default: \fB~/Library/ColorPickers\fP)\.
 .TP
 \fB\-\-prefpanedir\fP
-Target location for Preference Panes (default: \fB${HOME}/Library/PreferencePanes\fP)\.
+Target location for Preference Panes (default: \fB~/Library/PreferencePanes\fP)\.
 .TP
 \fB\-\-qlplugindir\fP
-Target location for Quick Look Plugins (default: \fB${HOME}/Library/QuickLook\fP)\.
+Target location for Quick Look Plugins (default: \fB~/Library/QuickLook\fP)\.
 .TP
 \fB\-\-mdimporterdir\fP
-Target location for Spotlight Plugins (default: \fB${HOME}/Library/Spotlight\fP)\.
+Target location for Spotlight Plugins (default: \fB~/Library/Spotlight\fP)\.
 .TP
 \fB\-\-dictionarydir\fP
-Target location for Dictionaries (default: \fB${HOME}/Library/Dictionaries\fP)\.
+Target location for Dictionaries (default: \fB~/Library/Dictionaries\fP)\.
 .TP
 \fB\-\-fontdir\fP
-Target location for Fonts (default: \fB${HOME}/Library/Fonts\fP)\.
+Target location for Fonts (default: \fB~/Library/Fonts\fP)\.
 .TP
 \fB\-\-servicedir\fP
-Target location for Services (default: \fB${HOME}/Library/Services\fP)\.
+Target location for Services (default: \fB~/Library/Services\fP)\.
 .TP
 \fB\-\-input\-methoddir\fP
-Target location for Input Methods (default: \fB${HOME}/Library/Input Methods\fP)\.
+Target location for Input Methods (default: \fB~/Library/Input Methods\fP)\.
 .TP
 \fB\-\-internet\-plugindir\fP
-Target location for Internet Plugins (default: \fB${HOME}/Library/Internet Plug\-Ins\fP)\.
+Target location for Internet Plugins (default: \fB~/Library/Internet Plug\-Ins\fP)\.
 .TP
 \fB\-\-audio\-unit\-plugindir\fP
-Target location for Audio Unit Plugins (default: \fB${HOME}/Library/Audio/Plug\-Ins/Components\fP)\.
+Target location for Audio Unit Plugins (default: \fB~/Library/Audio/Plug\-Ins/Components\fP)\.
 .TP
 \fB\-\-vst\-plugindir\fP
-Target location for VST Plugins (default: \fB${HOME}/Library/Audio/Plug\-Ins/VST\fP)\.
+Target location for VST Plugins (default: \fB~/Library/Audio/Plug\-Ins/VST\fP)\.
 .TP
 \fB\-\-vst3\-plugindir\fP
-Target location for VST3 Plugins (default: \fB${HOME}/Library/Audio/Plug\-Ins/VST3\fP)\.
+Target location for VST3 Plugins (default: \fB~/Library/Audio/Plug\-Ins/VST3\fP)\.
 .TP
 \fB\-\-screen\-saverdir\fP
-Target location for Screen Savers (default: \fB${HOME}/Library/Screen Savers\fP)\.
+Target location for Screen Savers (default: \fB~/Library/Screen Savers\fP)\.
 .TP
 \fB\-\-language\fP
 Comma\-separated list of language codes to prefer for cask installation\. The first matching language is used, otherwise it reverts to the cask\[u2019]s default language\. The default value is the language of your system\.
@@ -2020,7 +2020,7 @@ Print the environment variables that would be set in a \fBbrew bundle exec\fP en
 Read the \fBBrewfile\fP from this location\. Use \fB\-\-file=\-\fP to pipe to stdin/stdout\.
 .TP
 \fB\-\-global\fP
-Read the \fBBrewfile\fP from \fB$HOMEBREW_BUNDLE_FILE_GLOBAL\fP (if set), \fB${XDG_CONFIG_HOME}/homebrew/Brewfile\fP (if \fB$XDG_CONFIG_HOME\fP is set), \fB${HOME}/\.homebrew/Brewfile\fP or \fB${HOME}/\.Brewfile\fP otherwise\.
+Read the \fBBrewfile\fP from \fB$HOMEBREW_BUNDLE_FILE_GLOBAL\fP (if set), \fB${XDG_CONFIG_HOME}/homebrew/Brewfile\fP (if \fB$XDG_CONFIG_HOME\fP is set), \fB~/\.homebrew/Brewfile\fP or \fB~/\.Brewfile\fP otherwise\.
 .TP
 \fB\-v\fP, \fB\-\-verbose\fP
 \fBinstall\fP prints output from commands as they are run\. \fBcheck\fP lists all missing dependencies\.
@@ -2074,7 +2074,7 @@ Print instructions for setting up the command\-not\-found hook for your shell\. 
 .SS "\fBservices\fP \fR[\fIsubcommand\fP]"
 Manage background services with macOS\[u2019] \fBlaunchctl\fP(1) daemon manager or Linux\[u2019]s \fBsystemctl\fP(1) service manager\.
 .P
-If \fBsudo\fP is passed, operate on \fB/Library/LaunchDaemons\fP or \fB/usr/lib/systemd/system\fP (started at boot)\. Otherwise, operate on \fB${HOME}/Library/LaunchAgents\fP or \fB${HOME}/\.config/systemd/user\fP (started at login)\.
+If \fBsudo\fP is passed, operate on \fB/Library/LaunchDaemons\fP or \fB/usr/lib/systemd/system\fP (started at boot)\. Otherwise, operate on \fB~/Library/LaunchAgents\fP or \fB~/\.config/systemd/user\fP (started at login)\.
 .TP
 [\fBsudo\fP] \fBbrew services\fP [\fBlist\fP] (\fB\-\-json\fP) (\fB\-\-debug\fP)
 List information about all managed services for the current user (or root)\. Provides more output from Homebrew and \fBlaunchctl\fP(1) or \fBsystemctl\fP(1) if run with \fB\-\-debug\fP\&\.
@@ -2294,9 +2294,9 @@ Note that environment variables must have a value set to be detected\. For examp
 .IP \(bu 4
 \fB/etc/homebrew/brew\.env\fP (system\-wide)
 .IP \(bu 4
-\fB$HOMEBREW_PREFIX/etc/homebrew/brew\.env\fP (prefix\-specific)
+\fB${HOMEBREW_PREFIX}/etc/homebrew/brew\.env\fP (prefix\-specific)
 .IP \(bu 4
-\fB$XDG_CONFIG_HOME/homebrew/brew\.env\fP if \fB$XDG_CONFIG_HOME\fP is set or \fB$HOME/\.homebrew/brew\.env\fP otherwise (user\-specific)
+\fB$XDG_CONFIG_HOME/homebrew/brew\.env\fP if \fB$XDG_CONFIG_HOME\fP is set or \fB~/\.homebrew/brew\.env\fP otherwise (user\-specific)
 .P
 User\-specific environment files take precedence over prefix\-specific files and prefix\-specific files take precedence over system\-wide files (unless \fBHOMEBREW_SYSTEM_ENV_TAKES_PRIORITY\fP is set, see below)\.
 .P
@@ -2390,11 +2390,11 @@ If set, use this directory as the \fBbundle\fP(1) user cache\.
 Use this directory as the download cache\.
 .RS
 .P
-\fIDefault:\fP macOS: \fB$HOME/Library/Caches/Homebrew\fP, Linux: \fB$XDG_CACHE_HOME/Homebrew\fP or \fB$HOME/\.cache/Homebrew\fP\&\.
+\fIDefault:\fP macOS: \fB~/Library/Caches/Homebrew\fP, Linux: \fB$XDG_CACHE_HOME/Homebrew\fP or \fB~/\.cache/Homebrew\fP\&\.
 .RE
 .TP
 \fBHOMEBREW_CASK_OPTS\fP
-Append these options to all \fBcask\fP commands\. All \fB\-\-*dir\fP options, \fB\-\-language\fP, \fB\-\-require\-sha\fP, \fB\-\-no\-quarantine\fP and \fB\-\-no\-binaries\fP are supported\. For example, you might add something like the following to your \fB${HOME}/\.profile\fP, \fB${HOME}/\.bash_profile\fP, or \fB${HOME}/\.zshenv\fP:
+Append these options to all \fBcask\fP commands\. All \fB\-\-*dir\fP options, \fB\-\-language\fP, \fB\-\-require\-sha\fP, \fB\-\-no\-quarantine\fP and \fB\-\-no\-binaries\fP are supported\. For example, you might add something like the following to your \fB~/\.profile\fP, \fB~/\.bash_profile\fP, or \fB~/\.zshenv\fP:
 .RS
 .P
 \fBexport HOMEBREW_CASK_OPTS="\-\-appdir=${HOME}/Applications \-\-fontdir=/Library/Fonts"\fP
@@ -2593,7 +2593,7 @@ If set, \fBbrew livecheck\fP will include data for packages that are autobumped 
 Consult this file for the list of formulae to check by default when no formula argument is passed to \fBbrew livecheck\fP\&\.
 .RS
 .P
-\fIDefault:\fP \fB${XDG_CONFIG_HOME}/homebrew/livecheck_watchlist\.txt\fP if \fB$XDG_CONFIG_HOME\fP is set or \fB${HOME}/\.homebrew/livecheck_watchlist\.txt\fP otherwise\.
+\fIDefault:\fP \fB${XDG_CONFIG_HOME}/homebrew/livecheck_watchlist\.txt\fP if \fB$XDG_CONFIG_HOME\fP is set or \fB~/\.homebrew/livecheck_watchlist\.txt\fP otherwise\.
 .RE
 .TP
 \fBHOMEBREW_LOCK_CONTEXT\fP
@@ -2603,7 +2603,7 @@ If set, Homebrew will add this output as additional context for locking errors\.
 Use this directory to store log files\.
 .RS
 .P
-\fIDefault:\fP macOS: \fB${HOME}/Library/Logs/Homebrew\fP, Linux: \fB${XDG_CACHE_HOME}/Homebrew/Logs\fP or \fB${HOME}/\.cache/Homebrew/Logs\fP\&\.
+\fIDefault:\fP macOS: \fB~/Library/Logs/Homebrew\fP, Linux: \fB${XDG_CACHE_HOME}/Homebrew/Logs\fP or \fB~/\.cache/Homebrew/Logs\fP\&\.
 .RE
 .TP
 \fBHOMEBREW_MAKE_JOBS\fP
@@ -2694,10 +2694,10 @@ If set along with \fB$HOMEBREW_DEVELOPER\fP, do not use bottles from older versi
 If set, enable runtime typechecking using Sorbet\. Set by default for \fB$HOMEBREW_DEVELOPER\fP or when running some developer commands\.
 .TP
 \fBHOMEBREW_SSH_CONFIG_PATH\fP
-If set, Homebrew will use the given config file instead of \fB${HOME}/\.ssh/config\fP when fetching Git repositories over SSH\.
+If set, Homebrew will use the given config file instead of \fB~/\.ssh/config\fP when fetching Git repositories over SSH\.
 .RS
 .P
-\fIDefault:\fP \fB${HOME}/\.ssh/config\fP
+\fIDefault:\fP \fB~/\.ssh/config\fP
 .RE
 .TP
 \fBHOMEBREW_SUDO_THROUGH_SUDO_USER\fP

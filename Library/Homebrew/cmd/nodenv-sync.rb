@@ -9,7 +9,7 @@ module Homebrew
     class NodenvSync < AbstractCommand
       cmd_args do
         description <<~EOS
-          Create symlinks for Homebrew's installed NodeJS versions in `${HOME}/.nodenv/versions`.
+          Create symlinks for Homebrew's installed NodeJS versions in `~/.nodenv/versions`.
 
           Note that older version symlinks will also be created so e.g. NodeJS 19.1.0 will
           also be symlinked to 19.0.0.
