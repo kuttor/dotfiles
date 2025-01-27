@@ -3149,8 +3149,8 @@ flags which will help with finding keg-only dependencies like `openssl`,
 
 `--global`
 
-: Read the `Brewfile` from `~/.Brewfile` or the `HOMEBREW_BUNDLE_FILE_GLOBAL`
-  environment variable, if set.
+: Read the `Brewfile` from `~/.Brewfile`, in the `HOMEBREW_USER_CONFIG_HOME`
+  directory, or the `HOMEBREW_BUNDLE_FILE_GLOBAL` environment variable, if set.
 
 `-v`, `--verbose`
 
