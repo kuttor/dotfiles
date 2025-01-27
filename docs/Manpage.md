@@ -871,7 +871,7 @@ to be missing dependencies.
 ### `nodenv-sync`
 
 Create symlinks for Homebrew's installed NodeJS versions in
-`${HOME}/.nodenv/versions`.
+`~/.nodenv/versions`.
 
 Note that older version symlinks will also be created so e.g. NodeJS 19.1.0 will
 also be symlinked to 19.0.0.
@@ -957,16 +957,14 @@ Rerun the post-install steps for *`formula`*.
 
 ### `pyenv-sync`
 
-Create symlinks for Homebrew's installed Python versions in
-`${HOME}/.pyenv/versions`.
+Create symlinks for Homebrew's installed Python versions in `~/.pyenv/versions`.
 
 Note that older patch version symlinks will be created and linked to the minor
 version so e.g. Python 3.11.0 will also be symlinked to 3.11.3.
 
 ### `rbenv-sync`
 
-Create symlinks for Homebrew's installed Ruby versions in
-`${HOME}/.rbenv/versions`.
+Create symlinks for Homebrew's installed Ruby versions in `~/.rbenv/versions`.
 
 Note that older version symlinks will also be created so e.g. Ruby 3.2.1 will
 also be symlinked to 3.2.0.
@@ -1180,9 +1178,9 @@ The variables `$HOMEBREW_PREFIX`, `$HOMEBREW_CELLAR` and `$HOMEBREW_REPOSITORY`
 are also exported to avoid querying them multiple times. To help guarantee
 idempotence, this command produces no output when Homebrew's `bin` and `sbin`
 directories are first and second respectively in your `PATH`. Consider adding
-evaluation of this command's output to your dotfiles (e.g.
-`${HOME}/.bash_profile` or `${HOME}/.zprofile` on macOS and `${HOME}/.bashrc` or
-`${HOME}/.zshrc` on Linux) with: `eval "$(brew shellenv)"`
+evaluation of this command's output to your dotfiles (e.g. `~/.bash_profile` or
+~/.zprofile` on macOS and ~/.bashrc` or ~/.zshrc` on Linux) with:
+  `eval "$(brew shellenv)"\`
 
 The shell can be specified explicitly with a supported shell name parameter.
 Unknown shells will output POSIX exports.
@@ -2343,8 +2341,7 @@ provided, check all kegs. Raises an error if run on uninstalled formulae.
 
 Check for newer versions of formulae and/or casks from upstream. If no formula
 or cask argument is passed, the list of formulae and casks to check is taken
-from `HOMEBREW_LIVECHECK_WATCHLIST` or
-`${HOME}/.homebrew/livecheck_watchlist.txt`.
+from `HOMEBREW_LIVECHECK_WATCHLIST` or `~/.homebrew/livecheck_watchlist.txt`.
 
 `--full-name`
 
@@ -2983,60 +2980,56 @@ subcommands with the `--cask` switch.
 
 `--colorpickerdir`
 
-: Target location for Color Pickers (default: `${HOME}/Library/ColorPickers`).
+: Target location for Color Pickers (default: `~/Library/ColorPickers`).
 
 `--prefpanedir`
 
-: Target location for Preference Panes (default:
-  `${HOME}/Library/PreferencePanes`).
+: Target location for Preference Panes (default: `~/Library/PreferencePanes`).
 
 `--qlplugindir`
 
-: Target location for Quick Look Plugins (default: `${HOME}/Library/QuickLook`).
+: Target location for Quick Look Plugins (default: `~/Library/QuickLook`).
 
 `--mdimporterdir`
 
-: Target location for Spotlight Plugins (default: `${HOME}/Library/Spotlight`).
+: Target location for Spotlight Plugins (default: `~/Library/Spotlight`).
 
 `--dictionarydir`
 
-: Target location for Dictionaries (default: `${HOME}/Library/Dictionaries`).
+: Target location for Dictionaries (default: `~/Library/Dictionaries`).
 
 `--fontdir`
 
-: Target location for Fonts (default: `${HOME}/Library/Fonts`).
+: Target location for Fonts (default: `~/Library/Fonts`).
 
 `--servicedir`
 
-: Target location for Services (default: `${HOME}/Library/Services`).
+: Target location for Services (default: `~/Library/Services`).
 
 `--input-methoddir`
 
-: Target location for Input Methods (default: `${HOME}/Library/Input Methods`).
+: Target location for Input Methods (default: `~/Library/Input Methods`).
 
 `--internet-plugindir`
 
-: Target location for Internet Plugins (default: `${HOME}/Library/Internet
-  Plug-Ins`).
+: Target location for Internet Plugins (default: `~/Library/Internet Plug-Ins`).
 
 `--audio-unit-plugindir`
 
 : Target location for Audio Unit Plugins (default:
-  `${HOME}/Library/Audio/Plug-Ins/Components`).
+  `~/Library/Audio/Plug-Ins/Components`).
 
 `--vst-plugindir`
 
-: Target location for VST Plugins (default:
-  `${HOME}/Library/Audio/Plug-Ins/VST`).
+: Target location for VST Plugins (default: `~/Library/Audio/Plug-Ins/VST`).
 
 `--vst3-plugindir`
 
-: Target location for VST3 Plugins (default:
-  `${HOME}/Library/Audio/Plug-Ins/VST3`).
+: Target location for VST3 Plugins (default: `~/Library/Audio/Plug-Ins/VST3`).
 
 `--screen-saverdir`
 
-: Target location for Screen Savers (default: `${HOME}/Library/Screen Savers`).
+: Target location for Screen Savers (default: `~/Library/Screen Savers`).
 
 `--language`
 
@@ -3158,7 +3151,7 @@ flags which will help with finding keg-only dependencies like `openssl`,
 
 : Read the `Brewfile` from `$HOMEBREW_BUNDLE_FILE_GLOBAL` (if set),
   `${XDG_CONFIG_HOME}/homebrew/Brewfile` (if `$XDG_CONFIG_HOME` is set),
-  `${HOME}/.homebrew/Brewfile` or `${HOME}/.Brewfile` otherwise.
+  `~/.homebrew/Brewfile` or `~/.Brewfile` otherwise.
 
 `-v`, `--verbose`
 
@@ -3247,8 +3240,7 @@ Manage background services with macOS' `launchctl`(1) daemon manager or Linux's
 
 If `sudo` is passed, operate on `/Library/LaunchDaemons` or
 `/usr/lib/systemd/system` (started at boot). Otherwise, operate on
-`${HOME}/Library/LaunchAgents` or `${HOME}/.config/systemd/user` (started at
-login).
+`~/Library/LaunchAgents` or `~/.config/systemd/user` (started at login).
 
 \[`sudo`\] `brew services` \[`list`\] (`--json`) (`--debug`)
 
@@ -3587,10 +3579,10 @@ files:
 
 * `/etc/homebrew/brew.env` (system-wide)
 
-* `$HOMEBREW_PREFIX/etc/homebrew/brew.env` (prefix-specific)
+* `${HOMEBREW_PREFIX}/etc/homebrew/brew.env` (prefix-specific)
 
 * `$XDG_CONFIG_HOME/homebrew/brew.env` if `$XDG_CONFIG_HOME` is set or
-  `$HOME/.homebrew/brew.env` otherwise (user-specific)
+  `~/.homebrew/brew.env` otherwise (user-specific)
 
 User-specific environment files take precedence over prefix-specific files and
 prefix-specific files take precedence over system-wide files (unless
@@ -3710,15 +3702,15 @@ command execution e.g. `$(cat file)`.
 
 : Use this directory as the download cache.
   
-  *Default:* macOS: `$HOME/Library/Caches/Homebrew`, Linux:
-  `$XDG_CACHE_HOME/Homebrew` or `$HOME/.cache/Homebrew`.
+  *Default:* macOS: `~/Library/Caches/Homebrew`, Linux:
+  `$XDG_CACHE_HOME/Homebrew` or `~/.cache/Homebrew`.
 
 `HOMEBREW_CASK_OPTS`
 
 : Append these options to all `cask` commands. All `--*dir` options,
   `--language`, `--require-sha`, `--no-quarantine` and `--no-binaries` are
   supported. For example, you might add something like the following to your
-  `${HOME}/.profile`, `${HOME}/.bash_profile`, or `${HOME}/.zshenv`:
+  `~/.profile`, `~/.bash_profile`, or `~/.zshenv`:
   
   `export HOMEBREW_CASK_OPTS="--appdir=${HOME}/Applications
   --fontdir=/Library/Fonts"`
@@ -3981,8 +3973,7 @@ command execution e.g. `$(cat file)`.
   argument is passed to `brew livecheck`.
   
   *Default:* `${XDG_CONFIG_HOME}/homebrew/livecheck_watchlist.txt` if
-  `$XDG_CONFIG_HOME` is set or `${HOME}/.homebrew/livecheck_watchlist.txt`
-  otherwise.
+  `$XDG_CONFIG_HOME` is set or `~/.homebrew/livecheck_watchlist.txt` otherwise.
 
 `HOMEBREW_LOCK_CONTEXT`
 
@@ -3993,8 +3984,8 @@ command execution e.g. `$(cat file)`.
 
 : Use this directory to store log files.
   
-  *Default:* macOS: `${HOME}/Library/Logs/Homebrew`, Linux:
-  `${XDG_CACHE_HOME}/Homebrew/Logs` or `${HOME}/.cache/Homebrew/Logs`.
+  *Default:* macOS: `~/Library/Logs/Homebrew`, Linux:
+  `${XDG_CACHE_HOME}/Homebrew/Logs` or `~/.cache/Homebrew/Logs`.
 
 `HOMEBREW_MAKE_JOBS`
 
@@ -4127,10 +4118,10 @@ command execution e.g. `$(cat file)`.
 
 `HOMEBREW_SSH_CONFIG_PATH`
 
-: If set, Homebrew will use the given config file instead of
-  `${HOME}/.ssh/config` when fetching Git repositories over SSH.
+: If set, Homebrew will use the given config file instead of `~/.ssh/config`
+  when fetching Git repositories over SSH.
   
-  *Default:* `${HOME}/.ssh/config`
+  *Default:* `~/.ssh/config`
 
 `HOMEBREW_SUDO_THROUGH_SUDO_USER`
 

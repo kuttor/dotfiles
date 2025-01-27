@@ -177,10 +177,10 @@ files:
 
 * `/etc/homebrew/brew.env` (system-wide)
 
-* `$HOMEBREW_PREFIX/etc/homebrew/brew.env` (prefix-specific)
+* `${HOMEBREW_PREFIX}/etc/homebrew/brew.env` (prefix-specific)
 
 * `$XDG_CONFIG_HOME/homebrew/brew.env` if `$XDG_CONFIG_HOME` is set or
-  `$HOME/.homebrew/brew.env` otherwise (user-specific)
+  `~/.homebrew/brew.env` otherwise (user-specific)
 
 User-specific environment files take precedence over prefix-specific files and
 prefix-specific files take precedence over system-wide files (unless

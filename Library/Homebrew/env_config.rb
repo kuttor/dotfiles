@@ -99,15 +99,15 @@ module Homebrew
       },
       HOMEBREW_CACHE:                            {
         description:  "Use this directory as the download cache.",
-        default_text: "macOS: `$HOME/Library/Caches/Homebrew`, " \
-                      "Linux: `$XDG_CACHE_HOME/Homebrew` or `$HOME/.cache/Homebrew`.",
+        default_text: "macOS: `~/Library/Caches/Homebrew`, " \
+                      "Linux: `$XDG_CACHE_HOME/Homebrew` or `~/.cache/Homebrew`.",
         default:      HOMEBREW_DEFAULT_CACHE,
       },
       HOMEBREW_CASK_OPTS:                        {
         description: "Append these options to all `cask` commands. All `--*dir` options, " \
                      "`--language`, `--require-sha`, `--no-quarantine` and `--no-binaries` are supported. " \
                      "For example, you might add something like the following to your " \
-                     "`${HOME}/.profile`, `${HOME}/.bash_profile`, or `${HOME}/.zshenv`:" \
+                     "`~/.profile`, `~/.bash_profile`, or `~/.zshenv`:" \
                      "\n\n    `export HOMEBREW_CASK_OPTS=\"--appdir=${HOME}/Applications --fontdir=/Library/Fonts\"`",
       },
       HOMEBREW_CLEANUP_MAX_AGE_DAYS:             {
@@ -317,7 +317,7 @@ module Homebrew
         description:  "Consult this file for the list of formulae to check by default when no formula argument " \
                       "is passed to `brew livecheck`.",
         default_text: "`${XDG_CONFIG_HOME}/homebrew/livecheck_watchlist.txt` if `$XDG_CONFIG_HOME` is set " \
-                      "or `${HOME}/.homebrew/livecheck_watchlist.txt` otherwise.",
+                      "or `~/.homebrew/livecheck_watchlist.txt` otherwise.",
         default:      "#{ENV.fetch("HOMEBREW_USER_CONFIG_HOME")}/livecheck_watchlist.txt",
       },
       HOMEBREW_LOCK_CONTEXT:                     {
@@ -326,8 +326,8 @@ module Homebrew
       },
       HOMEBREW_LOGS:                             {
         description:  "Use this directory to store log files.",
-        default_text: "macOS: `${HOME}/Library/Logs/Homebrew`, " \
-                      "Linux: `${XDG_CACHE_HOME}/Homebrew/Logs` or `${HOME}/.cache/Homebrew/Logs`.",
+        default_text: "macOS: `~/Library/Logs/Homebrew`, " \
+                      "Linux: `${XDG_CACHE_HOME}/Homebrew/Logs` or `~/.cache/Homebrew/Logs`.",
         default:      HOMEBREW_DEFAULT_LOGS,
       },
       HOMEBREW_MAKE_JOBS:                        {
@@ -450,9 +450,9 @@ module Homebrew
         boolean:     true,
       },
       HOMEBREW_SSH_CONFIG_PATH:                  {
-        description:  "If set, Homebrew will use the given config file instead of `${HOME}/.ssh/config` when " \
+        description:  "If set, Homebrew will use the given config file instead of `~/.ssh/config` when " \
                       "fetching Git repositories over SSH.",
-        default_text: "`${HOME}/.ssh/config`",
+        default_text: "`~/.ssh/config`",
       },
       HOMEBREW_SUDO_THROUGH_SUDO_USER:           {
         description: "If set, Homebrew will use the `SUDO_USER` environment variable to define the user to " \
