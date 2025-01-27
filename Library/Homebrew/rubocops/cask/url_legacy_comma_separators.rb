@@ -14,9 +14,9 @@ module RuboCop
 
         sig { override.params(stanza: RuboCop::Cask::AST::Stanza).void }
         def on_url_stanza(stanza)
-          return if stanza.stanza_node.type == :block
+          return if stanza.stanza_node.block_type?
 
-          url_node = stanza.stanza_node.first_argument
+          url_node = T.cast(stanza.stanza_node, RuboCop::AST::SendNode).first_argument
 
           legacy_comma_separator_pattern = /version\.(before|after)_comma/
 

@@ -6,7 +6,7 @@ module RuboCop
       class Discontinued < Base
         sig {
           params(
-            base_node: RuboCop::AST::BlockNode,
+            base_node: RuboCop::AST::Node,
             block:     T.nilable(T.proc.params(node: RuboCop::AST::SendNode).void),
           ).returns(T::Boolean)
         }
@@ -14,7 +14,7 @@ module RuboCop
 
         sig {
           params(
-            base_node: RuboCop::AST::BlockNode,
+            base_node: RuboCop::AST::Node,
             block:     T.proc.params(node: RuboCop::AST::SendNode).void,
           ).void
         }

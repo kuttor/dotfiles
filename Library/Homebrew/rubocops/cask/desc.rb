@@ -16,7 +16,7 @@ module RuboCop
 
         sig { params(stanza: RuboCop::Cask::AST::Stanza).void }
         def on_desc_stanza(stanza)
-          @name = T.let(cask_block.header.cask_token, T.nilable(String))
+          @name = T.let(cask_block&.header&.cask_token, T.nilable(String))
           desc_call = stanza.stanza_node
           audit_desc(:cask, @name, desc_call)
         end

@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "rubocops/shared/url_helper"
@@ -24,6 +24,7 @@ module RuboCop
         include OnUrlStanza
         include UrlHelper
 
+        sig { params(stanza: RuboCop::Cask::AST::Stanza).void }
         def on_url_stanza(stanza)
           if stanza.stanza_node.block_type?
             if cask_tap == "homebrew-cask"
@@ -32,8 +33,9 @@ module RuboCop
             return
           end
 
-          url_stanza = stanza.stanza_node.first_argument
-          hash_node = stanza.stanza_node.last_argument
+          stanza_node = T.cast(stanza.stanza_node, RuboCop::AST::SendNode)
+          url_stanza = stanza_node.first_argument
+          hash_node = stanza_node.last_argument
 
           audit_url(:cask, [stanza.stanza_node], [], livecheck_url: false)
 
