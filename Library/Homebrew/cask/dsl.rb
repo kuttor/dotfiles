@@ -317,7 +317,7 @@ module Cask
     #
     # @api public
     def sha256(arg = nil, arm: nil, intel: nil, linux: nil)
-      should_return = arg.nil? && arm.nil? && intel.nil?
+      should_return = arg.nil? && arm.nil? && intel.nil? && linux.nil?
 
       set_unique_stanza(:sha256, should_return) do
         @on_system_blocks_exist = true if arm.present? || intel.present? || linux.present?
