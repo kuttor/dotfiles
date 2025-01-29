@@ -703,6 +703,7 @@ end
 
 # Strategy for extracting local binary packages.
 class LocalBottleDownloadStrategy < AbstractFileDownloadStrategy
+  # TODO: Call `super` here
   def initialize(path) # rubocop:disable Lint/MissingSuper
     @cached_location = path
     extend Pourable
