@@ -138,7 +138,7 @@ module Homebrew
         <% elsif @mode == :perl %>
           uses_from_macos "perl"
         <% elsif @mode == :python %>
-          depends_on "python"
+          depends_on "python@x.y"
         <% elsif @mode == :ruby %>
           uses_from_macos "ruby"
         <% elsif @mode == :rust %>
@@ -147,7 +147,7 @@ module Homebrew
           # depends_on "cmake" => :build
         <% end %>
 
-        <% if @mode == :perl %>
+        <% if @mode == :perl || :python || :ruby %>
           # Additional dependency
           # resource "" do
           #   url ""
@@ -201,8 +201,14 @@ module Homebrew
             virtualenv_install_with_resources
         <% elsif @mode == :ruby %>
             ENV["GEM_HOME"] = libexec
+
+            # resources.each do |r|
+            #   system "gem", "install", r.cached_download, "--ignore-dependencies",
+            #      "--no-document", "--install-dir", libexec
+            # end
+
             system "gem", "build", "\#{name}.gemspec"
-            system "gem", "install", "\#{name}-\#{@version}.gem"
+            system "gem", "install", "\#{name}-\#{version}.gem"
             bin.install libexec/"bin/\#{name}"
             bin.env_script_all_files(libexec/"bin", GEM_HOME: ENV["GEM_HOME"])
         <% elsif @mode == :rust %>
