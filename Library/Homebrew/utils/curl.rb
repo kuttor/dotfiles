@@ -345,7 +345,7 @@ module Utils
         url:               String,
         url_type:          String,
         specs:             T::Hash[Symbol, String],
-        user_agents:       T::Array[Symbol],
+        user_agents:       T::Array[T.any(String, Symbol)],
         referer:           T.nilable(String),
         check_content:     T::Boolean,
         strict:            T::Boolean,
@@ -490,7 +490,7 @@ module Utils
         specs:             T::Hash[Symbol, String],
         hash_needed:       T::Boolean,
         use_homebrew_curl: T::Boolean,
-        user_agent:        Symbol,
+        user_agent:        T.any(String, Symbol),
         referer:           T.nilable(String),
       ).returns(T::Hash[Symbol, T.untyped])
     }
