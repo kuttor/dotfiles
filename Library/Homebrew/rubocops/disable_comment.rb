@@ -21,12 +21,12 @@ module RuboCop
 
       private
 
-      sig { params(comment: Parser::Source::Comment).returns(T::Boolean)
+      sig { params(comment: Parser::Source::Comment).returns(T::Boolean) }
       def disable_comment?(comment)
         comment.text.start_with? "# rubocop:disable"
       end
 
-sig { params(line: String).returns(T::Boolean) } 
+      sig { params(line: String).returns(T::Boolean) }
       def comment?(line)
         line.strip.start_with? "#"
       end
