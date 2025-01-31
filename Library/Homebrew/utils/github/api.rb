@@ -329,9 +329,7 @@ module GitHub
       result = open_rest("#{API_URL}/graphql", scopes:, data:, request_method: "POST")
 
       if raise_errors
-        if result["errors"].present?
-          raise Error, result["errors"].map { |e| "#{e["type"]}: #{e["message"]}" }.join("\n")
-        end
+        raise Error, result["errors"].map { |e| e["message"] }.join("\n") if result["errors"].present?
 
         result["data"]
       else
