@@ -104,7 +104,7 @@ module Homebrew
 
         Homebrew.install_bundler_gems!(groups: ["bottle"])
 
-        gnu_tar_formula_ensure_installed_if_needed!
+        gnu_tar_formula_ensure_installed_if_needed! if args.only_json_tab?
 
         args.named.to_resolved_formulae(uniq: false).each do |formula|
           bottle_formula formula
