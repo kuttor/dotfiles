@@ -480,9 +480,7 @@ module GitHub
     end
 
     # Only raise errors if we didn't get any sponsorships.
-    if sponsorships.blank? && errors.present?
-      raise API::Error, errors.map { |e| "#{e["type"]}: #{e["message"]}" }.join("\n")
-    end
+    raise API::Error, errors.map { |e| e["message"] }.join("\n") if sponsorships.blank? && errors.present?
 
     sponsorships.map do |sponsorship|
       sponsor = sponsorship["sponsorEntity"]
