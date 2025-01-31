@@ -28,7 +28,7 @@ module RuboCop
 
       sig { params(line: String).returns(T::Boolean) }
       def comment?(line)
-        line.strip.start_with? "#"
+        line.strip.start_with?("#") && line.strip.delete_prefix("#") != ""
       end
     end
   end

@@ -25,6 +25,16 @@ RSpec.describe RuboCop::Cop::DisableComment, :config do
     RUBY
   end
 
+  it "registers an offense if the comment is empty" do
+    expect_offense(<<~RUBY)
+      def something; end
+      #
+      # rubocop:disable Naming/AccessorMethodName
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Add a clarifying comment to the RuboCop disable comment
+      def get_decrypted_io; end
+    RUBY
+  end
+
   it "doesn't register an offense" do
     expect_no_offenses(<<~RUBY)
       def something; end
