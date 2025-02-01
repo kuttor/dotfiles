@@ -1882,7 +1882,7 @@ _brew_tap() {
     '--force[Force install core taps even under API mode]' \
     '--help[Show this message]' \
     '--quiet[Make some output more quiet]' \
-    '--repair[Migrate tapped formulae from symlink-based to directory-based structure]' \
+    '--repair[Add missing symlinks to tap manpages and shell completions. Correct git remote refs for any taps where upstream HEAD branch has been renamed]' \
     '--verbose[Make some output more verbose]' \
     - tap \
     '*::tap:__brew_any_tap'
