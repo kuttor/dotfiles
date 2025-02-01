@@ -1230,7 +1230,8 @@ HTTPS, e.g. SSH, git, HTTP, FTP(S), rsync.
 
 `--repair`
 
-: Migrate tapped formulae from symlink-based to directory-based structure.
+: Add missing symlinks to tap manpages and shell completions. Correct git remote
+  refs for any taps where upstream HEAD branch has been renamed.
 
 `--eval-all`
 

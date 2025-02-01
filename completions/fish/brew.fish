@@ -1517,7 +1517,7 @@ __fish_brew_complete_arg 'tap' -l eval-all -d 'Evaluate all the formulae, casks 
 __fish_brew_complete_arg 'tap' -l force -d 'Force install core taps even under API mode'
 __fish_brew_complete_arg 'tap' -l help -d 'Show this message'
 __fish_brew_complete_arg 'tap' -l quiet -d 'Make some output more quiet'
-__fish_brew_complete_arg 'tap' -l repair -d 'Migrate tapped formulae from symlink-based to directory-based structure'
+__fish_brew_complete_arg 'tap' -l repair -d 'Add missing symlinks to tap manpages and shell completions. Correct git remote refs for any taps where upstream HEAD branch has been renamed'
 __fish_brew_complete_arg 'tap' -l verbose -d 'Make some output more verbose'
 __fish_brew_complete_arg 'tap' -a '(__fish_brew_suggest_taps_installed)'
 
