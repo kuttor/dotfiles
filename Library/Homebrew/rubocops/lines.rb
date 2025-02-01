@@ -40,7 +40,7 @@ module RuboCop
           return if begin_pos-end_pos == 3
 
           problem "Use a space in class inheritance: " \
-                  "class #{@formula_name.capitalize} < #{class_name(parent_class_node)}"
+                  "class #{T.must(@formula_name).capitalize} < #{class_name(parent_class_node)}"
         end
       end
 
@@ -181,9 +181,11 @@ module RuboCop
           end
         end
 
+        sig { params(node: RuboCop::AST::Node).returns(T::Boolean) }
         def unless_modifier?(node)
           return false unless node.if_type?
 
+          node = T.cast(node, RuboCop::AST::IfNode)
           node.modifier_form? && node.unless?
         end
 
@@ -207,8 +209,8 @@ module RuboCop
 
           find_method_with_args(body_node, :depends_on, "mpich") do
             problem "Formulae in homebrew/core should use 'depends_on \"open-mpi\"' " \
-                    "instead of '#{@offensive_node.source}'." do |corrector|
-              corrector.replace(@offensive_node.source_range, "depends_on \"open-mpi\"")
+                    "instead of '#{T.must(@offensive_node).source}'." do |corrector|
+              corrector.replace(T.must(@offensive_node).source_range, "depends_on \"open-mpi\"")
             end
           end
         end
@@ -224,17 +226,19 @@ module RuboCop
           return if (body_node = formula_nodes.body_node).nil?
 
           find_method_with_args(body_node, :local_npm_install_args) do
-            problem "Use 'std_npm_args' instead of '#{@offensive_node.method_name}'." do |corrector|
-              corrector.replace(@offensive_node.source_range, "std_npm_args(prefix: false)")
+            problem "Use 'std_npm_args' instead of '#{T.cast(@offensive_node,
+                                                             RuboCop::AST::SendNode).method_name}'." do |corrector|
+              corrector.replace(T.must(@offensive_node).source_range, "std_npm_args(prefix: false)")
             end
           end
 
           find_method_with_args(body_node, :std_npm_install_args) do |method|
-            problem "Use 'std_npm_args' instead of '#{@offensive_node.method_name}'." do |corrector|
+            problem "Use 'std_npm_args' instead of '#{T.cast(@offensive_node,
+                                                             RuboCop::AST::SendNode).method_name}'." do |corrector|
               if (param = parameters(method).first.source) == "libexec"
-                corrector.replace(@offensive_node.source_range, "std_npm_args")
+                corrector.replace(T.must(@offensive_node).source_range, "std_npm_args")
               else
-                corrector.replace(@offensive_node.source_range, "std_npm_args(prefix: #{param})")
+                corrector.replace(T.must(@offensive_node).source_range, "std_npm_args(prefix: #{param})")
               end
             end
           end
@@ -264,8 +268,8 @@ module RuboCop
 
           find_method_with_args(body_node, :depends_on, "quictls") do
             problem "Formulae in homebrew/core should use 'depends_on \"openssl@3\"' " \
-                    "instead of '#{@offensive_node.source}'." do |corrector|
-              corrector.replace(@offensive_node.source_range, "depends_on \"openssl@3\"")
+                    "instead of '#{T.must(@offensive_node).source}'." do |corrector|
+              corrector.replace(T.must(@offensive_node).source_range, "depends_on \"openssl@3\"")
             end
           end
         end
@@ -281,7 +285,7 @@ module RuboCop
           return if formula_tap != "homebrew-core"
           return unless depends_on?("pyoxidizer")
 
-          problem "Formulae in homebrew/core should not use '#{@offensive_node.source}'."
+          problem "Formulae in homebrew/core should not use '#{T.must(@offensive_node).source}'."
         end
       end
 
@@ -307,7 +311,8 @@ module RuboCop
             find_instance_method_call(body_node, "Utils", unsafe_command) do |method|
               unless test_methods.include?(method.source_range)
                 problem "Use `Utils.safe_#{unsafe_command}` instead of `Utils.#{unsafe_command}`" do |corrector|
-                  corrector.replace(@offensive_node.loc.selector, "safe_#{@offensive_node.method_name}")
+                  corrector.replace(T.must(@offensive_node).loc.selector,
+                                    "safe_#{T.cast(@offensive_node, RuboCop::AST::SendNode).method_name}")
                 end
               end
             end
@@ -478,7 +483,10 @@ module RuboCop
       class MacOSOnLinux < FormulaCop
         include OnSystemConditionalsHelper
 
-        ON_MACOS_BLOCKS = [:macos, *MACOS_VERSION_OPTIONS].map { |os| :"on_#{os}" }.freeze
+        ON_MACOS_BLOCKS = T.let(
+          [:macos, *MACOS_VERSION_OPTIONS].map { |os| :"on_#{os}" }.freeze,
+          T::Array[Symbol],
+        )
 
         sig { override.params(formula_nodes: FormulaNodes).void }
         def audit_formula(formula_nodes)
@@ -529,8 +537,8 @@ module RuboCop
             offending_node(node)
             replacement = "generate_completions_from_executable(#{replacement_args.join(", ")})"
 
-            problem "Use `#{replacement}` instead of `#{@offensive_node.source}`." do |corrector|
-              corrector.replace(@offensive_node.source_range, replacement)
+            problem "Use `#{replacement}` instead of `#{T.must(@offensive_node).source}`." do |corrector|
+              corrector.replace(T.must(@offensive_node).source_range, replacement)
             end
           end
 
@@ -539,7 +547,7 @@ module RuboCop
             next if node.source.match?(/{.*=>.*}/) # skip commands needing custom ENV variables
 
             offending_node(node)
-            problem "Use `generate_completions_from_executable` DSL instead of `#{@offensive_node.source}`."
+            problem "Use `generate_completions_from_executable` DSL instead of `#{T.must(@offensive_node).source}`."
           end
         end
 
@@ -608,7 +616,7 @@ module RuboCop
             problem "Use a single `generate_completions_from_executable` " \
                     "call combining all specified shells." do |corrector|
               # adjust range by -4 and +1 to also include & remove leading spaces and trailing \n
-              corrector.replace(@offensive_node.source_range.adjust(begin_pos: -4, end_pos: 1), "")
+              corrector.replace(T.must(@offensive_node).source_range.adjust(begin_pos: -4, end_pos: 1), "")
             end
           end
 
@@ -616,17 +624,18 @@ module RuboCop
 
           offending_node(offenses.last)
           replacement = if (%w[:bash :zsh :fish] - shells).empty?
-            @offensive_node.source.sub(/shells: \[(:bash|:zsh|:fish)\]/, "")
-                           .sub(", )", ")") # clean up dangling trailing comma
-                           .sub("(, ", "(") # clean up dangling leading comma
-                           .sub(", , ", ", ") # clean up dangling enclosed comma
+            T.must(@offensive_node).source
+             .sub(/shells: \[(:bash|:zsh|:fish)\]/, "")
+             .sub(", )", ")") # clean up dangling trailing comma
+             .sub("(, ", "(") # clean up dangling leading comma
+             .sub(", , ", ", ") # clean up dangling enclosed comma
           else
-            @offensive_node.source.sub(/shells: \[(:bash|:zsh|:fish)\]/,
-                                       "shells: [#{shells.join(", ")}]")
+            T.must(@offensive_node).source.sub(/shells: \[(:bash|:zsh|:fish)\]/,
+                                               "shells: [#{shells.join(", ")}]")
           end
 
-          problem "Use `#{replacement}` instead of `#{@offensive_node.source}`." do |corrector|
-            corrector.replace(@offensive_node.source_range, replacement)
+          problem "Use `#{replacement}` instead of `#{T.must(@offensive_node).source}`." do |corrector|
+            corrector.replace(T.must(@offensive_node).source_range, replacement)
           end
         end
       end
@@ -783,7 +792,7 @@ module RuboCop
           end
 
           find_method_with_args(body_node, :system, /^(otool|install_name_tool|lipo)/) do
-            problem "Use ruby-macho instead of calling #{@offensive_node.source}"
+            problem "Use ruby-macho instead of calling #{T.must(@offensive_node).source}"
           end
 
           problem "Use new-style test definitions (test do)" if find_method_def(body_node, :test)
@@ -854,10 +863,11 @@ module RuboCop
           end
         end
 
+        sig { params(node: RuboCop::AST::Node).returns(T::Boolean) }
         def modifier?(node)
           return false unless node.if_type?
 
-          node.modifier_form?
+          T.cast(node, RuboCop::AST::IfNode).modifier_form?
         end
 
         def_node_search :conditional_dependencies, <<~EOS
@@ -892,7 +902,7 @@ module RuboCop
 
           # Avoid build-time checks in homebrew/core
           find_every_method_call_by_name(formula_nodes.body_node, :system).each do |method|
-            next if @formula_name.start_with?("lib")
+            next if @formula_name&.start_with?("lib")
             next if tap_style_exception? :make_check_allowlist
 
             params = parameters(method)
@@ -933,8 +943,8 @@ module RuboCop
 
           find_method_with_args(body_node, :depends_on, "rustup") do
             problem "Formulae in homebrew/core should use 'depends_on \"rust\"' " \
-                    "instead of '#{@offensive_node.source}'." do |corrector|
-              corrector.replace(@offensive_node.source_range, "depends_on \"rust\"")
+                    "instead of '#{T.must(@offensive_node).source}'." do |corrector|
+              corrector.replace(T.must(@offensive_node).source_range, "depends_on \"rust\"")
             end
           end
 
@@ -943,8 +953,8 @@ module RuboCop
           [:build, [:build, :test], [:test, :build]].each do |type|
             find_method_with_args(body_node, :depends_on, "rustup" => type) do
               problem "Formulae in homebrew/core should use 'depends_on \"rust\" => #{type}' " \
-                      "instead of '#{@offensive_node.source}'." do |corrector|
-                corrector.replace(@offensive_node.source_range, "depends_on \"rust\" => #{type}")
+                      "instead of '#{T.must(@offensive_node).source}'." do |corrector|
+                corrector.replace(T.must(@offensive_node).source_range, "depends_on \"rust\" => #{type}")
               end
             end
           end

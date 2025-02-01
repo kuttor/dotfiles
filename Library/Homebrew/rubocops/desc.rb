@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "rubocops/extend/formula_cop"
@@ -17,7 +17,7 @@ module RuboCop
         def audit_formula(formula_nodes)
           body_node = formula_nodes.body_node
 
-          @name = @formula_name
+          @name = T.let(@formula_name, T.nilable(String))
           desc_call = find_node_method_by_name(body_node, :desc)
           offending_node(formula_nodes.class_node) if body_node.nil?
           audit_desc(:formula, @name, desc_call)

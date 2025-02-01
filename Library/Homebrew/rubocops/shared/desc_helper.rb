@@ -17,6 +17,7 @@ module RuboCop
         macOS
       ].freeze
 
+      sig { params(type: Symbol, name: T.nilable(String), desc_call: T.nilable(RuboCop::AST::Node)).void }
       def audit_desc(type, name, desc_call)
         # Check if a desc is present.
         if desc_call.nil?
@@ -26,7 +27,7 @@ module RuboCop
 
         @offensive_node = desc_call
 
-        desc = desc_call.first_argument
+        desc = T.cast(desc_call, RuboCop::AST::SendNode).first_argument
 
         # Check if the desc is empty.
         desc_length = string_content(desc).length
@@ -56,7 +57,7 @@ module RuboCop
         end
 
         # Check if the desc starts with the formula's or cask's name.
-        name_regex = name.delete("-").chars.join('[\s\-]?')
+        name_regex = T.must(name).delete("-").chars.join('[\s\-]?')
         if regex_match_group(desc, /^#{name_regex}\b/i)
           desc_problem "Description shouldn't start with the #{type} name."
         end

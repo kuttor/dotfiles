@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 module RuboCop
@@ -32,6 +32,7 @@ module RuboCop
           (send (send $!nil? :include? $_) :!)
         PATTERN
 
+        sig { params(node: RuboCop::AST::SendNode).void }
         def on_send(node)
           return unless (receiver, obj = negate_include_call?(node))
 

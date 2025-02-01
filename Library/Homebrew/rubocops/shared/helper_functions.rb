@@ -32,7 +32,10 @@ module RuboCop
         @line_no = line_number(node)
         @source_buf = source_buffer(node)
         @offensive_node = node
-        @offensive_source_range = source_range(@source_buf, @line_no, @column, @length)
+        @offensive_source_range = T.let(
+          source_range(@source_buf, @line_no, @column, @length),
+          T.nilable(Parser::Source::Range),
+        )
         match_object
       end
 
@@ -53,6 +56,7 @@ module RuboCop
       end
 
       # Source buffer is required as an argument to report style violations.
+      sig { params(node: RuboCop::AST::Node).returns(Parser::Source::Buffer) }
       def source_buffer(node)
         node.source_range.source_buffer
       end
