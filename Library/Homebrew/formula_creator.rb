@@ -202,14 +202,7 @@ module Homebrew
         <% elsif @mode == :ruby %>
             ENV["GEM_HOME"] = libexec
 
-            # Additional dependency from gem
-            # resources.each do |r|
-            #   system "gem", "install", r.cached_download, "--ignore-dependencies",
-            #      "--no-document", "--install-dir", libexec
-            # end
-
-            system "bundle", "config", "set", "without", "development", "test"
-            system "bundle", "install"
+            system "bundle", "install", "-without", "development", "test"
             system "gem", "build", "\#{name}.gemspec"
             system "gem", "install", "\#{name}-\#{version}.gem"
             bin.install libexec/"bin/\#{name}"
