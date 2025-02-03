@@ -92,6 +92,7 @@ module Homebrew
           end
         end
 
+        skipped_autobump = T.let(false, T::Boolean)
         if skip_autobump?
           autobump_lists = {}
 
@@ -105,10 +106,11 @@ module Homebrew
             end
 
             name = formula_or_cask.respond_to?(:token) ? formula_or_cask.token : formula_or_cask.name
-            if autobump_lists[tap].include?(name)
-              odebug "Skipping #{name} as it is autobumped in #{tap}."
-              true
-            end
+            next unless autobump_lists[tap].include?(name)
+
+            odebug "Skipping #{name} as it is autobumped in #{tap}."
+            skipped_autobump = true
+            true
           end
         end
 
@@ -116,7 +118,8 @@ module Homebrew
           formula_or_cask.respond_to?(:token) ? formula_or_cask.token : formula_or_cask.name
         end
 
-        raise UsageError, "No formulae or casks to check." if formulae_and_casks_to_check.blank?
+        raise UsageError, "No formulae or casks to check." if formulae_and_casks_to_check.blank? && !skipped_autobump
+        return if formulae_and_casks_to_check.blank?
 
         options = {
           json:                 args.json?,
