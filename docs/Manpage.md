@@ -23,17 +23,18 @@ Linux distribution without requiring `sudo`.
 
 **prefix**
 
-: path in which Homebrew is installed, e.g. `/usr/local`
+: path in which Homebrew is installed, e.g. `/opt/homebrew` or
+  `/home/linuxbrew/.linuxbrew`
 
 **keg**
 
 : installation destination directory of a given **formula** version, e.g.
-  `/usr/local/Cellar/foo/0.1`
+  `/opt/homebrew/Cellar/foo/0.1`
 
 **rack**
 
 : directory containing one or more versioned **kegs**, e.g.
-  `/usr/local/Cellar/foo`
+  `/opt/homebrew/Cellar/foo`
 
 **keg-only**
 
@@ -41,15 +42,16 @@ Linux distribution without requiring `sudo`.
 
 **opt prefix**
 
-: a symlink to the active version of a **keg**, e.g. `/usr/local/opt/foo`
+: a symlink to the active version of a **keg**, e.g. `/opt/homebrew/opt/foo`
 
 **Cellar**
 
-: directory containing one or more named **racks**, e.g. `/usr/local/Cellar`
+: directory containing one or more named **racks**, e.g. `/opt/homebrew/Cellar`
 
 **Caskroom**
 
-: directory containing one or more named **casks**, e.g. `/usr/local/Caskroom`
+: directory containing one or more named **casks**, e.g.
+  `/opt/homebrew/Caskroom`
 
 **external command**
 

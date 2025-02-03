@@ -127,7 +127,7 @@ This is an issue in the connection between your machine and GitHub, rather than 
 
 Upgrading macOS can cause errors like the following:
 
-* `dyld: Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.54.dylib`
+* `dyld: Library not loaded: /opt/homebrew/opt/icu4c/lib/libicui18n.76.dylib`
 * `configure: error: Cannot find libz`
 
 Following a macOS upgrade it may be necessary to reinstall the Xcode Command Line Tools and then `brew upgrade` all installed formulae:
