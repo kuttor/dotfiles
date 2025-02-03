@@ -57,7 +57,7 @@ The `site-packages` is a directory that contains Python modules, including bindi
 $(brew --prefix)/lib/pythonX.Y/site-packages
 ```
 
-So, for Python 3.y.z, you'll find it at `/usr/local/lib/python3.y/site-packages` on macOS Intel.
+So, for Python 3.y.z, you'll find it at `/opt/homebrew/lib/python3.y/site-packages` on Apple Silicon.
 
 Python 3.y also searches for modules in:
 

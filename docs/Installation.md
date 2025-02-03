@@ -12,7 +12,7 @@ The macOS `.pkg` installer also installs Homebrew to its default prefix (`/opt/h
 
 ## macOS Requirements
 
-* A 64-bit Intel CPU or Apple Silicon CPU <sup>[1](#1)</sup>
+* An Apple Silicon CPU or 64-bit Intel CPU <sup>[1](#1)</sup>
 * macOS Ventura (13) (or higher) installed on officially supported hardware<sup>[2](#2)</sup>
   * **Note:** Devices using OpenCore Legacy Patcher are not supported
 * Command Line Tools (CLT) for Xcode (from `xcode-select --install` or

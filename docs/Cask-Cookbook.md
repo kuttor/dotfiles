@@ -129,7 +129,7 @@ Each cask must declare one or more *artifacts* (i.e. something to install).
 | [`pkg`](#stanza-pkg)             | yes                           | Relative path to a `.pkg` file containing the distribution. |
 | [`installer`](#stanza-installer) | yes                           | Describes an executable which must be run to complete the installation. |
 | [`binary`](#stanza-binary)       | yes                           | Relative path to a Binary that should be linked into the `$(brew --prefix)/bin` folder on installation. |
-| `manpage`                        | yes                           | Relative path to a Man Page that should be linked into the respective man page folder on installation, e.g. `/usr/local/share/man/man3` for `my_app.3`. |
+| `manpage`                        | yes                           | Relative path to a Man Page that should be linked into the respective man page folder on installation, e.g. `/opt/homebrew/share/man/man3` for `my_app.3`. |
 | `colorpicker`                    | yes                           | Relative path to a ColorPicker plugin that should be moved into the `~/Library/ColorPickers` folder on installation. |
 | `dictionary`                     | yes                           | Relative path to a Dictionary that should be moved into the `~/Library/Dictionaries` folder on installation. |
 | `font`                           | yes                           | Relative path to a Font that should be moved into the `~/Library/Fonts` folder on installation. |
@@ -417,17 +417,17 @@ The available symbols for hardware are:
 
 | symbol     | meaning        |
 | ---------- | -------------- |
+| `:arm64`   | Apple Silicon |
 | `:x86_64`  | 64-bit Intel |
 | `:intel`   | 64-bit Intel |
-| `:arm64`   | Apple Silicon |
 
 The following are all valid expressions:
 
 ```ruby
+depends_on arch: :arm64
 depends_on arch: :intel
 depends_on arch: :x86_64            # same meaning as above
 depends_on arch: [:x86_64]          # same meaning as above
-depends_on arch: :arm64
 ```
 
 #### `depends_on` parameters
@@ -1182,7 +1182,7 @@ If no additional files are discovered, instead of a zap stanza, include the foll
 
 Casks can deliver specific versions of artifacts depending on the current macOS release or CPU architecture by either tailoring the URL / SHA-256 hash / version, using the [`on_<system>` syntax](Formula-Cookbook.md#handling-different-system-configurations) (which replaces conditional statements using `MacOS.version` or `Hardware::CPU`), or both.
 
-If your cask's artifact is offered as separate downloads for Intel and Apple Silicon architectures, they'll presumably be downloadable at distinct URLs that differ only slightly. To adjust the URL depending on the current CPU architecture, supply a hash for each to the `arm:` and `intel:` parameters of `sha256`, and use the special `arch` stanza to define the unique components of the respective URLs for substitution in the `url`. Additional substitutions can be defined by calling `on_arch_conditional` directly. Example (from [libreoffice.rb](https://github.com/Homebrew/homebrew-cask/blob/a4164b8f5084fdaefb6e2e2f4f699270690b7845/Casks/l/libreoffice.rb#L1-L10)):
+If your cask's artifact is offered as separate downloads for Apple Silicon and Intel architectures, they'll presumably be downloadable at distinct URLs that differ only slightly. To adjust the URL depending on the current CPU architecture, supply a hash for each to the `arm:` and `intel:` parameters of `sha256`, and use the special `arch` stanza to define the unique components of the respective URLs for substitution in the `url`. Additional substitutions can be defined by calling `on_arch_conditional` directly. Example (from [libreoffice.rb](https://github.com/Homebrew/homebrew-cask/blob/a4164b8f5084fdaefb6e2e2f4f699270690b7845/Casks/l/libreoffice.rb#L1-L10)):
 
 ```ruby
 cask "libreoffice" do
