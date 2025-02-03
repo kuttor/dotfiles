@@ -37,8 +37,6 @@ If a pull request needs its commit messages changed in a way that autosquash doe
 
 If a formula in homebrew-core needs rebottling for any reason:
 
-1. Navigate to the homebrew-core github page.
-2. Click on the "Actions" tab.
-3. Click on the "Dispatch rebottle" workflow on the left of the page.
-4. Click on the "Run workflow" button on the right of the page.
-5. Fill out any necessary fields.
+1. Navigate to [homebrew-core's rebottling workflow page](https://github.com/Homebrew/homebrew-core/actions/workflows/dispatch-rebottle.yml)
+2. Click on the "Run workflow" button on the right of the page.
+3. Fill out any necessary fields.
