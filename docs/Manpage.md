@@ -4232,11 +4232,11 @@ Homebrew API: <https://rubydoc.brew.sh>
 
 Homebrew's Project Leader is Mike McQuaid.
 
-Homebrew's Project Leadership Committee is Colin Dean, Issy Long, Mike McQuaid,
-Patrick Linnane and Vanessa Gennarelli.
+Homebrew's Project Leadership Committee is Colin Dean, Michka Popoff, Mike
+McQuaid, Patrick Linnane and Vanessa Gennarelli.
 
-Homebrew's Technical Steering Committee is Bo Anderson, FX Coudert, Michka
-Popoff, Mike McQuaid and Rylan Polster.
+Homebrew's Technical Steering Committee is Bo Anderson, FX Coudert, Mike McQuaid
+and Rylan Polster.
 
 Homebrew's maintainers are Alexander Bayandin, Bevan Kay, Bo Anderson, Branch
 Vincent, Caleb Xu, Carlo Cabrera, Daeho Ro, Douglas Eichelberger, Dustin
