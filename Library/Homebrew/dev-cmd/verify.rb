@@ -57,22 +57,23 @@ module Homebrew
 
               bottle = formula.bottle_for_tag(bottle_tag)
 
-              if bottle.nil?
+              if bottle
+                bottle.clear_cache if args.force?
+                bottle.fetch
+                begin
+                  attestation = Homebrew::Attestation.check_core_attestation bottle
+                  oh1 "#{bottle.filename} has a valid attestation"
+                  json_results.push(attestation)
+                rescue Homebrew::Attestation::InvalidAttestationError => e
+                  ofail <<~ERR
+                    Failed to verify #{bottle.filename} with tag #{bottle_tag} due to error:
+
+                    #{e}
+                  ERR
+                end
+              else
                 opoo "Bottle for tag #{bottle_tag.to_sym.inspect} is unavailable."
                 next
-              end
-              bottle.clear_cache if args.force?
-              bottle.fetch
-              begin
-                attestation = Homebrew::Attestation.check_core_attestation bottle
-                oh1 "#{bottle.filename} has a valid attestation"
-                json_results.push(attestation)
-              rescue Homebrew::Attestation::InvalidAttestationError => e
-                ofail <<~ERR
-                  Failed to verify #{bottle.filename} with tag #{bottle_tag} due to error:
-
-                  #{e}
-                ERR
               end
             end
           end
