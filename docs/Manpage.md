@@ -2563,7 +2563,8 @@ Apply the bottle commit and publish bottles to a host.
 `--keep-old`
 
 : If the formula specifies a rebuild version, attempt to preserve its value in
-  the generated DSL.
+  the generated DSL. When using GitHub Packages, this also appends the manifest
+  to the existing list.
 
 `-n`, `--dry-run`
 

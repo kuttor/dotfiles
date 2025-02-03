@@ -1282,7 +1282,7 @@ __fish_brew_complete_arg 'pr-upload' -l committer -d 'Specify a committer name a
 __fish_brew_complete_arg 'pr-upload' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'pr-upload' -l dry-run -d 'Print what would be done rather than doing it'
 __fish_brew_complete_arg 'pr-upload' -l help -d 'Show this message'
-__fish_brew_complete_arg 'pr-upload' -l keep-old -d 'If the formula specifies a rebuild version, attempt to preserve its value in the generated DSL'
+__fish_brew_complete_arg 'pr-upload' -l keep-old -d 'If the formula specifies a rebuild version, attempt to preserve its value in the generated DSL. When using GitHub Packages, this also appends the manifest to the existing list'
 __fish_brew_complete_arg 'pr-upload' -l no-commit -d 'Do not generate a new commit before uploading'
 __fish_brew_complete_arg 'pr-upload' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'pr-upload' -l root-url -d 'Use the specified URL as the root of the bottle\'s URL instead of Homebrew\'s default'
