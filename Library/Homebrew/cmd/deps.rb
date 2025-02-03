@@ -32,7 +32,7 @@ module Homebrew
         switch "--full-name",
                description: "List dependencies by their full name."
         switch "--include-implicit",
-               description: "Include implicit dependencies used to download and unpack source files"
+               description: "Include implicit dependencies used to download and unpack source files."
         switch "--include-build",
                description: "Include `:build` dependencies for <formula>."
         switch "--include-optional",

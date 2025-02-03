@@ -43,8 +43,8 @@ module Homebrew
                      "`http://localhost:8080/v2/homebrew/core/gettext/manifests/0.21`",
       },
       HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK:      {
-        description: "If `$HOMEBREW_ARTIFACT_DOMAIN` and `$HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK` are both set, " \
-                     "if the request to `$HOMEBREW_ARTIFACT_DOMAIN` fails then it Homebrew will error rather than " \
+        description: "When `$HOMEBREW_ARTIFACT_DOMAIN` and `$HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK` are both set, " \
+                     "if the request to `$HOMEBREW_ARTIFACT_DOMAIN` fails then Homebrew will error rather than " \
                      "trying any other/default URLs.",
         boolean:     true,
       },
@@ -422,7 +422,7 @@ module Homebrew
         boolean:     true,
       },
       HOMEBREW_NO_VERIFY_ATTESTATIONS:           {
-        description: "If set, Homebrew not verify cryptographic attestations of build provenance for bottles " \
+        description: "If set, Homebrew will not verify cryptographic attestations of build provenance for bottles " \
                      "from homebrew-core.",
         boolean:     true,
       },

@@ -38,8 +38,8 @@ module Homebrew
                description: "Evaluate all available formulae and casks, whether installed or not, to show " \
                             "their dependents."
         switch "--include-implicit",
-               description: "Include formulae that have <formula> as an implicit dependency to " \
-                            "download and unpack source files"
+               description: "Include formulae that have <formula> as an implicit dependency for " \
+                            "downloading and unpacking source files."
         switch "--include-build",
                description: "Include formulae that specify <formula> as a `:build` dependency."
         switch "--include-test",
