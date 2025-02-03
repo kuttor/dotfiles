@@ -12,7 +12,7 @@ A [GitHub Action](https://github.com/Homebrew/brew/blob/master/.github/workflows
 
 Open <https://docs.brew.sh> in your web browser.
 
-To instead generate the site locally to <http://localhost:4000>, run:
+To instead generate the site locally, available on localhost:4000, run:
 
 ```bash
 cd `brew --repository`/docs
