@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Python
 
 This page describes how Python is handled in Homebrew for users. See [Python for Formula Authors](Python-for-Formula-Authors.md) for advice on writing formulae to install packages written in Python.

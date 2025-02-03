@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # New Maintainer Checklist
 
 **Existing maintainers and project leadership uses this guide to invite and onboard new maintainers and project leaders.**

@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Extraordinary General Meeting 2021
 
 ## 2021-01-14

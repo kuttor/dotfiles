@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Bottles (Binary Packages)
 
 Bottles are produced by installing a formula with `brew install --build-bottle <formula>` and then bottling it with `brew bottle <formula>`. This generates a bottle file in the current directory and outputs the bottle DSL for insertion into the formula file.

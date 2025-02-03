@@ -3,6 +3,7 @@ logo: /assets/img/brewtestbot.png
 image: /assets/img/brewtestbot.png
 redirect_from:
   - /Brew-Test-Bot-For-Core-Contributors
+last_review_date: "1970-01-01"
 ---
 
 # BrewTestBot for Maintainers

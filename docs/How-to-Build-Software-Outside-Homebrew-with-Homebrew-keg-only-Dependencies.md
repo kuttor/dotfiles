@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # How to Build Software Outside Homebrew with Homebrew `keg_only` Dependencies
 
 ## What does "keg-only" mean?

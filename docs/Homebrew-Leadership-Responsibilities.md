@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Homebrew Leadership Responsibilities
 
 ## Project Leadership Committee

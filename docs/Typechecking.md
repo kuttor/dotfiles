@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Type Checking With Sorbet
 
 The majority of the code in Homebrew is written in Ruby which is a dynamic language. To avail the benefits of static type checking, we have set up Sorbet in our codebase which provides the benefits of static type checking to dynamic languages like Ruby.

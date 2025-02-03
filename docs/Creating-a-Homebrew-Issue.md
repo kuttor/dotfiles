@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Creating a Homebrew Issue
 
 First, check to make sure your issue is not listed in the [FAQ](FAQ.md) or [Common Issues](Common-Issues.md) and can't otherwise be resolved with the information in the [Tips and Tricks](Tips-N'-Tricks.md) documentation. Next, go through the steps in the [Troubleshooting guide](Troubleshooting.md).

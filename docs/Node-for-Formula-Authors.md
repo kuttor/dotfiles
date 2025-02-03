@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Node for Formula Authors
 
 This document explains how to successfully use Node and npm in a Node module based Homebrew formula.

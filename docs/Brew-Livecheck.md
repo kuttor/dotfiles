@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # `brew livecheck`
 
 The `brew livecheck` command finds the newest version of a formula or cask's software by checking upstream. Livecheck has [strategies](https://rubydoc.brew.sh/Homebrew/Livecheck/Strategy) to identify versions from various sources, such as Git repositories, websites, etc.

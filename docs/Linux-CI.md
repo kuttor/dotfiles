@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Linux CI in `homebrew/core`
 
 We currently use Ubuntu 22.04 for bottling in `homebrew/core`.

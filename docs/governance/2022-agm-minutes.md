@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Homebrew Annual General Meeting 2022
 
 ## Minutes

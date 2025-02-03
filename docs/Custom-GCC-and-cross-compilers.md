@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Custom GCC and Cross Compilers
 
 Homebrew depends on having an up-to-date version of Xcode because it comes with specific versions of build tools, e.g. `clang`. Installing a custom version of GCC or Autotools into your `PATH` has the potential to break lots of compiles so we prefer the Apple- or Homebrew-provided compilers. Cross compilers based on GCC will typically be "keg-only" and therefore not linked into your `PATH` by default, or be prefixed with the target architecture, again to avoid conflicting with Apple or Homebrew compilers.

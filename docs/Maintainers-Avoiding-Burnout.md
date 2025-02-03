@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Maintainers: Avoiding Burnout
 
 **This guide is for maintainers.** These special people have **write

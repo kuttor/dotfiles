@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Homebrew and Java
 
 This page describes how Java is handled in Homebrew for users. Prospective formula authors may refer to existing Java-based formulae for examples of how to install packages written in Java via Homebrew, or visit the [Homebrew discussion forum](https://github.com/orgs/Homebrew/discussions) to seek guidance for their specific situation.

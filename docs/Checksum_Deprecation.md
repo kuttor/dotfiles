@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # MD5 and SHA-1 Deprecation
 
 In early 2015 Homebrew started the process of deprecating _SHA1_ for package

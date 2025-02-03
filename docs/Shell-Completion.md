@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # `brew` Shell Completion
 
 Homebrew comes with completion definitions for the `brew` command. Some packages also provide completion definitions for their own programs.

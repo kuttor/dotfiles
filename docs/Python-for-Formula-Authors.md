@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Python for Formula Authors
 
 This document explains how to successfully use Python in a Homebrew formula.

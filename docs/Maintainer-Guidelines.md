@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Maintainer Guidelines
 
 **This guide is for maintainers.** These special people have **write access** to Homebrew’s repository and help merge the contributions of others. You may find what is written here interesting, but it’s definitely not a beginner’s guide.

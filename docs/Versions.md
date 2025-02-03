@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Formulae Versions
 
 [homebrew/core](https://github.com/homebrew/homebrew-core) supports multiple versions of formulae by using a special naming format. For example, the formula for GCC 9 is named `gcc@9.rb` and begins with `class GccAT9 < Formula`.
