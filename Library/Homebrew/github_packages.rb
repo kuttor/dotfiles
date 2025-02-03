@@ -371,7 +371,7 @@ class GitHubPackages
         os_version ||= OS::LINUX_CI_OS_VERSION
         glibc_version = tab["built_on"]["glibc_version"].presence if tab["built_on"].present?
         glibc_version ||= OS::LINUX_GLIBC_CI_VERSION
-        cpu_variant = tab["oldest_cpu_family"] || Hardware::CPU::INTEL_64BIT_OLDEST_CPU.to_s
+        cpu_variant = tab.dig("built_on", "oldest_cpu_family") || Hardware::CPU::INTEL_64BIT_OLDEST_CPU.to_s
       end
 
       platform_hash = {
