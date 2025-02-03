@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Homebrew Docs
 
 These are the source files for the [Homebrew documentation site](https://docs.brew.sh/).

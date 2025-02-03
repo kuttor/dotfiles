@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Anonymous Analytics
 
 Homebrew gathers anonymous analytics using InfluxDB. You will be notified the first time you run `brew update` or install Homebrew. Analytics are not enabled until after this notice is shown, to ensure that you can [opt out](Analytics.md#opting-out) without ever sending analytics data.

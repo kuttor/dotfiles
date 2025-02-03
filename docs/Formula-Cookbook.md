@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Formula Cookbook
 
 A *formula* is a package definition written in Ruby. It can be created with `brew create <URL>` where `<URL>` is a zip or tarball, installed with `brew install <formula>`, and debugged with `brew install --debug --verbose <formula>`. Formulae use the [Formula API](https://rubydoc.brew.sh/Formula) which provides various Homebrew-specific helpers.

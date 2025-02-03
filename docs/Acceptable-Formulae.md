@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Acceptable Formulae
 
 Some formulae should not go in [homebrew/core](https://github.com/Homebrew/homebrew-core). But there are additional [Interesting Taps and Forks](Interesting-Taps-and-Forks.md) and anyone can [start their own](How-to-Create-and-Maintain-a-Tap.md)!

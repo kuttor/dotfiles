@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # License Guidelines
 
 We only accept formulae that use a [Debian Free Software Guidelines license](https://wiki.debian.org/DFSGLicenses) or are released into the public domain following [DFSG Guidelines on Public Domain software](https://wiki.debian.org/DFSGLicenses#Public_Domain) into `homebrew/core`.

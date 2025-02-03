@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Deprecating, Disabling and Removing Casks
 
 There are many reasons why casks may be deprecated, disabled or removed. This document explains the differences between each method as well as explaining when one method should be used over another.

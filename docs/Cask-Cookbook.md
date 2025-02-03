@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Cask Cookbook
 
 Each cask is a Ruby block, beginning with a special header line. The cask definition itself is always enclosed in a `do … end` block. Example:

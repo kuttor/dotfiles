@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Installation
 
 Instructions for a supported install of Homebrew are on the [homepage](https://brew.sh).

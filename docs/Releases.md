@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Releases
 
 Since Homebrew 1.0.0 most Homebrew users (those who haven't run a `dev-cmd` or set `HOMEBREW_DEVELOPER=1` which is ~99.9% based on analytics data) require tags on the [Homebrew/brew repository](https://github.com/homebrew/brew) in order to receive new versions of Homebrew. There are a few steps in making a new Homebrew release:

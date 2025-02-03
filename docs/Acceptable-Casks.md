@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Acceptable Casks
 
 Some casks should not go in [homebrew/cask](https://github.com/Homebrew/homebrew-cask). But there are additional [Interesting Taps and Forks](Interesting-Taps-and-Forks.md) and anyone can [start their own](How-to-Create-and-Maintain-a-Tap.md)!

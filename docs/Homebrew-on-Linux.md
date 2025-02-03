@@ -5,6 +5,7 @@ redirect_from:
   - /linux
   - /Linux
   - /Linuxbrew
+last_review_date: "1970-01-01"
 ---
 
 # Homebrew on Linux

@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # How to Open a Homebrew Pull Request
 
 The following commands are used by Homebrew contributors to set up a fork of Homebrew's Git repository on GitHub, create a new branch and create a GitHub pull request ("PR") for the changes in that branch.

@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Homebrew/homebrew-cask Maintainer Guide
 
 This guide is intended to help maintainers effectively maintain the cask repository. It is meant to be used in conjunction with the more generic [Maintainer Guidelines](Maintainer-Guidelines.md).

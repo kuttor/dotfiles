@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Homebrew/brew Maintainer Guide
 
 This document describes a few components of the `Homebrew/brew` repository that are useful for maintainers to be aware of, but don't necessarily need to appear in documentation for most users and contributors.

@@ -1,3 +1,7 @@
+---
+last_review_date: "1970-01-01"
+---
+
 # Troubleshooting
 
 **Run `brew update` twice and `brew doctor` (and fix all the warnings) *before* creating an issue!**
