@@ -256,10 +256,17 @@ module Homebrew
               $stdout.print "#{status} #{message}#{"\n" unless last}"
               $stdout.flush
 
-              if future.rejected? && (e = future.reason).is_a?(ChecksumMismatchError)
-                opoo "#{downloadable.download_type.capitalize} reports different checksum: #{e.expected}"
-                Homebrew.failed = true if downloadable.is_a?(Resource::Patch)
-                next 2
+              if future.rejected?
+                if (e = future.reason).is_a?(ChecksumMismatchError)
+                  opoo "#{downloadable.download_type.capitalize} reports different checksum: #{e.expected}"
+                  Homebrew.failed = true if downloadable.is_a?(Resource::Patch)
+                  next 2
+                else
+                  message = future.reason.to_s
+                  onoe message
+                  Homebrew.failed = true
+                  next message.count("\n")
+                end
               end
 
               1
