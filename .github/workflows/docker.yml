@@ -85,7 +85,7 @@ jobs:
             )
           fi
           if [[ "${{ matrix.version }}" == "18.04" ]]; then
-            # odeprecated: remove this in Homebrew >=4.4
+            # odeprecated: remove this in Homebrew >=4.5
             echo "The homebrew/ubuntu18.04 image is deprecated and will soon be retired. Use homebrew/ubuntu22.04 or homebrew/ubuntu24.04 or homebrew/ubuntu20.04 or homebrew/brew." > .docker-deprecate
           fi
 
