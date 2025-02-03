@@ -16,7 +16,8 @@ module Homebrew
         EOS
         switch "--keep-old",
                description: "If the formula specifies a rebuild version, " \
-                            "attempt to preserve its value in the generated DSL."
+                            "attempt to preserve its value in the generated DSL. " \
+                            "When using GitHub Packages, this also appends the manifest to the existing list."
         switch "-n", "--dry-run",
                description: "Print what would be done rather than doing it."
         switch "--no-commit",
@@ -34,7 +35,6 @@ module Homebrew
                description: "Use the specified download strategy class for downloading the bottle's URL instead of " \
                             "Homebrew's default."
 
-        conflicts "--upload-only", "--keep-old"
         conflicts "--upload-only", "--no-commit"
 
         named_args :none
