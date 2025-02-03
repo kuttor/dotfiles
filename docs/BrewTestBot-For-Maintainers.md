@@ -35,7 +35,7 @@ If a pull request needs its commit messages changed in a way that autosquash doe
 
 ## Rebottling
 
-If a formula needs rebottling for any reasons within homebrew-core:
+If a formula in homebrew-core needs rebottling for any reason:
 
 1. Navigate to the homebrew-core github page.
 2. Click on the "Actions" tab.
