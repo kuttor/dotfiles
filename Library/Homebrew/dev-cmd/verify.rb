@@ -2,17 +2,15 @@
 # frozen_string_literal: true
 
 require "abstract_command"
-require "formula"
-require "date"
 require "attestation"
 
 module Homebrew
   module DevCmd
-    class VerifyCmd < AbstractCommand
+    class Verify < AbstractCommand
       cmd_args do
         description <<~EOS
           Verify the build provenance of bottles using GitHub's attestation tools.
-          This is done by first fetching the given bottles, and then verifying
+          This is done by first fetching the given bottles and then verifying
           their provenance.
 
           Note that this command depends on the GitHub CLI. Run `brew install gh`.
