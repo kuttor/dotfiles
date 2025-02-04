@@ -99,13 +99,23 @@ RSpec.describe Livecheck do
   end
 
   describe "#strategy" do
+    block = proc { |page, regex| page.scan(regex).map { |match| match[0].tr("_", ".") } }
+
     it "returns nil if not set" do
       expect(livecheck_f.strategy).to be_nil
+      expect(livecheck_f.strategy_block).to be_nil
     end
 
     it "returns the Symbol if set" do
       livecheck_f.strategy(:page_match)
       expect(livecheck_f.strategy).to eq(:page_match)
+      expect(livecheck_f.strategy_block).to be_nil
+    end
+
+    it "sets `strategy_block` when provided" do
+      livecheck_f.strategy(:page_match, &block)
+      expect(livecheck_f.strategy).to eq(:page_match)
+      expect(livecheck_f.strategy_block).to eq(block)
     end
   end
 
