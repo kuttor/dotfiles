@@ -47,7 +47,8 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         uses: Homebrew/actions/setup-commit-signing@master
         with:
-          signing_key: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY }}
+          ssh: true
+          signing_key: ${{ secrets.BREWTESTBOT_SSH_SIGNING_KEY }}
 
       - name: Check out pull request
         id: checkout
@@ -66,8 +67,6 @@ jobs:
         working-directory: ${{ steps.set-up-homebrew.outputs.repository-path }}
 
       - name: Vendor Gems
-        env:
-          HOMEBREW_GPG_PASSPHRASE: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY_PASSPHRASE }}
         run: |
           if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]
           then
@@ -83,7 +82,6 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         env:
           GEM_NAME: ${{ steps.checkout.outputs.gem_name }}
-          HOMEBREW_GPG_PASSPHRASE: ${{ secrets.BREWTESTBOT_GPG_SIGNING_SUBKEY_PASSPHRASE }}
         working-directory: ${{ steps.set-up-homebrew.outputs.repository-path }}
         run: |
           if ! git diff --stat --exit-code "Library/Homebrew/sorbet"
