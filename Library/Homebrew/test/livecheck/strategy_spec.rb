@@ -105,23 +105,48 @@ RSpec.describe Homebrew::Livecheck::Strategy do
     it "returns the Strategy module represented by the Symbol argument" do
       expect(strategy.from_symbol(:page_match)).to eq(Homebrew::Livecheck::Strategy::PageMatch)
     end
+
+    it "returns `nil` if the argument is `nil`" do
+      expect(strategy.from_symbol(nil)).to be_nil
+    end
   end
 
   describe "::from_url" do
-    let(:url) { "https://sourceforge.net/projects/test" }
+    let(:sourceforge_url) { "https://sourceforge.net/projects/test" }
 
-    context "when no regex is provided" do
+    context "when a regex or `strategy` block is not provided" do
       it "returns an array of usable strategies which doesn't include PageMatch" do
-        expect(strategy.from_url(url)).to eq([Homebrew::Livecheck::Strategy::Sourceforge])
+        expect(strategy.from_url(sourceforge_url)).to eq([Homebrew::Livecheck::Strategy::Sourceforge])
       end
     end
 
-    context "when a regex is provided" do
+    context "when a regex or `strategy` block is provided" do
       it "returns an array of usable strategies including PageMatch, sorted in descending order by priority" do
-        expect(strategy.from_url(url, regex_provided: true))
+        expect(strategy.from_url(sourceforge_url, regex_provided: true))
           .to eq(
             [Homebrew::Livecheck::Strategy::Sourceforge, Homebrew::Livecheck::Strategy::PageMatch],
           )
+      end
+    end
+
+    context "when a `strategy` block is required and one is provided" do
+      it "returns an array of usable strategies including the specified strategy" do
+        # The strategies array is naturally in alphabetic order when all
+        # applicable strategies have the same priority
+        expect(strategy.from_url(url, livecheck_strategy: :json, block_provided: true))
+          .to eq([Homebrew::Livecheck::Strategy::Json, Homebrew::Livecheck::Strategy::PageMatch])
+        expect(strategy.from_url(url, livecheck_strategy: :xml, block_provided: true))
+          .to eq([Homebrew::Livecheck::Strategy::PageMatch, Homebrew::Livecheck::Strategy::Xml])
+        expect(strategy.from_url(url, livecheck_strategy: :yaml, block_provided: true))
+          .to eq([Homebrew::Livecheck::Strategy::PageMatch, Homebrew::Livecheck::Strategy::Yaml])
+      end
+    end
+
+    context "when a `strategy` block is required and one is not provided" do
+      it "returns an array of usable strategies not including the specified strategy" do
+        expect(strategy.from_url(url, livecheck_strategy: :json, block_provided: false)).to eq([])
+        expect(strategy.from_url(url, livecheck_strategy: :xml, block_provided: false)).to eq([])
+        expect(strategy.from_url(url, livecheck_strategy: :yaml, block_provided: false)).to eq([])
       end
     end
   end
