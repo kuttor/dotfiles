@@ -1899,6 +1899,28 @@ Update the specified list of vendored gems to the latest version\.
 .TP
 \fB\-\-no\-commit\fP
 Do not generate a new commit upon completion\.
+.SS "\fBverify\fP \fR[\fIoptions\fP] \fIformula\fP \fR[\.\.\.]"
+Verify the build provenance of bottles using GitHub\[u2019]s attestation tools\. This is done by first fetching the given bottles and then verifying their provenance\.
+.P
+Note that this command depends on the GitHub CLI\. Run \fBbrew install gh\fP\&\.
+.TP
+\fB\-\-os\fP
+Download for the given operating system\.(Pass \fBall\fP to download for all operating systems\.)
+.TP
+\fB\-\-arch\fP
+Download for the given CPU architecture\.(Pass \fBall\fP to download for all architectures\.)
+.TP
+\fB\-\-bottle\-tag\fP
+Download a bottle for given tag\.
+.TP
+\fB\-\-deps\fP
+Also download dependencies for any listed \fIformula\fP\&\.
+.TP
+\fB\-f\fP, \fB\-\-force\fP
+Remove a previously cached version and re\-fetch\.
+.TP
+\fB\-j\fP, \fB\-\-json\fP
+Return JSON for the attestation data for each bottle\.
 .SH "GLOBAL CASK OPTIONS"
 These options are applicable to the \fBinstall\fP, \fBreinstall\fP and \fBupgrade\fP subcommands with the \fB\-\-cask\fP switch\.
 .TP
