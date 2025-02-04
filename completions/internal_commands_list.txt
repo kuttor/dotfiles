@@ -118,3 +118,4 @@ upgrade
 uses
 vendor-gems
 vendor-install
+verify

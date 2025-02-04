@@ -1845,6 +1845,20 @@ __fish_brew_complete_arg 'vendor-install' -l quiet -d 'Make some output more qui
 __fish_brew_complete_arg 'vendor-install' -l verbose -d 'Make some output more verbose'
 
 
+__fish_brew_complete_cmd 'verify' 'Verify the build provenance of bottles using GitHub\'s attestation tools'
+__fish_brew_complete_arg 'verify' -l arch -d 'Download for the given CPU architecture.(Pass `all` to download for all architectures.)'
+__fish_brew_complete_arg 'verify' -l bottle-tag -d 'Download a bottle for given tag'
+__fish_brew_complete_arg 'verify' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'verify' -l deps -d 'Also download dependencies for any listed formula'
+__fish_brew_complete_arg 'verify' -l force -d 'Remove a previously cached version and re-fetch'
+__fish_brew_complete_arg 'verify' -l help -d 'Show this message'
+__fish_brew_complete_arg 'verify' -l json -d 'Return JSON for the attestation data for each bottle'
+__fish_brew_complete_arg 'verify' -l os -d 'Download for the given operating system.(Pass `all` to download for all operating systems.)'
+__fish_brew_complete_arg 'verify' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'verify' -l verbose -d 'Make some output more verbose'
+__fish_brew_complete_arg 'verify' -a '(__fish_brew_suggest_formulae_all)'
+
+
 
 ################################
 ## OFFICIAL EXTERNAL COMMANDS ##

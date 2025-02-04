@@ -2969,6 +2969,39 @@ Install and commit Homebrew's vendored gems.
 
 : Do not generate a new commit upon completion.
 
+### `verify` \[*`options`*\] *`formula`* \[...\]
+
+Verify the build provenance of bottles using GitHub's attestation tools. This is
+done by first fetching the given bottles and then verifying their provenance.
+
+Note that this command depends on the GitHub CLI. Run `brew install gh`.
+
+`--os`
+
+: Download for the given operating system.(Pass `all` to download for all
+  operating systems.)
+
+`--arch`
+
+: Download for the given CPU architecture.(Pass `all` to download for all
+  architectures.)
+
+`--bottle-tag`
+
+: Download a bottle for given tag.
+
+`--deps`
+
+: Also download dependencies for any listed *`formula`*.
+
+`-f`, `--force`
+
+: Remove a previously cached version and re-fetch.
+
+`-j`, `--json`
+
+: Return JSON for the attestation data for each bottle.
+
 ## GLOBAL CASK OPTIONS
 
 These options are applicable to the `install`, `reinstall` and `upgrade`
