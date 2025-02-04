@@ -217,13 +217,13 @@ module Homebrew
         # @return [Hash]
         sig {
           params(
-            url:     String,
-            regex:   T.nilable(Regexp),
-            _unused: T.untyped,
-            block:   T.nilable(Proc),
+            url:    String,
+            regex:  T.nilable(Regexp),
+            unused: T.untyped,
+            block:  T.nilable(Proc),
           ).returns(T::Hash[Symbol, T.untyped])
         }
-        def self.find_versions(url:, regex: nil, **_unused, &block)
+        def self.find_versions(url:, regex: nil, **unused, &block)
           if regex.present? && block.blank?
             raise ArgumentError,
                   "#{Utils.demodulize(T.must(name))} only supports a regex when using a `strategy` block"
@@ -231,7 +231,12 @@ module Homebrew
 
           match_data = { matches: {}, regex:, url: }
 
-          match_data.merge!(Strategy.page_content(url))
+          match_data.merge!(
+            Strategy.page_content(
+              url,
+              url_options: unused.fetch(:url_options, {}),
+            ),
+          )
           content = match_data.delete(:content)
           return match_data if content.blank?
 
