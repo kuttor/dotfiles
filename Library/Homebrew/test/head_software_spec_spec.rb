@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "software_spec"
+require "head_software_spec"
 
 RSpec.describe HeadSoftwareSpec do
   subject(:head_spec) { described_class.new }
