@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "software_spec"
+require "bottle_specification"
 require "test/support/fixtures/testball_bottle"
 
 RSpec.describe Bottle do

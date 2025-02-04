@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "software_spec"
+require "bottle_specification"
 
 RSpec.describe BottleSpecification do
   subject(:bottle_spec) { described_class.new }
