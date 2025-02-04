@@ -73,7 +73,6 @@ module Homebrew
                 end
               else
                 opoo "Bottle for tag #{bottle_tag.to_sym.inspect} is unavailable."
-                next
               end
             end
           end
