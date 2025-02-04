@@ -11,61 +11,61 @@
 # source://json_schemer//lib/json_schemer/version.rb#2
 module JSONSchemer
   class << self
-    # source://json_schemer//lib/json_schemer.rb#234
+    # source://json_schemer//lib/json_schemer.rb#240
     def configuration; end
 
     # @yield [configuration]
     #
-    # source://json_schemer//lib/json_schemer.rb#238
+    # source://json_schemer//lib/json_schemer.rb#244
     def configure; end
 
-    # source://json_schemer//lib/json_schemer.rb#142
+    # source://json_schemer//lib/json_schemer.rb#148
     def draft201909; end
 
-    # source://json_schemer//lib/json_schemer.rb#130
+    # source://json_schemer//lib/json_schemer.rb#136
     def draft202012; end
 
-    # source://json_schemer//lib/json_schemer.rb#178
+    # source://json_schemer//lib/json_schemer.rb#184
     def draft4; end
 
-    # source://json_schemer//lib/json_schemer.rb#166
+    # source://json_schemer//lib/json_schemer.rb#172
     def draft6; end
 
-    # source://json_schemer//lib/json_schemer.rb#154
+    # source://json_schemer//lib/json_schemer.rb#160
     def draft7; end
 
-    # source://json_schemer//lib/json_schemer.rb#230
+    # source://json_schemer//lib/json_schemer.rb#236
     def openapi(document, **options); end
 
-    # source://json_schemer//lib/json_schemer.rb#200
+    # source://json_schemer//lib/json_schemer.rb#206
     def openapi30; end
 
-    # source://json_schemer//lib/json_schemer.rb#222
+    # source://json_schemer//lib/json_schemer.rb#228
     def openapi30_document; end
 
-    # source://json_schemer//lib/json_schemer.rb#190
+    # source://json_schemer//lib/json_schemer.rb#196
     def openapi31; end
 
-    # source://json_schemer//lib/json_schemer.rb#214
+    # source://json_schemer//lib/json_schemer.rb#220
     def openapi31_document; end
 
-    # source://json_schemer//lib/json_schemer.rb#115
+    # source://json_schemer//lib/json_schemer.rb#121
     def schema(schema, **options); end
 
     # @return [Boolean]
     #
-    # source://json_schemer//lib/json_schemer.rb#120
+    # source://json_schemer//lib/json_schemer.rb#126
     def valid_schema?(schema, **options); end
 
-    # source://json_schemer//lib/json_schemer.rb#125
+    # source://json_schemer//lib/json_schemer.rb#131
     def validate_schema(schema, **options); end
 
     private
 
-    # source://json_schemer//lib/json_schemer.rb#263
+    # source://json_schemer//lib/json_schemer.rb#269
     def meta_schema(schema, options); end
 
-    # source://json_schemer//lib/json_schemer.rb#244
+    # source://json_schemer//lib/json_schemer.rb#250
     def resolve(schema, options); end
   end
 end
@@ -946,191 +946,198 @@ JSONSchemer::Draft202012::Vocab::VALIDATION = T.let(T.unsafe(nil), Hash)
 # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#5
 module JSONSchemer::Draft202012::Vocab::Validation; end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#71
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#75
 class JSONSchemer::Draft202012::Vocab::Validation::Const < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#72
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#76
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#80
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#264
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#268
 class JSONSchemer::Draft202012::Vocab::Validation::DependentRequired < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#265
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#269
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#273
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#61
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#65
 class JSONSchemer::Draft202012::Vocab::Validation::Enum < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#62
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#66
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#70
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#101
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#105
 class JSONSchemer::Draft202012::Vocab::Validation::ExclusiveMaximum < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#102
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#106
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#110
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#121
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#125
 class JSONSchemer::Draft202012::Vocab::Validation::ExclusiveMinimum < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#122
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#126
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#130
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#195
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#199
 class JSONSchemer::Draft202012::Vocab::Validation::MaxContains < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#196
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#200
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#204
   def validate(instance, instance_location, keyword_location, context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#165
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#169
 class JSONSchemer::Draft202012::Vocab::Validation::MaxItems < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#166
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#170
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#174
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#131
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#135
 class JSONSchemer::Draft202012::Vocab::Validation::MaxLength < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#132
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#136
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#140
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#219
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#223
 class JSONSchemer::Draft202012::Vocab::Validation::MaxProperties < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#220
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#224
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#228
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#91
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#95
 class JSONSchemer::Draft202012::Vocab::Validation::Maximum < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#92
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#96
   def error(formatted_instance_location:, **_arg1); end
 
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#96
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#100
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#207
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#211
 class JSONSchemer::Draft202012::Vocab::Validation::MinContains < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#208
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#212
   def error(formatted_instance_location:, **_arg1); end
 
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#212
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#216
   def validate(instance, instance_location, keyword_location, context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#175
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#179
 class JSONSchemer::Draft202012::Vocab::Validation::MinItems < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#176
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#180
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#184
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#141
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#145
 class JSONSchemer::Draft202012::Vocab::Validation::MinLength < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#142
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#146
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#150
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#229
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#233
 class JSONSchemer::Draft202012::Vocab::Validation::MinProperties < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#230
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#234
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#238
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#111
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#115
 class JSONSchemer::Draft202012::Vocab::Validation::Minimum < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#112
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#116
+  def error(formatted_instance_location:, **_arg1); end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#120
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#81
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#85
 class JSONSchemer::Draft202012::Vocab::Validation::MultipleOf < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#82
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#86
   def error(formatted_instance_location:, **_arg1); end
 
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#86
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#90
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#151
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#155
 class JSONSchemer::Draft202012::Vocab::Validation::Pattern < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#152
-  def error(formatted_instance_location:, **_arg1); end
-
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#156
-  def parse; end
+  def error(formatted_instance_location:, **_arg1); end
 
   # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#160
+  def parse; end
+
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#164
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#239
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#243
 class JSONSchemer::Draft202012::Vocab::Validation::Required < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#240
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#244
   def error(formatted_instance_location:, details:, **_arg2); end
 
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#244
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#248
   def validate(instance, instance_location, keyword_location, context); end
 end
 
 # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#6
 class JSONSchemer::Draft202012::Vocab::Validation::Type < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#7
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#11
   def error(formatted_instance_location:, **_arg1); end
 
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#28
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#32
   def validate(instance, instance_location, keyword_location, _context); end
 
   private
 
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#39
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#43
   def valid_type(type, instance); end
+
+  class << self
+    # @return [Boolean]
+    #
+    # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#7
+    def valid_integer?(instance); end
+  end
 end
 
-# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#185
+# source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#189
 class JSONSchemer::Draft202012::Vocab::Validation::UniqueItems < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#186
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#190
   def error(formatted_instance_location:, **_arg1); end
 
-  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#190
+  # source://json_schemer//lib/json_schemer/draft202012/vocab/validation.rb#194
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
@@ -1161,30 +1168,32 @@ JSONSchemer::Draft4::Vocab::ALL = T.let(T.unsafe(nil), Hash)
 # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#5
 module JSONSchemer::Draft4::Vocab::Validation; end
 
-# source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#13
+# source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#12
 class JSONSchemer::Draft4::Vocab::Validation::ExclusiveMaximum < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#14
+  # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#13
   def error(formatted_instance_location:, **_arg1); end
 
-  # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#18
+  # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#17
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
-# source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#25
+# source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#24
 class JSONSchemer::Draft4::Vocab::Validation::ExclusiveMinimum < ::JSONSchemer::Keyword
-  # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#26
+  # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#25
   def error(formatted_instance_location:, **_arg1); end
 
-  # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#30
+  # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#29
   def validate(instance, instance_location, keyword_location, _context); end
 end
 
 # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#6
 class JSONSchemer::Draft4::Vocab::Validation::Type < ::JSONSchemer::Draft202012::Vocab::Validation::Type
-  private
-
-  # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#8
-  def valid_type(type, instance); end
+  class << self
+    # @return [Boolean]
+    #
+    # source://json_schemer//lib/json_schemer/draft4/vocab/validation.rb#7
+    def valid_integer?(instance); end
+  end
 end
 
 # source://json_schemer//lib/json_schemer/draft6/meta.rb#3
@@ -1306,7 +1315,9 @@ module JSONSchemer::Errors
   end
 end
 
-# source://json_schemer//lib/json_schemer.rb#106
+# :nocov:
+#
+# source://json_schemer//lib/json_schemer.rb#112
 JSONSchemer::FILE_URI_REF_RESOLVER = T.let(T.unsafe(nil), Proc)
 
 # source://json_schemer//lib/json_schemer/format/duration.rb#3
@@ -1821,19 +1832,19 @@ JSONSchemer::I18N_SCOPE = T.let(T.unsafe(nil), String)
 # source://json_schemer//lib/json_schemer/result.rb#4
 JSONSchemer::I18N_SEPARATOR = T.let(T.unsafe(nil), String)
 
-# source://json_schemer//lib/json_schemer.rb#76
+# source://json_schemer//lib/json_schemer.rb#78
 class JSONSchemer::InvalidEcmaRegexp < ::StandardError; end
 
-# source://json_schemer//lib/json_schemer.rb#75
+# source://json_schemer//lib/json_schemer.rb#77
 class JSONSchemer::InvalidFileURI < ::StandardError; end
 
-# source://json_schemer//lib/json_schemer.rb#73
+# source://json_schemer//lib/json_schemer.rb#75
 class JSONSchemer::InvalidRefPointer < ::StandardError; end
 
-# source://json_schemer//lib/json_schemer.rb#72
+# source://json_schemer//lib/json_schemer.rb#74
 class JSONSchemer::InvalidRefResolution < ::StandardError; end
 
-# source://json_schemer//lib/json_schemer.rb#74
+# source://json_schemer//lib/json_schemer.rb#76
 class JSONSchemer::InvalidRegexpResolution < ::StandardError; end
 
 # source://json_schemer//lib/json_schemer/keyword.rb#3
@@ -1915,10 +1926,10 @@ JSONSchemer::Location::JSON_POINTER_TOKEN_ESCAPE_CHARS = T.let(T.unsafe(nil), Ha
 # source://json_schemer//lib/json_schemer/location.rb#5
 JSONSchemer::Location::JSON_POINTER_TOKEN_ESCAPE_REGEX = T.let(T.unsafe(nil), Regexp)
 
-# source://json_schemer//lib/json_schemer.rb#285
+# source://json_schemer//lib/json_schemer.rb#291
 JSONSchemer::META_SCHEMAS_BY_BASE_URI_STR = T.let(T.unsafe(nil), Hash)
 
-# source://json_schemer//lib/json_schemer.rb#273
+# source://json_schemer//lib/json_schemer.rb#279
 JSONSchemer::META_SCHEMA_CALLABLES_BY_BASE_URI_STR = T.let(T.unsafe(nil), Hash)
 
 # source://json_schemer//lib/json_schemer/openapi.rb#3
@@ -1963,13 +1974,13 @@ JSONSchemer::OpenAPI30::Document::SCHEMAS = T.let(T.unsafe(nil), Hash)
 # source://json_schemer//lib/json_schemer/openapi30/meta.rb#6
 JSONSchemer::OpenAPI30::FORMATS = T.let(T.unsafe(nil), Hash)
 
-# source://json_schemer//lib/json_schemer/openapi30/meta.rb#25
+# source://json_schemer//lib/json_schemer/openapi30/meta.rb#27
 module JSONSchemer::OpenAPI30::Meta; end
 
-# source://json_schemer//lib/json_schemer/openapi30/meta.rb#26
+# source://json_schemer//lib/json_schemer/openapi30/meta.rb#28
 JSONSchemer::OpenAPI30::Meta::SCHEMAS = T.let(T.unsafe(nil), Hash)
 
-# source://json_schemer//lib/json_schemer/openapi30/meta.rb#11
+# source://json_schemer//lib/json_schemer/openapi30/meta.rb#13
 JSONSchemer::OpenAPI30::SCHEMA = T.let(T.unsafe(nil), Hash)
 
 # source://json_schemer//lib/json_schemer/openapi30/vocab/base.rb#4
@@ -2154,6 +2165,28 @@ end
 # source://json_schemer//lib/json_schemer/output.rb#4
 JSONSchemer::Output::FRAGMENT_ENCODE_REGEX = T.let(T.unsafe(nil), Regexp)
 
+# source://json_schemer//lib/json_schemer/resources.rb#3
+class JSONSchemer::Resources
+  # @return [Resources] a new instance of Resources
+  #
+  # source://json_schemer//lib/json_schemer/resources.rb#4
+  def initialize; end
+
+  # source://json_schemer//lib/json_schemer/resources.rb#8
+  def [](uri); end
+
+  # source://json_schemer//lib/json_schemer/resources.rb#12
+  def []=(uri, resource); end
+
+  # source://json_schemer//lib/json_schemer/resources.rb#16
+  def fetch(uri); end
+
+  # @return [Boolean]
+  #
+  # source://json_schemer//lib/json_schemer/resources.rb#20
+  def key?(uri); end
+end
+
 # source://json_schemer//lib/json_schemer/result.rb#12
 class JSONSchemer::Result < ::Struct
   # Returns the value of attribute annotation
@@ -2332,217 +2365,200 @@ end
 # source://json_schemer//lib/json_schemer/schema.rb#3
 class JSONSchemer::Schema
   include ::JSONSchemer::Output
+  extend ::Forwardable
 
   # @return [Schema] a new instance of Schema
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#49
+  # source://json_schemer//lib/json_schemer/schema.rb#51
   def initialize(value, parent = T.unsafe(nil), root = T.unsafe(nil), keyword = T.unsafe(nil), configuration: T.unsafe(nil), base_uri: T.unsafe(nil), meta_schema: T.unsafe(nil), vocabulary: T.unsafe(nil), format: T.unsafe(nil), formats: T.unsafe(nil), content_encodings: T.unsafe(nil), content_media_types: T.unsafe(nil), keywords: T.unsafe(nil), before_property_validation: T.unsafe(nil), after_property_validation: T.unsafe(nil), insert_property_defaults: T.unsafe(nil), property_default_resolver: T.unsafe(nil), ref_resolver: T.unsafe(nil), regexp_resolver: T.unsafe(nil), output_format: T.unsafe(nil), resolve_enumerators: T.unsafe(nil), access_mode: T.unsafe(nil)); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#267
+  # source://json_schemer//lib/json_schemer/schema.rb#272
   def absolute_keyword_location; end
 
-  # Returns the value of attribute after_property_validation.
-  #
-  # source://json_schemer//lib/json_schemer/schema.rb#47
-  def after_property_validation; end
+  # source://forwardable/1.3.3/forwardable.rb#231
+  def after_property_validation(*args, **_arg1, &block); end
 
   # Returns the value of attribute base_uri.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#45
+  # source://json_schemer//lib/json_schemer/schema.rb#46
   def base_uri; end
 
   # Sets the attribute base_uri
   #
   # @param value the value to set the attribute base_uri to.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#45
+  # source://json_schemer//lib/json_schemer/schema.rb#46
   def base_uri=(_arg0); end
 
-  # Returns the value of attribute before_property_validation.
-  #
-  # source://json_schemer//lib/json_schemer/schema.rb#47
-  def before_property_validation; end
+  # source://forwardable/1.3.3/forwardable.rb#231
+  def before_property_validation(*args, **_arg1, &block); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#218
+  # source://json_schemer//lib/json_schemer/schema.rb#223
   def bundle; end
 
   # Returns the value of attribute configuration.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#46
+  # source://json_schemer//lib/json_schemer/schema.rb#47
   def configuration; end
 
-  # Returns the value of attribute content_encodings.
-  #
-  # source://json_schemer//lib/json_schemer/schema.rb#47
-  def content_encodings; end
+  # source://forwardable/1.3.3/forwardable.rb#231
+  def content_encodings(*args, **_arg1, &block); end
 
-  # Returns the value of attribute content_media_types.
-  #
-  # source://json_schemer//lib/json_schemer/schema.rb#47
-  def content_media_types; end
+  # source://forwardable/1.3.3/forwardable.rb#231
+  def content_media_types(*args, **_arg1, &block); end
 
-  # Returns the value of attribute custom_keywords.
-  #
-  # source://json_schemer//lib/json_schemer/schema.rb#47
-  def custom_keywords; end
+  # source://forwardable/1.3.3/forwardable.rb#231
+  def custom_keywords(*args, **_arg1, &block); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#326
+  # source://json_schemer//lib/json_schemer/schema.rb#331
   def defs_keyword; end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#334
+  # source://json_schemer//lib/json_schemer/schema.rb#339
   def error(formatted_instance_location:, **options); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#290
+  # source://json_schemer//lib/json_schemer/schema.rb#295
   def error_key; end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#294
+  # source://json_schemer//lib/json_schemer/schema.rb#299
   def fetch(key); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#306
+  # source://json_schemer//lib/json_schemer/schema.rb#311
   def fetch_content_encoding(content_encoding, *args, &block); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#314
+  # source://json_schemer//lib/json_schemer/schema.rb#319
   def fetch_content_media_type(content_media_type, *args, &block); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#298
+  # source://json_schemer//lib/json_schemer/schema.rb#303
   def fetch_format(format, *args, &block); end
 
-  # Returns the value of attribute format.
-  #
-  # source://json_schemer//lib/json_schemer/schema.rb#47
-  def format; end
+  # source://forwardable/1.3.3/forwardable.rb#231
+  def format(*args, **_arg1, &block); end
 
-  # Returns the value of attribute formats.
-  #
-  # source://json_schemer//lib/json_schemer/schema.rb#47
-  def formats; end
+  # source://forwardable/1.3.3/forwardable.rb#231
+  def formats(*args, **_arg1, &block); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#322
+  # source://json_schemer//lib/json_schemer/schema.rb#327
   def id_keyword; end
 
-  # Returns the value of attribute insert_property_defaults.
-  #
-  # source://json_schemer//lib/json_schemer/schema.rb#47
-  def insert_property_defaults; end
+  # source://forwardable/1.3.3/forwardable.rb#231
+  def insert_property_defaults(*args, **_arg1, &block); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#357
+  # source://json_schemer//lib/json_schemer/schema.rb#362
   def inspect; end
 
   # Returns the value of attribute keyword_order.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#45
+  # source://json_schemer//lib/json_schemer/schema.rb#46
   def keyword_order; end
 
   # Sets the attribute keyword_order
   #
   # @param value the value to set the attribute keyword_order to.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#45
+  # source://json_schemer//lib/json_schemer/schema.rb#46
   def keyword_order=(_arg0); end
 
   # Returns the value of attribute keywords.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#45
+  # source://json_schemer//lib/json_schemer/schema.rb#46
   def keywords; end
 
   # Sets the attribute keywords
   #
   # @param value the value to set the attribute keywords to.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#45
+  # source://json_schemer//lib/json_schemer/schema.rb#46
   def keywords=(_arg0); end
 
   # Returns the value of attribute meta_schema.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#45
+  # source://json_schemer//lib/json_schemer/schema.rb#46
   def meta_schema; end
 
   # Sets the attribute meta_schema
   #
   # @param value the value to set the attribute meta_schema to.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#45
+  # source://json_schemer//lib/json_schemer/schema.rb#46
   def meta_schema=(_arg0); end
 
   # Returns the value of attribute parent.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#46
+  # source://json_schemer//lib/json_schemer/schema.rb#47
   def parent; end
 
   # Returns the value of attribute parsed.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#46
+  # source://json_schemer//lib/json_schemer/schema.rb#47
   def parsed; end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#123
+  # source://json_schemer//lib/json_schemer/schema.rb#128
   def ref(value); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#342
+  # source://json_schemer//lib/json_schemer/schema.rb#347
   def ref_resolver; end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#346
+  # source://json_schemer//lib/json_schemer/schema.rb#351
   def regexp_resolver; end
 
   # @raise [InvalidRefPointer]
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#170
+  # source://json_schemer//lib/json_schemer/schema.rb#175
   def resolve_ref(uri); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#214
+  # source://json_schemer//lib/json_schemer/schema.rb#219
   def resolve_regexp(pattern); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#330
+  # source://json_schemer//lib/json_schemer/schema.rb#335
   def resources; end
 
   # Returns the value of attribute root.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#46
+  # source://json_schemer//lib/json_schemer/schema.rb#47
   def root; end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#280
+  # source://json_schemer//lib/json_schemer/schema.rb#285
   def schema_pointer; end
 
   # @return [Boolean]
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#99
+  # source://json_schemer//lib/json_schemer/schema.rb#104
   def valid?(instance, **options); end
 
   # @return [Boolean]
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#115
+  # source://json_schemer//lib/json_schemer/schema.rb#120
   def valid_schema?(**options); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#103
+  # source://json_schemer//lib/json_schemer/schema.rb#108
   def validate(instance, output_format: T.unsafe(nil), resolve_enumerators: T.unsafe(nil), access_mode: T.unsafe(nil)); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#127
+  # source://json_schemer//lib/json_schemer/schema.rb#132
   def validate_instance(instance, instance_location, keyword_location, context); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#119
+  # source://json_schemer//lib/json_schemer/schema.rb#124
   def validate_schema(**options); end
 
   # Returns the value of attribute value.
   #
-  # source://json_schemer//lib/json_schemer/schema.rb#46
+  # source://json_schemer//lib/json_schemer/schema.rb#47
   def value; end
 
-  # Returns the value of attribute vocabulary.
-  #
-  # source://json_schemer//lib/json_schemer/schema.rb#47
-  def vocabulary; end
+  # source://forwardable/1.3.3/forwardable.rb#231
+  def vocabulary(*args, **_arg1, &block); end
 
   private
 
-  # source://json_schemer//lib/json_schemer/schema.rb#363
+  # source://json_schemer//lib/json_schemer/schema.rb#368
   def parse; end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#409
+  # source://json_schemer//lib/json_schemer/schema.rb#414
   def property_default_resolver; end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#413
+  # source://json_schemer//lib/json_schemer/schema.rb#422
   def resolve_enumerators!(output); end
 
-  # source://json_schemer//lib/json_schemer/schema.rb#405
+  # source://json_schemer//lib/json_schemer/schema.rb#410
   def root_keyword_location; end
 end
 
@@ -2615,70 +2631,75 @@ class JSONSchemer::Schema::Context < ::Struct
   end
 end
 
-# source://json_schemer//lib/json_schemer/schema.rb#31
+# source://json_schemer//lib/json_schemer/schema.rb#32
 JSONSchemer::Schema::DEFAULT_PROPERTY_DEFAULT_RESOLVER = T.let(T.unsafe(nil), Proc)
 
-# source://json_schemer//lib/json_schemer/schema.rb#29
+# source://json_schemer//lib/json_schemer/schema.rb#30
 JSONSchemer::Schema::ECMA_REGEXP_RESOLVER = T.let(T.unsafe(nil), Proc)
 
-# source://json_schemer//lib/json_schemer/schema.rb#22
+# source://json_schemer//lib/json_schemer/schema.rb#23
 JSONSchemer::Schema::ID_KEYWORD_CLASS = JSONSchemer::Draft202012::Vocab::Core::Id
 
-# source://json_schemer//lib/json_schemer/schema.rb#27
+# source://json_schemer//lib/json_schemer/schema.rb#28
 JSONSchemer::Schema::NET_HTTP_REF_RESOLVER = T.let(T.unsafe(nil), Proc)
 
-# source://json_schemer//lib/json_schemer/schema.rb#24
+# source://json_schemer//lib/json_schemer/schema.rb#25
 JSONSchemer::Schema::NOT_KEYWORD_CLASS = JSONSchemer::Draft202012::Vocab::Applicator::Not
 
-# source://json_schemer//lib/json_schemer/schema.rb#25
+# source://json_schemer//lib/json_schemer/schema.rb#26
 JSONSchemer::Schema::PROPERTIES_KEYWORD_CLASS = JSONSchemer::Draft202012::Vocab::Applicator::Properties
 
-# source://json_schemer//lib/json_schemer/schema.rb#28
+# source://json_schemer//lib/json_schemer/schema.rb#29
 JSONSchemer::Schema::RUBY_REGEXP_RESOLVER = T.let(T.unsafe(nil), Proc)
 
-# source://json_schemer//lib/json_schemer/schema.rb#20
+# source://json_schemer//lib/json_schemer/schema.rb#21
 JSONSchemer::Schema::SCHEMA_KEYWORD_CLASS = JSONSchemer::Draft202012::Vocab::Core::Schema
 
-# source://json_schemer//lib/json_schemer/schema.rb#41
+# source://json_schemer//lib/json_schemer/schema.rb#42
 JSONSchemer::Schema::SYMBOL_PROPERTY_DEFAULT_RESOLVER = T.let(T.unsafe(nil), Proc)
 
-# source://json_schemer//lib/json_schemer/schema.rb#23
+# source://json_schemer//lib/json_schemer/schema.rb#24
 JSONSchemer::Schema::UNKNOWN_KEYWORD_CLASS = JSONSchemer::Draft202012::Vocab::Core::UnknownKeyword
 
-# source://json_schemer//lib/json_schemer/schema.rb#21
+# source://json_schemer//lib/json_schemer/schema.rb#22
 JSONSchemer::Schema::VOCABULARY_KEYWORD_CLASS = JSONSchemer::Draft202012::Vocab::Core::Vocabulary
 
-# source://json_schemer//lib/json_schemer.rb#69
-class JSONSchemer::UnknownContentEncoding < ::StandardError; end
-
-# source://json_schemer//lib/json_schemer.rb#70
-class JSONSchemer::UnknownContentMediaType < ::StandardError; end
-
-# source://json_schemer//lib/json_schemer.rb#67
-class JSONSchemer::UnknownFormat < ::StandardError; end
+# :nocov:
+#
+# source://json_schemer//lib/json_schemer.rb#109
+JSONSchemer::URI_PARSER = T.let(T.unsafe(nil), URI::RFC2396_Parser)
 
 # source://json_schemer//lib/json_schemer.rb#71
+class JSONSchemer::UnknownContentEncoding < ::StandardError; end
+
+# source://json_schemer//lib/json_schemer.rb#72
+class JSONSchemer::UnknownContentMediaType < ::StandardError; end
+
+# source://json_schemer//lib/json_schemer.rb#69
+class JSONSchemer::UnknownFormat < ::StandardError; end
+
+# source://json_schemer//lib/json_schemer.rb#73
 class JSONSchemer::UnknownOutputFormat < ::StandardError; end
 
-# source://json_schemer//lib/json_schemer.rb#66
+# source://json_schemer//lib/json_schemer.rb#68
 class JSONSchemer::UnknownRef < ::StandardError; end
 
-# source://json_schemer//lib/json_schemer.rb#68
+# source://json_schemer//lib/json_schemer.rb#70
 class JSONSchemer::UnknownVocabulary < ::StandardError; end
 
-# source://json_schemer//lib/json_schemer.rb#65
+# source://json_schemer//lib/json_schemer.rb#67
 class JSONSchemer::UnsupportedOpenAPIVersion < ::StandardError; end
 
 # source://json_schemer//lib/json_schemer/version.rb#3
 JSONSchemer::VERSION = T.let(T.unsafe(nil), String)
 
-# source://json_schemer//lib/json_schemer.rb#78
+# source://json_schemer//lib/json_schemer.rb#80
 JSONSchemer::VOCABULARIES = T.let(T.unsafe(nil), Hash)
 
-# source://json_schemer//lib/json_schemer.rb#102
+# source://json_schemer//lib/json_schemer.rb#104
 JSONSchemer::VOCABULARY_ORDER = T.let(T.unsafe(nil), Hash)
 
-# source://json_schemer//lib/json_schemer.rb#104
+# source://json_schemer//lib/json_schemer.rb#106
 JSONSchemer::WINDOWS_URI_PATH_REGEX = T.let(T.unsafe(nil), Regexp)
 
 # source://json_schemer//lib/json_schemer/result.rb#7
