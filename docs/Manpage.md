@@ -1656,7 +1656,7 @@ checks. Will exit with a non-zero status if any errors are found.
 
 `--[no-]signing`
 
-: Audit for app signing, which is required by macOS on ARM.
+: Audit for app signatures, which are required by macOS on ARM.
 
 `--token-conflicts`
 
