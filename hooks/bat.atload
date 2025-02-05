@@ -3,15 +3,6 @@
 export BAT_THEME=OneHalfDark
 export BAT_STYLE=header,numbers,grid
 
-# Check if 'delta' command exists
-if command -v delta > /dev/null 2>&1; then
-    export BAT_PAGER="delta"
-    export MANPAGER="delta"
-else
-    export BAT_PAGER="less -R -F -+X --mouse"
-    export MANPAGER="sh -c 'col -bx | bat --color=always --style=plain --language=man'"
-fi
-
 
 alias cat='bat --paging=never --color=auto --style=numbers,changes'
 alias cats='bat --paging=always --color=always --style=numbers,changes'
@@ -20,5 +11,3 @@ alias catcat='\cat --paging=never --color=auto --style=plain'
 # colored help 
 alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
-
-# man 2 select

@@ -1,19 +1,20 @@
---max-columns=150                 # Limit the width of the output
---max-columns-preview             # Show a preview of the file
---type-add="web:*.{html,css,js}*" # Add my 'web' type.
---glob="!.git/*"                  # Ignore git files
---glob="!**/*.js.map"             # Ignore js.map files
---glob="!**/__snapshots__/*"      # Ignore __snapshots__ folders
---glob="!.DS_Store"               # Ignore .DS_Store files
---smart-case                      # Case-insensitive search
---pretty                          # Pretty output
---colors="path:fg:173,129,168"    # Catpuccin Mauve
---colors="path:bg:45,45,45"       # Dark background
---colors="path:style:bold"        # Bold path
---colors="line:fg:129,161,193"    # Catpuccin Blue
---colors="line:bg:45,45,45"       # Uniform background with path
---colors="line:style:normal"      # Normal line style
---colors="match:fg:255,184,108"   # Catpuccin Peach
---colors="match:bg:65,65,65"      # Slightly lighter background for matches
---colors="match:style:bold"       # Bold matches
---colors="match:style:underline"  # Underline matches for emphasis
+# Ripgrep config
+# See https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
+
+# Don't let ripgrep vomit really long lines
+--max-columns=150
+
+# Search files that begin with a .
+--hidden
+
+# ...but not inside .git directories or mac clutter
+--glob=!.git/*
+--glob="!.DS_Store"
+
+# pretty
+# --pretty
+--heading
+--color=always
+--line-number
+--trim
+--smart-case
