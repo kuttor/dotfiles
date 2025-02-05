@@ -31,7 +31,7 @@ RSpec.describe Homebrew::Cmd::Desc do
       .and not_to_output.to_stderr
   end
 
-  it "successfully searches without --eval-all, with API", :integration_test do
+  it "successfully searches without --eval-all, with API", :integration_test, :needs_network do
     setup_test_formula "testball"
 
     expect { brew "desc", "--search", "testball", "HOMEBREW_NO_INSTALL_FROM_API" => nil }
