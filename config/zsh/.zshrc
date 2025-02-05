@@ -6,7 +6,7 @@ clone-if-missing zdharma-continuum/zinit.git $ZINIT[HOME_DIR]
 source-and-autoload $ZINIT[HOME_DIR]/zinit.git/zinit.zsh _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-#install_homebrew 
+#install_homebrew
 
 # ~~ plugins -----------------------------------------------------------------------------------------------------------
 # -- annexes --
@@ -67,19 +67,13 @@ zi id-as wait'1' lman lucid light-mode for                                      
                                                                                   @lincheney/fzf-tab-completion        \
                                                                                   @chitoku-k/fzf-zsh-completions       \
    atload'use --atload zsh-fancy-completions'                                     @z-shell/zsh-fancy-completions       \
-   atload='use --atload bash-completions-fallback' nocd depth'1'                  @3v1n0/zsh-bash-completions-fallback 
-   
+   atload'use --atload bash-completions-fallback' nocd depth'1'                   @3v1n0/zsh-bash-completions-fallback
+
 # ~~ core --------------------------------------------------------------------------------------------------------------
 zi wait id-as lman lucid light-mode for                                                                                \
-   atinit'use --atinit fast-syntax-highlighting'                                                                       \
-     @zdharma-continuum/fast-syntax-highlighting                                                                       \
-   blockf                                                                                                              \
-   atload'use --atload zsh-completions'                                                                                \
-   atpull'use --atpull zsh-completions'                                                                                \
-     @zsh-users/zsh-completions                                                                                        \
-   atinit'use --atinit zsh-autosuggestions'                                                                            \
-   atload'use --atload zsh-autosuggestions'                                                                            \
-     @zsh-users/zsh-autosuggestions
+   atinit'use --atinit fast-syntax-highlighting'                           @zdharma-continuum/fast-syntax-highlighting \
+   atload'use --atload zsh-completions' atpull'use --atpull zsh-completions' blockf     @zsh-users/zsh-completions     \
+   atinit'use --atinit zsh-autosuggestions' atload'use --atload zsh-autosuggestions'    @zsh-users/zsh-autosuggestions
 
 # source if files exist
 [[ ! -f "$DOT_CONFIG_HOME/iterm2_shell_integration.zsh" ]] || source "$DOT_CONFIG_HOME/iterm2_shell_integration.zsh"
