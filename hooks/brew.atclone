@@ -31,3 +31,9 @@ wget                                                                            
 curl
 
 brew cleanup && brew doctor
+
+export MANPATH="$HOMEBREW_PREFIX/share/man:$MANPATH"
+export MANPATH="$HOMEBREW_PREFIX/manpages:$MANPATH"
+export PATH="$HOMEBREW_PREFIX/bin:$PATH"
+
+brew generate-man-completions
