@@ -34,11 +34,11 @@ module Homebrew
         switch "--cask", "--casks",
                description: "Treat all named arguments as cask tokens."
         switch "--skip-install",
-               description: "Skip installing casks"
+               description: "Skip installing casks."
         switch "--new",
-               description: "Run new cask checks"
+               description: "Run new cask checks."
         switch "--syntax-only",
-               description: "Only run syntax checks"
+               description: "Only run syntax checks."
 
         conflicts "--url", "--cask"
         conflicts "--syntax-only", "--skip-install"

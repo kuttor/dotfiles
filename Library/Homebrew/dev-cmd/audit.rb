@@ -24,9 +24,9 @@ module Homebrew
     class Audit < AbstractCommand
       cmd_args do
         description <<~EOS
-          Check <formula> for Homebrew coding style violations. This should be run before
-          submitting a new formula or cask. If no <formula>|<cask> are provided, check all
-          locally available formulae and casks and skip style checks. Will exit with a
+          Check <formula> or <cask> for Homebrew coding style violations. This should be run
+          before submitting a new formula or cask. If no <formula> or <cask> are provided, check
+          all locally available formulae and casks and skip style checks. Will exit with a
           non-zero status if any errors are found.
         EOS
         flag   "--os=",
@@ -57,11 +57,11 @@ module Homebrew
                disable:     true,
                hidden:      true
         switch "--[no-]signing",
-               description: "Audit for signed apps, which are required on ARM"
+               description: "Audit for app signatures, which are required by macOS on ARM."
         switch "--token-conflicts",
                description: "Audit for token conflicts."
         flag   "--tap=",
-               description: "Check the formulae within the given tap, specified as <user>`/`<repo>."
+               description: "Check formulae and casks within the given tap, specified as <user>`/`<repo>."
         switch "--fix",
                description: "Fix style violations automatically using RuboCop's auto-correct feature."
         switch "--display-cop-names",

@@ -221,7 +221,7 @@ if the installed versions are outdated.
 
 `--include-implicit`
 
-: Include implicit dependencies used to download and unpack source files
+: Include implicit dependencies used to download and unpack source files.
 
 `--include-build`
 
@@ -1479,8 +1479,8 @@ dependency for their stable builds.
 
 `--include-implicit`
 
-: Include formulae that have *`formula`* as an implicit dependency to download
-  and unpack source files
+: Include formulae that have *`formula`* as an implicit dependency for
+  downloading and unpacking source files.
 
 `--include-build`
 
@@ -1614,10 +1614,10 @@ Homebrew/homebrew-cask (if tapped) to standard output.
 
 ### `audit` \[*`options`*\] \[*`formula`*\|*`cask`* ...\]
 
-Check *`formula`* for Homebrew coding style violations. This should be run
-before submitting a new formula or cask. If no *`formula`*\|*`cask`* are
-provided, check all locally available formulae and casks and skip style checks.
-Will exit with a non-zero status if any errors are found.
+Check *`formula`* or *`cask`* for Homebrew coding style violations. This should
+be run before submitting a new formula or cask. If no *`formula`* or *`cask`*
+are provided, check all locally available formulae and casks and skip style
+checks. Will exit with a non-zero status if any errors are found.
 
 `--os`
 
@@ -1656,7 +1656,7 @@ Will exit with a non-zero status if any errors are found.
 
 `--[no-]signing`
 
-: Audit for signed apps, which are required on ARM
+: Audit for app signatures, which are required by macOS on ARM.
 
 `--token-conflicts`
 
@@ -1664,7 +1664,8 @@ Will exit with a non-zero status if any errors are found.
 
 `--tap`
 
-: Check the formulae within the given tap, specified as *`user`*`/`*`repo`*.
+: Check formulae and casks within the given tap, specified as
+  *`user`*`/`*`repo`*.
 
 `--fix`
 
@@ -3670,9 +3671,9 @@ command execution e.g. `$(cat file)`.
 
 `HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK`
 
-: If `$HOMEBREW_ARTIFACT_DOMAIN` and `$HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK` are
-  both set, if the request to `$HOMEBREW_ARTIFACT_DOMAIN` fails then it Homebrew
-  will error rather than trying any other/default URLs.
+: When `$HOMEBREW_ARTIFACT_DOMAIN` and `$HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK`
+  are both set, if the request to `$HOMEBREW_ARTIFACT_DOMAIN` fails then
+  Homebrew will error rather than trying any other/default URLs.
 
 `HOMEBREW_AUTO_UPDATE_SECS`
 
@@ -4124,8 +4125,8 @@ command execution e.g. `$(cat file)`.
 
 `HOMEBREW_NO_VERIFY_ATTESTATIONS`
 
-: If set, Homebrew not verify cryptographic attestations of build provenance for
-  bottles from homebrew-core.
+: If set, Homebrew will not verify cryptographic attestations of build
+  provenance for bottles from homebrew-core.
 
 `HOMEBREW_PIP_INDEX_URL`
 
