@@ -6,6 +6,8 @@ clone-if-missing zdharma-continuum/zinit.git $ZINIT[HOME_DIR]
 source-and-autoload $ZINIT[HOME_DIR]/zinit.git/zinit.zsh _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
+#install_homebrew 
+
 # ~~ plugins -----------------------------------------------------------------------------------------------------------
 # -- annexes --
 zi id-as lucid light-mode for @zdharma-continuum/zinit-annex-{bin-gem-node,binary-symlink,patch-dl,link-man,linkman}
@@ -32,18 +34,17 @@ zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid
                                                              lbin                         @ClementTsang/bottom         \
                                                              lbin'bin/*'                  @eth-p/bat-extras            \
    atclone'use --atclone rg'     atload'use --atload rg'     lbin'ripgrep-*/rg'           @BurntSushi/ripgrep          \
-   atclone'use --atclone delta'  atload'use --atload delta'  lbin'*/delta'                @dandavison/delta            \
                                                              lbin'rush/rush'              @shenwei356/rush             \
    atclone'use --atclone glow'                                                            @charmbracelet/glow          \
    atclone'use --atclone moar'                               lbin'moar-*->moar'           @walles/moar                 \
    atclone'use --atclone sd'                                                              @chmln/sd                    \
    atclone'use --atclone zeno'                                                            @orf/gping                   \
-   atclone'use --atclone mc'                                 lbin'mc-*->mc'               @thewh1teagle/mc
+   atclone'use --atclone mc'                                 lbin'mc-*->mc'               @thewh1teagle/mci            \
+   atclone'use --atclone ov'     atload'use --atload ov'     lbin'ov-*->ov'               @noborus/ov
 
 # -- non-github-releases --
 zi id-as wait binary light-mode lbin lman lucid for                                                                    \
    atload'use --atload tre'                                                              @dduan/tre                    \
-   atload'use --atload brew' atclone'use --atclone brew' depth'3' nocompile sbin'*/brew' @homebrew/brew                \
    atload'use --atload fzf-tab'                                                          @Aloxaf/fzf-tab               \
    atload'use --atload fzf-tab-completion'                                               @lincheney/fzf-tab-completion \
    atload'use --atload git-ignore' pick'init.zsh' lbin'bin/git-ignore'                   @laggardkernel/git-ignore     \
@@ -66,8 +67,7 @@ zi id-as wait'1' lman lucid light-mode for                                      
                                                                                   @lincheney/fzf-tab-completion        \
                                                                                   @chitoku-k/fzf-zsh-completions       \
    atload'use --atload zsh-fancy-completions'                                     @z-shell/zsh-fancy-completions       \
-   atload='use --atload bash-completions-fallback' nocd depth'1'                  @3v1n0/zsh-bash-completions-fallback \
-   id-as'sainhe' atload'use --atload sainhe' atpull'use --atpull sainhe' depth'1' @sainnhe/zsh-completions
+   atload='use --atload bash-completions-fallback' nocd depth'1'                  @3v1n0/zsh-bash-completions-fallback 
    
 # ~~ core --------------------------------------------------------------------------------------------------------------
 zi wait id-as lman lucid light-mode for                                                                                \

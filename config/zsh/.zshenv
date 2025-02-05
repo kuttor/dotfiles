@@ -48,24 +48,24 @@ fpath=("$DOT_FUNCTIONS_HOME" "${fpath}")
 autoload -Uz $DOT_FUNCTIONS_HOME/*(.:t)
 
 # -- XDG based variables --------------------------------------------------------------------------
-set_xdg "config" "NPM_CONFIG_USERCONFIG"                  "npm/npmrc"
-set_xdg "config" "PIP_CONFIG_FILE"                        "pip/pip.conf"
-set_xdg "config" "BAT_CONFIG_PATH"                        "bat/bat.conf"
-set_xdg "config" "FZF_CONFIG_PATH"                        "fzf/fzf.conf"
-set_xdg "config" "EDITORCONFIG_RC"                        "editorconfig/editorconfigrc"
-set_xdg "config" "SHELLSCRIPT_RC"                         "shellscript/shellscriptrc"
-set_xdg "config" "ZSH_TMUX_CONFIG"                        "tmux/tmux.conf"
-set_xdg "config" "DOCKER_CONFIG"                          "docker/docker.conf"
-set_xdg "config" "PYTHONSTARTUP"                          "python/startup.py"
-set_xdg "config" "GIT_CONFIG"                             "git/config"
+set_xdg "config" "NPM_CONFIG_USERCONFIG"    "create path" "npm/npmrc"
+set_xdg "config" "PIP_CONFIG_FILE"          "create path" "pip/pip.conf"
+set_xdg "config" "BAT_CONFIG_PATH"          "create path" "bat/bat.conf"
+set_xdg "config" "FZF_CONFIG_PATH"          "create path" "fzf/fzf.conf"
+set_xdg "config" "EDITORCONFIG_RC"          "create path" "editorconfig/editorconfigrc"
+set_xdg "config" "SHELLSCRIPT_RC"           "create path" "shellscript/shellscriptrc"
+set_xdg "config" "ZSH_TMUX_CONFIG"          "create path" "tmux/tmux.conf"
+set_xdg "config" "DOCKER_CONFIG"            "create path" "docker/docker.conf"
+set_xdg "config" "PYTHONSTARTUP"            "create path" "python/startup.py"
+set_xdg "config" "GIT_CONFIG"               "create path" "git/config"
 set_xdg "config" "RUSTUP_HOME"              "create path" "rust/rustup"
 set_xdg "config" "CARGO_HOME"               "create path" "rust/cargo"
 set_xdg "config" "CURL_HOME"                "create path" "curl/"
 set_xdg "config" "VIMDOTDIR"                "create path" "vim/"
-set_xdg "config" "LESSKEY"                                "less/lesskey"
-set_xdg "config" "MYVIMRC"                                "nvim/nvim.confs"
-set_xdg "config" "INPUTRC"                                "inputrc/inputrc"
-set_xdg "config" "WGETRC"                                 "wget/wgetrc"
+set_xdg "config" "LESSKEY"                  "create path" "less/lesskey"
+set_xdg "config" "MYVIMRC"                  "create path" "nvim/nvim.confs"
+set_xdg "config" "INPUTRC"                  "create path" "inputrc/inputrc"
+set_xdg "config" "WGETRC"                   "create path" "wget/wgetrc"
 set_xdg "config" "RBENV_ROOT"               "create path" "rbenv/"
 set_xdg "data"   "ANTIDOT_DIR"              "create path" "antidot/"
 set_xdg "data"   "NODE_PATH"                "create path" "node/"
@@ -77,6 +77,7 @@ set_xdg "cache"  "NODE_REPL_HISTORY"                      "node_repl_history"
 set_xdg "cache"  "HISTFILE"                               "zsh/history.zsh"
 set_xdg "cache"  "LESSHISTFILE"                           "less/history.less"
 set_xdg "cache"  "ZSH_CACHE_DIR"            "create path" "zsh/"
+
 # histzsh
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
@@ -108,6 +109,7 @@ path=(
   /{sbin,bin}
   /usr/local/bin
   /usr/{sbin,bin}
+  /opt/homebrew/bin
   $CARGO_HOME/bin
   $path
 )
@@ -129,5 +131,5 @@ infopath=(
 
 # Source antidot files
 source_if_exists "$ANTIDOT_DIR/{env,alias}.sh"
-. "/Users/akuttor/.config/rust//env"
+. "/Users/akuttor/.config/rust/env"
 . "/Users/akuttor/.config/rust/cargo/env"

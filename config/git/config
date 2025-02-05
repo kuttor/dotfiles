@@ -22,51 +22,53 @@
   statusHints                  = false
 
 [apply]
-  whitespace                   = "fix"
+  whitespace                   = fix
 
 [branch]
   autosetupmerge               = true
 
 [color]
-  advice                       = "always"
-  branch                       = "always"
-  #pager = "diff-so-fancy | less --tabs=4 -RFX"
-  pager                        = "delta --color-only"
-  editor                       = "nvim"
-  whitespace                   = "trailing-space,space-before-tab"
-  excludesfile                 = "$DOT_CONFIG_HOME/git/gitignore"
-  attributesfile               = "$DOT_CONFIG_HOME/git/gitattributes"
+  advice                       = always
+  branch                       = always
+  editor                       = nvim
+  whitespace                   = trailing-space,space-before-tab
+  excludesfile                 = $GIT_CONFIG_GLOBAL/gitignore
+  attributesfile               = $GIT_CONFIG_GLOBAL/gitattributes
+  pager                        = true
   preloadIndex                 = true
   precomposeunicode            = true
   ignorecase                   = true
-  trustctime                   = false
   untrackedCache               = true
+  trustctime                   = false
+  
 
 [columns]
-  ui                           = "always"
-  status                       = "always"
+  ui                           = always
+  status                       = always
 
 [core]
   fsmonitor                    = true
   untrackedCache               = true
   commitGraph                  = true
-  pager                        = "delta --color-only"
+	symlinks                     = true
+	autocrlf                     = false
+  pager                        = delta --pager='ov -F'
 
 [credential]
-  helper                       = "cache"
+  helper                       = cache
 
 [delta]
   navigate                     = true
   dark                         = true
   hyperlinks                   = true
   line-numbers                 = true
-  features                     = "side-by-side unobtrusive-line-numbers decorations"
-  whitespace-error-style       = "22 reverse"
-  true-color                   = "always"
-  syntax-theme                 = "Dracula"
-  plus-style                   = "syntax '#003800'"
-  minus-style                  = "syntax '#3f0001'"
-
+  features                     = side-by-side unobtrusive-line-numbers decorations
+  whitespace-error-style       = 22 reverse
+  true-color                   = always
+  syntax-theme                 = Dracula
+  plus-style                   = syntax '#003800'
+  minus-style                  = syntax '#3f0001'
+  
 [delta "unobtrusive-line-numbers"]
   line-numbers                 = true
   line-numbers-minus-style     = "#444444"
@@ -78,10 +80,10 @@
   line-numbers-right-style     = "blue"
 
 [delta "decorations"]
-  commit-decoration-style      = "bold yellow box ul"
-  file-style                   = "bold yellow ul"
-  file-decoration-style        = "none"
-  hunk-header-decoration-style = "yellow box"
+  commit-decoration-style      = bold yellow box ul
+  file-style                   = bold yellow ul
+  file-decoration-style        = none
+  hunk-header-decoration-style = yellow box
 
 [delta "line-numbers"]
   line-numbers-left-style      = "cyan"
@@ -89,9 +91,14 @@
   line-numbers-minus-style     = 12
   line-numbers-plus-style      = 28
 
+[delta "ov-diff"]
+    pager                      = ov -F --section-delimiter '^(commit|added:|removed:|renamed:|Δ)' --section-header --pattern '•'
+
+[delta "ov-log"]
+    pager                      = ov -F --section-delimiter '^commit' --section-header-num 3
 [diff]
   tool                         = delta
-  1external                    = "$ZINIT[PLUGINS_DIR]/brew/bin/delta"
+  external                     = $HOMEBREW_PREFIX/bin/delta
   colorMoved                   = true
   renames                      = true
   
@@ -101,11 +108,12 @@
   
 [fetch]
   writeCommitGraph             = true
+
 [format]
   pretty                       = true
 
 [github]
-  user                         = "kuttor"
+  user                         = kuttor
 
 [grep]
   lineNumbers                  = true
@@ -113,49 +121,53 @@
 
 [help]
   autocorrect                  = 1
-                              M                      ,,,,,,,,,,,,,,,,,,,
+
 [interactive]
-  diffFilter                   = "delta --color-only"
+  diffFilter                   = delta --color-only
 
 [include]
-  path                         = "$DOT_CONFIG_HOME/git/themes.gitconfig"
+  path                         = $GIT_CONFIG_GLOBAL/themes.gitconfig
 
 [index]
   skipHaves                    = true
-  version                      = 4
   untrackedCache               = true 
+  version                      = 4
 
 [log]
-  decorate                     = "full"
+  decorate                     = full
   showRoot                     = true
-
   showSignature                = true
 
 [pager]
-  log                          = delta
   show                         = delta
-  diff                         = delta
-
+  diff                         = delta --features ov-diff
+  log                          = delta --features ov-log
 
 [pull]
-	rebase                       = false
-	ff                           = true
+  rebase   	                   = false
+  ff 	                         = true
 
 [push]
-  followTags                   = true
-  default                      = "upstream"
   autoSetupRemote              = true
+  followTags                   = true
+  default                      = upstream
 
 [rerere]
   enabled                      = true
   eautoupdate                  = 1
 
 [user]
-	name                         = "Andrew Kuttor"
-	email                        = "andrew.kuttor@gmail.com"
+  name                         = Andrew Kuttor
+  email                        = andrew.kuttor@gmail.com
 
 [web]
-  browser                      = "safari"
+  browser                      = safari
+
+
+
+
+
+
 
 
 

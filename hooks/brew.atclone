@@ -1,4 +1,4 @@
-#! /usr/bin/env zsh
+#! /usr/bin/env sh
 
 link_config homebrew 
 
@@ -11,23 +11,23 @@ $HOMEBREW_PREFIX/bin/brew shellenv >> "$XDG_CONFIG_HOME/homebrew/brew.conf"
 zcompile "$XDG_CONFIG_HOME/homebrew/brew.conf" && source "$XDG_CONFIG_HOME/homebrew/brew.conf"
 
 # install brew maintained packages
-brew install --force-bottle        \
-rbenv                              \
-ruwstu                             \
-tree                               \
-hg                                 \
-go                                 \
-xz                                 \
-tmux                               \
-coreutils                          \
-eza                                \
-gawk                               \
-gnu-sed                            \
-grep                               \
-gsed                               \
-pygments                           \
-chroma                             \
-wget                               \
+brew install --force-bottle                                                                                           \
+rbenv                                                                                                                 \
+rustup                                                                                                                \
+tree                                                                                                                  \
+hg                                                                                                                    \
+go                                                                                                                    \
+xz                                                                                                                    \
+tmux                                                                                                                  \
+coreutils                                                                                                             \
+eza                                                                                                                   \
+gawk                                                                                                                  \
+gnu-sed                                                                                                               \
+grep                                                                                                                  \
+gsed                                                                                                                  \
+pygments                                                                                                              \
+chroma                                                                                                                \
+wget                                                                                                                  \
 curl
 
 brew cleanup && brew doctor

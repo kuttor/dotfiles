@@ -1,19 +1,6 @@
 #! /usr/bin/env zsh
 
-# ==============================================================================
 # -- keybinds ------------------------------------------------------------------
-# ==============================================================================
-
-# to add other keys to this hash, see: man 5 terminfo
-
-#stty intr '^C'        # Ctrl+C cancel
-#stty susp '^Z'        # Ctrl+Z suspend
-#stty stop undef
-
-# Mac keyboard specific keybindings
-
-# The host is using OSX terminal, as set in
-# 89-ssh-enhancements
 if [[ "$LC_TERM_PROGRAM" == "iTerm.app" ]]
 then
   bindkey "\e\e[D" backward-word # alt + <-
@@ -21,7 +8,6 @@ then
   bindkey '^[[H'   beginning-of-line
   bindkey '^[[F' end-of-line
 fi
-
 
 typeset -g -A key
 key[End]="${terminfo[kend]}"
@@ -55,8 +41,6 @@ key[Control-Right]="${terminfo[kRIT5]}"
 [[ -n "${key[PageUp]}"        ]] && bindkey -- "${key[PageUp]}"        beginning-of-buffer-or-history
 
 
-# Finally, make sure the terminal is in application mode, when zle is
-# active. Only then are the values from $terminfo valid.
 if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 	autoload -Uz add-zle-hook-widget
 	function zle_application_mode_start { echoti smkx }
@@ -65,9 +49,7 @@ if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
-# ------------------------------------------------------------------------------
-# ~ Custom Keybindings ~
-# ------------------------------------------------------------------------------
+# -- Custom Keybindings ----------------------------------------------------------------------------
 bindkey " " magic-space
 bindkey "^I" expand-or-complete-with-dots
 bindkey "^N" history-beginning-search-forward-end

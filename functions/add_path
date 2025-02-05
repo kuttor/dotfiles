@@ -1,0 +1,89 @@
+#!/usr/bin/env zsh
+  
+# usage: add_path <path>
+# adds a path to the PATH environment variable
+# options:
+#   -s or --set {fpath,manpath,infopath}: path is default
+#   -p or --prepend {path}: prepend to target path 
+#   -a or --append {path}: append to target path
+#   -r or --remove {number}: prints a numbered list of paths and removes the path at the given number
+#   -d or --delete : delete duplicates from target path
+#   -l or --list: print the target path
+#   -h: print this help message 
+
+add_path() {
+    local path="$1"
+    local target="PATH"
+    shift
+
+    while [[ "$#" -gt 0 ]]; do
+        case "$1" in
+            -s|--set)
+                shift
+                case "$1" in
+                    fpath) target="FPATH";;
+                    manpath) target="MANPATH";;
+                    infopath) target="INFOPATH";;
+                    *) echo "Invalid set option"; return 1;;
+                esac
+                ;;
+            -p|--prepend)
+                export $target="$path:${(P)target}"
+                ;;
+            -a|--append)
+                export $target="${(P)target}:$path"
+                ;;
+            -r|--remove)
+                shift
+                local i="$1"
+                local paths=("${(@s/:/)$(print -P %$target)}")
+                unset paths[$i]
+                export $target="${(paths[*]})"
+                ;;
+            -d|--delete)
+                local paths=("${(@s/:/)$(print -P %$target)}")
+                typeset -U paths
+                export $target="${(paths[*]})"
+                ;;
+            -l|--list)
+                echo "${(P)target}"
+                ;;
+            -h|--help)
+                head -n 10 $0
+                ;;
+            -c|--create-autocompletion)
+                local script_path="${HOME}/.zsh/completion/_add_path"
+                mkdir -p "${HOME}/.zsh/completion"
+                cat > "$script_path" <<'EOF'
+#compdef add_path
+
+_add_path() {
+    local -a commands
+    commands=(
+        '-s:sets the type of path to modify'
+        '-p:prepend path to the target'
+        '-a:append path to the target'
+        '-r:remove a path entry by index'
+        '-d:delete duplicates in the target'
+        '-l:list the current paths in the target'
+        '-h:display help'
+        '-c:create autocompletion script'
+    )
+    _arguments '*: :($commands)'
+}
+
+_add_path
+EOF
+                echo "Autocompletion script created at $script_path"
+                ;;
+            *)
+                echo "Invalid option: $1"
+                return 1
+                ;;
+        esac
+        shift
+    done
+}
+
+
+

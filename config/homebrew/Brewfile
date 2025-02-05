@@ -1,3 +1,5 @@
+#! /usr/bin/env brewfile
+
 brew "brew-cask-completion"
 brew 'coreutils'
 brew 'jq'
@@ -13,7 +15,7 @@ brew 'gsed'
 brew 'wget'
 brew 'curl'
 brew 'tmux'
-
+brew 'delta'
 
 
 

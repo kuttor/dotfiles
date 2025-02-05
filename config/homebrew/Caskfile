@@ -1,5 +1,4 @@
-# vim: syntax=ruby filetype=ruby
-# -*- mode: ruby -*-
+#! /usr/bin/env brewfile
 
 # file: CaskFile
 # info: Automagically and programatically installs Brew hosted packages

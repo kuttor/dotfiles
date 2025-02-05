@@ -3,18 +3,11 @@
 # start the completion system
 initialize_completions
 
-# -- load completions ------------------------------------------------------------------------------------------------
-zinit wait'1' id-as'auto' for                                                                                          \
-atload'use zsh-completions.atload'                                                                                     \
-atpull'use zsh-completions.atpull'                                                                                     \
-@sainnhe/zsh-completions
-
-
 # -- configure completion system ---------------------------------------------------------------------------------------
-zicompdef                                                                                                              \
-  _gnu_generic rg git chmod chwown ssh cut which whence type bandwhich curl direnv docker lighttpd                     \
-  emacs feh ffmpeg ffprobe fsck.ext4 fzf gocryptfs hexyl highlight histdb light zinit tlp brew vue                     \
-  mkdir ssh-keygen zstd lsd sd tre tlrc rip choose mcfly just dog rust cargo go zoxide z zsh nvim 
+#zicompdef                                                                                                              \
+#  _gnu_generic rg git chmod chwown ssh cut which whence type bandwhich curl direnv docker lighttpd                     \
+#  emacs feh ffmpeg ffprobe fsck.ext4 fzf gocryptfs hexyl highlight histdb light zinit tlp brew vue                     \
+#  mkdir ssh-keygen zstd lsd sd tre tlrc rip choose mcfly just dog rust cargo go zoxide z zsh nvim 
 
 # -- completion options --
 setopt ALWAYS_TO_END AUTO_LIST AUTO_MENU AUTO_PARAM_SLASH AUTO_REMOVE_SLASH
