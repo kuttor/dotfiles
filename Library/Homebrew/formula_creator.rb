@@ -97,6 +97,14 @@ module Homebrew
       path
     end
 
+    sig { params(name: String).returns(String) }
+    def latest_versioned_formula(name)
+      name_prefix = "#{name}@"
+      Tap.fetch("homebrew/core").formula_names
+         .select { |f| f.start_with?(name_prefix) }
+         .max_by { |v| Gem::Version.new(v.sub(name_prefix, "")) } || "python"
+    end
+
     sig { returns(String) }
     def template
       # FIXME: https://github.com/errata-ai/vale/issues/818
@@ -138,7 +146,7 @@ module Homebrew
         <% elsif @mode == :perl %>
           uses_from_macos "perl"
         <% elsif @mode == :python %>
-          depends_on "python@x.y"
+          depends_on "#{latest_versioned_formula("python")}"
         <% elsif @mode == :ruby %>
           uses_from_macos "ruby"
         <% elsif @mode == :rust %>
