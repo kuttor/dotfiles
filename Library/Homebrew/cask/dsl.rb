@@ -390,6 +390,13 @@ module Cask
       @depends_on
     end
 
+    # @api private
+    def add_implicit_macos_dependency
+      return if @depends_on.present? && @depends_on.macos.present?
+
+      depends_on macos: ">= :#{MacOSVersion::SYMBOLS.key MacOSVersion::SYMBOLS.values.min}"
+    end
+
     # Declare conflicts that keep a cask from installing or working correctly.
     #
     # @api public
