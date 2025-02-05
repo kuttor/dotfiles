@@ -57,7 +57,7 @@ module Homebrew
                disable:     true,
                hidden:      true
         switch "--[no-]signing",
-               description: "Audit for app signing, which is required by macOS on ARM."
+               description: "Audit for app signatures, which are required by macOS on ARM."
         switch "--token-conflicts",
                description: "Audit for token conflicts."
         flag   "--tap=",
