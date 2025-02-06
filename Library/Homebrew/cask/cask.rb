@@ -400,63 +400,15 @@ module Cask
       }
     end
 
-    def to_internal_api_hash
-      api_hash = {
-        "token"              => token,
-        "name"               => name,
-        "desc"               => desc,
-        "homepage"           => homepage,
-        "url"                => url,
-        "version"            => version,
-        "sha256"             => sha256,
-        "artifacts"          => artifacts_list(compact: true),
-        "ruby_source_path"   => ruby_source_path,
-        "ruby_source_sha256" => ruby_source_checksum.fetch(:sha256),
-      }
-
-      if deprecation_date
-        api_hash["deprecation_date"] = deprecation_date
-        api_hash["deprecation_reason"] = deprecation_reason
-        api_hash["deprecation_replacement"] = deprecation_replacement
-      end
-
-      if disable_date
-        api_hash["disable_date"] = disable_date
-        api_hash["disable_reason"] = disable_reason
-        api_hash["disable_replacement"] = disable_replacement
-      end
-
-      if (url_specs_hash = url_specs).present?
-        api_hash["url_specs"] = url_specs_hash
-      end
-
-      api_hash["caskfile_only"] = true if caskfile_only?
-      api_hash["conflicts_with"] = conflicts_with if conflicts_with.present?
-      api_hash["depends_on"] = depends_on if depends_on.present?
-      api_hash["container"] = container.pairs if container
-      api_hash["caveats"] = caveats if caveats.present?
-      api_hash["auto_updates"] = auto_updates if auto_updates
-      api_hash["languages"] = languages if languages.present?
-
-      api_hash
-    end
-
     HASH_KEYS_TO_SKIP = %w[outdated installed versions].freeze
     private_constant :HASH_KEYS_TO_SKIP
 
-    def to_hash_with_variations(hash_method: :to_h)
-      case hash_method
-      when :to_h
-        if loaded_from_api? && !Homebrew::EnvConfig.no_install_from_api?
-          return api_to_local_hash(Homebrew::API::Cask.all_casks[token].dup)
-        end
-      when :to_internal_api_hash
-        raise ArgumentError, "API Hash must be generated from Ruby source files" if loaded_from_api?
-      else
-        raise ArgumentError, "Unknown hash method #{hash_method.inspect}"
+    def to_hash_with_variations
+      if loaded_from_api? && !Homebrew::EnvConfig.no_install_from_api?
+        return api_to_local_hash(Homebrew::API::Cask.all_casks[token].dup)
       end
 
-      hash = public_send(hash_method)
+      hash = to_h
       variations = {}
 
       if @dsl.on_system_blocks_exist?
@@ -471,7 +423,7 @@ module Cask
             Homebrew::SimulateSystem.with(os:, arch:) do
               refresh
 
-              public_send(hash_method).each do |key, value|
+              to_h.each do |key, value|
                 next if HASH_KEYS_TO_SKIP.include? key
                 next if value.to_s == hash[key].to_s
 
@@ -485,11 +437,11 @@ module Cask
         end
       end
 
-      hash["variations"] = variations if hash_method != :to_internal_api_hash || variations.present?
+      hash["variations"] = variations
       hash
     end
 
-    def artifacts_list(compact: false, uninstall_only: false)
+    def artifacts_list(uninstall_only: false)
       artifacts.filter_map do |artifact|
         case artifact
         when Artifact::AbstractFlightBlock
@@ -498,8 +450,7 @@ module Cask
           next if uninstall_only && !uninstall_flight_block
 
           # Only indicate whether this block is used as we don't load it from the API
-          # We can skip this entirely once we move to internal JSON v3.
-          { artifact.summarize.to_sym => nil } unless compact
+          { artifact.summarize.to_sym => nil }
         else
           zap_artifact = artifact.is_a?(Artifact::Zap)
           uninstall_artifact = artifact.respond_to?(:uninstall_phase) || artifact.respond_to?(:post_uninstall_phase)
