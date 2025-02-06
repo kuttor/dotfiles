@@ -308,13 +308,15 @@ module Homebrew
         # Showing dependencies and required size to install
         if args.ask?
           ohai "Looking for dependencies..."
+          package = []
+          bottle_size = 0
+          installed_size = 0
           installed_formulae.each do |f|
             if (bottle = f.bottle)
               begin
-                package = []
                 bottle.fetch_tab(quiet: !args.debug?)
-                bottle_size = bottle.bottle_size
-                installed_size = bottle.installed_size
+                bottle_size += bottle.bottle_size if bottle.bottle_size
+                installed_size += bottle.installed_size if bottle.installed_size
                 package.push(f, f.recursive_dependencies)
                 unless f.deps.empty?
                   f.recursive_dependencies.each do |dep|
@@ -324,25 +326,24 @@ module Homebrew
                     installed_size += bottle.installed_size if bottle.installed_size
                   end
                 end
-                puts "Packages : #{package.join(", ")}\n\n"
-                puts "Bottle Size: #{disk_usage_readable(bottle_size)}" if bottle_size
-                puts "Installed Size: #{disk_usage_readable(installed_size)}\n\n" if installed_size
-                ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
-                loop do
-                  result = STDIN.gets.chomp.strip.downcase
-
-                  if result == "y" || result == "yes"
-                    puts "Proceeding with installation..."
-                    break
-                  elsif result == "n"
-                    return
-                  else
-                    puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
-                  end
-                end
               rescue RuntimeError => e
                 odebug e
               end
+            end
+          end
+          puts "Packages : #{package.join(", ")}\n\n"
+          puts "Bottle Size: #{disk_usage_readable(bottle_size)}" if bottle_size
+          puts "Installed Size: #{disk_usage_readable(installed_size)}\n\n" if installed_size
+          ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
+          loop do
+            result = STDIN.gets.chomp.strip.downcase
+            if result == "y" || result == "yes"
+              puts "Proceeding with installation..."
+              break
+            elsif result == "n"
+              return
+            else
+              puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
             end
           end
         end
