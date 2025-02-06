@@ -86,7 +86,10 @@ module PyPI
         end
       end
 
-      return if dist.nil?
+      if dist.nil?
+        onoe "#{name} exists on PyPI but lacks a suitable source distribution"
+        return
+      end
 
       @pypi_info = [
         PyPI.normalize_python_package(json["info"]["name"]), dist["url"],
