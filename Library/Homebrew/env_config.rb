@@ -48,6 +48,10 @@ module Homebrew
                      "trying any other/default URLs.",
         boolean:     true,
       },
+      HOMEBREW_ASK:                    {
+        description: "If set, pass `--ask`to all formula install commands.",
+        boolean:     true,
+      },
       HOMEBREW_AUTO_UPDATE_SECS:                 {
         description:  "Run `brew update` once every `$HOMEBREW_AUTO_UPDATE_SECS` seconds before some commands, " \
                       "e.g. `brew install`, `brew upgrade` and `brew tap`. Alternatively, " \
@@ -498,10 +502,6 @@ module Homebrew
       HOMEBREW_VERIFY_ATTESTATIONS:              {
         description: "If set, Homebrew will use the `gh` tool to verify cryptographic attestations " \
                      "of build provenance for bottles from homebrew-core.",
-        boolean:     true,
-      },
-      HOMEBREW_ASK:                    {
-        description: "If set, pass `--ask`to all formula install commands.",
         boolean:     true,
       },
       SUDO_ASKPASS:                              {
