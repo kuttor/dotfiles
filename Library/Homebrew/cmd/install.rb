@@ -120,6 +120,9 @@ module Homebrew
           [:switch, "--overwrite", {
             description: "Delete files that already exist in the prefix while linking.",
           }],
+          [:switch, "--ask", {
+            description: "Ask for confirmation before downloading and installing software. Print bottles and dependencies download size and install size.",
+          }]
         ].each do |args|
           options = args.pop
           send(*args, **options)
@@ -301,6 +304,35 @@ module Homebrew
 
         Install.perform_preinstall_checks_once
         Install.check_cc_argv(args.cc)
+
+        if args.ask?
+          ohai "Looking for dependencies..."
+          installed_formulae.each do |f|
+            if (bottle = f.bottle)
+              begin
+                package = []
+                bottle.fetch_tab(quiet: !args.debug?)
+                bottle_size = bottle.bottle_size
+                installed_size = bottle.installed_size
+                package.push(f, f.recursive_dependencies)
+                unless f.deps.empty?
+                  puts "Packages : #{package.join(", ")}\n\n"
+                  f.recursive_dependencies.each do |dep|
+                    bottle = dep.to_formula.bottle
+                    bottle.fetch_tab(quiet: !args.debug?)
+                    bottle_size += bottle.bottle_size if bottle.bottle_size
+                    installed_size += bottle.installed_size if bottle.installed_size
+                  end
+                  puts "Bottle Size: #{disk_usage_readable(bottle_size)}" if bottle_size
+                  puts "Installed Size: #{disk_usage_readable(installed_size)}" if installed_size
+                  return
+                end
+              rescue RuntimeError => e
+                odebug e
+              end
+            end
+          end
+        end
 
         Install.install_formulae(
           installed_formulae,
