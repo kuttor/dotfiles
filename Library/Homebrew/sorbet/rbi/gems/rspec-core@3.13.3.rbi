@@ -9049,12 +9049,12 @@ end
 #
 # @private
 #
-# source://rspec-core//lib/rspec/core/reporter.rb#259
+# source://rspec-core//lib/rspec/core/reporter.rb#260
 class RSpec::Core::NullReporter
   class << self
     private
 
-    # source://rspec-core//lib/rspec/core/reporter.rb#260
+    # source://rspec-core//lib/rspec/core/reporter.rb#261
     def method_missing(*_arg0); end
   end
 end
@@ -9783,12 +9783,12 @@ class RSpec::Core::Reporter
 
   # @private
   #
-  # source://rspec-core//lib/rspec/core/reporter.rb#214
+  # source://rspec-core//lib/rspec/core/reporter.rb#215
   def abort_with(msg, exit_status); end
 
   # @private
   #
-  # source://rspec-core//lib/rspec/core/reporter.rb#193
+  # source://rspec-core//lib/rspec/core/reporter.rb#194
   def close_after; end
 
   # @private
@@ -9846,7 +9846,7 @@ class RSpec::Core::Reporter
   # @private
   # @return [Boolean]
   #
-  # source://rspec-core//lib/rspec/core/reporter.rb#221
+  # source://rspec-core//lib/rspec/core/reporter.rb#222
   def fail_fast_limit_met?; end
 
   # @private
@@ -9868,7 +9868,7 @@ class RSpec::Core::Reporter
 
   # @private
   #
-  # source://rspec-core//lib/rspec/core/reporter.rb#206
+  # source://rspec-core//lib/rspec/core/reporter.rb#207
   def notify(event, notification); end
 
   # Provides a way to notify of an exception that is not tied to any
@@ -9939,25 +9939,25 @@ class RSpec::Core::Reporter
 
   # @private
   #
-  # source://rspec-core//lib/rspec/core/reporter.rb#200
-  def stop; end
+  # source://rspec-core//lib/rspec/core/reporter.rb#201
+  def stop(notification); end
 
   private
 
-  # source://rspec-core//lib/rspec/core/reporter.rb#242
+  # source://rspec-core//lib/rspec/core/reporter.rb#243
   def close; end
 
-  # source://rspec-core//lib/rspec/core/reporter.rb#233
+  # source://rspec-core//lib/rspec/core/reporter.rb#234
   def ensure_listeners_ready; end
 
   # @return [Boolean]
   #
-  # source://rspec-core//lib/rspec/core/reporter.rb#246
+  # source://rspec-core//lib/rspec/core/reporter.rb#247
   def mute_profile_output?; end
 
   # @return [Boolean]
   #
-  # source://rspec-core//lib/rspec/core/reporter.rb#252
+  # source://rspec-core//lib/rspec/core/reporter.rb#253
   def seed_used?; end
 end
 
