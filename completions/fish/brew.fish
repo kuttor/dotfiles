@@ -1720,6 +1720,7 @@ __fish_brew_complete_arg 'update-python-resources' -l debug -d 'Display any debu
 __fish_brew_complete_arg 'update-python-resources' -l exclude-packages -d 'Exclude these packages when finding resources'
 __fish_brew_complete_arg 'update-python-resources' -l extra-packages -d 'Include these additional packages when finding resources'
 __fish_brew_complete_arg 'update-python-resources' -l help -d 'Show this message'
+__fish_brew_complete_arg 'update-python-resources' -l ignore-errors -d 'Record all discovered resources, even those that can\'t be resolved successfully. This option is ignored for homebrew/core formulae'
 __fish_brew_complete_arg 'update-python-resources' -l ignore-non-pypi-packages -d 'Don\'t fail if formula is not a PyPI package'
 __fish_brew_complete_arg 'update-python-resources' -l install-dependencies -d 'Install missing dependencies required to update resources'
 __fish_brew_complete_arg 'update-python-resources' -l package-name -d 'Use the specified package-name when finding resources for formula. If no package name is specified, it will be inferred from the formula\'s stable URL'

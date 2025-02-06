@@ -2906,6 +2906,11 @@ Update versions for PyPI resource blocks in *`formula`*.
 
 : Suppress any output.
 
+`--ignore-errors`
+
+: Record all discovered resources, even those that can't be resolved
+  successfully. This option is ignored for homebrew/core formulae.
+
 `--ignore-non-pypi-packages`
 
 : Don't fail if *`formula`* is not a PyPI package.
