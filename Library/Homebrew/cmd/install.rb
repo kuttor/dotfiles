@@ -121,8 +121,9 @@ module Homebrew
             description: "Delete files that already exist in the prefix while linking.",
           }],
           [:switch, "--ask", {
-            description: "Ask for confirmation before downloading and installing software. Print bottles and dependencies download size and install size.",
-          }]
+            description: "Ask for confirmation before downloading and installing software. " \
+                         "Print bottles and dependencies download size and install size.",
+          }],
         ].each do |args|
           options = args.pop
           send(*args, **options)
@@ -312,35 +313,37 @@ module Homebrew
           bottle_size = 0
           installed_size = 0
           installed_formulae.each do |f|
-            if (bottle = f.bottle)
-              begin
-                bottle.fetch_tab(quiet: !args.debug?)
-                bottle_size += bottle.bottle_size if bottle.bottle_size
-                installed_size += bottle.installed_size if bottle.installed_size
-                package.push(f, f.recursive_dependencies)
-                unless f.deps.empty?
-                  f.recursive_dependencies.each do |dep|
-                    bottle = dep.to_formula.bottle
-                    bottle.fetch_tab(quiet: !args.debug?)
-                    bottle_size += bottle.bottle_size if bottle.bottle_size
-                    installed_size += bottle.installed_size if bottle.installed_size
-                  end
+            next unless (bottle = f.bottle)
+
+            begin
+              bottle.fetch_tab(quiet: !args.debug?)
+              bottle_size += T.must(bottle.bottle_size) if bottle.bottle_size
+              installed_size += T.must(bottle.installed_size) if bottle.installed_size
+              package.push(f, f.recursive_dependencies)
+              unless f.deps.empty?
+                f.recursive_dependencies.each do |dep|
+                  bottle_dep = dep.to_formula.bottle
+                  bottle_dep.fetch_tab(quiet: !args.debug?)
+                  bottle_size += bottle_dep.bottle_size if bottle_dep.bottle_size
+                  installed_size += bottle_dep.installed_size if bottle_dep.installed_size
                 end
-              rescue RuntimeError => e
-                odebug e
               end
+            rescue RuntimeError => e
+              odebug e
             end
           end
           puts "Packages : #{package.join(", ")}\n\n"
           puts "Bottle Size: #{disk_usage_readable(bottle_size)}" if bottle_size
           puts "Installed Size: #{disk_usage_readable(installed_size)}\n\n" if installed_size
           ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
+          accepted_inputs = %w[y yes]
+          declined_inputs = %w[n no]
           loop do
-            result = STDIN.gets.chomp.strip.downcase
-            if result == "y" || result == "yes"
+            result = $stdin.gets.chomp.strip.downcase
+            if accepted_inputs.include?(result)
               puts "Proceeding with installation..."
               break
-            elsif result == "n"
+            elsif declined_inputs.include?(result)
               return
             else
               puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."

@@ -48,7 +48,7 @@ module Homebrew
                      "trying any other/default URLs.",
         boolean:     true,
       },
-      HOMEBREW_ASK:                    {
+      HOMEBREW_ASK:                              {
         description: "If set, pass `--ask`to all formula install commands.",
         boolean:     true,
       },
