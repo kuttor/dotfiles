@@ -15,6 +15,9 @@ module Homebrew
                description: "Print the updated resource blocks instead of changing <formula>."
         switch "-s", "--silent",
                description: "Suppress any output."
+        switch "--ignore-errors",
+               description: "Record all discovered resources, even those that can't be resolved successfully. " \
+                            "This option is ignored for homebrew/core formulae."
         switch "--ignore-non-pypi-packages",
                description: "Don't fail if <formula> is not a PyPI package."
         switch "--install-dependencies",
@@ -36,6 +39,11 @@ module Homebrew
       sig { override.void }
       def run
         args.named.to_formulae.each do |formula|
+          ignore_errors = if T.must(formula.tap).name == "homebrew/core"
+            false
+          else
+            args.ignore_errors?
+          end
           PyPI.update_python_resources! formula,
                                         version:                  args.version,
                                         package_name:             args.package_name,
@@ -45,6 +53,7 @@ module Homebrew
                                         print_only:               args.print_only?,
                                         silent:                   args.silent?,
                                         verbose:                  args.verbose?,
+                                        ignore_errors:            ignore_errors,
                                         ignore_non_pypi_packages: args.ignore_non_pypi_packages?
         end
       end
