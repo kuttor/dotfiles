@@ -27,7 +27,7 @@ RSpec.describe Tapioca::Compilers::Args do
 
     it "returns a mapping of update-python-resources args to default values" do
       expect(compiler.args_table(update_python_resources_parser)).to contain_exactly(
-        :d?, :debug?, :exclude_packages, :extra_packages, :h?, :help?, :ignore_non_pypi_packages?,
+        :d?, :debug?, :exclude_packages, :extra_packages, :h?, :help?, :ignore_errors?, :ignore_non_pypi_packages?,
         :install_dependencies?, :p?, :package_name, :print_only?, :q?, :quiet?, :s?, :silent?, :v?, :verbose?,
         :version
       )

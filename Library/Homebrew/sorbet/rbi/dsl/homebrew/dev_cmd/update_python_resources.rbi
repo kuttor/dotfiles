@@ -18,6 +18,9 @@ class Homebrew::DevCmd::UpdatePythonResources::Args < Homebrew::CLI::Args
   def extra_packages; end
 
   sig { returns(T::Boolean) }
+  def ignore_errors?; end
+
+  sig { returns(T::Boolean) }
   def ignore_non_pypi_packages?; end
 
   sig { returns(T::Boolean) }

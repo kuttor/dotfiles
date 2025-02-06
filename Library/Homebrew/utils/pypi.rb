@@ -54,8 +54,11 @@ module PyPI
     # Get name, URL, SHA-256 checksum and latest version for a given package.
     # This only works for packages from PyPI or from a PyPI URL; packages
     # derived from non-PyPI URLs will produce `nil` here.
-    sig { params(new_version: T.nilable(T.any(String, Version))).returns(T.nilable(T::Array[String])) }
-    def pypi_info(new_version: nil)
+    sig {
+      params(new_version:   T.nilable(T.any(String, Version)),
+             ignore_errors: T.nilable(T::Boolean)).returns(T.nilable(T::Array[String]))
+    }
+    def pypi_info(new_version: nil, ignore_errors: false)
       return unless valid_pypi_package?
       return @pypi_info if @pypi_info.present? && new_version.blank?
 
@@ -86,7 +89,12 @@ module PyPI
         end
       end
 
-      return if dist.nil?
+      if dist.nil?
+        return ["", "", "", "", "no suitable source distribution on PyPI"] if ignore_errors
+
+        onoe "#{name} exists on PyPI but lacks a suitable source distribution"
+        return
+      end
 
       @pypi_info = [
         PyPI.normalize_python_package(json["info"]["name"]), dist["url"],
@@ -215,13 +223,14 @@ module PyPI
       print_only:               T.nilable(T::Boolean),
       silent:                   T.nilable(T::Boolean),
       verbose:                  T.nilable(T::Boolean),
+      ignore_errors:            T.nilable(T::Boolean),
       ignore_non_pypi_packages: T.nilable(T::Boolean),
     ).returns(T.nilable(T::Boolean))
   }
   def self.update_python_resources!(formula, version: nil, package_name: nil, extra_packages: nil,
                                     exclude_packages: nil, dependencies: nil, install_dependencies: false,
                                     print_only: false, silent: false, verbose: false,
-                                    ignore_non_pypi_packages: false)
+                                    ignore_errors: false, ignore_non_pypi_packages: false)
     auto_update_list = formula.tap&.pypi_formula_mappings
     if auto_update_list.present? && auto_update_list.key?(formula.full_name) &&
        package_name.blank? && extra_packages.blank? && exclude_packages.blank?
@@ -347,6 +356,7 @@ module PyPI
     end
 
     new_resource_blocks = ""
+    package_errors = ""
     found_packages.sort.each do |package|
       if exclude_packages.include? package
         ohai "Excluding \"#{package}\"" if show_info
@@ -355,31 +365,48 @@ module PyPI
       end
 
       ohai "Getting PyPI info for \"#{package}\"" if show_info
-      name, url, checksum = package.pypi_info
-      # Fail if unable to find name, url or checksum for any resource
-      if name.blank?
-        odie "Unable to resolve some dependencies. Please update the resources for \"#{formula.name}\" manually."
-      elsif url.blank? || checksum.blank?
-        odie <<~EOS
-          Unable to find the URL and/or sha256 for the "#{name}" resource.
-          Please update the resources for "#{formula.name}" manually.
-        EOS
+      name, url, checksum, _, package_error = package.pypi_info(ignore_errors: ignore_errors)
+      if package_error.blank?
+        # Fail if unable to find name, url or checksum for any resource
+        if name.blank?
+          if ignore_errors
+            package_error = "unknown failure"
+          else
+            odie "Unable to resolve some dependencies. Please update the resources for \"#{formula.name}\" manually."
+          end
+        elsif url.blank? || checksum.blank?
+          if ignore_errors
+            package_error = "unable to find URL and/or sha256"
+          else
+            odie <<~EOS
+              Unable to find the URL and/or sha256 for the "#{name}" resource.
+              Please update the resources for "#{formula.name}" manually.
+            EOS
+          end
+        end
       end
 
-      # Append indented resource block
-      new_resource_blocks += <<-EOS
+      if package_error.blank?
+        # Append indented resource block
+        new_resource_blocks += <<-EOS
   resource "#{name}" do
     url "#{url}"
     sha256 "#{checksum}"
   end
 
-      EOS
+        EOS
+      else
+        # Leave a placeholder for formula author to investigate
+        package_errors += "  # RESOURCE-ERROR: Unable to resolve \"#{package}\" (#{package_error})\n"
+      end
     end
+
+    resource_section = "#{package_errors}\n#{new_resource_blocks}"
 
     odie "Excluded superfluous packages: #{exclude_packages.join(", ")}" if exclude_packages.any?
 
     if print_only
-      puts new_resource_blocks.chomp
+      puts resource_section.chomp
       return
     end
 
@@ -387,11 +414,12 @@ module PyPI
     if formula.resources.all? { |resource| resource.name.start_with?("homebrew-") }
       # Place resources above install method
       inreplace_regex = /  def install/
-      new_resource_blocks += "  def install"
+      resource_section += "  def install"
     else
       # Replace existing resource blocks with new resource blocks
       inreplace_regex = /
         \ \ (
+        (\#\ RESOURCE-ERROR:\ .*\s+)*
         resource\ .*\ do\s+
           url\ .*\s+
           sha256\ .*\s+
@@ -402,7 +430,7 @@ module PyPI
           end\s+)*
         end\s+)+
       /x
-      new_resource_blocks += "  "
+      resource_section += "  "
     end
 
     ohai "Updating resource blocks" unless silent
@@ -410,7 +438,11 @@ module PyPI
       if T.must(s.inreplace_string.split(/^  test do\b/, 2).first).scan(inreplace_regex).length > 1
         odie "Unable to update resource blocks for \"#{formula.name}\" automatically. Please update them manually."
       end
-      s.sub! inreplace_regex, new_resource_blocks
+      s.sub! inreplace_regex, resource_section
+    end
+
+    if package_errors.present?
+      ofail "Unable to resolve some dependencies. Please check #{formula.path} for RESOURCE-ERROR comments."
     end
 
     true
