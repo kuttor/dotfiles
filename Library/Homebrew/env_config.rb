@@ -500,6 +500,10 @@ module Homebrew
                      "of build provenance for bottles from homebrew-core.",
         boolean:     true,
       },
+      HOMEBREW_ASK:                    {
+        description: "If set, pass `--ask`to all formula install commands.",
+        boolean:     true,
+      },
       SUDO_ASKPASS:                              {
         description: "If set, pass the `-A` option when calling `sudo`(8).",
       },
