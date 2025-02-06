@@ -306,7 +306,7 @@ module Homebrew
         Install.check_cc_argv(args.cc)
 
         # Showing dependencies and required size to install
-        if args.ask? || !Homebrew::EnvConfig.ask?
+        if args.ask? || Homebrew::EnvConfig.ask?
           ohai "Looking for dependencies..."
           package = []
           bottle_size = 0
