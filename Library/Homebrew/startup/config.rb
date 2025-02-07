@@ -65,3 +65,15 @@ HOMEBREW_RUBY_EXEC_ARGS = [
   ENV.fetch("HOMEBREW_RUBY_WARNINGS"),
   ENV.fetch("HOMEBREW_RUBY_DISABLE_OPTIONS"),
 ].freeze
+
+# Location for `brew alias` and `brew unalias` commands.
+#
+# Unix-Like systems store config in $HOME/.config whose location can be
+# overridden by the XDG_CONFIG_HOME environment variable. Unfortunately
+# Homebrew strictly filters environment variables in BuildEnvironment.
+HOMEBREW_ALIASES = if (path = Pathname.new("~/.config/brew-aliases").expand_path).exist? ||
+                      (path = Pathname.new("~/.brew-aliases").expand_path).exist?
+  path.realpath
+else
+  path
+end.freeze

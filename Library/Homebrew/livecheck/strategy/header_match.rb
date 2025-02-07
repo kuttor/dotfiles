@@ -74,14 +74,18 @@ module Homebrew
             url:           String,
             regex:         T.nilable(Regexp),
             homebrew_curl: T::Boolean,
-            _unused:       T.untyped,
+            unused:        T.untyped,
             block:         T.nilable(Proc),
           ).returns(T::Hash[Symbol, T.untyped])
         }
-        def self.find_versions(url:, regex: nil, homebrew_curl: false, **_unused, &block)
+        def self.find_versions(url:, regex: nil, homebrew_curl: false, **unused, &block)
           match_data = { matches: {}, regex:, url: }
 
-          headers = Strategy.page_headers(url, homebrew_curl:)
+          headers = Strategy.page_headers(
+            url,
+            url_options:   unused.fetch(:url_options, {}),
+            homebrew_curl:,
+          )
 
           # Merge the headers from all responses into one hash
           merged_headers = headers.reduce(&:merge)

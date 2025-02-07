@@ -381,6 +381,23 @@ _brew_abv() {
   __brew_complete_casks
 }
 
+_brew_alias() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --edit
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+}
+
 _brew_analytics() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "${cur}" in
@@ -2473,6 +2490,22 @@ _brew_typecheck() {
   __brew_complete_tapped
 }
 
+_brew_unalias() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+}
+
 _brew_unbottled() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "${cur}" in
@@ -2963,6 +2996,7 @@ _brew() {
     -S) _brew__s ;;
     -v) _brew__v ;;
     abv) _brew_abv ;;
+    alias) _brew_alias ;;
     analytics) _brew_analytics ;;
     audit) _brew_audit ;;
     autoremove) _brew_autoremove ;;
@@ -3053,6 +3087,7 @@ _brew() {
     test) _brew_test ;;
     tests) _brew_tests ;;
     typecheck) _brew_typecheck ;;
+    unalias) _brew_unalias ;;
     unbottled) _brew_unbottled ;;
     uninstal) _brew_uninstal ;;
     uninstall) _brew_uninstall ;;

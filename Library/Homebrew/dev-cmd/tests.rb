@@ -219,7 +219,6 @@ module Homebrew
 
         # TODO: remove this and fix tests when possible.
         ENV["HOMEBREW_NO_INSTALL_FROM_API"] = "1"
-        ENV.delete("HOMEBREW_INTERNAL_JSON_V3")
 
         ENV["USER"] ||= system_command!("id", args: ["-nu"]).stdout.chomp
 

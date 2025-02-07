@@ -186,27 +186,36 @@ source "${HOMEBREW_LIBRARY}/Homebrew/utils/helpers.sh"
 # (i.e. not defined above this line e.g. formulae or --cellar).
 if [[ -z "${HOMEBREW_NO_FORCE_BREW_WRAPPER:-}" && -n "${HOMEBREW_FORCE_BREW_WRAPPER:-}" ]]
 then
+  HOMEBREW_FORCE_BREW_WRAPPER_WITHOUT_BREW="${HOMEBREW_FORCE_BREW_WRAPPER%/brew}"
   if [[ -z "${HOMEBREW_BREW_WRAPPER:-}" ]]
   then
     odie <<EOS
-HOMEBREW_FORCE_BREW_WRAPPER was set to
-  ${HOMEBREW_FORCE_BREW_WRAPPER}
-but HOMEBREW_BREW_WRAPPER was unset. This indicates that you are running
-  ${HOMEBREW_BREW_FILE}
-directly but should instead run
-  ${HOMEBREW_FORCE_BREW_WRAPPER}
+conflicting Homebrew wrapper configuration!
+HOMEBREW_FORCE_BREW_WRAPPER was set to ${HOMEBREW_FORCE_BREW_WRAPPER}
+but   HOMEBREW_BREW_WRAPPER was unset.
+
+$(bold "Ensure you run ${HOMEBREW_FORCE_BREW_WRAPPER} directly (not ${HOMEBREW_BREW_FILE})")!
+
+Manually setting your PATH can interfere with Homebrew wrappers.
+Ensure your shell configuration contains:
+  eval "\$(${HOMEBREW_BREW_FILE} shellenv)"
+or that ${HOMEBREW_FORCE_BREW_WRAPPER_WITHOUT_BREW} comes before ${HOMEBREW_PREFIX}/bin in your PATH:
+  export PATH="${HOMEBREW_FORCE_BREW_WRAPPER_WITHOUT_BREW}:${HOMEBREW_PREFIX}/bin:\$PATH"
 EOS
   elif [[ "${HOMEBREW_FORCE_BREW_WRAPPER}" != "${HOMEBREW_BREW_WRAPPER}" ]]
   then
     odie <<EOS
-HOMEBREW_FORCE_BREW_WRAPPER was set to
-  ${HOMEBREW_FORCE_BREW_WRAPPER}
-but HOMEBREW_BREW_WRAPPER was set to
-  ${HOMEBREW_BREW_WRAPPER}
-This indicates that you are running
-  ${HOMEBREW_BREW_FILE}
-directly but should instead run:
-  ${HOMEBREW_FORCE_BREW_WRAPPER}
+conflicting Homebrew wrapper configuration!
+HOMEBREW_FORCE_BREW_WRAPPER was set to ${HOMEBREW_FORCE_BREW_WRAPPER}
+but HOMEBREW_BREW_WRAPPER   was set to ${HOMEBREW_BREW_WRAPPER}
+
+$(bold "Ensure you run ${HOMEBREW_FORCE_BREW_WRAPPER} directly (not ${HOMEBREW_BREW_FILE})")!
+
+Manually setting your PATH can interfere with Homebrew wrappers.
+Ensure your shell configuration contains:
+  eval "\$(${HOMEBREW_BREW_FILE} shellenv)"
+or that ${HOMEBREW_FORCE_BREW_WRAPPER_WITHOUT_BREW} comes before ${HOMEBREW_PREFIX}/bin in your PATH:
+  export PATH="${HOMEBREW_FORCE_BREW_WRAPPER_WITHOUT_BREW}:${HOMEBREW_PREFIX}/bin:\$PATH"
 EOS
   fi
 fi

@@ -27,6 +27,15 @@ RSpec.describe Livecheck do
   end
   let(:livecheck_c) { described_class.new(c) }
 
+  let(:post_hash) do
+    {
+      "empty"   => "",
+      "boolean" => "true",
+      "number"  => "1",
+      "string"  => "a + b = c",
+    }
+  end
+
   describe "#formula" do
     it "returns nil if not set" do
       expect(livecheck_f.formula).to be_nil
@@ -90,13 +99,23 @@ RSpec.describe Livecheck do
   end
 
   describe "#strategy" do
+    block = proc { |page, regex| page.scan(regex).map { |match| match[0].tr("_", ".") } }
+
     it "returns nil if not set" do
       expect(livecheck_f.strategy).to be_nil
+      expect(livecheck_f.strategy_block).to be_nil
     end
 
     it "returns the Symbol if set" do
       livecheck_f.strategy(:page_match)
       expect(livecheck_f.strategy).to eq(:page_match)
+      expect(livecheck_f.strategy_block).to be_nil
+    end
+
+    it "sets `strategy_block` when provided" do
+      livecheck_f.strategy(:page_match, &block)
+      expect(livecheck_f.strategy).to eq(:page_match)
+      expect(livecheck_f.strategy_block).to eq(block)
     end
   end
 
@@ -137,9 +156,21 @@ RSpec.describe Livecheck do
       expect(livecheck_c.url).to eq(:url)
     end
 
+    it "sets `url_options` when provided" do
+      post_args = { post_form: post_hash }
+      livecheck_f.url(url_string, **post_args)
+      expect(livecheck_f.url_options).to eq(post_args)
+    end
+
     it "raises an ArgumentError if the argument isn't a valid Symbol" do
       expect do
         livecheck_f.url(:not_a_valid_symbol)
+      end.to raise_error ArgumentError
+    end
+
+    it "raises an ArgumentError if both `post_form` and `post_json` arguments are provided" do
+      expect do
+        livecheck_f.url(:stable, post_form: post_hash, post_json: post_hash)
       end.to raise_error ArgumentError
     end
   end
@@ -148,14 +179,15 @@ RSpec.describe Livecheck do
     it "returns a Hash of all instance variables" do
       expect(livecheck_f.to_hash).to eq(
         {
-          "cask"     => nil,
-          "formula"  => nil,
-          "regex"    => nil,
-          "skip"     => false,
-          "skip_msg" => nil,
-          "strategy" => nil,
-          "throttle" => nil,
-          "url"      => nil,
+          "cask"        => nil,
+          "formula"     => nil,
+          "regex"       => nil,
+          "skip"        => false,
+          "skip_msg"    => nil,
+          "strategy"    => nil,
+          "throttle"    => nil,
+          "url"         => nil,
+          "url_options" => nil,
         },
       )
     end

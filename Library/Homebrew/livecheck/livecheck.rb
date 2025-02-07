@@ -614,6 +614,7 @@ module Homebrew
       referenced_livecheck = referenced_formula_or_cask&.livecheck
 
       livecheck_url = livecheck.url || referenced_livecheck&.url
+      livecheck_url_options = livecheck.url_options || referenced_livecheck&.url_options
       livecheck_regex = livecheck.regex || referenced_livecheck&.regex
       livecheck_strategy = livecheck.strategy || referenced_livecheck&.strategy
       livecheck_strategy_block = livecheck.strategy_block || referenced_livecheck&.strategy_block
@@ -673,6 +674,7 @@ module Homebrew
           elsif original_url.present? && original_url != "None"
             puts "URL:              #{original_url}"
           end
+          puts "URL Options:      #{livecheck_url_options}" if livecheck_url_options.present?
           puts "URL (processed):  #{url}" if url != original_url
           if strategies.present? && verbose
             puts "Strategies:       #{strategies.map { |s| livecheck_strategy_names[s] }.join(", ")}"
@@ -701,6 +703,7 @@ module Homebrew
 
         strategy_args = {
           regex:         livecheck_regex,
+          url_options:   livecheck_url_options,
           homebrew_curl:,
         }
         # TODO: Set `cask`/`url` args based on the presence of the keyword arg
@@ -807,6 +810,7 @@ module Homebrew
               version_info[:meta][:url][:strategy] = strategy_data[:url]
             end
             version_info[:meta][:url][:final] = strategy_data[:final_url] if strategy_data[:final_url]
+            version_info[:meta][:url][:options] = livecheck_url_options if livecheck_url_options.present?
             version_info[:meta][:url][:homebrew_curl] = homebrew_curl if homebrew_curl.present?
           end
           version_info[:meta][:strategy] = strategy_name if strategy.present?
@@ -856,6 +860,7 @@ module Homebrew
       livecheck = resource.livecheck
       livecheck_reference = livecheck.formula
       livecheck_url = livecheck.url
+      livecheck_url_options = livecheck.url_options
       livecheck_regex = livecheck.regex
       livecheck_strategy = livecheck.strategy
       livecheck_strategy_block = livecheck.strategy_block
@@ -893,6 +898,7 @@ module Homebrew
           elsif original_url.present? && original_url != "None"
             puts "URL:              #{original_url}"
           end
+          puts "URL Options:      #{livecheck_url_options}" if livecheck_url_options.present?
           puts "URL (processed):  #{url}" if url != original_url
           if strategies.present? && verbose
             puts "Strategies:       #{strategies.map { |s| livecheck_strategy_names[s] }.join(", ")}"
@@ -923,6 +929,7 @@ module Homebrew
           strategy_args = {
             url:,
             regex:         livecheck_regex,
+            url_options:   livecheck_url_options,
             homebrew_curl: false,
           }.compact
 
@@ -1012,6 +1019,7 @@ module Homebrew
             resource_version_info[:meta][:url][:strategy] = strategy_data[:url]
           end
           resource_version_info[:meta][:url][:final] = strategy_data[:final_url] if strategy_data&.dig(:final_url)
+          resource_version_info[:meta][:url][:options] = livecheck_url_options if livecheck_url_options.present?
         end
         resource_version_info[:meta][:strategy] = strategy_name if strategy.present?
         if strategies.present?

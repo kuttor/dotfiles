@@ -11,7 +11,6 @@ module Homebrew
       extend Cachable
 
       DEFAULT_API_FILENAME = "formula.jws.json"
-      INTERNAL_V3_API_FILENAME = "internal/v3/homebrew-core.jws.json"
 
       private_class_method :cache
 
@@ -43,33 +42,24 @@ module Homebrew
 
       sig { returns(Pathname) }
       def self.cached_json_file_path
-        if Homebrew::API.internal_json_v3?
-          HOMEBREW_CACHE_API/INTERNAL_V3_API_FILENAME
-        else
-          HOMEBREW_CACHE_API/DEFAULT_API_FILENAME
-        end
+        HOMEBREW_CACHE_API/DEFAULT_API_FILENAME
       end
 
       sig { returns(T::Boolean) }
       def self.download_and_cache_data!
-        if Homebrew::API.internal_json_v3?
-          json_formulae, updated = Homebrew::API.fetch_json_api_file INTERNAL_V3_API_FILENAME
-          overwrite_cache! T.cast(json_formulae, T::Hash[String, T.untyped])
-        else
-          json_formulae, updated = Homebrew::API.fetch_json_api_file DEFAULT_API_FILENAME
+        json_formulae, updated = Homebrew::API.fetch_json_api_file DEFAULT_API_FILENAME
 
-          cache["aliases"] = {}
-          cache["renames"] = {}
-          cache["formulae"] = json_formulae.to_h do |json_formula|
-            json_formula["aliases"].each do |alias_name|
-              cache["aliases"][alias_name] = json_formula["name"]
-            end
-            (json_formula["oldnames"] || [json_formula["oldname"]].compact).each do |oldname|
-              cache["renames"][oldname] = json_formula["name"]
-            end
-
-            [json_formula["name"], json_formula.except("name")]
+        cache["aliases"] = {}
+        cache["renames"] = {}
+        cache["formulae"] = json_formulae.to_h do |json_formula|
+          json_formula["aliases"].each do |alias_name|
+            cache["aliases"][alias_name] = json_formula["name"]
           end
+          (json_formula["oldnames"] || [json_formula["oldname"]].compact).each do |oldname|
+            cache["renames"][oldname] = json_formula["name"]
+          end
+
+          [json_formula["name"], json_formula.except("name")]
         end
 
         updated

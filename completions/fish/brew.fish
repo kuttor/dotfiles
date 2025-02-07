@@ -319,6 +319,14 @@ __fish_brew_complete_arg 'abv; and not __fish_seen_argument -l cask -l casks' -a
 __fish_brew_complete_arg 'abv; and not __fish_seen_argument -l formula -l formulae' -a '(__fish_brew_suggest_casks_all)'
 
 
+__fish_brew_complete_cmd 'alias' 'Show existing aliases'
+__fish_brew_complete_arg 'alias' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'alias' -l edit -d 'Edit aliases in a text editor. Either one or all aliases may be opened at once. If the given alias doesn\'t exist it\'ll be pre-populated with a template'
+__fish_brew_complete_arg 'alias' -l help -d 'Show this message'
+__fish_brew_complete_arg 'alias' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'alias' -l verbose -d 'Make some output more verbose'
+
+
 __fish_brew_complete_cmd 'analytics' 'Control Homebrew\'s anonymous aggregate user behaviour analytics'
 __fish_brew_complete_sub_cmd 'analytics' 'state'
 __fish_brew_complete_sub_cmd 'analytics' 'on'
@@ -555,7 +563,7 @@ __fish_brew_complete_arg 'contributions' -l debug -d 'Display any debugging info
 __fish_brew_complete_arg 'contributions' -l from -d 'Date (ISO-8601 format) to start searching contributions. Omitting this flag searches the last year'
 __fish_brew_complete_arg 'contributions' -l help -d 'Show this message'
 __fish_brew_complete_arg 'contributions' -l quiet -d 'Make some output more quiet'
-__fish_brew_complete_arg 'contributions' -l repositories -d 'Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `aliases`, `bundle`, `command-not-found`, `test-bot` and `services`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. '
+__fish_brew_complete_arg 'contributions' -l repositories -d 'Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found`, `test-bot` and `services`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. '
 __fish_brew_complete_arg 'contributions' -l to -d 'Date (ISO-8601 format) to stop searching contributions'
 __fish_brew_complete_arg 'contributions' -l user -d 'Specify a comma-separated list of GitHub usernames or email addresses to find contributions from. Omitting this flag searches maintainers'
 __fish_brew_complete_arg 'contributions' -l verbose -d 'Make some output more verbose'
@@ -1601,6 +1609,13 @@ __fish_brew_complete_arg 'typecheck' -l update -d 'Update RBI files'
 __fish_brew_complete_arg 'typecheck' -l update-all -d 'Update all RBI files rather than just updated gems'
 __fish_brew_complete_arg 'typecheck' -l verbose -d 'Make some output more verbose'
 __fish_brew_complete_arg 'typecheck' -a '(__fish_brew_suggest_taps_installed)'
+
+
+__fish_brew_complete_cmd 'unalias' 'Remove aliases'
+__fish_brew_complete_arg 'unalias' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'unalias' -l help -d 'Show this message'
+__fish_brew_complete_arg 'unalias' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'unalias' -l verbose -d 'Make some output more verbose'
 
 
 __fish_brew_complete_cmd 'unbottled' 'Show the unbottled dependents of formulae'

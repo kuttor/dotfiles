@@ -1307,8 +1307,6 @@ class CoreTap < AbstractCoreTap
     @tap_migrations ||= if Homebrew::EnvConfig.no_install_from_api?
       ensure_installed!
       super
-    elsif Homebrew::API.internal_json_v3?
-      Homebrew::API::Formula.tap_migrations
     else
       migrations, = Homebrew::API.fetch_json_api_file "formula_tap_migrations.jws.json",
                                                       stale_seconds: TAP_MIGRATIONS_STALE_SECONDS
@@ -1400,23 +1398,6 @@ class CoreTap < AbstractCoreTap
       end
     end
   end
-
-  sig { returns(T::Hash[String, T.untyped]) }
-  def to_internal_api_hash
-    formulae_api_hash = formula_names.to_h do |name|
-      formula = Formulary.factory(name)
-      formula_hash = formula.to_hash_with_variations(hash_method: :to_internal_api_hash)
-      [name, formula_hash]
-    end
-
-    {
-      "tap_git_head"   => git_head,
-      "aliases"        => alias_table,
-      "renames"        => formula_renames,
-      "tap_migrations" => tap_migrations,
-      "formulae"       => formulae_api_hash,
-    }
-  end
 end
 
 # A specialized {Tap} class for homebrew-cask.
@@ -1490,22 +1471,6 @@ class CoreCaskTap < AbstractCoreTap
                                                       stale_seconds: TAP_MIGRATIONS_STALE_SECONDS
       migrations
     end
-  end
-
-  sig { returns(T::Hash[String, T.untyped]) }
-  def to_internal_api_hash
-    casks_api_hash = cask_tokens.to_h do |token|
-      cask = Cask::CaskLoader.load(token)
-      cask_hash = cask.to_hash_with_variations(hash_method: :to_internal_api_hash)
-      [token, cask_hash]
-    end
-
-    {
-      "tap_git_head"   => git_head,
-      "renames"        => cask_renames,
-      "tap_migrations" => tap_migrations,
-      "casks"          => casks_api_hash,
-    }
   end
 end
 

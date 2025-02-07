@@ -236,23 +236,6 @@ RSpec.describe Cask::Cask, :cask do
       expect(cask.artifacts_list).to eq(expected_artifacts)
     end
 
-    it "skips flight blocks when compact is true" do
-      expected_artifacts = [
-        { uninstall: [{
-          rmdir: "#{TEST_TMPDIR}/empty_directory_path",
-          trash: ["#{TEST_TMPDIR}/foo", "#{TEST_TMPDIR}/bar"],
-        }] },
-        { pkg: ["ManyArtifacts/ManyArtifacts.pkg"] },
-        { app: ["ManyArtifacts/ManyArtifacts.app"] },
-        { zap: [{
-          rmdir: ["~/Library/Caches/ManyArtifacts", "~/Library/Application Support/ManyArtifacts"],
-          trash: "~/Library/Logs/ManyArtifacts.log",
-        }] },
-      ]
-
-      expect(cask.artifacts_list(compact: true)).to eq(expected_artifacts)
-    end
-
     it "returns only uninstall artifacts when uninstall_only is true" do
       expected_artifacts = [
         { uninstall_preflight: nil },
@@ -269,22 +252,6 @@ RSpec.describe Cask::Cask, :cask do
       ]
 
       expect(cask.artifacts_list(uninstall_only: true)).to eq(expected_artifacts)
-    end
-
-    it "skips flight blocks and returns only uninstall artifacts when compact and uninstall_only are true" do
-      expected_artifacts = [
-        { uninstall: [{
-          rmdir: "#{TEST_TMPDIR}/empty_directory_path",
-          trash: ["#{TEST_TMPDIR}/foo", "#{TEST_TMPDIR}/bar"],
-        }] },
-        { app: ["ManyArtifacts/ManyArtifacts.app"] },
-        { zap: [{
-          rmdir: ["~/Library/Caches/ManyArtifacts", "~/Library/Application Support/ManyArtifacts"],
-          trash: "~/Library/Logs/ManyArtifacts.log",
-        }] },
-      ]
-
-      expect(cask.artifacts_list(compact: true, uninstall_only: true)).to eq(expected_artifacts)
     end
   end
 
