@@ -120,10 +120,10 @@ module Homebrew
           [:switch, "--overwrite", {
             description: "Delete files that already exist in the prefix while linking.",
           }],
-          [:switch, "--install-ask", {
+          [:switch, "--ask", {
             description: "Ask for confirmation before downloading and installing formulae. " \
                          "Print bottles and dependencies download size and install size.",
-            env:         :install_ask,
+            env:         :ask,
           }],
         ].each do |args|
           options = args.pop
@@ -325,7 +325,7 @@ module Homebrew
         Install.check_cc_argv(args.cc)
 
         # Showing dependencies and required size to install
-        if args.install_ask?
+        if args.ask?
           ohai "Looking for bottle sizes..."
           sized_formulae = []
           total_download_size = 0

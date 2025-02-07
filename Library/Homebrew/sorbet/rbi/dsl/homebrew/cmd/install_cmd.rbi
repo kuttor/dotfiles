@@ -168,5 +168,5 @@ class Homebrew::Cmd::InstallCmd::Args < Homebrew::CLI::Args
   def zap?; end
 
   sig { returns(T::Boolean) }
-  def install_ask?; end
+  def ask?; end
 end
