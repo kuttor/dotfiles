@@ -24,6 +24,7 @@ HOMEBREW_DATA_PATH = (HOMEBREW_LIBRARY_PATH/"data").freeze
 
 # Paths redirected to a temporary directory and wiped at the end of the test run
 HOMEBREW_PREFIX        = (Pathname(TEST_TMPDIR)/"prefix").freeze
+HOMEBREW_ALIASES       = (Pathname(TEST_TMPDIR)/"aliases").freeze
 HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX.dup.freeze
 HOMEBREW_LIBRARY       = (HOMEBREW_REPOSITORY/"Library").freeze
 HOMEBREW_CACHE         = (HOMEBREW_PREFIX.parent/"cache").freeze

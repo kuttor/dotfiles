@@ -63,6 +63,7 @@ TEST_DIRECTORIES = [
   HOMEBREW_LOCKS,
   HOMEBREW_LOGS,
   HOMEBREW_TEMP,
+  HOMEBREW_ALIASES,
 ].freeze
 
 # Make `instance_double` and `class_double`
