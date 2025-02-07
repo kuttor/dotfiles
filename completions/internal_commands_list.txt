@@ -10,6 +10,7 @@
 -S
 -v
 abv
+alias
 analytics
 audit
 autoremove
@@ -100,6 +101,7 @@ tc
 test
 tests
 typecheck
+unalias
 unbottled
 uninstall
 unlink

@@ -62,6 +62,11 @@ List all installed formulae\.
 .SS "\fBsearch\fP \fR[\fItext\fP|\fB/\fP\fItext\fP\fB/\fP]"
 Perform a substring search of cask tokens and formula names for \fItext\fP\&\. If \fItext\fP is flanked by slashes, it is interpreted as a regular expression\. The search for \fItext\fP is extended online to \fBhomebrew/core\fP and \fBhomebrew/cask\fP\&\. If no search term is provided, all locally available formulae are listed\.
 .SH "COMMANDS"
+.SS "\fBalias\fP \fR[\fIalias\fP \.\.\. | \fIalias\fP=\fIcommand\fP]"
+Show existing aliases\. If no aliases are given, print the whole list\.
+.TP
+\fB\-\-edit\fP
+Edit aliases in a text editor\. Either one or all aliases may be opened at once\. If the given alias doesn\[u2019]t exist it\[u2019]ll be pre\-populated with a template\.
 .SS "\fBanalytics\fP \fR[\fIsubcommand\fP]"
 Control Homebrew\[u2019]s anonymous aggregate user behaviour analytics\. Read more at 
 .UR https://docs\.brew\.sh/Analytics
@@ -788,6 +793,8 @@ Show information on each installed tap\.
 Print a JSON representation of \fItap\fP\&\. Currently the default and only accepted value for \fIversion\fP is \fBv1\fP\&\. See the docs for examples of using the JSON output: 
 .UR https://docs\.brew\.sh/Querying\-Brew
 .UE
+.SS "\fBunalias\fP \fIalias\fP \fR[\.\.\.]"
+Remove aliases\.
 .SS "\fBuninstall\fP, \fBremove\fP, \fBrm\fP \fR[\fIoptions\fP] \fIinstalled_formula\fP|\fIinstalled_cask\fP \fR[\.\.\.]"
 Uninstall a \fIformula\fP or \fIcask\fP\&\.
 .TP
@@ -1310,7 +1317,7 @@ Treat all named arguments as casks\.
 Summarise contributions to Homebrew repositories\.
 .TP
 \fB\-\-repositories\fP
-Specify a comma\-separated list of repositories to search\. Supported repositories: \fBbrew\fP, \fBcore\fP, \fBcask\fP, \fBaliases\fP, \fBbundle\fP, \fBcommand\-not\-found\fP, \fBtest\-bot\fP and \fBservices\fP\&\. Omitting this flag, or specifying \fB\-\-repositories=primary\fP, searches only the main repositories: brew,core,cask\. Specifying \fB\-\-repositories=all\fP, searches all repositories\.
+Specify a comma\-separated list of repositories to search\. Supported repositories: \fBbrew\fP, \fBcore\fP, \fBcask\fP, \fBbundle\fP, \fBcommand\-not\-found\fP, \fBtest\-bot\fP and \fBservices\fP\&\. Omitting this flag, or specifying \fB\-\-repositories=primary\fP, searches only the main repositories: brew,core,cask\. Specifying \fB\-\-repositories=all\fP, searches all repositories\.
 .TP
 \fB\-\-from\fP
 Date (ISO\-8601 format) to start searching contributions\. Omitting this flag searches the last year\.
@@ -1989,11 +1996,6 @@ Make some output more verbose\.
 \fB\-h\fP, \fB\-\-help\fP
 Show this message\.
 .SH "OFFICIAL EXTERNAL COMMANDS"
-.SS "\fBalias\fP \fR[\fIalias\fP \.\.\. | \fIalias\fP=\fIcommand\fP]"
-Show existing aliases\. If no aliases are given, print the whole list\.
-.TP
-\fB\-\-edit\fP
-Edit aliases in a text editor\. Either one or all aliases may be opened at once\. If the given alias doesn\[u2019]t exist it\[u2019]ll be pre\-populated with a template\.
 .SS "\fBbundle\fP \fR[\fIsubcommand\fP]"
 Bundler for non\-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store, Whalebrew and Visual Studio Code\.
 .TP
@@ -2269,8 +2271,6 @@ Use these skipped or failed formulae from formulae steps for a formulae dependen
 .TP
 \fB\-\-tested\-formulae\fP
 Use these tested formulae from formulae steps for a formulae dependents step\.
-.SS "\fBunalias\fP \fIalias\fP \fR[\.\.\.]"
-Remove aliases\.
 .SS "\fBwhich\-formula\fP \fR[\fB\-\-explain\fP] \fIcommand\fP \fR[\.\.\.]"
 Show which formula(e) provides the given command\.
 .TP
