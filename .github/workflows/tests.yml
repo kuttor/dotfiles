@@ -113,7 +113,6 @@ jobs:
 
       - name: Set up all Homebrew taps
         run: |
-          brew tap homebrew/aliases
           brew tap homebrew/bundle
           brew tap homebrew/command-not-found
           brew tap homebrew/formula-analytics
@@ -129,8 +128,7 @@ jobs:
                      homebrew/services \
                      homebrew/test-bot
 
-          brew style homebrew/aliases \
-                     homebrew/command-not-found \
+          brew style homebrew/command-not-found \
                      homebrew/formula-analytics \
                      homebrew/portable-ruby
 
