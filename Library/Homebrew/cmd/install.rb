@@ -120,7 +120,7 @@ module Homebrew
           [:switch, "--overwrite", {
             description: "Delete files that already exist in the prefix while linking.",
           }],
-          [:switch, "--ask", {
+          [:switch, "--install-ask", {
             description: "Ask for confirmation before downloading and installing formulae. " \
                          "Print bottles and dependencies download size and install size.",
             env: :install_ask,
@@ -308,48 +308,31 @@ module Homebrew
         Install.check_cc_argv(args.cc)
 
         # Showing dependencies and required size to install
-        if args.ask? || Homebrew::EnvConfig.ask?
+        if args.install_ask?
           ohai "Looking for bottle sizes..."
           sized_formulae = []
           total_download_size = 0
           total_installed_size = 0
           installed_formulae.each do |f|
             next unless (bottle = f.bottle)
-
-            begin
-              bottle.fetch_tab(quiet: !args.debug?)
-              bottle_size += T.must(bottle.bottle_size) if bottle.bottle_size
-              installed_size += T.must(bottle.installed_size) if bottle.installed_size
-              package.push(f, f.recursive_dependencies)
-              unless f.deps.empty?
-                f.recursive_dependencies.each do |dep|
-                  bottle_dep = dep.to_formula.bottle
-                  bottle_dep.fetch_tab(quiet: !args.debug?)
-                  bottle_size += bottle_dep.bottle_size if bottle_dep.bottle_size
-                  installed_size += bottle_dep.installed_size if bottle_dep.installed_size
-                end
+            # keep it quiet as there could be a lot of json fetch, it’s not intuitive to show them all.
+            bottle.fetch_tab(quiet: !args.debug?)
+            total_download_size += T.must(bottle.bottle_size) if bottle.bottle_size
+            total_installed_size += T.must(bottle.installed_size) if bottle.installed_size
+            sized_formulae.push(f, f.recursive_dependencies)
+            unless f.deps.empty?
+              f.recursive_dependencies.each do |dep|
+                bottle_dep = dep.to_formula.bottle
+                bottle_dep.fetch_tab(quiet: !args.debug?)
+                total_download_size += bottle_dep.bottle_size if bottle_dep.bottle_size
+                total_installed_size += bottle_dep.installed_size if bottle_dep.installed_size
               end
-            rescue RuntimeError => e
-              odebug e
             end
           end
-          puts "Formulae: #{sized_formulae(", ")}\n\n"
-          puts "Download Size: #{disk_usage_readable(total_download_size)}" if bottle_size
-          puts "Install Size: #{disk_usage_readable(total_installed_size)}\n" if installed_size
-          ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
-          accepted_inputs = %w[y yes]
-          declined_inputs = %w[n no]
-          loop do
-            result = $stdin.gets.chomp.strip.downcase
-            if accepted_inputs.include?(result)
-              puts "Proceeding with installation..."
-              break
-            elsif declined_inputs.include?(result)
-              return
-            else
-              puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
-            end
-          end
+          puts "Formulae: #{sized_formulae.join(", ")}\n\n"
+          puts "Download Size: #{disk_usage_readable(total_download_size)}" if total_download_size
+          puts "Install Size: #{disk_usage_readable(total_installed_size)}\n" if total_installed_size
+          ask_input
         end
 
         Install.install_formulae(
@@ -465,6 +448,25 @@ module Homebrew
         return if all_formulae.any? || all_casks.any?
 
         odie "No #{package_types.join(" or ")} found for #{name}."
+      end
+
+      private
+
+      def ask_input
+        ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
+        accepted_inputs = %w[y yes]
+        declined_inputs = %w[n no]
+        loop do
+          result = $stdin.gets.chomp.strip.downcase
+          if accepted_inputs.include?(result)
+            puts "Proceeding with installation..."
+            break
+          elsif declined_inputs.include?(result)
+            return
+          else
+            puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
+          end
+        end
       end
     end
   end
