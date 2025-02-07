@@ -102,6 +102,15 @@ If no search term is provided, all locally available formulae are listed.
 
 ## COMMANDS
 
+### `alias` \[*`alias`* ... \| *`alias`*=*`command`*\]
+
+Show existing aliases. If no aliases are given, print the whole list.
+
+`--edit`
+
+: Edit aliases in a text editor. Either one or all aliases may be opened at
+  once. If the given alias doesn't exist it'll be pre-populated with a template.
+
 ### `analytics` \[*`subcommand`*\]
 
 Control Homebrew's anonymous aggregate user behaviour analytics. Read more at
@@ -1259,6 +1268,10 @@ provided, display brief statistics for all installed taps.
   accepted value for *`version`* is `v1`. See the docs for examples of using the
   JSON output: <https://docs.brew.sh/Querying-Brew>
 
+### `unalias` *`alias`* \[...\]
+
+Remove aliases.
+
 ### `uninstall`, `remove`, `rm` \[*`options`*\] *`installed_formula`*\|*`installed_cask`* \[...\]
 
 Uninstall a *`formula`* or *`cask`*.
@@ -2066,10 +2079,10 @@ Summarise contributions to Homebrew repositories.
 `--repositories`
 
 : Specify a comma-separated list of repositories to search. Supported
-  repositories: `brew`, `core`, `cask`, `aliases`, `bundle`,
-  `command-not-found`, `test-bot` and `services`. Omitting this flag, or
-  specifying `--repositories=primary`, searches only the main repositories:
-  brew,core,cask. Specifying `--repositories=all`, searches all repositories.
+  repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found`,
+  `test-bot` and `services`. Omitting this flag, or specifying
+  `--repositories=primary`, searches only the main repositories: brew,core,cask.
+  Specifying `--repositories=all`, searches all repositories.
 
 `--from`
 
@@ -3102,15 +3115,6 @@ These options are applicable across multiple subcommands.
 
 ## OFFICIAL EXTERNAL COMMANDS
 
-### `alias` \[*`alias`* ... \| *`alias`*=*`command`*\]
-
-Show existing aliases. If no aliases are given, print the whole list.
-
-`--edit`
-
-: Edit aliases in a text editor. Either one or all aliases may be opened at
-  once. If the given alias doesn't exist it'll be pre-populated with a template.
-
 ### `bundle` \[*`subcommand`*\]
 
 Bundler for non-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store,
@@ -3535,10 +3539,6 @@ and Linux workers.
 `--tested-formulae`
 
 : Use these tested formulae from formulae steps for a formulae dependents step.
-
-### `unalias` *`alias`* \[...\]
-
-Remove aliases.
 
 ### `which-formula` \[`--explain`\] *`command`* \[...\]
 

@@ -139,6 +139,7 @@ __brew_internal_commands() {
     '--prefix:Display Homebrew'\''s install path'
     '--repository:Display where Homebrew'\''s Git repository is located'
     '--version:Print the version numbers of Homebrew, Homebrew/homebrew-core and Homebrew/homebrew-cask (if tapped) to standard output'
+    'alias:Show existing aliases'
     'analytics:Control Homebrew'\''s anonymous aggregate user behaviour analytics'
     'audit:Check formula or cask for Homebrew coding style violations'
     'autoremove:Uninstall formulae that were only installed as a dependency of another formula and are now no longer needed'
@@ -219,6 +220,7 @@ __brew_internal_commands() {
     'test:Run the test method provided by an installed formula'
     'tests:Run Homebrew'\''s unit and integration tests'
     'typecheck:Check for typechecking errors using Sorbet'
+    'unalias:Remove aliases'
     'unbottled:Show the unbottled dependents of formulae'
     'uninstall:Uninstall a formula or cask'
     'unlink:Remove symlinks for formula from Homebrew'\''s prefix'
@@ -430,6 +432,16 @@ _brew_abv() {
     - cask \
     '(--formula --fetch-manifest)--cask[Treat all named arguments as casks]' \
     '*::cask:__brew_casks'
+}
+
+# brew alias
+_brew_alias() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--edit[Edit aliases in a text editor. Either one or all aliases may be opened at once. If the given alias doesn'\''t exist it'\''ll be pre-populated with a template]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]'
 }
 
 # brew analytics
@@ -716,7 +728,7 @@ _brew_contributions() {
     '--from[Date (ISO-8601 format) to start searching contributions. Omitting this flag searches the last year]' \
     '--help[Show this message]' \
     '--quiet[Make some output more quiet]' \
-    '--repositories[Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `aliases`, `bundle`, `command-not-found`, `test-bot` and `services`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. ]' \
+    '--repositories[Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found`, `test-bot` and `services`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. ]' \
     '--to[Date (ISO-8601 format) to stop searching contributions]' \
     '--user[Specify a comma-separated list of GitHub usernames or email addresses to find contributions from. Omitting this flag searches maintainers]' \
     '--verbose[Make some output more verbose]'
@@ -1985,6 +1997,15 @@ _brew_typecheck() {
     '--verbose[Make some output more verbose]' \
     - tap \
     '*::tap:__brew_any_tap'
+}
+
+# brew unalias
+_brew_unalias() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]'
 }
 
 # brew unbottled
