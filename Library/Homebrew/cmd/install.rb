@@ -180,6 +180,25 @@ module Homebrew
           odisabled "brew install --env", "`env :std` in specific formula files"
         end
 
+        sig { returns(NilClass) }
+
+        def ask_input
+          ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
+          accepted_inputs = %w[y yes]
+          declined_inputs = %w[n no]
+          loop do
+            result = $stdin.gets.chomp.strip.downcase
+            if accepted_inputs.include?(result)
+              puts "Proceeding with installation..."
+              break
+            elsif declined_inputs.include?(result)
+              return
+            else
+              puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
+            end
+          end
+        end
+
         args.named.each do |name|
           if (tap_with_name = Tap.with_formula_name(name))
             tap, = tap_with_name
@@ -448,25 +467,6 @@ module Homebrew
         return if all_formulae.any? || all_casks.any?
 
         odie "No #{package_types.join(" or ")} found for #{name}."
-      end
-
-      private
-
-      def ask_input
-        ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
-        accepted_inputs = %w[y yes]
-        declined_inputs = %w[n no]
-        loop do
-          result = $stdin.gets.chomp.strip.downcase
-          if accepted_inputs.include?(result)
-            puts "Proceeding with installation..."
-            break
-          elsif declined_inputs.include?(result)
-            return
-          else
-            puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
-          end
-        end
       end
     end
   end
