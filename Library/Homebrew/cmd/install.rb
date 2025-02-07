@@ -121,8 +121,9 @@ module Homebrew
             description: "Delete files that already exist in the prefix while linking.",
           }],
           [:switch, "--ask", {
-            description: "Ask for confirmation before downloading and installing software. " \
+            description: "Ask for confirmation before downloading and installing formulae. " \
                          "Print bottles and dependencies download size and install size.",
+            env: :install_ask,
           }],
         ].each do |args|
           options = args.pop
@@ -308,10 +309,10 @@ module Homebrew
 
         # Showing dependencies and required size to install
         if args.ask? || Homebrew::EnvConfig.ask?
-          ohai "Looking for dependencies..."
-          package = []
-          bottle_size = 0
-          installed_size = 0
+          ohai "Looking for bottle sizes..."
+          sized_formulae = []
+          total_download_size = 0
+          total_installed_size = 0
           installed_formulae.each do |f|
             next unless (bottle = f.bottle)
 
@@ -332,9 +333,9 @@ module Homebrew
               odebug e
             end
           end
-          puts "Packages : #{package.join(", ")}\n\n"
-          puts "Bottle Size: #{disk_usage_readable(bottle_size)}" if bottle_size
-          puts "Installed Size: #{disk_usage_readable(installed_size)}\n\n" if installed_size
+          puts "Formulae: #{sized_formulae(", ")}\n\n"
+          puts "Download Size: #{disk_usage_readable(total_download_size)}" if bottle_size
+          puts "Install Size: #{disk_usage_readable(total_installed_size)}\n" if installed_size
           ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
           accepted_inputs = %w[y yes]
           declined_inputs = %w[n no]
