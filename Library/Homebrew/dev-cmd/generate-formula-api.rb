@@ -60,8 +60,6 @@ module Homebrew
             raise
           end
 
-          homebrew_core_tap_json = JSON.generate(tap.to_internal_api_hash)
-          File.write("api/internal/v3/homebrew-core.json", homebrew_core_tap_json) unless args.dry_run?
           canonical_json = JSON.pretty_generate(tap.formula_renames.merge(tap.alias_table))
           File.write("_data/formula_canonical.json", "#{canonical_json}\n") unless args.dry_run?
         end
