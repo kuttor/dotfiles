@@ -48,10 +48,6 @@ module Homebrew
                      "trying any other/default URLs.",
         boolean:     true,
       },
-      HOMEBREW_INSTALL_ASK:                      {
-        description: "If set, pass `--install-ask`to all formula install commands.",
-        boolean:     true,
-      },
       HOMEBREW_AUTO_UPDATE_SECS:                 {
         description:  "Run `brew update` once every `$HOMEBREW_AUTO_UPDATE_SECS` seconds before some commands, " \
                       "e.g. `brew install`, `brew upgrade` and `brew tap`. Alternatively, " \
@@ -307,6 +303,10 @@ module Homebrew
       HOMEBREW_GIT_PATH:                         {
         description: "Linux only: Set this value to a new enough `git` executable for Homebrew to use.",
         default:     "git",
+      },
+      HOMEBREW_INSTALL_ASK:                      {
+        description: "If set, pass `--install-ask`to all formula install commands.",
+        boolean:     true,
       },
       HOMEBREW_INSTALL_BADGE:                    {
         description:  "Print this text before the installation summary of each successful build.",

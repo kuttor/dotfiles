@@ -123,7 +123,7 @@ module Homebrew
           [:switch, "--install-ask", {
             description: "Ask for confirmation before downloading and installing formulae. " \
                          "Print bottles and dependencies download size and install size.",
-            env: :install_ask,
+            env:         :install_ask,
           }],
         ].each do |args|
           options = args.pop
@@ -332,18 +332,19 @@ module Homebrew
           total_installed_size = 0
           installed_formulae.each do |f|
             next unless (bottle = f.bottle)
+
             # keep it quiet as there could be a lot of json fetch, it’s not intuitive to show them all.
             bottle.fetch_tab(quiet: !args.debug?)
             total_download_size += T.must(bottle.bottle_size) if bottle.bottle_size
             total_installed_size += T.must(bottle.installed_size) if bottle.installed_size
             sized_formulae.push(f, f.recursive_dependencies)
-            unless f.deps.empty?
-              f.recursive_dependencies.each do |dep|
-                bottle_dep = dep.to_formula.bottle
-                bottle_dep.fetch_tab(quiet: !args.debug?)
-                total_download_size += bottle_dep.bottle_size if bottle_dep.bottle_size
-                total_installed_size += bottle_dep.installed_size if bottle_dep.installed_size
-              end
+            next if f.deps.empty?
+
+            f.recursive_dependencies.each do |dep|
+              bottle_dep = dep.to_formula.bottle
+              bottle_dep.fetch_tab(quiet: !args.debug?)
+              total_download_size += bottle_dep.bottle_size if bottle_dep.bottle_size
+              total_installed_size += bottle_dep.installed_size if bottle_dep.installed_size
             end
           end
           puts "Formulae: #{sized_formulae.join(", ")}\n\n"
