@@ -180,9 +180,7 @@ module Homebrew
           odisabled "brew install --env", "`env :std` in specific formula files"
         end
 
-        sig { returns(NilClass) }
-
-        def ask_input
+        ask_input = lambda {
           ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
           accepted_inputs = %w[y yes]
           declined_inputs = %w[n no]
@@ -197,7 +195,7 @@ module Homebrew
               puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
             end
           end
-        end
+        }
 
         args.named.each do |name|
           if (tap_with_name = Tap.with_formula_name(name))
@@ -351,7 +349,7 @@ module Homebrew
           puts "Formulae: #{sized_formulae.join(", ")}\n\n"
           puts "Download Size: #{disk_usage_readable(total_download_size)}" if total_download_size
           puts "Install Size: #{disk_usage_readable(total_installed_size)}\n" if total_installed_size
-          ask_input
+          ask_input.call
         end
 
         Install.install_formulae(
