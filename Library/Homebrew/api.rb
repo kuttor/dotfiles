@@ -184,11 +184,6 @@ module Homebrew
 
       Tap.fetch(org, repo)
     end
-
-    sig { returns(T::Boolean) }
-    def self.internal_json_v3?
-      ENV["HOMEBREW_INTERNAL_JSON_V3"].present?
-    end
   end
 
   sig { params(block: T.proc.returns(T.untyped)).returns(T.untyped) }

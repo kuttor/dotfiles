@@ -213,71 +213,38 @@ module Formulary
       end
     end
 
-    add_deps = if Homebrew::API.internal_json_v3?
-      lambda do |deps|
-        T.bind(self, SoftwareSpec)
+    add_deps = lambda do |spec|
+      T.bind(self, SoftwareSpec)
 
-        deps&.each do |name, info|
-          tags = case info&.dig("tags")
-          in Array => tag_list
-            tag_list.map(&:to_sym)
-          in String => tag
-            tag.to_sym
-          else
-            nil
-          end
+      dep_json = json_formula.fetch("#{spec}_dependencies", json_formula)
 
-          if info&.key?("uses_from_macos")
-            bounds = info["uses_from_macos"].dup || {}
-            bounds.deep_transform_keys!(&:to_sym)
-            bounds.deep_transform_values!(&:to_sym)
+      dep_json["dependencies"]&.each do |dep|
+        # Backwards compatibility check - uses_from_macos used to be a part of dependencies on Linux
+        next if !json_formula.key?("uses_from_macos_bounds") && uses_from_macos_names.include?(dep) &&
+                !Homebrew::SimulateSystem.simulating_or_running_on_macos?
 
-            if tags
-              uses_from_macos name => tags, **bounds
-            else
-              uses_from_macos name, **bounds
-            end
-          elsif tags
-            depends_on name => tags
-          else
-            depends_on name
-          end
-        end
+        depends_on dep
       end
-    else
-      lambda do |spec|
-        T.bind(self, SoftwareSpec)
 
-        dep_json = json_formula.fetch("#{spec}_dependencies", json_formula)
-
-        dep_json["dependencies"]&.each do |dep|
+      [:build, :test, :recommended, :optional].each do |type|
+        dep_json["#{type}_dependencies"]&.each do |dep|
           # Backwards compatibility check - uses_from_macos used to be a part of dependencies on Linux
           next if !json_formula.key?("uses_from_macos_bounds") && uses_from_macos_names.include?(dep) &&
                   !Homebrew::SimulateSystem.simulating_or_running_on_macos?
 
-          depends_on dep
+          depends_on dep => type
         end
+      end
 
-        [:build, :test, :recommended, :optional].each do |type|
-          dep_json["#{type}_dependencies"]&.each do |dep|
-            # Backwards compatibility check - uses_from_macos used to be a part of dependencies on Linux
-            next if !json_formula.key?("uses_from_macos_bounds") && uses_from_macos_names.include?(dep) &&
-                    !Homebrew::SimulateSystem.simulating_or_running_on_macos?
+      dep_json["uses_from_macos"]&.each_with_index do |dep, index|
+        bounds = dep_json.fetch("uses_from_macos_bounds", [])[index].dup || {}
+        bounds.deep_transform_keys!(&:to_sym)
+        bounds.deep_transform_values!(&:to_sym)
 
-            depends_on dep => type
-          end
-        end
-
-        dep_json["uses_from_macos"]&.each_with_index do |dep, index|
-          bounds = dep_json.fetch("uses_from_macos_bounds", [])[index].dup || {}
-          bounds.deep_transform_keys!(&:to_sym)
-          bounds.deep_transform_values!(&:to_sym)
-
-          if dep.is_a?(Hash)
-            uses_from_macos dep.deep_transform_values(&:to_sym).merge(bounds)
-          else
-            uses_from_macos dep, bounds
-          end
+        if dep.is_a?(Hash)
+          uses_from_macos dep.deep_transform_values(&:to_sym).merge(bounds)
+        else
+          uses_from_macos dep, bounds
         end
       end
     end
@@ -299,15 +266,10 @@ module Formulary
             using:    urls_stable["using"]&.to_sym,
           }.compact
           url urls_stable["url"], **url_spec
-          version Homebrew::API.internal_json_v3? ? json_formula["version"] : json_formula["versions"]["stable"]
+          version json_formula["versions"]["stable"]
           sha256 urls_stable["checksum"] if urls_stable["checksum"].present?
 
-          if Homebrew::API.internal_json_v3?
-            instance_exec(json_formula["dependencies"], &add_deps)
-          else
-            instance_exec(:stable, &add_deps)
-          end
-
+          instance_exec(:stable, &add_deps)
           requirements[:stable]&.each do |req|
             depends_on req
           end
@@ -322,23 +284,14 @@ module Formulary
           }.compact
           url urls_head["url"], **url_spec
 
-          if Homebrew::API.internal_json_v3?
-            instance_exec(json_formula["head_dependencies"], &add_deps)
-          else
-            instance_exec(:head, &add_deps)
-          end
-
+          instance_exec(:head, &add_deps)
           requirements[:head]&.each do |req|
             depends_on req
           end
         end
       end
 
-      bottles_stable = if Homebrew::API.internal_json_v3?
-        json_formula["bottle"]
-      else
-        json_formula["bottle"]["stable"]
-      end.presence
+      bottles_stable = json_formula["bottle"]["stable"].presence
 
       if bottles_stable
         bottle do
@@ -426,26 +379,20 @@ module Formulary
                       .gsub(HOMEBREW_HOME_PLACEHOLDER, Dir.home)
       end
 
-      @tap_git_head_string = if Homebrew::API.internal_json_v3?
-        Homebrew::API::Formula.tap_git_head
-      else
-        json_formula["tap_git_head"]
-      end
+      @tap_git_head_string = json_formula["tap_git_head"]
 
       def tap_git_head
         self.class.instance_variable_get(:@tap_git_head_string)
       end
 
-      unless Homebrew::API.internal_json_v3?
-        @oldnames_array = json_formula["oldnames"] || [json_formula["oldname"]].compact
-        def oldnames
-          self.class.instance_variable_get(:@oldnames_array)
-        end
+      @oldnames_array = json_formula["oldnames"] || [json_formula["oldname"]].compact
+      def oldnames
+        self.class.instance_variable_get(:@oldnames_array)
+      end
 
-        @aliases_array = json_formula.fetch("aliases", [])
-        def aliases
-          self.class.instance_variable_get(:@aliases_array)
-        end
+      @aliases_array = json_formula.fetch("aliases", [])
+      def aliases
+        self.class.instance_variable_get(:@aliases_array)
       end
 
       @versioned_formulae_array = json_formula.fetch("versioned_formulae", [])
