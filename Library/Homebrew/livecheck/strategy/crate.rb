@@ -81,11 +81,11 @@ module Homebrew
             regex:            T.nilable(Regexp),
             provided_content: T.nilable(String),
             homebrew_curl:    T::Boolean,
-            _unused:          T.untyped,
+            unused:           T.untyped,
             block:            T.nilable(Proc),
           ).returns(T::Hash[Symbol, T.untyped])
         }
-        def self.find_versions(url:, regex: nil, provided_content: nil, homebrew_curl: false, **_unused, &block)
+        def self.find_versions(url:, regex: nil, provided_content: nil, homebrew_curl: false, **unused, &block)
           match_data = { matches: {}, regex:, url: }
           match_data[:cached] = true if provided_content.is_a?(String)
 
@@ -97,7 +97,13 @@ module Homebrew
           content = if provided_content
             provided_content
           else
-            match_data.merge!(Strategy.page_content(match_data[:url], homebrew_curl:))
+            match_data.merge!(
+              Strategy.page_content(
+                match_data[:url],
+                url_options:   unused.fetch(:url_options, {}),
+                homebrew_curl:,
+              ),
+            )
             match_data[:content]
           end
           return match_data unless content

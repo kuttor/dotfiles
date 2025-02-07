@@ -20,6 +20,14 @@ class Livecheck
   sig { returns(T.nilable(String)) }
   attr_reader :skip_msg
 
+  # A block used by strategies to identify version information.
+  sig { returns(T.nilable(Proc)) }
+  attr_reader :strategy_block
+
+  # Options used by `Strategy` methods to modify `curl` behavior.
+  sig { returns(T.nilable(T::Hash[Symbol, T.untyped])) }
+  attr_reader :url_options
+
   sig { params(package_or_resource: T.any(Cask::Cask, T.class_of(Formula), Resource)).void }
   def initialize(package_or_resource)
     @package_or_resource = package_or_resource
@@ -32,6 +40,7 @@ class Livecheck
     @strategy_block = T.let(nil, T.nilable(Proc))
     @throttle = T.let(nil, T.nilable(Integer))
     @url = T.let(nil, T.any(NilClass, String, Symbol))
+    @url_options = T.let(nil, T.nilable(T::Hash[Symbol, T.untyped]))
   end
 
   # Sets the `@referenced_cask_name` instance variable to the provided `String`
@@ -134,9 +143,6 @@ class Livecheck
     end
   end
 
-  sig { returns(T.nilable(Proc)) }
-  attr_reader :strategy_block
-
   # Sets the `@throttle` instance variable to the provided `Integer` or returns
   # the `@throttle` instance variable when no argument is provided.
   sig {
@@ -158,13 +164,22 @@ class Livecheck
   # `@url` instance variable when no argument is provided. The argument can be
   # a `String` (a URL) or a supported `Symbol` corresponding to a URL in the
   # formula/cask/resource (e.g. `:stable`, `:homepage`, `:head`, `:url`).
+  # Any options provided to the method are passed through to `Strategy` methods
+  # (`page_headers`, `page_content`).
   sig {
     params(
       # URL to check for version information.
-      url: T.any(String, Symbol),
+      url:       T.any(String, Symbol),
+      post_form: T.nilable(T::Hash[T.any(String, Symbol), String]),
+      post_json: T.nilable(T::Hash[T.any(String, Symbol), String]),
     ).returns(T.nilable(T.any(String, Symbol)))
   }
-  def url(url = T.unsafe(nil))
+  def url(url = T.unsafe(nil), post_form: nil, post_json: nil)
+    raise ArgumentError, "Only use `post_form` or `post_json`, not both" if post_form && post_json
+
+    options = { post_form:, post_json: }.compact
+    @url_options = options if options.present?
+
     case url
     when nil
       @url
@@ -183,14 +198,15 @@ class Livecheck
   sig { returns(T::Hash[String, T.untyped]) }
   def to_hash
     {
-      "cask"     => @referenced_cask_name,
-      "formula"  => @referenced_formula_name,
-      "regex"    => @regex,
-      "skip"     => @skip,
-      "skip_msg" => @skip_msg,
-      "strategy" => @strategy,
-      "throttle" => @throttle,
-      "url"      => @url,
+      "cask"        => @referenced_cask_name,
+      "formula"     => @referenced_formula_name,
+      "regex"       => @regex,
+      "skip"        => @skip,
+      "skip_msg"    => @skip_msg,
+      "strategy"    => @strategy,
+      "throttle"    => @throttle,
+      "url"         => @url,
+      "url_options" => @url_options,
     }
   end
 end
