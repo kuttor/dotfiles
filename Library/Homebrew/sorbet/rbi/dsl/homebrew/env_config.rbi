@@ -317,6 +317,6 @@ module Homebrew::EnvConfig
     def verify_attestations?; end
 
     sig { returns(T::Boolean) }
-    def ask?; end
+    def install_ask?; end
   end
 end

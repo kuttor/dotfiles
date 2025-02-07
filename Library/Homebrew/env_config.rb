@@ -48,8 +48,8 @@ module Homebrew
                      "trying any other/default URLs.",
         boolean:     true,
       },
-      HOMEBREW_ASK:                              {
-        description: "If set, pass `--ask`to all formula install commands.",
+      HOMEBREW_INSTALL_ASK:                      {
+        description: "If set, pass `--install-ask`to all formula install commands.",
         boolean:     true,
       },
       HOMEBREW_AUTO_UPDATE_SECS:                 {
