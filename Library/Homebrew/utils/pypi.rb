@@ -401,7 +401,8 @@ module PyPI
       end
     end
 
-    resource_section = "#{package_errors}\n#{new_resource_blocks}"
+    package_errors += "\n" if package_errors.present?
+    resource_section = "#{package_errors}#{new_resource_blocks}"
 
     odie "Excluded superfluous packages: #{exclude_packages.join(", ")}" if exclude_packages.any?
 
