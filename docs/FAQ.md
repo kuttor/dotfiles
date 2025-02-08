@@ -1,5 +1,5 @@
 ---
-last_review_date: "1970-01-01"
+last_review_date: "2025-02-08"
 ---
 
 # FAQ (Frequently Asked Questions)
@@ -158,10 +158,9 @@ Ensure you have a [local copy of `homebrew/core`](#can-i-edit-formulae-myself), 
 
 ```sh
 brew update
-brew install hub
+brew install gh
 cd "$(brew --repository homebrew/core)"
-hub fetch github_username
-hub pr checkout pull_request_number
+gh pr checkout pull_request_number
 ```
 
 ## Why was a formula deleted or disabled?
