@@ -35,4 +35,7 @@ gem:
     - unicode-display_width
     - unicode-emoji
     - yard-sorbet
+    # The tapioca generated gem is not correct or sufficient for pycall
+    # so we need to generate our own:
+    - pycall
   prerequire: sorbet/tapioca/prerequire.rb

@@ -106,6 +106,7 @@
 **/vendor/bundle/ruby/*/gems/prism-*/
 **/vendor/bundle/ruby/*/gems/psych-*/
 **/vendor/bundle/ruby/*/gems/pry-*/
+**/vendor/bundle/ruby/*/gems/pycall-*/
 **/vendor/bundle/ruby/*/gems/racc-*/
 **/vendor/bundle/ruby/*/gems/rainbow-*/
 **/vendor/bundle/ruby/*/gems/rbi-*/

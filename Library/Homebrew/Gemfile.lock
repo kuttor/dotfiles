@@ -43,6 +43,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (6.0.1)
+    pycall (1.5.2)
     racc (1.8.1)
     rainbow (3.1.1)
     rbi (0.2.4)
@@ -169,6 +170,7 @@ DEPENDENCIES
   patchelf
   plist
   pry
+  pycall
   redcarpet
   rexml
   rspec

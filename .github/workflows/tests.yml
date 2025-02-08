@@ -115,7 +115,6 @@ jobs:
         run: |
           brew tap homebrew/bundle
           brew tap homebrew/command-not-found
-          brew tap homebrew/formula-analytics
           brew tap homebrew/portable-ruby
           brew tap homebrew/services
 
@@ -129,7 +128,6 @@ jobs:
                      homebrew/test-bot
 
           brew style homebrew/command-not-found \
-                     homebrew/formula-analytics \
                      homebrew/portable-ruby
 
       - name: Run brew style on homebrew/cask
@@ -181,9 +179,6 @@ jobs:
       - name: Run brew audit --skip-style on homebrew/cask
         run: |
           brew audit --skip-style --except=version --tap=homebrew/cask
-
-      - name: Generate formula API
-        run: brew generate-formula-api --dry-run
 
       - name: Generate cask API
         run: brew generate-cask-api --dry-run
@@ -398,3 +393,46 @@ jobs:
       - run: brew install gnu-tar
 
       - run: brew test-bot --only-formulae --only-json-tab --test-default-formula
+
+  test-analytics:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    needs: syntax
+    if: github.repository_owner == 'Homebrew' && github.event_name != 'push'
+    steps:
+    - name: Set up Homebrew
+      id: set-up-homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+
+    - name: Setup Python
+      uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+      with:
+        python-version-file: ${{ steps.set-up-homebrew.outputs.repository-path }}/Library/Homebrew/formula-analytics/.python-version
+
+    - name: Cache Homebrew Bundler RubyGems
+      id: cache
+      uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+      with:
+        path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+        key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+        restore-keys: ${{ runner.os }}-rubygems-
+
+    - name: Install Homebrew Bundler RubyGems
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: brew install-bundler-gems
+
+    - run: brew formula-analytics --setup
+
+    - run: brew formula-analytics --install --json --days-ago=2
+      if: github.event.pull_request.head.repo.fork == false && (github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]')
+      env:
+        HOMEBREW_INFLUXDB_TOKEN: ${{ secrets.HOMEBREW_INFLUXDB_READ_TOKEN }}
+
+    - run: brew generate-analytics-api
+      if: github.event.pull_request.head.repo.fork == false && (github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]')
+      env:
+        HOMEBREW_INFLUXDB_TOKEN: ${{ secrets.HOMEBREW_INFLUXDB_READ_TOKEN }}
