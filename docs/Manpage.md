@@ -2281,6 +2281,82 @@ form of *`user`*`/`*`repo`*`/`*`formula`*.
 
 Display the path where *`formula`* is located.
 
+### `formula-analytics`
+
+Query Homebrew's analytics.
+
+`--days-ago`
+
+: Query from the specified days ago until the present. The default is 30 days.
+
+`--install`
+
+: Output the number of specifically requested installations or installation as
+  dependencies of the formula. This is the default.
+
+`--cask-install`
+
+: Output the number of installations of casks.
+
+`--install-on-request`
+
+: Output the number of specifically requested installations of the formula.
+
+`--build-error`
+
+: Output the number of build errors for the formulae.
+
+`--os-version`
+
+: Output OS versions.
+
+`--homebrew-devcmdrun-developer`
+
+: Output devcmdrun/HOMEBREW\_DEVELOPER.
+
+`--homebrew-os-arch-ci`
+
+: Output OS/Architecture/CI.
+
+`--homebrew-prefixes`
+
+: Output Homebrew prefixes.
+
+`--homebrew-versions`
+
+: Output Homebrew versions.
+
+`--brew-command-run`
+
+: Output `brew` commands run.
+
+`--brew-command-run-options`
+
+: Output `brew` commands run with options.
+
+`--brew-test-bot-test`
+
+: Output `brew test-bot` steps run.
+
+`--json`
+
+: Output JSON. This is required: plain text support has been removed.
+
+`--all-core-formulae-json`
+
+: Output a different JSON format containing the JSON data for all
+  Homebrew/homebrew-core formulae.
+
+`--setup`
+
+: Install the necessary gems, require them and exit without running a query.
+
+### `generate-analytics-api`
+
+Generates analytics API data files for formulae.brew.sh.
+
+The generated files are written to the current directory.
+
 ### `generate-cask-api` \[`--dry-run`\]
 
 Generate `homebrew/cask` API data files for <https://formulae.brew.sh>. The
