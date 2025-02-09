@@ -1448,6 +1448,60 @@ Extract the specified \fIversion\fP of \fIformula\fP instead of the most recent\
 Overwrite the destination formula if it already exists\.
 .SS "\fBformula\fP \fIformula\fP \fR[\.\.\.]"
 Display the path where \fIformula\fP is located\.
+.SS "\fBformula\-analytics\fP"
+Query Homebrew\[u2019]s analytics\.
+.TP
+\fB\-\-days\-ago\fP
+Query from the specified days ago until the present\. The default is 30 days\.
+.TP
+\fB\-\-install\fP
+Output the number of specifically requested installations or installation as dependencies of the formula\. This is the default\.
+.TP
+\fB\-\-cask\-install\fP
+Output the number of installations of casks\.
+.TP
+\fB\-\-install\-on\-request\fP
+Output the number of specifically requested installations of the formula\.
+.TP
+\fB\-\-build\-error\fP
+Output the number of build errors for the formulae\.
+.TP
+\fB\-\-os\-version\fP
+Output OS versions\.
+.TP
+\fB\-\-homebrew\-devcmdrun\-developer\fP
+Output devcmdrun/HOMEBREW_DEVELOPER\.
+.TP
+\fB\-\-homebrew\-os\-arch\-ci\fP
+Output OS/Architecture/CI\.
+.TP
+\fB\-\-homebrew\-prefixes\fP
+Output Homebrew prefixes\.
+.TP
+\fB\-\-homebrew\-versions\fP
+Output Homebrew versions\.
+.TP
+\fB\-\-brew\-command\-run\fP
+Output \fBbrew\fP commands run\.
+.TP
+\fB\-\-brew\-command\-run\-options\fP
+Output \fBbrew\fP commands run with options\.
+.TP
+\fB\-\-brew\-test\-bot\-test\fP
+Output \fBbrew test\-bot\fP steps run\.
+.TP
+\fB\-\-json\fP
+Output JSON\. This is required: plain text support has been removed\.
+.TP
+\fB\-\-all\-core\-formulae\-json\fP
+Output a different JSON format containing the JSON data for all Homebrew/homebrew\-core formulae\.
+.TP
+\fB\-\-setup\fP
+Install the necessary gems, require them and exit without running a query\.
+.SS "\fBgenerate\-analytics\-api\fP"
+Generates analytics API data files for formulae\.brew\.sh\.
+.P
+The generated files are written to the current directory\.
 .SS "\fBgenerate\-cask\-api\fP \fR[\fB\-\-dry\-run\fP]"
 Generate \fBhomebrew/cask\fP API data files for 
 .UR https://formulae\.brew\.sh

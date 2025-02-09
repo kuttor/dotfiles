@@ -43,7 +43,9 @@ environment
 extract
 fetch
 formula
+formula-analytics
 formulae
+generate-analytics-api
 generate-cask-api
 generate-cask-ci-matrix
 generate-formula-api
