@@ -2,6 +2,9 @@ name: Docker
 
 on:
   pull_request:
+  push:
+    branches:
+      - master
   merge_group:
   release:
     types:
@@ -74,7 +77,7 @@ jobs:
                 "homebrew/brew:latest"
               )
             fi
-          elif [[ "${GITHUB_EVENT_NAME}" == "merge_group" &&
+          elif [[ "${GITHUB_EVENT_NAME}" == "push" &&
                   "${GITHUB_REF}" == "refs/heads/master" &&
                   "${{ matrix.version }}" == "22.04" ]]; then
             tags+=(
