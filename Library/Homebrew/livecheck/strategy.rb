@@ -12,8 +12,6 @@ module Homebrew
     module Strategy
       extend Utils::Curl
 
-      module_function
-
       # {Strategy} priorities informally range from 1 to 10, where 10 is the
       # highest priority. 5 is the default priority because it's roughly in
       # the middle of this range. Strategies with a priority of 0 (or lower)
@@ -98,7 +96,7 @@ module Homebrew
       # loaded, otherwise livecheck won't be able to use them.
       # @return [Hash]
       sig { returns(T::Hash[Symbol, T.untyped]) }
-      def strategies
+      def self.strategies
         @strategies ||= T.let(Strategy.constants.sort.each_with_object({}) do |const_symbol, hash|
           constant = Strategy.const_get(const_symbol)
           next unless constant.is_a?(Class)
@@ -116,7 +114,7 @@ module Homebrew
       #   `Symbol` (e.g. `:page_match`)
       # @return [Class, nil]
       sig { params(symbol: T.nilable(Symbol)).returns(T.untyped) }
-      def from_symbol(symbol)
+      def self.from_symbol(symbol)
         strategies[symbol] if symbol.present?
       end
 
@@ -138,7 +136,7 @@ module Homebrew
           block_provided:     T::Boolean,
         ).returns(T::Array[T.untyped])
       }
-      def from_url(url, livecheck_strategy: nil, regex_provided: false, block_provided: false)
+      def self.from_url(url, livecheck_strategy: nil, regex_provided: false, block_provided: false)
         usable_strategies = strategies.select do |strategy_symbol, strategy|
           if strategy == PageMatch
             # Only treat the strategy as usable if the `livecheck` block
@@ -178,7 +176,7 @@ module Homebrew
           post_json: T.nilable(T::Hash[T.any(String, Symbol), String]),
         ).returns(T::Array[String])
       }
-      def post_args(post_form: nil, post_json: nil)
+      def self.post_args(post_form: nil, post_json: nil)
         if post_form.present?
           require "uri"
           ["--data", URI.encode_www_form(post_form)]
