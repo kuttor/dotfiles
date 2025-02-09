@@ -4216,7 +4216,7 @@ class Formula
         lambda do |_|
           on_macos do
             T.bind(self, PourBottleCheck)
-            reason(<<~EOS)
+            reason(+<<~EOS)
               The bottle needs the Xcode Command Line Tools to be installed at /Library/Developer/CommandLineTools.
               Development tools provided by Xcode.app are not sufficient.
 
