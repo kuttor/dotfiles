@@ -100,9 +100,9 @@ module Homebrew
     sig { params(name: String).returns(String) }
     def latest_versioned_formula(name)
       name_prefix = "#{name}@"
-      Tap.fetch("homebrew/core").formula_names
-         .select { |f| f.start_with?(name_prefix) }
-         .max_by { |v| Gem::Version.new(v.sub(name_prefix, "")) } || "python"
+      CoreTap.instance.formula_names
+             .select { |f| f.start_with?(name_prefix) }
+             .max_by { |v| Gem::Version.new(v.sub(name_prefix, "")) } || "python"
     end
 
     sig { returns(String) }
