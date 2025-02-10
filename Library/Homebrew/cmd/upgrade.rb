@@ -71,6 +71,11 @@ module Homebrew
           [:switch, "--overwrite", {
             description: "Delete files that already exist in the prefix while linking.",
           }],
+          [:switch, "--ask", {
+            description: "Ask for confirmation before downloading and upgrading formulae. " \
+              "Print bottles and dependencies download size, install and net install size.",
+            env:         :ask,
+          }],
         ].each do |args|
           options = args.pop
           send(*args, **options)
@@ -215,6 +220,64 @@ module Homebrew
         end
 
         Install.perform_preinstall_checks_once
+
+        ask_input = lambda {
+          ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
+          accepted_inputs = %w[y yes]
+          declined_inputs = %w[n no]
+          loop do
+            result = $stdin.gets.chomp.strip.downcase
+            if accepted_inputs.include?(result)
+              puts "Proceeding with installation..."
+              break
+            elsif declined_inputs.include?(result)
+              return
+            else
+              puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
+            end
+          end
+        }
+
+        # Showing dependencies and required size to install
+        if args.ask?
+          ohai "Looking for bottles..."
+          sized_formulae = []
+          total_download_size = 0
+          total_installed_size = 0
+          total_net_size = 0
+          formulae_to_install.each do |f|
+            next unless (bottle = f.bottle)
+            kegs_size = 0
+            # keep it quiet as there could be a lot of json fetch, it’s not intuitive to show them all.
+            bottle.fetch_tab(quiet: !args.debug?)
+            total_download_size += T.must(bottle.bottle_size) if bottle.bottle_size
+            total_installed_size += T.must(bottle.installed_size) if bottle.installed_size
+            f.installed_kegs.each do |keg|
+              kegs_size += keg.disk_usage if keg.disk_usage
+            end
+            total_net_size += (bottle.installed_size - kegs_size) if bottle.installed_size
+            sized_formulae.push(f)
+            next if f.deps.empty?
+
+            # f.recursive_dependencies.each do |dep|
+            #   f_dep = dep.to_formula
+            #   kegs_dep_size = 0
+            #   bottle_dep = f_dep.bottle
+            #   bottle_dep.fetch_tab(quiet: !args.debug?)
+            #   total_download_size += bottle_dep.bottle_size if bottle_dep.bottle_size
+            #   total_installed_size += bottle_dep.installed_size if bottle_dep.installed_size
+            #   f_dep.installed_kegs.each do |keg|
+            #     kegs_dep_size += keg.disk_usage if keg.disk_usage
+            #   end
+            #   total_net_size += (bottle_dep.installed_size - kegs_dep_size) if bottle_dep.installed_size
+            # end
+          end
+          puts "Formulae: #{sized_formulae.join(", ")}\n\n"
+          puts "Download Size: #{disk_usage_readable(total_download_size)}" if total_download_size
+          puts "Install Size: #{disk_usage_readable(total_installed_size)}\n" if total_installed_size
+          puts "Net Install Size: #{disk_usage_readable(total_net_size)}\n" if total_net_size
+          ask_input.call
+        end
 
         Upgrade.upgrade_formulae(
           formulae_to_install,
