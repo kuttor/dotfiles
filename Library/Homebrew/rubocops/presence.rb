@@ -78,6 +78,7 @@ module RuboCop
           }
         PATTERN
 
+        sig { params(node: RuboCop::AST::IfNode).void }
         def on_if(node)
           return if ignore_if_node?(node)
 

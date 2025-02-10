@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "rubocops/extend/formula_cop"
@@ -133,7 +133,7 @@ module RuboCop
             problem "`env :userpaths` in homebrew/core formulae is deprecated"
           end
 
-          share_path_starts_with(body_node, @formula_name) do |share_node|
+          share_path_starts_with(body_node, T.must(@formula_name)) do |share_node|
             offending_node(share_node)
             problem "Use `pkgshare` instead of `share/\"#{@formula_name}\"`"
           end
@@ -162,11 +162,13 @@ module RuboCop
 
         # Check whether value starts with the formula name and then a "/", " " or EOS.
         # If we're checking for "#{bin}", we also check for "-" since similar binaries also don't need interpolation.
+        sig { params(path: String, starts_with: String, bin: T::Boolean).returns(T::Boolean) }
         def path_starts_with?(path, starts_with, bin: false)
           ending = bin ? "/|-|$" : "/| |$"
           path.match?(/^#{Regexp.escape(starts_with)}(#{ending})/)
         end
 
+        sig { params(path: String, starts_with: String).returns(T::Boolean) }
         def path_starts_with_bin?(path, starts_with)
           return false if path.include?(" ")
 

@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "rubocops/extend/formula_cop"
@@ -29,24 +29,25 @@ module RuboCop
 
           reason = parameters(keg_only_node).first
           offending_node(reason)
-          name = Regexp.new(@formula_name, Regexp::IGNORECASE)
+          name = Regexp.new(T.must(@formula_name), Regexp::IGNORECASE)
           reason = string_content(reason).sub(name, "")
           first_word = reason.split.first
 
           if /\A[A-Z]/.match?(reason) && !reason.start_with?(*allowlist)
             problem "'#{first_word}' from the `keg_only` reason should be '#{first_word.downcase}'." do |corrector|
               reason[0] = reason[0].downcase
-              corrector.replace(@offensive_node.source_range, "\"#{reason}\"")
+              corrector.replace(T.must(@offensive_node).source_range, "\"#{reason}\"")
             end
           end
 
           return unless reason.end_with?(".")
 
           problem "`keg_only` reason should not end with a period." do |corrector|
-            corrector.replace(@offensive_node.source_range, "\"#{reason.chop}\"")
+            corrector.replace(T.must(@offensive_node).source_range, "\"#{reason.chop}\"")
           end
         end
 
+        sig { params(node: RuboCop::AST::Node).void }
         def autocorrect(node)
           lambda do |corrector|
             reason = string_content(node)
