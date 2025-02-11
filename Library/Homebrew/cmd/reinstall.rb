@@ -152,7 +152,7 @@ module Homebrew
           # 1. The original formulae to install.
           # 2. Their outdated dependents (subject to pruning criteria).
           # 3. Optionally, any installed formula that depends on one of these and is outdated.
-          def compute_sized_formulae(formulae_to_install, check_dep: true)
+          compute_sized_formulae = lambda { |formulae_to_install, check_dep: true|
             sized_formulae = formulae_to_install.flat_map do |formula|
               # Always include the formula itself.
               formula_list = [formula]
@@ -184,10 +184,10 @@ module Homebrew
 
             # Uniquify based on a string representation (or any unique identifier)
             sized_formulae.uniq { |f| f.to_s }
-          end
+          }
 
           # Compute the total sizes (download, installed, and net) for the given formulae.
-          def compute_total_sizes(sized_formulae, debug: false)
+          compute_total_sizes = lambda { |sized_formulae, debug: false|
             total_download_size  = 0
             total_installed_size = 0
             total_net_size       = 0
@@ -213,15 +213,15 @@ module Homebrew
             { download: total_download_size,
               installed: total_installed_size,
               net: total_net_size }
-          end
+          }
 
           # Main block: if asking the user is enabled, show dependency and size information.
           # This part should be
           if args.ask?
             ohai "Looking for bottles..."
 
-            sized_formulae = compute_sized_formulae(formulae, check_dep: false)
-            sizes = compute_total_sizes(sized_formulae, debug: args.debug?)
+            sized_formulae = compute_sized_formulae.call(formulae, check_dep: false)
+            sizes = compute_total_sizes.call(sized_formulae, debug: args.debug?)
 
             puts "Formulae: #{sized_formulae.join(", ")}\n\n"
             puts "Download Size: #{disk_usage_readable(sizes[:download])}"
