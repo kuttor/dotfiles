@@ -65,7 +65,7 @@ module Homebrew
           }],
           [:switch, "--ask", {
             description: "Ask for confirmation before downloading and upgrading formulae. " \
-              "Print bottles and dependencies download size, install and net install size.",
+                         "Print bottles and dependencies download size, install and net install size.",
             env:         :ask,
           }],
         ].each do |args|
@@ -174,7 +174,7 @@ module Homebrew
             end
 
             # Add any installed formula that depends on one of the sized formulae and is outdated.
-            unless Homebrew::EnvConfig.no_installed_dependents_check? || !check_dep
+            if !Homebrew::EnvConfig.no_installed_dependents_check? && check_dep
               installed_outdated = Formula.installed.select do |installed_formula|
                 installed_formula.outdated? &&
                   installed_formula.deps.any? { |dep| sized_formulae.include?(dep.to_formula) }
@@ -183,7 +183,7 @@ module Homebrew
             end
 
             # Uniquify based on a string representation (or any unique identifier)
-            sized_formulae.uniq { |f| f.to_s }
+            sized_formulae.uniq(&:to_s)
           }
 
           # Compute the total sizes (download, installed, and net) for the given formulae.
@@ -202,17 +202,15 @@ module Homebrew
               total_installed_size += bottle.installed_size.to_i if bottle.installed_size
 
               # Sum disk usage for all installed kegs of the formula.
-              if formula.installed_kegs.any?
-                kegs_dep_size = formula.installed_kegs.sum { |keg| keg.disk_usage.to_i }
-                if bottle.installed_size
-                  total_net_size += bottle.installed_size.to_i - kegs_dep_size
-                end
-              end
+              next if formula.installed_kegs.none?
+
+              kegs_dep_size = formula.installed_kegs.sum { |keg| keg.disk_usage.to_i }
+              total_net_size += bottle.installed_size.to_i - kegs_dep_size if bottle.installed_size
             end
 
-            { download: total_download_size,
+            { download:  total_download_size,
               installed: total_installed_size,
-              net: total_net_size }
+              net:       total_net_size }
           }
 
           # Main block: if asking the user is enabled, show dependency and size information.
