@@ -117,9 +117,7 @@ module Cask
       @dsl.language_eval
     end
 
-    ::Cask::DSL::DSL_METHODS.each do |method_name|
-      define_method(method_name) { |*args, &block| @dsl.send(method_name, *args, &block) }
-    end
+    def_delegators :@dsl, *::Cask::DSL::DSL_METHODS
 
     sig { params(caskroom_path: Pathname).returns(T::Array[[String, String]]) }
     def timestamped_versions(caskroom_path: self.caskroom_path)
