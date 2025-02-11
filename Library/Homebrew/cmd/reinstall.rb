@@ -63,6 +63,11 @@ module Homebrew
           [:switch, "-g", "--git", {
             description: "Create a Git repository, useful for creating patches to the software.",
           }],
+          [:switch, "--ask", {
+            description: "Ask for confirmation before downloading and upgrading formulae. " \
+              "Print bottles and dependencies download size, install and net install size.",
+            env:         :ask,
+          }],
         ].each do |args|
           options = args.pop
           send(*args, **options)
@@ -125,6 +130,106 @@ module Homebrew
 
         unless formulae.empty?
           Install.perform_preinstall_checks_once
+
+          ask_input = lambda {
+            ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
+            accepted_inputs = %w[y yes]
+            declined_inputs = %w[n no]
+            loop do
+              result = $stdin.gets.chomp.strip.downcase
+              if accepted_inputs.include?(result)
+                puts "Proceeding with installation..."
+                break
+              elsif declined_inputs.include?(result)
+                exit 0
+              else
+                puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
+              end
+            end
+          }
+
+          # Build a unique list of formulae to size by including:
+          # 1. The original formulae to install.
+          # 2. Their outdated dependents (subject to pruning criteria).
+          # 3. Optionally, any installed formula that depends on one of these and is outdated.
+          def compute_sized_formulae(formulae_to_install, check_dep: true)
+            sized_formulae = formulae_to_install.flat_map do |formula|
+              # Always include the formula itself.
+              formula_list = [formula]
+
+              # If there are dependencies, try to gather outdated, bottled ones.
+              if formula.deps.any? && check_dep
+                outdated_dependents = formula.recursive_dependencies do |_, dep|
+                  dep_formula = dep.to_formula
+                  next :prune if dep_formula.deps.empty?
+                  next :prune unless dep_formula.outdated?
+                  next :prune unless dep_formula.bottled?
+                end.flatten
+
+                # Convert each dependency to its formula.
+                formula_list.concat(outdated_dependents.flat_map { |dep| Array(dep.to_formula) })
+              end
+
+              formula_list
+            end
+
+            # Add any installed formula that depends on one of the sized formulae and is outdated.
+            unless Homebrew::EnvConfig.no_installed_dependents_check? || !check_dep
+              installed_outdated = Formula.installed.select do |installed_formula|
+                installed_formula.outdated? &&
+                  installed_formula.deps.any? { |dep| sized_formulae.include?(dep.to_formula) }
+              end
+              sized_formulae.concat(installed_outdated)
+            end
+
+            # Uniquify based on a string representation (or any unique identifier)
+            sized_formulae.uniq { |f| f.to_s }
+          end
+
+          # Compute the total sizes (download, installed, and net) for the given formulae.
+          def compute_total_sizes(sized_formulae, debug: false)
+            total_download_size  = 0
+            total_installed_size = 0
+            total_net_size       = 0
+
+            sized_formulae.each do |formula|
+              next unless (bottle = formula.bottle)
+
+              # Fetch additional bottle metadata (if necessary).
+              bottle.fetch_tab(quiet: !debug)
+
+              total_download_size  += bottle.bottle_size.to_i if bottle.bottle_size
+              total_installed_size += bottle.installed_size.to_i if bottle.installed_size
+
+              # Sum disk usage for all installed kegs of the formula.
+              if formula.installed_kegs.any?
+                kegs_dep_size = formula.installed_kegs.sum { |keg| keg.disk_usage.to_i }
+                if bottle.installed_size
+                  total_net_size += bottle.installed_size.to_i - kegs_dep_size
+                end
+              end
+            end
+
+            { download: total_download_size,
+              installed: total_installed_size,
+              net: total_net_size }
+          end
+
+          # Main block: if asking the user is enabled, show dependency and size information.
+          # This part should be
+          if args.ask?
+            ohai "Looking for bottles..."
+
+            sized_formulae = compute_sized_formulae(formulae, check_dep: false)
+            sizes = compute_total_sizes(sized_formulae, debug: args.debug?)
+
+            puts "Formulae: #{sized_formulae.join(", ")}\n\n"
+            puts "Download Size: #{disk_usage_readable(sizes[:download])}"
+            puts "Install Size:  #{disk_usage_readable(sizes[:installed])}"
+            puts "Net Install Size: #{disk_usage_readable(sizes[:net])}" if sizes[:net] != 0
+
+            ask_input.call
+          end
 
           formulae.each do |formula|
             if formula.pinned?
