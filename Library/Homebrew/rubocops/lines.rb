@@ -938,7 +938,7 @@ module RuboCop
             end
           end
 
-          [:build, [:build, :test]].each do |type|
+          [:build, [:build, :test], [:test, :build]].each do |type|
             find_method_with_args(body_node, :depends_on, "rustup" => type) do
               problem "Formulae in homebrew/core should use 'depends_on \"rust\" => #{type}' " \
                       "instead of '#{@offensive_node.source}'." do |corrector|
