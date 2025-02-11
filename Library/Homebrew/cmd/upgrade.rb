@@ -242,13 +242,13 @@ module Homebrew
         # 1. The original formulae to install.
         # 2. Their outdated dependents (subject to pruning criteria).
         # 3. Optionally, any installed formula that depends on one of these and is outdated.
-        def compute_sized_formulae(formulae_to_install)
+        def compute_sized_formulae(formulae_to_install, check_dep: true)
           sized_formulae = formulae_to_install.flat_map do |formula|
             # Always include the formula itself.
             formula_list = [formula]
 
             # If there are dependencies, try to gather outdated, bottled ones.
-            if formula.deps.any?
+            if formula.deps.any? && check_dep
               outdated_dependents = formula.recursive_dependencies do |_, dep|
                 dep_formula = dep.to_formula
                 next :prune if dep_formula.deps.empty?
@@ -264,7 +264,7 @@ module Homebrew
           end
 
           # Add any installed formula that depends on one of the sized formulae and is outdated.
-          unless Homebrew::EnvConfig.no_installed_dependents_check?
+          unless Homebrew::EnvConfig.no_installed_dependents_check? || !check_dep
             installed_outdated = Formula.installed.select do |installed_formula|
               installed_formula.outdated? &&
                 installed_formula.deps.any? { |dep| sized_formulae.include?(dep.to_formula) }
@@ -292,9 +292,11 @@ module Homebrew
             total_installed_size += bottle.installed_size.to_i if bottle.installed_size
 
             # Sum disk usage for all installed kegs of the formula.
-            kegs_dep_size = formula.installed_kegs.sum { |keg| keg.disk_usage.to_i }
-            if bottle.installed_size
-              total_net_size += bottle.installed_size.to_i - kegs_dep_size
+            if formula.installed_kegs.any?
+              kegs_dep_size = formula.installed_kegs.sum { |keg| keg.disk_usage.to_i }
+              if bottle.installed_size
+                total_net_size += bottle.installed_size.to_i - kegs_dep_size
+              end
             end
           end
 
@@ -304,6 +306,7 @@ module Homebrew
         end
 
         # Main block: if asking the user is enabled, show dependency and size information.
+        # This part should be
         if args.ask?
           ohai "Looking for bottles..."
 
@@ -311,9 +314,9 @@ module Homebrew
           sizes = compute_total_sizes(sized_formulae, debug: args.debug?)
 
           puts "Formulae: #{sized_formulae.join(", ")}\n\n"
-          puts "Download Size: #{disk_usage_readable(sizes[:download])}" if sizes[:download] > 0
-          puts "Install Size:  #{disk_usage_readable(sizes[:installed])}" if sizes[:installed] > 0
-          puts "Net Install Size: #{disk_usage_readable(sizes[:net])}" if sizes[:net] > 0
+          puts "Download Size: #{disk_usage_readable(sizes[:download])}"
+          puts "Install Size:  #{disk_usage_readable(sizes[:installed])}"
+          puts "Net Install Size: #{disk_usage_readable(sizes[:net])}" if sizes[:net] != 0
 
           ask_input.call
         end
