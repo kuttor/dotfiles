@@ -220,6 +220,7 @@ module Homebrew
         path = fc.write_formula!
 
         formula = Homebrew.with_no_api_env do
+          CoreTap.instance.clear_cache
           Formula[fc.name]
         end
         PyPI.update_python_resources! formula, ignore_non_pypi_packages: true if args.python?
