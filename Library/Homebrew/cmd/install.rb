@@ -314,7 +314,6 @@ module Homebrew
           loop do
             result = $stdin.gets.chomp.strip.downcase
             if accepted_inputs.include?(result)
-              puts "Proceeding with installation..."
               break
             elsif declined_inputs.include?(result)
               exit 0
