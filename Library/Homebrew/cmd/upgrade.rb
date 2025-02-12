@@ -242,7 +242,7 @@ module Homebrew
         # 1. The original formulae to install.
         # 2. Their outdated dependents (subject to pruning criteria).
         # 3. Optionally, any installed formula that depends on one of these and is outdated.
-        compute_sized_formulae = lambda { |f, check_dep: true|
+        compute_sized_formulae = lambda { |f, check_dep: true, upgrade: true|
           sized_formulae = f.flat_map do |formula|
             # Always include the formula itself.
             formula_list = [formula]
@@ -252,7 +252,7 @@ module Homebrew
               outdated_dependents = formula.recursive_dependencies do |_, dep|
                 dep_formula = dep.to_formula
                 next :prune if dep_formula.deps.empty?
-                next :prune unless dep_formula.outdated?
+                next :prune if !upgrade || !dep_formula.outdated?
                 next :prune unless dep_formula.bottled?
               end.flatten
 
