@@ -394,7 +394,7 @@ module Homebrew
         if args.ask?
           ohai "Looking for bottles..."
 
-          sized_formulae = compute_sized_formulae.call(formulae_to_install, check_dep: true, upgrade: false)
+          sized_formulae = compute_sized_formulae.call(installed_formulae, check_dep: true, upgrade: false)
           sizes = compute_total_sizes.call(sized_formulae, debug: args.debug?)
 
           puts "Formulae: #{sized_formulae.join(", ")}\n\n"
