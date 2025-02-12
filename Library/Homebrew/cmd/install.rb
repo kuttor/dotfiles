@@ -317,7 +317,7 @@ module Homebrew
               puts "Proceeding with installation..."
               break
             elsif declined_inputs.include?(result)
-              return
+              exit 0
             else
               puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
             end
