@@ -112,7 +112,7 @@ Replace this with the installation directory on your system.
 For more insight, re-run the installer or inspect [the installer's source](https://github.com/Homebrew/install/blob/deacfa6a6e62e5f4002baf9e1fac7a96e9aa5d41/install.sh#L1072-L1088)
 to see how the installer constructs the path it recommends.
 
-See [Tips N' Tricks > Loading Homebrew from the same dotfiles on different operating systems](Tips-N'-Tricks.md#Loading-Homebrew-from-the-same-dotfiles-on-different-operating-systems)
+See [Tips N' Tricks > Loading Homebrew from the same dotfiles on different operating systems](Tips-N'-Tricks.md#loading-homebrew-from-the-same-dotfiles-on-different-operating-systems)
 for another way to handle this across multiple operating systems.
 
 ## Uninstallation
