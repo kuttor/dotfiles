@@ -39,21 +39,19 @@ RSpec.describe Homebrew::Livecheck::Options do
 
   describe "#to_h" do
     it "returns a Hash of all instance variables" do
-      expect(options.new.to_h).to eq({
-        homebrew_curl: nil,
-        post_form:     nil,
-        post_json:     nil,
-      })
+      # `T::Struct.serialize` omits `nil` values
+      expect(options.new.to_h).to eq({})
+
+      expect(options.new(**args).to_h).to eq(args)
     end
   end
 
   describe "#to_hash" do
     it "returns a Hash of all instance variables, using String keys" do
-      expect(options.new.to_hash).to eq({
-        "homebrew_curl" => nil,
-        "post_form"     => nil,
-        "post_json"     => nil,
-      })
+      # `T::Struct.serialize` omits `nil` values
+      expect(options.new.to_hash).to eq({})
+
+      expect(options.new(**args).to_hash).to eq(args.transform_keys(&:to_s))
     end
   end
 
@@ -64,6 +62,8 @@ RSpec.describe Homebrew::Livecheck::Options do
       expect(options.new(**args).merge(options.new(**other_args)))
         .to eq(options.new(**merged_hash))
       expect(options.new(**args).merge(args))
+        .to eq(options.new(**args))
+      expect(options.new(**args).merge({}))
         .to eq(options.new(**args))
     end
   end
@@ -81,6 +81,10 @@ RSpec.describe Homebrew::Livecheck::Options do
 
     it "returns false if any instance variables differ" do
       expect(options.new == options.new(**args)).to be false
+    end
+
+    it "returns false if other object is not the same class" do
+      expect(options.new == :other).to be false
     end
   end
 
