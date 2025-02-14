@@ -103,11 +103,12 @@ While it's difficult to document the precise path for every shell,
 typically, what follows must be in your shell's `rc` or `profile` file:
 
 ```sh
-eval "${HOMEBREW_PREFIX}/bin/brew shellenv)"
+eval "<Homebrew prefix path>/bin/brew shellenv)"
 ```
 
 where `${HOMEBREW_PREFIX}` is the Homebrew installation directory.
 Replace this with the installation directory on your system.
+See the [FAQ about default installation locations](FAQ.md#why-should-i-install-homebrew-in-the-default-location).
 
 For more insight, re-run the installer or inspect [the installer's source](https://github.com/Homebrew/install/blob/deacfa6a6e62e5f4002baf9e1fac7a96e9aa5d41/install.sh#L1072-L1088)
 to see how the installer constructs the path it recommends.
