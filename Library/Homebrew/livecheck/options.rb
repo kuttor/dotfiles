@@ -1,4 +1,4 @@
-# typed: strict
+# typed: strong
 # frozen_string_literal: true
 
 module Homebrew
@@ -30,11 +30,13 @@ module Homebrew
 
       # Returns a `Hash` of all instance variables, using `String` keys.
       sig { returns(T::Hash[String, T.untyped]) }
-      def to_hash = serialize
+      def to_hash
+        T.let(serialize, T::Hash[String, T.untyped])
+      end
 
       # Returns a `Hash` of all instance variables, using `Symbol` keys.
       sig { returns(T::Hash[Symbol, T.untyped]) }
-      def to_h = serialize.transform_keys(&:to_sym)
+      def to_h = to_hash.transform_keys(&:to_sym)
 
       # Returns a new object formed by merging `other` values with a copy of
       # `self`.
@@ -54,10 +56,11 @@ module Homebrew
         Options.new(**new_options)
       end
 
-      sig { params(other: T.untyped).returns(T::Boolean) }
+      sig { params(other: Object).returns(T::Boolean) }
       def ==(other)
-        instance_of?(other.class) &&
-          @homebrew_curl == other.homebrew_curl &&
+        return false unless other.is_a?(Options)
+
+        @homebrew_curl == other.homebrew_curl &&
           @post_form == other.post_form &&
           @post_json == other.post_json
       end
@@ -65,7 +68,7 @@ module Homebrew
 
       # Whether the object has only default values.
       sig { returns(T::Boolean) }
-      def empty? = serialize.empty?
+      def empty? = to_hash.empty?
 
       # Whether the object has any non-default values.
       sig { returns(T::Boolean) }
