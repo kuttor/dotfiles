@@ -170,7 +170,7 @@ module Homebrew
               match = case dep
               when Dependency
                 dep.to_formula.full_name == ff.full_name if dep.name.include?("/")
-              when CaskDependent, Formula
+              when Requirement
                 nil
               else
                 T.absurd(dep)

@@ -66,9 +66,9 @@ module DependenciesHelpers
   end
 
   sig {
-    params(dependables: T::Array[T.any(Formula, CaskDependent)], ignores: T::Array[Symbol],
+    params(dependables: T.any(Dependencies, Requirements), ignores: T::Array[Symbol],
            includes: T::Array[Symbol])
-      .returns(T::Array[T.any(Formula, CaskDependent)])
+      .returns(T::Array[T.any(Dependency, Requirement)])
   }
   def select_includes(dependables, ignores, includes)
     dependables.select do |dep|
