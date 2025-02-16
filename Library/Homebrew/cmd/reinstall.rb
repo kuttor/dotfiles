@@ -156,6 +156,7 @@ module Homebrew
               # Always include the formula itself.
               formula_list = [formula]
               next unless upgrade
+
               deps = args.build_from_source? ? formula.deps.build : formula.deps.required
               # If there are dependencies, try to gather outdated, bottled ones.
               if deps.any? && check_dep

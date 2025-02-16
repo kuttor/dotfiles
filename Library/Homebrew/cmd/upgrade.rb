@@ -230,7 +230,7 @@ module Homebrew
             if accepted_inputs.include?(result)
               break
             elsif declined_inputs.include?(result)
-              return
+              exit 0
             else
               puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
             end
@@ -246,6 +246,7 @@ module Homebrew
             # Always include the formula itself.
             formula_list = [formula]
             next unless upgrade
+
             deps = args.build_from_source? ? formula.deps.build : formula.deps.required
             # If there are dependencies, try to gather outdated, bottled ones.
             if deps.any? && check_dep
@@ -269,7 +270,6 @@ module Homebrew
 
           sized_formulae.uniq(&:to_s)
         }
-
 
         # Compute the total sizes (download, installed, and net) for the given formulae.
         compute_total_sizes = lambda { |sized_formulae, debug: false|
