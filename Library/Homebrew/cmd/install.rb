@@ -331,33 +331,29 @@ module Homebrew
           sized_formulae = f.flat_map do |formula|
             # Always include the formula itself.
             formula_list = [formula]
+            next unless upgrade
 
+            deps = args.build_from_source? ? formula.deps.build : formula.deps.required
             # If there are dependencies, try to gather outdated, bottled ones.
-            if formula.deps.any? && check_dep
-              outdated_dependents = formula.recursive_dependencies do |_, dep|
-                dep_formula = dep.to_formula
-                next :prune if dep_formula.deps.empty?
-                next :prune if !upgrade || !dep_formula.outdated?
-                next :prune unless dep_formula.bottled?
-              end.flatten
+            if deps.any? && check_dep
+              outdated_dependents = deps.map(&:to_formula).reject(&:pinned?).select do |dep|
+                dep.installed_kegs.empty? || (dep.bottled? && dep.outdated?)
+              end
 
-              # Convert each dependency to its formula.
-              formula_list.concat(outdated_dependents.flat_map { |dep| Array(dep.to_formula) })
+              formula_list.concat(outdated_dependents)
             end
 
             formula_list
           end
 
           # Add any installed formula that depends on one of the sized formulae and is outdated.
-          if !Homebrew::EnvConfig.no_installed_dependents_check? && check_dep
-            installed_outdated = Formula.installed.select do |installed_formula|
+          if check_dep && !Homebrew::EnvConfig.no_installed_dependents_check?
+            sized_formulae.concat(Formula.installed.select do |installed_formula|
               installed_formula.outdated? &&
-                installed_formula.deps.any? { |dep| sized_formulae.include?(dep.to_formula) }
-            end
-            sized_formulae.concat(installed_outdated)
+                installed_formula.deps.required.any? { |dep| sized_formulae.include?(dep.to_formula) }
+            end)
           end
 
-          # Uniquify based on a string representation (or any unique identifier)
           sized_formulae.uniq(&:to_s)
         }
 
@@ -389,11 +385,10 @@ module Homebrew
         }
 
         # Main block: if asking the user is enabled, show dependency and size information.
-        # This part should be
         if args.ask?
           ohai "Looking for bottles..."
 
-          sized_formulae = compute_sized_formulae.call(installed_formulae, check_dep: true, upgrade: false)
+          sized_formulae = compute_sized_formulae.call(formulae, check_dep: false, upgrade: false)
           sizes = compute_total_sizes.call(sized_formulae, debug: args.debug?)
 
           puts "Formulae: #{sized_formulae.join(", ")}\n\n"
