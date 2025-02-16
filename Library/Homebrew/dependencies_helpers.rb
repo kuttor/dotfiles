@@ -79,14 +79,16 @@ module DependenciesHelpers
   end
 
   sig {
-    params(formulae_or_casks: T::Array[T.any(Formula, Cask::Cask)]).returns(T::Array[T.any(Formula, CaskDependent)])
+    params(formulae_or_casks: T::Array[T.any(Formula, Keg, Cask::Cask)])
+      .returns(T::Array[T.any(Formula, CaskDependent)])
   }
   def dependents(formulae_or_casks)
     formulae_or_casks.map do |formula_or_cask|
-      if formula_or_cask.is_a?(Formula)
-        formula_or_cask
+      case formula_or_cask
+      when Formula then formula_or_cask
+      when Cask::Cask then CaskDependent.new(formula_or_cask)
       else
-        CaskDependent.new(formula_or_cask)
+        raise TypeError, "Unsupported type: #{formula_or_cask.class}"
       end
     end
   end

@@ -65,7 +65,7 @@ module Homebrew
             description = formula_or_cask.desc.presence || Formatter.warning("[no description]")
             desc[formula_or_cask.full_name] = "(#{formula_or_cask.name.join(", ")}) #{description}"
           else
-            T.absurd(formula_or_cask)
+            raise TypeError, "Unsupported formula_or_cask type: #{formula_or_cask.class}"
           end
         end
         Descriptions.new(desc).print

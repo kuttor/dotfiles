@@ -81,7 +81,7 @@ module Homebrew
               end
             end
           else
-            T.absurd(formula_or_cask)
+            raise "Invalid type: #{formula_or_cask.class}"
           end
         end
       end
