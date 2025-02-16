@@ -70,26 +70,29 @@ module Homebrew
           method:             T.nilable(Symbol),
           uniq:               T::Boolean,
           warn:               T::Boolean,
-        ).returns(T::Array[T.any(Formula, Keg, Cask::Cask)])
+        ).returns(T::Array[T.any(Formula, Cask::Cask)])
       }
       def to_formulae_and_casks(
         only: parent.only_formula_or_cask, ignore_unavailable: false, method: nil, uniq: true, warn: false
       )
         @to_formulae_and_casks ||= T.let(
-          {}, T.nilable(T::Hash[T.nilable(Symbol), T::Array[T.any(Formula, Keg, Cask::Cask)]])
+          {}, T.nilable(T::Hash[T.nilable(Symbol), T::Array[T.any(Formula, Cask::Cask)]])
         )
-        @to_formulae_and_casks[only] ||= downcased_unique_named.flat_map do |name|
-          options = { warn: }.compact
-          load_formula_or_cask(name, only:, method:, **options)
-        rescue FormulaUnreadableError, FormulaClassUnavailableError,
-               TapFormulaUnreadableError, TapFormulaClassUnavailableError,
-               Cask::CaskUnreadableError
-          # Need to rescue before `*UnavailableError` (superclass of this)
-          # The formula/cask was found, but there's a problem with its implementation
-          raise
-        rescue NoSuchKegError, FormulaUnavailableError, Cask::CaskUnavailableError, FormulaOrCaskUnavailableError
-          ignore_unavailable ? [] : raise
-        end.freeze
+        @to_formulae_and_casks[only] ||= T.cast(
+          downcased_unique_named.flat_map do |name|
+            options = { warn: }.compact
+            load_formula_or_cask(name, only:, method:, **options)
+          rescue FormulaUnreadableError, FormulaClassUnavailableError,
+                 TapFormulaUnreadableError, TapFormulaClassUnavailableError,
+                 Cask::CaskUnreadableError
+            # Need to rescue before `*UnavailableError` (superclass of this)
+            # The formula/cask was found, but there's a problem with its implementation
+            raise
+          rescue NoSuchKegError, FormulaUnavailableError, Cask::CaskUnavailableError, FormulaOrCaskUnavailableError
+            ignore_unavailable ? [] : raise
+          end.freeze,
+          T::Array[T.any(Formula, Cask::Cask)],
+        )
 
         if uniq
           @to_formulae_and_casks.fetch(only).uniq.freeze
@@ -120,7 +123,7 @@ module Homebrew
       def to_formulae_and_casks_with_taps
         formulae_and_casks_with_taps, formulae_and_casks_without_taps =
           to_formulae_and_casks.partition do |formula_or_cask|
-            T.cast(formula_or_cask, T.any(Formula, Cask::Cask)).tap&.installed?
+            formula_or_cask.tap&.installed?
           end
 
         return formulae_and_casks_with_taps if formulae_and_casks_without_taps.empty?

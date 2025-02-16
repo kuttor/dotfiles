@@ -99,9 +99,7 @@ module Homebrew
             else
               args.named.to_formulae_and_casks(only: :cask, method: :resolve)
             end
-            # The cast is because `Keg`` does not define `full_name`
-            full_cask_names = T.cast(cask_names, T::Array[T.any(Formula, Cask::Cask)])
-                               .map(&:full_name).sort(&tap_and_name_comparison)
+            full_cask_names = cask_names.map(&:full_name).sort(&tap_and_name_comparison)
             full_cask_names = Formatter.columns(full_cask_names) unless args.public_send(:"1?")
             puts full_cask_names if full_cask_names.present?
           end

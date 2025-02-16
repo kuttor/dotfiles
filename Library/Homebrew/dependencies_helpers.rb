@@ -1,14 +1,10 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "cask_dependent"
 
 # Helper functions for dependencies.
 module DependenciesHelpers
-  extend T::Helpers
-
-  requires_ancestor { Kernel }
-
   def args_includes_ignores(args)
     includes = [:required?, :recommended?] # included by default
     includes << :implicit? if args.include_implicit?
@@ -23,9 +19,35 @@ module DependenciesHelpers
     [includes, ignores]
   end
 
-  def recursive_includes(klass, root_dependent, includes, ignores)
-    raise ArgumentError, "Invalid class argument: #{klass}" if klass != Dependency && klass != Requirement
+  sig {
+    params(root_dependent: T.any(Formula, CaskDependent), includes: T::Array[Symbol], ignores: T::Array[Symbol])
+      .returns(T::Array[Dependency])
+  }
+  def recursive_dep_includes(root_dependent, includes, ignores)
+    # The use of T.unsafe is recommended by the Sorbet docs:
+    #   https://sorbet.org/docs/overloads#multiple-methods-but-sharing-a-common-implementation
+    T.unsafe(recursive_includes(Dependency, root_dependent, includes, ignores))
+  end
 
+  sig {
+    params(root_dependent: T.any(Formula, CaskDependent), includes: T::Array[Symbol], ignores: T::Array[Symbol])
+      .returns(Requirements)
+  }
+  def recursive_req_includes(root_dependent, includes, ignores)
+    # The use of T.unsafe is recommended by the Sorbet docs:
+    #   https://sorbet.org/docs/overloads#multiple-methods-but-sharing-a-common-implementation
+    T.unsafe(recursive_includes(Requirement, root_dependent, includes, ignores))
+  end
+
+  sig {
+    params(
+      klass:          T.any(T.class_of(Dependency), T.class_of(Requirement)),
+      root_dependent: T.any(Formula, CaskDependent),
+      includes:       T::Array[Symbol],
+      ignores:        T::Array[Symbol],
+    ).returns(T.any(T::Array[Dependency], Requirements))
+  }
+  def recursive_includes(klass, root_dependent, includes, ignores)
     cache_key = "recursive_includes_#{includes}_#{ignores}"
 
     klass.expand(root_dependent, cache_key:) do |dependent, dep|
@@ -43,6 +65,11 @@ module DependenciesHelpers
     end
   end
 
+  sig {
+    params(dependables: T::Array[T.any(Formula, CaskDependent)], ignores: T::Array[Symbol],
+           includes: T::Array[Symbol])
+      .returns(T::Array[T.any(Formula, CaskDependent)])
+  }
   def select_includes(dependables, ignores, includes)
     dependables.select do |dep|
       next false if ignores.any? { |ignore| dep.public_send(ignore) }
@@ -51,6 +78,9 @@ module DependenciesHelpers
     end
   end
 
+  sig {
+    params(formulae_or_casks: T::Array[T.any(Formula, Cask::Cask)]).returns(T::Array[T.any(Formula, CaskDependent)])
+  }
   def dependents(formulae_or_casks)
     formulae_or_casks.map do |formula_or_cask|
       if formula_or_cask.is_a?(Formula)
@@ -60,5 +90,4 @@ module DependenciesHelpers
       end
     end
   end
-  module_function :dependents
 end
