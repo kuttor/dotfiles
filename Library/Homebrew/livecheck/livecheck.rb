@@ -34,22 +34,11 @@ module Homebrew
       @livecheck_strategy_names[strategy_class] ||= Utils.demodulize(strategy_class.name)
     end
 
-    sig { returns(T::Hash[T::Class[T.anything], T::Array[Symbol]]) }
-    private_class_method def self.livecheck_find_versions_parameters
-      return T.must(@livecheck_find_versions_parameters) if defined?(@livecheck_find_versions_parameters)
-
-      # Cache strategy `find_versions` method parameters, to avoid repeating
-      # this work
-      @livecheck_find_versions_parameters = T.let({}, T.nilable(T::Hash[T::Class[T.anything], T::Array[Symbol]]))
-      Strategy.constants.sort.each do |const_symbol|
-        constant = Strategy.const_get(const_symbol)
-        next unless constant.is_a?(Class)
-
-        T.must(@livecheck_find_versions_parameters)[constant] =
-          T::Utils.signature_for_method(constant.method(:find_versions))
-                  &.parameters&.map(&:second)
-      end
-      T.must(@livecheck_find_versions_parameters).freeze
+    sig { params(strategy_class: T::Class[T.anything]).returns(T::Array[Symbol]) }
+    private_class_method def self.livecheck_find_versions_parameters(strategy_class)
+      @livecheck_find_versions_parameters ||= T.let({}, T.nilable(T::Hash[T::Class[T.anything], T::Array[Symbol]]))
+      @livecheck_find_versions_parameters[strategy_class] ||=
+        T::Utils.signature_for_method(strategy_class.method(:find_versions)).parameters.map(&:second)
     end
 
     # Uses `formulae_and_casks_to_check` to identify taps in use other than
@@ -729,7 +718,7 @@ module Homebrew
 
         # Only use arguments that the strategy's `#find_versions` method
         # supports
-        find_versions_parameters = T.must(livecheck_find_versions_parameters[strategy])
+        find_versions_parameters = livecheck_find_versions_parameters(strategy)
         strategy_args = {}
         strategy_args[:cask] = cask if find_versions_parameters.include?(:cask)
         strategy_args[:url] = url if find_versions_parameters.include?(:url)
@@ -957,7 +946,7 @@ module Homebrew
         else
           # Only use arguments that the strategy's `#find_versions` method
           # supports
-          find_versions_parameters = T.must(livecheck_find_versions_parameters[strategy])
+          find_versions_parameters = livecheck_find_versions_parameters(strategy)
           strategy_args = {}
           strategy_args[:url] = url if find_versions_parameters.include?(:url)
           strategy_args[:regex] = livecheck_regex if find_versions_parameters.include?(:regex)
