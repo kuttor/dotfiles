@@ -209,7 +209,6 @@ module Homebrew
           }
 
           # Main block: if asking the user is enabled, show dependency and size information.
-          # This part should be
           if args.ask?
             ohai "Looking for bottles..."
 
