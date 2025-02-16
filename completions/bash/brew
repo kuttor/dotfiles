@@ -1133,7 +1133,55 @@ _brew_formula() {
   __brew_complete_formulae
 }
 
+_brew_formula_analytics() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --all-core-formulae-json
+      --brew-command-run
+      --brew-command-run-options
+      --brew-test-bot-test
+      --build-error
+      --cask-install
+      --days-ago
+      --debug
+      --help
+      --homebrew-devcmdrun-developer
+      --homebrew-os-arch-ci
+      --homebrew-prefixes
+      --homebrew-versions
+      --install
+      --install-on-request
+      --json
+      --os-version
+      --quiet
+      --setup
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+}
+
 _brew_formulae() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --debug
+      --help
+      --quiet
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+}
+
+_brew_generate_analytics_api() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "${cur}" in
     -*)
@@ -3029,7 +3077,9 @@ _brew() {
     extract) _brew_extract ;;
     fetch) _brew_fetch ;;
     formula) _brew_formula ;;
+    formula-analytics) _brew_formula_analytics ;;
     formulae) _brew_formulae ;;
+    generate-analytics-api) _brew_generate_analytics_api ;;
     generate-cask-api) _brew_generate_cask_api ;;
     generate-cask-ci-matrix) _brew_generate_cask_ci_matrix ;;
     generate-formula-api) _brew_generate_formula_api ;;

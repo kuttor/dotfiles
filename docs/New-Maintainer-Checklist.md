@@ -1,5 +1,5 @@
 ---
-last_review_date: "1970-01-01"
+last_review_date: "2025-02-08"
 ---
 
 # New Maintainer Checklist
@@ -107,15 +107,14 @@ The Project Leader, one other PLC member (ideally a maintainer) and one other TS
 - Make them owners on the [`machomebrew` private Slack](https://machomebrew.slack.com/admin)
 - Make them owners on the [`homebrew` private 1Password](https://homebrew.1password.com/people)
 
-When they cease to be am owner, revoke or downgrade their access to all of the above.
+When they cease to be an owner, revoke or downgrade their access to all of the above.
 
 ## Members
 
-People who are either not eligible or willing to be Homebrew maintainers but have shown continued involvement in the Homebrew community may be admitted by a majority vote of the [Project Leadership Committee](https://docs.brew.sh/Homebrew-Governance#4-project-leadership-committee) to join the Homebrew GitHub organisation as [members](https://docs.brew.sh/Homebrew-Governance#2-members).
+People who are either not eligible or willing to be Homebrew maintainers but have shown continued involvement in the Homebrew community may be admitted by a majority vote of the [Project Leadership Committee](https://docs.brew.sh/Homebrew-Governance#4-project-leadership-committee).
 
 When admitted as members:
 
-- Invite them to the [**@Homebrew/members** team](https://github.com/orgs/Homebrew/teams/members), to give them access to the private governance repository.
 - Invite them as a single-channel guest to the #members channel on the [`machomebrew` private Slack](https://machomebrew.slack.com/admin/invites) (and ensure they've read the [communication guidelines](Maintainer-Guidelines.md#communication)) and ask them to use their real name there (rather than a pseudonym they may use on e.g. GitHub).
 - Add them to the current year's membership list in the [governance archives](https://github.com/Homebrew/brew/tree/master/docs/governance).
 

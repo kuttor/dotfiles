@@ -780,11 +780,41 @@ __fish_brew_complete_arg 'formula' -l verbose -d 'Make some output more verbose'
 __fish_brew_complete_arg 'formula' -a '(__fish_brew_suggest_formulae_all)'
 
 
+__fish_brew_complete_cmd 'formula-analytics' 'Query Homebrew\'s analytics'
+__fish_brew_complete_arg 'formula-analytics' -l all-core-formulae-json -d 'Output a different JSON format containing the JSON data for all Homebrew/homebrew-core formulae'
+__fish_brew_complete_arg 'formula-analytics' -l brew-command-run -d 'Output `brew` commands run'
+__fish_brew_complete_arg 'formula-analytics' -l brew-command-run-options -d 'Output `brew` commands run with options'
+__fish_brew_complete_arg 'formula-analytics' -l brew-test-bot-test -d 'Output `brew test-bot` steps run'
+__fish_brew_complete_arg 'formula-analytics' -l build-error -d 'Output the number of build errors for the formulae'
+__fish_brew_complete_arg 'formula-analytics' -l cask-install -d 'Output the number of installations of casks'
+__fish_brew_complete_arg 'formula-analytics' -l days-ago -d 'Query from the specified days ago until the present. The default is 30 days'
+__fish_brew_complete_arg 'formula-analytics' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'formula-analytics' -l help -d 'Show this message'
+__fish_brew_complete_arg 'formula-analytics' -l homebrew-devcmdrun-developer -d 'Output devcmdrun/HOMEBREW_DEVELOPER'
+__fish_brew_complete_arg 'formula-analytics' -l homebrew-os-arch-ci -d 'Output OS/Architecture/CI'
+__fish_brew_complete_arg 'formula-analytics' -l homebrew-prefixes -d 'Output Homebrew prefixes'
+__fish_brew_complete_arg 'formula-analytics' -l homebrew-versions -d 'Output Homebrew versions'
+__fish_brew_complete_arg 'formula-analytics' -l install -d 'Output the number of specifically requested installations or installation as dependencies of the formula. This is the default'
+__fish_brew_complete_arg 'formula-analytics' -l install-on-request -d 'Output the number of specifically requested installations of the formula'
+__fish_brew_complete_arg 'formula-analytics' -l json -d 'Output JSON. This is required: plain text support has been removed'
+__fish_brew_complete_arg 'formula-analytics' -l os-version -d 'Output OS versions'
+__fish_brew_complete_arg 'formula-analytics' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'formula-analytics' -l setup -d 'Install the necessary gems, require them and exit without running a query'
+__fish_brew_complete_arg 'formula-analytics' -l verbose -d 'Make some output more verbose'
+
+
 __fish_brew_complete_cmd 'formulae' 'List all locally installable formulae including short names'
 __fish_brew_complete_arg 'formulae' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'formulae' -l help -d 'Show this message'
 __fish_brew_complete_arg 'formulae' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'formulae' -l verbose -d 'Make some output more verbose'
+
+
+__fish_brew_complete_cmd 'generate-analytics-api' 'Generates analytics API data files for formulae.brew.sh'
+__fish_brew_complete_arg 'generate-analytics-api' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'generate-analytics-api' -l help -d 'Show this message'
+__fish_brew_complete_arg 'generate-analytics-api' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'generate-analytics-api' -l verbose -d 'Make some output more verbose'
 
 
 __fish_brew_complete_cmd 'generate-cask-api' 'Generate `homebrew/cask` API data files for https://formulae.brew.sh'
