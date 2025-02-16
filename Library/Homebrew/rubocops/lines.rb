@@ -86,6 +86,8 @@ module RuboCop
 
       # This cop makes sure that idiomatic `assert_*` statements are used.
       class AssertStatements < FormulaCop
+        extend AutoCorrector
+
         sig { override.params(formula_nodes: FormulaNodes).void }
         def audit_formula(formula_nodes)
           return if (body_node = formula_nodes.body_node).nil?
@@ -96,15 +98,39 @@ module RuboCop
             end
 
             if method_called_ever?(method, :exist?) && !method_called_ever?(method, :!)
-              problem "Use `assert_predicate <path_to_file>, :exist?` instead of `#{method.source}`"
+              problem "Use `assert_path_exists <path_to_file>` instead of `#{method.source}`"
             end
 
             if method_called_ever?(method, :exist?) && method_called_ever?(method, :!)
-              problem "Use `refute_predicate <path_to_file>, :exist?` instead of `#{method.source}`"
+              problem "Use `refute_path_exists <path_to_file>` instead of `#{method.source}`"
             end
 
             if method_called_ever?(method, :executable?) && !method_called_ever?(method, :!)
               problem "Use `assert_predicate <path_to_file>, :executable?` instead of `#{method.source}`"
+            end
+          end
+
+          find_every_method_call_by_name(body_node, :assert_predicate).each do |method|
+            args = parameters(method)
+            next if args[1].source != ":exist?"
+
+            offending_node(method)
+            problem "Use `assert_path_exists <path_to_file>` instead of `#{method.source}`" do |corrector|
+              correct = "assert_path_exists #{args.first.source}"
+              correct += ", #{args[2].source}" if args.length == 3
+              corrector.replace(T.must(@offensive_node).source_range, correct)
+            end
+          end
+
+          find_every_method_call_by_name(body_node, :refute_predicate).each do |method|
+            args = parameters(method)
+            next if args[1].source != ":exist?"
+
+            offending_node(method)
+            problem "Use `refute_path_exists <path_to_file>` instead of `#{method.source}`" do |corrector|
+              correct = "refute_path_exists #{args.first.source}"
+              correct += ", #{args[2].source}" if args.length == 3
+              corrector.replace(T.must(@offensive_node).source_range, correct)
             end
           end
         end
