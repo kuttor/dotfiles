@@ -25,7 +25,7 @@ zi id-as wait lman lucid light-mode pack for                                    
 # -- github-releases --
 zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid binary for                            \
                                                              lman'autocomplete/_lsd'      @lsd-rs/lsd                  \
-   atload'use --atload fx'                                   lbin'fx_*->fx'               @antonmedv/fx                \
+   atclone'use --atclone fx'     atload'use --atload fx'     lbin'fx_*->fx'               @antonmedv/fx                \
    atclone'use --atclone nvim'                               lbin'**/nvim'                @neovim/neovim               \
    atclone'use --atclone dog'                                                             @ogham/dog                   \
    atclone'use --atclone just'                                                            @casey/just                  \

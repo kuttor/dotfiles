@@ -16,18 +16,3 @@ brew 'wget'
 brew 'curl'
 brew 'tmux'
 brew 'delta'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
