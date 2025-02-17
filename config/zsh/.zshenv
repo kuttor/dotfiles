@@ -139,5 +139,5 @@ infopath=(
 
 # Source antidot files
 source_if_exists "$ANTIDOT_DIR/{env,alias}.sh"
-. "$XDG_CONFIG_HOMEs/rust/env"
+. "$XDG_CONFIG_HOME/rust/env"
 . "$XDG_CONFIG_HOME/rust/cargo/env"
