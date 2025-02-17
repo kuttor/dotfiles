@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+# autocomplete
+source <(fx --comp zsh)

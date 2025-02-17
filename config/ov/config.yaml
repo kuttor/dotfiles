@@ -1,23 +1,37 @@
-# This is the ov config file.
+# This is a file with less key bindings set.
 # Copy it to `$XDG_CONFIG_HOME/ov/config.yaml` or start it with `ov --config ov.yaml`.
-
-QuitSmall: false # Quit if the file size is smaller than the terminal size.
-IsWriteOriginal: false # Write the original content when exiting.
-BeforeWriteOriginal: 0 # Write the number of lines before the current location when exiting.
-AfterWriteOriginal: 0 # Write the number of lines after the current location when exiting.
-CaseSensitive: false # Case sensitive search.
-SmartCaseSensitive: true # Case sensitive search if the search string contains uppercase characters.
-RegexpSearch: true # Regular expression search.
-Incsearch: true # Incremental search.
-ViewMode: markdown # Default view mode.
-
+# Thanks to hupfdule (Marco Herrn) for the less keybinding information.
+#
+# QuitSmall: false # Quit if the file size is smaller than the terminal size.
+# IsWriteOriginal: false # Write the original content when exiting.
+# BeforeWriteOriginal: 0 # Write the number of lines before the current location when exiting.
+# AfterWriteOriginal: 0 # Write the number of lines after the current location when exiting.
+#
+# CaseSensitive: false # Case sensitive search.
+# SmartCaseSensitive: false # Case sensitive search if the search string contains uppercase characters.
+# RegexpSearch: false # Regular expression search.
+# Incsearch: true # Incremental search.
+#
+# MemoryLimit: -1 # The maximum number of lines that can be loaded into memory.
+# MemoryLimitFile: 100 # The maximum number of lines that can be loaded into memory when opening a file.
+#
+# DisableMouse: false # Disable mouse support.
+# DisableColumnCycle: false # Disable cycling when moving columns.
+#
+# ViewMode: markdown # Default view mode.
+#
+# Debug: false # Debug mode.
+#
 Prompt:
   Normal:
-    ShowFilename: true # Show the filename.
-    ShrinkChar: '…' # Characters displayed when the column is shrinking.
+    #    ShowFilename: true # Show the filename.
+    #    InvertColor: true # Invert the color of the prompt.
+    #    ProcessOfCount: true # Show the process of count.
+
+    # ShrinkChar: '…' # Characters displayed when the column is shrinking.
 
 General:
-  TabWidth: 8
+  TabWidth: 4
   Header: 0
   AlternateRows: false
   ColumnMode: false
@@ -25,9 +39,7 @@ General:
   WrapMode: true
   ColumnDelimiter: ","
   MarkStyleWidth: 1
-  SectionDelimiter: "^#"
 
-# Style
 # String of the color name: Foreground, Background, UnderlineColor
 # Boolean: Bold, Blink, Dim, Italic, Underline
 # Number: UnderlineStyle
@@ -36,13 +48,9 @@ StyleAlternate:
 StyleHeader:
   Bold: true
 StyleOverStrike:
-  Foreground: "aqua"
   Bold: true
 StyleOverLine:
   Underline: true
-  Foreground: "red"
-StyleLineNumber:
-  Bold: true
 StyleSearchHighlight:
   Reverse: true
 StyleColumnHighlight:
@@ -50,32 +58,18 @@ StyleColumnHighlight:
 StyleMarkLine:
   Background: "darkgoldenrod"
 StyleSectionLine:
-  Background: "slateblue"
+  Background: "green"
 StyleMultiColorHighlight:
-  - Foreground: "red"
-  - Foreground: "aqua"
-  - Foreground: "yellow"
-  - Foreground: "fuchsia"
-  - Foreground: "lime"
-  - Foreground: "blue"
-  - Foreground: "grey"
+- Foreground: "red"
+- Foreground: "aqua"
+- Foreground: "yellow"
+- Foreground: "fuchsia"
+- Foreground: "lime"
+- Foreground: "blue"
+- Foreground: "grey"
 StyleJumpTargetLine:
-  Underline: true
+  Underline: false
 
-# `StyleColumnRainbow:`
-# `  - Foreground: "whit`e"
-`    # Background: "red"`
-# `  - Foreground: "aqua`"
-`    # Underline: true`
-# `  - Foreground: "#ff7`f00"
-`    # Background: "blue`"
-`    # Bold: true`
-# `  - Foreground: "lime`"
-`    # Italic: true`
-# `  - Foreground: "blue`"
-`    # Dim: true`
-# `  - Foreground: "yell`owgreen"
-# `  - Foreground: "red"`
 # Keybind
 # Special key
 #   "Enter","Backspace","Tab","Backtab","Esc",
@@ -87,135 +81,152 @@ StyleJumpTargetLine:
 # Connect with modifier key + key
 #   "ctrl+c"
 KeyBind:
-    exit:
-        - "Escape"
-        - "q"
-    cancel:
-        - "ctrl+c"
-    write_exit:
-        - "Q"
-    set_write_exit:
-        - "ctrl+q"
-    suspend:
-        - "ctrl+z"
-    sync:
-        - "ctrl+l"
-    reload:
-        - "ctrl+alt+l"
-        - "F5"
-    watch:
-        - "ctrl+alt+w"
-        - "F4"
-    watch_interval:
-        - "ctrl+w"
-    follow_mode:
-        - "ctrl+f"
-    follow_all:
-        - "ctrl+a"
-    follow_section:
-        -  "F2"
-    help:
-        - "h"
-        - "ctrl+alt+c"
-        - "ctrl+f1"
-    logdoc:
-        - "ctrl+f2"
-        - "ctrl+alt+e"
-    down:
-        - "Enter"
-        - "Down"
-        - "ctrl+N"
-    up:
-        - "Up"
-        - "ctrl+p"
-    top:
-        - "Home"
-    bottom:
-        - "End"
-    left:
-        - "left"
-    right:
-        - "right"
-    half_left:
-        - "ctrl+left"
-    half_right:
-        - "ctrl+right"
-    page_up:
-        - "PageUp"
-        - "ctrl+b"
-    page_down:
-        - "PageDown"
-        - "ctrl+v"
-    page_half_up:
-        - "ctrl+u"
-    page_half_down:
-        - "ctrl+d"
-    section_delimiter:
-        - "alt+d"
-    section_start:
-        - "ctrl+F3"
-        - "alt+s"
-    section_header_num:
-        - "F7"
-    hide_other:
-        - "alt+-"
-    next_section:
-        - "space"
-    last_section:
-        - "9"
-    previous_section:
-        - "^"
-    mark:
-        - "m"
-    remove_mark:
-        - "M"
-    remove_all_mark:
-        - "ctrl+delete"
-    next_mark:
-        - ">"
-    previous_mark:
-        - "<"
-    set_view_mode:
-        - "p"
-        - "P"
-    alter_rows_mode:
-        - "C"
-    line_number_mode:
-        - "G"
-    search:
-        - "/"
-    wrap_mode:
-        - "w"
-        - "W"
-    column_mode:
-        - "c"
-    backsearch:
-        - "?"
-    delimiter:
-        - "d"
-    header:
-        - "H"
-    skip_lines:
-        - "ctrl+s"
-    tabwidth:
-        - "t"
-    goto:
-        - "g"
-    next_search:
-        - "n"
-    next_backsearch:
-        - "N"
-    next_doc:
-        - "]"
-    previous_doc:
-        - "["
-    toggle_mouse:
-        - "ctrl+f3"
-        - "ctrl+alt+r"
-    multi_color:
-        - "."
-    jump_target:
-        - "j"
+  exit:
+  - "Escape"
+  - "q"
+  cancel:
+  - "ctrl+c"
+  write_exit:
+  - "Q"
+  set_write_exit:
+  - "ctrl+q"
+  suspend:
+  - "ctrl+z"
+  sync:
+  - "r"
+  - "ctrl+l"
+  reload:
+  - "R"
+  - "ctrl+r"
+  watch:
+  - "T"
+  - "ctrl+alt+w"
+  watch_interval:
+  - "ctrl+w"
+  follow_mode:
+  - "F"
+  follow_all:
+  - "ctrl+a"
+  follow_section:
+  - "F2"
+  help:
+  - "h"
+  - "ctrl+alt+c"
+  logdoc:
+  - "ctrl+alt+e"
+  down:
+  - "e"
+  - "ctrl+e"
+  - "j"
+  - "J"
+  - "ctrl+j"
+  - "Enter"
+  - "Down"
+  up:
+  - "y"
+  - "Y"
+  - "ctrl+y"
+  - "k"
+  - "K"
+  - "ctrl+K"
+  - "Up"
+  top:
+  - "Home"
+  - "g"
+  - "<"
+  bottom:
+  - "End"
+  - ">"
+  - "G"
+  left:
+  - "left"
+  right:
+  - "right"
+  half_left:
+  - "ctrl+left"
+  half_right:
+  - "ctrl+right"
+  page_up:
+  - "PageUp"
+  - "b"
+  - "alt+v"
+  page_down:
+  - "PageDown"
+  - "ctrl+v"
+  - "alt+space"
+  - "f"
+  - "z"
+  page_half_up:
+  - "u"
+  - "ctrl+u"
+  page_half_down:
+  - "d"
+  - "ctrl+d"
+  section_delimiter:
+  - "alt+d"
+  section_start:
+  - "ctrl+F3"
+  - "alt+s"
+  section_header_num:
+  - "F7"
+  hide_other:
+  - "alt+-"
+  next_section:
+  - "space"
+  last_section:
+  - "9"
+  previous_section:
+  - "^"
+  mark:
+  - "m"
+  remove_mark:
+  - "M"
+  remove_all_mark:
+  - "ctrl+delete"
+  next_mark:
+  - "alt+>"
+  previous_mark:
+  - "alt+<"
+  set_view_mode:
+  - "p"
+  - "P"
+  alter_rows_mode:
+  - "C"
+  line_number_mode:
+  - "alt+n"
+  search:
+  - "/"
+  wrap_mode:
+  - "w"
+  - "W"
+  column_mode:
+  - "c"
+  backsearch:
+  - "?"
+  delimiter:
+  - "d"
+  header:
+  - "H"
+  skip_lines:
+  - "ctrl+s"
+  tabwidth:
+  - "t"
+  goto:
+  - ":"
+  next_search:
+  - "n"
+  next_backsearch:
+  - "N"
+  next_doc:
+  - "]"
+  previous_doc:
+  - "["
+  toggle_mouse:
+  - "ctrl+alt+r"
+  multi_color:
+  - "."
+  jump_target:
+  - "alt+j"
 
 Mode:
   markdown:
@@ -225,36 +236,13 @@ Mode:
     Header: 2
     AlternateRows: true
     ColumnMode: true
-    LineNumMode: true 
+    LineNumMode: false
     WrapMode: true
     ColumnDelimiter: "|"
   mysql:
     Header: 3
     AlternateRows: true
     ColumnMode: true
-    LineNumMode: true
+    LineNumMode: false
     WrapMode: true
     ColumnDelimiter: "|"
-  p:
-    Header: 2
-    AlternateRows: true
-    ColumnMode: true
-    LineNumMode: true
-    WrapMode: true
-    ColumnDelimiter: "|"
-    ColumnRainbow: true
-  m:
-    Header: 3
-    AlternateRows: true
-    ColumnMode: true
-    LineNumMode: true
-    WrapMode: true
-    ColumnDelimiter: "|"
-  csv:
-    Header: 1
-    AlternateRows: true
-    ColumnMode: true
-    LineNumMode: true
-    WrapMode: true
-    ColumnDelimiter: ","
-    ColumnRainbow: true
