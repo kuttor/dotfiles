@@ -122,7 +122,7 @@ path=(
 
 fpath=(
   $DOT_FUNCTIONS_HOME
-  /usr/share/zsh/5.9/functions
+  /usr/share/zsh/*/functions
   $fpath
 )
 
