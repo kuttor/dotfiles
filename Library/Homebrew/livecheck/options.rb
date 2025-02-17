@@ -56,6 +56,33 @@ module Homebrew
         Options.new(**new_options)
       end
 
+      # Merges values from `other` into `self` and returns `self`.
+      #
+      # `nil` values are removed from `other` before merging if it is an
+      # `Options` object, as these are unitiailized values. This ensures that
+      # existing values in `self` aren't unexpectedly overwritten with defaults.
+      sig { params(other: T.any(Options, T::Hash[Symbol, T.untyped])).returns(Options) }
+      def merge!(other)
+        return self if other.empty?
+
+        if other.is_a?(Options)
+          return self if self == other
+
+          other.instance_variables.each do |ivar|
+            next if (v = T.let(other.instance_variable_get(ivar), Object)).nil?
+
+            instance_variable_set(ivar, v)
+          end
+        else
+          other.each do |k, v|
+            cmd = :"#{k}="
+            send(cmd, v) if respond_to?(cmd)
+          end
+        end
+
+        self
+      end
+
       sig { params(other: Object).returns(T::Boolean) }
       def ==(other)
         return false unless other.is_a?(Options)

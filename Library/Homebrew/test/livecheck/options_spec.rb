@@ -27,6 +27,10 @@ RSpec.describe Homebrew::Livecheck::Options do
   end
   let(:merged_hash) { args.merge(other_args) }
 
+  let(:base_options) { options.new(**args) }
+  let(:other_options) { options.new(**other_args) }
+  let(:merged_options) { options.new(**merged_hash) }
+
   describe "#url_options" do
     it "returns a Hash of the options that are provided as arguments to the `url` DSL method" do
       expect(options.new.url_options).to eq({
@@ -65,6 +69,40 @@ RSpec.describe Homebrew::Livecheck::Options do
         .to eq(options.new(**args))
       expect(options.new(**args).merge({}))
         .to eq(options.new(**args))
+    end
+  end
+
+  describe "#merge!" do
+    it "merges values from `other` into `self` and returns `self`" do
+      o1 = options.new(**args)
+      expect(o1.merge!(other_options)).to eq(merged_options)
+      expect(o1).to eq(merged_options)
+
+      o2 = options.new(**args)
+      expect(o2.merge!(other_args)).to eq(merged_options)
+      expect(o2).to eq(merged_options)
+
+      o3 = options.new(**args)
+      expect(o3.merge!(base_options)).to eq(base_options)
+      expect(o3).to eq(base_options)
+
+      o4 = options.new(**args)
+      expect(o4.merge!(args)).to eq(base_options)
+      expect(o4).to eq(base_options)
+
+      o5 = options.new(**args)
+      expect(o5.merge!(options.new)).to eq(base_options)
+      expect(o5).to eq(base_options)
+
+      o6 = options.new(**args)
+      expect(o6.merge!({})).to eq(base_options)
+      expect(o6).to eq(base_options)
+    end
+
+    it "skips over hash values without a corresponding Options value" do
+      o1 = options.new(**args)
+      expect(o1.merge!({ nonexistent: true })).to eq(base_options)
+      expect(o1).to eq(base_options)
     end
   end
 
