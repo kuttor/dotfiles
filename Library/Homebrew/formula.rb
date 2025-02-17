@@ -364,14 +364,10 @@ class Formula
   end
 
   sig { returns(T.nilable(String)) }
-  def installed_alias_name
-    installed_alias_path&.basename&.to_s
-  end
+  def installed_alias_name = installed_alias_path&.basename&.to_s
 
   sig { returns(T.nilable(String)) }
-  def full_installed_alias_name
-    full_name_with_optional_tap(installed_alias_name)
-  end
+  def full_installed_alias_name = full_name_with_optional_tap(installed_alias_name)
 
   # The path that was specified to find this formula.
   sig { returns(T.nilable(Pathname)) }
@@ -524,15 +520,11 @@ class Formula
 
   # The {PkgVersion} for this formula with {version} and {#revision} information.
   sig { returns(PkgVersion) }
-  def pkg_version
-    PkgVersion.new(version, revision)
-  end
+  def pkg_version = PkgVersion.new(version, revision)
 
   # If this is a `@`-versioned formula.
   sig { returns(T::Boolean) }
-  def versioned_formula?
-    name.include?("@")
-  end
+  def versioned_formula? = name.include?("@")
 
   # Returns any other `@`-versioned formulae names for any formula (including versioned formulae).
   sig { returns(T::Array[String]) }
@@ -761,15 +753,11 @@ class Formula
   #
   # @api internal
   sig { returns(T::Boolean) }
-  def linked?
-    linked_keg.symlink?
-  end
+  def linked? = linked_keg.symlink?
 
   # Is the formula linked to `opt`?
   sig { returns(T::Boolean) }
-  def optlinked?
-    opt_prefix.symlink?
-  end
+  def optlinked? = opt_prefix.symlink?
 
   # If a formula's linked keg points to the prefix.
   sig { params(version: T.any(String, PkgVersion)).returns(T::Boolean) }
@@ -790,9 +778,7 @@ class Formula
   # The parent of the prefix; the named directory in the cellar containing all
   # installed versions of this software.
   sig { returns(Pathname) }
-  def rack
-    HOMEBREW_CELLAR/name
-  end
+  def rack = HOMEBREW_CELLAR/name
 
   # All currently installed prefix directories.
   sig { returns(T::Array[Pathname]) }
@@ -829,9 +815,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def bin
-    prefix/"bin"
-  end
+  def bin = prefix/"bin"
 
   # The directory where the formula's documentation should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -839,9 +823,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def doc
-    share/"doc"/name
-  end
+  def doc = share/"doc"/name
 
   # The directory where the formula's headers should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -857,9 +839,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def include
-    prefix/"include"
-  end
+  def include = prefix/"include"
 
   # The directory where the formula's info files should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -867,9 +847,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def info
-    share/"info"
-  end
+  def info = share/"info"
 
   # The directory where the formula's libraries should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -885,9 +863,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def lib
-    prefix/"lib"
-  end
+  def lib = prefix/"lib"
 
   # The directory where the formula's binaries should be installed.
   # This is not symlinked into `HOMEBREW_PREFIX`.
@@ -904,9 +880,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def libexec
-    prefix/"libexec"
-  end
+  def libexec = prefix/"libexec"
 
   # The root directory where the formula's manual pages should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -916,9 +890,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def man
-    share/"man"
-  end
+  def man = share/"man"
 
   # The directory where the formula's man1 pages should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -934,9 +906,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def man1
-    man/"man1"
-  end
+  def man1 = man/"man1"
 
   # The directory where the formula's man2 pages should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -944,9 +914,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def man2
-    man/"man2"
-  end
+  def man2 = man/"man2"
 
   # The directory where the formula's man3 pages should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -962,9 +930,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def man3
-    man/"man3"
-  end
+  def man3 = man/"man3"
 
   # The directory where the formula's man4 pages should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -972,9 +938,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def man4
-    man/"man4"
-  end
+  def man4 = man/"man4"
 
   # The directory where the formula's man5 pages should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -982,9 +946,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def man5
-    man/"man5"
-  end
+  def man5 = man/"man5"
 
   # The directory where the formula's man6 pages should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -992,9 +954,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def man6
-    man/"man6"
-  end
+  def man6 = man/"man6"
 
   # The directory where the formula's man7 pages should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -1002,9 +962,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def man7
-    man/"man7"
-  end
+  def man7 = man/"man7"
 
   # The directory where the formula's man8 pages should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -1012,9 +970,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def man8
-    man/"man8"
-  end
+  def man8 = man/"man8"
 
   # The directory where the formula's `sbin` binaries should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -1023,9 +979,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def sbin
-    prefix/"sbin"
-  end
+  def sbin = prefix/"sbin"
 
   # The directory where the formula's shared files should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -1059,9 +1013,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def share
-    prefix/"share"
-  end
+  def share = prefix/"share"
 
   # The directory where the formula's shared files should be installed,
   # with the name of the formula appended to avoid linking conflicts.
@@ -1078,9 +1030,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def pkgshare
-    prefix/"share"/name
-  end
+  def pkgshare = prefix/"share"/name
 
   # The directory where Emacs Lisp files should be installed, with the
   # formula name appended to avoid linking conflicts.
@@ -1095,9 +1045,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def elisp
-    prefix/"share/emacs/site-lisp"/name
-  end
+  def elisp = prefix/"share/emacs/site-lisp"/name
 
   # The directory where the formula's Frameworks should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -1106,9 +1054,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def frameworks
-    prefix/"Frameworks"
-  end
+  def frameworks = prefix/"Frameworks"
 
   # The directory where the formula's kernel extensions should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
@@ -1117,9 +1063,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def kext_prefix
-    prefix/"Library/Extensions"
-  end
+  def kext_prefix = prefix/"Library/Extensions"
 
   # The directory where the formula's configuration files should be installed.
   # Anything using `etc.install` will not overwrite other files on e.g. upgrades
@@ -1129,9 +1073,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def etc
-    (HOMEBREW_PREFIX/"etc").extend(InstallRenamed)
-  end
+  def etc = (HOMEBREW_PREFIX/"etc").extend(InstallRenamed)
 
   # A subdirectory of `etc` with the formula name suffixed.
   # e.g. `$HOMEBREW_PREFIX/etc/openssl@1.1`
@@ -1140,9 +1082,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def pkgetc
-    (HOMEBREW_PREFIX/"etc"/name).extend(InstallRenamed)
-  end
+  def pkgetc = (HOMEBREW_PREFIX/"etc"/name).extend(InstallRenamed)
 
   # The directory where the formula's variable files should be installed.
   # This directory is not inside the `HOMEBREW_CELLAR` so it persists
@@ -1150,9 +1090,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def var
-    HOMEBREW_PREFIX/"var"
-  end
+  def var = HOMEBREW_PREFIX/"var"
 
   # The directory where the formula's zsh function files should be
   # installed.
@@ -1161,9 +1099,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def zsh_function
-    share/"zsh/site-functions"
-  end
+  def zsh_function = share/"zsh/site-functions"
 
   # The directory where the formula's fish function files should be
   # installed.
@@ -1172,9 +1108,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def fish_function
-    share/"fish/vendor_functions.d"
-  end
+  def fish_function = share/"fish/vendor_functions.d"
 
   # The directory where the formula's Bash completion files should be
   # installed.
@@ -1183,9 +1117,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def bash_completion
-    prefix/"etc/bash_completion.d"
-  end
+  def bash_completion = prefix/"etc/bash_completion.d"
 
   # The directory where the formula's zsh completion files should be
   # installed.
@@ -1194,9 +1126,7 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def zsh_completion
-    share/"zsh/site-functions"
-  end
+  def zsh_completion = share/"zsh/site-functions"
 
   # The directory where the formula's fish completion files should be
   # installed.
@@ -1205,23 +1135,17 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def fish_completion
-    share/"fish/vendor_completions.d"
-  end
+  def fish_completion = share/"fish/vendor_completions.d"
 
   # The directory used for as the prefix for {#etc} and {#var} files on
   # installation so, despite not being in `HOMEBREW_CELLAR`, they are installed
   # there after pouring a bottle.
   sig { returns(Pathname) }
-  def bottle_prefix
-    prefix/".bottle"
-  end
+  def bottle_prefix = prefix/".bottle"
 
   # The directory where the formula's installation or test logs will be written.
   sig { returns(Pathname) }
-  def logs
-    HOMEBREW_LOGS + name
-  end
+  def logs = HOMEBREW_LOGS + name
 
   # The prefix, if any, to use in filenames for logging current activity.
   sig { returns(String) }
@@ -1283,33 +1207,23 @@ class Formula
 
   # The generated launchd {.plist} service name.
   sig { returns(String) }
-  def plist_name
-    service.plist_name
-  end
+  def plist_name = service.plist_name
 
   # The generated service name.
   sig { returns(String) }
-  def service_name
-    service.service_name
-  end
+  def service_name = service.service_name
 
   # The generated launchd {.service} file path.
   sig { returns(Pathname) }
-  def launchd_service_path
-    opt_prefix/"#{plist_name}.plist"
-  end
+  def launchd_service_path = opt_prefix/"#{plist_name}.plist"
 
   # The generated systemd {.service} file path.
   sig { returns(Pathname) }
-  def systemd_service_path
-    opt_prefix/"#{service_name}.service"
-  end
+  def systemd_service_path = opt_prefix/"#{service_name}.service"
 
   # The generated systemd {.timer} file path.
   sig { returns(Pathname) }
-  def systemd_timer_path
-    opt_prefix/"#{service_name}.timer"
-  end
+  def systemd_timer_path = opt_prefix/"#{service_name}.timer"
 
   # The service specification of the software.
   sig { returns(Homebrew::Service) }
@@ -1332,81 +1246,61 @@ class Formula
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_prefix
-    HOMEBREW_PREFIX/"opt"/name
-  end
+  def opt_prefix = HOMEBREW_PREFIX/"opt"/name
 
   # Same as {#bin}, but relative to {#opt_prefix} instead of {#prefix}.
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_bin
-    opt_prefix/"bin"
-  end
+  def opt_bin = opt_prefix/"bin"
 
   # Same as {#include}, but relative to {#opt_prefix} instead of {#prefix}.
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_include
-    opt_prefix/"include"
-  end
+  def opt_include = opt_prefix/"include"
 
   # Same as {#lib}, but relative to {#opt_prefix} instead of {#prefix}.
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_lib
-    opt_prefix/"lib"
-  end
+  def opt_lib = opt_prefix/"lib"
 
   # Same as {#libexec}, but relative to {#opt_prefix} instead of {#prefix}.
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_libexec
-    opt_prefix/"libexec"
-  end
+  def opt_libexec = opt_prefix/"libexec"
 
   # Same as {#sbin}, but relative to {#opt_prefix} instead of {#prefix}.
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_sbin
-    opt_prefix/"sbin"
-  end
+  def opt_sbin = opt_prefix/"sbin"
 
   # Same as {#share}, but relative to {#opt_prefix} instead of {#prefix}.
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_share
-    opt_prefix/"share"
-  end
+  def opt_share = opt_prefix/"share"
 
   # Same as {#pkgshare}, but relative to {#opt_prefix} instead of {#prefix}.
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_pkgshare
-    opt_prefix/"share"/name
-  end
+  def opt_pkgshare = opt_prefix/"share"/name
 
   # Same as {#elisp}, but relative to {#opt_prefix} instead of {#prefix}.
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_elisp
-    opt_prefix/"share/emacs/site-lisp"/name
-  end
+  def opt_elisp = opt_prefix/"share/emacs/site-lisp"/name
 
   # Same as {#frameworks}, but relative to {#opt_prefix} instead of {#prefix}.
   #
   # @api public
   sig { returns(Pathname) }
-  def opt_frameworks
-    opt_prefix/"Frameworks"
-  end
+  def opt_frameworks = opt_prefix/"Frameworks"
 
   # Indicates that this formula supports bottles. (Not necessarily that one
   # should be used in the current installation run.)
@@ -1415,9 +1309,7 @@ class Formula
   # are supported.
   # Replaced by {.pour_bottle?}'s `satisfy` method if it is specified.
   sig { returns(T::Boolean) }
-  def pour_bottle?
-    true
-  end
+  def pour_bottle? = true
 
   delegate pour_bottle_check_unsatisfied_reason: :"self.class"
 
@@ -1497,9 +1389,7 @@ class Formula
   # end
   # ```
   sig { overridable.returns(T.nilable(String)) }
-  def caveats
-    nil
-  end
+  def caveats = nil
 
   # Rarely, you don't want your library symlinked into the main prefix.
   # See `gettext.rb` for an example.
@@ -1617,14 +1507,10 @@ class Formula
   delegate disable_replacement: :"self.class"
 
   sig { returns(T::Boolean) }
-  def skip_cxxstdlib_check?
-    false
-  end
+  def skip_cxxstdlib_check? = false
 
   sig { returns(T::Boolean) }
-  def require_universal_deps?
-    false
-  end
+  def require_universal_deps? = false
 
   sig { void }
   def patch
@@ -1782,9 +1668,7 @@ class Formula
 
   # Is this formula the target of an alias used to install an old formula?
   sig { returns(T::Boolean) }
-  def supersedes_an_installed_formula?
-    old_installed_formulae.any?
-  end
+  def supersedes_an_installed_formula? = old_installed_formulae.any?
 
   # Has the alias used to install the formula changed, or are different
   # formulae already installed with this alias?
@@ -1820,17 +1704,11 @@ class Formula
     true
   end
 
-  delegate pinnable?: :@pin
+  def_delegators :@pin, :pinnable?, :pinned_version, :pin, :unpin
 
   # !attr[r] pinned?
   # @api internal
   delegate pinned?: :@pin
-
-  delegate pinned_version: :@pin
-
-  delegate pin: :@pin
-
-  delegate unpin: :@pin
 
   sig { params(other: T.untyped).returns(T::Boolean) }
   def ==(other)
@@ -1841,9 +1719,7 @@ class Formula
   alias eql? ==
 
   sig { returns(Integer) }
-  def hash
-    name.hash
-  end
+  def hash = name.hash
 
   sig { params(other: BasicObject).returns(T.nilable(Integer)) }
   def <=>(other)
@@ -2058,9 +1934,7 @@ class Formula
   #
   # @api public
   sig { returns(String) }
-  def loader_path
-    "@loader_path"
-  end
+  def loader_path = "@loader_path"
 
   # Creates a new `Time` object for use in the formula as the build time.
   #
@@ -3722,9 +3596,7 @@ class Formula
     end
 
     sig { returns(T::Array[Symbol]) }
-    def spec_syms
-      [:stable, :head].freeze
-    end
+    def spec_syms = [:stable, :head].freeze
 
     # A list of the {.stable} and {.head} {SoftwareSpec}s.
     sig { returns(T::Array[SoftwareSpec]) }
@@ -3759,9 +3631,7 @@ class Formula
     # @!attribute [w] url
     # @api public
     sig { params(val: String, specs: T::Hash[Symbol, T.any(String, Symbol)]).void }
-    def url(val, specs = {})
-      stable.url(val, specs)
-    end
+    def url(val, specs = {}) = stable.url(val, specs)
 
     # @!attribute [w] version
     # The version string for the {.stable} version of the formula.
@@ -3776,9 +3646,7 @@ class Formula
     #
     # @api public
     sig { params(val: T.nilable(String)).void }
-    def version(val = nil)
-      stable.version(val)
-    end
+    def version(val = nil) = stable.version(val)
 
     # @!attribute [w] mirror
     # Additional URLs for the {.stable} version of the formula.
@@ -3796,9 +3664,7 @@ class Formula
     #
     # @api public
     sig { params(val: String).void }
-    def mirror(val)
-      stable.mirror(val)
-    end
+    def mirror(val) = stable.mirror(val)
 
     # @!attribute [w] sha256
     # @scope class
@@ -3815,9 +3681,7 @@ class Formula
     #
     # @api public
     sig { params(val: String).void }
-    def sha256(val)
-      stable.sha256(val)
-    end
+    def sha256(val) = stable.sha256(val)
 
     # Adds a {.bottle} {SoftwareSpec}.
     # This provides a pre-built binary package built by the Homebrew maintainers for you.
@@ -3844,14 +3708,10 @@ class Formula
     #
     # @api public
     sig { params(block: T.proc.bind(BottleSpecification).void).void }
-    def bottle(&block)
-      stable.bottle(&block)
-    end
+    def bottle(&block) = stable.bottle(&block)
 
     sig { returns(String) }
-    def build
-      stable.build
-    end
+    def build = stable.build
 
     # Get the `BUILD_FLAGS` from the formula's namespace set in `Formulary::load_formula`.
     sig { returns(T::Array[String]) }
@@ -4313,9 +4173,7 @@ class Formula
     # @return [Boolean]
     # @api public
     sig { params(block: T.proc.returns(T.untyped)).returns(T.untyped) }
-    def test(&block)
-      define_method(:test, &block)
-    end
+    def test(&block) = define_method(:test, &block)
 
     # {Livecheck} can be used to check for newer versions of the software.
     # This method evaluates the DSL specified in the `livecheck` block of the
@@ -4358,10 +4216,7 @@ class Formula
     #
     # @!attribute [w] service
     # @api public
-    sig {
-      params(block: T.nilable(T.proc.returns(T.untyped)))
-        .returns(T.nilable(T.proc.returns(T.untyped)))
-    }
+    sig { params(block: T.nilable(T.proc.returns(T.untyped))).returns(T.nilable(T.proc.returns(T.untyped))) }
     def service(&block)
       return @service_block unless block
 
