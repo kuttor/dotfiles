@@ -292,6 +292,7 @@ module Cask
     end
 
     LIVECHECK_REFERENCE_URL = "https://docs.brew.sh/Cask-Cookbook#stanza-livecheck"
+    private_constant :LIVECHECK_REFERENCE_URL
 
     sig { params(livecheck_result: T.any(NilClass, T::Boolean, Symbol)).void }
     def audit_hosting_with_livecheck(livecheck_result: audit_livecheck_version)
@@ -317,6 +318,7 @@ module Cask
     end
 
     SOURCEFORGE_OSDN_REFERENCE_URL = "https://docs.brew.sh/Cask-Cookbook#sourceforgeosdn-urls"
+    private_constant :SOURCEFORGE_OSDN_REFERENCE_URL
 
     sig { void }
     def audit_download_url_format
@@ -339,6 +341,7 @@ module Cask
     end
 
     VERIFIED_URL_REFERENCE_URL = "https://docs.brew.sh/Cask-Cookbook#when-url-and-homepage-domains-differ-add-verified"
+    private_constant :VERIFIED_URL_REFERENCE_URL
 
     sig { void }
     def audit_unnecessary_verified

@@ -5,6 +5,10 @@ require "test_runner_formula"
 require "github_runner"
 
 class GitHubRunnerMatrix
+  NEWEST_HOMEBREW_CORE_MACOS_RUNNER = :sequoia
+  OLDEST_HOMEBREW_CORE_MACOS_RUNNER = :ventura
+  NEWEST_HOMEBREW_CORE_INTEL_MACOS_RUNNER = :sonoma
+
   RunnerSpec = T.type_alias { T.any(LinuxRunnerSpec, MacOSRunnerSpec) }
   private_constant :RunnerSpec
 
@@ -77,6 +81,7 @@ class GitHubRunnerMatrix
   # https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#usage-limits
   GITHUB_ACTIONS_LONG_TIMEOUT = 2160 # 36 hours
   GITHUB_ACTIONS_SHORT_TIMEOUT = 60
+  private_constant :SELF_HOSTED_LINUX_RUNNER, :GITHUB_ACTIONS_LONG_TIMEOUT, :GITHUB_ACTIONS_SHORT_TIMEOUT
 
   sig { returns(LinuxRunnerSpec) }
   def linux_runner_spec
@@ -97,6 +102,7 @@ class GitHubRunnerMatrix
 
   VALID_PLATFORMS = T.let([:macos, :linux].freeze, T::Array[Symbol])
   VALID_ARCHES = T.let([:arm64, :x86_64].freeze, T::Array[Symbol])
+  private_constant :VALID_PLATFORMS, :VALID_ARCHES
 
   sig {
     params(
@@ -116,10 +122,6 @@ class GitHubRunnerMatrix
     runner.freeze
   end
 
-  NEWEST_HOMEBREW_CORE_MACOS_RUNNER = :sequoia
-  OLDEST_HOMEBREW_CORE_MACOS_RUNNER = :ventura
-  NEWEST_HOMEBREW_CORE_INTEL_MACOS_RUNNER = :sonoma
-
   sig { params(macos_version: MacOSVersion).returns(T::Boolean) }
   def runner_enabled?(macos_version)
     macos_version <= NEWEST_HOMEBREW_CORE_MACOS_RUNNER && macos_version >= OLDEST_HOMEBREW_CORE_MACOS_RUNNER
@@ -130,6 +132,9 @@ class GitHubRunnerMatrix
   NEWEST_GITHUB_ACTIONS_ARM_MACOS_RUNNER = :sequoia
   OLDEST_GITHUB_ACTIONS_ARM_MACOS_RUNNER = :sonoma
   GITHUB_ACTIONS_RUNNER_TIMEOUT = 360
+  private_constant :NEWEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER, :OLDEST_GITHUB_ACTIONS_INTEL_MACOS_RUNNER,
+                   :NEWEST_GITHUB_ACTIONS_ARM_MACOS_RUNNER, :OLDEST_GITHUB_ACTIONS_ARM_MACOS_RUNNER,
+                   :GITHUB_ACTIONS_RUNNER_TIMEOUT
 
   sig { void }
   def generate_runners!

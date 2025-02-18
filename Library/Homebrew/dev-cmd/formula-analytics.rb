@@ -229,7 +229,7 @@ module Homebrew
                 if record["prefix"] == "custom-prefix"
                   "#{record["prefix"]} (#{record["os"]} #{record["arch"]})"
                 else
-                  (record["prefix"]).to_s
+                  record["prefix"].to_s
                 end
               when :os_versions
                 format_os_version_dimension(record["os_name_and_version"])

@@ -136,6 +136,8 @@ class GitHubPackages
   IMAGE_MANIFEST_SCHEMA_URI = "https://opencontainers.org/schema/image/manifest"
 
   GITHUB_PACKAGE_TYPE = "homebrew_bottle"
+  private_constant :IMAGE_CONFIG_SCHEMA_URI, :IMAGE_INDEX_SCHEMA_URI, :IMAGE_LAYOUT_SCHEMA_URI,
+                   :IMAGE_MANIFEST_SCHEMA_URI, :GITHUB_PACKAGE_TYPE
 
   def load_schemas!
     schema_uri("content-descriptor",
