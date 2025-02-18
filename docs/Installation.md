@@ -95,20 +95,17 @@ Create a Homebrew installation wherever you extract the tarball. Whichever `brew
 
 ## Post-installation steps
 
-Before completing installation, Homebrew installer will provide some required "Next steps" instructions.
-These instructions configure your shell to evaluate the output of `brew shellenv`,
-which will load `brew` into your shell environment for use.
+When you install Homebrew, it prints some directions for updating your shell's config.
+If you don't follow those directions, Homebrew will not work.
 
-While it's difficult to document the precise path for every shell,
-typically, what follows must be in your shell's `rc` or `profile` file:
+You need to update your shell's config file (which file exactly depends on your shell, for example `~/.bashrc` or `~/.zshrc`) to include this:
 
 ```sh
 eval "<Homebrew prefix path>/bin/brew shellenv)"
 ```
 
-where `${HOMEBREW_PREFIX}` is the Homebrew installation directory.
-Replace this with the installation directory on your system.
-See the [FAQ about default installation locations](FAQ.md#why-should-i-install-homebrew-in-the-default-location).
+Replace `<Homebrew prefix path>` with the directory where Homebrew is installed on your system.
+You can find Homebrew's default install location [in this FAQ entry](https://docs.brew.sh/FAQ#why-should-i-install-homebrew-in-the-default-location).
 
 For more insight, re-run the installer or inspect [the installer's source](https://github.com/Homebrew/install/blob/deacfa6a6e62e5f4002baf9e1fac7a96e9aa5d41/install.sh#L1072-L1088)
 to see how the installer constructs the path it recommends.
