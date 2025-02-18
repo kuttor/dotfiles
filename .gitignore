@@ -90,6 +90,7 @@
 **/vendor/bundle/ruby/*/gems/json_schemer-*/
 **/vendor/bundle/ruby/*/gems/kramdown-*/
 **/vendor/bundle/ruby/*/gems/language_server-protocol-*/
+**/vendor/bundle/ruby/*/gems/lint_roller-*/
 **/vendor/bundle/ruby/*/gems/logger-*/
 **/vendor/bundle/ruby/*/gems/method_source-*/
 **/vendor/bundle/ruby/*/gems/mini_portile2-*/
