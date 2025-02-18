@@ -221,8 +221,8 @@ module Homebrew
         deps = dependency.runtime_dependencies if @use_runtime_dependencies
 
         if recursive
-          deps ||= recursive_includes(Dependency, dependency, includes, ignores)
-          reqs   = recursive_includes(Requirement, dependency, includes, ignores)
+          deps ||= recursive_dep_includes(dependency, includes, ignores)
+          reqs   = recursive_req_includes(dependency, includes, ignores)
         else
           deps ||= select_includes(dependency.deps, ignores, includes)
           reqs   = select_includes(dependency.requirements, ignores, includes)
