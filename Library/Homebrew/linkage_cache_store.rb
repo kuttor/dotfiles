@@ -65,6 +65,7 @@ class LinkageCacheStore < CacheStore
   private
 
   HASH_LINKAGE_TYPES = [:keg_files_dylibs].freeze
+  private_constant :HASH_LINKAGE_TYPES
 
   # @param type [Symbol]
   # @return [Hash]

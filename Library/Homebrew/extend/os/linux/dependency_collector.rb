@@ -33,6 +33,7 @@ module OS
 
       GLIBC = "glibc"
       GCC = OS::LINUX_PREFERRED_GCC_RUNTIME_FORMULA
+      private_constant :GLIBC, :GCC
 
       sig { void }
       def init_global_dep_tree_if_needed!

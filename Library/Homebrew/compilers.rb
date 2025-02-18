@@ -92,6 +92,7 @@ class CompilerFailure
       create(:clang),
     ],
   }.freeze
+  private_constant :COLLECTIONS
 end
 
 # Class for selecting a compiler for a formula.

@@ -240,6 +240,7 @@ module OS
       private
 
       CELLAR_RX = %r{\A#{HOMEBREW_CELLAR}/(?<formula_name>[^/]+)/[^/]+}
+      private_constant :CELLAR_RX
 
       # Replace HOMEBREW_CELLAR references with HOMEBREW_PREFIX/opt references
       # if the Cellar reference is to a different keg.
