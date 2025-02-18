@@ -1608,6 +1608,20 @@ class Formula
     patchlist.each(&:apply)
   end
 
+  sig { params(is_data: T::Boolean).void }
+  def selective_patch(is_data: false)
+    patches = patchlist.select { |p| p.is_a?(DATAPatch) == is_data }
+    return if patches.empty?
+
+    patchtype = if is_data
+      "DATA"
+    else
+      "non-DATA"
+    end
+    ohai "Applying #{patchtype} patches"
+    patches.each(&:apply)
+  end
+
   # Yields |self,staging| with current working directory set to the uncompressed tarball
   # where staging is a {Mktemp} staging context.
   sig(:final) {

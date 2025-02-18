@@ -148,12 +148,15 @@ class Build
           # https://github.com/Homebrew/homebrew-core/pull/87470
           TZ:                         "UTC0",
         ) do
-          formula.patch
-
           if args.git?
+            formula.selective_patch(is_data: false)
             system "git", "init"
             system "git", "add", "-A"
+            formula.selective_patch(is_data: true)
+          else
+            formula.patch
           end
+
           if args.interactive?
             ohai "Entering interactive mode..."
             puts <<~EOS
