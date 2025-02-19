@@ -66,9 +66,11 @@ module DependenciesHelpers
   end
 
   sig {
-    params(dependables: T.any(Dependencies, Requirements), ignores: T::Array[Symbol],
-           includes: T::Array[Symbol])
-      .returns(T::Array[T.any(Dependency, Requirement)])
+    params(
+      dependables: T.any(Dependencies, Requirements, T::Array[Dependency], T::Array[Requirement]),
+      ignores:     T::Array[Symbol],
+      includes:    T::Array[Symbol],
+    ).returns(T::Array[T.any(Dependency, Requirement)])
   }
   def select_includes(dependables, ignores, includes)
     dependables.select do |dep|
