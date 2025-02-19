@@ -28,19 +28,10 @@ module Homebrew
     ].freeze, T::Array[String])
     private_constant :UNSTABLE_VERSION_KEYWORDS
 
-    sig { returns(T::Hash[T::Class[T.anything], String]) }
-    private_class_method def self.livecheck_strategy_names
-      return T.must(@livecheck_strategy_names) if defined?(@livecheck_strategy_names)
-
-      # Cache demodulized strategy names, to avoid repeating this work
-      @livecheck_strategy_names = T.let({}, T.nilable(T::Hash[T::Class[T.anything], String]))
-      Strategy.constants.sort.each do |const_symbol|
-        constant = Strategy.const_get(const_symbol)
-        next unless constant.is_a?(Class)
-
-        T.must(@livecheck_strategy_names)[constant] = Utils.demodulize(T.must(constant.name))
-      end
-      T.must(@livecheck_strategy_names).freeze
+    sig { params(strategy_class: T::Class[T.anything]).returns(String) }
+    private_class_method def self.livecheck_strategy_names(strategy_class)
+      @livecheck_strategy_names ||= T.let({}, T.nilable(T::Hash[T::Class[T.anything], String]))
+      @livecheck_strategy_names[strategy_class] ||= Utils.demodulize(T.must(strategy_class.name))
     end
 
     # Uses `formulae_and_casks_to_check` to identify taps in use other than
@@ -668,7 +659,9 @@ module Homebrew
           block_provided:     livecheck_strategy_block.present?,
         )
         strategy = Strategy.from_symbol(livecheck_strategy) || strategies.first
-        strategy_name = livecheck_strategy_names[strategy]
+        next unless strategy
+
+        strategy_name = livecheck_strategy_names(strategy)
 
         if strategy.respond_to?(:preprocess_url)
           url = strategy.preprocess_url(url)
@@ -686,7 +679,7 @@ module Homebrew
           puts "URL Options:      #{livecheck_url_options}" if livecheck_url_options.present?
           puts "URL (processed):  #{url}" if url != original_url
           if strategies.present? && verbose
-            puts "Strategies:       #{strategies.map { |s| livecheck_strategy_names[s] }.join(", ")}"
+            puts "Strategies:       #{strategies.map { |s| livecheck_strategy_names(s) }.join(", ")}"
           end
           puts "Strategy:         #{strategy_name}" if strategy.present?
           puts "Regex:            #{livecheck_regex.inspect}" if livecheck_regex.present?
@@ -823,7 +816,7 @@ module Homebrew
             version_info[:meta][:url][:homebrew_curl] = homebrew_curl if homebrew_curl.present?
           end
           version_info[:meta][:strategy] = strategy_name if strategy.present?
-          version_info[:meta][:strategies] = strategies.map { |s| livecheck_strategy_names[s] } if strategies.present?
+          version_info[:meta][:strategies] = strategies.map { |s| livecheck_strategy_names(s) } if strategies.present?
           version_info[:meta][:regex] = regex.inspect if regex.present?
           version_info[:meta][:cached] = true if strategy_data[:cached] == true
           version_info[:meta][:throttle] = livecheck_throttle if livecheck_throttle
@@ -892,7 +885,9 @@ module Homebrew
           block_provided:     livecheck_strategy_block.present?,
         )
         strategy = Strategy.from_symbol(livecheck_strategy) || strategies.first
-        strategy_name = livecheck_strategy_names[strategy]
+        next unless strategy
+
+        strategy_name = livecheck_strategy_names(strategy)
 
         if strategy.respond_to?(:preprocess_url)
           url = strategy.preprocess_url(url)
@@ -910,7 +905,7 @@ module Homebrew
           puts "URL Options:      #{livecheck_url_options}" if livecheck_url_options.present?
           puts "URL (processed):  #{url}" if url != original_url
           if strategies.present? && verbose
-            puts "Strategies:       #{strategies.map { |s| livecheck_strategy_names[s] }.join(", ")}"
+            puts "Strategies:       #{strategies.map { |s| livecheck_strategy_names(s) }.join(", ")}"
           end
           puts "Strategy:         #{strategy_name}" if strategy.present?
           puts "Regex:            #{livecheck_regex.inspect}" if livecheck_regex.present?
@@ -1032,7 +1027,7 @@ module Homebrew
         end
         resource_version_info[:meta][:strategy] = strategy_name if strategy.present?
         if strategies.present?
-          resource_version_info[:meta][:strategies] = strategies.map { |s| livecheck_strategy_names[s] }
+          resource_version_info[:meta][:strategies] = strategies.map { |s| livecheck_strategy_names(s) }
         end
         resource_version_info[:meta][:regex] = regex.inspect if regex.present?
         resource_version_info[:meta][:cached] = true if cached == true
