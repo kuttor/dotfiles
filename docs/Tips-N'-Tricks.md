@@ -148,34 +148,6 @@ Use this to detect the likely Homebrew installation directory and load Homebrew 
 You may need to adapt this to your particular shell or other particulars of your environment.
 
 ```sh
-# Execute only if brew isn't already available.
-if ! [ -x "$(command -v brew)" ]; then
-  OS="$(uname)"
-  UNAME_MACHINE="$(uname -m)"
-  if [ "${OS}" = "Linux" ]; then
-    # Linux
-    HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
-  elif [ "${OS}" = "Darwin" ]; then
-    if [ "${UNAME_MACHINE}" = "arm64" ]; then
-      # M-series ARM64 macOS
-      HOMEBREW_PREFIX="/opt/homebrew"
-    else
-      # Intel macOS
-      HOMEBREW_PREFIX="/usr/local"
-    fi
-  fi
-
-  if [ -d "${HOMEBREW_PREFIX}" ]; then
-    BREW_BIN="${HOMEBREW_PREFIX}/bin/brew"
-    if [ -x "${BREW_BIN}" ]; then
-      eval "\$(${BREW_BIN} shellenv)"
-    else
-      >&2 printf "Homebrew possibly found at %s but %s is not executable. Check the permissions.\n" "${HOMEBREW_PREFIX}" "${BREW_BIN}"
-    fi
-  else
-    >&2 printf "Homebrew not found where expected in %s on %s %s\n" "${HOMEBREW_PREFIX}" "${OS}" "${UNAME_MACHINE}"
-    >&2 printf "Double-check that it's installed or run the following command to install it\n\n\t%s\n" \
-      '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-  fi
-fi
+command -v brew || export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin"
+command -v brew && eval "$(brew shellenv)"
 ```
