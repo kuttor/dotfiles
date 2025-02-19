@@ -318,8 +318,5 @@ module Homebrew::EnvConfig
 
     sig { returns(T::Boolean) }
     def verify_attestations?; end
-
-    sig { returns(T::Boolean) }
-    def ask?; end
   end
 end

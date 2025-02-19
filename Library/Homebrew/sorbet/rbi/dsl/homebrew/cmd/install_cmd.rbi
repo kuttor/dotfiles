@@ -20,6 +20,9 @@ class Homebrew::Cmd::InstallCmd::Args < Homebrew::CLI::Args
   sig { returns(T.nilable(String)) }
   def appdir; end
 
+  sig { returns(T::Boolean) }
+  def ask?; end
+
   sig { returns(T.nilable(String)) }
   def audio_unit_plugindir; end
 
@@ -166,7 +169,4 @@ class Homebrew::Cmd::InstallCmd::Args < Homebrew::CLI::Args
 
   sig { returns(T::Boolean) }
   def zap?; end
-
-  sig { returns(T::Boolean) }
-  def ask?; end
 end
