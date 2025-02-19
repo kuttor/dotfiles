@@ -2403,6 +2403,7 @@ class Formula
 
   # Returns the {PkgVersion} for this formula if it is installed.
   # If not, return `nil`.
+  sig { returns(T.nilable(PkgVersion)) }
   def any_installed_version
     any_installed_keg&.version
   end

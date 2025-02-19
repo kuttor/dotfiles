@@ -13,6 +13,8 @@ module Homebrew
   # command. These methods print the requested livecheck information
   # for formulae.
   module Livecheck
+    NO_CURRENT_VERSION_MSG = "Unable to identify current version"
+
     UNSTABLE_VERSION_KEYWORDS = T.let(%w[
       alpha
       beta
@@ -249,12 +251,19 @@ module Homebrew
         # comparison.
         current = if formula
           if formula.head_only?
-            Version.new(formula.any_installed_version.version.commit)
-          else
-            T.must(formula.stable).version
+            formula_commit = formula.any_installed_version&.version&.commit
+            Version.new(formula_commit) if formula_commit
+          elsif (stable = formula.stable)
+            stable.version
           end
         else
           Version.new(formula_or_cask.version)
+        end
+        unless current
+          raise Livecheck::Error, NO_CURRENT_VERSION_MSG unless json
+          next if quiet
+
+          next status_hash(formula_or_cask, "error", [NO_CURRENT_VERSION_MSG], full_name: use_full_name, verbose:)
         end
 
         current_str = current.to_s

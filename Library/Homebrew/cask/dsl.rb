@@ -287,6 +287,7 @@ module Cask
     #
     # @see DSL::Version
     # @api public
+    sig { params(arg: T.nilable(T.any(String, Symbol))).returns(T.nilable(DSL::Version)) }
     def version(arg = nil)
       set_unique_stanza(:version, arg.nil?) do
         if !arg.is_a?(String) && arg != :latest
