@@ -1045,6 +1045,8 @@ module Homebrew
       end
 
       def check_for_duplicate_formulae
+        return if ENV["HOMEBREW_TEST_BOT"].present?
+
         core_formula_names = CoreTap.instance.formula_names
         shadowed_formula_full_names = non_core_taps.flat_map do |tap|
           tap_formula_names = tap.formula_names.map { |s| s.delete_prefix("#{tap.name}/") }
@@ -1060,6 +1062,8 @@ module Homebrew
       end
 
       def check_for_duplicate_casks
+        return if ENV["HOMEBREW_TEST_BOT"].present?
+
         core_cask_names = CoreCaskTap.instance.cask_tokens
         shadowed_cask_full_names = non_core_taps.flat_map do |tap|
           tap_cask_names = tap.cask_tokens.map { |s| s.delete_prefix("#{tap.name}/") }
