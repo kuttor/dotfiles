@@ -1051,13 +1051,23 @@ module Homebrew
         shadowed_formula_full_names = non_core_taps.flat_map do |tap|
           tap_formula_names = tap.formula_names.map { |s| s.delete_prefix("#{tap.name}/") }
           (core_formula_names & tap_formula_names).map { |f| "#{tap.name}/#{f}" }
-        end.compact
+        end.compact.sort
         return if shadowed_formula_full_names.empty?
+
+        installed_formula_tap_names = Formula.installed.filter_map(&:tap).uniq.reject(&:official?).map(&:name)
+        shadowed_formula_tap_names = shadowed_formula_full_names.map { |s| s.rpartition("/").first }.uniq
+        unused_shadowed_formula_tap_names = (shadowed_formula_tap_names - installed_formula_tap_names).sort
+
+        resolution = if unused_shadowed_formula_tap_names.empty?
+          "Their taps are in use, so you must use these full names throughout Homebrew."
+        else
+          "Some of these can be resolved with:\n  brew untap #{unused_shadowed_formula_tap_names.join(" ")}"
+        end
 
         <<~EOS
           The following formulae have the same name as core formulae:
             #{shadowed_formula_full_names.join("\n  ")}
-          You will need to use their full names throughout Homebrew.
+          #{resolution}
         EOS
       end
 
@@ -1068,13 +1078,23 @@ module Homebrew
         shadowed_cask_full_names = non_core_taps.flat_map do |tap|
           tap_cask_names = tap.cask_tokens.map { |s| s.delete_prefix("#{tap.name}/") }
           (core_cask_names & tap_cask_names).map { |f| "#{tap.name}/#{f}" }
-        end.compact
+        end.compact.sort
         return if shadowed_cask_full_names.empty?
+
+        installed_cask_tap_names = Cask::Caskroom.casks.filter_map(&:tap).uniq.reject(&:official?).map(&:name)
+        shadowed_cask_tap_names = shadowed_cask_full_names.map { |s| s.rpartition("/").first }.uniq
+        unused_shadowed_cask_tap_names = (shadowed_cask_tap_names - installed_cask_tap_names).sort
+
+        resolution = if unused_shadowed_cask_tap_names.empty?
+          "Their taps are in use, so you must use these full names throughout Homebrew."
+        else
+          "Some of these can be resolved with:\n  brew untap #{unused_shadowed_cask_tap_names.join(" ")}"
+        end
 
         <<~EOS
           The following casks have the same name as core casks:
             #{shadowed_cask_full_names.join("\n  ")}
-          You will need to use their full names throughout Homebrew.
+          #{resolution}
         EOS
       end
 
