@@ -1946,6 +1946,17 @@ class Formula
     args
   end
 
+  # Standard parameters for zig builds.
+  #
+  # @api public
+  sig {
+    params(prefix:       T.any(String, Pathname),
+           release_mode: String).returns(T::Array[String])
+  }
+  def std_zig_args(prefix: self.prefix, release_mode: "fast")
+    ["--prefix", prefix.to_s, "--release=#{release_mode}", "--summary", "all"]
+  end
+
   # Shared library names according to platform conventions.
   #
   # Optionally specify a `version` to restrict the shared library to a specific
@@ -3029,6 +3040,8 @@ class Formula
         pretty_args -= std_go_args
       when "meson"
         pretty_args -= std_meson_args
+      when "zig"
+        pretty_args -= std_zig_args
       when %r{(^|/)(pip|python)(?:[23](?:\.\d{1,2})?)?$}
         pretty_args -= std_pip_args
       end
