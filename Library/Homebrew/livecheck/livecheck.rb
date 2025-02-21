@@ -13,6 +13,9 @@ module Homebrew
   # command. These methods print the requested livecheck information
   # for formulae.
   module Livecheck
+    NO_CURRENT_VERSION_MSG = "Unable to identify current version"
+    NO_VERSIONS_MSG = "Unable to get versions"
+
     UNSTABLE_VERSION_KEYWORDS = T.let(%w[
       alpha
       beta
@@ -249,12 +252,19 @@ module Homebrew
         # comparison.
         current = if formula
           if formula.head_only?
-            Version.new(formula.any_installed_version.version.commit)
-          else
-            T.must(formula.stable).version
+            formula_commit = formula.any_installed_version&.version&.commit
+            Version.new(formula_commit) if formula_commit
+          elsif (stable = formula.stable)
+            stable.version
           end
         else
           Version.new(formula_or_cask.version)
+        end
+        unless current
+          raise Livecheck::Error, NO_CURRENT_VERSION_MSG unless json
+          next if quiet
+
+          next status_hash(formula_or_cask, "error", [NO_CURRENT_VERSION_MSG], full_name: use_full_name, verbose:)
         end
 
         current_str = current.to_s
@@ -289,7 +299,7 @@ module Homebrew
                 verbose:,
               )
               if res_version_info.empty?
-                status_hash(resource, "error", ["Unable to get versions"], verbose:)
+                status_hash(resource, "error", [NO_VERSIONS_MSG], verbose:)
               else
                 res_version_info
               end
@@ -299,13 +309,12 @@ module Homebrew
         end
 
         if latest.blank?
-          no_versions_msg = "Unable to get versions"
-          raise Livecheck::Error, no_versions_msg unless json
+          raise Livecheck::Error, NO_VERSIONS_MSG unless json
           next if quiet
 
           next version_info if version_info.is_a?(Hash) && version_info[:status] && version_info[:messages]
 
-          latest_info = status_hash(formula_or_cask, "error", [no_versions_msg], full_name: use_full_name,
+          latest_info = status_hash(formula_or_cask, "error", [NO_VERSIONS_MSG], full_name: use_full_name,
                                                                                  verbose:)
           if check_for_resources
             unless verbose
@@ -986,7 +995,7 @@ module Homebrew
         res_current = T.must(resource.version)
         res_latest = Version.new(match_version_map.values.max_by { |v| LivecheckVersion.create(resource, v) })
 
-        return status_hash(resource, "error", ["Unable to get versions"], verbose:) if res_latest.blank?
+        return status_hash(resource, "error", [NO_VERSIONS_MSG], verbose:) if res_latest.blank?
 
         is_outdated = res_current < res_latest
         is_newer_than_upstream = res_current > res_latest

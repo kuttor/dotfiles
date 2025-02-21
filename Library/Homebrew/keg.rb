@@ -388,6 +388,7 @@ class Keg
     (path/"share/emacs/site-lisp"/name).children.any? { |f| ELISP_EXTENSIONS.include? f.extname }
   end
 
+  sig { returns(PkgVersion) }
   def version
     require "pkg_version"
     PkgVersion.parse(path.basename.to_s)
