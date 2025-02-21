@@ -151,6 +151,8 @@ module Homebrew
           uses_from_macos "ruby"
         <% elsif @mode == :rust %>
           depends_on "rust" => :build
+        <% elsif @mode == :zig %>
+          depends_on "zig" => :build
         <% elsif @mode.nil? %>
           # depends_on "cmake" => :build
         <% end %>
@@ -217,6 +219,8 @@ module Homebrew
             bin.env_script_all_files(libexec/"bin", GEM_HOME: ENV["GEM_HOME"])
         <% elsif @mode == :rust %>
             system "cargo", "install", *std_cargo_args
+        <% elsif @mode == :zig %>
+            system "zig", "build", *std_zig_args
         <% else %>
             # Remove unrecognized options if they cause configure to fail
             # https://rubydoc.brew.sh/Formula.html#std_configure_args-instance_method
