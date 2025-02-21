@@ -592,6 +592,7 @@ __fish_brew_complete_arg 'create' -l set-name -d 'Explicitly set the name of the
 __fish_brew_complete_arg 'create' -l set-version -d 'Explicitly set the version of the new formula or cask'
 __fish_brew_complete_arg 'create' -l tap -d 'Generate the new formula within the given tap, specified as user`/`repo'
 __fish_brew_complete_arg 'create' -l verbose -d 'Make some output more verbose'
+__fish_brew_complete_arg 'create' -l zig -d 'Create a basic template for a Zig build'
 
 
 __fish_brew_complete_cmd 'debugger' 'Run the specified Homebrew command in debug mode'

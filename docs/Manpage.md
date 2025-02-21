@@ -2154,6 +2154,10 @@ see: <https://rubydoc.brew.sh/Formula>
 
 : Create a basic template for a Rust build.
 
+`--zig`
+
+: Create a basic template for a Zig build.
+
 `--no-fetch`
 
 : Homebrew will not download *`URL`* to the cache and will thus not add its
