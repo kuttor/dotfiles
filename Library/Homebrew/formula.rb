@@ -1954,12 +1954,14 @@ class Formula
            release_mode: String).returns(T::Array[String])
   }
   def std_zig_args(prefix: self.prefix, release_mode: "fast")
-    release_mode = release_mode.downcase
-    args = ["--prefix", prefix.to_s, "--release=#{release_mode}"]
-    release_mode_uc = release_mode.capitalize
-    args << "-Doptimize=Release#{release_mode_uc}"
-    args += ["--summary", "all"]
-    args
+    release_mode_downcased = release_mode.downcase
+    release_mode_capitalized = release_mode.capitalize
+    [
+      "--prefix", prefix.to_s,
+      "--release=#{release_mode_downcased}",
+      "-Doptimize=Release#{release_mode_capitalized}",
+      "--summary", "all",
+    ]
   end
 
   # Shared library names according to platform conventions.
