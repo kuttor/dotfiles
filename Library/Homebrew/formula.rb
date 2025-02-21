@@ -1951,16 +1951,18 @@ class Formula
   # @api public
   sig {
     params(prefix:       T.any(String, Pathname),
-           release_mode: String).returns(T::Array[String])
+           release_mode: Symbol).returns(T::Array[String])
   }
-  def std_zig_args(prefix: self.prefix, release_mode: "fast")
-    release_mode_downcased = release_mode.downcase
-    release_mode_capitalized = release_mode.capitalize
+  def std_zig_args(prefix: self.prefix, release_mode: :fast)
+    raise ArgumentError, "Invalid Zig release mode: #{release_mode}" if [:safe, :fast, :small].exclude?(release_mode)
+
+    release_mode_downcased = release_mode.to_s.downcase
+    release_mode_capitalized = release_mode.to_s.capitalize
     [
       "--prefix", prefix.to_s,
       "--release=#{release_mode_downcased}",
       "-Doptimize=Release#{release_mode_capitalized}",
-      "--summary", "all",
+      "--summary", "all"
     ]
   end
 
