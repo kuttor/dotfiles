@@ -41,9 +41,7 @@ module OS
       }
       def std_zig_args(prefix: self.prefix, release_mode: :fast)
         args = super
-        # it is probably better to add this flag only on arm macs
-        # my attempts with `MacOS::Hardware::CPU.arm?` and its variations didn't work out
-        args << "-fno-rosetta"
+        args << "-fno-rosetta" if ::Hardware::CPU.arm?
         args
       end
     end
