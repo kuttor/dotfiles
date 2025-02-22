@@ -29,10 +29,10 @@ RSpec.describe Livecheck do
 
   let(:post_hash) do
     {
-      "empty"   => "",
-      "boolean" => "true",
-      "number"  => "1",
-      "string"  => "a + b = c",
+      empty:   "",
+      boolean: "true",
+      number:  "1",
+      string:  "a + b = c",
     }
   end
 
