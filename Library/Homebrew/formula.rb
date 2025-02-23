@@ -3374,9 +3374,11 @@ class Formula
     # desc "Example formula"
     # ```
     #
-    # @!attribute [w] desc
     # @api public
-    attr_rw :desc
+    sig { params(val: T.nilable(String)).returns(T.nilable(String)) }
+    def desc(val = nil)
+      val.nil? ? @desc : @desc = T.let(val, T.nilable(String))
+    end
 
     # The SPDX ID of the open-source license that the formula uses.
     # Shows when running `brew info`.
@@ -3524,9 +3526,11 @@ class Formula
     # homepage "https://www.example.com"
     # ```
     #
-    # @!attribute [w] homepage
     # @api public
-    attr_rw :homepage
+    sig { params(val: T.nilable(String)).returns(T.nilable(String)) }
+    def homepage(val = nil)
+      val.nil? ? @homepage : @homepage = T.let(val, T.nilable(String))
+    end
 
     # Checks whether a `livecheck` specification is defined or not.
     #
@@ -3566,7 +3570,6 @@ class Formula
     # why they cannot use the bottle.
     attr_accessor :pour_bottle_check_unsatisfied_reason
 
-    # @!attribute [w] revision
     # Used for creating new Homebrew versions of software without new upstream
     # versions. For example, if we bump the major version of a library that this
     # {Formula} {.depends_on} then we may need to update the `revision` of this
@@ -3580,9 +3583,11 @@ class Formula
     # ```
     #
     # @api public
-    attr_rw :revision
+    sig { params(val: T.nilable(Integer)).returns(T.nilable(Integer)) }
+    def revision(val = nil)
+      val.nil? ? @revision : @revision = T.let(val, T.nilable(Integer))
+    end
 
-    # @!attribute [w] version_scheme
     # Used for creating new Homebrew version schemes. For example, if we want
     # to change version scheme from one to another, then we may need to update
     # `version_scheme` of this {Formula} to be able to use new version scheme,
@@ -3598,7 +3603,10 @@ class Formula
     # ```
     #
     # @api public
-    attr_rw :version_scheme
+    sig { params(val: T.nilable(Integer)).returns(T.nilable(Integer)) }
+    def version_scheme(val = nil)
+      val.nil? ? @version_scheme : @version_scheme = T.let(val, T.nilable(Integer))
+    end
 
     def spec_syms
       [:stable, :head].freeze

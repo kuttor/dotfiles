@@ -28,25 +28,14 @@ module Tapioca
 
       sig { params(klass: RBI::Scope, method: T.any(Method, UnboundMethod), class_method: T::Boolean).void }
       def compile_attrable_method(klass, method, class_method: false)
-        case method.arity
-        when -1
-          # attr_rw
-          klass.create_method(
-            method.name.to_s,
-            parameters:   [create_opt_param("arg", type: "T.untyped", default: "nil")],
-            return_type:  "T.untyped",
-            class_method:,
-          )
-        when 0
-          # attr_predicate
-          klass.create_method(
-            method.name.to_s,
-            return_type:  "T::Boolean",
-            class_method:,
-          )
-        else
-          raise "Unsupported arity for method #{method.name} - did `Attrable` change?"
-        end
+        raise "Unsupported arity for method #{method.name} - did `Attrable` change?" unless method.arity.zero?
+
+        # attr_predicate
+        klass.create_method(
+          method.name.to_s,
+          return_type:  "T::Boolean",
+          class_method:,
+        )
       end
     end
   end

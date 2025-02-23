@@ -179,11 +179,23 @@ class Requirement
 
   class << self
     include BuildEnvironment::DSL
-    extend Attrable
 
     attr_reader :env_proc, :build
 
-    attr_rw :fatal, :cask, :download
+    sig { params(val: T.nilable(String)).returns(T.nilable(String)) }
+    def cask(val = nil)
+      val.nil? ? @cask : @cask = val
+    end
+
+    sig { params(val: T.nilable(String)).returns(T.nilable(String)) }
+    def download(val = nil)
+      val.nil? ? @download : @download = val
+    end
+
+    sig { params(val: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
+    def fatal(val = nil)
+      val.nil? ? @fatal : @fatal = val
+    end
 
     def satisfy(options = nil, &block)
       return @satisfied if options.nil? && !block
