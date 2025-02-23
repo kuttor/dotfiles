@@ -15,8 +15,8 @@ class BottleSpecification
     @root_url_specs = {}
   end
 
-  sig { params(val: T.nilable(Integer)).returns(T.nilable(Integer)) }
-  def rebuild(val = nil)
+  sig { params(val: Integer).returns(T.nilable(Integer)) }
+  def rebuild(val = T.unsafe(nil))
     val.nil? ? @rebuild : @rebuild = val
   end
 

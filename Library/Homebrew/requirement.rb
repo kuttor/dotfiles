@@ -182,18 +182,18 @@ class Requirement
 
     attr_reader :env_proc, :build
 
-    sig { params(val: T.nilable(String)).returns(T.nilable(String)) }
-    def cask(val = nil)
+    sig { params(val: String).returns(T.nilable(String)) }
+    def cask(val = T.unsafe(nil))
       val.nil? ? @cask : @cask = val
     end
 
-    sig { params(val: T.nilable(String)).returns(T.nilable(String)) }
-    def download(val = nil)
+    sig { params(val: String).returns(T.nilable(String)) }
+    def download(val = T.unsafe(nil))
       val.nil? ? @download : @download = val
     end
 
-    sig { params(val: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
-    def fatal(val = nil)
+    sig { params(val: T::Boolean).returns(T.nilable(T::Boolean)) }
+    def fatal(val = T.unsafe(nil))
       val.nil? ? @fatal : @fatal = val
     end
 

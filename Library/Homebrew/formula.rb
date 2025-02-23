@@ -3375,8 +3375,8 @@ class Formula
     # ```
     #
     # @api public
-    sig { params(val: T.nilable(String)).returns(T.nilable(String)) }
-    def desc(val = nil)
+    sig { params(val: String).returns(T.nilable(String)) }
+    def desc(val = T.unsafe(nil))
       val.nil? ? @desc : @desc = T.let(val, T.nilable(String))
     end
 
@@ -3527,8 +3527,8 @@ class Formula
     # ```
     #
     # @api public
-    sig { params(val: T.nilable(String)).returns(T.nilable(String)) }
-    def homepage(val = nil)
+    sig { params(val: String).returns(T.nilable(String)) }
+    def homepage(val = T.unsafe(nil))
       val.nil? ? @homepage : @homepage = T.let(val, T.nilable(String))
     end
 
@@ -3583,8 +3583,8 @@ class Formula
     # ```
     #
     # @api public
-    sig { params(val: T.nilable(Integer)).returns(T.nilable(Integer)) }
-    def revision(val = nil)
+    sig { params(val: Integer).returns(T.nilable(Integer)) }
+    def revision(val = T.unsafe(nil))
       val.nil? ? @revision : @revision = T.let(val, T.nilable(Integer))
     end
 
@@ -3603,8 +3603,8 @@ class Formula
     # ```
     #
     # @api public
-    sig { params(val: T.nilable(Integer)).returns(T.nilable(Integer)) }
-    def version_scheme(val = nil)
+    sig { params(val: Integer).returns(T.nilable(Integer)) }
+    def version_scheme(val = T.unsafe(nil))
       val.nil? ? @version_scheme : @version_scheme = T.let(val, T.nilable(Integer))
     end
 
