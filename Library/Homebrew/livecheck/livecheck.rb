@@ -31,7 +31,7 @@ module Homebrew
     sig { params(strategy_class: T::Class[T.anything]).returns(String) }
     private_class_method def self.livecheck_strategy_names(strategy_class)
       @livecheck_strategy_names ||= T.let({}, T.nilable(T::Hash[T::Class[T.anything], String]))
-      @livecheck_strategy_names[strategy_class] ||= Utils.demodulize(T.must(strategy_class.name))
+      @livecheck_strategy_names[strategy_class] ||= Utils.demodulize(strategy_class.name)
     end
 
     # Uses `formulae_and_casks_to_check` to identify taps in use other than

@@ -30,6 +30,10 @@ RSpec.describe Utils do
       expect(described_class.demodulize("")).to eq("")
       expect(described_class.demodulize("::")).to eq("")
     end
+
+    it "raise an ArgumentError when passed nil" do
+      expect { described_class.demodulize(nil) }.to raise_error(ArgumentError)
+    end
   end
 
   specify ".parse_author!" do

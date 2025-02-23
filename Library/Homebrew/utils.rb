@@ -97,8 +97,11 @@ module Utils
   # See also #deconstantize.
   # @see https://github.com/rails/rails/blob/b0dd7c7/activesupport/lib/active_support/inflector/methods.rb#L230-L245
   #   `ActiveSupport::Inflector.demodulize`
-  sig { params(path: String).returns(String) }
+  # @raise [ArgumentError] if the provided path is nil
+  sig { params(path: T.nilable(String)).returns(String) }
   def self.demodulize(path)
+    raise ArgumentError, "No constant path provided" if path.nil?
+
     if (i = path.rindex("::"))
       T.must(path[(i + 2)..])
     else
