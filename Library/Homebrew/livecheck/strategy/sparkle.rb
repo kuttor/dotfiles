@@ -228,7 +228,7 @@ module Homebrew
         def self.find_versions(url:, regex: nil, homebrew_curl: false, **unused, &block)
           if regex.present? && block.blank?
             raise ArgumentError,
-                  "#{Utils.demodulize(T.must(name))} only supports a regex when using a `strategy` block"
+                  "#{Utils.demodulize(name)} only supports a regex when using a `strategy` block"
           end
 
           match_data = { matches: {}, regex:, url: }

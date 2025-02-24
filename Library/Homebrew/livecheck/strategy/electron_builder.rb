@@ -47,7 +47,7 @@ module Homebrew
         def self.find_versions(url:, regex: nil, provided_content: nil, **unused, &block)
           if regex.present? && block.blank?
             raise ArgumentError,
-                  "#{Utils.demodulize(T.must(name))} only supports a regex when using a `strategy` block"
+                  "#{Utils.demodulize(name)} only supports a regex when using a `strategy` block"
           end
 
           Yaml.find_versions(
