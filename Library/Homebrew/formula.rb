@@ -1,7 +1,6 @@
 # typed: strict
 # frozen_string_literal: true
 
-require "attrable"
 require "cache_store"
 require "did_you_mean"
 require "formula_support"
@@ -79,7 +78,6 @@ class Formula
   include Homebrew::Livecheck::Constants
   extend Forwardable
   extend Cachable
-  extend Attrable
   extend APIHashable
   extend T::Helpers
 
@@ -3288,8 +3286,6 @@ class Formula
 
   # The methods below define the formula DSL.
   class << self
-    extend Attrable
-
     include BuildEnvironment::DSL
     include OnSystem::MacOSAndLinux
 
@@ -3307,6 +3303,7 @@ class Formula
         @skip_clean_paths = T.let(Set.new, T.nilable(T::Set[T.any(String, Symbol)]))
         @link_overwrite_paths = T.let(Set.new, T.nilable(T::Set[String]))
         @loaded_from_api = T.let(false, T.nilable(T::Boolean))
+        @on_system_blocks_exist = T.let(false, T.nilable(T::Boolean))
         @network_access_allowed = T.let(SUPPORTED_NETWORK_ACCESS_PHASES.to_h do |phase|
           [phase, DEFAULT_NETWORK_ACCESS_ALLOWED]
         end, T.nilable(T::Hash[Symbol, T::Boolean]))
@@ -3327,11 +3324,13 @@ class Formula
     def network_access_allowed = T.must(@network_access_allowed)
 
     # Whether this formula was loaded using the formulae.brew.sh API
-    attr_predicate :loaded_from_api?
+    sig { returns(T::Boolean) }
+    def loaded_from_api? = !!@loaded_from_api
 
     # Whether this formula contains OS/arch-specific blocks
     # (e.g. `on_macos`, `on_arm`, `on_monterey :or_older`, `on_system :linux, macos: :big_sur_or_newer`).
-    attr_predicate :on_system_blocks_exist?
+    sig { returns(T::Boolean) }
+    def on_system_blocks_exist? = !!@on_system_blocks_exist
 
     # The reason for why this software is not linked (by default) to {::HOMEBREW_PREFIX}.
     sig { returns(T.nilable(KegOnlyReason)) }
