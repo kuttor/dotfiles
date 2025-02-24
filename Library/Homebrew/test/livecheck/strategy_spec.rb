@@ -10,14 +10,6 @@ RSpec.describe Homebrew::Livecheck::Strategy do
 
   let(:post_hash) do
     {
-      "empty"   => "",
-      "boolean" => "true",
-      "number"  => "1",
-      "string"  => "a + b = c",
-    }
-  end
-  let(:post_hash_symbol_keys) do
-    {
       empty:   "",
       boolean: "true",
       number:  "1",
@@ -154,7 +146,6 @@ RSpec.describe Homebrew::Livecheck::Strategy do
   describe "::post_args" do
     it "returns an array including `--data` and an encoded form data string" do
       expect(strategy.post_args(post_form: post_hash)).to eq(["--data", form_string])
-      expect(strategy.post_args(post_form: post_hash_symbol_keys)).to eq(["--data", form_string])
 
       # If both `post_form` and `post_json` are present, only `post_form` will
       # be used.
@@ -163,7 +154,6 @@ RSpec.describe Homebrew::Livecheck::Strategy do
 
     it "returns an array including `--json` and a JSON string" do
       expect(strategy.post_args(post_json: post_hash)).to eq(["--json", json_string])
-      expect(strategy.post_args(post_json: post_hash_symbol_keys)).to eq(["--json", json_string])
     end
 
     it "returns an empty array if `post_form` value is blank" do

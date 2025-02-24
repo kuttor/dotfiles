@@ -170,8 +170,8 @@ class Livecheck
     params(
       # URL to check for version information.
       url:       T.any(String, Symbol),
-      post_form: T.nilable(T::Hash[T.any(String, Symbol), String]),
-      post_json: T.nilable(T::Hash[T.any(String, Symbol), String]),
+      post_form: T.nilable(T::Hash[Symbol, String]),
+      post_json: T.nilable(T::Hash[Symbol, String]),
     ).returns(T.nilable(T.any(String, Symbol)))
   }
   def url(url = T.unsafe(nil), post_form: nil, post_json: nil)

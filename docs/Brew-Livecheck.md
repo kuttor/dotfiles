@@ -119,8 +119,8 @@ Some checks require making a `POST` request and that can be accomplished by addi
 ```ruby
 livecheck do
   url "https://example.com/download.php", post_form: {
-    "Name"   => "",
-    "E-mail" => "",
+    Name:     "",
+    "E-mail": "",
   }
   regex(/href=.*?example[._-]v?(\d+(?:\.\d+)+)\.t/i)
 end

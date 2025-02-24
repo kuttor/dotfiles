@@ -172,8 +172,8 @@ module Homebrew
       # @return [Array]
       sig {
         params(
-          post_form: T.nilable(T::Hash[T.any(String, Symbol), String]),
-          post_json: T.nilable(T::Hash[T.any(String, Symbol), String]),
+          post_form: T.nilable(T::Hash[Symbol, String]),
+          post_json: T.nilable(T::Hash[Symbol, String]),
         ).returns(T::Array[String])
       }
       def self.post_args(post_form: nil, post_json: nil)
