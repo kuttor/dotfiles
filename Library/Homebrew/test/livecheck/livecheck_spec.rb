@@ -76,6 +76,16 @@ RSpec.describe Homebrew::Livecheck do
     RUBY
   end
 
+  describe "::livecheck_strategy_names" do
+    context "when provided with a strategy class" do
+      it "returns demodulized class name" do
+        # We run this twice with the same argument to exercise the caching logic
+        expect(livecheck.send(:livecheck_strategy_names, Homebrew::Livecheck::Strategy::PageMatch)).to eq("PageMatch")
+        expect(livecheck.send(:livecheck_strategy_names, Homebrew::Livecheck::Strategy::PageMatch)).to eq("PageMatch")
+      end
+    end
+  end
+
   describe "::resolve_livecheck_reference" do
     context "when a formula/cask has a `livecheck` block without formula/cask methods" do
       it "returns [nil, []]" do
