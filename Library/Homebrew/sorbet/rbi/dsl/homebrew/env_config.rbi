@@ -307,6 +307,9 @@ module Homebrew::EnvConfig
     sig { returns(T::Boolean) }
     def upgrade_greedy?; end
 
+    sig { returns(T.nilable(::String)) }
+    def upgrade_greedy_casks; end
+
     sig { returns(T::Boolean) }
     def verbose?; end
 
