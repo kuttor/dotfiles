@@ -1835,7 +1835,7 @@ class Formula
   # Standard parameters for npm builds.
   #
   # @api public
-  sig { params(prefix: T.any(NilClass, String, Pathname)).returns(T::Array[String]) }
+  sig { params(prefix: T.any(String, Pathname, FalseClass)).returns(T::Array[String]) }
   def std_npm_args(prefix: libexec)
     require "language/node"
 
