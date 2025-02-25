@@ -4283,6 +4283,11 @@ command execution e.g. `$(cat file)`.
 
 : If set, pass `--greedy` to all cask upgrade commands.
 
+`HOMEBREW_UPGRADE_GREEDY_CASKS`
+
+: A space-separated list of casks. Homebrew will act as if `--greedy` was passed
+  when upgrading any cask on this list.
+
 `HOMEBREW_VERBOSE`
 
 : If set, always assume `--verbose` when running commands.
