@@ -19,8 +19,8 @@ class Caveats
   sig { returns(String) }
   def caveats
     caveats = []
+    build = formula.build
     begin
-      build = formula.build
       formula.build = Tab.for_formula(formula)
       string = formula.caveats.to_s
       caveats << "#{string.chomp}\n" unless string.empty?
