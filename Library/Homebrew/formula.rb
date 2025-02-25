@@ -3432,8 +3432,6 @@ class Formula
     # ```ruby
     # allow_network_access! [:build, :test]
     # ```
-    #
-    # @!attribute [w] allow_network_access!
     sig { params(phases: T.any(Symbol, T::Array[Symbol])).void }
     def allow_network_access!(phases = [])
       phases_array = Array(phases)
@@ -3466,8 +3464,6 @@ class Formula
     # ```ruby
     # deny_network_access! [:build, :test]
     # ```
-    #
-    # @!attribute [w] deny_network_access!
     sig { params(phases: T.any(Symbol, T::Array[Symbol])).void }
     def deny_network_access!(phases = [])
       phases_array = Array(phases)
@@ -3740,7 +3736,6 @@ class Formula
       T.must(@stable).instance_eval(&block)
     end
 
-    # @!attribute [w] head
     # Adds a {.head} {SoftwareSpec}.
     # This can be installed by passing the `--HEAD` option to allow
     # installing software directly from a branch of a version-control repository.
