@@ -155,8 +155,6 @@ class Resource
   #   regex /foo-(\d+(?:\.\d+)+)\.tar/
   # end
   # ```
-  #
-  # @!attribute [w] livecheck
   def livecheck(&block)
     return @livecheck unless block
 
