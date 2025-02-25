@@ -368,7 +368,7 @@ module Homebrew
         # Add any installed formula that depends on one of the sized formulae and is outdated.
         unless Homebrew::EnvConfig.no_installed_dependents_check?
           sized_formulae.concat(Formula.installed.select do |installed_formula|
-            installed_formula.outdated? &&
+            installed_formula.bottled? && installed_formula.outdated? &&
               installed_formula.deps.required.any? { |dep| sized_formulae.include?(dep.to_formula) }
           end)
         end
