@@ -16,10 +16,10 @@ require "system_command"
 module Homebrew
   # Module containing diagnostic checks.
   module Diagnostic
-    def self.missing_deps(formulae, hide = nil)
+    def self.missing_deps(formulae, hide = [])
       missing = {}
       formulae.each do |f|
-        missing_dependencies = f.missing_dependencies(hide:)
+        missing_dependencies = f.missing_dependencies(hide: hide)
         next if missing_dependencies.empty?
 
         yield f.full_name, missing_dependencies if block_given?
