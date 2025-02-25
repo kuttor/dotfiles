@@ -86,6 +86,22 @@ RSpec.describe Homebrew::Livecheck do
     end
   end
 
+  describe "::livecheck_find_versions_parameters" do
+    context "when provided with a strategy class" do
+      it "returns demodulized class name" do
+        page_match_parameters = T::Utils.signature_for_method(
+          Homebrew::Livecheck::Strategy::PageMatch.method(:find_versions),
+        ).parameters.map(&:second)
+
+        # We run this twice with the same argument to exercise the caching logic
+        expect(livecheck.send(:livecheck_find_versions_parameters, Homebrew::Livecheck::Strategy::PageMatch))
+          .to eq(page_match_parameters)
+        expect(livecheck.send(:livecheck_find_versions_parameters, Homebrew::Livecheck::Strategy::PageMatch))
+          .to eq(page_match_parameters)
+      end
+    end
+  end
+
   describe "::resolve_livecheck_reference" do
     context "when a formula/cask has a `livecheck` block without formula/cask methods" do
       it "returns [nil, []]" do
