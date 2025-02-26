@@ -52,7 +52,7 @@ GEM
       sorbet-runtime (>= 0.5.9204)
     rbs (3.8.1)
       logger
-    redcarpet (3.6.0)
+    redcarpet (3.6.1)
     regexp_parser (2.10.0)
     rexml (3.4.1)
     rspec (3.13.0)
