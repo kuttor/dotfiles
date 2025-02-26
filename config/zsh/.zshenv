@@ -27,13 +27,14 @@ typeset -A ZINIT=(
   ZCOMPDUMP_PATH             $XDG_CACHE_HOME/zcompdump-${HOST/.*/}-$ZSH_VERSION
   OPTIMIZE_OUT_DISK_ACCESSES "1"
   COMPINIT_OPTS              " -C"
-  LIST_COMMAND               "exa --color=always --tree --icons -L3"
+  LIST_COMMAND               "lsd --color=always --tree --icons -L3"
+  LIST_SYMBOLS_DIR           "lsd --color=always --tree --icons=always --depth=3"
 )
 
 # core environment
 export LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
-# private git config stored in .localrc 
+# private git config stored in .localrc
 export GIT_AUTHOR_NAME="Andrew Kuttor"
 export GIT_AUTHOR_EMAIL="andrew.kuttor@gmail.com"
 export GIT_COMMITTER_NAME="Andrew Kuttor"
@@ -104,32 +105,39 @@ check nvim && alias vim=nvim
 
 # remove duplicate paths from the PATH, MANPATH, INFOPATH, and FPATH
 typeset -Ugx PATH FPATH MANPATH INFOPATH path fpath manpath infopath
- 
+
 path=(
-  /{sbin,bin}
+  $HOMEBREW_PREFIX/{bin,sbin}
+  $CARGO_HOME/bin
+  $HOMEBREW_PREFIX/{bin,sbin}
+  $XDG_DATA_HOME/zinit/plugins/git-ignore/bin
+  $XDG_CONFIG_HOME/rbenv/shims
+  $ZPFX/bin
   /usr/local/bin
-  /usr/{sbin,bin}
-  /opt/homebrew/bin
+  /usr/{bin,sbin}
+  $HOMEBREW_PREFIX/{bin,sbin}
   $CARGO_HOME/bin
   $path
 )
 
 fpath=(
   $DOT_FUNCTIONS_HOME
-  /usr/share/zsh/5.9/functions
+  /usr/share/zsh/*/functions
   $fpath
 )
 
 manpath=(
   /usr/share/man
+  $HOMEBREW_PREFIX/manpages
+  $HOMEBREW_PREFIX/share/man
   $manpath
 )
 
 infopath=(
-   $infopath
+  $infopath
 )
 
 # Source antidot files
 source_if_exists "$ANTIDOT_DIR/{env,alias}.sh"
-. "/Users/akuttor/.config/rust/env"
-. "/Users/akuttor/.config/rust/cargo/env"
+. "$XDG_CONFIG_HOME/rust/env"
+. "$XDG_CONFIG_HOME/rust/cargo/env"

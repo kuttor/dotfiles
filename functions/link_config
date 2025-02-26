@@ -1,46 +1,63 @@
 #! /usr/bin/env zsh
+# shellcheck disable=all  # This is a zsh script, not bash
 
-link_config() {
-  # Check if argument is provided
-  if [[ -z "$1" ]]; then
-    echo "Error: Please provide a config name"
-    echo "Usage: link_config <CONFIG_NAME>"
-    return 1
-  fi
+function link_config() {
+    local config_dir="$1"
 
-  local CONFIG_NAME="${1:l}"  # Convert to lowercase
-  local SOURCE_DIR="$DOT_CONFIG_HOME/$CONFIG_NAME"
-  local TARGET_DIR="$HOME/.config/$CONFIG_NAME"
+    # If no directory is provided, show usage
+    if [[ -z "$config_dir" ]]; then
+        echo "Usage: link_config [--all | <config_directory>]"
+        return 1
+    fi
 
-  # Check if source directory exists
-  if [[ ! -d "$SOURCE_DIR" ]]; then
-    echo "Error: Source directory $SOURCE_DIR does not exist"
-    return 1
-  fi
+    # Handle --all option
+    if [[ "$config_dir" = "--all" ]]; then
+        local dotfiles_config_dir="$HOME/.dotfiles/config"
 
-  # Create target directory if it doesn't exist
-  if [[ ! -d "$TARGET_DIR" ]]; then
-    mkdir -p "$TARGET_DIR"
-    echo "Created directory: $TARGET_DIR"
-  fi
+        # Check if the config directory exists
+        if [[ ! -d "$dotfiles_config_dir" ]]; then
+            echo "Error: Config directory $dotfiles_config_dir does not exist"
+            return 1
+        fi
 
-  # Find all files in source directory and create symlinks
-  local FILES=("$SOURCE_DIR"/*(.))
-  if (( ${#FILES} > 0 )); then
-      for SRC in "$FILES[@]"; do
-        local FILENAME="${SRC:t}"  # Get basename of file
-        local TARGET="$TARGET_DIR/$FILENAME"
-          
-          # Create symlink (forced)
-          ln -sf "$SRC" "$TARGET"
-          echo "Linked: $SRC → $TARGET"
-      done
-  else
-      echo "Warning: No configuration files found in $SOURCE_DIR"
-      return 1
-  fi
+        # Iterate through all subdirectories in the config folder
+        for dir in "$dotfiles_config_dir"/*(/); do
+            echo "Linking config: ${dir:t}"
+            link_config "${dir:t}"
+        done
+        return 0
+    fi
 
-  echo "Successfully linked all configs for $CONFIG_NAME"
+    # Original link_config functionality for single directory
+    local source_dir="$HOME/.dotfiles/config/$config_dir"
+    local target_dir="$HOME/.config/$config_dir"
+
+    # Check if source directory exists
+    if [[ ! -d "$source_dir" ]]; then
+        echo "Error: Source directory $source_dir does not exist"
+        return 1
+    fi
+
+    # Create target directory if it doesn't exist
+    mkdir -p "$target_dir"
+
+    # Check if there are any files to link (using zsh globbing, including dotfiles)
+    local files=("$source_dir"/*(DN.))
+    if (( ${#files} == 0 )); then
+        echo "Warning: No files found in $source_dir"
+        return 0
+    fi
+
+    # Create symbolic links with sudo if needed
+    for src in $files; do
+        local target="$target_dir/${src:t}"
+        if ! ln -sf "$src" "$target" 2>/dev/null; then
+            echo "Warning: Failed to create symlink for ${src:t}, trying with sudo..."
+            sudo ln -sf "$src" "$target"
+        fi
+    done
+
+    echo "Config linked: $config_dir"
 }
 
-link_config $1
+link_config "$1"

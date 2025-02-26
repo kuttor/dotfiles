@@ -2,6 +2,3 @@
 
 export FX_THEME=3
 export FX_SHOW_SIZE=true
-
-# autocomplete
-source <(fx --comp zsh)
