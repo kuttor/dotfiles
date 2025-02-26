@@ -2,6 +2,9 @@
 
 link_config homebrew 
 
+
+
+
 export HOMEBREW_PREFIX="$ZINIT[PLUGINS_DIR]/brew" && mkdir -p "$HOMEBREW_PREFIX"
 export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar" && mkdir -p "$HOMEBREW_CELLAR"
 export HOMEBREW_CACHE="$XDG_CACHE_HOME/homebrew" && mkdir -p "$HOMEBREW_CACHE"
