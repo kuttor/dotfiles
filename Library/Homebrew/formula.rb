@@ -2102,7 +2102,7 @@ class Formula
   }
   def generate_completions_from_executable(*commands,
                                            base_name: nil,
-                                           shells: [:bash, :zsh, :fish, :pwsh],
+                                           shells: [:bash, :zsh, :fish],
                                            shell_parameter_format: nil)
     executable = commands.first.to_s
     base_name ||= File.basename(executable) if executable.start_with?(bin.to_s, sbin.to_s)
