@@ -84,4 +84,15 @@ RSpec.describe Homebrew::Cmd::InstallCmd do
     expect(HOMEBREW_CELLAR/"testball1/0.1/bin/test.dSYM/Contents/Resources/DWARF/test").to be_a_file if OS.mac?
     expect(HOMEBREW_CACHE/"Sources/testball1").to be_a_directory
   end
+
+  it "installs with asking for user prompts without installed dependent checks", :integration_test do
+    setup_test_formula "testball1"
+
+    expect {
+      brew "install", "--ask", "testball1"
+    }.to output(/Formulae:\s*testball1/).to_stdout.and not_to_output.to_stderr
+
+    expect(HOMEBREW_CELLAR/"testball1/0.1/bin/test").to be_a_file
+  end
+
 end
