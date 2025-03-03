@@ -329,6 +329,7 @@ module Homebrew
 
       def ask_input
         ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
+        return unless $stdin.gets != nil
         accepted_inputs = %w[y yes]
         declined_inputs = %w[n no]
         loop do
