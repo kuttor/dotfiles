@@ -53,6 +53,9 @@ module Cask
       Artifact::Suite,
       Artifact::VstPlugin,
       Artifact::Vst3Plugin,
+      Artifact::ZshCompletion,
+      Artifact::FishCompletion,
+      Artifact::BashCompletion,
       Artifact::Uninstall,
       Artifact::Zap,
     ].freeze
