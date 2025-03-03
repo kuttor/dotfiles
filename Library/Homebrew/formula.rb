@@ -1135,6 +1135,13 @@ class Formula
   sig { returns(Pathname) }
   def fish_completion = share/"fish/vendor_completions.d"
 
+  # The directory where formula's powershell completion files should be
+  # installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  sig { returns(Pathname) }
+  def pwsh_completion = share/"pwsh/completions"
+
   # The directory used for as the prefix for {#etc} and {#var} files on
   # installation so, despite not being in `HOMEBREW_CELLAR`, they are installed
   # there after pouring a bottle.
@@ -1987,7 +1994,8 @@ class Formula
   end
   private :extract_macho_slice_from
 
-  # Generate shell completions for a formula for `bash`, `zsh` and `fish`, using the formula's executable.
+  # Generate shell completions for a formula for `bash`, `zsh`, `fish`, and `pwsh`,
+  # using the formula's executable.
   #
   # ### Examples
   #
@@ -2001,6 +2009,8 @@ class Formula
   # (zsh_completion/"_foo").write Utils.safe_popen_read({ "SHELL" => "zsh" }, bin/"foo", "completions", "zsh")
   # (fish_completion/"foo.fish").write Utils.safe_popen_read({ "SHELL" => "fish" }, bin/"foo",
   #                                                          "completions", "fish")
+  # (pwsh_completion/"foo").write Utils.safe_popen_read({ "SHELL" => "pwsh" }, bin/"foo",
+  #                                                           "completions", "powershell")
   # ```
   #
   # Selecting shells and using a different `base_name`.
@@ -2092,7 +2102,7 @@ class Formula
   }
   def generate_completions_from_executable(*commands,
                                            base_name: nil,
-                                           shells: [:bash, :zsh, :fish],
+                                           shells: [:bash, :zsh, :fish, :pwsh],
                                            shell_parameter_format: nil)
     executable = commands.first.to_s
     base_name ||= File.basename(executable) if executable.start_with?(bin.to_s, sbin.to_s)
@@ -2102,28 +2112,31 @@ class Formula
       bash: bash_completion/base_name,
       zsh:  zsh_completion/"_#{base_name}",
       fish: fish_completion/"#{base_name}.fish",
+      pwsh: pwsh_completion/"#{base_name}.ps1",
     }
 
     shells.each do |shell|
       popen_read_env = { "SHELL" => shell.to_s }
       script_path = completion_script_path_map[shell]
+      # Go's cobra and Rust's clap accept "powershell".
+      shell_argument = (shell == :pwsh) ? "powershell" : shell.to_s
       shell_parameter = if shell_parameter_format.nil?
-        shell.to_s
+        shell_argument.to_s
       elsif shell_parameter_format == :flag
-        "--#{shell}"
+        "--#{shell_argument}"
       elsif shell_parameter_format == :arg
-        "--shell=#{shell}"
+        "--shell=#{shell_argument}"
       elsif shell_parameter_format == :none
         nil
       elsif shell_parameter_format == :click
         prog_name = File.basename(executable).upcase.tr("-", "_")
-        popen_read_env["_#{prog_name}_COMPLETE"] = "#{shell}_source"
+        popen_read_env["_#{prog_name}_COMPLETE"] = "#{shell_argument}_source"
         nil
       elsif shell_parameter_format == :clap
-        popen_read_env["COMPLETE"] = shell.to_s
+        popen_read_env["COMPLETE"] = shell_argument.to_s
         nil
       else
-        "#{shell_parameter_format}#{shell}"
+        "#{shell_parameter_format}#{shell_argument}"
       end
 
       popen_read_args = %w[]
