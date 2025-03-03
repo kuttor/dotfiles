@@ -1996,7 +1996,8 @@ class Formula
   end
   private :extract_macho_slice_from
 
-  # Generate shell completions for a formula for `bash`, `zsh`, `fish`, and `powershell`, using the formula's executable.
+  # Generate shell completions for a formula for `bash`, `zsh`, `fish`, and `pwsh`,
+  # using the formula's executable.
   #
   # ### Examples
   #
@@ -2120,7 +2121,7 @@ class Formula
       popen_read_env = { "SHELL" => shell.to_s }
       script_path = completion_script_path_map[shell]
       # Go's cobra and Rust's clap accept "powershell".
-      shell_argument = shell == :pwsh ? "powershell" : shell.to_s
+      shell_argument = (shell == :pwsh) ? "powershell" : shell.to_s
       shell_parameter = if shell_parameter_format.nil?
         shell_argument.to_s
       elsif shell_parameter_format == :flag
