@@ -1865,6 +1865,9 @@ class Formula
 
   # Standard parameters for zig builds.
   #
+  # `release_mode` can be set to either `:safe`, `:fast`, or `:small`
+  # with `:fast` being the default value
+  #
   # @api public
   sig {
     params(prefix:       T.any(String, Pathname),

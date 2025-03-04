@@ -460,7 +460,7 @@ end
 
 ### Standard arguments
 
-For any formula using certain well-known build systems, there will be arguments that should be passed during compilation so that the build conforms to Homebrew standards. These have been collected into a set of `std_*_args` methods.
+For any formula using certain well-known build systems, there will be arguments that should be passed during compilation so that the build conforms to Homebrew standards. These have been collected into a set of `std_*_args` methods. Detailed information about each of those methods can be found in [Rubydoc](https://rubydoc.brew.sh/Formula).
 
 Most of these methods accept parameters to customize their output. For example, to set the install prefix to [**`libexec`**](#variables-for-directory-locations) for `configure` or `cmake`:
 
@@ -517,6 +517,8 @@ The `std_*_args` methods, as well as the arguments they pass, are:
 "-o=#{output}"
 ```
 
+It also provides a convenient way to set `-ldflags` and `-gcflags`, see examples: [`babelfish`](https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/babelfish.rb) and [`wazero`](https://github.com/Homebrew/homebrew-core/blob/master/Formula/w/wazero.rb) formulae.
+
 #### `std_meson_args`
 
 ```ruby
@@ -545,6 +547,19 @@ The `std_*_args` methods, as well as the arguments they pass, are:
 "--ignore-installed"
 "--no-compile"
 ```
+
+#### `std_zig_args`
+
+```ruby
+"--prefix"
+prefix
+"--release=#{release_mode}"
+"-Doptimize=Release#{release_mode}"
+"--summary"
+"all"
+```
+
+`release_mode` is a symbol that accepts only `:fast`, `:safe`, and `:small` values (with `:fast` being default).
 
 ### `bin.install "foo"`
 
