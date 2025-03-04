@@ -9,7 +9,7 @@ module Cask
     class BashCompletion < ShellCompletion
       sig { params(target: T.any(String, Pathname)).returns(Pathname) }
       def resolve_target(target)
-        name = if target.to_s.end_with? ".bash"
+        name = if File.extname(target).nil?
           target
         else
           new_name = File.basename(target, File.extname(target))
