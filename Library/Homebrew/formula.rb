@@ -1994,8 +1994,8 @@ class Formula
   end
   private :extract_macho_slice_from
 
-  # Generate shell completions for a formula for `bash`, `zsh`, `fish`, and `pwsh`,
-  # using the formula's executable.
+  # Generate shell completions for a formula for `bash`, `zsh`, `fish`, and
+  # optionally `pwsh` using the formula's executable.
   #
   # ### Examples
   #
@@ -2009,6 +2009,17 @@ class Formula
   # (zsh_completion/"_foo").write Utils.safe_popen_read({ "SHELL" => "zsh" }, bin/"foo", "completions", "zsh")
   # (fish_completion/"foo.fish").write Utils.safe_popen_read({ "SHELL" => "fish" }, bin/"foo",
   #                                                          "completions", "fish")
+  # ```
+  #
+  # If your executable can generate completions for PowerShell,
+  # you must pass ":pwsh" explicitly along with any other supported shells.
+  # This will pass "powershell" as the completion argument.
+  #
+  # ```ruby
+  # generate_completions_from_executable(bin/"foo", "completions", shells: [:bash, :pwsh])
+  #
+  # # translates to
+  # (bash_completion/"foo").write Utils.safe_popen_read({ "SHELL" => "bash" }, bin/"foo", "completions", "bash")
   # (pwsh_completion/"foo").write Utils.safe_popen_read({ "SHELL" => "pwsh" }, bin/"foo",
   #                                                           "completions", "powershell")
   # ```

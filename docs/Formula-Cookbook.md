@@ -889,6 +889,7 @@ Generally we'd rather you were specific about which files or directories need to
 | **`bash_completion`** | `#{prefix}/etc/bash_completion.d`              | `/opt/homebrew/Cellar/foo/0.1/etc/bash_completion.d` |
 | **`zsh_completion`**  | `#{prefix}/share/zsh/site-functions`           | `/opt/homebrew/Cellar/foo/0.1/share/zsh/site-functions` |
 | **`fish_completion`** | `#{prefix}/share/fish/vendor_completions.d`    | `/opt/homebrew/Cellar/foo/0.1/share/fish/vendor_completions.d` |
+| **`pwsh_completion`** | `#{prefix}/share/pwsh/completions`             | `/opt/homebrew/Cellar/foo/0.1/share/pwsh/completions` |
 | **`etc`**             | `#{HOMEBREW_PREFIX}/etc`                       | `/opt/homebrew/etc` |
 | **`pkgetc`**          | `#{HOMEBREW_PREFIX}/etc/#{name}`               | `/opt/homebrew/etc/foo` |
 | **`var`**             | `#{HOMEBREW_PREFIX}/var`                       | `/opt/homebrew/var` |
