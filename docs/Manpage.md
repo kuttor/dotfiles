@@ -3297,6 +3297,10 @@ flags which will help with finding keg-only dependencies like `openssl`,
 : `install` runs `brew upgrade` on outdated dependencies, even if
   `$HOMEBREW_BUNDLE_NO_UPGRADE` is set.
 
+`--install`
+
+: Run `install` before continuing to other operations e.g. `exec`.
+
 `-f`, `--force`
 
 : `install` runs with `--force`/`--overwrite`. `dump` overwrites an existing
