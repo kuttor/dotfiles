@@ -53,6 +53,9 @@ module Cask
       Artifact::Suite,
       Artifact::VstPlugin,
       Artifact::Vst3Plugin,
+      Artifact::ZshCompletion,
+      Artifact::FishCompletion,
+      Artifact::BashCompletion,
       Artifact::Uninstall,
       Artifact::Zap,
     ].freeze
@@ -449,6 +452,7 @@ module Cask
       @artifacts ||= ArtifactSet.new
     end
 
+    sig { returns(Pathname) }
     def caskroom_path
       cask.caskroom_path
     end
@@ -456,6 +460,7 @@ module Cask
     # The staged location for this cask, including version number.
     #
     # @api public
+    sig { returns(Pathname) }
     def staged_path
       return @staged_path if @staged_path
 
@@ -587,9 +592,15 @@ module Cask
       true
     end
 
+    sig { returns(T.nilable(MacOSVersion)) }
+    def os_version
+      nil
+    end
+
     # The directory `app`s are installed into.
     #
     # @api public
+    sig { returns(T.any(Pathname, String)) }
     def appdir
       return HOMEBREW_CASK_APPDIR_PLACEHOLDER if Cask.generating_hash?
 
