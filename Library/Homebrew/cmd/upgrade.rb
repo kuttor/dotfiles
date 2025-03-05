@@ -216,24 +216,14 @@ module Homebrew
               "#{f.full_specified_name} #{f.pkg_version}"
             end
           end
-          puts formulae_upgrades.join("\n")
+          puts formulae_upgrades.join("\n") unless args.ask?
         end
 
         Install.perform_preinstall_checks_once
 
         # Main block: if asking the user is enabled, show dependency and size information.
         if args.ask?
-          ohai "Looking for bottles..."
-
-          sized_formulae = Install.compute_sized_formulae(formulae_to_install, args: args)
-          sizes = Install.compute_total_sizes(sized_formulae, debug: args.debug?)
-
-          puts "Formulae: #{sized_formulae.join(", ")}\n\n"
-          puts "Download Size: #{disk_usage_readable(sizes[:download])}"
-          puts "Install Size:  #{disk_usage_readable(sizes[:installed])}"
-          puts "Net Install Size: #{disk_usage_readable(sizes[:net])}" if sizes[:net] != 0
-
-          Install.ask_input
+          Install.ask(formulae_to_install, args: args)
         end
 
         Upgrade.upgrade_formulae(

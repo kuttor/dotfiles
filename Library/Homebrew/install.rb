@@ -327,17 +327,74 @@ module Homebrew
         puts formula_names.join(" ")
       end
 
+
+      # Main block: if asking the user is enabled, show dependency and size information.
+      def ask(formulae, args:)
+        ohai "Looking for bottles..."
+
+        sized_formulae = compute_sized_formulae(formulae, args: args)
+        sizes = compute_total_sizes(sized_formulae, debug: args.debug?)
+
+        puts "#{::Utils.pluralize("Formul", sized_formulae.count, plural: "ae",
+                                  singular: "a")} (#{sized_formulae.count}): #{sized_formulae.join(", ")}\n\n"
+        puts "Download Size: #{disk_usage_readable(sizes[:download])}"
+        puts "Install Size:  #{disk_usage_readable(sizes[:installed])}"
+        puts "Net Install Size: #{disk_usage_readable(sizes[:net])}" if sizes[:net] != 0
+
+        ask_input
+      end
+
+      private
+
+      def perform_preinstall_checks(all_fatal: false)
+        check_prefix
+        check_cpu
+        attempt_directory_creation
+        Diagnostic.checks(:supported_configuration_checks, fatal: all_fatal)
+        Diagnostic.checks(:fatal_preinstall_checks)
+      end
+      alias generic_perform_preinstall_checks perform_preinstall_checks
+
+      def attempt_directory_creation
+        Keg.must_exist_directories.each do |dir|
+          FileUtils.mkdir_p(dir) unless dir.exist?
+        rescue
+          nil
+        end
+      end
+
+      def check_cpu
+        return unless Hardware::CPU.ppc?
+
+        odie <<~EOS
+          Sorry, Homebrew does not support your computer's CPU architecture!
+          For PowerPC Mac (PPC32/PPC64BE) support, see:
+            #{Formatter.url("https://github.com/mistydemeo/tigerbrew")}
+        EOS
+      end
+
+      def install_formula(formula_installer)
+        formula = formula_installer.formula
+
+        upgrade = formula.linked? && formula.outdated? && !formula.head? && !Homebrew::EnvConfig.no_install_upgrade?
+
+        Upgrade.install_formula(formula_installer, upgrade:)
+      end
+
+
       def ask_input
         ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
-        return unless $stdin.gets != nil
         accepted_inputs = %w[y yes]
         declined_inputs = %w[n no]
         loop do
-          result = $stdin.gets.chomp.strip.downcase
+          result = $stdin.gets
+          return unless result
+
+          result = result.chomp.strip.downcase
           if accepted_inputs.include?(result)
             break
           elsif declined_inputs.include?(result)
-            exit 0
+            exit 1
           else
             puts "Invalid input. Please enter 'Y', 'y', or 'yes' to proceed, or 'N' to abort."
           end
@@ -359,7 +416,11 @@ module Homebrew
             outdated_dependents = deps.map(&:to_formula).reject(&:pinned?).select do |dep|
               dep.installed_kegs.empty? || (dep.bottled? && dep.outdated?)
             end
-
+            deps.map(&:to_formula).each do |f|
+              outdated_dependents.concat(f.recursive_dependencies.map(&:to_formula).reject(&:pinned?).select do |dep|
+                dep.installed_kegs.empty? || (dep.bottled? && dep.outdated?)
+              end)
+            end
             formula_list.concat(outdated_dependents)
           end
 
@@ -402,43 +463,6 @@ module Homebrew
         { download:  total_download_size,
           installed: total_installed_size,
           net:       total_net_size }
-      end
-
-      private
-
-      def perform_preinstall_checks(all_fatal: false)
-        check_prefix
-        check_cpu
-        attempt_directory_creation
-        Diagnostic.checks(:supported_configuration_checks, fatal: all_fatal)
-        Diagnostic.checks(:fatal_preinstall_checks)
-      end
-      alias generic_perform_preinstall_checks perform_preinstall_checks
-
-      def attempt_directory_creation
-        Keg.must_exist_directories.each do |dir|
-          FileUtils.mkdir_p(dir) unless dir.exist?
-        rescue
-          nil
-        end
-      end
-
-      def check_cpu
-        return unless Hardware::CPU.ppc?
-
-        odie <<~EOS
-          Sorry, Homebrew does not support your computer's CPU architecture!
-          For PowerPC Mac (PPC32/PPC64BE) support, see:
-            #{Formatter.url("https://github.com/mistydemeo/tigerbrew")}
-        EOS
-      end
-
-      def install_formula(formula_installer)
-        formula = formula_installer.formula
-
-        upgrade = formula.linked? && formula.outdated? && !formula.head? && !Homebrew::EnvConfig.no_install_upgrade?
-
-        Upgrade.install_formula(formula_installer, upgrade:)
       end
     end
   end

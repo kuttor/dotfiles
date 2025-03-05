@@ -133,17 +133,7 @@ module Homebrew
 
           # Main block: if asking the user is enabled, show dependency and size information.
           if args.ask?
-            ohai "Looking for bottles..."
-
-            sized_formulae = Install.compute_sized_formulae(formulae, args: args)
-            sizes = Install.compute_total_sizes(sized_formulae, debug: args.debug?)
-
-            puts "Formulae: #{sized_formulae.join(", ")}\n\n"
-            puts "Download Size: #{disk_usage_readable(sizes[:download])}"
-            puts "Install Size:  #{disk_usage_readable(sizes[:installed])}"
-            puts "Net Install Size: #{disk_usage_readable(sizes[:net])}" if sizes[:net] != 0
-
-            Install.ask_input
+            Install.ask(formulae, args: args)
           end
 
           formulae.each do |formula|
