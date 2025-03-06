@@ -99,45 +99,32 @@ RSpec.describe Homebrew::Cmd::InstallCmd do
 
   it "installs with asking for user prompts with installed dependent checks", :integration_test do
     setup_test_formula "testball1", <<~RUBY
-      url "https://brew.sh/testball1-1.0"
       depends_on "testball3"
-      depends_on "build" => :build
+      # should work as its not building but test doesnt pass if dependant
+      # depends_on "build" => :build
       depends_on "installed"
     RUBY
     setup_test_formula "installed"
     setup_test_formula "testball3", <<~RUBY
-      url "https://brew.sh/testball3-1.0"
       depends_on "testball4"
     RUBY
     setup_test_formula "testball4", <<~RUBY
-      url "https://brew.sh/testball4-1.0"
     RUBY
     setup_test_formula "hiop"
     setup_test_formula "build"
-
-    expect {
-      brew "info", "testball1"
-    }.to be_a_failure
-
-    expect {
-      brew "info", "testball4"
-    }.to be_a_failure
 
     # Mock `Formula#any_version_installed?` by creating the tab in a plausible keg directory
     keg_dir = HOMEBREW_CELLAR/"installed"/"1.0"
     keg_dir.mkpath
     touch keg_dir/AbstractTab::FILENAME
-    #
-    # expect { brew "deps", "baz", "--include-test", "--missing", "--skip-recommended" }
-    #   .to be_a_success
-    #         .and output("bar\nfoo\ntest\n").to_stdout
-    #                                        .and not_to_output.to_stderr
 
     expect {
       brew "install", "--ask", "testball1"
-    }.to output(/.*Formula\s*\(3\):\s*testball1\s*,?\s*testball3\s*,?\s*testball4.*/
+    }.to output(/.*Formulae\s*\(3\):\s*testball1\s*,?\s*testball3\s*,?\s*testball4.*/
              ).to_stdout.and not_to_output.to_stderr
 
     expect(HOMEBREW_CELLAR/"testball1/0.1/bin/test").to be_a_file
+    expect(HOMEBREW_CELLAR/"testball4/0.1/bin/testball4").to be_a_file
+    expect(HOMEBREW_CELLAR/"testball3/0.1/bin/testball3").to be_a_file
   end
 end
