@@ -950,6 +950,9 @@ module Cask
       return unless (url = cask.livecheck.url)
       return if url.is_a?(Symbol)
 
+      options = cask.livecheck.options
+      return if options.post_form || options.post_json
+
       validate_url_for_https_availability(
         url, "livecheck URL",
         check_content: true,
