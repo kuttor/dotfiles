@@ -136,9 +136,11 @@ module Homebrew
             options:,
             &block
           )
+          content = match_data[:content]
+          return match_data if content.blank?
 
           # Cache any new page content
-          @page_data[generated_url] = match_data[:content] unless match_data[:content].empty?
+          @page_data[generated_url] = content unless cached_content
 
           match_data
         end
