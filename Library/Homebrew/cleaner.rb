@@ -114,6 +114,7 @@ class Cleaner
   # Arch & MacPorts amongst other packagers as well. The files are
   # created as part of installing any Perl module.
   PERL_BASENAMES = T.let(Set.new(%w[perllocal.pod .packlist]).freeze, T::Set[String])
+  private_constant :PERL_BASENAMES
 
   # Clean a top-level (`bin`, `sbin`, `lib`) directory, recursively, by fixing file
   # permissions and removing .la files, unless the files (or parent

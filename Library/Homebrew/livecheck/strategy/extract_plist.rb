@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "bundle_version"
+require "livecheck/strategic"
 require "unversioned_cask_checker"
 
 module Homebrew
@@ -17,6 +18,8 @@ module Homebrew
       # This strategy is not applied automatically and it's necessary to use
       # `strategy :extract_plist` in a `livecheck` block to apply it.
       class ExtractPlist
+        extend Strategic
+
         # A priority of zero causes livecheck to skip the strategy. We do this
         # for {ExtractPlist} so we can selectively apply it when appropriate.
         PRIORITY = 0
@@ -28,7 +31,7 @@ module Homebrew
         #
         # @param url [String] the URL to match against
         # @return [Boolean]
-        sig { params(url: String).returns(T::Boolean) }
+        sig { override.params(url: String).returns(T::Boolean) }
         def self.match?(url)
           URL_MATCH_REGEX.match?(url)
         end
@@ -79,24 +82,23 @@ module Homebrew
         # @param url [String, nil] an alternative URL to check for version
         #   information
         # @param regex [Regexp, nil] a regex for use in a strategy block
+        # @param options [Options] options to modify behavior
         # @return [Hash]
         sig {
-          params(
+          override(allow_incompatible: true).params(
             cask:    Cask::Cask,
             url:     T.nilable(String),
             regex:   T.nilable(Regexp),
-            _unused: T.untyped,
+            options: Options,
             block:   T.nilable(Proc),
-          ).returns(T::Hash[Symbol, T.untyped])
+          ).returns(T::Hash[Symbol, T.anything])
         }
-        def self.find_versions(cask:, url: nil, regex: nil, **_unused, &block)
-          if regex.present? && block.blank?
+        def self.find_versions(cask:, url: nil, regex: nil, options: Options.new, &block)
+          if regex.present? && !block_given?
             raise ArgumentError,
-                  "#{Utils.demodulize(T.must(name))} only supports a regex when using a `strategy` block"
+                  "#{Utils.demodulize(name)} only supports a regex when using a `strategy` block"
           end
-          unless T.unsafe(cask)
-            raise ArgumentError, "The #{Utils.demodulize(T.must(name))} strategy only supports casks."
-          end
+          raise ArgumentError, "The #{Utils.demodulize(name)} strategy only supports casks." unless T.unsafe(cask)
 
           match_data = { matches: {}, regex:, url: }
 

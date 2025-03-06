@@ -35,7 +35,7 @@ RSpec.describe DependenciesHelpers do
       :any_version_installed?,
     ]
 
-    dependents = described_class.dependents([foo, foo_cask, bar, bar_cask])
+    dependents = Class.new.extend(described_class).dependents([foo, foo_cask, bar, bar_cask])
 
     dependents.each do |dependent|
       methods.each do |method|

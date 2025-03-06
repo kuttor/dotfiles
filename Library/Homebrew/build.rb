@@ -148,12 +148,15 @@ class Build
           # https://github.com/Homebrew/homebrew-core/pull/87470
           TZ:                         "UTC0",
         ) do
-          formula.patch
-
           if args.git?
+            formula.selective_patch(is_data: false)
             system "git", "init"
             system "git", "add", "-A"
+            formula.selective_patch(is_data: true)
+          else
+            formula.patch
           end
+
           if args.interactive?
             ohai "Entering interactive mode..."
             puts <<~EOS
@@ -185,6 +188,8 @@ class Build
             # Find and link metafiles
             formula.prefix.install_metafiles formula.buildpath
             formula.prefix.install_metafiles formula.libexec if formula.libexec.exist?
+
+            normalize_pod2man_outputs!(formula)
           end
         end
       end
@@ -213,6 +218,11 @@ class Build
     Keg.new(path).optlink(verbose: args.verbose?)
   rescue
     raise "#{formula.opt_prefix} not present or broken\nPlease reinstall #{formula.full_name}. Sorry :("
+  end
+
+  def normalize_pod2man_outputs!(formula)
+    keg = Keg.new(formula.prefix)
+    keg.normalize_pod2man_outputs!
   end
 end
 

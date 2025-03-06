@@ -39,7 +39,7 @@ module Homebrew
       sig { override.void }
       def run
         args.named.to_formulae.each do |formula|
-          ignore_errors = if T.must(formula.tap).name == "homebrew/core"
+          ignore_errors = if formula.tap&.official?
             false
           else
             args.ignore_errors?

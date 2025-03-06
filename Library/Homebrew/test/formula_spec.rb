@@ -549,6 +549,7 @@ RSpec.describe Formula do
     expect(f.homepage).to eq("https://brew.sh")
     expect(f.version).to eq(Version.new("0.1"))
     expect(f).to be_stable
+    expect(f.build).to be_a(BuildOptions)
     expect(f.stable.version).to eq(Version.new("0.1"))
     expect(f.head.version).to eq(Version.new("HEAD"))
   end

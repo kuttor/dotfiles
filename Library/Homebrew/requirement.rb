@@ -1,7 +1,6 @@
 # typed: true # rubocop:todo Sorbet/StrictSigil
 # frozen_string_literal: true
 
-require "attrable"
 require "dependable"
 require "dependency"
 require "dependencies"
@@ -179,11 +178,23 @@ class Requirement
 
   class << self
     include BuildEnvironment::DSL
-    extend Attrable
 
     attr_reader :env_proc, :build
 
-    attr_rw :fatal, :cask, :download
+    sig { params(val: String).returns(T.nilable(String)) }
+    def cask(val = T.unsafe(nil))
+      val.nil? ? @cask : @cask = val
+    end
+
+    sig { params(val: String).returns(T.nilable(String)) }
+    def download(val = T.unsafe(nil))
+      val.nil? ? @download : @download = val
+    end
+
+    sig { params(val: T::Boolean).returns(T.nilable(T::Boolean)) }
+    def fatal(val = T.unsafe(nil))
+      val.nil? ? @fatal : @fatal = val
+    end
 
     def satisfy(options = nil, &block)
       return @satisfied if options.nil? && !block

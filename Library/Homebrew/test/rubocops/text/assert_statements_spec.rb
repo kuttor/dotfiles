@@ -23,7 +23,7 @@ RSpec.describe RuboCop::Cop::FormulaAudit::AssertStatements do
           desc "foo"
           url 'https://brew.sh/foo-1.0.tgz'
           assert File.exist? "default.ini"
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^ FormulaAudit/AssertStatements: Use `assert_predicate <path_to_file>, :exist?` instead of `assert File.exist? "default.ini"`
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^ FormulaAudit/AssertStatements: Use `assert_path_exists <path_to_file>` instead of `assert File.exist? "default.ini"`
         end
       RUBY
     end
@@ -34,7 +34,7 @@ RSpec.describe RuboCop::Cop::FormulaAudit::AssertStatements do
           desc "foo"
           url 'https://brew.sh/foo-1.0.tgz'
           assert !File.exist?("default.ini")
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ FormulaAudit/AssertStatements: Use `refute_predicate <path_to_file>, :exist?` instead of `assert !File.exist?("default.ini")`
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ FormulaAudit/AssertStatements: Use `refute_path_exists <path_to_file>` instead of `assert !File.exist?("default.ini")`
         end
       RUBY
     end

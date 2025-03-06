@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "addressable"
+require "livecheck/strategic"
 require "system_command"
 
 module Homebrew
@@ -25,6 +26,7 @@ module Homebrew
       #
       # @api public
       class Git
+        extend Strategic
         extend SystemCommand::Mixin
 
         # Used to cache processed URLs, to avoid duplicating effort.
@@ -104,7 +106,7 @@ module Homebrew
         #
         # @param url [String] the URL to match against
         # @return [Boolean]
-        sig { params(url: String).returns(T::Boolean) }
+        sig { override.params(url: String).returns(T::Boolean) }
         def self.match?(url)
           url = preprocess_url(url)
           (DownloadStrategyDetector.detect(url) <= GitDownloadStrategy) == true
@@ -186,16 +188,17 @@ module Homebrew
         #
         # @param url [String] the URL of the Git repository to check
         # @param regex [Regexp, nil] a regex used for matching versions
+        # @param options [Options] options to modify behavior
         # @return [Hash]
         sig {
-          params(
+          override(allow_incompatible: true).params(
             url:     String,
             regex:   T.nilable(Regexp),
-            _unused: T.untyped,
+            options: Options,
             block:   T.nilable(Proc),
-          ).returns(T::Hash[Symbol, T.untyped])
+          ).returns(T::Hash[Symbol, T.anything])
         }
-        def self.find_versions(url:, regex: nil, **_unused, &block)
+        def self.find_versions(url:, regex: nil, options: Options.new, &block)
           match_data = { matches: {}, regex:, url: }
 
           tags_data = tag_info(url, regex)

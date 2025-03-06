@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "rubocops/extend/formula_cop"
@@ -30,7 +30,7 @@ module RuboCop
 
           # Check for binary URLs
           audit_urls(urls, /(darwin|macos|osx)/i) do |match, url|
-            next if @formula_name.include?(match.to_s.downcase)
+            next if T.must(@formula_name).include?(match.to_s.downcase)
             next if url.match?(/.(patch|diff)(\?full_index=1)?$/)
             next if tap_style_exception? :not_a_binary_url_prefix_allowlist
             next if tap_style_exception? :binary_bootstrap_formula_urls_allowlist

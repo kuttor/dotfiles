@@ -140,3 +140,14 @@ export HOMEBREW_ARTIFACT_DOMAIN=https://artifacts.example.com/artifactory/homebr
 export HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK=1
 export HOMEBREW_DOCKER_REGISTRY_BASIC_AUTH_TOKEN="$(printf 'anonymous:' | base64)"
 ```
+
+## Loading Homebrew from the same dotfiles on different operating systems
+
+Some users may want to use the same shell initialization files on macOS and Linux.
+Use this to detect the likely Homebrew installation directory and load Homebrew when it's found.
+You may need to adapt this to your particular shell or other particulars of your environment.
+
+```sh
+command -v brew || export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin"
+command -v brew && eval "$(brew shellenv)"
+```

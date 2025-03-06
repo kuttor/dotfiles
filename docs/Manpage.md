@@ -2154,6 +2154,10 @@ see: <https://rubydoc.brew.sh/Formula>
 
 : Create a basic template for a Rust build.
 
+`--zig`
+
+: Create a basic template for a Zig build.
+
 `--no-fetch`
 
 : Homebrew will not download *`URL`* to the cache and will thus not add its
@@ -3293,6 +3297,10 @@ flags which will help with finding keg-only dependencies like `openssl`,
 : `install` runs `brew upgrade` on outdated dependencies, even if
   `$HOMEBREW_BUNDLE_NO_UPGRADE` is set.
 
+`--install`
+
+: Run `install` before continuing to other operations e.g. `exec`.
+
 `-f`, `--force`
 
 : `install` runs with `--force`/`--overwrite`. `dump` overwrites an existing
@@ -4278,6 +4286,11 @@ command execution e.g. `$(cat file)`.
 `HOMEBREW_UPGRADE_GREEDY`
 
 : If set, pass `--greedy` to all cask upgrade commands.
+
+`HOMEBREW_UPGRADE_GREEDY_CASKS`
+
+: A space-separated list of casks. Homebrew will act as if `--greedy` was passed
+  when upgrading any cask on this list.
 
 `HOMEBREW_VERBOSE`
 

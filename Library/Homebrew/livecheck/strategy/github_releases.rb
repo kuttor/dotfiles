@@ -1,6 +1,8 @@
 # typed: strict
 # frozen_string_literal: true
 
+require "livecheck/strategic"
+
 module Homebrew
   module Livecheck
     module Strategy
@@ -29,6 +31,8 @@ module Homebrew
       #
       # @api public
       class GithubReleases
+        extend Strategic
+
         NICE_NAME = "GitHub - Releases"
 
         # A priority of zero causes livecheck to skip the strategy. We do this
@@ -56,7 +60,7 @@ module Homebrew
         #
         # @param url [String] the URL to match against
         # @return [Boolean]
-        sig { params(url: String).returns(T::Boolean) }
+        sig { override.params(url: String).returns(T::Boolean) }
         def self.match?(url)
           URL_MATCH_REGEX.match?(url)
         end
@@ -108,7 +112,7 @@ module Homebrew
           content.compact_blank.filter_map do |release|
             next if release["draft"] || release["prerelease"]
 
-            value = T.let(nil, T.untyped)
+            value = T.let(nil, T.nilable(String))
             VERSION_KEYS.find do |key|
               match = release[key]&.match(regex)
               next if match.blank?
@@ -124,16 +128,17 @@ module Homebrew
         #
         # @param url [String] the URL of the content to check
         # @param regex [Regexp] a regex used for matching versions in content
+        # @param options [Options] options to modify behavior
         # @return [Hash]
         sig {
-          params(
+          override(allow_incompatible: true).params(
             url:     String,
             regex:   Regexp,
-            _unused: T.untyped,
+            options: Options,
             block:   T.nilable(Proc),
-          ).returns(T::Hash[Symbol, T.untyped])
+          ).returns(T::Hash[Symbol, T.anything])
         }
-        def self.find_versions(url:, regex: DEFAULT_REGEX, **_unused, &block)
+        def self.find_versions(url:, regex: DEFAULT_REGEX, options: Options.new, &block)
           match_data = { matches: {}, regex:, url: }
 
           generated = generate_input_values(url)

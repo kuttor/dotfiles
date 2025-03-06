@@ -7,7 +7,7 @@ require "cask/url"
 module Tapioca
   module Compilers
     # A compiler for subclasses of Delegator.
-    # To add a new delegator: require it above add add it to the DELEGATIONS hash below.
+    # To add a new delegator: require it above and add it to the DELEGATIONS hash below.
     class Delegators < Tapioca::Dsl::Compiler
       # Mapping of delegator classes to the classes they delegate to (as defined in `__getobj__`).
       DELEGATIONS = T.let({

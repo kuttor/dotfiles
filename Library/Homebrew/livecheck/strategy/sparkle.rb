@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require "bundle_version"
+require "livecheck/strategic"
 
 module Homebrew
   module Livecheck
@@ -12,6 +13,8 @@ module Homebrew
       # This strategy is not applied automatically and it's necessary to use
       # `strategy :sparkle` in a `livecheck` block to apply it.
       class Sparkle
+        extend Strategic
+
         # A priority of zero causes livecheck to skip the strategy. We do this
         # for {Sparkle} so we can selectively apply it when appropriate.
         PRIORITY = 0
@@ -26,7 +29,7 @@ module Homebrew
         #
         # @param url [String] the URL to match against
         # @return [Boolean]
-        sig { params(url: String).returns(T::Boolean) }
+        sig { override.params(url: String).returns(T::Boolean) }
         def self.match?(url)
           URL_MATCH_REGEX.match?(url)
         end
@@ -214,32 +217,25 @@ module Homebrew
         #
         # @param url [String] the URL of the content to check
         # @param regex [Regexp, nil] a regex for use in a strategy block
-        # @param homebrew_curl [Boolean] whether to use brewed curl with the URL
+        # @param options [Options] options to modify behavior
         # @return [Hash]
         sig {
-          params(
-            url:           String,
-            regex:         T.nilable(Regexp),
-            homebrew_curl: T::Boolean,
-            unused:        T.untyped,
-            block:         T.nilable(Proc),
-          ).returns(T::Hash[Symbol, T.untyped])
+          override(allow_incompatible: true).params(
+            url:     String,
+            regex:   T.nilable(Regexp),
+            options: Options,
+            block:   T.nilable(Proc),
+          ).returns(T::Hash[Symbol, T.anything])
         }
-        def self.find_versions(url:, regex: nil, homebrew_curl: false, **unused, &block)
-          if regex.present? && block.blank?
+        def self.find_versions(url:, regex: nil, options: Options.new, &block)
+          if regex.present? && !block_given?
             raise ArgumentError,
-                  "#{Utils.demodulize(T.must(name))} only supports a regex when using a `strategy` block"
+                  "#{Utils.demodulize(name)} only supports a regex when using a `strategy` block"
           end
 
           match_data = { matches: {}, regex:, url: }
 
-          match_data.merge!(
-            Strategy.page_content(
-              url,
-              url_options:   unused.fetch(:url_options, {}),
-              homebrew_curl:,
-            ),
-          )
+          match_data.merge!(Strategy.page_content(url, options:))
           content = match_data.delete(:content)
           return match_data if content.blank?
 

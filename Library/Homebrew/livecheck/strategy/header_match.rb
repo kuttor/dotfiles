@@ -1,6 +1,8 @@
 # typed: strict
 # frozen_string_literal: true
 
+require "livecheck/strategic"
+
 module Homebrew
   module Livecheck
     module Strategy
@@ -10,6 +12,8 @@ module Homebrew
       # This strategy is not applied automatically and it's necessary to use
       # `strategy :header_match` in a `livecheck` block to apply it.
       class HeaderMatch
+        extend Strategic
+
         NICE_NAME = "Header match"
 
         # A priority of zero causes livecheck to skip the strategy. We do this
@@ -26,7 +30,7 @@ module Homebrew
         #
         # @param url [String] the URL to match against
         # @return [Boolean]
-        sig { params(url: String).returns(T::Boolean) }
+        sig { override.params(url: String).returns(T::Boolean) }
         def self.match?(url)
           URL_MATCH_REGEX.match?(url)
         end
@@ -67,25 +71,20 @@ module Homebrew
         #
         # @param url [String] the URL to fetch
         # @param regex [Regexp, nil] a regex used for matching versions
-        # @param homebrew_curl [Boolean] whether to use brewed curl with the URL
+        # @param options [Options] options to modify behavior
         # @return [Hash]
         sig {
-          params(
-            url:           String,
-            regex:         T.nilable(Regexp),
-            homebrew_curl: T::Boolean,
-            unused:        T.untyped,
-            block:         T.nilable(Proc),
-          ).returns(T::Hash[Symbol, T.untyped])
+          override(allow_incompatible: true).params(
+            url:     String,
+            regex:   T.nilable(Regexp),
+            options: Options,
+            block:   T.nilable(Proc),
+          ).returns(T::Hash[Symbol, T.anything])
         }
-        def self.find_versions(url:, regex: nil, homebrew_curl: false, **unused, &block)
+        def self.find_versions(url:, regex: nil, options: Options.new, &block)
           match_data = { matches: {}, regex:, url: }
 
-          headers = Strategy.page_headers(
-            url,
-            url_options:   unused.fetch(:url_options, {}),
-            homebrew_curl:,
-          )
+          headers = Strategy.page_headers(url, options:)
 
           # Merge the headers from all responses into one hash
           merged_headers = headers.reduce(&:merge)
