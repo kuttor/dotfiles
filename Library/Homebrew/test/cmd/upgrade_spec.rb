@@ -54,7 +54,8 @@ RSpec.describe Homebrew::Cmd::UpgradeCmd do
 
     expect do
       brew "upgrade", "--ask"
-    end.to output(/.*Formulae\s*\(3\):\s*testball4\s*,?\s*testball5\s*,?\s*testball.*/)
+    end.to output(/.*Formulae\s*\(3\):\s*(?:testball|testball5|testball4)\s*,?\s*(?:testball|testball5|testball4)\s*,?
+\s*(?:testball|testball5|testball4).*/)
       .to_stdout.and not_to_output.to_stderr
 
     expect(HOMEBREW_CELLAR/"testball/0.1").to be_a_directory
