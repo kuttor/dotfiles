@@ -131,7 +131,7 @@ module Homebrew
         unless formulae.empty?
           Install.perform_preinstall_checks_once
 
-          # Main block: if asking the user is enabled, show dependency and size information.
+          # If asking the user is enabled, show dependency and size information.
           Install.ask(formulae, args: args) if args.ask?
 
           formulae.each do |formula|
