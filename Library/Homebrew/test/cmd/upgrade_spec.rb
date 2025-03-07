@@ -52,9 +52,25 @@ RSpec.describe Homebrew::Cmd::UpgradeCmd do
     keg_dir.mkpath
     touch keg_dir/AbstractTab::FILENAME
 
+    regex = /
+      Formulae\s*\(3\):\s*
+      (
+        testball|testball5|testball4
+      )
+      \s*,\s*
+      (?!\1)
+      (
+        testball|testball5|testball4
+      )
+      \s*,\s*
+      (?!\1|\2)
+      (
+        testball|testball5|testball4
+      )
+    /x
     expect do
       brew "upgrade", "--ask"
-    end.to output(/Formulae\s*\(3\):\s*(testball|testball5|testball4)\s*,\s*(?!(\1))(testball|testball5|testball4)\s*,\s*(?!(\1|\3))(testball|testball5|testball4)/)
+    end.to output(regex)
       .to_stdout.and not_to_output.to_stderr
 
     expect(HOMEBREW_CELLAR/"testball/0.1").to be_a_directory
