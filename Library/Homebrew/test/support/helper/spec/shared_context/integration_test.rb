@@ -135,36 +135,41 @@ RSpec.shared_context "integration test" do # rubocop:disable RSpec/ContextWordin
     case name
     when /^testball/
       case name
-      when "testball4", "testball5", "testball2"
+      when "testball4", "testball5"
         prefix = name
+        program_name = name
+      when "testball2"
+        prefix = name
+        program_name = "test"
       else
         prefix = "testball"
+        program_name = "test"
       end
+
       tarball_name = "#{prefix}-0.1#{'-linux' if OS.linux?}.tbz"
-      tarball = TEST_FIXTURE_DIR/"tarballs/#{tarball_name}"
+      tarball = TEST_FIXTURE_DIR / "tarballs/#{tarball_name}"
 
       content = <<~RUBY
-    desc "Some test"
-    homepage "https://brew.sh/#{name}"
-    url "file://#{tarball}"
-    sha256 "#{tarball.sha256}"
+      desc "Some test"
+      homepage "https://brew.sh/#{name}"
+      url "file://#{tarball}"
+      sha256 "#{tarball.sha256}"
 
-    option "with-foo", "Build with foo"
-    #{bottle_block}
+      option "with-foo", "Build with foo"
+      #{bottle_block}
+      def install
+        (prefix/"foo"/"#{program_name}").write("#{program_name}") if build.with? "foo"
+        prefix.install Dir["*"]
+        (buildpath/"#{program_name}.c").write \
+          "#include <stdio.h>\\nint main(){printf(\\"#{program_name}\\");return 0;}"
+        bin.mkpath
+        system ENV.cc, "#{program_name}.c", "-o", bin/"#{program_name}"
+      end
 
-    def install
-      (prefix/"foo"/"#{prefix}").write("#{prefix}") if build.with? "foo"
-      prefix.install Dir["*"]
-      (buildpath/"#{prefix}.c").write \\
-        "#include <stdio.h>\\nint main(){printf(\\"#{prefix}\\");return 0;}"
-      bin.mkpath
-      system ENV.cc, "#{prefix}.c", "-o", bin/"#{prefix}"
-    end
+      #{content}
 
-    #{content}
-
-    # something here
-    RUBY
+      # something here
+      RUBY
     when "bar"
       content = <<~RUBY
         url "https://brew.sh/#{name}-1.0"
