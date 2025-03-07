@@ -20,12 +20,43 @@ RSpec.describe Homebrew::Cmd::UpgradeCmd do
     setup_test_formula "testball"
     (HOMEBREW_CELLAR/"testball/0.0.1/foo").mkpath
 
-    expect {
+    expect do
       brew "upgrade", "--ask"
-    }.to output(/.*Formula\s*\(1\):\s*testball.*/
-         ).to_stdout.and not_to_output.to_stderr
+    end.to output(/.*Formula\s*\(1\):\s*testball.*/).to_stdout.and not_to_output.to_stderr
 
     expect(HOMEBREW_CELLAR/"testball/0.1").to be_a_directory
     expect(HOMEBREW_CELLAR/"testball/0.0.1").not_to exist
+  end
+
+  it "upgrades with asking for user prompts with dependants checks", :integration_test do
+    setup_test_formula "testball1", <<~RUBY
+      depends_on "testball5"
+      # should work as its not building but test doesnt pass if dependant
+      # depends_on "build" => :build
+      depends_on "installed"
+    RUBY
+    setup_test_formula "installed"
+    setup_test_formula "testball5", <<~RUBY
+      depends_on "testball4"
+    RUBY
+    setup_test_formula "testball4"
+    setup_test_formula "hiop"
+    setup_test_formula "build"
+
+    (HOMEBREW_CELLAR/"testball/0.0.1/foo").mkpath
+    (HOMEBREW_CELLAR/"testball5/0.0.1/foo").mkpath
+    (HOMEBREW_CELLAR/"testball4/0.0.1/foo").mkpath
+
+    expect {
+      brew "upgrade", "--ask"
+    }.to output(/.*Formulae\s*\(3\):\s*testball1\s*,?\s*testball5\s*,?\s*testball4.*/)
+                 .to_stdout.and not_to_output.to_stderr
+
+    expect(HOMEBREW_CELLAR/"testball/0.1").to be_a_directory
+    expect(HOMEBREW_CELLAR/"testball/0.0.1").not_to exist
+    expect(HOMEBREW_CELLAR/"testball5/0.1").to be_a_directory
+    expect(HOMEBREW_CELLAR/"testball5/0.0.1").not_to exist
+    expect(HOMEBREW_CELLAR/"testball4/0.1").to be_a_directory
+    expect(HOMEBREW_CELLAR/"testball4/0.0.1").not_to exist
   end
 end
