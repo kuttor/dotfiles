@@ -47,9 +47,13 @@ RSpec.describe Homebrew::Cmd::UpgradeCmd do
     (HOMEBREW_CELLAR/"testball5/0.0.1/foo").mkpath
     (HOMEBREW_CELLAR/"testball4/0.0.1/foo").mkpath
 
+    keg_dir = HOMEBREW_CELLAR/"installed"/"1.0"
+    keg_dir.mkpath
+    touch keg_dir/AbstractTab::FILENAME
+
     expect {
       brew "upgrade", "--ask"
-    }.to output(/.*Formulae\s*\(3\):\s*testball\s*,?\s*testball5\s*,?\s*testball4.*/)
+    }.to output(/.*Formulae\s*\(3\):\s*testball4\s*,?\s*testball5\s*,?\s*testball5.*/)
                  .to_stdout.and not_to_output.to_stderr
 
     expect(HOMEBREW_CELLAR/"testball/0.1").to be_a_directory
