@@ -134,15 +134,44 @@ RSpec.shared_context "integration test" do # rubocop:disable RSpec/ContextWordin
                          bottle_block: nil, tab_attributes: nil)
     case name
     when /^testball/
-      # Use a different tarball for testball2 to avoid lock errors when writing concurrency tests
-      prefix = (name == "testball2") ? "testball2" : "testball"
-      tarball = if OS.linux?
-                  TEST_FIXTURE_DIR/"tarballs/#{prefix}-0.1-linux.tbz"
-                else
-                  TEST_FIXTURE_DIR/"tarballs/#{prefix}-0.1.tbz"
-                end
+      if name == "testball5" || name == "testball4"
+        tarball = if OS.linux?
+                    TEST_FIXTURE_DIR/"tarballs/#{name}-0.1-linux.tbz"
+                  else
+                    TEST_FIXTURE_DIR/"tarballs/#{name}-0.1.tbz"
+                  end
+        content = <<~RUBY
+        desc "Some test"
+        homepage "https://brew.sh/#{name}"
+        url "file://#{tarball}"
+        sha256 "#{tarball.sha256}"
 
-      content = <<~RUBY
+        option "with-foo", "Build with foo"
+        #{bottle_block}
+        def install
+          STDERR.puts prefix
+          (prefix/"foo"/"#{name}").write("#{name}") if build.with? "foo"
+          prefix.install Dir["*"]
+          (buildpath/"#{name}.c").write \
+            "#include <stdio.h>\\nint main(){printf(\\"#{name}\\");return 0;}"
+          bin.mkpath
+          system ENV.cc, "#{name}.c", "-o", bin/"#{name}"
+        end
+
+        #{content}
+
+        # something here
+        RUBY
+      else
+        # Use a different tarball for testball2 to avoid lock errors when writing concurrency tests
+        prefix = (name == "testball2") ? "testball2" : "testball"
+        tarball = if OS.linux?
+                    TEST_FIXTURE_DIR/"tarballs/#{prefix}-0.1-linux.tbz"
+                  else
+                    TEST_FIXTURE_DIR/"tarballs/#{prefix}-0.1.tbz"
+                  end
+
+        content = <<~RUBY
         desc "Some test"
         homepage "https://brew.sh/#{name}"
         url "file://#{tarball}"
@@ -163,6 +192,7 @@ RSpec.shared_context "integration test" do # rubocop:disable RSpec/ContextWordin
 
         # something here
         RUBY
+      end
     when "bar"
       content = <<~RUBY
         url "https://brew.sh/#{name}-1.0"
