@@ -29,7 +29,7 @@ RSpec.describe Homebrew::Cmd::UpgradeCmd do
   end
 
   it "upgrades with asking for user prompts with dependants checks", :integration_test do
-    setup_test_formula "testball1", <<~RUBY
+    setup_test_formula "testball", <<~RUBY
       depends_on "testball5"
       # should work as its not building but test doesnt pass if dependant
       # depends_on "build" => :build
@@ -49,7 +49,7 @@ RSpec.describe Homebrew::Cmd::UpgradeCmd do
 
     expect {
       brew "upgrade", "--ask"
-    }.to output(/.*Formulae\s*\(3\):\s*testball1\s*,?\s*testball5\s*,?\s*testball4.*/)
+    }.to output(/.*Formulae\s*\(3\):\s*testball\s*,?\s*testball5\s*,?\s*testball4.*/)
                  .to_stdout.and not_to_output.to_stderr
 
     expect(HOMEBREW_CELLAR/"testball/0.1").to be_a_directory
