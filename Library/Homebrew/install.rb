@@ -334,8 +334,7 @@ module Homebrew
         sized_formulae = compute_sized_formulae(formulae, args: args)
         sizes = compute_total_sizes(sized_formulae, debug: args.debug?)
 
-        puts "#{::Utils.pluralize("Formul", sized_formulae.count, plural:   "ae",
-                                                                  singular: "a")} \
+        puts "#{::Utils.pluralize("Formul", sized_formulae.count, plural:   "ae")} \
 (#{sized_formulae.count}): #{sized_formulae.join(", ")}\n\n"
         puts "Download Size: #{disk_usage_readable(sizes[:download])}"
         puts "Install Size:  #{disk_usage_readable(sizes[:installed])}"
@@ -442,6 +441,7 @@ module Homebrew
         total_net_size       = 0
 
         sized_formulae.select(&:bottle).each do |formula|
+          bottle = formula.bottle
           # Fetch additional bottle metadata (if necessary).
           bottle.fetch_tab(quiet: !debug)
 
