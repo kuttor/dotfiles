@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "tsort"
@@ -6,11 +6,18 @@ require "tsort"
 module Utils
   # Topologically sortable hash map.
   class TopologicalHash < Hash
+    extend T::Generic
     include TSort
+
+    CaskOrFormula = T.type_alias { T.any(Cask::Cask, Formula) }
+
+    K = type_member { { fixed: CaskOrFormula } }
+    V = type_member { { fixed: T::Array[CaskOrFormula] } }
+    Elem = type_member(:out) { { fixed: [CaskOrFormula, T::Array[CaskOrFormula]] } }
 
     sig {
       params(
-        packages:    T.any(Cask::Cask, Formula, T::Array[T.any(Cask::Cask, Formula)]),
+        packages:    T.any(CaskOrFormula, T::Array[CaskOrFormula]),
         accumulator: TopologicalHash,
       ).returns(TopologicalHash)
     }
@@ -48,10 +55,12 @@ module Utils
 
     private
 
+    sig { params(block: T.proc.params(arg0: K).void).void }
     def tsort_each_node(&block)
       each_key(&block)
     end
 
+    sig { params(node: K, block: T.proc.params(arg0: CaskOrFormula).void).returns(V) }
     def tsort_each_child(node, &block)
       fetch(node).each(&block)
     end
