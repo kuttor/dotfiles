@@ -334,7 +334,7 @@ module Homebrew
         sized_formulae = compute_sized_formulae(formulae, args: args)
         sizes = compute_total_sizes(sized_formulae, debug: args.debug?)
 
-        puts "#{::Utils.pluralize("Formul", sized_formulae.count, plural:   "ae")} \
+        puts "#{::Utils.pluralize("Formula", sized_formulae.count, plural: "e")} \
 (#{sized_formulae.count}): #{sized_formulae.join(", ")}\n\n"
         puts "Download Size: #{disk_usage_readable(sizes[:download])}"
         puts "Install Size:  #{disk_usage_readable(sizes[:installed])}"
