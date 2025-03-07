@@ -4,6 +4,7 @@ require "cmd/shared_examples/args_parse"
 require "cmd/upgrade"
 
 RSpec.describe Homebrew::Cmd::UpgradeCmd do
+  include FileUtils
   it_behaves_like "parseable arguments"
 
   it "upgrades a Formula and cleans up old versions", :integration_test do
@@ -53,7 +54,7 @@ RSpec.describe Homebrew::Cmd::UpgradeCmd do
 
     expect {
       brew "upgrade", "--ask"
-    }.to output(/.*Formulae\s*\(3\):\s*testball4\s*,?\s*testball5\s*,?\s*testball5.*/)
+    }.to output(/.*Formulae\s*\(3\):\s*testball4\s*,?\s*testball5\s*,?\s*testball.*/)
                  .to_stdout.and not_to_output.to_stderr
 
     expect(HOMEBREW_CELLAR/"testball/0.1").to be_a_directory
