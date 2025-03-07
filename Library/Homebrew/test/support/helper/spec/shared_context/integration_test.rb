@@ -146,29 +146,29 @@ RSpec.shared_context "integration test" do # rubocop:disable RSpec/ContextWordin
         program_name = "test"
       end
 
-      tarball_name = "#{prefix}-0.1#{'-linux' if OS.linux?}.tbz"
+      tarball_name = "#{prefix}-0.1#{"-linux" if OS.linux?}.tbz"
       tarball = TEST_FIXTURE_DIR / "tarballs/#{tarball_name}"
 
       content = <<~RUBY
-      desc "Some test"
-      homepage "https://brew.sh/#{name}"
-      url "file://#{tarball}"
-      sha256 "#{tarball.sha256}"
+        desc "Some test"
+        homepage "https://brew.sh/#{name}"
+        url "file://#{tarball}"
+        sha256 "#{tarball.sha256}"
 
-      option "with-foo", "Build with foo"
-      #{bottle_block}
-      def install
-        (prefix/"foo"/"#{program_name}").write("#{program_name}") if build.with? "foo"
-        prefix.install Dir["*"]
-        (buildpath/"#{program_name}.c").write \
-          "#include <stdio.h>\\nint main(){printf(\\"#{program_name}\\");return 0;}"
-        bin.mkpath
-        system ENV.cc, "#{program_name}.c", "-o", bin/"#{program_name}"
-      end
+        option "with-foo", "Build with foo"
+        #{bottle_block}
+        def install
+          (prefix/"foo"/"#{program_name}").write("#{program_name}") if build.with? "foo"
+          prefix.install Dir["*"]
+          (buildpath/"#{program_name}.c").write \
+            "#include <stdio.h>\\nint main(){printf(\\"#{program_name}\\");return 0;}"
+          bin.mkpath
+          system ENV.cc, "#{program_name}.c", "-o", bin/"#{program_name}"
+        end
 
-      #{content}
+        #{content}
 
-      # something here
+        # something here
       RUBY
     when "bar"
       content = <<~RUBY

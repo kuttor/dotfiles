@@ -222,9 +222,7 @@ module Homebrew
         Install.perform_preinstall_checks_once
 
         # Main block: if asking the user is enabled, show dependency and size information.
-        if args.ask?
-          Install.ask(formulae_to_install, args: args)
-        end
+        Install.ask(formulae_to_install, args: args) if args.ask?
 
         Upgrade.upgrade_formulae(
           formulae_to_install,

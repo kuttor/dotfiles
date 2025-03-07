@@ -327,7 +327,6 @@ module Homebrew
         puts formula_names.join(" ")
       end
 
-
       # Main block: if asking the user is enabled, show dependency and size information.
       def ask(formulae, args:)
         ohai "Looking for bottles..."
@@ -335,8 +334,9 @@ module Homebrew
         sized_formulae = compute_sized_formulae(formulae, args: args)
         sizes = compute_total_sizes(sized_formulae, debug: args.debug?)
 
-        puts "#{::Utils.pluralize("Formul", sized_formulae.count, plural: "ae",
-                                  singular: "a")} (#{sized_formulae.count}): #{sized_formulae.join(", ")}\n\n"
+        puts "#{::Utils.pluralize("Formul", sized_formulae.count, plural:   "ae",
+                                                                  singular: "a")} (#{sized_formulae.count}): \
+                                                    #{sized_formulae.join(", ")}\n\n"
         puts "Download Size: #{disk_usage_readable(sizes[:download])}"
         puts "Install Size:  #{disk_usage_readable(sizes[:installed])}"
         puts "Net Install Size: #{disk_usage_readable(sizes[:net])}" if sizes[:net] != 0
@@ -380,7 +380,6 @@ module Homebrew
 
         Upgrade.install_formula(formula_installer, upgrade:)
       end
-
 
       def ask_input
         ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
