@@ -327,7 +327,7 @@ module Homebrew
         puts formula_names.join(" ")
       end
 
-      # Main block: if asking the user is enabled, show dependency and size information.
+      # If asking the user is enabled, show dependency and size information.
       def ask(formulae, args:)
         ohai "Looking for bottles..."
 
@@ -410,18 +410,16 @@ module Homebrew
           formula_list = [formula]
 
           deps = args.build_from_source? ? formula.deps.build : formula.deps.required
-          # If there are dependencies, try to gather outdated, bottled ones.
-          if deps.any?
-            outdated_dependents = deps.map(&:to_formula).reject(&:pinned?).select do |dep|
-              dep.installed_kegs.empty? || (dep.bottled? && dep.outdated?)
-            end
-            deps.map(&:to_formula).each do |f|
-              outdated_dependents.concat(f.recursive_dependencies.map(&:to_formula).reject(&:pinned?).select do |dep|
-                dep.installed_kegs.empty? || (dep.bottled? && dep.outdated?)
-              end)
-            end
-            formula_list.concat(outdated_dependents)
+
+          outdated_dependents = deps.map(&:to_formula).reject(&:pinned?).select do |dep|
+            dep.installed_kegs.empty? || (dep.bottled? && dep.outdated?)
           end
+          deps.map(&:to_formula).each do |f|
+            outdated_dependents.concat(f.recursive_dependencies.map(&:to_formula).reject(&:pinned?).select do |dep|
+              dep.installed_kegs.empty? || (dep.bottled? && dep.outdated?)
+            end)
+          end
+          formula_list.concat(outdated_dependents)
 
           formula_list
         end
@@ -430,7 +428,7 @@ module Homebrew
         unless Homebrew::EnvConfig.no_installed_dependents_check?
           sized_formulae.concat(Formula.installed.select do |installed_formula|
             installed_formula.bottled? && installed_formula.outdated? &&
-              installed_formula.deps.required.any? { |dep| sized_formulae.include?(dep.to_formula) }
+              installed_formula.deps.required.map(&:to_formula).intersect?(sized_formulae)
           end)
         end
 
@@ -443,9 +441,7 @@ module Homebrew
         total_installed_size = 0
         total_net_size       = 0
 
-        sized_formulae.each do |formula|
-          next unless (bottle = formula.bottle)
-
+        sized_formulae.select(&:bottle).each do |formula|
           # Fetch additional bottle metadata (if necessary).
           bottle.fetch_tab(quiet: !debug)
 
