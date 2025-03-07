@@ -407,7 +407,7 @@ module Homebrew
       def compute_sized_formulae(formulae, args:)
         sized_formulae = formulae.flat_map do |formula|
           # Always include the formula itself.
-          formula_list = [formula]
+          formula_list = formula.installed_kegs.empty? || (formula.bottled? && formula.outdated?) ? [formula] : []
 
           deps = args.build_from_source? ? formula.deps.build : formula.deps.required
           # If there are dependencies, try to gather outdated, bottled ones.
