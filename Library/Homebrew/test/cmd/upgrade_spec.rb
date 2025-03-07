@@ -52,10 +52,10 @@ RSpec.describe Homebrew::Cmd::UpgradeCmd do
     keg_dir.mkpath
     touch keg_dir/AbstractTab::FILENAME
 
-    expect {
+    expect do
       brew "upgrade", "--ask"
-    }.to output(/.*Formulae\s*\(3\):\s*testball4\s*,?\s*testball5\s*,?\s*testball.*/)
-                 .to_stdout.and not_to_output.to_stderr
+    end.to output(/.*Formulae\s*\(3\):\s*testball4\s*,?\s*testball5\s*,?\s*testball.*/)
+      .to_stdout.and not_to_output.to_stderr
 
     expect(HOMEBREW_CELLAR/"testball/0.1").to be_a_directory
     expect(HOMEBREW_CELLAR/"testball/0.0.1").not_to exist
