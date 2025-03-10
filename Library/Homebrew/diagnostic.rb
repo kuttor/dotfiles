@@ -426,10 +426,12 @@ module Homebrew
           end
         end
 
+        @user_path_1_done = true
         message unless message.empty?
       end
 
       def check_user_path_2
+        check_user_path_1 unless defined?(@user_path_1_done)
         return if @seen_prefix_bin
 
         <<~EOS
@@ -440,6 +442,7 @@ module Homebrew
       end
 
       def check_user_path_3
+        check_user_path_1 unless defined?(@user_path_1_done)
         return if @seen_prefix_sbin
 
         # Don't complain about sbin not being in the path if it doesn't exist
