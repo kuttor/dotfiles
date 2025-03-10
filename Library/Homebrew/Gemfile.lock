@@ -99,7 +99,8 @@ GEM
     rubocop-rspec (3.5.0)
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
-    rubocop-sorbet (0.8.9)
+    rubocop-sorbet (0.9.0)
+      lint_roller (~> 1.1)
       rubocop (>= 1)
     ruby-lsp (0.23.11)
       language_server-protocol (~> 3.17.0)
@@ -158,7 +159,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
