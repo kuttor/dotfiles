@@ -411,7 +411,7 @@ module Cask
 
       if @dsl.on_system_blocks_exist?
         begin
-          MacOSVersion::SYMBOLS.keys.product(OnSystem::ARCH_OPTIONS).each do |os, arch|
+          OnSystem::ALL_OS_ARCH_COMBINATIONS.each do |os, arch|
             bottle_tag = ::Utils::Bottles::Tag.new(system: os, arch:)
             next unless bottle_tag.valid_combination?
             next if depends_on.macos &&
