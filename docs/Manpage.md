@@ -678,6 +678,11 @@ upgrade *`formula`* if it is already installed but outdated.
 
 : Delete files that already exist in the prefix while linking.
 
+`--ask`
+
+: Ask for confirmation before downloading and installing formulae. Print bottles
+  and dependencies download size and install size.
+
 `--cask`
 
 : Treat all named arguments as casks.
@@ -1076,6 +1081,11 @@ for the reinstalled formulae or, every 30 days, for all formulae.
 
 : Create a Git repository, useful for creating patches to the software.
 
+`--ask`
+
+: Ask for confirmation before downloading and upgrading formulae. Print bottles
+  and dependencies download size, install and net install size.
+
 `--cask`
 
 : Treat all named arguments as casks.
@@ -1429,6 +1439,11 @@ for the upgraded formulae or, every 30 days, for all formulae.
 `--overwrite`
 
 : Delete files that already exist in the prefix while linking.
+
+`--ask`
+
+: Ask for confirmation before downloading and upgrading formulae. Print bottles
+  and dependencies download size, install and net install size.
 
 `--cask`
 
@@ -3249,6 +3264,17 @@ By default, only Homebrew formula dependencies are listed.
 
 : Edit the `Brewfile` in your editor.
 
+`brew bundle add` *`name`* \[...\]
+
+: Add entries to your `Brewfile`. Adds formulae by default. Use `--cask`,
+  `--tap`, `--whalebrew` or `--vscode` to add the corresponding entry instead.
+
+`brew bundle remove` *`name`* \[...\]
+
+: Remove entries that match `name` from your `Brewfile`. Use `--formula`,
+  `--cask`, `--tap`, `--mas`, `--whalebrew` or `--vscode` to remove only entries
+  of the corresponding type.
+
 `brew bundle exec` *`command`*
 
 : Run an external command in an isolated build environment based on the
@@ -3763,6 +3789,11 @@ command execution e.g. `$(cat file)`.
 : When `$HOMEBREW_ARTIFACT_DOMAIN` and `$HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK`
   are both set, if the request to `$HOMEBREW_ARTIFACT_DOMAIN` fails then
   Homebrew will error rather than trying any other/default URLs.
+
+`HOMEBREW_ASK`
+
+: If set, pass `--ask`to all formulae `brew install`, `brew upgrade` and `brew
+  reinstall` commands.
 
 `HOMEBREW_AUTO_UPDATE_SECS`
 
