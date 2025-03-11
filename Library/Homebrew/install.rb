@@ -381,7 +381,7 @@ module Homebrew
       end
 
       def ask_input
-        ohai "Do you want to proceed with the installation? [Y/y/yes/N/n]"
+        ohai "Do you want to proceed with the installation? [Y/y/yes/N/n/no]"
         accepted_inputs = %w[y yes]
         declined_inputs = %w[n no]
         loop do
