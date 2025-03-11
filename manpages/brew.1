@@ -423,6 +423,9 @@ Create a Git repository, useful for creating patches to the software\.
 \fB\-\-overwrite\fP
 Delete files that already exist in the prefix while linking\.
 .TP
+\fB\-\-ask\fP
+Ask for confirmation before downloading and installing formulae\. Print bottles and dependencies download size and install size\.
+.TP
 \fB\-\-cask\fP
 Treat all named arguments as casks\.
 .TP
@@ -672,6 +675,9 @@ Generate debug symbols on build\. Source will be retained in a cache directory\.
 \fB\-g\fP, \fB\-\-git\fP
 Create a Git repository, useful for creating patches to the software\.
 .TP
+\fB\-\-ask\fP
+Ask for confirmation before downloading and upgrading formulae\. Print bottles and dependencies download size, install and net install size\.
+.TP
 \fB\-\-cask\fP
 Treat all named arguments as casks\.
 .TP
@@ -890,6 +896,9 @@ Generate debug symbols on build\. Source will be retained in a cache directory\.
 .TP
 \fB\-\-overwrite\fP
 Delete files that already exist in the prefix while linking\.
+.TP
+\fB\-\-ask\fP
+Ask for confirmation before downloading and upgrading formulae\. Print bottles and dependencies download size, install and net install size\.
 .TP
 \fB\-\-cask\fP
 Treat all named arguments as casks\. If no named arguments are specified, upgrade only outdated casks\.
@@ -2089,6 +2098,12 @@ By default, only Homebrew formula dependencies are listed\.
 \fBbrew bundle edit\fP
 Edit the \fBBrewfile\fP in your editor\.
 .TP
+\fBbrew bundle add\fP \fIname\fP [\.\.\.]
+Add entries to your \fBBrewfile\fP\&\. Adds formulae by default\. Use \fB\-\-cask\fP, \fB\-\-tap\fP, \fB\-\-whalebrew\fP or \fB\-\-vscode\fP to add the corresponding entry instead\.
+.TP
+\fBbrew bundle remove\fP \fIname\fP [\.\.\.]
+Remove entries that match \fBname\fP from your \fBBrewfile\fP\&\. Use \fB\-\-formula\fP, \fB\-\-cask\fP, \fB\-\-tap\fP, \fB\-\-mas\fP, \fB\-\-whalebrew\fP or \fB\-\-vscode\fP to remove only entries of the corresponding type\.
+.TP
 \fBbrew bundle exec\fP \fIcommand\fP
 Run an external command in an isolated build environment based on the \fBBrewfile\fP dependencies\.
 .P
@@ -2416,6 +2431,9 @@ Prefix all download URLs, including those for bottles, with this value\. For exa
 .TP
 \fBHOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK\fP
 When \fB$HOMEBREW_ARTIFACT_DOMAIN\fP and \fB$HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK\fP are both set, if the request to \fB$HOMEBREW_ARTIFACT_DOMAIN\fP fails then Homebrew will error rather than trying any other/default URLs\.
+.TP
+\fBHOMEBREW_ASK\fP
+If set, pass \fB\-\-ask\fPto all formulae \fBbrew install\fP, \fBbrew upgrade\fP and \fBbrew reinstall\fP commands\.
 .TP
 \fBHOMEBREW_AUTO_UPDATE_SECS\fP
 Run \fBbrew update\fP once every \fB$HOMEBREW_AUTO_UPDATE_SECS\fP seconds before some commands, e\.g\. \fBbrew install\fP, \fBbrew upgrade\fP and \fBbrew tap\fP\&\. Alternatively, disable auto\-update entirely with \fB$HOMEBREW_NO_AUTO_UPDATE\fP\&\.
