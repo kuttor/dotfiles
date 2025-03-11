@@ -414,6 +414,7 @@ module Cask
           OnSystem::ALL_OS_ARCH_COMBINATIONS.each do |os, arch|
             bottle_tag = ::Utils::Bottles::Tag.new(system: os, arch:)
             next unless bottle_tag.valid_combination?
+            next if bottle_tag.linux? && @dsl.os.nil?
             next if bottle_tag.macos? &&
                     depends_on.macos &&
                     !@dsl.depends_on_set_in_block? &&
