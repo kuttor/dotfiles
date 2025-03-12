@@ -121,15 +121,15 @@ GEM
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
     simpleidn (0.2.3)
-    sorbet (0.5.11911)
-      sorbet-static (= 0.5.11911)
-    sorbet-runtime (0.5.11911)
-    sorbet-static (0.5.11911-aarch64-linux)
-    sorbet-static (0.5.11911-universal-darwin)
-    sorbet-static (0.5.11911-x86_64-linux)
-    sorbet-static-and-runtime (0.5.11911)
-      sorbet (= 0.5.11911)
-      sorbet-runtime (= 0.5.11911)
+    sorbet (0.5.11915)
+      sorbet-static (= 0.5.11915)
+    sorbet-runtime (0.5.11915)
+    sorbet-static (0.5.11915-aarch64-linux)
+    sorbet-static (0.5.11915-universal-darwin)
+    sorbet-static (0.5.11915-x86_64-linux)
+    sorbet-static-and-runtime (0.5.11915)
+      sorbet (= 0.5.11915)
+      sorbet-runtime (= 0.5.11915)
     spoom (1.5.4)
       erubi (>= 1.10.0)
       prism (>= 0.28.0)
@@ -160,6 +160,7 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
