@@ -115,7 +115,7 @@ module Homebrew
             strategy = DownloadStrategyDetector.detect(url)
             downloader = strategy.new(url, token, version.to_s, cache: Cask::Cache.path)
             downloader.fetch
-            downloader.cached_location.sha256
+            downloader.cached_location!.sha256
           end
 
           [url.gsub(version.to_s, "\#{version}"), sha256]

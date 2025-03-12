@@ -20,7 +20,7 @@ module Cask
       sig { returns(T.nilable(T.any(Symbol, String))) }
       attr_reader :user_agent
 
-      sig { returns(T.any(T::Class[T.anything], Symbol, NilClass)) }
+      sig { returns(T.any(T::Class[AbstractDownloadStrategy], Symbol, NilClass)) }
       attr_reader :using
 
       sig { returns(T.nilable(String)) }
@@ -35,7 +35,7 @@ module Cask
           # @api public
           verified:   T.nilable(String),
           # @api public
-          using:      T.any(Class, Symbol, NilClass),
+          using:      T.any(T::Class[AbstractDownloadStrategy], Symbol, NilClass),
           # @api public
           tag:        T.nilable(String),
           # @api public
@@ -186,7 +186,7 @@ module Cask
       params(
         uri:             T.nilable(T.any(URI::Generic, String)),
         verified:        T.nilable(String),
-        using:           T.any(Class, Symbol, NilClass),
+        using:           T.any(T::Class[AbstractDownloadStrategy], Symbol, NilClass),
         tag:             T.nilable(String),
         branch:          T.nilable(String),
         revisions:       T.nilable(T::Array[String]),

@@ -56,7 +56,7 @@ class Cask::URL
   sig { returns(T.nilable(T.any(::String, ::Symbol))) }
   def user_agent; end
 
-  sig { returns(T.nilable(T.any(::Symbol, T::Class[T.anything]))) }
+  sig { returns(T.nilable(T.any(::Symbol, T::Class[::AbstractDownloadStrategy]))) }
   def using; end
 
   sig { returns(T.nilable(::String)) }
