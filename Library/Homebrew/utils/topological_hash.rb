@@ -27,14 +27,15 @@ module Utils
       packages.each do |cask_or_formula|
         next if accumulator.key?(cask_or_formula)
 
-        if cask_or_formula.is_a?(Cask::Cask)
+        case cask_or_formula
+        when Cask::Cask
           formula_deps = cask_or_formula.depends_on
                                         .formula
                                         .map { |f| Formula[f] }
           cask_deps = cask_or_formula.depends_on
                                      .cask
                                      .map { |c| Cask::CaskLoader.load(c, config: nil) }
-        else
+        when Formula
           formula_deps = cask_or_formula.deps
                                         .reject(&:build?)
                                         .reject(&:test?)
@@ -42,6 +43,8 @@ module Utils
           cask_deps = cask_or_formula.requirements
                                      .filter_map(&:cask)
                                      .map { |c| Cask::CaskLoader.load(c, config: nil) }
+        else
+          T.absurd(cask_or_formula)
         end
 
         accumulator[cask_or_formula] = formula_deps + cask_deps

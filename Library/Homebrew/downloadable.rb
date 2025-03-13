@@ -56,7 +56,7 @@ module Downloadable
 
   sig { overridable.returns(Pathname) }
   def cached_download
-    downloader.cached_location!
+    downloader.cached_location
   end
 
   sig { overridable.void }

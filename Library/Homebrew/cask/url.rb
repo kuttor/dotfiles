@@ -5,12 +5,12 @@ require "source_location"
 require "utils/curl"
 
 module Cask
-  BlockReturn = T.type_alias do
-    T.any(URI::Generic, String, [T.any(URI::Generic, String), T::Hash[Symbol, T.untyped]])
-  end
-
   # Class corresponding to the `url` stanza.
   class URL < SimpleDelegator
+    BlockReturn = T.type_alias do
+      T.any(URI::Generic, String, [T.any(URI::Generic, String), T::Hash[Symbol, T.untyped]])
+    end
+
     class DSL
       sig { returns(T.any(URI::Generic, String)) }
       attr_reader :uri
@@ -173,9 +173,8 @@ module Cask
       #
       # @api public
       sig {
-        override
-          .params(method: Symbol, args: T.untyped, block: T.nilable(T.proc.returns(T.untyped)))
-          .returns(T.untyped)
+        override.params(method: Symbol, args: T.untyped, block: T.nilable(T.proc.returns(T.untyped)))
+                .returns(T.anything)
       }
       def method_missing(method, *args, &block)
         if @dsl.respond_to?(method)

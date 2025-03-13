@@ -50,12 +50,6 @@ class AbstractDownloadStrategy
   sig { returns(String) }
   attr_reader :url
 
-  # Location of the cached download.
-  #
-  # @api public
-  sig { returns(T.nilable(Pathname)) }
-  attr_reader :cached_location
-
   sig { returns(Pathname) }
   attr_reader :cache
 
@@ -90,8 +84,11 @@ class AbstractDownloadStrategy
   sig { overridable.params(timeout: T.any(Float, Integer, NilClass)).void }
   def fetch(timeout: nil); end
 
-  sig { returns(Pathname) }
-  def cached_location! = T.must(cached_location)
+  # Location of the cached download.
+  #
+  # @api public
+  sig { abstract.returns(Pathname) }
+  def cached_location; end
 
   # Disable any output during downloading.
   #
@@ -117,7 +114,7 @@ class AbstractDownloadStrategy
   # @api public
   sig { overridable.params(block: T.untyped).void }
   def stage(&block)
-    UnpackStrategy.detect(cached_location!,
+    UnpackStrategy.detect(cached_location,
                           prioritize_extension: true,
                           ref_type: @ref_type, ref: @ref)
                   .extract_nestedly(basename:,
@@ -158,12 +155,12 @@ class AbstractDownloadStrategy
   # @api public
   sig { overridable.void }
   def clear_cache
-    rm_rf(cached_location!)
+    rm_rf(cached_location)
   end
 
   sig { returns(Pathname) }
   def basename
-    cached_location!.basename
+    cached_location.basename
   end
 
   private
@@ -212,7 +209,7 @@ end
 class VCSDownloadStrategy < AbstractDownloadStrategy
   abstract!
 
-  sig { returns(Pathname) }
+  sig { override.returns(Pathname) }
   attr_reader :cached_location
 
   REF_TYPES = [:tag, :branch, :revisions, :revision].freeze
@@ -336,7 +333,7 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
   # Path for storing the completed download.
   #
   # @api public
-  sig { returns(Pathname) }
+  sig { override.returns(Pathname) }
   def cached_location
     return @cached_location if @cached_location
 
