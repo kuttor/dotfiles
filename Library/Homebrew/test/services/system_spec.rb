@@ -9,7 +9,7 @@ RSpec.describe Services::System do
     end
 
     it "Other - outputs launchctl command location", :needs_linux do
-      expect(described_class.launchctl).to eq_nil
+      expect(described_class.launchctl).to be_nil
     end
   end
 

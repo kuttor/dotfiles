@@ -9,6 +9,11 @@ module Services
         @executable ||= T.let(which("systemctl"), T.nilable(Pathname))
       end
 
+      sig { void }
+      def self.reset_executable!
+        @executable = nil
+      end
+
       sig { returns(String) }
       def self.scope
         System.root? ? "--system" : "--user"

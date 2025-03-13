@@ -177,8 +177,7 @@ RSpec.describe Services::Cli do
 
   describe "#systemd_load", :needs_linux do
     it "checks non-enabling run" do
-      expect(Services::System::Systemctl).to receive(:executable).once.and_return(Pathname.new("/usr/bin/systemctl"))
-      expect(Services::System::Systemctl).to receive(:scope).once.and_return("--user")
+      expect(Services::System::Systemctl).to receive(:run).once.and_return(true)
       services_cli.systemd_load(
         instance_double(Services::FormulaWrapper, service_name: "name"),
         enable: false,
@@ -186,8 +185,7 @@ RSpec.describe Services::Cli do
     end
 
     it "checks enabling run" do
-      expect(Services::System::Systemctl).to receive(:executable).once.and_return(Pathname.new("/usr/bin/systemctl"))
-      expect(Services::System::Systemctl).to receive(:scope).twice.and_return("--user")
+      expect(Services::System::Systemctl).to receive(:run).twice.and_return(true)
       services_cli.systemd_load(
         instance_double(Services::FormulaWrapper, service_name: "name"),
         enable: true,
@@ -197,15 +195,15 @@ RSpec.describe Services::Cli do
 
   describe "#launchctl_load", :needs_macos do
     it "checks non-enabling run" do
+      allow(Services::System).to receive(:launchctl).and_return(Pathname.new("/bin/launchctl"))
       expect(Services::System).to receive(:domain_target).once.and_return("target")
-      expect(Services::System).to receive(:launchctl).once.and_return(Pathname.new("/bin/launchctl"))
       expect(described_class).to receive(:safe_system).once.and_return(true)
       services_cli.launchctl_load(instance_double(Services::FormulaWrapper), file: "a", enable: false)
     end
 
     it "checks enabling run" do
+      allow(Services::System).to receive(:launchctl).and_return(Pathname.new("/bin/launchctl"))
       expect(Services::System).to receive(:domain_target).twice.and_return("target")
-      expect(Services::System).to receive(:launchctl).once.and_return(Pathname.new("/bin/launchctl"))
       expect(described_class).to receive(:safe_system).twice.and_return(true)
       services_cli.launchctl_load(instance_double(Services::FormulaWrapper, service_name: "name"), file:   "a",
                                                                                                    enable: true)
