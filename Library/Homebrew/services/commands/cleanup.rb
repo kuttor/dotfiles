@@ -1,7 +1,7 @@
 # typed: strict
 # frozen_string_literal: true
 
-module Service
+module Services
   module Commands
     module Cleanup
       TRIGGERS = %w[cleanup clean cl rm].freeze
@@ -10,8 +10,8 @@ module Service
       def self.run
         cleaned = []
 
-        cleaned += Service::ServicesCli.kill_orphaned_services
-        cleaned += Service::ServicesCli.remove_unused_service_files
+        cleaned += Services::Cli.kill_orphaned_services
+        cleaned += Services::Cli.remove_unused_service_files
 
         puts "All #{System.root? ? "root" : "user-space"} services OK, nothing cleaned..." if cleaned.empty?
       end

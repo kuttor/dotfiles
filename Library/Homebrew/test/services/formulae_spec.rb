@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "services/service"
+require "services/formulae"
 
-RSpec.describe Service::Formulae do
+RSpec.describe Services::Formulae do
   describe "#services_list" do
     it "empty list without available formulae" do
       allow(described_class).to receive(:available_services).and_return({})
@@ -10,7 +10,7 @@ RSpec.describe Service::Formulae do
     end
 
     it "list with available formulae" do
-      formula = instance_double(Service::FormulaWrapper)
+      formula = instance_double(Services::FormulaWrapper)
       expected = [
         {
           file:   Pathname.new("/Library/LaunchDaemons/file.plist"),

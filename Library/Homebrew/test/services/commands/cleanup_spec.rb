@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-require "services/service"
+require "services/commands/cleanup"
+require "services/system"
+require "services/cli"
 
-RSpec.describe Service::Commands::Cleanup do
+RSpec.describe Services::Commands::Cleanup do
   describe "#TRIGGERS" do
     it "contains all restart triggers" do
       expect(described_class::TRIGGERS).to eq(%w[cleanup clean cl rm])
@@ -11,9 +13,9 @@ RSpec.describe Service::Commands::Cleanup do
 
   describe "#run" do
     it "root - prints on empty cleanup" do
-      expect(Service::System).to receive(:root?).once.and_return(true)
-      expect(Service::ServicesCli).to receive(:kill_orphaned_services).once.and_return([])
-      expect(Service::ServicesCli).to receive(:remove_unused_service_files).once.and_return([])
+      expect(Services::System).to receive(:root?).once.and_return(true)
+      expect(Services::Cli).to receive(:kill_orphaned_services).once.and_return([])
+      expect(Services::Cli).to receive(:remove_unused_service_files).once.and_return([])
 
       expect do
         described_class.run
@@ -21,9 +23,9 @@ RSpec.describe Service::Commands::Cleanup do
     end
 
     it "user - prints on empty cleanup" do
-      expect(Service::System).to receive(:root?).once.and_return(false)
-      expect(Service::ServicesCli).to receive(:kill_orphaned_services).once.and_return([])
-      expect(Service::ServicesCli).to receive(:remove_unused_service_files).once.and_return([])
+      expect(Services::System).to receive(:root?).once.and_return(false)
+      expect(Services::Cli).to receive(:kill_orphaned_services).once.and_return([])
+      expect(Services::Cli).to receive(:remove_unused_service_files).once.and_return([])
 
       expect do
         described_class.run
@@ -31,9 +33,9 @@ RSpec.describe Service::Commands::Cleanup do
     end
 
     it "prints nothing on cleanup" do
-      expect(Service::System).not_to receive(:root?)
-      expect(Service::ServicesCli).to receive(:kill_orphaned_services).once.and_return(["a"])
-      expect(Service::ServicesCli).to receive(:remove_unused_service_files).once.and_return(["b"])
+      expect(Services::System).not_to receive(:root?)
+      expect(Services::Cli).to receive(:kill_orphaned_services).once.and_return(["a"])
+      expect(Services::Cli).to receive(:remove_unused_service_files).once.and_return(["b"])
 
       expect do
         described_class.run

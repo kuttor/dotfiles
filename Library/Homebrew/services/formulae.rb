@@ -1,11 +1,13 @@
 # typed: strict
 # frozen_string_literal: true
 
-module Service
+require "services/formula_wrapper"
+
+module Services
   module Formulae
     # All available services, with optional filters applied
     # @private
-    sig { params(loaded: T.nilable(T::Boolean), skip_root: T::Boolean).returns(T::Array[Service::FormulaWrapper]) }
+    sig { params(loaded: T.nilable(T::Boolean), skip_root: T::Boolean).returns(T::Array[Services::FormulaWrapper]) }
     def self.available_services(loaded: nil, skip_root: false)
       require "formula"
 

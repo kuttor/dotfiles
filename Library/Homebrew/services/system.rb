@@ -3,7 +3,7 @@
 
 require_relative "system/systemctl"
 
-module Service
+module Services
   module System
     extend FileUtils
 

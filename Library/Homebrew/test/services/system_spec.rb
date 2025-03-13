@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "services/service"
+require "services/system"
 
-RSpec.describe Service::System do
+RSpec.describe Services::System do
   describe "#launchctl" do
     it "macOS - outputs launchctl command location", :needs_macos do
       expect(described_class.launchctl).to eq(Pathname.new("/bin/launchctl"))

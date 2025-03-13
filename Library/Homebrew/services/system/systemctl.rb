@@ -1,7 +1,7 @@
 # typed: strict
 # frozen_string_literal: true
 
-module Service
+module Services
   module System
     module Systemctl
       sig { returns(T.nilable(Pathname)) }

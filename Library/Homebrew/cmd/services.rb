@@ -2,7 +2,16 @@
 # frozen_string_literal: true
 
 require "abstract_command"
-require "services/service"
+require "services/system"
+require "services/cli"
+require "services/commands/list"
+require "services/commands/cleanup"
+require "services/commands/info"
+require "services/commands/restart"
+require "services/commands/run"
+require "services/commands/start"
+require "services/commands/stop"
+require "services/commands/kill"
 
 module Homebrew
   module Cmd
@@ -64,36 +73,36 @@ module Homebrew
         # Keep this after the .parse to keep --help fast.
         require "utils"
 
-        if !::Service::System.launchctl? && !::Service::System.systemctl?
+        if !::Services::System.launchctl? && !::Services::System.systemctl?
           raise UsageError,
                 "`brew services` is supported only on macOS or Linux (with systemd)!"
         end
 
         if (sudo_service_user = args.sudo_service_user)
-          unless ::Service::System.root?
+          unless ::Services::System.root?
             raise UsageError,
                   "`brew services` is supported only when running as root!"
           end
 
-          unless ::Service::System.launchctl?
+          unless ::Services::System.launchctl?
             raise UsageError,
                   "`brew services --sudo-service-user` is currently supported only on macOS " \
                   "(but we'd love a PR to add Linux support)!"
           end
 
-          ::Service::ServicesCli.sudo_service_user = sudo_service_user
+          ::Services::Cli.sudo_service_user = sudo_service_user
         end
 
         # Parse arguments.
         subcommand, formula, = args.named
 
-        if [*::Service::Commands::List::TRIGGERS, *::Service::Commands::Cleanup::TRIGGERS].include?(subcommand)
+        if [*::Services::Commands::List::TRIGGERS, *::Services::Commands::Cleanup::TRIGGERS].include?(subcommand)
           raise UsageError, "The `#{subcommand}` subcommand does not accept a formula argument!" if formula
           raise UsageError, "The `#{subcommand}` subcommand does not accept the --all argument!" if args.all?
         end
 
         if args.file
-          if ::Service::Commands::Start::TRIGGERS.exclude?(subcommand)
+          if ::Services::Commands::Start::TRIGGERS.exclude?(subcommand)
             raise UsageError, "The `#{subcommand}` subcommand does not accept the --file= argument!"
           elsif args.all?
             raise UsageError, "The start subcommand does not accept the --all and --file= arguments at the same time!"
@@ -104,14 +113,14 @@ module Homebrew
 
         targets = if args.all?
           if subcommand == "start"
-            ::Service::Formulae.available_services(loaded: false, skip_root: !::Service::System.root?)
+            ::Services::Formulae.available_services(loaded: false, skip_root: !::Services::System.root?)
           elsif subcommand == "stop"
-            ::Service::Formulae.available_services(loaded: true, skip_root: !::Service::System.root?)
+            ::Services::Formulae.available_services(loaded: true, skip_root: !::Services::System.root?)
           else
-            ::Service::Formulae.available_services
+            ::Services::Formulae.available_services
           end
         elsif formula
-          [::Service::FormulaWrapper.new(Formulary.factory(formula))]
+          [::Services::FormulaWrapper.new(Formulary.factory(formula))]
         else
           []
         end
@@ -119,30 +128,30 @@ module Homebrew
         # Exit successfully if --all was used but there is nothing to do
         return if args.all? && targets.empty?
 
-        if ::Service::System.systemctl?
+        if ::Services::System.systemctl?
           ENV["DBUS_SESSION_BUS_ADDRESS"] = ENV.fetch("HOMEBREW_DBUS_SESSION_BUS_ADDRESS", nil)
           ENV["XDG_RUNTIME_DIR"] = ENV.fetch("HOMEBREW_XDG_RUNTIME_DIR", nil)
         end
 
         # Dispatch commands and aliases.
         case subcommand.presence
-        when *::Service::Commands::List::TRIGGERS
-          ::Service::Commands::List.run(json: args.json?)
-        when *::Service::Commands::Cleanup::TRIGGERS
-          ::Service::Commands::Cleanup.run
-        when *::Service::Commands::Info::TRIGGERS
-          ::Service::Commands::Info.run(targets, verbose: args.verbose?, json: args.json?)
-        when *::Service::Commands::Restart::TRIGGERS
-          ::Service::Commands::Restart.run(targets, verbose: args.verbose?)
-        when *::Service::Commands::Run::TRIGGERS
-          ::Service::Commands::Run.run(targets, verbose: args.verbose?)
-        when *::Service::Commands::Start::TRIGGERS
-          ::Service::Commands::Start.run(targets, args.file, verbose: args.verbose?)
-        when *::Service::Commands::Stop::TRIGGERS
+        when *::Services::Commands::List::TRIGGERS
+          ::Services::Commands::List.run(json: args.json?)
+        when *::Services::Commands::Cleanup::TRIGGERS
+          ::Services::Commands::Cleanup.run
+        when *::Services::Commands::Info::TRIGGERS
+          ::Services::Commands::Info.run(targets, verbose: args.verbose?, json: args.json?)
+        when *::Services::Commands::Restart::TRIGGERS
+          ::Services::Commands::Restart.run(targets, verbose: args.verbose?)
+        when *::Services::Commands::Run::TRIGGERS
+          ::Services::Commands::Run.run(targets, verbose: args.verbose?)
+        when *::Services::Commands::Start::TRIGGERS
+          ::Services::Commands::Start.run(targets, args.file, verbose: args.verbose?)
+        when *::Services::Commands::Stop::TRIGGERS
           max_wait = args.max_wait.to_f
-          ::Service::Commands::Stop.run(targets, verbose: args.verbose?, no_wait: args.no_wait?, max_wait:)
-        when *::Service::Commands::Kill::TRIGGERS
-          ::Service::Commands::Kill.run(targets, verbose: args.verbose?)
+          ::Services::Commands::Stop.run(targets, verbose: args.verbose?, no_wait: args.no_wait?, max_wait:)
+        when *::Services::Commands::Kill::TRIGGERS
+          ::Services::Commands::Kill.run(targets, verbose: args.verbose?)
         else
           raise UsageError, "unknown subcommand: `#{subcommand}`"
         end

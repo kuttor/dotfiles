@@ -1,8 +1,8 @@
 # typed: strict
 # frozen_string_literal: true
 
-module Service
-  module ServicesCli
+module Services
+  module Cli
     extend FileUtils
 
     sig { returns(T.nilable(String)) }
@@ -46,7 +46,7 @@ module Service
     end
 
     # Kill services that don't have a service file
-    sig { returns(T::Array[Service::FormulaWrapper]) }
+    sig { returns(T::Array[Services::FormulaWrapper]) }
     def self.kill_orphaned_services
       cleaned_labels = []
       cleaned_services = []
@@ -79,7 +79,7 @@ module Service
     end
 
     # Run a service as defined in the formula. This does not clean the service file like `start` does.
-    sig { params(targets: T::Array[Service::FormulaWrapper], verbose: T.nilable(T::Boolean)).void }
+    sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T.nilable(T::Boolean)).void }
     def self.run(targets, verbose: false)
       targets.each do |service|
         if service.pid?
@@ -96,7 +96,7 @@ module Service
 
     # Start a service.
     sig {
-      params(targets: T::Array[Service::FormulaWrapper], service_file: T.nilable(T.any(String, Pathname)),
+      params(targets: T::Array[Services::FormulaWrapper], service_file: T.nilable(T.any(String, Pathname)),
              verbose: T.nilable(T::Boolean)).void
     }
     def self.start(targets, service_file = nil, verbose: false)
@@ -138,7 +138,7 @@ module Service
 
     # Stop a service and unload it.
     sig {
-      params(targets:  T::Array[Service::FormulaWrapper],
+      params(targets:  T::Array[Services::FormulaWrapper],
              verbose:  T.nilable(T::Boolean),
              no_wait:  T.nilable(T::Boolean),
              max_wait: T.nilable(T.any(Integer, Float))).void
@@ -199,7 +199,7 @@ module Service
     end
 
     # Stop a service but keep it registered.
-    sig { params(targets: T::Array[Service::FormulaWrapper], verbose: T.nilable(T::Boolean)).void }
+    sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T.nilable(T::Boolean)).void }
     def self.kill(targets, verbose: false)
       targets.each do |service|
         if !service.pid?
@@ -209,7 +209,7 @@ module Service
         else
           puts "Killing `#{service.name}`... (might take a while)"
           if System.systemctl?
-            System::Systemctl.quiet_run("stop", T.must(service.service_name))
+            System::Systemctl.quiet_run("stop", service.service_name)
           elsif System.launchctl?
             quiet_system System.launchctl, "stop", "#{System.domain_target}/#{service.service_name}"
           end
@@ -290,7 +290,7 @@ module Service
     end
 
     sig {
-      params(service: Service::FormulaWrapper, file: T.nilable(T.any(String, Pathname)),
+      params(service: Services::FormulaWrapper, file: T.nilable(T.any(String, Pathname)),
              enable: T.nilable(T::Boolean)).void
     }
     def self.launchctl_load(service, file:, enable:)
@@ -298,13 +298,13 @@ module Service
       safe_system System.launchctl, "bootstrap", System.domain_target, file
     end
 
-    sig { params(service: Service::FormulaWrapper, enable: T.nilable(T::Boolean)).void }
+    sig { params(service: Services::FormulaWrapper, enable: T.nilable(T::Boolean)).void }
     def self.systemd_load(service, enable:)
       System::Systemctl.run("start", T.must(service.service_name))
       System::Systemctl.run("enable", T.must(service.service_name)) if enable
     end
 
-    sig { params(service: Service::FormulaWrapper, enable: T.nilable(T::Boolean)).void }
+    sig { params(service: Services::FormulaWrapper, enable: T.nilable(T::Boolean)).void }
     def self.service_load(service, enable:)
       if System.root? && !service.service_startup?
         opoo "#{service.name} must be run as non-root to start at user login!"
@@ -326,7 +326,7 @@ module Service
       ohai("Successfully #{function} `#{service.name}` (label: #{service.service_name})")
     end
 
-    sig { params(service: Service::FormulaWrapper, file: T.nilable(Pathname)).void }
+    sig { params(service: Services::FormulaWrapper, file: T.nilable(Pathname)).void }
     def self.install_service_file(service, file)
       raise UsageError, "Formula `#{service.name}` is not installed" unless service.installed?
 
@@ -339,9 +339,9 @@ module Service
       temp << if T.must(file).blank?
         contents = T.must(service.service_file).read
 
-        if sudo_service_user && Service::System.launchctl?
+        if sudo_service_user && Services::System.launchctl?
           # set the username in the new plist file
-          ohai "Setting username in #{service.service_name} to #{Service::System.user}"
+          ohai "Setting username in #{service.service_name} to #{Services::System.user}"
           plist_data = Plist.parse_xml(contents, marshal: false)
           plist_data["UserName"] = sudo_service_user
           plist_data.to_plist
@@ -362,7 +362,7 @@ module Service
 
       chmod 0644, service.dest
 
-      Service::System::Systemctl.run("daemon-reload") if System.systemctl?
+      Services::System::Systemctl.run("daemon-reload") if System.systemctl?
     end
   end
 end

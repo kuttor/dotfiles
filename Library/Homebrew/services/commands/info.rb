@@ -1,17 +1,20 @@
 # typed: strict
 # frozen_string_literal: true
 
-module Service
+require "services/formula_wrapper"
+require "services/cli"
+
+module Services
   module Commands
     module Info
       TRIGGERS = %w[info i].freeze
 
       sig {
-        params(targets: T::Array[Service::FormulaWrapper], verbose: T.nilable(T::Boolean),
+        params(targets: T::Array[Services::FormulaWrapper], verbose: T.nilable(T::Boolean),
                json: T.nilable(T::Boolean)).void
       }
       def self.run(targets, verbose:, json:)
-        Service::ServicesCli.check(targets)
+        Services::Cli.check(targets)
 
         output = targets.map(&:to_hash)
 

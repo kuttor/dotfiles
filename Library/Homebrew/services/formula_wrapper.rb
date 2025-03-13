@@ -3,7 +3,7 @@
 
 # Wrapper for a formula to handle service-related stuff like parsing and
 # generating the service/plist files.
-module Service
+module Services
   class FormulaWrapper
     # Access the `Formula` instance.
     sig { returns(Formula) }

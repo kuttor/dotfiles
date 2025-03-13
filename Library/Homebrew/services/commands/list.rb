@@ -1,9 +1,10 @@
 # typed: strict
 # frozen_string_literal: true
 
-require "service/formulae"
+require "services/formulae"
+require "services/cli"
 
-module Service
+module Services
   module Commands
     module List
       TRIGGERS = [nil, "list", "ls"].freeze
@@ -12,7 +13,7 @@ module Service
       def self.run(json: false)
         formulae = Formulae.services_list
         if formulae.blank?
-          opoo "No services available to control with `#{Service::ServicesCli.bin}`" if $stderr.tty?
+          opoo "No services available to control with `#{Services::Cli.bin}`" if $stderr.tty?
           return
         end
 

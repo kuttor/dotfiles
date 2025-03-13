@@ -25,7 +25,6 @@ brew cleanup
 brew tap --force homebrew/core
 # tap some other repos so codespaces can be used for developing multiple taps
 brew tap homebrew/bundle
-brew tap homebrew/services
 
 # install some useful development things
 sudo apt-get update

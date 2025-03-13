@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-require "services/service"
+require "services/system"
+require "services/formula_wrapper"
 require "tempfile"
 
-RSpec.describe Service::FormulaWrapper do
+RSpec.describe Services::FormulaWrapper do
   subject(:service) { described_class.new(formula) }
 
   let(:formula) do
@@ -40,17 +41,17 @@ RSpec.describe Service::FormulaWrapper do
 
   describe "#service_file" do
     it "macOS - outputs the full service file path" do
-      allow(Service::System).to receive(:launchctl?).and_return(true)
+      allow(Services::System).to receive(:launchctl?).and_return(true)
       expect(service.service_file.to_s).to eq("/usr/local/opt/mysql/homebrew.mysql.plist")
     end
 
     it "systemD - outputs the full service file path" do
-      allow(Service::System).to receive_messages(launchctl?: false, systemctl?: true)
+      allow(Services::System).to receive_messages(launchctl?: false, systemctl?: true)
       expect(service.service_file.to_s).to eq("/usr/local/opt/mysql/homebrew.mysql.service")
     end
 
     it "Other - outputs no service file" do
-      allow(Service::System).to receive_messages(launchctl?: false, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: false, systemctl?: false)
       expect(service.service_file).to be_nil
     end
   end
@@ -63,45 +64,45 @@ RSpec.describe Service::FormulaWrapper do
 
   describe "#service_name" do
     it "macOS - outputs the service name" do
-      allow(Service::System).to receive(:launchctl?).and_return(true)
+      allow(Services::System).to receive(:launchctl?).and_return(true)
       expect(service.service_name).to eq("plist-mysql-test")
     end
 
     it "systemD - outputs the service name" do
-      allow(Service::System).to receive_messages(launchctl?: false, systemctl?: true)
+      allow(Services::System).to receive_messages(launchctl?: false, systemctl?: true)
       expect(service.service_name).to eq("plist-mysql-test")
     end
 
     it "Other - outputs no service name" do
-      allow(Service::System).to receive_messages(launchctl?: false, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: false, systemctl?: false)
       expect(service.service_name).to be_nil
     end
   end
 
   describe "#dest_dir" do
     before do
-      allow(Service::System).to receive_messages(launchctl?: false, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: false, systemctl?: false)
     end
 
     it "macOS - user - outputs the destination directory for the service file" do
       ENV["HOME"] = "/tmp_home"
-      allow(Service::System).to receive_messages(root?: false, launchctl?: true)
+      allow(Services::System).to receive_messages(root?: false, launchctl?: true)
       expect(service.dest_dir.to_s).to eq("/tmp_home/Library/LaunchAgents")
     end
 
     it "macOS - root - outputs the destination directory for the service file" do
-      allow(Service::System).to receive_messages(launchctl?: true, root?: true)
+      allow(Services::System).to receive_messages(launchctl?: true, root?: true)
       expect(service.dest_dir.to_s).to eq("/Library/LaunchDaemons")
     end
 
     it "systemD - user - outputs the destination directory for the service file" do
       ENV["HOME"] = "/tmp_home"
-      allow(Service::System).to receive_messages(root?: false, launchctl?: false, systemctl?: true)
+      allow(Services::System).to receive_messages(root?: false, launchctl?: false, systemctl?: true)
       expect(service.dest_dir.to_s).to eq("/tmp_home/.config/systemd/user")
     end
 
     it "systemD - root - outputs the destination directory for the service file" do
-      allow(Service::System).to receive_messages(root?: true, launchctl?: false, systemctl?: true)
+      allow(Services::System).to receive_messages(root?: true, launchctl?: false, systemctl?: true)
       expect(service.dest_dir.to_s).to eq("/usr/lib/systemd/system")
     end
   end
@@ -109,16 +110,16 @@ RSpec.describe Service::FormulaWrapper do
   describe "#dest" do
     before do
       ENV["HOME"] = "/tmp_home"
-      allow(Service::System).to receive_messages(launchctl?: false, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: false, systemctl?: false)
     end
 
     it "macOS - outputs the destination for the service file" do
-      allow(Service::System).to receive(:launchctl?).and_return(true)
+      allow(Services::System).to receive(:launchctl?).and_return(true)
       expect(service.dest.to_s).to eq("/tmp_home/Library/LaunchAgents/homebrew.mysql.plist")
     end
 
     it "systemD - outputs the destination for the service file" do
-      allow(Service::System).to receive(:systemctl?).and_return(true)
+      allow(Services::System).to receive(:systemctl?).and_return(true)
       expect(service.dest.to_s).to eq("/tmp_home/.config/systemd/user/homebrew.mysql.service")
     end
   end
@@ -131,20 +132,20 @@ RSpec.describe Service::FormulaWrapper do
 
   describe "#loaded?" do
     it "macOS - outputs if the service is loaded" do
-      allow(Service::System).to receive_messages(launchctl?: true, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: true, systemctl?: false)
       allow(Utils).to receive(:safe_popen_read)
       expect(service.loaded?).to be(false)
     end
 
     it "systemD - outputs if the service is loaded" do
-      allow(Service::System).to receive_messages(launchctl?: false, systemctl?: true)
-      allow(Service::System::Systemctl).to receive(:quiet_run).and_return(false)
+      allow(Services::System).to receive_messages(launchctl?: false, systemctl?: true)
+      allow(Services::System::Systemctl).to receive(:quiet_run).and_return(false)
       allow(Utils).to receive(:safe_popen_read)
       expect(service.loaded?).to be(false)
     end
 
     it "Other - outputs no status" do
-      allow(Service::System).to receive_messages(launchctl?: false, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: false, systemctl?: false)
       expect(service.loaded?).to be_nil
     end
   end
@@ -181,7 +182,7 @@ RSpec.describe Service::FormulaWrapper do
     it "user if file present" do
       allow(service).to receive_messages(boot_path_service_file_present?: false,
                                          user_path_service_file_present?: true)
-      allow(Service::System).to receive(:user).and_return("user")
+      allow(Services::System).to receive(:user).and_return("user")
       expect(service.owner).to eq("user")
     end
 
@@ -194,24 +195,24 @@ RSpec.describe Service::FormulaWrapper do
 
   describe "#service_file_present?" do
     it "macOS - outputs if the service file is present" do
-      allow(Service::System).to receive_messages(launchctl?: true, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: true, systemctl?: false)
       expect(service.service_file_present?).to be(false)
     end
 
     it "macOS - outputs if the service file is present for root" do
-      allow(Service::System).to receive_messages(launchctl?: true, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: true, systemctl?: false)
       expect(service.service_file_present?(for: :root)).to be(false)
     end
 
     it "macOS - outputs if the service file is present for user" do
-      allow(Service::System).to receive_messages(launchctl?: true, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: true, systemctl?: false)
       expect(service.service_file_present?(for: :user)).to be(false)
     end
   end
 
   describe "#owner?" do
     it "macOS - outputs the service file owner" do
-      allow(Service::System).to receive_messages(launchctl?: true, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: true, systemctl?: false)
       expect(service.owner).to be_nil
     end
   end
@@ -320,7 +321,7 @@ RSpec.describe Service::FormulaWrapper do
 
   describe "#to_hash" do
     it "represents non-service values" do
-      allow(Service::System).to receive_messages(launchctl?: true, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: true, systemctl?: false)
       allow_any_instance_of(described_class).to receive_messages(service?: false, service_file_present?: false)
       expected = {
         exit_code:    nil,
@@ -339,7 +340,7 @@ RSpec.describe Service::FormulaWrapper do
 
     it "represents running non-service values" do
       ENV["HOME"] = "/tmp_home"
-      allow(Service::System).to receive_messages(launchctl?: true, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: true, systemctl?: false)
       expect(service).to receive(:service?).twice.and_return(false)
       expect(service).to receive(:service_file_present?).and_return(true)
       expected = {
@@ -359,7 +360,7 @@ RSpec.describe Service::FormulaWrapper do
 
     it "represents service values" do
       ENV["HOME"] = "/tmp_home"
-      allow(Service::System).to receive_messages(launchctl?: true, systemctl?: false)
+      allow(Services::System).to receive_messages(launchctl?: true, systemctl?: false)
       expect(service).to receive(:service?).twice.and_return(true)
       expect(service).to receive(:service_file_present?).and_return(true)
       expect(service).to receive(:load_service).twice.and_return(service_object)
