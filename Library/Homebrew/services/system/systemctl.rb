@@ -29,7 +29,7 @@ module Services
         _run(*args, mode: :read)
       end
 
-      sig { params(args: T.any(String, Pathname), mode: T.nilable(Symbol)).returns(T.untyped) }
+      sig { params(args: T.nilable(T.any(String, Pathname)), mode: T.nilable(Symbol)).returns(T.untyped) }
       private_class_method def self._run(*args, mode:)
         require "system_command"
         result = SystemCommand.run(executable,

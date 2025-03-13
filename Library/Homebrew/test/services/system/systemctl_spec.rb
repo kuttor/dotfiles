@@ -18,7 +18,7 @@ RSpec.describe Services::System::Systemctl do
 
   describe ".executable" do
     it "outputs systemctl command location", :needs_linux do
-      expect(described_class.executable).to eq("/bin/systemctl")
+      expect(described_class.executable).to eq(Pathname.new("/usr/bin/systemctl"))
     end
   end
 end
