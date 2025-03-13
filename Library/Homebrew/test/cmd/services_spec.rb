@@ -3,7 +3,7 @@
 require "cmd/services"
 require "cmd/shared_examples/args_parse"
 
-RSpec.describe Homebrew::Cmd::Services do
+RSpec.describe Homebrew::Cmd::Services, :needs_daemon_manager do
   it_behaves_like "parseable arguments"
 
   it "allows controlling services", :integration_test do

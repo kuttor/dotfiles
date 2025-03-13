@@ -24,7 +24,7 @@ RSpec.describe Services::System do
   end
 
   describe "#systemctl?" do
-    it "Linux - outputs systemctl presence", :needs_linux do
+    it "Linux with SystemD - outputs systemctl presence", :needs_systemd do
       expect(described_class.systemctl?).to be(true)
     end
 

@@ -171,6 +171,14 @@ RSpec.configure do |config|
     skip "Requires homebrew/core to be tapped." unless Dir.exist?(core_tap_path)
   end
 
+  config.before(:each, :needs_systemd) do
+    skip "No SystemD found." unless which("systemctl")
+  end
+
+  config.before(:each, :needs_daemon_manager) do
+    skip "No LaunchCTL or SystemD found." if !which("systemctl") && !which("launchctl")
+  end
+
   config.before do |example|
     next if example.metadata.key?(:needs_network)
     next if example.metadata.key?(:needs_utils_curl)

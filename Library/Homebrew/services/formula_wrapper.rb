@@ -181,6 +181,8 @@ module Services
     sig { returns(T.nilable(Integer)) }
     def pid
       status_output, _, status_type = status_output_success_type
+      return if status_type.nil?
+
       Regexp.last_match(1).to_i if status_output =~ pid_regex(status_type)
     end
 
@@ -188,6 +190,8 @@ module Services
     sig { returns(T.nilable(Integer)) }
     def exit_code
       status_output, _, status_type = status_output_success_type
+      return if status_type.nil?
+
       Regexp.last_match(1).to_i if status_output =~ exit_code_regex(status_type)
     end
 
