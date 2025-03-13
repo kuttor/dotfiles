@@ -2102,7 +2102,7 @@ Edit the \fBBrewfile\fP in your editor\.
 Add entries to your \fBBrewfile\fP\&\. Adds formulae by default\. Use \fB\-\-cask\fP, \fB\-\-tap\fP, \fB\-\-whalebrew\fP or \fB\-\-vscode\fP to add the corresponding entry instead\.
 .TP
 \fBbrew bundle remove\fP \fIname\fP [\.\.\.]
-Remove entries that match \fBname\fP from your \fBBrewfile\fP\&\. Use \fB\-\-formula\fP, \fB\-\-cask\fP, \fB\-\-tap\fP, \fB\-\-mas\fP, \fB\-\-whalebrew\fP or \fB\-\-vscode\fP to remove only entries of the corresponding type\.
+Remove entries that match \fBname\fP from your \fBBrewfile\fP\&\. Use \fB\-\-formula\fP, \fB\-\-cask\fP, \fB\-\-tap\fP, \fB\-\-mas\fP, \fB\-\-whalebrew\fP or \fB\-\-vscode\fP to remove only entries of the corresponding type\. Passing \fB\-\-formula\fP also removes matches against formula aliases and old formula names\.
 .TP
 \fBbrew bundle exec\fP \fIcommand\fP
 Run an external command in an isolated build environment based on the \fBBrewfile\fP dependencies\.

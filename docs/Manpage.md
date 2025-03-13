@@ -3273,7 +3273,8 @@ By default, only Homebrew formula dependencies are listed.
 
 : Remove entries that match `name` from your `Brewfile`. Use `--formula`,
   `--cask`, `--tap`, `--mas`, `--whalebrew` or `--vscode` to remove only entries
-  of the corresponding type.
+  of the corresponding type. Passing `--formula` also removes matches against
+  formula aliases and old formula names.
 
 `brew bundle exec` *`command`*
 
