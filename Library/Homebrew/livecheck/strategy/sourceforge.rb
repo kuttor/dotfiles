@@ -1,6 +1,8 @@
 # typed: strict
 # frozen_string_literal: true
 
+require "livecheck/strategic"
+
 module Homebrew
   module Livecheck
     module Strategy
@@ -31,6 +33,8 @@ module Homebrew
       #
       # @api public
       class Sourceforge
+        extend Strategic
+
         NICE_NAME = "SourceForge"
 
         # The `Regexp` used to determine if the strategy applies to the URL.
@@ -45,7 +49,7 @@ module Homebrew
         #
         # @param url [String] the URL to match against
         # @return [Boolean]
-        sig { params(url: String).returns(T::Boolean) }
+        sig { override.params(url: String).returns(T::Boolean) }
         def self.match?(url)
           URL_MATCH_REGEX.match?(url)
         end
@@ -84,22 +88,23 @@ module Homebrew
         #
         # @param url [String] the URL of the content to check
         # @param regex [Regexp] a regex used for matching versions in content
+        # @param options [Options] options to modify behavior
         # @return [Hash]
         sig {
-          params(
-            url:    String,
-            regex:  T.nilable(Regexp),
-            unused: T.untyped,
-            block:  T.nilable(Proc),
-          ).returns(T::Hash[Symbol, T.untyped])
+          override(allow_incompatible: true).params(
+            url:     String,
+            regex:   T.nilable(Regexp),
+            options: Options,
+            block:   T.nilable(Proc),
+          ).returns(T::Hash[Symbol, T.anything])
         }
-        def self.find_versions(url:, regex: nil, **unused, &block)
+        def self.find_versions(url:, regex: nil, options: Options.new, &block)
           generated = generate_input_values(url)
 
           PageMatch.find_versions(
-            url:   generated[:url] || url,
-            regex: regex || generated[:regex],
-            **unused,
+            url:     generated[:url] || url,
+            regex:   regex || generated[:regex],
+            options:,
             &block
           )
         end

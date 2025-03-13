@@ -559,7 +559,7 @@ module Homebrew
 
             ohai "Detecting if #{local_filename} is relocatable..." if bottle_path.size > 1 * 1024 * 1024
 
-            prefix_check = if Homebrew.default_prefix?(prefix)
+            prefix_check = if prefix == HOMEBREW_DEFAULT_PREFIX
               File.join(prefix, "opt")
             else
               prefix

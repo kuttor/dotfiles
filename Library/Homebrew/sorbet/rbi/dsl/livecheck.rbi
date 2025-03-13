@@ -5,4 +5,7 @@
 # Please instead update this file by running `bin/tapioca dsl Livecheck`.
 
 
-class Livecheck; end
+class Livecheck
+  sig { params(args: T.untyped, block: T.untyped).returns(T.untyped) }
+  def url_options(*args, &block); end
+end

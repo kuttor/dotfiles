@@ -766,15 +766,15 @@ class Version
     )
   end
 
+  # Represents the absence of a version.
+  #
+  # NOTE: Constructor needs to called with an arbitrary non-empty version which is then set to `nil`.
+  NULL = T.let(Version.new("NULL").tap { |v| v.instance_variable_set(:@version, nil) }.freeze, Version)
+
   private
 
   sig { params(first: Integer, second: Integer).returns(Integer) }
   def max(first, second)
     (first > second) ? first : second
   end
-
-  # Represents the absence of a version.
-  #
-  # NOTE: Constructor needs to called with an arbitrary non-empty version which is then set to `nil`.
-  NULL = T.let(Version.new("NULL").tap { |v| v.instance_variable_set(:@version, nil) }.freeze, Version)
 end

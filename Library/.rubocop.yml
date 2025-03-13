@@ -1,9 +1,14 @@
 ---
+plugins:
+  - rubocop-md:
+      plugin_class_name: RuboCop::Markdown::Plugin
+  - rubocop-performance:
+      plugin_class_name: RuboCop::Performance::Plugin
+  - rubocop-rspec:
+      plugin_class_name: RuboCop::RSpec::Plugin
+
 require:
   - ./Homebrew/rubocops.rb
-  - rubocop-md
-  - rubocop-performance
-  - rubocop-rspec
   - rubocop-sorbet
 
 inherit_mode:
@@ -254,6 +259,11 @@ RSpec/Focus:
 # We use `allow(:foo).to receive(:bar)` everywhere.
 RSpec/MessageSpies:
   EnforcedStyle: receive
+
+# These are legacy violations that we should try to fix.
+Sorbet/AllowIncompatibleOverride:
+  Exclude:
+    - "Homebrew/livecheck/strategy/*.rb"
 
 # Try getting rid of these.
 Sorbet/ConstantsFromStrings:

@@ -42,9 +42,16 @@ module Cask
 
       greedy = true if Homebrew::EnvConfig.upgrade_greedy?
 
+      greedy_casks = if (upgrade_greedy_casks = Homebrew::EnvConfig.upgrade_greedy_casks.presence)
+        upgrade_greedy_casks.split
+      else
+        []
+      end
+
       outdated_casks = if casks.empty?
         Caskroom.casks(config: Config.from_args(args)).select do |cask|
-          cask.outdated?(greedy:, greedy_latest:,
+          cask_greedy = greedy || greedy_casks.include?(cask.token)
+          cask.outdated?(greedy: cask_greedy, greedy_latest:,
                          greedy_auto_updates:)
         end
       else
@@ -78,7 +85,7 @@ module Cask
 
       return false if outdated_casks.empty?
 
-      if casks.empty? && !greedy
+      if casks.empty? && !greedy && greedy_casks.empty?
         if !greedy_auto_updates && !greedy_latest
           ohai "Casks with 'auto_updates true' or 'version :latest' " \
                "will not be upgraded; pass `--greedy` to upgrade them."

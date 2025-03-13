@@ -120,6 +120,11 @@ module Homebrew
           [:switch, "--overwrite", {
             description: "Delete files that already exist in the prefix while linking.",
           }],
+          [:switch, "--ask", {
+            description: "Ask for confirmation before downloading and installing formulae. " \
+                         "Print bottles and dependencies download size and install size.",
+            env:         :ask,
+          }],
         ].each do |args|
           options = args.pop
           send(*args, **options)
@@ -237,14 +242,14 @@ module Homebrew
           new_casks.each do |cask|
             Cask::Installer.new(
               cask,
-              binaries:       args.binaries?,
-              verbose:        args.verbose?,
-              force:          args.force?,
               adopt:          args.adopt?,
-              require_sha:    args.require_sha?,
-              skip_cask_deps: args.skip_cask_deps?,
+              binaries:       args.binaries?,
+              force:          args.force?,
               quarantine:     args.quarantine?,
               quiet:          args.quiet?,
+              require_sha:    args.require_sha?,
+              skip_cask_deps: args.skip_cask_deps?,
+              verbose:        args.verbose?,
             ).install
           end
 
@@ -301,6 +306,8 @@ module Homebrew
 
         Install.perform_preinstall_checks_once
         Install.check_cc_argv(args.cc)
+
+        Install.ask(formulae, args: args) if args.ask?
 
         Install.install_formulae(
           installed_formulae,

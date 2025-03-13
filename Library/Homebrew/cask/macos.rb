@@ -1,11 +1,9 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 module OS
   module Mac
-    module_function
-
-    SYSTEM_DIRS = [
+    SYSTEM_DIRS = T.let([
       "/",
       "/Applications",
       "/Applications/Utilities",
@@ -234,14 +232,13 @@ module OS
       "/var/spool/mail",
       "/var/tmp",
     ]
-                  .map(&method(:Pathname))
-                  .to_set
-                  .freeze
+                  .to_set { Pathname(_1) }
+                  .freeze, T::Set[Pathname])
     private_constant :SYSTEM_DIRS
 
     # TODO: There should be a way to specify a containing
     #       directory under which nothing can be deleted.
-    UNDELETABLE_PATHS = [
+    UNDELETABLE_PATHS = T.let([
       "~/",
       "~/Applications",
       "~/Applications/.localized",
@@ -378,14 +375,16 @@ module OS
     ]
                         .to_set { |path| Pathname(path.sub(%r{^~(?=(/|$))}, Dir.home)).expand_path }
                         .union(SYSTEM_DIRS)
-                        .freeze
+                        .freeze, T::Set[Pathname])
     private_constant :UNDELETABLE_PATHS
 
-    def system_dir?(dir)
+    sig { params(dir: T.any(Pathname, String)).returns(T::Boolean) }
+    def self.system_dir?(dir)
       SYSTEM_DIRS.include?(Pathname.new(dir).expand_path)
     end
 
-    def undeletable?(path)
+    sig { params(path: T.any(Pathname, String)).returns(T::Boolean) }
+    def self.undeletable?(path)
       UNDELETABLE_PATHS.include?(Pathname.new(path).expand_path)
     end
   end

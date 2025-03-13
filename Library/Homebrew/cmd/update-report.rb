@@ -161,7 +161,7 @@ module Homebrew
               end
               next unless formula.any_version_installed?
 
-              keg = formula.installed_kegs.last
+              keg = formula.installed_kegs.fetch(-1)
               tab = keg.tab
               # force a `brew upgrade` from the linuxbrew-core version to the homebrew-core version (even if lower)
               tab.source["versions"]["version_scheme"] = -1
@@ -277,7 +277,7 @@ module Homebrew
         puts
 
         new_major_version, new_minor_version, new_patch_version = new_tag.split(".").map(&:to_i)
-        old_major_version, old_minor_version = (old_tag.split(".")[0, 2]).map(&:to_i) if old_tag.present?
+        old_major_version, old_minor_version = old_tag.split(".")[0, 2].map(&:to_i) if old_tag.present?
         if old_tag.blank? || new_major_version > old_major_version || new_minor_version > old_minor_version
           puts <<~EOS
             The #{new_major_version}.#{new_minor_version}.0 release notes are available on the Homebrew Blog:

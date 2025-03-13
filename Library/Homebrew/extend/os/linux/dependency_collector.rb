@@ -33,6 +33,7 @@ module OS
 
       GLIBC = "glibc"
       GCC = OS::LINUX_PREFERRED_GCC_RUNTIME_FORMULA
+      private_constant :GLIBC, :GCC
 
       sig { void }
       def init_global_dep_tree_if_needed!
@@ -47,9 +48,9 @@ module OS
         built_global_dep_tree!
       end
 
-      sig { params(name: String).returns(T.nilable(Formula)) }
+      sig { params(name: String).returns(T.nilable(::Formula)) }
       def formula_for(name)
-        @formula_for ||= T.let({}, T.nilable(T::Hash[String, Formula]))
+        @formula_for ||= T.let({}, T.nilable(T::Hash[String, ::Formula]))
         @formula_for[name] ||= ::Formula[name]
       rescue FormulaUnavailableError
         nil

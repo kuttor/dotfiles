@@ -48,6 +48,11 @@ module Homebrew
                      "trying any other/default URLs.",
         boolean:     true,
       },
+      HOMEBREW_ASK:                              {
+        description: "If set, pass `--ask`to all formulae `brew install`, `brew upgrade` and `brew reinstall` " \
+                     "commands.",
+        boolean:     true,
+      },
       HOMEBREW_AUTO_UPDATE_SECS:                 {
         description:  "Run `brew update` once every `$HOMEBREW_AUTO_UPDATE_SECS` seconds before some commands, " \
                       "e.g. `brew install`, `brew upgrade` and `brew tap`. Alternatively, " \
@@ -485,6 +490,10 @@ module Homebrew
       HOMEBREW_UPGRADE_GREEDY:                   {
         description: "If set, pass `--greedy` to all cask upgrade commands.",
         boolean:     true,
+      },
+      HOMEBREW_UPGRADE_GREEDY_CASKS:             {
+        description: "A space-separated list of casks. Homebrew will act as " \
+                     "if `--greedy` was passed when upgrading any cask on this list.",
       },
       HOMEBREW_VERBOSE:                          {
         description: "If set, always assume `--verbose` when running commands.",

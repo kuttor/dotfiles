@@ -52,11 +52,13 @@ RSpec.describe BottleSpecification do
     end
   end
 
-  %w[root_url rebuild].each do |method|
-    specify "##{method}" do
-      object = Object.new
-      bottle_spec.public_send(method, object)
-      expect(bottle_spec.public_send(method)).to eq(object)
-    end
+  specify "#rebuild" do
+    bottle_spec.rebuild(1337)
+    expect(bottle_spec.rebuild).to eq(1337)
+  end
+
+  specify "#root_url" do
+    bottle_spec.root_url("https://example.com")
+    expect(bottle_spec.root_url).to eq("https://example.com")
   end
 end

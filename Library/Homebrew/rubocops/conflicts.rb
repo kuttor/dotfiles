@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "rubocops/extend/formula_cop"
@@ -22,7 +22,7 @@ module RuboCop
 
             reason = parameters(conflicts_with_call).last.values.first
             offending_node(reason)
-            name = Regexp.new(@formula_name, Regexp::IGNORECASE)
+            name = Regexp.new(T.must(@formula_name), Regexp::IGNORECASE)
             reason_text = string_content(reason).sub(name, "")
             first_word = reason_text.split.first
 
@@ -45,7 +45,7 @@ module RuboCop
           if !tap_style_exception?(:versioned_formulae_conflicts_allowlist) && method_called_ever?(body_node,
                                                                                                    :conflicts_with)
             problem MSG do |corrector|
-              corrector.replace(@offensive_node.source_range, "keg_only :versioned_formula")
+              corrector.replace(T.must(@offensive_node).source_range, "keg_only :versioned_formula")
             end
           end
         end

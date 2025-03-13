@@ -72,6 +72,7 @@ module Cask
       private
 
       ALT_NAME_ATTRIBUTE = "com.apple.metadata:kMDItemAlternateNames"
+      private_constant :ALT_NAME_ATTRIBUTE
 
       # Try to make the asset searchable under the target name. Spotlight
       # respects this attribute for many filetypes, but ignores it for App

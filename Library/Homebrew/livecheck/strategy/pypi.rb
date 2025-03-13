@@ -1,6 +1,8 @@
 # typed: strict
 # frozen_string_literal: true
 
+require "livecheck/strategic"
+
 module Homebrew
   module Livecheck
     module Strategy
@@ -16,6 +18,8 @@ module Homebrew
       #
       # @api public
       class Pypi
+        extend Strategic
+
         NICE_NAME = "PyPI"
 
         # The default `strategy` block used to extract version information when
@@ -26,7 +30,7 @@ module Homebrew
 
           regex ? version[regex, 1] : version
         end.freeze, T.proc.params(
-          json:  T::Hash[String, T.untyped],
+          json:  T::Hash[String, T.anything],
           regex: T.nilable(Regexp),
         ).returns(T.nilable(String)))
 
@@ -50,7 +54,7 @@ module Homebrew
         #
         # @param url [String] the URL to match against
         # @return [Boolean]
-        sig { params(url: String).returns(T::Boolean) }
+        sig { override.params(url: String).returns(T::Boolean) }
         def self.match?(url)
           URL_MATCH_REGEX.match?(url)
         end
@@ -79,17 +83,18 @@ module Homebrew
         # @param regex [Regexp] a regex used for matching versions in content
         # @param provided_content [String, nil] content to check instead of
         #   fetching
+        # @param options [Options] options to modify behavior
         # @return [Hash]
         sig {
-          params(
+          override.params(
             url:              String,
             regex:            T.nilable(Regexp),
             provided_content: T.nilable(String),
-            unused:           T.untyped,
+            options:          Options,
             block:            T.nilable(Proc),
-          ).returns(T::Hash[Symbol, T.untyped])
+          ).returns(T::Hash[Symbol, T.anything])
         }
-        def self.find_versions(url:, regex: nil, provided_content: nil, **unused, &block)
+        def self.find_versions(url:, regex: nil, provided_content: nil, options: Options.new, &block)
           match_data = { matches: {}, regex:, url: }
 
           generated = generate_input_values(url)
@@ -99,7 +104,7 @@ module Homebrew
             url:              generated[:url],
             regex:,
             provided_content:,
-            **unused,
+            options:,
             &block || DEFAULT_BLOCK
           )
         end

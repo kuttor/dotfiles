@@ -1,4 +1,4 @@
-# typed: true # rubocop:todo Sorbet/StrictSigil
+# typed: strict
 # frozen_string_literal: true
 
 require "rubocops/extend/formula_cop"
@@ -61,13 +61,13 @@ module RuboCop
 
               if reason_string.start_with?("it ")
                 problem "Do not start the reason with `it`" do |corrector|
-                  corrector.replace(@offensive_node.source_range, "\"#{reason_string[3..]}\"")
+                  corrector.replace(T.must(@offensive_node).source_range, "\"#{reason_string[3..]}\"")
                 end
               end
 
               if PUNCTUATION_MARKS.include?(reason_string[-1])
                 problem "Do not end the reason with a punctuation mark" do |corrector|
-                  corrector.replace(@offensive_node.source_range, "\"#{reason_string.chop}\"")
+                  corrector.replace(T.must(@offensive_node).source_range, "\"#{reason_string.chop}\"")
                 end
               end
             end

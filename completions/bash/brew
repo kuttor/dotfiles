@@ -816,6 +816,7 @@ _brew_create() {
       --set-version
       --tap
       --verbose
+      --zig
       "
       return
       ;;
@@ -1366,6 +1367,7 @@ _brew_instal() {
       --HEAD
       --adopt
       --appdir
+      --ask
       --audio-unit-plugindir
       --binaries
       --bottle-arch
@@ -1430,6 +1432,7 @@ _brew_install() {
       --HEAD
       --adopt
       --appdir
+      --ask
       --audio-unit-plugindir
       --binaries
       --bottle-arch
@@ -2089,6 +2092,7 @@ _brew_reinstall() {
       __brewcomp "
       --adopt
       --appdir
+      --ask
       --audio-unit-plugindir
       --binaries
       --build-from-source
@@ -2868,6 +2872,7 @@ _brew_upgrade() {
     -*)
       __brewcomp "
       --appdir
+      --ask
       --audio-unit-plugindir
       --binaries
       --build-from-source

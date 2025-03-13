@@ -40,6 +40,8 @@ module Homebrew
                description: "Create a basic template for a Ruby build."
         switch "--rust",
                description: "Create a basic template for a Rust build."
+        switch "--zig",
+               description: "Create a basic template for a Zig build."
         switch "--no-fetch",
                description: "Homebrew will not download <URL> to the cache and will thus not add its SHA-256 " \
                             "to the formula for you, nor will it check the GitHub API for GitHub projects " \
@@ -58,7 +60,7 @@ module Homebrew
                description: "Ignore errors for disallowed formula names and names that shadow aliases."
 
         conflicts "--autotools", "--cmake", "--crystal", "--go", "--meson", "--node",
-                  "--perl", "--python", "--ruby", "--rust", "--cask"
+                  "--perl", "--python", "--ruby", "--rust", "--zig", "--cask"
         conflicts "--cask", "--HEAD"
         conflicts "--cask", "--set-license"
 
@@ -173,6 +175,8 @@ module Homebrew
           :ruby
         elsif args.rust?
           :rust
+        elsif args.zig?
+          :zig
         end
 
         fc = FormulaCreator.new(
@@ -220,6 +224,7 @@ module Homebrew
         path = fc.write_formula!
 
         formula = Homebrew.with_no_api_env do
+          CoreTap.instance.clear_cache
           Formula[fc.name]
         end
         PyPI.update_python_resources! formula, ignore_non_pypi_packages: true if args.python?

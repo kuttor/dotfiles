@@ -94,7 +94,7 @@ module Homebrew
 
       sig {
         params(use_runtime_dependents: T::Boolean, used_formulae: T::Array[T.any(Formula, UnavailableFormula)])
-          .returns(T::Array[Formula])
+          .returns(T::Array[T.any(Formula, CaskDependent)])
       }
       def intersection_of_dependents(use_runtime_dependents, used_formulae)
         recursive = args.recursive?
@@ -106,9 +106,9 @@ module Homebrew
           # We can only get here if `used_formulae_missing` is false, thus there are no UnavailableFormula.
           used_formulae = T.cast(used_formulae, T::Array[Formula])
           if show_formulae_and_casks || args.formula?
-            deps += used_formulae.map(&:runtime_installed_formula_dependents)
-                                 .reduce(&:&)
-                                 .select(&:any_version_installed?)
+            deps += T.must(used_formulae.map(&:runtime_installed_formula_dependents)
+                     .reduce(&:&))
+                     .select(&:any_version_installed?)
           end
           if show_formulae_and_casks || args.cask?
             deps += select_used_dependents(
@@ -150,26 +150,30 @@ module Homebrew
 
       sig {
         params(
-          dependents: T::Array[Formula], used_formulae: T::Array[T.any(Formula, UnavailableFormula)],
-          recursive: T::Boolean, includes: T::Array[Symbol], ignores: T::Array[Symbol]
-        ).returns(
-          T::Array[Formula],
-        )
+          dependents:    T::Array[T.any(Formula, CaskDependent)],
+          used_formulae: T::Array[T.any(Formula, UnavailableFormula)],
+          recursive:     T::Boolean,
+          includes:      T::Array[Symbol],
+          ignores:       T::Array[Symbol],
+        ).returns(T::Array[T.any(Formula, CaskDependent)])
       }
       def select_used_dependents(dependents, used_formulae, recursive, includes, ignores)
         dependents.select do |d|
           deps = if recursive
-            recursive_includes(Dependency, d, includes, ignores)
+            recursive_dep_includes(d, includes, ignores)
           else
             select_includes(d.deps, ignores, includes)
           end
 
           used_formulae.all? do |ff|
             deps.any? do |dep|
-              match = begin
+              match = case dep
+              when Dependency
                 dep.to_formula.full_name == ff.full_name if dep.name.include?("/")
-              rescue
+              when Requirement
                 nil
+              else
+                T.absurd(dep)
               end
               next match unless match.nil?
 

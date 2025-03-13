@@ -678,6 +678,11 @@ upgrade *`formula`* if it is already installed but outdated.
 
 : Delete files that already exist in the prefix while linking.
 
+`--ask`
+
+: Ask for confirmation before downloading and installing formulae. Print bottles
+  and dependencies download size and install size.
+
 `--cask`
 
 : Treat all named arguments as casks.
@@ -1076,6 +1081,11 @@ for the reinstalled formulae or, every 30 days, for all formulae.
 
 : Create a Git repository, useful for creating patches to the software.
 
+`--ask`
+
+: Ask for confirmation before downloading and upgrading formulae. Print bottles
+  and dependencies download size, install and net install size.
+
 `--cask`
 
 : Treat all named arguments as casks.
@@ -1429,6 +1439,11 @@ for the upgraded formulae or, every 30 days, for all formulae.
 `--overwrite`
 
 : Delete files that already exist in the prefix while linking.
+
+`--ask`
+
+: Ask for confirmation before downloading and upgrading formulae. Print bottles
+  and dependencies download size, install and net install size.
 
 `--cask`
 
@@ -2153,6 +2168,10 @@ see: <https://rubydoc.brew.sh/Formula>
 `--rust`
 
 : Create a basic template for a Rust build.
+
+`--zig`
+
+: Create a basic template for a Zig build.
 
 `--no-fetch`
 
@@ -3216,7 +3235,7 @@ to one or more of the following environment variables:
 `brew bundle dump`
 
 : Write all installed casks/formulae/images/taps into a `Brewfile` in the
-  current directory.
+  current directory or to a custom file specified with the `--file` option.
 
 `brew bundle cleanup`
 
@@ -3245,6 +3264,17 @@ By default, only Homebrew formula dependencies are listed.
 
 : Edit the `Brewfile` in your editor.
 
+`brew bundle add` *`name`* \[...\]
+
+: Add entries to your `Brewfile`. Adds formulae by default. Use `--cask`,
+  `--tap`, `--whalebrew` or `--vscode` to add the corresponding entry instead.
+
+`brew bundle remove` *`name`* \[...\]
+
+: Remove entries that match `name` from your `Brewfile`. Use `--formula`,
+  `--cask`, `--tap`, `--mas`, `--whalebrew` or `--vscode` to remove only entries
+  of the corresponding type.
+
 `brew bundle exec` *`command`*
 
 : Run an external command in an isolated build environment based on the
@@ -3267,13 +3297,13 @@ flags which will help with finding keg-only dependencies like `openssl`,
 
 `--file`
 
-: Read the `Brewfile` from this location. Use `--file=-` to pipe to
-  stdin/stdout.
+: Read from or write to the `Brewfile` from this location. Use `--file=-` to
+  pipe to stdin/stdout.
 
 `--global`
 
-: Read the `Brewfile` from `$HOMEBREW_BUNDLE_FILE_GLOBAL` (if set),
-  `${XDG_CONFIG_HOME}/homebrew/Brewfile` (if `$XDG_CONFIG_HOME` is set),
+: Read from or write to the `Brewfile` from `$HOMEBREW_BUNDLE_FILE_GLOBAL` (if
+  set), `${XDG_CONFIG_HOME}/homebrew/Brewfile` (if `$XDG_CONFIG_HOME` is set),
   `~/.homebrew/Brewfile` or `~/.Brewfile` otherwise.
 
 `-v`, `--verbose`
@@ -3292,6 +3322,10 @@ flags which will help with finding keg-only dependencies like `openssl`,
 
 : `install` runs `brew upgrade` on outdated dependencies, even if
   `$HOMEBREW_BUNDLE_NO_UPGRADE` is set.
+
+`--install`
+
+: Run `install` before continuing to other operations e.g. `exec`.
 
 `-f`, `--force`
 
@@ -3755,6 +3789,11 @@ command execution e.g. `$(cat file)`.
 : When `$HOMEBREW_ARTIFACT_DOMAIN` and `$HOMEBREW_ARTIFACT_DOMAIN_NO_FALLBACK`
   are both set, if the request to `$HOMEBREW_ARTIFACT_DOMAIN` fails then
   Homebrew will error rather than trying any other/default URLs.
+
+`HOMEBREW_ASK`
+
+: If set, pass `--ask`to all formulae `brew install`, `brew upgrade` and `brew
+  reinstall` commands.
 
 `HOMEBREW_AUTO_UPDATE_SECS`
 
@@ -4278,6 +4317,11 @@ command execution e.g. `$(cat file)`.
 `HOMEBREW_UPGRADE_GREEDY`
 
 : If set, pass `--greedy` to all cask upgrade commands.
+
+`HOMEBREW_UPGRADE_GREEDY_CASKS`
+
+: A space-separated list of casks. Homebrew will act as if `--greedy` was passed
+  when upgrading any cask on this list.
 
 `HOMEBREW_VERBOSE`
 

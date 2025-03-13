@@ -2,10 +2,8 @@
 # frozen_string_literal: true
 
 class BottleSpecification
-  extend Attrable
   RELOCATABLE_CELLARS = [:any, :any_skip_relocation].freeze
 
-  attr_rw :rebuild
   attr_accessor :tap
   attr_reader :collector, :root_url_specs, :repository
 
@@ -15,6 +13,11 @@ class BottleSpecification
     @repository = Homebrew::DEFAULT_REPOSITORY
     @collector = Utils::Bottles::Collector.new
     @root_url_specs = {}
+  end
+
+  sig { params(val: Integer).returns(T.nilable(Integer)) }
+  def rebuild(val = T.unsafe(nil))
+    val.nil? ? @rebuild : @rebuild = val
   end
 
   def root_url(var = nil, specs = {})

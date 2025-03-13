@@ -10,14 +10,6 @@ RSpec.describe Homebrew::Livecheck::Strategy do
 
   let(:post_hash) do
     {
-      "empty"   => "",
-      "boolean" => "true",
-      "number"  => "1",
-      "string"  => "a + b = c",
-    }
-  end
-  let(:post_hash_symbol_keys) do
-    {
       empty:   "",
       boolean: "true",
       number:  "1",
@@ -152,18 +144,22 @@ RSpec.describe Homebrew::Livecheck::Strategy do
   end
 
   describe "::post_args" do
+    let(:form_string_content_length) { "Content-Length: #{form_string.length}" }
+    let(:json_string_content_length) { "Content-Length: #{json_string.length}" }
+
     it "returns an array including `--data` and an encoded form data string" do
-      expect(strategy.post_args(post_form: post_hash)).to eq(["--data", form_string])
-      expect(strategy.post_args(post_form: post_hash_symbol_keys)).to eq(["--data", form_string])
+      expect(strategy.post_args(post_form: post_hash))
+        .to eq(["--data", form_string, "--header", form_string_content_length])
 
       # If both `post_form` and `post_json` are present, only `post_form` will
       # be used.
-      expect(strategy.post_args(post_form: post_hash, post_json: post_hash)).to eq(["--data", form_string])
+      expect(strategy.post_args(post_form: post_hash, post_json: post_hash))
+        .to eq(["--data", form_string, "--header", form_string_content_length])
     end
 
     it "returns an array including `--json` and a JSON string" do
-      expect(strategy.post_args(post_json: post_hash)).to eq(["--json", json_string])
-      expect(strategy.post_args(post_json: post_hash_symbol_keys)).to eq(["--json", json_string])
+      expect(strategy.post_args(post_json: post_hash))
+        .to eq(["--json", json_string, "--header", json_string_content_length])
     end
 
     it "returns an empty array if `post_form` value is blank" do
@@ -191,8 +187,12 @@ RSpec.describe Homebrew::Livecheck::Strategy do
     it "handles `post_form` `url` options" do
       allow(strategy).to receive(:curl_headers).and_return({ responses:, body: })
 
-      expect(strategy.page_headers(url, url_options: { post_form: post_hash }))
-        .to eq([responses.first[:headers]])
+      expect(
+        strategy.page_headers(
+          url,
+          options: Homebrew::Livecheck::Options.new(post_form: post_hash),
+        ),
+      ).to eq([responses.first[:headers]])
     end
 
     it "returns an empty array if `curl_headers` only raises an `ErrorDuringExecution` error" do
@@ -217,14 +217,24 @@ RSpec.describe Homebrew::Livecheck::Strategy do
       allow_any_instance_of(Utils::Curl).to receive(:curl_version).and_return(curl_version)
       allow(strategy).to receive(:curl_output).and_return([response_text[:ok], nil, success_status])
 
-      expect(strategy.page_content(url, url_options: { post_form: post_hash })).to eq({ content: body })
+      expect(
+        strategy.page_content(
+          url,
+          options: Homebrew::Livecheck::Options.new(post_form: post_hash),
+        ),
+      ).to eq({ content: body })
     end
 
     it "handles `post_json` `url` option" do
       allow_any_instance_of(Utils::Curl).to receive(:curl_version).and_return(curl_version)
       allow(strategy).to receive(:curl_output).and_return([response_text[:ok], nil, success_status])
 
-      expect(strategy.page_content(url, url_options: { post_json: post_hash })).to eq({ content: body })
+      expect(
+        strategy.page_content(
+          url,
+          options: Homebrew::Livecheck::Options.new(post_json: post_hash),
+        ),
+      ).to eq({ content: body })
     end
 
     it "returns error `messages` from `stderr` in the return hash on failure when `stderr` is not `nil`" do

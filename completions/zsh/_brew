@@ -740,27 +740,28 @@ _brew_contributions() {
 _brew_create() {
   _arguments \
     '(--cask)--HEAD[Indicate that URL points to the package'\''s repository rather than a file]' \
-    '(--cmake --crystal --go --meson --node --perl --python --ruby --rust --cask)--autotools[Create a basic template for an Autotools-style build]' \
-    '(--autotools --cmake --crystal --go --meson --node --perl --python --ruby --rust --HEAD --set-license)--cask[Create a basic template for a cask]' \
-    '(--autotools --crystal --go --meson --node --perl --python --ruby --rust --cask)--cmake[Create a basic template for a CMake-style build]' \
-    '(--autotools --cmake --go --meson --node --perl --python --ruby --rust --cask)--crystal[Create a basic template for a Crystal build]' \
+    '(--cmake --crystal --go --meson --node --perl --python --ruby --rust --zig --cask)--autotools[Create a basic template for an Autotools-style build]' \
+    '(--autotools --cmake --crystal --go --meson --node --perl --python --ruby --rust --zig --HEAD --set-license)--cask[Create a basic template for a cask]' \
+    '(--autotools --crystal --go --meson --node --perl --python --ruby --rust --zig --cask)--cmake[Create a basic template for a CMake-style build]' \
+    '(--autotools --cmake --go --meson --node --perl --python --ruby --rust --zig --cask)--crystal[Create a basic template for a Crystal build]' \
     '--debug[Display any debugging information]' \
     '--force[Ignore errors for disallowed formula names and names that shadow aliases]' \
-    '(--autotools --cmake --crystal --meson --node --perl --python --ruby --rust --cask)--go[Create a basic template for a Go build]' \
+    '(--autotools --cmake --crystal --meson --node --perl --python --ruby --rust --zig --cask)--go[Create a basic template for a Go build]' \
     '--help[Show this message]' \
-    '(--autotools --cmake --crystal --go --node --perl --python --ruby --rust --cask)--meson[Create a basic template for a Meson-style build]' \
+    '(--autotools --cmake --crystal --go --node --perl --python --ruby --rust --zig --cask)--meson[Create a basic template for a Meson-style build]' \
     '--no-fetch[Homebrew will not download URL to the cache and will thus not add its SHA-256 to the formula for you, nor will it check the GitHub API for GitHub projects (to fill out its description and homepage)]' \
-    '(--autotools --cmake --crystal --go --meson --perl --python --ruby --rust --cask)--node[Create a basic template for a Node build]' \
-    '(--autotools --cmake --crystal --go --meson --node --python --ruby --rust --cask)--perl[Create a basic template for a Perl build]' \
-    '(--autotools --cmake --crystal --go --meson --node --perl --ruby --rust --cask)--python[Create a basic template for a Python build]' \
+    '(--autotools --cmake --crystal --go --meson --perl --python --ruby --rust --zig --cask)--node[Create a basic template for a Node build]' \
+    '(--autotools --cmake --crystal --go --meson --node --python --ruby --rust --zig --cask)--perl[Create a basic template for a Perl build]' \
+    '(--autotools --cmake --crystal --go --meson --node --perl --ruby --rust --zig --cask)--python[Create a basic template for a Python build]' \
     '--quiet[Make some output more quiet]' \
-    '(--autotools --cmake --crystal --go --meson --node --perl --python --rust --cask)--ruby[Create a basic template for a Ruby build]' \
-    '(--autotools --cmake --crystal --go --meson --node --perl --python --ruby --cask)--rust[Create a basic template for a Rust build]' \
+    '(--autotools --cmake --crystal --go --meson --node --perl --python --rust --zig --cask)--ruby[Create a basic template for a Ruby build]' \
+    '(--autotools --cmake --crystal --go --meson --node --perl --python --ruby --zig --cask)--rust[Create a basic template for a Rust build]' \
     '(--cask)--set-license[Explicitly set the license of the new formula]' \
     '--set-name[Explicitly set the name of the new formula or cask]' \
     '--set-version[Explicitly set the version of the new formula or cask]' \
     '--tap[Generate the new formula within the given tap, specified as user`/`repo]' \
-    '--verbose[Make some output more verbose]'
+    '--verbose[Make some output more verbose]' \
+    '(--autotools --cmake --crystal --go --meson --node --perl --python --ruby --rust --cask)--zig[Create a basic template for a Zig build]'
 }
 
 # brew debugger
@@ -1155,6 +1156,7 @@ _brew_instal() {
     '(--cask)--HEAD[If formula defines it, install the HEAD version, aka. main, trunk, unstable, master]' \
     '(--formula --force)--adopt[Adopt existing artifacts in the destination that are identical to those being installed. Cannot be combined with `--force`]' \
     '(--formula)--appdir[Target location for Applications (default: `/Applications`)]' \
+    '(--cask)--ask[Ask for confirmation before downloading and installing formulae. Print bottles and dependencies download size and install size]' \
     '(--formula)--audio-unit-plugindir[Target location for Audio Unit Plugins (default: `~/Library/Audio/Plug-Ins/Components`)]' \
     '(--formula)--binaries[Disable/enable linking of helper executables (default: enabled)]' \
     '(--cask)--bottle-arch[Optimise bottles for the specified architecture rather than the oldest architecture supported by the version of macOS the bottles are built on]' \
@@ -1204,7 +1206,7 @@ _brew_instal() {
     '(--casks --binaries --require-sha --quarantine --adopt --skip-cask-deps --zap --appdir --keyboard-layoutdir --colorpickerdir --prefpanedir --qlplugindir --mdimporterdir --dictionarydir --fontdir --servicedir --input-methoddir --internet-plugindir --audio-unit-plugindir --vst-plugindir --vst3-plugindir --screen-saverdir --language)--formula[Treat all named arguments as formulae]' \
     '*::formula:__brew_formulae' \
     - cask \
-    '(--formulae --env --ignore-dependencies --only-dependencies --cc --build-from-source --force-bottle --include-test --HEAD --fetch-HEAD --keep-tmp --debug-symbols --build-bottle --skip-post-install --skip-link --bottle-arch --interactive --git --overwrite)--cask[Treat all named arguments as casks]' \
+    '(--formulae --env --ignore-dependencies --only-dependencies --cc --build-from-source --force-bottle --include-test --HEAD --fetch-HEAD --keep-tmp --debug-symbols --build-bottle --skip-post-install --skip-link --bottle-arch --interactive --git --overwrite --ask)--cask[Treat all named arguments as casks]' \
     '*::cask:__brew_casks'
 }
 
@@ -1214,6 +1216,7 @@ _brew_install() {
     '(--cask)--HEAD[If formula defines it, install the HEAD version, aka. main, trunk, unstable, master]' \
     '(--formula --force)--adopt[Adopt existing artifacts in the destination that are identical to those being installed. Cannot be combined with `--force`]' \
     '(--formula)--appdir[Target location for Applications (default: `/Applications`)]' \
+    '(--cask)--ask[Ask for confirmation before downloading and installing formulae. Print bottles and dependencies download size and install size]' \
     '(--formula)--audio-unit-plugindir[Target location for Audio Unit Plugins (default: `~/Library/Audio/Plug-Ins/Components`)]' \
     '(--formula)--binaries[Disable/enable linking of helper executables (default: enabled)]' \
     '(--cask)--bottle-arch[Optimise bottles for the specified architecture rather than the oldest architecture supported by the version of macOS the bottles are built on]' \
@@ -1263,7 +1266,7 @@ _brew_install() {
     '(--casks --binaries --require-sha --quarantine --adopt --skip-cask-deps --zap --appdir --keyboard-layoutdir --colorpickerdir --prefpanedir --qlplugindir --mdimporterdir --dictionarydir --fontdir --servicedir --input-methoddir --internet-plugindir --audio-unit-plugindir --vst-plugindir --vst3-plugindir --screen-saverdir --language)--formula[Treat all named arguments as formulae]' \
     '*::formula:__brew_formulae' \
     - cask \
-    '(--formulae --env --ignore-dependencies --only-dependencies --cc --build-from-source --force-bottle --include-test --HEAD --fetch-HEAD --keep-tmp --debug-symbols --build-bottle --skip-post-install --skip-link --bottle-arch --interactive --git --overwrite)--cask[Treat all named arguments as casks]' \
+    '(--formulae --env --ignore-dependencies --only-dependencies --cc --build-from-source --force-bottle --include-test --HEAD --fetch-HEAD --keep-tmp --debug-symbols --build-bottle --skip-post-install --skip-link --bottle-arch --interactive --git --overwrite --ask)--cask[Treat all named arguments as casks]' \
     '*::cask:__brew_casks'
 }
 
@@ -1703,6 +1706,7 @@ _brew_reinstall() {
   _arguments \
     '(--formula)--adopt[Adopt existing artifacts in the destination that are identical to those being installed. Cannot be combined with `--force`]' \
     '(--formula)--appdir[Target location for Applications (default: `/Applications`)]' \
+    '(--cask)--ask[Ask for confirmation before downloading and upgrading formulae. Print bottles and dependencies download size, install and net install size]' \
     '(--formula)--audio-unit-plugindir[Target location for Audio Unit Plugins (default: `~/Library/Audio/Plug-Ins/Components`)]' \
     '(--formula)--binaries[Disable/enable linking of helper executables (default: enabled)]' \
     '(--cask --force-bottle)--build-from-source[Compile formula from source even if a bottle is available]' \
@@ -1741,7 +1745,7 @@ _brew_reinstall() {
     '(--casks --binaries --require-sha --quarantine --adopt --skip-cask-deps --zap --appdir --keyboard-layoutdir --colorpickerdir --prefpanedir --qlplugindir --mdimporterdir --dictionarydir --fontdir --servicedir --input-methoddir --internet-plugindir --audio-unit-plugindir --vst-plugindir --vst3-plugindir --screen-saverdir --language)--formula[Treat all named arguments as formulae]' \
     '*::formula:__brew_formulae' \
     - cask \
-    '(--formulae --build-from-source --interactive --force-bottle --keep-tmp --debug-symbols --git)--cask[Treat all named arguments as casks]' \
+    '(--formulae --build-from-source --interactive --force-bottle --keep-tmp --debug-symbols --git --ask)--cask[Treat all named arguments as casks]' \
     '*::cask:__brew_casks'
 }
 
@@ -2254,6 +2258,7 @@ _brew_update_test() {
 _brew_upgrade() {
   _arguments \
     '(--formula)--appdir[Target location for Applications (default: `/Applications`)]' \
+    '(--cask)--ask[Ask for confirmation before downloading and upgrading formulae. Print bottles and dependencies download size, install and net install size]' \
     '(--formula)--audio-unit-plugindir[Target location for Audio Unit Plugins (default: `~/Library/Audio/Plug-Ins/Components`)]' \
     '(--formula)--binaries[Disable/enable linking of helper executables (default: enabled)]' \
     '(--cask --force-bottle)--build-from-source[Compile formula from source even if a bottle is available]' \
@@ -2296,7 +2301,7 @@ _brew_upgrade() {
     '(--casks --skip-cask-deps --greedy --greedy-latest --greedy-auto-updates --binaries --require-sha --quarantine --appdir --keyboard-layoutdir --colorpickerdir --prefpanedir --qlplugindir --mdimporterdir --dictionarydir --fontdir --servicedir --input-methoddir --internet-plugindir --audio-unit-plugindir --vst-plugindir --vst3-plugindir --screen-saverdir --language)--formula[Treat all named arguments as formulae. If no named arguments are specified, upgrade only outdated formulae]' \
     '*::installed_formula:__brew_installed_formulae' \
     - installed_cask \
-    '(--formulae --build-from-source --interactive --force-bottle --fetch-HEAD --keep-tmp --debug-symbols --overwrite)--cask[Treat all named arguments as casks. If no named arguments are specified, upgrade only outdated casks]' \
+    '(--formulae --build-from-source --interactive --force-bottle --fetch-HEAD --keep-tmp --debug-symbols --overwrite --ask)--cask[Treat all named arguments as casks. If no named arguments are specified, upgrade only outdated casks]' \
     '*::installed_cask:__brew_installed_casks'
 }
 
