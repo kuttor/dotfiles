@@ -3,15 +3,15 @@
 require "services/system"
 require "services/system/systemctl"
 
-RSpec.describe Services::System::Systemctl do
+RSpec.describe Homebrew::Services::System::Systemctl do
   describe ".scope" do
     it "outputs systemctl scope for user" do
-      allow(Services::System).to receive(:root?).and_return(false)
+      allow(Homebrew::Services::System).to receive(:root?).and_return(false)
       expect(described_class.scope).to eq("--user")
     end
 
     it "outputs systemctl scope for root" do
-      allow(Services::System).to receive(:root?).and_return(true)
+      allow(Homebrew::Services::System).to receive(:root?).and_return(true)
       expect(described_class.scope).to eq("--system")
     end
   end

@@ -3,7 +3,6 @@
 
 require "abstract_command"
 require "services/system"
-require "services/cli"
 require "services/commands/list"
 require "services/commands/cleanup"
 require "services/commands/info"
@@ -73,36 +72,40 @@ module Homebrew
         # Keep this after the .parse to keep --help fast.
         require "utils"
 
-        if !::Services::System.launchctl? && !::Services::System.systemctl?
+        if !Homebrew::Services::System.launchctl? && !Homebrew::Services::System.systemctl?
           raise UsageError,
                 "`brew services` is supported only on macOS or Linux (with systemd)!"
         end
 
         if (sudo_service_user = args.sudo_service_user)
-          unless ::Services::System.root?
+          unless Homebrew::Services::System.root?
             raise UsageError,
                   "`brew services` is supported only when running as root!"
           end
 
-          unless ::Services::System.launchctl?
+          unless Homebrew::Services::System.launchctl?
             raise UsageError,
                   "`brew services --sudo-service-user` is currently supported only on macOS " \
                   "(but we'd love a PR to add Linux support)!"
           end
 
-          ::Services::Cli.sudo_service_user = sudo_service_user
+          Homebrew::Services::Cli.sudo_service_user = sudo_service_user
         end
 
         # Parse arguments.
         subcommand, formula, = args.named
 
-        if [*::Services::Commands::List::TRIGGERS, *::Services::Commands::Cleanup::TRIGGERS].include?(subcommand)
+        no_named_formula_commands = [
+          *Homebrew::Services::Commands::List::TRIGGERS,
+          *Homebrew::Services::Commands::Cleanup::TRIGGERS,
+        ]
+        if no_named_formula_commands.include?(subcommand)
           raise UsageError, "The `#{subcommand}` subcommand does not accept a formula argument!" if formula
           raise UsageError, "The `#{subcommand}` subcommand does not accept the --all argument!" if args.all?
         end
 
         if args.file
-          if ::Services::Commands::Start::TRIGGERS.exclude?(subcommand)
+          if Homebrew::Services::Commands::Start::TRIGGERS.exclude?(subcommand)
             raise UsageError, "The `#{subcommand}` subcommand does not accept the --file= argument!"
           elsif args.all?
             raise UsageError, "The start subcommand does not accept the --all and --file= arguments at the same time!"
@@ -113,14 +116,20 @@ module Homebrew
 
         targets = if args.all?
           if subcommand == "start"
-            ::Services::Formulae.available_services(loaded: false, skip_root: !::Services::System.root?)
+            Homebrew::Services::Formulae.available_services(
+              loaded:    false,
+              skip_root: !Homebrew::Services::System.root?,
+            )
           elsif subcommand == "stop"
-            ::Services::Formulae.available_services(loaded: true, skip_root: !::Services::System.root?)
+            Homebrew::Services::Formulae.available_services(
+              loaded:    true,
+              skip_root: !Homebrew::Services::System.root?,
+            )
           else
-            ::Services::Formulae.available_services
+            Homebrew::Services::Formulae.available_services
           end
         elsif formula
-          [::Services::FormulaWrapper.new(Formulary.factory(formula))]
+          [Homebrew::Services::FormulaWrapper.new(Formulary.factory(formula))]
         else
           []
         end
@@ -128,30 +137,30 @@ module Homebrew
         # Exit successfully if --all was used but there is nothing to do
         return if args.all? && targets.empty?
 
-        if ::Services::System.systemctl?
+        if Homebrew::Services::System.systemctl?
           ENV["DBUS_SESSION_BUS_ADDRESS"] = ENV.fetch("HOMEBREW_DBUS_SESSION_BUS_ADDRESS", nil)
           ENV["XDG_RUNTIME_DIR"] = ENV.fetch("HOMEBREW_XDG_RUNTIME_DIR", nil)
         end
 
         # Dispatch commands and aliases.
         case subcommand.presence
-        when *::Services::Commands::List::TRIGGERS
-          ::Services::Commands::List.run(json: args.json?)
-        when *::Services::Commands::Cleanup::TRIGGERS
-          ::Services::Commands::Cleanup.run
-        when *::Services::Commands::Info::TRIGGERS
-          ::Services::Commands::Info.run(targets, verbose: args.verbose?, json: args.json?)
-        when *::Services::Commands::Restart::TRIGGERS
-          ::Services::Commands::Restart.run(targets, verbose: args.verbose?)
-        when *::Services::Commands::Run::TRIGGERS
-          ::Services::Commands::Run.run(targets, verbose: args.verbose?)
-        when *::Services::Commands::Start::TRIGGERS
-          ::Services::Commands::Start.run(targets, args.file, verbose: args.verbose?)
-        when *::Services::Commands::Stop::TRIGGERS
+        when *Homebrew::Services::Commands::List::TRIGGERS
+          Homebrew::Services::Commands::List.run(json: args.json?)
+        when *Homebrew::Services::Commands::Cleanup::TRIGGERS
+          Homebrew::Services::Commands::Cleanup.run
+        when *Homebrew::Services::Commands::Info::TRIGGERS
+          Homebrew::Services::Commands::Info.run(targets, verbose: args.verbose?, json: args.json?)
+        when *Homebrew::Services::Commands::Restart::TRIGGERS
+          Homebrew::Services::Commands::Restart.run(targets, verbose: args.verbose?)
+        when *Homebrew::Services::Commands::Run::TRIGGERS
+          Homebrew::Services::Commands::Run.run(targets, verbose: args.verbose?)
+        when *Homebrew::Services::Commands::Start::TRIGGERS
+          Homebrew::Services::Commands::Start.run(targets, args.file, verbose: args.verbose?)
+        when *Homebrew::Services::Commands::Stop::TRIGGERS
           max_wait = args.max_wait.to_f
-          ::Services::Commands::Stop.run(targets, verbose: args.verbose?, no_wait: args.no_wait?, max_wait:)
-        when *::Services::Commands::Kill::TRIGGERS
-          ::Services::Commands::Kill.run(targets, verbose: args.verbose?)
+          Homebrew::Services::Commands::Stop.run(targets, verbose: args.verbose?, no_wait: args.no_wait?, max_wait:)
+        when *Homebrew::Services::Commands::Kill::TRIGGERS
+          Homebrew::Services::Commands::Kill.run(targets, verbose: args.verbose?)
         else
           raise UsageError, "unknown subcommand: `#{subcommand}`"
         end

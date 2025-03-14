@@ -2,7 +2,7 @@
 
 require "services/commands/info"
 
-RSpec.describe Services::Commands::Info do
+RSpec.describe Homebrew::Services::Commands::Info do
   before do
     allow_any_instance_of(IO).to receive(:tty?).and_return(false)
   end

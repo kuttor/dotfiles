@@ -1,35 +1,39 @@
 # typed: strict
 # frozen_string_literal: true
 
-module Services
-  module Commands
-    module Restart
-      # NOTE: The restart command is used to update service files
-      # after a package gets updated through `brew upgrade`.
-      # This works by removing the old file with `brew services stop`
-      # and installing the new one with `brew services start|run`.
+require "services/cli"
 
-      TRIGGERS = %w[restart relaunch reload r].freeze
+module Homebrew
+  module Services
+    module Commands
+      module Restart
+        # NOTE: The restart command is used to update service files
+        # after a package gets updated through `brew upgrade`.
+        # This works by removing the old file with `brew services stop`
+        # and installing the new one with `brew services start|run`.
 
-      sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T.nilable(T::Boolean)).returns(NilClass) }
-      def self.run(targets, verbose:)
-        Services::Cli.check(targets)
+        TRIGGERS = %w[restart relaunch reload r].freeze
 
-        ran = []
-        started = []
-        targets.each do |service|
-          if service.loaded? && !service.service_file_present?
-            ran << service
-          else
-            # group not-started services with started ones for restart
-            started << service
+        sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T.nilable(T::Boolean)).returns(NilClass) }
+        def self.run(targets, verbose:)
+          Services::Cli.check(targets)
+
+          ran = []
+          started = []
+          targets.each do |service|
+            if service.loaded? && !service.service_file_present?
+              ran << service
+            else
+              # group not-started services with started ones for restart
+              started << service
+            end
+            Services::Cli.stop([service], verbose:) if service.loaded?
           end
-          Services::Cli.stop([service], verbose:) if service.loaded?
-        end
 
-        Services::Cli.run(targets, verbose:) if ran.present?
-        Services::Cli.start(started, verbose:) if started.present?
-        nil
+          Services::Cli.run(targets, verbose:) if ran.present?
+          Services::Cli.start(started, verbose:) if started.present?
+          nil
+        end
       end
     end
   end

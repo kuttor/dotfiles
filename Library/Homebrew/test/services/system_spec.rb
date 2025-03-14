@@ -2,7 +2,7 @@
 
 require "services/system"
 
-RSpec.describe Services::System do
+RSpec.describe Homebrew::Services::System do
   describe "#launchctl" do
     it "macOS - outputs launchctl command location", :needs_macos do
       expect(described_class.launchctl).to eq(Pathname.new("/bin/launchctl"))

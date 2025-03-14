@@ -2,7 +2,7 @@
 
 require "services/commands/list"
 
-RSpec.describe Services::Commands::List do
+RSpec.describe Homebrew::Services::Commands::List do
   describe "#TRIGGERS" do
     it "contains all restart triggers" do
       expect(described_class::TRIGGERS).to eq([nil, "list", "ls"])
@@ -11,7 +11,7 @@ RSpec.describe Services::Commands::List do
 
   describe "#run" do
     it "fails with empty list" do
-      expect(Services::Formulae).to receive(:services_list).and_return([])
+      expect(Homebrew::Services::Formulae).to receive(:services_list).and_return([])
       expect do
         allow($stderr).to receive(:tty?).and_return(true)
         described_class.run
@@ -27,7 +27,7 @@ RSpec.describe Services::Commands::List do
         file:   "/dev/null",
         loaded: true,
       }
-      expect(Services::Formulae).to receive(:services_list).and_return([formula])
+      expect(Homebrew::Services::Formulae).to receive(:services_list).and_return([formula])
       expect do
         described_class.run
       end.to output(out).to_stdout
@@ -47,7 +47,7 @@ RSpec.describe Services::Commands::List do
       filtered_formula = formula.slice(*described_class::JSON_FIELDS)
       expected_output = "#{JSON.pretty_generate([filtered_formula])}\n"
 
-      expect(Services::Formulae).to receive(:services_list).and_return([formula])
+      expect(Homebrew::Services::Formulae).to receive(:services_list).and_return([formula])
       expect do
         described_class.run(json: true)
       end.to output(expected_output).to_stdout

@@ -4,7 +4,7 @@ require "services/cli"
 require "services/system"
 require "services/formula_wrapper"
 
-RSpec.describe Services::Cli do
+RSpec.describe Homebrew::Services::Cli do
   subject(:services_cli) { described_class }
 
   let(:service_string) { "service" }
@@ -17,7 +17,7 @@ RSpec.describe Services::Cli do
 
   describe "#running" do
     it "macOS - returns the currently running services" do
-      allow(Services::System).to receive_messages(launchctl?: true, systemctl?: false)
+      allow(Homebrew::Services::System).to receive_messages(launchctl?: true, systemctl?: false)
       allow(Utils).to receive(:popen_read).and_return <<~EOS
         77513   50  homebrew.mxcl.php
         495     0   homebrew.mxcl.node_exporter
@@ -31,8 +31,8 @@ RSpec.describe Services::Cli do
     end
 
     it "systemD - returns the currently running services" do
-      allow(Services::System).to receive(:launchctl?).and_return(false)
-      allow(Services::System::Systemctl).to receive(:popen_read).and_return <<~EOS
+      allow(Homebrew::Services::System).to receive(:launchctl?).and_return(false)
+      allow(Homebrew::Services::System::Systemctl).to receive(:popen_read).and_return <<~EOS
         homebrew.php.service     loaded active running Homebrew PHP service
         systemd-udevd.service    loaded active running Rule-based Manager for Device Events and Files
         udisks2.service          loaded active running Disk Manager
@@ -74,7 +74,7 @@ RSpec.describe Services::Cli do
         keep_alive?: false,
       )
       allow(service).to receive(:service_name)
-      allow(Services::FormulaWrapper).to receive(:from).and_return(service)
+      allow(Homebrew::Services::FormulaWrapper).to receive(:from).and_return(service)
       allow(services_cli).to receive(:running).and_return(["example_service"])
       expect do
         services_cli.kill_orphaned_services
@@ -84,7 +84,7 @@ RSpec.describe Services::Cli do
 
   describe "#run" do
     it "checks empty targets cause no error" do
-      expect(Services::System).not_to receive(:root?)
+      expect(Homebrew::Services::System).not_to receive(:root?)
       services_cli.run([])
     end
 
@@ -100,14 +100,14 @@ RSpec.describe Services::Cli do
 
   describe "#start" do
     it "checks missing file causes error" do
-      expect(Services::System).not_to receive(:root?)
+      expect(Homebrew::Services::System).not_to receive(:root?)
       expect do
         services_cli.start(["service_name"], "/hfdkjshksdjhfkjsdhf/fdsjghsdkjhb")
       end.to raise_error(UsageError, "Invalid usage: Provided service file does not exist")
     end
 
     it "checks empty targets cause no error" do
-      expect(Services::System).not_to receive(:root?)
+      expect(Homebrew::Services::System).not_to receive(:root?)
       services_cli.start([])
     end
 
@@ -123,14 +123,14 @@ RSpec.describe Services::Cli do
 
   describe "#stop" do
     it "checks empty targets cause no error" do
-      expect(Services::System).not_to receive(:root?)
+      expect(Homebrew::Services::System).not_to receive(:root?)
       services_cli.stop([])
     end
   end
 
   describe "#kill" do
     it "checks empty targets cause no error" do
-      expect(Services::System).not_to receive(:root?)
+      expect(Homebrew::Services::System).not_to receive(:root?)
       services_cli.kill([])
     end
 
@@ -153,7 +153,7 @@ RSpec.describe Services::Cli do
 
   describe "#install_service_file" do
     it "checks service is installed" do
-      service = instance_double(Services::FormulaWrapper, name: "name", installed?: false)
+      service = instance_double(Homebrew::Services::FormulaWrapper, name: "name", installed?: false)
       expect do
         services_cli.install_service_file(service, nil)
       end.to raise_error(UsageError, "Invalid usage: Formula `name` is not installed")
@@ -161,7 +161,7 @@ RSpec.describe Services::Cli do
 
     it "checks service file exists" do
       service = instance_double(
-        Services::FormulaWrapper,
+        Homebrew::Services::FormulaWrapper,
         name:         "name",
         installed?:   true,
         service_file: instance_double(Pathname, exist?: false),
@@ -177,17 +177,17 @@ RSpec.describe Services::Cli do
 
   describe "#systemd_load", :needs_linux do
     it "checks non-enabling run" do
-      expect(Services::System::Systemctl).to receive(:run).once.and_return(true)
+      expect(Homebrew::Services::System::Systemctl).to receive(:run).once.and_return(true)
       services_cli.systemd_load(
-        instance_double(Services::FormulaWrapper, service_name: "name"),
+        instance_double(Homebrew::Services::FormulaWrapper, service_name: "name"),
         enable: false,
       )
     end
 
     it "checks enabling run" do
-      expect(Services::System::Systemctl).to receive(:run).twice.and_return(true)
+      expect(Homebrew::Services::System::Systemctl).to receive(:run).twice.and_return(true)
       services_cli.systemd_load(
-        instance_double(Services::FormulaWrapper, service_name: "name"),
+        instance_double(Homebrew::Services::FormulaWrapper, service_name: "name"),
         enable: true,
       )
     end
@@ -195,57 +195,67 @@ RSpec.describe Services::Cli do
 
   describe "#launchctl_load", :needs_macos do
     it "checks non-enabling run" do
-      allow(Services::System).to receive(:launchctl).and_return(Pathname.new("/bin/launchctl"))
-      expect(Services::System).to receive(:domain_target).once.and_return("target")
+      allow(Homebrew::Services::System).to receive(:launchctl).and_return(Pathname.new("/bin/launchctl"))
+      expect(Homebrew::Services::System).to receive(:domain_target).once.and_return("target")
       expect(described_class).to receive(:safe_system).once.and_return(true)
-      services_cli.launchctl_load(instance_double(Services::FormulaWrapper), file: "a", enable: false)
+      services_cli.launchctl_load(instance_double(Homebrew::Services::FormulaWrapper), file: "a", enable: false)
     end
 
     it "checks enabling run" do
-      allow(Services::System).to receive(:launchctl).and_return(Pathname.new("/bin/launchctl"))
-      expect(Services::System).to receive(:domain_target).twice.and_return("target")
+      allow(Homebrew::Services::System).to receive(:launchctl).and_return(Pathname.new("/bin/launchctl"))
+      expect(Homebrew::Services::System).to receive(:domain_target).twice.and_return("target")
       expect(described_class).to receive(:safe_system).twice.and_return(true)
-      services_cli.launchctl_load(instance_double(Services::FormulaWrapper, service_name: "name"), file:   "a",
-                                                                                                   enable: true)
+      services_cli.launchctl_load(instance_double(Homebrew::Services::FormulaWrapper, service_name: "name"),
+                                  file:   "a",
+                                  enable: true)
     end
   end
 
   describe "#service_load" do
     it "checks non-root for login" do
-      expect(Services::System).to receive(:launchctl?).once.and_return(false)
-      expect(Services::System).to receive(:systemctl?).once.and_return(false)
-      expect(Services::System).to receive(:root?).once.and_return(true)
+      expect(Homebrew::Services::System).to receive(:launchctl?).once.and_return(false)
+      expect(Homebrew::Services::System).to receive(:systemctl?).once.and_return(false)
+      expect(Homebrew::Services::System).to receive(:root?).once.and_return(true)
 
       expect do
         services_cli.service_load(
-          instance_double(Services::FormulaWrapper, name: "name", service_name: "service.name",
-service_startup?: false), enable: false
+          instance_double(
+            Homebrew::Services::FormulaWrapper,
+            name:             "name",
+            service_name:     "service.name",
+            service_startup?: false,
+          ),
+          enable: false,
         )
       end.to output("==> Successfully ran `name` (label: service.name)\n").to_stdout
     end
 
     it "checks root for startup" do
-      expect(Services::System).to receive(:launchctl?).once.and_return(false)
-      expect(Services::System).to receive(:systemctl?).once.and_return(false)
-      expect(Services::System).to receive(:root?).twice.and_return(false)
+      expect(Homebrew::Services::System).to receive(:launchctl?).once.and_return(false)
+      expect(Homebrew::Services::System).to receive(:systemctl?).once.and_return(false)
+      expect(Homebrew::Services::System).to receive(:root?).twice.and_return(false)
       expect do
         services_cli.service_load(
-          instance_double(Services::FormulaWrapper, name: "name", service_name: "service.name",
-service_startup?: true),
+          instance_double(
+            Homebrew::Services::FormulaWrapper,
+            name:             "name",
+            service_name:     "service.name",
+            service_startup?: true,
+          ),
           enable: false,
         )
       end.to output("==> Successfully ran `name` (label: service.name)\n").to_stdout
     end
 
     it "triggers launchctl" do
-      expect(Services::System).to receive(:launchctl?).once.and_return(true)
-      expect(Services::System).not_to receive(:systemctl?)
-      expect(Services::System).to receive(:root?).twice.and_return(false)
+      expect(Homebrew::Services::System).to receive(:launchctl?).once.and_return(true)
+      expect(Homebrew::Services::System).not_to receive(:systemctl?)
+      expect(Homebrew::Services::System).to receive(:root?).twice.and_return(false)
       expect(described_class).to receive(:launchctl_load).once.and_return(true)
       expect do
         services_cli.service_load(
           instance_double(
-            Services::FormulaWrapper,
+            Homebrew::Services::FormulaWrapper,
             name:             "name",
             service_name:     "service.name",
             service_startup?: false,
@@ -257,14 +267,14 @@ service_startup?: true),
     end
 
     it "triggers systemctl" do
-      expect(Services::System).to receive(:launchctl?).once.and_return(false)
-      expect(Services::System).to receive(:systemctl?).once.and_return(true)
-      expect(Services::System).to receive(:root?).twice.and_return(false)
-      expect(Services::System::Systemctl).to receive(:run).once.and_return(true)
+      expect(Homebrew::Services::System).to receive(:launchctl?).once.and_return(false)
+      expect(Homebrew::Services::System).to receive(:systemctl?).once.and_return(true)
+      expect(Homebrew::Services::System).to receive(:root?).twice.and_return(false)
+      expect(Homebrew::Services::System::Systemctl).to receive(:run).once.and_return(true)
       expect do
         services_cli.service_load(
           instance_double(
-            Services::FormulaWrapper,
+            Homebrew::Services::FormulaWrapper,
             name:             "name",
             service_name:     "service.name",
             service_startup?: false,
@@ -276,14 +286,14 @@ service_startup?: true),
     end
 
     it "represents correct action" do
-      expect(Services::System).to receive(:launchctl?).once.and_return(false)
-      expect(Services::System).to receive(:systemctl?).once.and_return(true)
-      expect(Services::System).to receive(:root?).twice.and_return(false)
-      expect(Services::System::Systemctl).to receive(:run).twice.and_return(true)
+      expect(Homebrew::Services::System).to receive(:launchctl?).once.and_return(false)
+      expect(Homebrew::Services::System).to receive(:systemctl?).once.and_return(true)
+      expect(Homebrew::Services::System).to receive(:root?).twice.and_return(false)
+      expect(Homebrew::Services::System::Systemctl).to receive(:run).twice.and_return(true)
       expect do
         services_cli.service_load(
           instance_double(
-            Services::FormulaWrapper,
+            Homebrew::Services::FormulaWrapper,
             name:             "name",
             service_name:     "service.name",
             service_startup?: false,

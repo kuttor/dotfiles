@@ -1,19 +1,23 @@
 # typed: strict
 # frozen_string_literal: true
 
-module Services
-  module Commands
-    module Cleanup
-      TRIGGERS = %w[cleanup clean cl rm].freeze
+require "services/cli"
 
-      sig { void }
-      def self.run
-        cleaned = []
+module Homebrew
+  module Services
+    module Commands
+      module Cleanup
+        TRIGGERS = %w[cleanup clean cl rm].freeze
 
-        cleaned += Services::Cli.kill_orphaned_services
-        cleaned += Services::Cli.remove_unused_service_files
+        sig { void }
+        def self.run
+          cleaned = []
 
-        puts "All #{System.root? ? "root" : "user-space"} services OK, nothing cleaned..." if cleaned.empty?
+          cleaned += Services::Cli.kill_orphaned_services
+          cleaned += Services::Cli.remove_unused_service_files
+
+          puts "All #{System.root? ? "root" : "user-space"} services OK, nothing cleaned..." if cleaned.empty?
+        end
       end
     end
   end

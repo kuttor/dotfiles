@@ -2,7 +2,7 @@
 
 require "services/formulae"
 
-RSpec.describe Services::Formulae do
+RSpec.describe Homebrew::Services::Formulae do
   describe "#services_list" do
     it "empty list without available formulae" do
       allow(described_class).to receive(:available_services).and_return({})
@@ -10,7 +10,7 @@ RSpec.describe Services::Formulae do
     end
 
     it "list with available formulae" do
-      formula = instance_double(Services::FormulaWrapper)
+      formula = instance_double(Homebrew::Services::FormulaWrapper)
       expected = [
         {
           file:   Pathname.new("/Library/LaunchDaemons/file.plist"),
