@@ -1183,6 +1183,78 @@ Perform a substring search of cask tokens and formula names for *`text`*. If
 
 : Search for *`text`* in the given database.
 
+### `services` \[*`subcommand`*\]
+
+Manage background services with macOS' `launchctl`(1) daemon manager or Linux's
+`systemctl`(1) service manager.
+
+If `sudo` is passed, operate on `/Library/LaunchDaemons` or
+`/usr/lib/systemd/system` (started at boot). Otherwise, operate on
+`~/Library/LaunchAgents` or `~/.config/systemd/user` (started at login).
+
+\[`sudo`\] `brew services` \[`list`\] (`--json`) (`--debug`)
+
+: List information about all managed services for the current user (or root).
+  Provides more output from Homebrew and `launchctl`(1) or `systemctl`(1) if run
+  with `--debug`.
+
+\[`sudo`\] `brew services info` (*`formula`*\|`--all`\|`--json`)
+
+: List all managed services for the current user (or root).
+
+\[`sudo`\] `brew services run` (*`formula`*\|`--all`)
+
+: Run the service *`formula`* without registering to launch at login (or boot).
+
+\[`sudo`\] `brew services start` (*`formula`*\|`--all`\|`--file=`)
+
+: Start the service *`formula`* immediately and register it to launch at login
+  (or boot).
+
+\[`sudo`\] `brew services stop` (*`formula`*\|`--all`)
+
+: Stop the service *`formula`* immediately and unregister it from launching at
+  login (or boot).
+
+\[`sudo`\] `brew services kill` (*`formula`*\|`--all`)
+
+: Stop the service *`formula`* immediately but keep it registered to launch at
+  login (or boot).
+
+\[`sudo`\] `brew services restart` (*`formula`*\|`--all`)
+
+: Stop (if necessary) and start the service *`formula`* immediately and register
+  it to launch at login (or boot).
+
+\[`sudo`\] `brew services cleanup`
+
+: Remove all unused services.
+
+`--file`
+
+: Use the service file from this location to `start` the service.
+
+`--sudo-service-user`
+
+: When run as root on macOS, run the service(s) as this user.
+
+`--max-wait`
+
+: Wait at most this many seconds for `stop` to finish stopping a service. Omit
+  this flag or set this to zero (0) seconds to wait indefinitely.
+
+`--all`
+
+: Run *`subcommand`* on all services.
+
+`--json`
+
+: Output as JSON.
+
+`--no-wait`
+
+: Don't wait for `stop` to finish stopping the service.
+
 ### `setup-ruby` \[*`command`* ...\]
 
 Installs and configures Homebrew's Ruby. If `command` is passed, it will only
@@ -2094,10 +2166,10 @@ Summarise contributions to Homebrew repositories.
 `--repositories`
 
 : Specify a comma-separated list of repositories to search. Supported
-  repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found`,
-  `test-bot` and `services`. Omitting this flag, or specifying
-  `--repositories=primary`, searches only the main repositories: brew,core,cask.
-  Specifying `--repositories=all`, searches all repositories.
+  repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found` and
+  `test-bot`. Omitting this flag, or specifying `--repositories=primary`,
+  searches only the main repositories: brew,core,cask. Specifying
+  `--repositories=all`, searches all repositories.
 
 `--from`
 
@@ -3390,78 +3462,6 @@ flags which will help with finding keg-only dependencies like `openssl`,
 
 Print instructions for setting up the command-not-found hook for your shell. If
 the output is not to a tty, print the appropriate handler script for your shell.
-
-### `services` \[*`subcommand`*\]
-
-Manage background services with macOS' `launchctl`(1) daemon manager or Linux's
-`systemctl`(1) service manager.
-
-If `sudo` is passed, operate on `/Library/LaunchDaemons` or
-`/usr/lib/systemd/system` (started at boot). Otherwise, operate on
-`~/Library/LaunchAgents` or `~/.config/systemd/user` (started at login).
-
-\[`sudo`\] `brew services` \[`list`\] (`--json`) (`--debug`)
-
-: List information about all managed services for the current user (or root).
-  Provides more output from Homebrew and `launchctl`(1) or `systemctl`(1) if run
-  with `--debug`.
-
-\[`sudo`\] `brew services info` (*`formula`*\|`--all`\|`--json`)
-
-: List all managed services for the current user (or root).
-
-\[`sudo`\] `brew services run` (*`formula`*\|`--all`)
-
-: Run the service *`formula`* without registering to launch at login (or boot).
-
-\[`sudo`\] `brew services start` (*`formula`*\|`--all`\|`--file=`)
-
-: Start the service *`formula`* immediately and register it to launch at login
-  (or boot).
-
-\[`sudo`\] `brew services stop` (*`formula`*\|`--all`)
-
-: Stop the service *`formula`* immediately and unregister it from launching at
-  login (or boot).
-
-\[`sudo`\] `brew services kill` (*`formula`*\|`--all`)
-
-: Stop the service *`formula`* immediately but keep it registered to launch at
-  login (or boot).
-
-\[`sudo`\] `brew services restart` (*`formula`*\|`--all`)
-
-: Stop (if necessary) and start the service *`formula`* immediately and register
-  it to launch at login (or boot).
-
-\[`sudo`\] `brew services cleanup`
-
-: Remove all unused services.
-
-`--file`
-
-: Use the service file from this location to `start` the service.
-
-`--sudo-service-user`
-
-: When run as root on macOS, run the service(s) as this user.
-
-`--max-wait`
-
-: Wait at most this many seconds for `stop` to finish stopping a service. Omit
-  this flag or set this to zero (0) seconds to wait indefinitely.
-
-`--all`
-
-: Run *`subcommand`* on all services.
-
-`--json`
-
-: Output as JSON.
-
-`--no-wait`
-
-: Don't wait for `stop` to finish stopping the service.
 
 ### `test-bot` \[*`options`*\] \[*`formula`*\]
 

@@ -745,6 +745,52 @@ Search for \fItext\fP in the given database\.
 .TP
 \fB\-\-ubuntu\fP
 Search for \fItext\fP in the given database\.
+.SS "\fBservices\fP \fR[\fIsubcommand\fP]"
+Manage background services with macOS\[u2019] \fBlaunchctl\fP(1) daemon manager or Linux\[u2019]s \fBsystemctl\fP(1) service manager\.
+.P
+If \fBsudo\fP is passed, operate on \fB/Library/LaunchDaemons\fP or \fB/usr/lib/systemd/system\fP (started at boot)\. Otherwise, operate on \fB~/Library/LaunchAgents\fP or \fB~/\.config/systemd/user\fP (started at login)\.
+.TP
+[\fBsudo\fP] \fBbrew services\fP [\fBlist\fP] (\fB\-\-json\fP) (\fB\-\-debug\fP)
+List information about all managed services for the current user (or root)\. Provides more output from Homebrew and \fBlaunchctl\fP(1) or \fBsystemctl\fP(1) if run with \fB\-\-debug\fP\&\.
+.TP
+[\fBsudo\fP] \fBbrew services info\fP (\fIformula\fP|\fB\-\-all\fP|\fB\-\-json\fP)
+List all managed services for the current user (or root)\.
+.TP
+[\fBsudo\fP] \fBbrew services run\fP (\fIformula\fP|\fB\-\-all\fP)
+Run the service \fIformula\fP without registering to launch at login (or boot)\.
+.TP
+[\fBsudo\fP] \fBbrew services start\fP (\fIformula\fP|\fB\-\-all\fP|\fB\-\-file=\fP)
+Start the service \fIformula\fP immediately and register it to launch at login (or boot)\.
+.TP
+[\fBsudo\fP] \fBbrew services stop\fP (\fIformula\fP|\fB\-\-all\fP)
+Stop the service \fIformula\fP immediately and unregister it from launching at login (or boot)\.
+.TP
+[\fBsudo\fP] \fBbrew services kill\fP (\fIformula\fP|\fB\-\-all\fP)
+Stop the service \fIformula\fP immediately but keep it registered to launch at login (or boot)\.
+.TP
+[\fBsudo\fP] \fBbrew services restart\fP (\fIformula\fP|\fB\-\-all\fP)
+Stop (if necessary) and start the service \fIformula\fP immediately and register it to launch at login (or boot)\.
+.TP
+[\fBsudo\fP] \fBbrew services cleanup\fP
+Remove all unused services\.
+.TP
+\fB\-\-file\fP
+Use the service file from this location to \fBstart\fP the service\.
+.TP
+\fB\-\-sudo\-service\-user\fP
+When run as root on macOS, run the service(s) as this user\.
+.TP
+\fB\-\-max\-wait\fP
+Wait at most this many seconds for \fBstop\fP to finish stopping a service\. Omit this flag or set this to zero (0) seconds to wait indefinitely\.
+.TP
+\fB\-\-all\fP
+Run \fIsubcommand\fP on all services\.
+.TP
+\fB\-\-json\fP
+Output as JSON\.
+.TP
+\fB\-\-no\-wait\fP
+Don\[u2019]t wait for \fBstop\fP to finish stopping the service\.
 .SS "\fBsetup\-ruby\fP \fR[\fIcommand\fP \.\.\.]"
 Installs and configures Homebrew\[u2019]s Ruby\. If \fBcommand\fP is passed, it will only run Bundler if necessary for that command\.
 .SS "\fBshellenv\fP \fR[\fIshell\fP \.\.\.]"
@@ -1326,7 +1372,7 @@ Treat all named arguments as casks\.
 Summarise contributions to Homebrew repositories\.
 .TP
 \fB\-\-repositories\fP
-Specify a comma\-separated list of repositories to search\. Supported repositories: \fBbrew\fP, \fBcore\fP, \fBcask\fP, \fBbundle\fP, \fBcommand\-not\-found\fP, \fBtest\-bot\fP and \fBservices\fP\&\. Omitting this flag, or specifying \fB\-\-repositories=primary\fP, searches only the main repositories: brew,core,cask\. Specifying \fB\-\-repositories=all\fP, searches all repositories\.
+Specify a comma\-separated list of repositories to search\. Supported repositories: \fBbrew\fP, \fBcore\fP, \fBcask\fP, \fBbundle\fP, \fBcommand\-not\-found\fP and \fBtest\-bot\fP\&\. Omitting this flag, or specifying \fB\-\-repositories=primary\fP, searches only the main repositories: brew,core,cask\. Specifying \fB\-\-repositories=all\fP, searches all repositories\.
 .TP
 \fB\-\-from\fP
 Date (ISO\-8601 format) to start searching contributions\. Omitting this flag searches the last year\.
@@ -2173,52 +2219,6 @@ Run \fBinstall\fP before continuing to other operations e\.g\. \fBexec\fP\&\.
 \fBcleanup\fP casks using the \fBzap\fP command instead of \fBuninstall\fP\&\.
 .SS "\fBcommand\-not\-found\-init\fP"
 Print instructions for setting up the command\-not\-found hook for your shell\. If the output is not to a tty, print the appropriate handler script for your shell\.
-.SS "\fBservices\fP \fR[\fIsubcommand\fP]"
-Manage background services with macOS\[u2019] \fBlaunchctl\fP(1) daemon manager or Linux\[u2019]s \fBsystemctl\fP(1) service manager\.
-.P
-If \fBsudo\fP is passed, operate on \fB/Library/LaunchDaemons\fP or \fB/usr/lib/systemd/system\fP (started at boot)\. Otherwise, operate on \fB~/Library/LaunchAgents\fP or \fB~/\.config/systemd/user\fP (started at login)\.
-.TP
-[\fBsudo\fP] \fBbrew services\fP [\fBlist\fP] (\fB\-\-json\fP) (\fB\-\-debug\fP)
-List information about all managed services for the current user (or root)\. Provides more output from Homebrew and \fBlaunchctl\fP(1) or \fBsystemctl\fP(1) if run with \fB\-\-debug\fP\&\.
-.TP
-[\fBsudo\fP] \fBbrew services info\fP (\fIformula\fP|\fB\-\-all\fP|\fB\-\-json\fP)
-List all managed services for the current user (or root)\.
-.TP
-[\fBsudo\fP] \fBbrew services run\fP (\fIformula\fP|\fB\-\-all\fP)
-Run the service \fIformula\fP without registering to launch at login (or boot)\.
-.TP
-[\fBsudo\fP] \fBbrew services start\fP (\fIformula\fP|\fB\-\-all\fP|\fB\-\-file=\fP)
-Start the service \fIformula\fP immediately and register it to launch at login (or boot)\.
-.TP
-[\fBsudo\fP] \fBbrew services stop\fP (\fIformula\fP|\fB\-\-all\fP)
-Stop the service \fIformula\fP immediately and unregister it from launching at login (or boot)\.
-.TP
-[\fBsudo\fP] \fBbrew services kill\fP (\fIformula\fP|\fB\-\-all\fP)
-Stop the service \fIformula\fP immediately but keep it registered to launch at login (or boot)\.
-.TP
-[\fBsudo\fP] \fBbrew services restart\fP (\fIformula\fP|\fB\-\-all\fP)
-Stop (if necessary) and start the service \fIformula\fP immediately and register it to launch at login (or boot)\.
-.TP
-[\fBsudo\fP] \fBbrew services cleanup\fP
-Remove all unused services\.
-.TP
-\fB\-\-file\fP
-Use the service file from this location to \fBstart\fP the service\.
-.TP
-\fB\-\-sudo\-service\-user\fP
-When run as root on macOS, run the service(s) as this user\.
-.TP
-\fB\-\-max\-wait\fP
-Wait at most this many seconds for \fBstop\fP to finish stopping a service\. Omit this flag or set this to zero (0) seconds to wait indefinitely\.
-.TP
-\fB\-\-all\fP
-Run \fIsubcommand\fP on all services\.
-.TP
-\fB\-\-json\fP
-Output as JSON\.
-.TP
-\fB\-\-no\-wait\fP
-Don\[u2019]t wait for \fBstop\fP to finish stopping the service\.
 .SS "\fBtest\-bot\fP \fR[\fIoptions\fP] \fR[\fIformula\fP]"
 Tests the full lifecycle of a Homebrew change to a tap (Git repository)\. For example, for a GitHub Actions pull request that changes a formula \fBbrew test\-bot\fP will ensure the system is cleaned and set up to test the formula, install the formula, run various tests and checks on it, bottle (package) the binaries and test formulae that depend on it to ensure they aren\[u2019]t broken by these changes\.
 .P

@@ -91,6 +91,7 @@ rubocop
 ruby
 rubydoc
 search
+services
 setup-ruby
 sh
 shellenv
