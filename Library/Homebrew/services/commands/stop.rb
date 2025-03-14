@@ -12,8 +12,8 @@ module Homebrew
         sig {
           params(
             targets:  T::Array[Services::FormulaWrapper],
-            verbose:  T.nilable(T::Boolean),
-            no_wait:  T.nilable(T::Boolean),
+            verbose:  T::Boolean,
+            no_wait:  T::Boolean,
             max_wait: T.nilable(Float),
           ).void
         }

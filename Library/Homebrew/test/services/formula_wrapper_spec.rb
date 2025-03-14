@@ -201,12 +201,12 @@ RSpec.describe Homebrew::Services::FormulaWrapper do
 
     it "macOS - outputs if the service file is present for root" do
       allow(Homebrew::Services::System).to receive_messages(launchctl?: true, systemctl?: false)
-      expect(service.service_file_present?(for: :root)).to be(false)
+      expect(service.service_file_present?(type: :root)).to be(false)
     end
 
     it "macOS - outputs if the service file is present for user" do
       allow(Homebrew::Services::System).to receive_messages(launchctl?: true, systemctl?: false)
-      expect(service.service_file_present?(for: :user)).to be(false)
+      expect(service.service_file_present?(type: :user)).to be(false)
     end
   end
 
@@ -224,13 +224,13 @@ RSpec.describe Homebrew::Services::FormulaWrapper do
     end
   end
 
-  describe "#pid" do
+  describe "#pid", :needs_systemd do
     it "outputs nil because there is not pid" do
       expect(service.pid).to be_nil
     end
   end
 
-  describe "#error?" do
+  describe "#error?", :needs_systemd do
     it "outputs false because there a no PID" do
       allow(service).to receive(:pid).and_return(nil)
       expect(service.error?).to be(false)
@@ -242,13 +242,13 @@ RSpec.describe Homebrew::Services::FormulaWrapper do
     end
   end
 
-  describe "#exit_code" do
+  describe "#exit_code", :needs_systemd do
     it "outputs nil because there is no exit code" do
       expect(service.exit_code).to be_nil
     end
   end
 
-  describe "#unknown_status?" do
+  describe "#unknown_status?", :needs_systemd do
     it "outputs true because there is no PID" do
       expect(service.unknown_status?).to be(true)
     end

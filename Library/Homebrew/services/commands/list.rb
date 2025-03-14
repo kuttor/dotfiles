@@ -1,4 +1,4 @@
-# typed: strict
+# typed: true # rubocop:todo Sorbet/StrictSigil
 # frozen_string_literal: true
 
 require "services/cli"
@@ -29,7 +29,6 @@ module Homebrew
 
         # Print the JSON representation in the CLI
         # @private
-        sig { params(formulae: T.untyped).returns(NilClass) }
         def self.print_json(formulae)
           services = formulae.map do |formula|
             formula.slice(*JSON_FIELDS)
@@ -40,7 +39,6 @@ module Homebrew
 
         # Print the table in the CLI
         # @private
-        sig { params(formulae: T::Array[T::Hash[T.untyped, T.untyped]]).void }
         def self.print_table(formulae)
           services = formulae.map do |formula|
             status = T.must(get_status_string(formula[:status]))
@@ -71,7 +69,7 @@ module Homebrew
 
         # Get formula status output
         # @private
-        sig { params(status: T.anything).returns(T.nilable(String)) }
+        sig { params(status: Symbol).returns(T.nilable(String)) }
         def self.get_status_string(status)
           case status
           when :started, :scheduled then "#{Tty.green}#{status}#{Tty.reset}"

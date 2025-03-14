@@ -1,4 +1,4 @@
-# typed: strict
+# typed: true # rubocop:todo Sorbet/StrictSigil
 # frozen_string_literal: true
 
 require "services/formula_wrapper"
@@ -24,7 +24,6 @@ module Homebrew
       end
 
       # List all available services with status, user, and path to the file.
-      sig { returns(T::Array[T::Hash[T.untyped, T.untyped]]) }
       def self.services_list
         available_services.map(&:to_hash)
       end

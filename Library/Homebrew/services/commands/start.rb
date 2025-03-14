@@ -13,7 +13,7 @@ module Homebrew
           params(
             targets:      T::Array[Services::FormulaWrapper],
             custom_plist: T.nilable(String),
-            verbose:      T.nilable(T::Boolean),
+            verbose:      T::Boolean,
           ).void
         }
         def self.run(targets, custom_plist, verbose:)
