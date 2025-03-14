@@ -1220,15 +1220,15 @@ class Formula
 
   # The generated launchd {.service} file path.
   sig { returns(Pathname) }
-  def launchd_service_path = opt_prefix/"#{plist_name}.plist"
+  def launchd_service_path = (any_installed_prefix || opt_prefix)/"#{plist_name}.plist"
 
   # The generated systemd {.service} file path.
   sig { returns(Pathname) }
-  def systemd_service_path = opt_prefix/"#{service_name}.service"
+  def systemd_service_path = (any_installed_prefix || opt_prefix)/"#{service_name}.service"
 
   # The generated systemd {.timer} file path.
   sig { returns(Pathname) }
-  def systemd_timer_path = opt_prefix/"#{service_name}.timer"
+  def systemd_timer_path = (any_installed_prefix || opt_prefix)/"#{service_name}.timer"
 
   # The service specification of the software.
   sig { returns(Homebrew::Service) }
