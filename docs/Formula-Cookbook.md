@@ -27,7 +27,7 @@ A *formula* is a package definition written in Ruby. It can be created with `bre
 | **bottle**           | pre-built **keg** poured into a **rack** of the **Cellar** instead of building from upstream sources | `qt--6.5.1.ventura.bottle.tar.gz` |
 | **tab**              | information about a **keg**, e.g. whether it was poured from a **bottle** or built from source       | `/opt/homebrew/Cellar/foo/0.1/INSTALL_RECEIPT.json` |
 | **Brew Bundle**      | an [extension of Homebrew](https://github.com/Homebrew/homebrew-bundle) to describe dependencies     | `brew 'myservice', restart_service: true` |
-| **Brew Services**    | an [extension of Homebrew](https://github.com/Homebrew/homebrew-services) to manage services         | `brew services start myservice` |
+| **Brew Services**    | the Homebrew command to manage background services                                                   | `brew services start myservice` |
 
 ## An introduction
 
@@ -1042,7 +1042,7 @@ Another example would be configuration files that should not be overwritten on p
 
 ### Service files
 
-There are two ways to add `launchd` plists and `systemd` services to a formula, so that [`brew services`](https://github.com/Homebrew/homebrew-services) can pick them up:
+There are two ways to add `launchd` plists and `systemd` services to a formula, so that `brew services` can pick them up:
 
 1. If the package already provides a service file the formula can reference it by name:
 
