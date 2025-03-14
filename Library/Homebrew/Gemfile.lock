@@ -130,7 +130,7 @@ GEM
     sorbet-static-and-runtime (0.5.11933)
       sorbet (= 0.5.11933)
       sorbet-runtime (= 0.5.11933)
-    spoom (1.6.0)
+    spoom (1.6.1)
       erubi (>= 1.10.0)
       prism (>= 0.28.0)
       rbi (>= 0.2.3)
@@ -160,7 +160,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
