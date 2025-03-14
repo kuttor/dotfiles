@@ -2286,6 +2286,28 @@ _brew_search() {
   esac
 }
 
+_brew_services() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  case "${cur}" in
+    -*)
+      __brewcomp "
+      --all
+      --debug
+      --file
+      --help
+      --json
+      --max-wait
+      --no-wait
+      --quiet
+      --sudo-service-user
+      --verbose
+      "
+      return
+      ;;
+    *) ;;
+  esac
+}
+
 _brew_setup_ruby() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   case "${cur}" in
@@ -3130,6 +3152,7 @@ _brew() {
     ruby) _brew_ruby ;;
     rubydoc) _brew_rubydoc ;;
     search) _brew_search ;;
+    services) _brew_services ;;
     setup-ruby) _brew_setup_ruby ;;
     sh) _brew_sh ;;
     shellenv) _brew_shellenv ;;

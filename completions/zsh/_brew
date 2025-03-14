@@ -211,6 +211,7 @@ __brew_internal_commands() {
     'ruby:Run a Ruby instance with Homebrew'\''s libraries loaded'
     'rubydoc:Generate Homebrew'\''s RubyDoc documentation'
     'search:Perform a substring search of cask tokens and formula names for text'
+    'services:Manage background services with macOS'\'' `launchctl`(1) daemon manager or Linux'\''s `systemctl`(1) service manager'
     'setup-ruby:Installs and configures Homebrew'\''s Ruby'
     'sh:Enter an interactive shell for Homebrew'\''s build environment'
     'shellenv:Valid shells: bash|csh|fish|pwsh|sh|tcsh|zsh  Print export statements'
@@ -730,7 +731,7 @@ _brew_contributions() {
     '--from[Date (ISO-8601 format) to start searching contributions. Omitting this flag searches the last year]' \
     '--help[Show this message]' \
     '--quiet[Make some output more quiet]' \
-    '--repositories[Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found`, `test-bot` and `services`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. ]' \
+    '--repositories[Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found` and `test-bot`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. ]' \
     '--to[Date (ISO-8601 format) to stop searching contributions]' \
     '--user[Specify a comma-separated list of GitHub usernames or email addresses to find contributions from. Omitting this flag searches maintainers]' \
     '--verbose[Make some output more verbose]'
@@ -1850,6 +1851,21 @@ _brew_search() {
     '--quiet[Make some output more quiet]' \
     '(--macports --fink --opensuse --fedora --archlinux --debian --ubuntu)--repology[Search for text in the given database]' \
     '(--repology --macports --fink --opensuse --fedora --archlinux --debian)--ubuntu[Search for text in the given database]' \
+    '--verbose[Make some output more verbose]'
+}
+
+# brew services
+_brew_services() {
+  _arguments \
+    '--all[Run subcommand on all services]' \
+    '--debug[Display any debugging information]' \
+    '--file[Use the service file from this location to `start` the service]' \
+    '--help[Show this message]' \
+    '--json[Output as JSON]' \
+    '(--no-wait)--max-wait[Wait at most this many seconds for `stop` to finish stopping a service. Omit this flag or set this to zero (0) seconds to wait indefinitely]' \
+    '(--max-wait)--no-wait[Don'\''t wait for `stop` to finish stopping the service]' \
+    '--quiet[Make some output more quiet]' \
+    '--sudo-service-user[When run as root on macOS, run the service(s) as this user]' \
     '--verbose[Make some output more verbose]'
 }
 

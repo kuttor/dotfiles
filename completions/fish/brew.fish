@@ -563,7 +563,7 @@ __fish_brew_complete_arg 'contributions' -l debug -d 'Display any debugging info
 __fish_brew_complete_arg 'contributions' -l from -d 'Date (ISO-8601 format) to start searching contributions. Omitting this flag searches the last year'
 __fish_brew_complete_arg 'contributions' -l help -d 'Show this message'
 __fish_brew_complete_arg 'contributions' -l quiet -d 'Make some output more quiet'
-__fish_brew_complete_arg 'contributions' -l repositories -d 'Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found`, `test-bot` and `services`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. '
+__fish_brew_complete_arg 'contributions' -l repositories -d 'Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found` and `test-bot`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. '
 __fish_brew_complete_arg 'contributions' -l to -d 'Date (ISO-8601 format) to stop searching contributions'
 __fish_brew_complete_arg 'contributions' -l user -d 'Specify a comma-separated list of GitHub usernames or email addresses to find contributions from. Omitting this flag searches maintainers'
 __fish_brew_complete_arg 'contributions' -l verbose -d 'Make some output more verbose'
@@ -1497,6 +1497,19 @@ __fish_brew_complete_arg 'search' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'search' -l repology -d 'Search for text in the given database'
 __fish_brew_complete_arg 'search' -l ubuntu -d 'Search for text in the given database'
 __fish_brew_complete_arg 'search' -l verbose -d 'Make some output more verbose'
+
+
+__fish_brew_complete_cmd 'services' 'Manage background services with macOS\' `launchctl`(1) daemon manager or Linux\'s `systemctl`(1) service manager'
+__fish_brew_complete_arg 'services' -l all -d 'Run subcommand on all services'
+__fish_brew_complete_arg 'services' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'services' -l file -d 'Use the service file from this location to `start` the service'
+__fish_brew_complete_arg 'services' -l help -d 'Show this message'
+__fish_brew_complete_arg 'services' -l json -d 'Output as JSON'
+__fish_brew_complete_arg 'services' -l max-wait -d 'Wait at most this many seconds for `stop` to finish stopping a service. Omit this flag or set this to zero (0) seconds to wait indefinitely'
+__fish_brew_complete_arg 'services' -l no-wait -d 'Don\'t wait for `stop` to finish stopping the service'
+__fish_brew_complete_arg 'services' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'services' -l sudo-service-user -d 'When run as root on macOS, run the service(s) as this user'
+__fish_brew_complete_arg 'services' -l verbose -d 'Make some output more verbose'
 
 
 __fish_brew_complete_cmd 'setup-ruby' 'Installs and configures Homebrew\'s Ruby'
