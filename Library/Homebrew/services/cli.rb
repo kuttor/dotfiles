@@ -1,4 +1,4 @@
-# typed: strict
+# typed: true # rubocop:todo Sorbet/StrictSigil
 # frozen_string_literal: true
 
 require "services/formula_wrapper"
@@ -15,7 +15,7 @@ module Homebrew
 
       sig { params(sudo_service_user: String).void }
       def self.sudo_service_user=(sudo_service_user)
-        @sudo_service_user = T.let(sudo_service_user, T.nilable(String))
+        @sudo_service_user = sudo_service_user
       end
 
       # Binary name.
@@ -41,7 +41,6 @@ module Homebrew
       end
 
       # Check if formula has been found.
-      sig { params(targets: T.untyped).returns(TrueClass) }
       def self.check(targets)
         raise UsageError, "Formula(e) missing, please provide a formula name or use --all" if targets.empty?
 
@@ -49,7 +48,6 @@ module Homebrew
       end
 
       # Kill services that don't have a service file
-      sig { returns(T::Array[Services::FormulaWrapper]) }
       def self.kill_orphaned_services
         cleaned_labels = []
         cleaned_services = []
@@ -67,7 +65,6 @@ module Homebrew
         cleaned_labels
       end
 
-      sig { returns(T::Array[T.untyped]) }
       def self.remove_unused_service_files
         cleaned = []
         Dir["#{System.path}homebrew.*.{plist,service}"].each do |file|
@@ -82,7 +79,7 @@ module Homebrew
       end
 
       # Run a service as defined in the formula. This does not clean the service file like `start` does.
-      sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T.nilable(T::Boolean)).void }
+      sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T::Boolean).void }
       def self.run(targets, verbose: false)
         targets.each do |service|
           if service.pid?
@@ -102,7 +99,7 @@ module Homebrew
         params(
           targets:      T::Array[Services::FormulaWrapper],
           service_file: T.nilable(T.any(String, Pathname)),
-          verbose:      T.nilable(T::Boolean),
+          verbose:      T::Boolean,
         ).void
       }
       def self.start(targets, service_file = nil, verbose: false)
@@ -121,11 +118,12 @@ module Homebrew
 
           odie "Formula `#{service.name}` is not installed." unless service.installed?
 
-          file ||= if T.must(service.service_file).exist? || System.systemctl?
+          file ||= if service.service_file.exist? || System.systemctl?
             nil
           elsif service.formula.opt_prefix.exist? &&
-                (keg = Keg.for service.formula.opt_prefix) && keg.plist_installed?
-            service_file = Dir["#{keg}/*#{T.must(service.service_file).extname}"].first
+                (keg = Keg.for service.formula.opt_prefix) &&
+                keg.plist_installed?
+            service_file = Dir["#{keg}/*#{service.service_file.extname}"].first
             Pathname.new service_file if service_file.present?
           end
 
@@ -147,8 +145,8 @@ module Homebrew
       sig {
         params(
           targets:  T::Array[Services::FormulaWrapper],
-          verbose:  T.nilable(T::Boolean),
-          no_wait:  T.nilable(T::Boolean),
+          verbose:  T::Boolean,
+          no_wait:  T::Boolean,
           max_wait: T.nilable(T.any(Integer, Float)),
         ).void
       }
@@ -208,7 +206,7 @@ module Homebrew
       end
 
       # Stop a service but keep it registered.
-      sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T.nilable(T::Boolean)).void }
+      sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T::Boolean).void }
       def self.kill(targets, verbose: false)
         targets.each do |service|
           if !service.pid?
@@ -233,7 +231,6 @@ module Homebrew
       end
 
       # protections to avoid users editing root services
-      sig { params(service: T.untyped).returns(T.nilable(Integer)) }
       def self.take_root_ownership(service)
         return unless System.root?
         return if sudo_service_user
@@ -302,7 +299,7 @@ module Homebrew
         params(
           service: Services::FormulaWrapper,
           file:    T.nilable(T.any(String, Pathname)),
-          enable:  T.nilable(T::Boolean),
+          enable:  T::Boolean,
         ).void
       }
       def self.launchctl_load(service, file:, enable:)
@@ -310,13 +307,13 @@ module Homebrew
         safe_system System.launchctl, "bootstrap", System.domain_target, file
       end
 
-      sig { params(service: Services::FormulaWrapper, enable: T.nilable(T::Boolean)).void }
+      sig { params(service: Services::FormulaWrapper, enable: T::Boolean).void }
       def self.systemd_load(service, enable:)
-        System::Systemctl.run("start", T.must(service.service_name))
-        System::Systemctl.run("enable", T.must(service.service_name)) if enable
+        System::Systemctl.run("start", service.service_name)
+        System::Systemctl.run("enable", service.service_name) if enable
       end
 
-      sig { params(service: Services::FormulaWrapper, enable: T.nilable(T::Boolean)).void }
+      sig { params(service: Services::FormulaWrapper, enable: T::Boolean).void }
       def self.service_load(service, enable:)
         if System.root? && !service.service_startup?
           opoo "#{service.name} must be run as non-root to start at user login!"
@@ -338,22 +335,21 @@ module Homebrew
         ohai("Successfully #{function} `#{service.name}` (label: #{service.service_name})")
       end
 
-      sig { params(service: Services::FormulaWrapper, file: T.nilable(Pathname)).void }
       def self.install_service_file(service, file)
         raise UsageError, "Formula `#{service.name}` is not installed" unless service.installed?
 
-        unless T.must(service.service_file).exist?
+        unless service.service_file.exist?
           raise UsageError,
                 "Formula `#{service.name}` has not implemented #plist, #service or installed a locatable service file"
         end
 
-        temp = Tempfile.new(T.must(service.service_name))
-        temp << if T.must(file).blank?
-          contents = T.must(service.service_file).read
+        temp = Tempfile.new(service.service_name)
+        temp << if file.blank?
+          contents = service.service_file.read
 
-          if sudo_service_user && Services::System.launchctl?
+          if sudo_service_user && System.launchctl?
             # set the username in the new plist file
-            ohai "Setting username in #{service.service_name} to #{Services::System.user}"
+            ohai "Setting username in #{service.service_name} to #{System.user}"
             plist_data = Plist.parse_xml(contents, marshal: false)
             plist_data["UserName"] = sudo_service_user
             plist_data.to_plist
@@ -361,7 +357,7 @@ module Homebrew
             contents
           end
         else
-          T.must(file).read
+          file.read
         end
         temp.flush
 
@@ -374,7 +370,7 @@ module Homebrew
 
         chmod 0644, service.dest
 
-        Services::System::Systemctl.run("daemon-reload") if System.systemctl?
+        System::Systemctl.run("daemon-reload") if System.systemctl?
       end
     end
   end

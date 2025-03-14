@@ -12,8 +12,8 @@ module Homebrew
         sig {
           params(
             targets: T::Array[Services::FormulaWrapper],
-            verbose: T.nilable(T::Boolean),
-            json:    T.nilable(T::Boolean),
+            verbose: T::Boolean,
+            json:    T::Boolean,
           ).void
         }
         def self.run(targets, verbose:, json:)
@@ -33,7 +33,7 @@ module Homebrew
 
         sig { params(bool: T.nilable(T.any(String, T::Boolean))).returns(String) }
         def self.pretty_bool(bool)
-          return T.must(bool).to_s if !$stdout.tty? || Homebrew::EnvConfig.no_emoji?
+          return bool.to_s if !$stdout.tty? || Homebrew::EnvConfig.no_emoji?
 
           if bool
             "#{Tty.bold}#{Formatter.success("✔")}#{Tty.reset}"
@@ -42,7 +42,7 @@ module Homebrew
           end
         end
 
-        sig { params(hash: T.untyped, verbose: T.nilable(T::Boolean)).returns(String) }
+        sig { params(hash: T::Hash[Symbol, T.untyped], verbose: T::Boolean).returns(String) }
         def self.output(hash, verbose:)
           out = "#{Tty.bold}#{hash[:name]}#{Tty.reset} (#{hash[:service_name]})\n"
           out += "Running: #{pretty_bool(hash[:running])}\n"

@@ -14,7 +14,7 @@ module Homebrew
 
         TRIGGERS = %w[restart relaunch reload r].freeze
 
-        sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T.nilable(T::Boolean)).returns(NilClass) }
+        sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T::Boolean).void }
         def self.run(targets, verbose:)
           Services::Cli.check(targets)
 
@@ -32,7 +32,6 @@ module Homebrew
 
           Services::Cli.run(targets, verbose:) if ran.present?
           Services::Cli.start(started, verbose:) if started.present?
-          nil
         end
       end
     end
