@@ -218,8 +218,24 @@ RSpec.describe Homebrew::Services::FormulaWrapper do
   end
 
   describe "#pid?" do
-    it "outputs false because there is not pid" do
+    it "outputs false because there is not PID" do
       allow(service).to receive(:pid).and_return(nil)
+      expect(service.pid?).to be(false)
+    end
+
+    it "outputs false because there is a PID and it is zero" do
+      allow(service).to receive(:pid).and_return(0)
+      expect(service.pid?).to be(false)
+    end
+
+    it "outputs true because there is a PID and it is positive" do
+      allow(service).to receive(:pid).and_return(12)
+      expect(service.pid?).to be(true)
+    end
+
+    # This should never happen in practice, as PIDs cannot be negative.
+    it "outputs false because there is a PID and it is negative" do
+      allow(service).to receive(:pid).and_return(-1)
       expect(service.pid?).to be(false)
     end
   end
@@ -230,15 +246,41 @@ RSpec.describe Homebrew::Services::FormulaWrapper do
     end
   end
 
-  describe "#error?", :needs_systemd do
-    it "outputs false because there a no PID" do
-      allow(service).to receive(:pid).and_return(nil)
+  describe "#error?" do
+    it "outputs false because there is no PID or exit code" do
+      allow(service).to receive_messages(pid: nil, exit_code: nil)
       expect(service.error?).to be(false)
     end
 
     it "outputs false because there is a PID but no exit" do
       allow(service).to receive_messages(pid: 12, exit_code: nil)
       expect(service.error?).to be(false)
+    end
+
+    it "outputs false because there is a PID and a zero exit code" do
+      allow(service).to receive_messages(pid: 12, exit_code: 0)
+      expect(service.error?).to be(false)
+    end
+
+    it "outputs false because there is a PID and a positive exit code" do
+      allow(service).to receive_messages(pid: 12, exit_code: 1)
+      expect(service.error?).to be(false)
+    end
+
+    it "outputs false because there is no PID and a zero exit code" do
+      allow(service).to receive_messages(pid: nil, exit_code: 0)
+      expect(service.error?).to be(false)
+    end
+
+    it "outputs true because there is no PID and a positive exit code" do
+      allow(service).to receive_messages(pid: nil, exit_code: 1)
+      expect(service.error?).to be(true)
+    end
+
+    # This should never happen in practice, as exit codes cannot be negative.
+    it "outputs true because there is no PID and a negative exit code" do
+      allow(service).to receive_messages(pid: nil, exit_code: -1)
+      expect(service.error?).to be(true)
     end
   end
 

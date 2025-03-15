@@ -161,14 +161,14 @@ module Homebrew
 
       sig { returns(T::Boolean) }
       def pid?
-        pid.present? && !pid.zero?
+        pid.present? && pid.positive?
       end
 
       sig { returns(T::Boolean) }
       def error?
         return false if pid?
 
-        exit_code.present? && exit_code.nonzero?
+        exit_code.present? && !exit_code.zero?
       end
 
       sig { returns(T::Boolean) }
