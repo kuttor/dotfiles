@@ -1219,7 +1219,7 @@ end
 #
 # @api public
 class GitHubGitDownloadStrategy < GitDownloadStrategy
-  sig { params(url: String, name: String, version: T.nilable(Version), meta: T::Hash[Symbol, T.untyped]).void }
+  sig { params(url: String, name: String, version: T.nilable(Version), meta: T.untyped).void }
   def initialize(url, name, version, **meta)
     super
     @version = T.let(version, T.nilable(Version))
@@ -1371,10 +1371,7 @@ end
 #
 # @api public
 class MercurialDownloadStrategy < VCSDownloadStrategy
-  sig {
-    params(url: String, name: String, version: T.any(NilClass, String, Version), meta: T::Hash[Symbol, T.untyped])
-      .void
-  }
+  sig { params(url: String, name: String, version: T.any(NilClass, String, Version), meta: T.untyped).void }
   def initialize(url, name, version, **meta)
     super
     @url = T.let(@url.sub(%r{^hg://}, ""), String)
@@ -1462,10 +1459,7 @@ end
 #
 # @api public
 class BazaarDownloadStrategy < VCSDownloadStrategy
-  sig {
-    params(url: String, name: String, version: T.any(NilClass, String, Version), meta: T::Hash[Symbol, T.untyped])
-      .void
-  }
+  sig { params(url: String, name: String, version: T.any(NilClass, String, Version), meta: T.untyped).void }
   def initialize(url, name, version, **meta)
     super
     @url = T.let(@url.sub(%r{^bzr://}, ""), String)
