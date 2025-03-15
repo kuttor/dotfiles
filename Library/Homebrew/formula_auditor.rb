@@ -563,6 +563,15 @@ module Homebrew
 
       return unless DevelopmentTools.curl_handles_most_https_certificates?
 
+      # Skip gnu.org and nongnu.org audit on GitHub runners
+      # See issue: https://github.com/Homebrew/homebrew-core/issues/206757
+      gnu_homepages = [
+        %r{https://www\.gnu\.org/.+},
+        %r{https://www\.nongnu\.org/.+},
+      ]
+
+      return if gnu_homepages.any?(&homepage.method(:match?)) && ENV["HOMEBREW_GITHUB_HOSTED_RUNNER"]
+
       use_homebrew_curl = [:stable, :head].any? do |spec_name|
         next false unless (spec = formula.send(spec_name))
 
