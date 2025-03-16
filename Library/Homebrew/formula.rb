@@ -1820,10 +1820,12 @@ class Formula
       output:  T.any(String, Pathname),
       ldflags: T.nilable(T.any(String, T::Array[String])),
       gcflags: T.nilable(T.any(String, T::Array[String])),
+      tags:    T.nilable(T.any(String, T::Array[String])),
     ).returns(T::Array[String])
   }
-  def std_go_args(output: bin/name, ldflags: nil, gcflags: nil)
+  def std_go_args(output: bin/name, ldflags: nil, gcflags: nil, tags: nil)
     args = ["-trimpath", "-o=#{output}"]
+    args += ["-tags=#{Array(tags).join(" ")}"] if tags
     args += ["-ldflags=#{Array(ldflags).join(" ")}"] if ldflags
     args += ["-gcflags=#{Array(gcflags).join(" ")}"] if gcflags
     args
