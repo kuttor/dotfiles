@@ -259,3 +259,10 @@ Help us by [submitting a fix](https://github.com/Homebrew/homebrew-cask/blob/HEA
 ## Other local issues
 
 If your Homebrew installation gets messed up (and fixing the issues found by `brew doctor` doesn't solve the problem), reinstalling Homebrew may help to reset to a normal state. To easily reinstall Homebrew, use [Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle) to automatically restore your installed formulae and casks. To do so, run `brew bundle dump`, [uninstall](https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew), [reinstall](https://docs.brew.sh/Installation) and run `brew bundle install`.
+
+## Possible curl issues
+
+Sometimes, the user's workstation itself may be responsible for issues which therefore are outside Homebrew's control. As brew is making extensive use of `curl`,  good configuration as well as good connectivity are required in order to allow brew to function correctly. Here some links that could help you identify cURL issues based on `curl`'s and `libcurl`'s exit codes:
+
+ - https://everything.curl.dev/cmdline/exitcode.html
+ - https://curl.se/libcurl/c/libcurl-errors.html
