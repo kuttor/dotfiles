@@ -1,6 +1,6 @@
 cask "sha256-os" do
-  os macos: "darwin", linux: "linux"
   arch arm: "arm", intel: "intel"
+  os macos: "darwin", linux: "linux"
 
   version "1.2.3"
   sha256 arm:          "67cdb8a02803ef37fdbf7e0be205863172e41a561ca446cd84f0d7ab35a99d94",
