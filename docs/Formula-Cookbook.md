@@ -517,7 +517,7 @@ The `std_*_args` methods, as well as the arguments they pass, are:
 "-o=#{output}"
 ```
 
-It also provides a convenient way to set `-ldflags` and `-gcflags`, see examples: [`babelfish`](https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/babelfish.rb) and [`wazero`](https://github.com/Homebrew/homebrew-core/blob/master/Formula/w/wazero.rb) formulae.
+It also provides a convenient way to set `-ldflags`, `-gcflags`, and `-tags`, see examples: [`babelfish`](https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/babelfish.rb) and [`wazero`](https://github.com/Homebrew/homebrew-core/blob/master/Formula/w/wazero.rb) formulae.
 
 #### `std_meson_args`
 
