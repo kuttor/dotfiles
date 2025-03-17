@@ -74,7 +74,8 @@ module OS
         end
 
         def check_supported_architecture
-          return if Hardware::CPU.arch == :x86_64
+          return if Hardware::CPU.intel?
+          return if Homebrew::EnvConfig.developer? && ENV["HOMEBREW_ARM64_TESTING"].present? && Hardware::CPU.arm?
 
           <<~EOS
             Your CPU architecture (#{Hardware::CPU.arch}) is not supported. We only support
