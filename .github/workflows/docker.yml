@@ -198,9 +198,9 @@ jobs:
           labels: ${{ needs.generate-tags.outputs.labels }}
 
       - name: Run brew test-bot --only-setup
-        # TODO: Remove this conditional when `brew doctor` no longer throws an error on ARM64 Linux.
-        if: matrix.arch == 'x86_64'
-        run: docker run --rm brew brew test-bot --only-setup
+        run: docker run --env HOMEBREW_ARM64_TESTING --rm brew brew test-bot --only-setup
+        env:
+          HOMEBREW_ARM64_TESTING: 1
 
       - name: Log in to GitHub Packages (BrewTestBot)
         if: fromJSON(steps.attributes.outputs.push)
