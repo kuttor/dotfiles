@@ -143,7 +143,14 @@ module OS
           return if gcc_dependents.empty?
 
           badly_linked = gcc_dependents.select do |dependent|
-            keg = Keg.new(dependent.prefix)
+            dependent_prefix = dependent.any_installed_prefix
+            # Keg.new() may raise an error if it is not a directory.
+            # As the result `brew doctor` may display `Error: <keg> is not a directory`
+            # instead of proper `doctor` information.
+            # There are other checks that test that, we can skip broken kegs.
+            next if dependent_prefix.nil? || !dependent_prefix.exist? || !dependent_prefix.directory?
+
+            keg = Keg.new(dependent_prefix)
             keg.binary_executable_or_library_files.any? do |binary|
               paths = binary.rpaths
               versioned_linkage = paths.any? { |path| path.match?(%r{lib/gcc/\d+$}) }
