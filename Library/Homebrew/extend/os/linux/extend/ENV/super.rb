@@ -31,6 +31,8 @@ module Superenv
     self["HOMEBREW_RPATH_PATHS"] = determine_rpath_paths(@formula)
     m4_path_deps = ["libtool", "bison"]
     self["M4"] = "#{HOMEBREW_PREFIX}/opt/m4/bin/m4" if deps.any? { m4_path_deps.include?(_1.name) }
+
+    append_to_cccfg "b" if Hardware::CPU.arch == :arm64 && DevelopmentTools.gcc_version("gcc") >= 9
   end
 
   def homebrew_extra_paths
