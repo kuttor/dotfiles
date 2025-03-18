@@ -264,5 +264,5 @@ If your Homebrew installation gets messed up (and fixing the issues found by `br
 
 Sometimes, the user's computer, configuration or network connection may cause issues downloading with `curl` which are outside Homebrew's control. Homebrew requires good internet connectivity and correct configuration to function correctly. Here some links that could help you identify cURL issues based on `curl`'s and `libcurl`'s exit codes:
 
- - https://everything.curl.dev/cmdline/exitcode.html
- - https://curl.se/libcurl/c/libcurl-errors.html
+* https://everything.curl.dev/cmdline/exitcode.html
+* https://curl.se/libcurl/c/libcurl-errors.html
