@@ -77,7 +77,7 @@ RSpec.describe Homebrew::Bundle::Commands::Exec do
 
     it "prepends the path of the requested command to PATH before running" do
       expect(described_class).to receive(:exec).with("bundle", "install").and_return(nil)
-      expect(described_class).to receive(:which).and_return(Pathname("/usr/local/bin/bundle"))
+      expect(described_class).to receive(:which).twice.and_return(Pathname("/usr/local/bin/bundle"))
       allow(ENV).to receive(:prepend_path).with(any_args).and_call_original
       expect(ENV).to receive(:prepend_path).with("PATH", "/usr/local/bin").once.and_call_original
       described_class.run("bundle", "install")

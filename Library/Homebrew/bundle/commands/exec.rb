@@ -59,15 +59,6 @@ module Homebrew
 
           command = args.first
 
-          # For commands which aren't either absolute or relative
-          if command.exclude? "/"
-            # Save the command path, since this will be blown away by superenv
-            command_path = which(command)
-            raise "command was not found in your PATH: #{command}" if command_path.blank?
-
-            command_path = command_path.dirname.to_s
-          end
-
           @dsl = Brewfile.read(global:, file:)
 
           require "formula"
@@ -111,8 +102,11 @@ module Homebrew
           end
           # rubocop:enable Homebrew/MoveToExtendOS
 
-          # Ensure the Ruby path we saved goes before anything else, if the command was in the PATH
-          ENV.prepend_path "PATH", command_path if command_path.present?
+          # For commands which aren't either absolute or relative
+          # Add the command directory to PATH, since it may get blown away by superenv
+          if command.exclude?("/") && (which_command = which(command)).present?
+            ENV.prepend_path "PATH", which_command.dirname.to_s
+          end
 
           # Replace the formula versions from the environment variables
           formula_versions = {}
@@ -154,6 +148,9 @@ module Homebrew
           if ["sh", "env"].include?(subcommand) && (homebrew_path = ENV.fetch("HOMEBREW_PATH", nil))
             ENV.append_path "PATH", homebrew_path
           end
+
+          # For commands which aren't either absolute or relative
+          raise "command was not found in your PATH: #{command}" if command.exclude?("/") && which(command).nil?
 
           if subcommand == "env"
             ENV.each do |key, value|
