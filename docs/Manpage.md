@@ -1378,7 +1378,7 @@ If `sudo` is passed, operate on `/Library/LaunchDaemons` or
 
 : List all managed services for the current user (or root).
 
-\[`sudo`\] `brew services run` (*`formula`*\|`--all`)
+\[`sudo`\] `brew services run` (*`formula`*\|`--all`\|`--file=`)
 
 : Run the service *`formula`* without registering to launch at login (or boot).
 
