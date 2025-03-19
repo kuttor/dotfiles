@@ -45,10 +45,6 @@ module Homebrew
                              !Homebrew::EnvConfig.no_install_from_api?)
       end
 
-      def services_installed?
-        @services_installed ||= which("services.rb").present?
-      end
-
       def which_formula(name)
         formula = Formulary.factory(name)
         ENV["PATH"] = "#{formula.opt_bin}:#{ENV.fetch("PATH", nil)}" if formula.any_version_installed?

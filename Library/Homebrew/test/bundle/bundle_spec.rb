@@ -39,13 +39,6 @@ RSpec.describe Homebrew::Bundle do
     end
   end
 
-  context "when checking for brew services", :needs_macos do
-    it "finds it when present" do
-      allow(described_class).to receive(:which).and_return(true)
-      expect(described_class.services_installed?).to be(true)
-    end
-  end
-
   context "when checking for mas", :needs_macos do
     it "finds it when present" do
       stub_formula_loader formula("mas") { url "mas-1.0" }
