@@ -8,13 +8,7 @@ RSpec.describe Homebrew::Bundle::BrewServices do
       described_class.reset!
     end
 
-    it "is empty when brew services not installed" do
-      allow(Homebrew::Bundle).to receive(:services_installed?).and_return(false)
-      expect(described_class.started_services).to be_empty
-    end
-
     it "returns started services" do
-      allow(Homebrew::Bundle).to receive(:services_installed?).and_return(true)
       allow(Utils).to receive(:safe_popen_read).and_return <<~EOS
         nginx  started  homebrew.mxcl.nginx.plist
         apache stopped  homebrew.mxcl.apache.plist
