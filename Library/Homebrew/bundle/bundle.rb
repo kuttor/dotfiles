@@ -32,7 +32,14 @@ module Homebrew
       end
 
       def vscode_installed?
-        @vscode_installed ||= which("code").present?
+        @vscode_installed ||= which_vscode.present?
+      end
+
+      def which_vscode
+        @which_vscode ||= which("code", ORIGINAL_PATHS)
+        @which_vscode ||= which("codium", ORIGINAL_PATHS)
+        @which_vscode ||= which("cursor", ORIGINAL_PATHS)
+        @which_vscode ||= which("code-insiders", ORIGINAL_PATHS)
       end
 
       def whalebrew_installed?

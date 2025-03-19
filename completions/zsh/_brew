@@ -149,7 +149,7 @@ __brew_internal_commands() {
     'bump-formula-pr:Create a pull request to update formula with a new URL or a new tag'
     'bump-revision:Create a commit to increment the revision of formula'
     'bump-unversioned-casks:Check all casks with unversioned URLs in a given tap for updates'
-    'bundle:Bundler for non-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store, Whalebrew and Visual Studio Code'
+    'bundle:Bundler for non-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store, Whalebrew and Visual Studio Code (and forks/variants)'
     'casks:List all locally installable casks including short names'
     'cat:Display the source of a formula or cask'
     'cleanup:Remove stale lock files and outdated downloads for all formulae and casks, and remove old versions of installed formulae'
@@ -659,12 +659,12 @@ _brew_bundle() {
     '--mas[`list` or `dump` Mac App Store dependencies]' \
     '--no-restart[`dump` does not add `restart_service` to formula lines]' \
     '--no-upgrade[`install` does not run `brew upgrade` on outdated dependencies. `check` does not check for outdated dependencies. Note they may still be upgraded by `brew install` if needed. This is enabled by default if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set]' \
-    '(--all --vscode)--no-vscode[`dump` without VSCode extensions. This is enabled by default if `$HOMEBREW_BUNDLE_DUMP_NO_VSCODE` is set]' \
+    '(--all --vscode)--no-vscode[`dump` without VSCode (and forks/variants) extensions. This is enabled by default if `$HOMEBREW_BUNDLE_DUMP_NO_VSCODE` is set]' \
     '--quiet[Make some output more quiet]' \
     '--tap[`list` or `dump` Homebrew tap dependencies]' \
     '(--install)--upgrade[`install` runs `brew upgrade` on outdated dependencies, even if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set. ]' \
     '--verbose[`install` prints output from commands as they are run. `check` lists all missing dependencies]' \
-    '(--no-vscode)--vscode[`list` or `dump` VSCode extensions]' \
+    '(--no-vscode)--vscode[`list` or `dump` VSCode (and forks/variants) extensions]' \
     '--whalebrew[`list` or `dump` Whalebrew dependencies]' \
     '--zap[`cleanup` casks using the `zap` command instead of `uninstall`]' \
     - subcommand \

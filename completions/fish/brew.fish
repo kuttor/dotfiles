@@ -493,7 +493,7 @@ __fish_brew_complete_arg 'bump-unversioned-casks' -a '(__fish_brew_suggest_casks
 __fish_brew_complete_arg 'bump-unversioned-casks' -a '(__fish_brew_suggest_taps_installed)'
 
 
-__fish_brew_complete_cmd 'bundle' 'Bundler for non-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store, Whalebrew and Visual Studio Code'
+__fish_brew_complete_cmd 'bundle' 'Bundler for non-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store, Whalebrew and Visual Studio Code (and forks/variants)'
 __fish_brew_complete_sub_cmd 'bundle' 'install'
 __fish_brew_complete_sub_cmd 'bundle' 'dump'
 __fish_brew_complete_sub_cmd 'bundle' 'cleanup'
@@ -517,12 +517,12 @@ __fish_brew_complete_arg 'bundle' -l install -d 'Run `install` before continuing
 __fish_brew_complete_arg 'bundle' -l mas -d '`list` or `dump` Mac App Store dependencies'
 __fish_brew_complete_arg 'bundle' -l no-restart -d '`dump` does not add `restart_service` to formula lines'
 __fish_brew_complete_arg 'bundle' -l no-upgrade -d '`install` does not run `brew upgrade` on outdated dependencies. `check` does not check for outdated dependencies. Note they may still be upgraded by `brew install` if needed. This is enabled by default if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set'
-__fish_brew_complete_arg 'bundle' -l no-vscode -d '`dump` without VSCode extensions. This is enabled by default if `$HOMEBREW_BUNDLE_DUMP_NO_VSCODE` is set'
+__fish_brew_complete_arg 'bundle' -l no-vscode -d '`dump` without VSCode (and forks/variants) extensions. This is enabled by default if `$HOMEBREW_BUNDLE_DUMP_NO_VSCODE` is set'
 __fish_brew_complete_arg 'bundle' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'bundle' -l tap -d '`list` or `dump` Homebrew tap dependencies'
 __fish_brew_complete_arg 'bundle' -l upgrade -d '`install` runs `brew upgrade` on outdated dependencies, even if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set. '
 __fish_brew_complete_arg 'bundle' -l verbose -d '`install` prints output from commands as they are run. `check` lists all missing dependencies'
-__fish_brew_complete_arg 'bundle' -l vscode -d '`list` or `dump` VSCode extensions'
+__fish_brew_complete_arg 'bundle' -l vscode -d '`list` or `dump` VSCode (and forks/variants) extensions'
 __fish_brew_complete_arg 'bundle' -l whalebrew -d '`list` or `dump` Whalebrew dependencies'
 __fish_brew_complete_arg 'bundle' -l zap -d '`cleanup` casks using the `zap` command instead of `uninstall`'
 

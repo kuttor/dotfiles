@@ -332,8 +332,8 @@ module Kernel
     editor = Homebrew::EnvConfig.editor
     return editor if editor
 
-    # Find VS Code, Sublime Text, Textmate, BBEdit, or vim
-    editor = %w[code subl mate bbedit vim].find do |candidate|
+    # Find VS Code variants, Sublime Text, Textmate, BBEdit, or vim
+    editor = %w[code codium cursor code-insiders subl mate bbedit vim].find do |candidate|
       candidate if which(candidate, ORIGINAL_PATHS)
     end
     editor ||= "vim"
