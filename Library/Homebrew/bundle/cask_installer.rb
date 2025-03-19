@@ -33,8 +33,6 @@ module Homebrew
 
         full_name = options.fetch(:full_name, name)
 
-        p [:installed_casks, installed_casks]
-        p [:upgrading?, upgrading?(no_upgrade, name, options)]
         install_result = if installed_casks.include?(name) && upgrading?(no_upgrade, name, options)
           status = "#{options[:greedy] ? "may not be" : "not"} up-to-date"
           puts "Upgrading #{name} cask. It is installed but #{status}." if verbose
