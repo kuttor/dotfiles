@@ -83,6 +83,13 @@ RSpec.describe Homebrew::Services::Cli do
   end
 
   describe "#run" do
+    it "checks missing file causes error" do
+      expect(Homebrew::Services::System).not_to receive(:root?)
+      expect do
+        services_cli.start(["service_name"], "/non/existent/path")
+      end.to raise_error(UsageError, "Invalid usage: Provided service file does not exist")
+    end
+
     it "checks empty targets cause no error" do
       expect(Homebrew::Services::System).not_to receive(:root?)
       services_cli.run([])
@@ -225,6 +232,7 @@ RSpec.describe Homebrew::Services::Cli do
             service_name:     "service.name",
             service_startup?: false,
           ),
+          nil,
           enable: false,
         )
       end.to output("==> Successfully ran `name` (label: service.name)\n").to_stdout
@@ -242,6 +250,7 @@ RSpec.describe Homebrew::Services::Cli do
             service_name:     "service.name",
             service_startup?: true,
           ),
+          nil,
           enable: false,
         )
       end.to output("==> Successfully ran `name` (label: service.name)\n").to_stdout
@@ -261,6 +270,7 @@ RSpec.describe Homebrew::Services::Cli do
             service_startup?: false,
             service_file:     instance_double(Pathname, exist?: false),
           ),
+          nil,
           enable: false,
         )
       end.to output("==> Successfully ran `name` (label: service.name)\n").to_stdout
@@ -280,6 +290,7 @@ RSpec.describe Homebrew::Services::Cli do
             service_startup?: false,
             dest:             instance_double(Pathname, exist?: true),
           ),
+          nil,
           enable: false,
         )
       end.to output("==> Successfully ran `name` (label: service.name)\n").to_stdout
@@ -299,6 +310,7 @@ RSpec.describe Homebrew::Services::Cli do
             service_startup?: false,
             dest:             instance_double(Pathname, exist?: true),
           ),
+          nil,
           enable: true,
         )
       end.to output("==> Successfully started `name` (label: service.name)\n").to_stdout

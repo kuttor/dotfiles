@@ -79,8 +79,19 @@ module Homebrew
       end
 
       # Run a service as defined in the formula. This does not clean the service file like `start` does.
-      sig { params(targets: T::Array[Services::FormulaWrapper], verbose: T::Boolean).void }
-      def self.run(targets, verbose: false)
+      sig {
+        params(
+          targets:      T::Array[Services::FormulaWrapper],
+          service_file: T.nilable(String),
+          verbose:      T::Boolean,
+        ).void
+      }
+      def self.run(targets, service_file = nil, verbose: false)
+        if service_file.present?
+          file = Pathname.new service_file
+          raise UsageError, "Provided service file does not exist" unless file.exist?
+        end
+
         targets.each do |service|
           if service.pid?
             puts "Service `#{service.name}` already running, use `#{bin} restart #{service.name}` to restart."
@@ -90,7 +101,7 @@ module Homebrew
             next
           end
 
-          service_load(service, enable: false)
+          service_load(service, file, enable: false)
         end
       end
 
@@ -98,7 +109,7 @@ module Homebrew
       sig {
         params(
           targets:      T::Array[Services::FormulaWrapper],
-          service_file: T.nilable(T.any(String, Pathname)),
+          service_file: T.nilable(String),
           verbose:      T::Boolean,
         ).void
       }
@@ -137,7 +148,7 @@ module Homebrew
 
           next if take_root_ownership(service).nil? && System.root?
 
-          service_load(service, enable: true)
+          service_load(service, nil, enable: true)
         end
       end
 
@@ -313,8 +324,8 @@ module Homebrew
         System::Systemctl.run("enable", service.service_name) if enable
       end
 
-      sig { params(service: Services::FormulaWrapper, enable: T::Boolean).void }
-      def self.service_load(service, enable:)
+      sig { params(service: Services::FormulaWrapper, file: T.nilable(Pathname), enable: T::Boolean).void }
+      def self.service_load(service, file, enable:)
         if System.root? && !service.service_startup?
           opoo "#{service.name} must be run as non-root to start at user login!"
         elsif !System.root? && service.service_startup?
@@ -322,12 +333,12 @@ module Homebrew
         end
 
         if System.launchctl?
-          file = enable ? service.dest : service.service_file
+          file ||= enable ? service.dest : service.service_file
           launchctl_load(service, file:, enable:)
         elsif System.systemctl?
           # Systemctl loads based upon location so only install service
           # file when it is not installed. Used with the `run` command.
-          install_service_file(service, nil) unless service.dest.exist?
+          install_service_file(service, file) unless service.dest.exist?
           systemd_load(service, enable:)
         end
 
