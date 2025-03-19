@@ -26,6 +26,7 @@ module Homebrew
       end
 
       def install(name, preinstall: true, verbose: false, force: false, **_options)
+        # odeprecated "`brew bundle` `whalebrew` support", "using `whalebrew` directly"
         return true unless preinstall
 
         puts "Installing #{name} image. It is not currently installed." if verbose
