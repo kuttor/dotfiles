@@ -10,7 +10,7 @@ module Homebrew
         usage_banner <<~EOS
           `bundle` [<subcommand>]
 
-          Bundler for non-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store, Whalebrew and Visual Studio Code.
+          Bundler for non-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store, Whalebrew and Visual Studio Code (and forks/variants).
 
           `brew bundle` [`install`]:
           Install and upgrade (by default) all dependencies from the `Brewfile`.
@@ -105,10 +105,10 @@ module Homebrew
         switch "--whalebrew",
                description: "`list` or `dump` Whalebrew dependencies."
         switch "--vscode",
-               description: "`list` or `dump` VSCode extensions."
+               description: "`list` or `dump` VSCode (and forks/variants) extensions."
         switch "--no-vscode",
                env:         :bundle_dump_no_vscode,
-               description: "`dump` without VSCode extensions. " \
+               description: "`dump` without VSCode (and forks/variants) extensions. " \
                             "This is enabled by default if `$HOMEBREW_BUNDLE_DUMP_NO_VSCODE` is set."
         switch "--describe",
                env:         :bundle_dump_describe,

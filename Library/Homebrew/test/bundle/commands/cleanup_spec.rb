@@ -186,6 +186,7 @@ RSpec.describe Homebrew::Bundle::Commands::Cleanup do
   context "when there are VSCode extensions to uninstall" do
     before do
       described_class.reset!
+      allow(Homebrew::Bundle).to receive(:which_vscode).and_return(Pathname("code"))
       allow(described_class).to receive_messages(casks_to_uninstall:             [],
                                                  formulae_to_uninstall:          [],
                                                  taps_to_untap:                  [],
@@ -193,7 +194,7 @@ RSpec.describe Homebrew::Bundle::Commands::Cleanup do
     end
 
     it "uninstalls extensions" do
-      expect(Kernel).to receive(:system).with("code", "--uninstall-extension", "GitHub.codespaces")
+      expect(Kernel).to receive(:system).with(Pathname("code"), "--uninstall-extension", "GitHub.codespaces")
       expect(described_class).to receive(:system_output_no_stderr).and_return("")
       described_class.run(force: true)
     end

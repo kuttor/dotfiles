@@ -20,7 +20,7 @@ RSpec.describe Homebrew::Bundle::VscodeExtensionInstaller do
 
   context "when VSCode is installed" do
     before do
-      allow(Homebrew::Bundle).to receive(:vscode_installed?).and_return(true)
+      allow(Homebrew::Bundle).to receive(:which_vscode).and_return(Pathname("code"))
     end
 
     context "when extension is installed" do
@@ -45,8 +45,8 @@ RSpec.describe Homebrew::Bundle::VscodeExtensionInstaller do
       end
 
       it "installs extension" do
-        expect(Homebrew::Bundle).to receive(:system).with("code", "--install-extension", "foo",
-                                                          verbose: false).and_return(true)
+        expect(Homebrew::Bundle).to \
+          receive(:system).with(Pathname("code"), "--install-extension", "foo", verbose: false).and_return(true)
         expect(described_class.preinstall("foo")).to be(true)
         expect(described_class.install("foo")).to be(true)
       end
@@ -56,8 +56,8 @@ RSpec.describe Homebrew::Bundle::VscodeExtensionInstaller do
         expect(Process::UID).to receive(:re_exchangeable?).and_return(true).once
         expect(Process::UID).to receive(:re_exchange).twice
 
-        expect(Homebrew::Bundle).to receive(:system).with("code", "--install-extension", "foo",
-                                                          verbose: false).and_return(true)
+        expect(Homebrew::Bundle).to \
+          receive(:system).with(Pathname("code"), "--install-extension", "foo", verbose: false).and_return(true)
         expect(described_class.preinstall("foo")).to be(true)
         expect(described_class.install("foo")).to be(true)
       end
@@ -67,8 +67,8 @@ RSpec.describe Homebrew::Bundle::VscodeExtensionInstaller do
         expect(Process::UID).to receive(:re_exchangeable?).and_return(false).once
         expect(Process::Sys).to receive(:seteuid).twice
 
-        expect(Homebrew::Bundle).to receive(:system).with("code", "--install-extension", "foo",
-                                                          verbose: false).and_return(true)
+        expect(Homebrew::Bundle).to \
+          receive(:system).with(Pathname("code"), "--install-extension", "foo", verbose: false).and_return(true)
         expect(described_class.preinstall("foo")).to be(true)
         expect(described_class.install("foo")).to be(true)
       end
