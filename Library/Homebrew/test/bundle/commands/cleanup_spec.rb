@@ -80,7 +80,7 @@ RSpec.describe Homebrew::Bundle::Commands::Cleanup do
 
     it "computes which tap to untap" do
       allow(Homebrew::Bundle::TapDumper).to \
-        receive(:tap_names).and_return(%w[z homebrew/bundle homebrew/core homebrew/tap])
+        receive(:tap_names).and_return(%w[z homebrew/core homebrew/tap])
       expect(described_class.taps_to_untap).to eql(%w[z])
     end
 
@@ -88,7 +88,7 @@ RSpec.describe Homebrew::Bundle::Commands::Cleanup do
       allow(Formulary).to \
         receive(:factory).and_raise(TapFormulaUnavailableError.new(Tap.fetch("homebrew/tap"), "foo"))
       allow(Homebrew::Bundle::TapDumper).to \
-        receive(:tap_names).and_return(%w[z homebrew/bundle homebrew/core homebrew/tap])
+        receive(:tap_names).and_return(%w[z homebrew/core homebrew/tap])
       expect(described_class.taps_to_untap).to eql(%w[z homebrew/tap])
     end
 

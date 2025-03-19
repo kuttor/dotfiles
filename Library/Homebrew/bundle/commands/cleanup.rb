@@ -151,7 +151,7 @@ module Homebrew
           dependencies.uniq
         end
 
-        IGNORED_TAPS = %w[homebrew/core homebrew/bundle].freeze
+        IGNORED_TAPS = %w[homebrew/core].freeze
 
         def taps_to_untap(global: false, file: nil)
           @dsl ||= Brewfile.read(global:, file:)
