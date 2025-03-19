@@ -149,6 +149,7 @@ __brew_internal_commands() {
     'bump-formula-pr:Create a pull request to update formula with a new URL or a new tag'
     'bump-revision:Create a commit to increment the revision of formula'
     'bump-unversioned-casks:Check all casks with unversioned URLs in a given tap for updates'
+    'bundle:Bundler for non-Ruby dependencies from Homebrew, Homebrew Cask, Mac App Store, Whalebrew and Visual Studio Code'
     'casks:List all locally installable casks including short names'
     'cat:Display the source of a formula or cask'
     'cleanup:Remove stale lock files and outdated downloads for all formulae and casks, and remove old versions of installed formulae'
@@ -641,6 +642,35 @@ _brew_bump_unversioned_casks() {
     '*::tap:__brew_any_tap'
 }
 
+# brew bundle
+_brew_bundle() {
+  _arguments \
+    '(--no-vscode)--all[`list` all dependencies]' \
+    '--cask[`list` or `dump` Homebrew cask dependencies]' \
+    '--cleanup[`install` performs cleanup operation, same as running `cleanup --force`. This is enabled by default if `$HOMEBREW_BUNDLE_INSTALL_CLEANUP` is set and `--global` is passed]' \
+    '--debug[Display any debugging information]' \
+    '--describe[`dump` adds a description comment above each line, unless the dependency does not have a description. This is enabled by default if `$HOMEBREW_BUNDLE_DUMP_DESCRIBE` is set]' \
+    '--file[Read from or write to the `Brewfile` from this location. Use `--file=-` to pipe to stdin/stdout]' \
+    '--force[`install` runs with `--force`/`--overwrite`. `dump` overwrites an existing `Brewfile`. `cleanup` actually performs its cleanup operations]' \
+    '--formula[`list` or `dump` Homebrew formula dependencies]' \
+    '--global[Read from or write to the `Brewfile` from `$HOMEBREW_BUNDLE_FILE_GLOBAL` (if set), `${XDG_CONFIG_HOME}/homebrew/Brewfile` (if `$XDG_CONFIG_HOME` is set), `~/.homebrew/Brewfile` or `~/.Brewfile` otherwise]' \
+    '--help[Show this message]' \
+    '(--upgrade)--install[Run `install` before continuing to other operations e.g. `exec`]' \
+    '--mas[`list` or `dump` Mac App Store dependencies]' \
+    '--no-restart[`dump` does not add `restart_service` to formula lines]' \
+    '--no-upgrade[`install` does not run `brew upgrade` on outdated dependencies. `check` does not check for outdated dependencies. Note they may still be upgraded by `brew install` if needed. This is enabled by default if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set]' \
+    '(--all --vscode)--no-vscode[`dump` without VSCode extensions. This is enabled by default if `$HOMEBREW_BUNDLE_DUMP_NO_VSCODE` is set]' \
+    '--quiet[Make some output more quiet]' \
+    '--tap[`list` or `dump` Homebrew tap dependencies]' \
+    '(--install)--upgrade[`install` runs `brew upgrade` on outdated dependencies, even if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set. ]' \
+    '--verbose[`install` prints output from commands as they are run. `check` lists all missing dependencies]' \
+    '(--no-vscode)--vscode[`list` or `dump` VSCode extensions]' \
+    '--whalebrew[`list` or `dump` Whalebrew dependencies]' \
+    '--zap[`cleanup` casks using the `zap` command instead of `uninstall`]' \
+    - subcommand \
+    '*::subcommand:(install dump cleanup check exec list sh env edit)'
+}
+
 # brew casks
 _brew_casks() {
   _arguments \
@@ -731,7 +761,7 @@ _brew_contributions() {
     '--from[Date (ISO-8601 format) to start searching contributions. Omitting this flag searches the last year]' \
     '--help[Show this message]' \
     '--quiet[Make some output more quiet]' \
-    '--repositories[Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `bundle`, `command-not-found` and `test-bot`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. ]' \
+    '--repositories[Specify a comma-separated list of repositories to search. Supported repositories: `brew`, `core`, `cask`, `command-not-found` and `test-bot`. Omitting this flag, or specifying `--repositories=primary`, searches only the main repositories: brew,core,cask. Specifying `--repositories=all`, searches all repositories. ]' \
     '--to[Date (ISO-8601 format) to stop searching contributions]' \
     '--user[Specify a comma-separated list of GitHub usernames or email addresses to find contributions from. Omitting this flag searches maintainers]' \
     '--verbose[Make some output more verbose]'
