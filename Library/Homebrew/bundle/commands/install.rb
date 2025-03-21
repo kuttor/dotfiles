@@ -5,10 +5,8 @@ module Homebrew
   module Bundle
     module Commands
       module Install
-        module_function
-
-        def run(global: false, file: nil, no_lock: false, no_upgrade: false, verbose: false, force: false,
-                quiet: false)
+        def self.run(global: false, file: nil, no_lock: false, no_upgrade: false, verbose: false, force: false,
+                     quiet: false)
           @dsl = Brewfile.read(global:, file:)
           Homebrew::Bundle::Installer.install(
             @dsl.entries,
@@ -16,7 +14,7 @@ module Homebrew
           ) || exit(1)
         end
 
-        def dsl
+        def self.dsl
           @dsl
         end
       end

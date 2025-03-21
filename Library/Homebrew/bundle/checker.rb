@@ -55,8 +55,6 @@ module Homebrew
         end
       end
 
-      module_function
-
       CheckResult = Struct.new :work_to_be_done, :errors
 
       CHECKS = {
@@ -68,7 +66,7 @@ module Homebrew
         formulae_to_start:     "Services",
       }.freeze
 
-      def check(global: false, file: nil, exit_on_first_error: false, no_upgrade: false, verbose: false)
+      def self.check(global: false, file: nil, exit_on_first_error: false, no_upgrade: false, verbose: false)
         @dsl ||= Brewfile.read(global:, file:)
 
         check_method_names = CHECKS.keys
@@ -89,49 +87,49 @@ module Homebrew
         CheckResult.new work_to_be_done, errors
       end
 
-      def casks_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
+      def self.casks_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
         Homebrew::Bundle::Checker::CaskChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
         )
       end
 
-      def formulae_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
+      def self.formulae_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
         Homebrew::Bundle::Checker::BrewChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
         )
       end
 
-      def taps_to_tap(exit_on_first_error: false, no_upgrade: false, verbose: false)
+      def self.taps_to_tap(exit_on_first_error: false, no_upgrade: false, verbose: false)
         Homebrew::Bundle::Checker::TapChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
         )
       end
 
-      def apps_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
+      def self.apps_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
         Homebrew::Bundle::Checker::MacAppStoreChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
         )
       end
 
-      def extensions_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
+      def self.extensions_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
         Homebrew::Bundle::Checker::VscodeExtensionChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
         )
       end
 
-      def formulae_to_start(exit_on_first_error: false, no_upgrade: false, verbose: false)
+      def self.formulae_to_start(exit_on_first_error: false, no_upgrade: false, verbose: false)
         Homebrew::Bundle::Checker::BrewServiceChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
         )
       end
 
-      def reset!
+      def self.reset!
         @dsl = nil
         Homebrew::Bundle::CaskDumper.reset!
         Homebrew::Bundle::BrewDumper.reset!

@@ -4,10 +4,8 @@
 module Homebrew
   module Bundle
     module Installer
-      module_function
-
-      def install(entries, global: false, file: nil, no_lock: false, no_upgrade: false, verbose: false, force: false,
-                  quiet: false)
+      def self.install(entries, global: false, file: nil, no_lock: false, no_upgrade: false, verbose: false,
+                       force: false, quiet: false)
         success = 0
         failure = 0
 

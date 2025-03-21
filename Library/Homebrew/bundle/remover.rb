@@ -4,9 +4,7 @@
 module Homebrew
   module Bundle
     module Remover
-      module_function
-
-      def remove(*args, type:, global:, file:)
+      def self.remove(*args, type:, global:, file:)
         brewfile = Brewfile.read(global:, file:)
         content = brewfile.input
         entry_type = type.to_s if type != :none
@@ -36,7 +34,7 @@ module Homebrew
         Dumper.write_file path, new_content
       end
 
-      def possible_names(formula_name, raise_error: true)
+      def self.possible_names(formula_name, raise_error: true)
         formula = Formulary.factory(formula_name)
         [formula_name, formula.name, formula.full_name, *formula.aliases, *formula.oldnames].compact.uniq
       rescue FormulaUnavailableError

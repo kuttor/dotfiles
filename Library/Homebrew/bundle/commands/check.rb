@@ -5,12 +5,10 @@ module Homebrew
   module Bundle
     module Commands
       module Check
-        module_function
-
         ARROW = "→"
         FAILURE_MESSAGE = "brew bundle can't satisfy your Brewfile's dependencies."
 
-        def run(global: false, file: nil, no_upgrade: false, verbose: false)
+        def self.run(global: false, file: nil, no_upgrade: false, verbose: false)
           output_errors = verbose
           exit_on_first_error = !verbose
           check_result = Homebrew::Bundle::Checker.check(

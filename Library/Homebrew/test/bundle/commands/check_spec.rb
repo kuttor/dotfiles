@@ -74,7 +74,7 @@ RSpec.describe Homebrew::Bundle::Commands::Check do
 
   context "when apps are not installed", :needs_macos do
     it "raises an error" do
-      allow_any_instance_of(Homebrew::Bundle::MacAppStoreDumper).to receive(:app_ids).and_return([])
+      allow(Homebrew::Bundle::MacAppStoreDumper).to receive(:app_ids).and_return([])
       allow(Homebrew::Bundle::BrewInstaller).to receive(:upgradable_formulae).and_return([])
       allow_any_instance_of(Pathname).to receive(:read).and_return("mas 'foo', id: 123")
       expect { do_check }.to raise_error(SystemExit)
