@@ -58,7 +58,7 @@ module Homebrew
         switch "--json", description: "Output as JSON."
         switch "--no-wait", description: "Don't wait for `stop` to finish stopping the service."
         conflicts "--max-wait=", "--no-wait"
-        named_args max: 2
+        named_args
       end
 
       sig { override.void }
@@ -93,14 +93,14 @@ module Homebrew
         end
 
         # Parse arguments.
-        subcommand, formula, = args.named
+        subcommand, *formulae = args.named
 
         no_named_formula_commands = [
           *Homebrew::Services::Commands::List::TRIGGERS,
           *Homebrew::Services::Commands::Cleanup::TRIGGERS,
         ]
         if no_named_formula_commands.include?(subcommand)
-          raise UsageError, "The `#{subcommand}` subcommand does not accept a formula argument!" if formula
+          raise UsageError, "The `#{subcommand}` subcommand does not accept a formula argument!" if formulae.present?
           raise UsageError, "The `#{subcommand}` subcommand does not accept the --all argument!" if args.all?
         end
 
@@ -117,7 +117,7 @@ module Homebrew
           end
         end
 
-        opoo "The --all argument overrides provided formula argument!" if formula.present? && args.all?
+        opoo "The --all argument overrides provided formula argument!" if formulae.present? && args.all?
 
         targets = if args.all?
           if subcommand == "start"
@@ -133,8 +133,8 @@ module Homebrew
           else
             Homebrew::Services::Formulae.available_services
           end
-        elsif formula
-          [Homebrew::Services::FormulaWrapper.new(Formulary.factory(formula))]
+        elsif formulae.present?
+          formulae.map { |formula| Homebrew::Services::FormulaWrapper.new(Formulary.factory(formula)) }
         else
           []
         end
