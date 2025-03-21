@@ -4,9 +4,7 @@
 module Homebrew
   module Bundle
     module TapInstaller
-      module_function
-
-      def preinstall(name, verbose: false, **_options)
+      def self.preinstall(name, verbose: false, **_options)
         if installed_taps.include? name
           puts "Skipping install of #{name} tap. It is already installed." if verbose
           return false
@@ -15,7 +13,7 @@ module Homebrew
         true
       end
 
-      def install(name, preinstall: true, verbose: false, force: false, **options)
+      def self.install(name, preinstall: true, verbose: false, force: false, **options)
         return true unless preinstall
 
         puts "Installing #{name} tap. It is not currently installed." if verbose
@@ -38,7 +36,7 @@ module Homebrew
         true
       end
 
-      def installed_taps
+      def self.installed_taps
         @installed_taps ||= Homebrew::Bundle::TapDumper.tap_names
       end
     end

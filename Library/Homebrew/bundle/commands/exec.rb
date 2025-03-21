@@ -10,8 +10,6 @@ module Homebrew
   module Bundle
     module Commands
       module Exec
-        module_function
-
         # Homebrew's global environment variables that we don't want to leak into
         # the `brew bundle exec` environment.
         HOMEBREW_ENV_CLEANUP = %w[
@@ -49,7 +47,7 @@ module Homebrew
 
         PATH_LIKE_ENV_REGEX = /.+#{File::PATH_SEPARATOR}/
 
-        def run(*args, global: false, file: nil, subcommand: "")
+        def self.run(*args, global: false, file: nil, subcommand: "")
           # Cleanup Homebrew's global environment
           HOMEBREW_ENV_CLEANUP.each { |key| ENV.delete(key) }
 
