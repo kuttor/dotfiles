@@ -92,7 +92,7 @@ class GitHubRunnerMatrix
     end
 
     LinuxRunnerSpec.new(
-      name:      "Linux",
+      name:      "Linux #{arch}",
       runner:    linux_runner,
       container: {
         image:   "ghcr.io/homebrew/ubuntu22.04:master",
