@@ -835,6 +835,10 @@ upgrade *`formula`* if it is already installed but outdated.
 
 : Install but skip linking the keg into the prefix.
 
+`--as-dependency`
+
+: Install but mark as installed as a dependency and not installed on request.
+
 `--bottle-arch`
 
 : Optimise bottles for the specified architecture rather than the oldest
