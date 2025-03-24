@@ -8,6 +8,7 @@ require "bundle/mac_app_store_installer"
 require "bundle/whalebrew_installer"
 require "bundle/vscode_extension_installer"
 require "bundle/tap_installer"
+require "bundle/skipper"
 
 module Homebrew
   module Bundle
