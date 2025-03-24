@@ -32,6 +32,7 @@ module Homebrew
         end
 
         def checkable_entries(all_entries)
+          require "bundle/skipper"
           all_entries.select { |e| e.type == self.class::PACKAGE_TYPE }
                      .reject(&Bundle::Skipper.method(:skip?))
         end
@@ -67,6 +68,7 @@ module Homebrew
       }.freeze
 
       def self.check(global: false, file: nil, exit_on_first_error: false, no_upgrade: false, verbose: false)
+        require "bundle/brewfile"
         @dsl ||= Brewfile.read(global:, file:)
 
         check_method_names = CHECKS.keys
@@ -88,6 +90,7 @@ module Homebrew
       end
 
       def self.casks_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
+        require "bundle/cask_checker"
         Homebrew::Bundle::Checker::CaskChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
@@ -95,6 +98,7 @@ module Homebrew
       end
 
       def self.formulae_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
+        require "bundle/brew_checker"
         Homebrew::Bundle::Checker::BrewChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
@@ -102,6 +106,7 @@ module Homebrew
       end
 
       def self.taps_to_tap(exit_on_first_error: false, no_upgrade: false, verbose: false)
+        require "bundle/tap_checker"
         Homebrew::Bundle::Checker::TapChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
@@ -109,6 +114,7 @@ module Homebrew
       end
 
       def self.apps_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
+        require "bundle/mac_app_store_checker"
         Homebrew::Bundle::Checker::MacAppStoreChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
@@ -116,6 +122,7 @@ module Homebrew
       end
 
       def self.extensions_to_install(exit_on_first_error: false, no_upgrade: false, verbose: false)
+        require "bundle/vscode_extension_checker"
         Homebrew::Bundle::Checker::VscodeExtensionChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
@@ -123,6 +130,7 @@ module Homebrew
       end
 
       def self.formulae_to_start(exit_on_first_error: false, no_upgrade: false, verbose: false)
+        require "bundle/brew_service_checker"
         Homebrew::Bundle::Checker::BrewServiceChecker.new.find_actionable(
           @dsl.entries,
           exit_on_first_error:, no_upgrade:, verbose:,
@@ -130,6 +138,12 @@ module Homebrew
       end
 
       def self.reset!
+        require "bundle/cask_dumper"
+        require "bundle/brew_dumper"
+        require "bundle/mac_app_store_dumper"
+        require "bundle/tap_dumper"
+        require "bundle/brew_services"
+
         @dsl = nil
         Homebrew::Bundle::CaskDumper.reset!
         Homebrew::Bundle::BrewDumper.reset!

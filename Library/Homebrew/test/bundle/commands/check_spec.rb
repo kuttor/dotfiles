@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 require "bundle"
+require "bundle/commands/check"
+require "bundle/brew_checker"
+require "bundle/mac_app_store_checker"
+require "bundle/vscode_extension_checker"
+require "bundle/brew_installer"
+require "bundle/mac_app_store_installer"
 
 RSpec.describe Homebrew::Bundle::Commands::Check do
   let(:do_check) do

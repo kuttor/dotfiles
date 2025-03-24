@@ -57,6 +57,7 @@ module Homebrew
 
           command = args.first
 
+          require "bundle/brewfile"
           @dsl = Brewfile.read(global:, file:)
 
           require "formula"

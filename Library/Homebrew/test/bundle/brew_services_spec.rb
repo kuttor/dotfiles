@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "bundle"
+require "bundle/brew_services"
 
 RSpec.describe Homebrew::Bundle::BrewServices do
   describe ".started_services" do

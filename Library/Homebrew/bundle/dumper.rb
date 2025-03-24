@@ -14,6 +14,12 @@ module Homebrew
       end
 
       def self.build_brewfile(describe:, no_restart:, brews:, taps:, casks:, mas:, whalebrew:, vscode:)
+        require "bundle/tap_dumper"
+        require "bundle/cask_dumper"
+        require "bundle/mac_app_store_dumper"
+        require "bundle/whalebrew_dumper"
+        require "bundle/vscode_extension_dumper"
+
         content = []
         content << TapDumper.dump if taps
         content << BrewDumper.dump(describe:, no_restart:) if brews
@@ -33,6 +39,7 @@ module Homebrew
       end
 
       def self.brewfile_path(global: false, file: nil)
+        require "bundle/brewfile"
         Brewfile.path(dash_writes_to_stdout: true, global:, file:)
       end
 
