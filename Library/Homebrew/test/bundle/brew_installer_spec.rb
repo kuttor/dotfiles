@@ -2,6 +2,9 @@
 
 require "bundle"
 require "formula"
+require "bundle/brew_installer"
+require "bundle/brew_dumper"
+require "bundle/brew_services"
 
 RSpec.describe Homebrew::Bundle::BrewInstaller do
   let(:formula_name) { "mysql" }

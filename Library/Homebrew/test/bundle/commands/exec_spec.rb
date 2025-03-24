@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "bundle"
+require "bundle/commands/exec"
 
 RSpec.describe Homebrew::Bundle::Commands::Exec do
   context "when a Brewfile is not found" do

@@ -40,6 +40,7 @@ module Homebrew
       end
 
       def self.installed_images
+        require "bundle/whalebrew_dumper"
         @installed_images ||= Homebrew::Bundle::WhalebrewDumper.images
       end
     end

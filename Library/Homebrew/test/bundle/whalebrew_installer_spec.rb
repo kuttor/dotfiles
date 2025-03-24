@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "bundle"
+require "bundle/whalebrew_installer"
 
 RSpec.describe Homebrew::Bundle::WhalebrewInstaller do
   before do
