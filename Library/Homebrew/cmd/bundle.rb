@@ -210,18 +210,17 @@ module Homebrew
             _subcommand, *named_args = args.named
             named_args
           when "sh"
-            preferred_shell = Utils::Shell.preferred_path(default: "/bin/bash")
-            subshell = case Utils::Shell.preferred
-            when :zsh
-              "PS1='brew bundle %B%F{green}%~%f%b$ ' #{preferred_shell} -d -f"
-            when :bash
-              "PS1=\"brew bundle \\[\\033[1;32m\\]\\w\\[\\033[0m\\]$ \" #{preferred_shell} --noprofile --norc"
-            else
-              "PS1=\"brew bundle \\[\\033[1;32m\\]\\w\\[\\033[0m\\]$ \" #{preferred_shell}"
+            preferred_path = Utils::Shell.preferred_path(default: "/bin/bash")
+            notice = unless Homebrew::EnvConfig.no_env_hints?
+              <<~EOS
+                Your shell has been configured to use a build environment from your `Brewfile`.
+                This should help you build stuff.
+                Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+                When done, type `exit`.
+              EOS
             end
-            $stdout.flush
             ENV["HOMEBREW_FORCE_API_AUTO_UPDATE"] = nil
-            [subshell]
+            [Utils::Shell.shell_with_prompt("brew bundle", preferred_path:, notice:)]
           when "env"
             ["env"]
           end
