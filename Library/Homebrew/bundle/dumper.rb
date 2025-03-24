@@ -15,6 +15,7 @@ module Homebrew
 
       def self.build_brewfile(describe:, no_restart:, brews:, taps:, casks:, mas:, whalebrew:, vscode:)
         require "bundle/tap_dumper"
+        require "bundle/brew_dumper"
         require "bundle/cask_dumper"
         require "bundle/mac_app_store_dumper"
         require "bundle/whalebrew_dumper"
