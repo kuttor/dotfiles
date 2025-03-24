@@ -27,6 +27,7 @@ module Homebrew
         @start_service = options.fetch(:start_service, @restart_service)
         @link = options.fetch(:link, nil)
         @postinstall = options.fetch(:postinstall, nil)
+        @version_file = options.fetch(:version_file, nil)
         @changed = nil
       end
 
@@ -57,6 +58,19 @@ module Homebrew
 
           postinstall_result = postinstall_change_state!(verbose:)
           result &&= postinstall_result
+
+          if result && @version_file.present?
+            # Use the version from the environment if it hasn't changed.
+            version = if !changed? && (env_version = Bundle.formula_versions_from_env[@name])
+              env_version
+            else
+              Formula[@full_name].version.to_s
+            end
+            version_path = Pathname.new(@version_file)
+            version_path.write("#{version}\n")
+
+            puts "Wrote #{@name} version #{version} to #{@version_file}" if verbose
+          end
         end
 
         result
