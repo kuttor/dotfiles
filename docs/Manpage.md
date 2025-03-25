@@ -3976,6 +3976,11 @@ command execution e.g. `$(cat file)`.
   
   *Default:* `$EDITOR` or `$VISUAL`.
 
+`HOMEBREW_ENV_SYNC_STRICT`
+
+: If set, `brew *env-sync` will only sync the exact installed versions of
+  formulae.
+
 `HOMEBREW_EVAL_ALL`
 
 : If set, `brew` commands evaluate all formulae and casks, executing their
