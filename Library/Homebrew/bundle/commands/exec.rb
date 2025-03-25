@@ -51,6 +51,10 @@ module Homebrew
           # Cleanup Homebrew's global environment
           HOMEBREW_ENV_CLEANUP.each { |key| ENV.delete(key) }
 
+          # Store the old environment so we can check if things were already set
+          # before we start mutating it.
+          old_env = ENV.to_h
+
           # Setup Homebrew's ENV extensions
           ENV.activate_extensions!
           raise UsageError, "No command to execute was specified!" if args.blank?
@@ -141,7 +145,13 @@ module Homebrew
           raise "command was not found in your PATH: #{command}" if command.exclude?("/") && which(command).nil?
 
           if subcommand == "env"
-            ENV.each do |key, value|
+            ENV.sort.each do |key, value|
+              # No need to export empty values.
+              next if value.blank?
+
+              # Skip exporting non-Homebrew things that were already set in the old environment.
+              next if !key.start_with?("HOMEBREW_") && old_env.key?(key) && old_env[key] == value
+
               puts "export #{key}=\"#{Utils::Shell.sh_quote(value)}\""
             end
             return
