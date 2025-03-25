@@ -82,6 +82,34 @@ module Homebrew
 
         return_value
       end
+
+      def formula_versions_from_env
+        @formula_versions_from_env ||= begin
+          formula_versions = {}
+
+          ENV.each do |key, value|
+            match = key.match(/^HOMEBREW_BUNDLE_EXEC_FORMULA_VERSION_(.+)$/)
+            next if match.blank?
+
+            formula_name = match[1]
+            next if formula_name.blank?
+
+            ENV.delete(key)
+            formula_versions[formula_name.downcase] = value
+          end
+
+          formula_versions
+        end
+      end
+
+      sig { void }
+      def reset!
+        @mas_installed = nil
+        @vscode_installed = nil
+        @whalebrew_installed = nil
+        @cask_installed = nil
+        @formula_versions_from_env = nil
+      end
     end
   end
 end
