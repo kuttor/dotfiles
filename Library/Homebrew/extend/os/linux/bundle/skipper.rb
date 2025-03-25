@@ -1,6 +1,9 @@
 # typed: true # rubocop:todo Sorbet/StrictSigil
 # frozen_string_literal: true
 
+require "cask/cask_loader"
+require "cask/installer"
+
 module OS
   module Linux
     module Bundle
