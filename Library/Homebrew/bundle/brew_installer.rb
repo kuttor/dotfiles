@@ -63,10 +63,10 @@ module Homebrew
             # Use the version from the environment if it hasn't changed.
             # Strip the revision number because it's not part of the non-Homebrew version.
             version = if !changed? && (env_version = Bundle.formula_versions_from_env[@name])
-              env_version
+              PkgVersion.parse(env_version).version
             else
-              Formula[@full_name].version.to_s
-            end.sub(/_\d+$/, "")
+              Formula[@full_name].version
+            end.to_s
             version_path = Pathname.new(@version_file)
             version_path.write("#{version}\n")
 
