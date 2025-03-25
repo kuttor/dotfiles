@@ -29,6 +29,7 @@ RSpec.describe Homebrew::Bundle::Commands::Exec do
     context "with valid command setup" do
       before do
         allow(described_class).to receive(:exec).and_return(nil)
+        Homebrew::Bundle.reset!
       end
 
       it "does not raise an error" do
