@@ -142,7 +142,7 @@ module Homebrew
 
           if subcommand == "env"
             ENV.each do |key, value|
-              puts "export #{key}=\"#{value}\""
+              puts "export #{key}=\"#{Utils::Shell.sh_quote(value)}\""
             end
             return
           end
