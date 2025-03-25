@@ -2498,11 +2498,15 @@ Build bottles for these formulae with GitHub Actions.
 
 `--linux`
 
-: Dispatch bottle for Linux (using GitHub runners).
+: Dispatch bottle for Linux x86\_64 (using GitHub runners).
+
+`--linux-arm64`
+
+: Dispatch bottle for Linux arm64 (using GitHub runners).
 
 `--linux-self-hosted`
 
-: Dispatch bottle for Linux (using self-hosted runner).
+: Dispatch bottle for Linux x86\_64 (using self-hosted runner).
 
 `--linux-wheezy`
 
