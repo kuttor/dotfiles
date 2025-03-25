@@ -2,6 +2,7 @@
 
 require "bundle"
 require "bundle/whalebrew_installer"
+require "bundle/whalebrew_dumper"
 
 RSpec.describe Homebrew::Bundle::WhalebrewInstaller do
   before do
