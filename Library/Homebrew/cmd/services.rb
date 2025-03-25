@@ -38,8 +38,9 @@ module Homebrew
           [`sudo`] `brew services start` (<formula>|`--all`|`--file=`):
           Start the service <formula> immediately and register it to launch at login (or boot).
 
-          [`sudo`] `brew services stop` (<formula>|`--all`):
-          Stop the service <formula> immediately and unregister it from launching at login (or boot).
+          [`sudo`] `brew services stop` (`--keep`) (`--no-wait`|`--max-wait=`) (<formula>|`--all`):
+          Stop the service <formula> immediately and unregister it from launching at login (or boot),
+          unless `--keep` is specified.
 
           [`sudo`] `brew services kill` (<formula>|`--all`):
           Stop the service <formula> immediately but keep it registered to launch at login (or boot).
@@ -57,6 +58,7 @@ module Homebrew
         switch "--all", description: "Run <subcommand> on all services."
         switch "--json", description: "Output as JSON."
         switch "--no-wait", description: "Don't wait for `stop` to finish stopping the service."
+        switch "--keep", description: "When stopped, don't unregister the service from launching at login (or boot)."
         conflicts "--max-wait=", "--no-wait"
         named_args
       end
@@ -117,6 +119,14 @@ module Homebrew
           end
         end
 
+        unless Homebrew::Services::Commands::Stop::TRIGGERS.include?(subcommand)
+          raise UsageError, "The `#{subcommand}` subcommand does not accept the --keep argument!" if args.keep?
+          raise UsageError, "The `#{subcommand}` subcommand does not accept the --no-wait argument!" if args.no_wait?
+          if args.max_wait
+            raise UsageError, "The `#{subcommand}` subcommand does not accept the --max-wait= argument!"
+          end
+        end
+
         opoo "The --all argument overrides provided formula argument!" if formulae.present? && args.all?
 
         targets = if args.all?
@@ -162,8 +172,13 @@ module Homebrew
         when *Homebrew::Services::Commands::Start::TRIGGERS
           Homebrew::Services::Commands::Start.run(targets, args.file, verbose: args.verbose?)
         when *Homebrew::Services::Commands::Stop::TRIGGERS
-          max_wait = args.max_wait.to_f
-          Homebrew::Services::Commands::Stop.run(targets, verbose: args.verbose?, no_wait: args.no_wait?, max_wait:)
+          Homebrew::Services::Commands::Stop.run(
+            targets,
+            verbose:  args.verbose?,
+            no_wait:  args.no_wait?,
+            max_wait: args.max_wait.to_f,
+            keep:     args.keep?,
+          )
         when *Homebrew::Services::Commands::Kill::TRIGGERS
           Homebrew::Services::Commands::Kill.run(targets, verbose: args.verbose?)
         else
