@@ -233,6 +233,7 @@ module Homebrew
           Please audit and test formula before submitting:
             HOMEBREW_NO_INSTALL_FROM_API=1 brew audit --new #{fc.name}
             HOMEBREW_NO_INSTALL_FROM_API=1 brew install --build-from-source --verbose --debug #{fc.name}
+            HOMEBREW_NO_INSTALL_FROM_API=1 brew test #{fc.name}
         EOS
         path
       end
