@@ -45,7 +45,7 @@ module Homebrew
           [`sudo`] `brew services kill` (<formula>|`--all`):
           Stop the service <formula> immediately but keep it registered to launch at login (or boot).
 
-          [`sudo`] `brew services restart` (<formula>|`--all`):
+          [`sudo`] `brew services restart` (<formula>|`--all`|`--file=`):
           Stop (if necessary) and start the service <formula> immediately and register it to launch at login (or boot).
 
           [`sudo`] `brew services cleanup`:
@@ -110,6 +110,7 @@ module Homebrew
           file_commands = [
             *Homebrew::Services::Commands::Start::TRIGGERS,
             *Homebrew::Services::Commands::Run::TRIGGERS,
+            *Homebrew::Services::Commands::Restart::TRIGGERS,
           ]
           if file_commands.exclude?(subcommand)
             raise UsageError, "The `#{subcommand}` subcommand does not accept the --file= argument!"
@@ -166,7 +167,7 @@ module Homebrew
         when *Homebrew::Services::Commands::Info::TRIGGERS
           Homebrew::Services::Commands::Info.run(targets, verbose: args.verbose?, json: args.json?)
         when *Homebrew::Services::Commands::Restart::TRIGGERS
-          Homebrew::Services::Commands::Restart.run(targets, verbose: args.verbose?)
+          Homebrew::Services::Commands::Restart.run(targets, args.file, verbose: args.verbose?)
         when *Homebrew::Services::Commands::Run::TRIGGERS
           Homebrew::Services::Commands::Run.run(targets, args.file, verbose: args.verbose?)
         when *Homebrew::Services::Commands::Start::TRIGGERS
