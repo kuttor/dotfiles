@@ -22,9 +22,9 @@ module OS
             installer = ::Cask::Installer.new(cask)
             installer.check_stanza_os_requirements
 
-            true
-          rescue ::Cask::CaskError
             false
+          rescue ::Cask::CaskError
+            true
           end
 
           def skip?(entry, silent: false)
