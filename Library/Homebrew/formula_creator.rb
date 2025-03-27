@@ -87,7 +87,11 @@ module Homebrew
 
         if @github
           @desc = @github["description"]
-          @homepage = @github["homepage"]
+          @homepage = if @github["homepage"].empty?
+            "https://github.com/#{@github["full_name"]}"
+          else
+            @github["homepage"]
+          end
           @license = @github["license"]["spdx_id"] if @github["license"]
         end
       end
