@@ -89,6 +89,8 @@ module Homebrew
                             "even if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set. "
         switch "--install",
                description: "Run `install` before continuing to other operations e.g. `exec`."
+        switch "--services",
+               description: "Temporarily start services while running the `exec` or `sh` command."
         switch "-f", "--force",
                description: "`install` runs with `--force`/`--overwrite`. " \
                             "`dump` overwrites an existing `Brewfile`. " \
@@ -238,7 +240,7 @@ module Homebrew
             ["env"]
           end
           require "bundle/commands/exec"
-          Homebrew::Bundle::Commands::Exec.run(*named_args, global:, file:, subcommand:)
+          Homebrew::Bundle::Commands::Exec.run(*named_args, global:, file:, subcommand:, services: args.services?)
         when "list"
           require "bundle/commands/list"
           Homebrew::Bundle::Commands::List.run(

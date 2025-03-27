@@ -47,7 +47,7 @@ module Homebrew
 
         PATH_LIKE_ENV_REGEX = /.+#{File::PATH_SEPARATOR}/
 
-        def self.run(*args, global: false, file: nil, subcommand: "")
+        def self.run(*args, global: false, file: nil, subcommand: "", services: false)
           # Cleanup Homebrew's global environment
           HOMEBREW_ENV_CLEANUP.each { |key| ENV.delete(key) }
 
@@ -157,7 +157,18 @@ module Homebrew
             return
           end
 
-          exec(*args)
+          if services
+            require "bundle/commands/services"
+
+            exit_code = 0
+            Services.run_services(@dsl.entries) do
+              Kernel.system(*args)
+              exit_code = $CHILD_STATUS.exitstatus
+            end
+            exit!(exit_code)
+          else
+            exec(*args)
+          end
         end
       end
     end

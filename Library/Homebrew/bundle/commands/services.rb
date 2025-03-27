@@ -114,6 +114,12 @@ module Homebrew
               yield
             ensure
               stop_services(entries)
+
+              conflicting_services.each do |conflict|
+                if conflict["running"] && conflict["registered"] && !Bundle::BrewServices.run(conflict["name"])
+                  opoo "Failed to restart #{conflict["name"]} service"
+                end
+              end
             end
           end
         end
