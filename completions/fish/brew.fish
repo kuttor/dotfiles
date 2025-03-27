@@ -1800,6 +1800,13 @@ __fish_brew_complete_arg 'update' -l quiet -d 'Make some output more quiet'
 __fish_brew_complete_arg 'update' -l verbose -d 'Print the directories checked and `git` operations performed'
 
 
+__fish_brew_complete_cmd 'update-if-needed' 'Runs `brew update --auto-update` only if needed'
+__fish_brew_complete_arg 'update-if-needed' -l debug -d 'Display any debugging information'
+__fish_brew_complete_arg 'update-if-needed' -l help -d 'Show this message'
+__fish_brew_complete_arg 'update-if-needed' -l quiet -d 'Make some output more quiet'
+__fish_brew_complete_arg 'update-if-needed' -l verbose -d 'Make some output more verbose'
+
+
 __fish_brew_complete_cmd 'update-license-data' 'Update SPDX license data in the Homebrew repository'
 __fish_brew_complete_arg 'update-license-data' -l debug -d 'Display any debugging information'
 __fish_brew_complete_arg 'update-license-data' -l help -d 'Show this message'

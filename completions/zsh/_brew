@@ -232,6 +232,7 @@ __brew_internal_commands() {
     'unpin:Unpin formula, allowing them to be upgraded by `brew upgrade` formula'
     'untap:Remove a tapped formula repository'
     'update:Fetch the newest version of Homebrew and all formulae from GitHub using `git`(1) and perform any necessary migrations'
+    'update-if-needed:Runs `brew update --auto-update` only if needed'
     'update-license-data:Update SPDX license data in the Homebrew repository'
     'update-maintainers:Update the list of maintainers in the `Homebrew/brew` README'
     'update-python-resources:Update versions for PyPI resource blocks in formula'
@@ -2221,6 +2222,15 @@ _brew_update() {
     '--merge[Use `git merge` to apply updates (rather than `git rebase`)]' \
     '--quiet[Make some output more quiet]' \
     '--verbose[Print the directories checked and `git` operations performed]'
+}
+
+# brew update-if-needed
+_brew_update_if_needed() {
+  _arguments \
+    '--debug[Display any debugging information]' \
+    '--help[Show this message]' \
+    '--quiet[Make some output more quiet]' \
+    '--verbose[Make some output more verbose]'
 }
 
 # brew update-license-data
