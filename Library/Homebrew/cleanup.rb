@@ -558,7 +558,7 @@ module Homebrew
       return unless bootsnap.directory?
 
       bootsnap.each_child do |subdir|
-        cleanup_path(subdir) { FileUtils.rm_r(subdir) } if subdir.basename.to_s != Homebrew.bootsnap_key
+        cleanup_path(subdir) { FileUtils.rm_r(subdir) } if subdir.basename.to_s != Homebrew::Bootsnap.key
       end
     end
 
