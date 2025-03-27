@@ -1610,6 +1610,12 @@ and perform any necessary migrations.
 
 : Display a trace of all shell commands as they are executed.
 
+### `update-if-needed`
+
+Runs `brew update --auto-update` only if needed. This is a good replacement for
+`brew update` in scripts where you want the no-op case to be both possible and
+really fast.
+
 ### `update-reset` \[*`repository`* ...\]
 
 Fetch and reset Homebrew and all tap repositories (or any specified
