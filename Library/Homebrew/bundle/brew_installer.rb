@@ -113,12 +113,15 @@ module Homebrew
 
       def service_change_state!(verbose:)
         require "bundle/brew_services"
+
+        file = Bundle::BrewServices.versioned_service_file(@name)
+
         if restart_service_needed?
           puts "Restarting #{@name} service." if verbose
-          BrewServices.restart(@full_name, verbose:)
+          BrewServices.restart(@full_name, file:, verbose:)
         elsif start_service_needed?
           puts "Starting #{@name} service." if verbose
-          BrewServices.start(@full_name, verbose:)
+          BrewServices.start(@full_name, file:, verbose:)
         else
           true
         end
