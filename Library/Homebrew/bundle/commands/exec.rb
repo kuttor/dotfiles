@@ -123,11 +123,11 @@ module Homebrew
               ENV[key] = if key.include?("PATH") && value.match?(PATH_LIKE_ENV_REGEX)
                 rejected_opts = []
                 path = PATH.new(ENV.fetch("PATH"))
-                           .reject do |value|
-                  rejected_opts << value if value.match?(opt)
+                           .reject do |path_value|
+                  rejected_opts << path_value if path_value.match?(opt)
                 end
-                rejected_opts.each do |value|
-                  path.prepend(value.gsub(opt, cellar))
+                rejected_opts.each do |path_value|
+                  path.prepend(path_value.gsub(opt, cellar))
                 end
                 path.to_s
               else
