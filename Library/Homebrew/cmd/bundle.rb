@@ -61,12 +61,6 @@ module Homebrew
 
           `brew bundle env`:
           Print the environment variables that would be set in a `brew bundle exec` environment.
-
-          `brew bundle services run`:
-          Start services for formulae specified in the `Brewfile`.
-
-          `brew bundle services stop`:
-          Stop services for formulae specified in the `Brewfile`.
         EOS
         flag "--file=",
              description: "Read from or write to the `Brewfile` from this location. " \
@@ -141,7 +135,7 @@ module Homebrew
         require "bundle"
 
         subcommand = args.named.first.presence
-        if %w[exec add remove services].exclude?(subcommand) && args.named.size > 1
+        if %w[exec add remove].exclude?(subcommand) && args.named.size > 1
           raise UsageError, "This command does not take more than 1 subcommand argument."
         end
 
@@ -281,10 +275,6 @@ module Homebrew
             require "bundle/commands/remove"
             Homebrew::Bundle::Commands::Remove.run(*named_args, type: selected_types.first, global:, file:)
           end
-        when "services"
-          _, *named_args = args.named
-          require "bundle/commands/services"
-          Homebrew::Bundle::Commands::Services.run(*named_args, global:, file:)
         else
           raise UsageError, "unknown subcommand: #{subcommand}"
         end
