@@ -662,6 +662,7 @@ _brew_bundle() {
     '--no-upgrade[`install` does not run `brew upgrade` on outdated dependencies. `check` does not check for outdated dependencies. Note they may still be upgraded by `brew install` if needed. This is enabled by default if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set]' \
     '(--all --vscode)--no-vscode[`dump` without VSCode (and forks/variants) extensions. This is enabled by default if `$HOMEBREW_BUNDLE_DUMP_NO_VSCODE` is set]' \
     '--quiet[Make some output more quiet]' \
+    '--services[Temporarily start services while running the `exec` or `sh` command]' \
     '--tap[`list` or `dump` Homebrew tap dependencies]' \
     '(--install)--upgrade[`install` runs `brew upgrade` on outdated dependencies, even if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set. ]' \
     '--verbose[`install` prints output from commands as they are run. `check` lists all missing dependencies]' \
@@ -1896,6 +1897,7 @@ _brew_services() {
     '--file[Use the service file from this location to `start` the service]' \
     '--help[Show this message]' \
     '--json[Output as JSON]' \
+    '--keep[When stopped, don'\''t unregister the service from launching at login (or boot)]' \
     '(--no-wait)--max-wait[Wait at most this many seconds for `stop` to finish stopping a service. Omit this flag or set this to zero (0) seconds to wait indefinitely]' \
     '(--max-wait)--no-wait[Don'\''t wait for `stop` to finish stopping the service]' \
     '--quiet[Make some output more quiet]' \

@@ -664,6 +664,7 @@ _brew_bundle() {
       --no-upgrade
       --no-vscode
       --quiet
+      --services
       --tap
       --upgrade
       --verbose
@@ -2334,6 +2335,7 @@ _brew_services() {
       --file
       --help
       --json
+      --keep
       --max-wait
       --no-wait
       --quiet

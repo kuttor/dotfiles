@@ -251,6 +251,10 @@ flags which will help with finding keg-only dependencies like `openssl`,
 
 : Run `install` before continuing to other operations e.g. `exec`.
 
+`--services`
+
+: Temporarily start services while running the `exec` or `sh` command.
+
 `-f`, `--force`
 
 : `install` runs with `--force`/`--overwrite`. `dump` overwrites an existing
@@ -1391,17 +1395,17 @@ If `sudo` is passed, operate on `/Library/LaunchDaemons` or
 : Start the service *`formula`* immediately and register it to launch at login
   (or boot).
 
-\[`sudo`\] `brew services stop` (*`formula`*\|`--all`)
+\[`sudo`\] `brew services stop` (`--keep`) (`--no-wait`\|`--max-wait=`) (*`formula`*\|`--all`)
 
 : Stop the service *`formula`* immediately and unregister it from launching at
-  login (or boot).
+  login (or boot), unless `--keep` is specified.
 
 \[`sudo`\] `brew services kill` (*`formula`*\|`--all`)
 
 : Stop the service *`formula`* immediately but keep it registered to launch at
   login (or boot).
 
-\[`sudo`\] `brew services restart` (*`formula`*\|`--all`)
+\[`sudo`\] `brew services restart` (*`formula`*\|`--all`\|`--file=`)
 
 : Stop (if necessary) and start the service *`formula`* immediately and register
   it to launch at login (or boot).
@@ -1434,6 +1438,10 @@ If `sudo` is passed, operate on `/Library/LaunchDaemons` or
 `--no-wait`
 
 : Don't wait for `stop` to finish stopping the service.
+
+`--keep`
+
+: When stopped, don't unregister the service from launching at login (or boot).
 
 ### `setup-ruby` \[*`command`* ...\]
 
