@@ -84,7 +84,9 @@ module Homebrew
           r.owner = self
           filepath = r.fetch
           html_doctype_prefix = "<!doctype html"
-          raise "Downloaded URL is not archive" if File.read(filepath, html_doctype_prefix.length).downcase.start_with?(html_doctype_prefix)
+          if File.read(filepath, html_doctype_prefix.length).downcase.start_with?(html_doctype_prefix)
+            raise "Downloaded URL is not archive"
+          end
 
           @sha256 = filepath.sha256
         end
