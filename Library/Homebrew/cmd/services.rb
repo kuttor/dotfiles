@@ -60,7 +60,7 @@ module Homebrew
         switch "--no-wait", description: "Don't wait for `stop` to finish stopping the service."
         switch "--keep", description: "When stopped, don't unregister the service from launching at login (or boot)."
         conflicts "--max-wait=", "--no-wait"
-        named_args
+        named_args %w[list info run start stop kill restart cleanup]
       end
 
       sig { override.void }

@@ -2346,6 +2346,7 @@ _brew_services() {
       ;;
     *) ;;
   esac
+  __brewcomp "list info run start stop kill restart cleanup"
 }
 
 _brew_setup_ruby() {
