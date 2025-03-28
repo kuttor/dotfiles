@@ -1902,7 +1902,9 @@ _brew_services() {
     '(--max-wait)--no-wait[Don'\''t wait for `stop` to finish stopping the service]' \
     '--quiet[Make some output more quiet]' \
     '--sudo-service-user[When run as root on macOS, run the service(s) as this user]' \
-    '--verbose[Make some output more verbose]'
+    '--verbose[Make some output more verbose]' \
+    - subcommand \
+    '*::subcommand:(list info run start stop kill restart cleanup)'
 }
 
 # brew setup-ruby
