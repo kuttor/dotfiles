@@ -83,6 +83,8 @@ module Homebrew
                             "even if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set. "
         switch "--install",
                description: "Run `install` before continuing to other operations e.g. `exec`."
+        switch "--services",
+               description: "Temporarily start services while running the `exec` or `sh` command."
         switch "-f", "--force",
                description: "`install` runs with `--force`/`--overwrite`. " \
                             "`dump` overwrites an existing `Brewfile`. " \
@@ -133,7 +135,7 @@ module Homebrew
         require "bundle"
 
         subcommand = args.named.first.presence
-        if ["exec", "add", "remove"].exclude?(subcommand) && args.named.size > 1
+        if %w[exec add remove].exclude?(subcommand) && args.named.size > 1
           raise UsageError, "This command does not take more than 1 subcommand argument."
         end
 
@@ -232,7 +234,7 @@ module Homebrew
             ["env"]
           end
           require "bundle/commands/exec"
-          Homebrew::Bundle::Commands::Exec.run(*named_args, global:, file:, subcommand:)
+          Homebrew::Bundle::Commands::Exec.run(*named_args, global:, file:, subcommand:, services: args.services?)
         when "list"
           require "bundle/commands/list"
           Homebrew::Bundle::Commands::List.run(

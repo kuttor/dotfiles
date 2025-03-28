@@ -38,13 +38,14 @@ module Homebrew
           [`sudo`] `brew services start` (<formula>|`--all`|`--file=`):
           Start the service <formula> immediately and register it to launch at login (or boot).
 
-          [`sudo`] `brew services stop` (<formula>|`--all`):
-          Stop the service <formula> immediately and unregister it from launching at login (or boot).
+          [`sudo`] `brew services stop` (`--keep`) (`--no-wait`|`--max-wait=`) (<formula>|`--all`):
+          Stop the service <formula> immediately and unregister it from launching at login (or boot),
+          unless `--keep` is specified.
 
           [`sudo`] `brew services kill` (<formula>|`--all`):
           Stop the service <formula> immediately but keep it registered to launch at login (or boot).
 
-          [`sudo`] `brew services restart` (<formula>|`--all`):
+          [`sudo`] `brew services restart` (<formula>|`--all`|`--file=`):
           Stop (if necessary) and start the service <formula> immediately and register it to launch at login (or boot).
 
           [`sudo`] `brew services cleanup`:
@@ -57,6 +58,7 @@ module Homebrew
         switch "--all", description: "Run <subcommand> on all services."
         switch "--json", description: "Output as JSON."
         switch "--no-wait", description: "Don't wait for `stop` to finish stopping the service."
+        switch "--keep", description: "When stopped, don't unregister the service from launching at login (or boot)."
         conflicts "--max-wait=", "--no-wait"
         named_args
       end
@@ -108,12 +110,21 @@ module Homebrew
           file_commands = [
             *Homebrew::Services::Commands::Start::TRIGGERS,
             *Homebrew::Services::Commands::Run::TRIGGERS,
+            *Homebrew::Services::Commands::Restart::TRIGGERS,
           ]
           if file_commands.exclude?(subcommand)
             raise UsageError, "The `#{subcommand}` subcommand does not accept the --file= argument!"
           elsif args.all?
             raise UsageError,
                   "The `#{subcommand}` subcommand does not accept the --all and --file= arguments at the same time!"
+          end
+        end
+
+        unless Homebrew::Services::Commands::Stop::TRIGGERS.include?(subcommand)
+          raise UsageError, "The `#{subcommand}` subcommand does not accept the --keep argument!" if args.keep?
+          raise UsageError, "The `#{subcommand}` subcommand does not accept the --no-wait argument!" if args.no_wait?
+          if args.max_wait
+            raise UsageError, "The `#{subcommand}` subcommand does not accept the --max-wait= argument!"
           end
         end
 
@@ -156,14 +167,19 @@ module Homebrew
         when *Homebrew::Services::Commands::Info::TRIGGERS
           Homebrew::Services::Commands::Info.run(targets, verbose: args.verbose?, json: args.json?)
         when *Homebrew::Services::Commands::Restart::TRIGGERS
-          Homebrew::Services::Commands::Restart.run(targets, verbose: args.verbose?)
+          Homebrew::Services::Commands::Restart.run(targets, args.file, verbose: args.verbose?)
         when *Homebrew::Services::Commands::Run::TRIGGERS
           Homebrew::Services::Commands::Run.run(targets, args.file, verbose: args.verbose?)
         when *Homebrew::Services::Commands::Start::TRIGGERS
           Homebrew::Services::Commands::Start.run(targets, args.file, verbose: args.verbose?)
         when *Homebrew::Services::Commands::Stop::TRIGGERS
-          max_wait = args.max_wait.to_f
-          Homebrew::Services::Commands::Stop.run(targets, verbose: args.verbose?, no_wait: args.no_wait?, max_wait:)
+          Homebrew::Services::Commands::Stop.run(
+            targets,
+            verbose:  args.verbose?,
+            no_wait:  args.no_wait?,
+            max_wait: args.max_wait.to_f,
+            keep:     args.keep?,
+          )
         when *Homebrew::Services::Commands::Kill::TRIGGERS
           Homebrew::Services::Commands::Kill.run(targets, verbose: args.verbose?)
         else
