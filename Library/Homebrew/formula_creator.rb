@@ -93,7 +93,7 @@ module Homebrew
 
         if @github
           @desc = @github["description"]
-          @homepage = if @github["homepage"].nil?
+          @homepage = if @github["homepage"].blank?
             "https://github.com/#{@github["full_name"]}"
           else
             @github["homepage"]
