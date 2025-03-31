@@ -47,7 +47,6 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         uses: Homebrew/actions/setup-commit-signing@master
         with:
-          ssh: true
           signing_key: ${{ secrets.BREWTESTBOT_SSH_SIGNING_KEY }}
 
       - name: Check out pull request
