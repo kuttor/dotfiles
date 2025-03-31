@@ -92,7 +92,7 @@ An unsupported configuration is one in which:
 - Homebrew will refuse to run at all without third-party patching
 - You must migrate to another tool (e.g. Tigerbrew, MacPorts, Linux system package managers etc.)
 
-Tier 3 configurations include:
+Unsupported configurations include:
 
 - FreeBSD
 - macOS 10.6
