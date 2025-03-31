@@ -26,7 +26,8 @@ module Homebrew
         @checks ||= Diagnostic::Checks.new
         opoo <<~EOS
           You passed `--cc=#{cc}`.
-          #{@checks.please_create_pull_requests}
+
+          #{@checks.support_tier_message(tier: 3)}
         EOS
       end
 

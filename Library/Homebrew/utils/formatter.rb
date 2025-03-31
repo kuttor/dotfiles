@@ -25,8 +25,12 @@ module Formatter
     "#{Tty.green}#{string}#{Tty.default}"
   end
 
-  def self.option(string)
+  def self.bold(string)
     "#{Tty.bold}#{string}#{Tty.reset}"
+  end
+
+  def self.option(string)
+    bold(string)
   end
 
   # Format a string as success, with an optional label.

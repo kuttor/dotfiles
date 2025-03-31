@@ -388,6 +388,10 @@ jobs:
 
       - run: brew test-bot --only-cleanup-before
 
+      - name: Setup environment variables
+        if: matrix.container == 'ghcr.io/homebrew/ubuntu20.04:latest'
+        run: echo "HOMEBREW_GLIBC_TESTING=1" >> "$GITHUB_ENV"
+
       - run: brew test-bot --only-setup
 
       - run: brew install gnu-tar

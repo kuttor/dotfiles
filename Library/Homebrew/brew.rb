@@ -169,8 +169,13 @@ rescue BuildError => e
   Utils::Analytics.report_build_error(e)
   e.dump(verbose: args&.verbose? || false)
 
-  if OS.unsupported_configuration?
-    $stderr.puts "#{Tty.bold}Do not report this issue: you are running in an unsupported configuration.#{Tty.reset}"
+  if OS.not_tier_one_configuration?
+    $stderr.puts <<~EOS
+      This build failure was expected, as this is not a Tier 1 configuration:
+        #{Formatter.url("https://docs.brew.sh/Support-Tiers")}
+      #{Formatter.bold("Do not report any issues to Homebrew/* repositories!")}
+      Read the above document instead before opening any issues or PRs.
+    EOS
   elsif e.formula.head? || e.formula.deprecated? || e.formula.disabled?
     reason = if e.formula.head?
       "was built from an unstable upstream --HEAD"
@@ -182,14 +187,7 @@ rescue BuildError => e
     $stderr.puts <<~EOS
       #{e.formula.name}'s formula #{reason}.
       This build failure is expected behaviour.
-      Do not create issues about this on Homebrew's GitHub repositories.
-      Any opened issues will be immediately closed without response.
-      Do not ask for help from Homebrew or its maintainers on social media.
-      You may ask for help in Homebrew's discussions but are unlikely to receive a response.
-      Try to figure out the problem yourself and submit a fix as a pull request.
-      We will review it but may or may not accept it.
     EOS
-
   end
 
   exit 1
@@ -211,15 +209,20 @@ rescue Exception => e # rubocop:disable Lint/RescueException
   require "utils/backtrace"
   $stderr.puts Utils::Backtrace.clean(e) if args&.debug? || ARGV.include?("--debug") || !method_deprecated_error
 
-  if OS.unsupported_configuration?
-    $stderr.puts "#{Tty.bold}Do not report this issue: you are running in an unsupported configuration.#{Tty.reset}"
+  if OS.not_tier_one_configuration?
+    $stderr.puts <<~EOS
+      This error was expected, as this is not a Tier 1 configuration:
+        #{Formatter.url("https://docs.brew.sh/Support-Tiers")}
+      #{Formatter.bold("Do not report any issues to Homebrew/* repositories!")}
+      Read the above document instead before opening any issues or PRs.
+    EOS
   elsif Homebrew::EnvConfig.no_auto_update? &&
         (fetch_head = HOMEBREW_REPOSITORY/".git/FETCH_HEAD") &&
         (!fetch_head.exist? || (fetch_head.mtime.to_date < Date.today))
     $stderr.puts "#{Tty.bold}You have disabled automatic updates and have not updated today.#{Tty.reset}"
     $stderr.puts "#{Tty.bold}Do not report this issue until you've run `brew update` and tried again.#{Tty.reset}"
   elsif (issues_url = (method_deprecated_error && e.issues_url) || Utils::Backtrace.tap_error_url(e))
-    $stderr.puts "If reporting this issue please do so at (not Homebrew/brew or Homebrew/homebrew-core):"
+    $stderr.puts "If reporting this issue please do so at (not Homebrew/* repositories):"
     $stderr.puts "  #{Formatter.url(issues_url)}"
   elsif internal_cmd
     $stderr.puts "#{Tty.bold}Please report this issue:#{Tty.reset}"

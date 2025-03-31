@@ -18,6 +18,7 @@ defaults:
     shell: bash -xeuo pipefail {0}
 
 env:
+  # odeprecated: remove 18.04 image in Homebrew >=4.5
   VERSIONS: '["18.04", "20.04", "22.04", "24.04"]'
 
 jobs:
@@ -145,9 +146,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # odeprecated: remove 18.04 image in Homebrew >=4.5
         version: ["18.04", "20.04", "22.04", "24.04"]
         arch: ["x86_64", "arm64"]
         exclude:
+          # odeprecated: move this to 20.04 in Homebrew >=4.5 and remove 18.04 image
           - version: "18.04"
             arch: "arm64"
           - arch: ${{ github.event_name == 'release' && 'arm64' }}
@@ -172,9 +175,9 @@ jobs:
           VERSION: ${{ matrix.version }}
           PUSH: ${{ needs.generate-tags.outputs.push }}
         run: |
+          # odeprecated: move this to 20.04 in Homebrew >=4.5 and remove 18.04 image
           if [[ "${VERSION}" == "18.04" ]]; then
-            # odeprecated: remove this in Homebrew >=4.5
-            echo "The homebrew/ubuntu18.04 image is deprecated and will soon be retired. Use homebrew/ubuntu22.04 or homebrew/ubuntu24.04 or homebrew/ubuntu20.04 or homebrew/brew." > .docker-deprecate
+            echo "The homebrew/ubuntu18.04 image is deprecated and will soon be retired. Use homebrew/ubuntu22.04 or homebrew/ubuntu24.04 or homebrew/brew." > .docker-deprecate
           fi
 
           filter="$(printf '.["%s"]' "${VERSION}")"
@@ -197,10 +200,22 @@ jobs:
           build-args: version=${{ matrix.version }}
           labels: ${{ needs.generate-tags.outputs.labels }}
 
-      - name: Run brew test-bot --only-setup
-        run: docker run --env HOMEBREW_ARM64_TESTING --rm brew brew test-bot --only-setup
+      - name: Set environment variables
+        run: |
+          if [[ "${ARCH}" == "arm64" ]]; then
+            echo "HOMEBREW_ARM64_TESTING=1" >> "$GITHUB_ENV"
+          fi
+
+          # odeprecated: remove 18.04 in Homebrew >=4.5
+          if [[ "${VERSION}" == "18.04" || "${VERSION}" == "20.04" ]]; then
+            echo "HOMEBREW_GLIBC_TESTING=1" >> "$GITHUB_ENV"
+          fi
         env:
-          HOMEBREW_ARM64_TESTING: 1
+          VERSION: ${{ matrix.version }}
+          ARCH: ${{ matrix.arch }}
+
+      - name: Run brew test-bot --only-setup
+        run: docker run --env HOMEBREW_ARM64_TESTING --env HOMEBREW_GLIBC_TESTING --rm brew brew test-bot --only-setup
 
       - name: Log in to GitHub Packages (BrewTestBot)
         if: fromJSON(steps.attributes.outputs.push)
@@ -286,6 +301,7 @@ jobs:
           done <<<"$(jq --raw-output "${filter}" <<<"${TAGS}")"
 
           image_args=("ghcr.io/homebrew/ubuntu${VERSION}@sha256:$(<"${RUNNER_TEMP}/digests/${VERSION}-x86_64")")
+          # odeprecated: move this to 20.04 in Homebrew >=4.5 and remove 18.04 image
           if [[ "${VERSION}" != 18.04 ]]; then
             image_args+=("ghcr.io/homebrew/ubuntu${VERSION}@sha256:$(<"${RUNNER_TEMP}/digests/${VERSION}-arm64")")
           fi

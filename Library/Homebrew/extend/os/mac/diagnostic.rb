@@ -110,10 +110,12 @@ module OS
           return if Homebrew::EnvConfig.developer?
           return if ENV["HOMEBREW_INTEGRATION_TEST"]
 
+          tier = 2
           who = +"We"
           what = if OS::Mac.version.prerelease?
             "pre-release version"
           elsif OS::Mac.version.outdated_release?
+            tier = 3
             who << " (and Apple)"
             "old version"
           end
@@ -124,7 +126,8 @@ module OS
           <<~EOS
             You are using macOS #{MacOS.version}.
             #{who} do not provide support for this #{what}.
-            #{please_create_pull_requests(what)}
+
+            #{support_tier_message(tier:)}
           EOS
         end
 
@@ -145,7 +148,8 @@ module OS
           <<~EOS
             You have booted macOS using OpenCore Legacy Patcher.
             We do not provide support for this configuration.
-            #{please_create_pull_requests}
+
+            #{support_tier_message(tier: 2)}
           EOS
         end
 
@@ -169,6 +173,8 @@ module OS
             Your Xcode (#{MacOS::Xcode.version}) is outdated.
             Please update to Xcode #{MacOS::Xcode.latest_version} (or delete it).
             #{MacOS::Xcode.update_instructions}
+
+            #{support_tier_message(tier: 2)}
           EOS
 
           if OS::Mac.version.prerelease?
@@ -198,6 +204,8 @@ module OS
           <<~EOS
             A newer Command Line Tools release is available.
             #{MacOS::CLT.update_instructions}
+
+            #{support_tier_message(tier: 2)}
           EOS
         end
 
@@ -409,6 +417,8 @@ module OS
 
             You should set the "HOMEBREW_TEMP" environment variable to a suitable
             directory on the same volume as your Cellar.
+
+            #{support_tier_message(tier: 2)}
           EOS
         end
 
