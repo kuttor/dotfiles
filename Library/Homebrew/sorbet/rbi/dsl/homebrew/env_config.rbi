@@ -43,9 +43,6 @@ module Homebrew::EnvConfig
     sig { returns(T.nilable(::String)) }
     def bat_theme; end
 
-    sig { returns(T::Boolean) }
-    def bootsnap?; end
-
     sig { returns(String) }
     def bottle_domain; end
 

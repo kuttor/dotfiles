@@ -127,6 +127,10 @@ If there's no Homebrew Portable Ruby available for your processor:
   if [[ -x "${vendor_ruby_path}" ]]
   then
     HOMEBREW_RUBY_PATH="${vendor_ruby_path}"
+    HOMEBREW_BOOTSNAP_GEM_PATH="$(
+      shopt -s nullglob
+      echo "${vendor_ruby_root}"/lib/ruby/gems/*/gems/bootsnap-*/lib/bootsnap 2>/dev/null
+    )"
     TERMINFO_DIRS="${vendor_ruby_terminfo}"
     if [[ "${vendor_ruby_current_version}" != "${HOMEBREW_PORTABLE_RUBY_VERSION}" ]]
     then
@@ -146,7 +150,7 @@ If there's no Homebrew Portable Ruby available for your processor:
     fi
   fi
 
-  export HOMEBREW_RUBY_PATH
+  export HOMEBREW_RUBY_PATH HOMEBREW_BOOTSNAP_GEM_PATH
   [[ -n "${HOMEBREW_LINUX}" && -n "${TERMINFO_DIRS}" ]] && export TERMINFO_DIRS
 }
 

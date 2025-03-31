@@ -3843,11 +3843,6 @@ command execution e.g. `$(cat file)`.
   
   *Default:* `$BAT_THEME`.
 
-`HOMEBREW_BOOTSNAP`
-
-: If set, use Bootsnap to speed up repeated `brew` calls. A no-op on Linux when
-  not using Homebrew's vendored, relocatable Ruby.
-
 `HOMEBREW_BOTTLE_DOMAIN`
 
 : Use this URL as the download mirror for bottles. If bottles at that URL are

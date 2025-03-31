@@ -5,7 +5,7 @@
 # work as the first item in `brew.rb` so we can load gems with Bundler when
 # needed before anything else is loaded (e.g. `json`).
 
-require "English"
+Homebrew::FastBootRequire.from_rubylibdir("English")
 
 module Homebrew
   # Keep in sync with the `Gemfile.lock`'s BUNDLED WITH.

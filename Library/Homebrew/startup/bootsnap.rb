@@ -34,17 +34,21 @@ module Homebrew
     end
 
     private_class_method def self.enabled?
-      HOMEBREW_USING_PORTABLE_RUBY && ENV["HOMEBREW_NO_BOOTSNAP"].nil? && !ENV["HOMEBREW_BOOTSNAP"].nil?
+      !ENV["HOMEBREW_BOOTSNAP_GEM_PATH"].to_s.empty? && ENV["HOMEBREW_NO_BOOTSNAP"].nil?
     end
 
     def self.load!(compile_cache: true)
       return unless enabled?
 
-      require "bootsnap"
+      require ENV.fetch("HOMEBREW_BOOTSNAP_GEM_PATH")
 
       ::Bootsnap.setup(
         cache_dir:,
         ignore_directories:,
+        # In development environments the bootsnap compilation cache is
+        # generated on the fly when source files are loaded.
+        # https://github.com/Shopify/bootsnap?tab=readme-ov-file#precompilation
+        development_mode:   true,
         load_path_cache:    true,
         compile_cache_iseq: compile_cache,
         compile_cache_yaml: compile_cache,
