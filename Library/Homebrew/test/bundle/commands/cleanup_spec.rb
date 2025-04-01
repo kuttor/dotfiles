@@ -44,7 +44,7 @@ RSpec.describe Homebrew::Bundle::Commands::Cleanup do
 
     it "computes which formulae to uninstall" do
       dependencies_arrays_hash = { dependencies: [], build_dependencies: [] }
-      allow(Homebrew::Bundle::BrewDumper).to receive(:formulae).and_return [
+      formulae_hash = [
         { name: "a2", full_name: "a2", aliases: ["a"], dependencies: ["d"] },
         { name: "c", full_name: "c" },
         { name: "d", full_name: "homebrew/tap/d", aliases: ["d2"] },
@@ -70,6 +70,17 @@ RSpec.describe Homebrew::Bundle::Commands::Cleanup do
         { name: "builddependency2", full_name: "builddependency2" },
         { name: "caskdependency", full_name: "homebrew/tap/caskdependency" },
       ].map { |formula| dependencies_arrays_hash.merge(formula) }
+      allow(Homebrew::Bundle::BrewDumper).to receive(:formulae).and_return(formulae_hash)
+
+      formulae_hash.each do |hash_formula|
+        name = hash_formula[:name]
+        full_name = hash_formula[:full_name]
+        tap_name = full_name.rpartition("/").first.presence || "homebrew/core"
+        tap = Tap.fetch(tap_name)
+        f = formula(name, tap:) { url "#{name}-1.0" }
+        stub_formula_loader f, full_name
+      end
+
       allow(Homebrew::Bundle::CaskDumper).to receive(:formula_dependencies).and_return(%w[caskdependency])
       expect(described_class.formulae_to_uninstall).to eql %w[
         c
@@ -91,6 +102,19 @@ RSpec.describe Homebrew::Bundle::Commands::Cleanup do
       allow(Homebrew::Bundle::TapDumper).to \
         receive(:tap_names).and_return(%w[z homebrew/core homebrew/tap])
       expect(described_class.taps_to_untap).to eql(%w[z homebrew/tap])
+    end
+
+    it "ignores formulae with .keepme references when computing which formulae to uninstall" do
+      name = full_name ="c"
+      allow(Homebrew::Bundle::BrewDumper).to receive(:formulae).and_return([{ name:, full_name: }])
+      f = formula(name) { url "#{name}-1.0" }
+      stub_formula_loader f, name
+
+      keg = instance_double(Keg)
+      allow(keg).to receive(:keepme_refs).and_return(["/some/file"])
+      allow(f).to receive(:installed_kegs).and_return([keg])
+
+      expect(described_class.formulae_to_uninstall).to be_empty
     end
 
     it "computes which VSCode extensions to uninstall" do
