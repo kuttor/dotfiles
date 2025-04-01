@@ -45,7 +45,7 @@ RSpec.describe Homebrew::Bundle::Commands::Exec do
         openssl_version = "1.1.1"
         ENV["PATH"] = "/opt/homebrew/opt/openssl/bin:/usr/bin:/bin"
         ENV["MANPATH"] = "/opt/homebrew/opt/openssl/man"
-        ENV["HOMEBREW_BUNDLE_EXEC_FORMULA_VERSION_OPENSSL"] = openssl_version
+        ENV["HOMEBREW_BUNDLE_FORMULA_VERSION_OPENSSL"] = openssl_version
         allow(described_class).to receive(:which).and_return(Pathname("/usr/bin/bundle"))
         described_class.run("bundle", "install")
         expect(ENV.fetch("PATH")).to include("/Cellar/openssl/1.1.1/bin")

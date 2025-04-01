@@ -88,7 +88,9 @@ module Homebrew
           formula_versions = {}
 
           ENV.each do |key, value|
-            match = key.match(/^HOMEBREW_BUNDLE_EXEC_FORMULA_VERSION_(.+)$/)
+            match = key.match(/^HOMEBREW_BUNDLE_FORMULA_VERSION_(.+)$/)
+            # odeprecated: get rid of this in Homebrew >=4.5
+            match ||= key.match(/^HOMEBREW_BUNDLE_EXEC_FORMULA_VERSION_(.+)$/)
             next if match.blank?
 
             formula_name = match[1]
