@@ -3148,7 +3148,7 @@ class Formula
             opoo "Skipping (old) #{keg} due to it being pinned" unless quiet
           elsif (keepme = keg/".keepme") && keepme.exist? && keepme.readable? &&
                 (keepme_refs = keepme.readlines.map(&:strip).select { |ref| Pathname(ref).exist? }.presence)
-            opoo "Skipping #{keg} as it needed by #{keepme_refs.join(", ")}" unless quiet
+            opoo "Skipping #{keg} as it is needed by #{keepme_refs.join(", ")}" unless quiet
           else
             eligible_for_cleanup << keg
           end
