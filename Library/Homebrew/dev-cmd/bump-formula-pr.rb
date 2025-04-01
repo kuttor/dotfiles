@@ -550,8 +550,9 @@ module Homebrew
           formula.name, tap_remote_repo,
           version:,
           state:,
-          file:    formula.path.relative_path_from(tap.path).to_s,
-          quiet:   args.quiet?
+          file:         formula.path.relative_path_from(tap.path).to_s,
+          quiet:        args.quiet?,
+          official_tap: tap.official?
         )
       end
 

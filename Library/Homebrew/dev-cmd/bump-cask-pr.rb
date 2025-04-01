@@ -259,8 +259,9 @@ module Homebrew
 
         file = cask.sourcefile_path.relative_path_from(cask.tap.path).to_s
         quiet = args.quiet?
+        official_tap = cask.tap.official?
         GitHub.check_for_duplicate_pull_requests(cask.token, tap_remote_repo,
-                                                 state: "open", file:, quiet:)
+                                                 state: "open", file:, quiet:, official_tap:)
 
         # if we haven't already found open requests, try for an exact match across all pull requests
         new_version.instance_variables.each do |version_type|
@@ -268,7 +269,8 @@ module Homebrew
           next if version_type_version.blank?
 
           version = shortened_version(version_type_version, cask:)
-          GitHub.check_for_duplicate_pull_requests(cask.token, tap_remote_repo, version:, file:, quiet:)
+          GitHub.check_for_duplicate_pull_requests(cask.token, tap_remote_repo, version:,
+                                                   file:, quiet:, official_tap:)
         end
       end
 
