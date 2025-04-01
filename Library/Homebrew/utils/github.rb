@@ -635,9 +635,11 @@ module GitHub
       quiet:           T::Boolean,
       state:           T.nilable(String),
       version:         T.nilable(String),
+      official_tap:    T::Boolean,
     ).void
   }
-  def self.check_for_duplicate_pull_requests(name, tap_remote_repo, file:, quiet: false, state: nil, version: nil)
+  def self.check_for_duplicate_pull_requests(name, tap_remote_repo, file:, quiet: false, state: nil,
+                                             version: nil, official_tap: true)
     pull_requests = fetch_pull_requests(name, tap_remote_repo, state:, version:)
 
     pull_requests.select! do |pr|
@@ -657,7 +659,9 @@ module GitHub
       Manually open these PRs if you are sure that they are not duplicates (and tell us that in the PR).
     EOS
 
-    if version
+    if !official_tap
+      opoo duplicates_message
+    elsif version
       odie <<~EOS
         #{duplicates_message.chomp}
         #{error_message}
