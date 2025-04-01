@@ -106,6 +106,13 @@ module Homebrew
           current_formulae.reject! do |f|
             Homebrew::Bundle::BrewInstaller.formula_in_array?(f[:full_name], kept_formulae)
           end
+
+          # Don't try to uninstall formulae with keepme references
+          current_formulae.reject! do |f|
+            Formula[f[:full_name]].installed_kegs.any? do |keg|
+              keg.keepme_refs.present?
+            end
+          end
           current_formulae.map { |f| f[:full_name] }
         end
 

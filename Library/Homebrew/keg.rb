@@ -95,6 +95,8 @@ class Keg
   PYC_EXTENSIONS = %w[.pyc .pyo].freeze
   LIBTOOL_EXTENSIONS = %w[.la .lai].freeze
 
+  KEEPME_FILE = ".keepme"
+
   # @param path if this is a file in a keg, returns the containing {Keg} object.
   def self.for(path)
     original_path = path
@@ -590,6 +592,14 @@ class Keg
 
       manpage.atomic_write(content)
     end
+  end
+
+  sig { returns(T::Array[String]) }
+  def keepme_refs
+    keepme = path/KEEPME_FILE
+    return [] if !keepme.exist? || !keepme.readable?
+
+    keepme.readlines.select { |ref| File.exist?(ref.strip) }
   end
 
   def binary_executable_or_library_files
