@@ -67,8 +67,7 @@ module Homebrew
             else
               Formula[@full_name].version
             end.to_s
-            version_path = Pathname.new(@version_file)
-            version_path.write("#{version}\n")
+            File.write(@version_file, "#{version}\n")
 
             puts "Wrote #{@name} version #{version} to #{@version_file}" if verbose
           end

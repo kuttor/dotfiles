@@ -27,19 +27,16 @@ RSpec.describe Homebrew::Bundle::Skipper do
       end
     end
 
-    context "with an unbottled formula on ARM", :needs_macos do
+    context "with an unbottled formula on ARM" do
       let(:entry) { Homebrew::Bundle::Dsl::Entry.new(:brew, "mysql") }
 
-      # TODO: remove OpenStruct usage
-      # rubocop:todo Style/OpenStructUse
       it "returns true" do
         allow(Hardware::CPU).to receive(:arm?).and_return(true)
-        allow_any_instance_of(Formula).to receive(:stable).and_return(OpenStruct.new(bottled?:        false,
-                                                                                     bottle_defined?: true))
+        allow(Homebrew).to receive(:default_prefix?).and_return(true)
+        stub_formula_loader formula("mysql") { url "mysql-1.0" }
 
         expect(skipper.skip?(entry)).to be true
       end
-      # rubocop:enable Style/OpenStructUse
     end
 
     context "with an unlisted cask", :needs_macos do
