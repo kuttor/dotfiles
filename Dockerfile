@@ -69,15 +69,15 @@ WORKDIR /home/linuxbrew
 
 
 RUN --mount=type=cache,target=/tmp/homebrew-core,uid="${USER_ID}",sharing=locked \
-    # Clone the homebre-core repo into /tmp/homebrew-core or pull latest changes if it exists
-    git clone https://github.com/homebrew/homebrew-core /tmp/homebrew-core || { cd /tmp/homebrew-core && git pull; } \
-    && mkdir -p /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core \
-    && cp -r /tmp/homebrew-core /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/
+  # Clone the homebrew-core repo into /tmp/homebrew-core or pull latest changes if it exists
+  git clone https://github.com/homebrew/homebrew-core /tmp/homebrew-core || { cd /tmp/homebrew-core && git pull; } \
+  && mkdir -p /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core \
+  && cp -r /tmp/homebrew-core /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/
 
 
 RUN --mount=type=cache,target=/home/linuxbrew/.cache,uid="${USER_ID}" \
-   --mount=type=cache,target=/home/linuxbrew/.bundle,uid="${USER_ID}" \
-   mkdir -p \
+  --mount=type=cache,target=/home/linuxbrew/.bundle,uid="${USER_ID}" \
+  mkdir -p \
   .linuxbrew/bin \
   .linuxbrew/etc \
   .linuxbrew/include \
