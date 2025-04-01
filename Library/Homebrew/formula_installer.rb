@@ -378,15 +378,10 @@ class FormulaInstaller
           If you're feeling brave, you can try to install from source with:
             brew install --build-from-source #{formula}
 
-          It is expected behaviour that most formulae will fail to build from source.
-          It is expected behaviour that Homebrew will be buggy and slow when building from source.
-          Do not create any issues about failures building from source on Homebrew's GitHub repositories.
-          Do not create any issues building from source even if you think this message is unrelated.
-          Any opened issues will be immediately closed without response.
-          Do not ask for help from Homebrew or its maintainers on social media.
-          You may ask for help building from source in Homebrew's discussions but are unlikely to receive a response.
-          If building from source fails, try to figure out the problem yourself and submit a fix as a pull request.
-          We will review it but may or may not accept it.
+          This is a Tier 3 configuration:
+            #{Formatter.url("https://docs.brew.sh/Support-Tiers#tier-3")}
+          #{Formatter.bold("Do not report any issues to Homebrew/* repositories!")}
+          Read the above document instead before opening any issues or PRs.
         EOS
         raise CannotInstallFormulaError, message
       end
@@ -608,7 +603,7 @@ on_request: installed_on_request?, options:)
       raise if Homebrew::EnvConfig.developer?
 
       $stderr.puts "Please report this issue to the #{formula.tap&.full_name} tap".squeeze(" ")
-      $stderr.puts " (not Homebrew/brew or Homebrew/homebrew-core)!" unless formula.core_formula?
+      $stderr.puts " (not Homebrew/* repositories)!" unless formula.core_formula?
       false
     else
       f.linked_keg.exist? && f.opt_prefix.exist?

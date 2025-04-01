@@ -111,17 +111,21 @@ module Homebrew
         supported_configuration_checks + build_from_source_checks
       end
 
-      def please_create_pull_requests(what = "unsupported configuration")
+      sig { params(tier: T.any(Integer, String, Symbol)).returns(T.nilable(String)) }
+      def support_tier_message(tier:)
+        return if tier.to_s == "1"
+
+        tier_title, tier_slug = if tier.to_s == "unsupported"
+          ["Unsupported", "unsupported"]
+        else
+          ["Tier #{tier}", "tier-#{tier.to_s.downcase}"]
+        end
+
         <<~EOS
-          It is expected behaviour that some formulae will fail to build in this #{what}.
-          It is expected behaviour that Homebrew will be buggy and slow.
-          Do not create any issues about this on Homebrew's GitHub repositories.
-          Do not create any issues even if you think this message is unrelated.
-          Any opened issues will be immediately closed without response.
-          Do not ask for help from Homebrew or its maintainers on social media.
-          You may ask for help in Homebrew's discussions but are unlikely to receive a response.
-          Try to figure out the problem yourself and submit a fix as a pull request.
-          We will review it but may or may not accept it.
+          This is a #{tier_title} configuration:
+            #{Formatter.url("https://docs.brew.sh/Support-Tiers##{tier_slug}")}
+          #{Formatter.bold("Do not report any issues to Homebrew/* repositories!")}
+          Read the above document instead before opening any issues or PRs.
         EOS
       end
 
@@ -834,9 +838,10 @@ module Homebrew
         <<~EOS
           Your Homebrew's prefix is not #{Homebrew::DEFAULT_PREFIX}.
 
-          Many of Homebrew's bottles (binary packages) can only be used with the default prefix.
+          Most of Homebrew's bottles (binary packages) can only be used with the default prefix.
           Consider uninstalling Homebrew and reinstalling into the default prefix.
-          #{please_create_pull_requests}
+
+          #{support_tier_message(tier: 3)}
         EOS
       end
 

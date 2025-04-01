@@ -56,7 +56,7 @@ module OS
   if OS.mac?
     require "os/mac"
     require "hardware"
-    # Don't tell people to report issues on unsupported configurations.
+    # Don't tell people to report issues on non-Tier 1 configurations.
     if !OS::Mac.version.prerelease? &&
        !OS::Mac.version.outdated_release? &&
        ARGV.none? { |v| v.start_with?("--cc=") } &&
@@ -76,7 +76,7 @@ module OS
   end
 
   sig { returns(T::Boolean) }
-  def self.unsupported_configuration?
+  def self.not_tier_one_configuration?
     !defined?(OS::ISSUES_URL)
   end
 end

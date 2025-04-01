@@ -521,23 +521,31 @@ class BuildError < RuntimeError
       end
     end
 
-    if formula.tap && !OS.unsupported_configuration?
-      if formula.tap.official?
+    if formula.tap
+      if OS.not_tier_one_configuration?
+        <<~EOS
+          This is not a Tier 1 configuration:
+            #{Formatter.url("https://docs.brew.sh/Support-Tiers")}
+          #{Formatter.bold("Do not report any issues to Homebrew/* repositories!")}
+          Read the above document instead before opening any issues or PRs.
+        EOS
+      elsif formula.tap.official?
         puts Formatter.error(Formatter.url(OS::ISSUES_URL), label: "READ THIS")
       elsif (issues_url = formula.tap.issues_url)
         puts <<~EOS
-          If reporting this issue please do so at (not Homebrew/brew or Homebrew/homebrew-core):
+          If reporting this issue please do so at (not Homebrew/* repositories):
             #{Formatter.url(issues_url)}
         EOS
       else
         puts <<~EOS
-          If reporting this issue please do so to (not Homebrew/brew or Homebrew/homebrew-core):
+          If reporting this issue please do so to (not Homebrew/* repositories):
             #{formula.tap}
         EOS
       end
     else
-      puts <<~EOS
-        Do not report this issue to Homebrew/brew or Homebrew/homebrew-core!
+      <<~EOS
+        We cannot detect the correct tap to report this issue to.
+        Do not report this issue to Homebrew/* repositories!
       EOS
     end
 
