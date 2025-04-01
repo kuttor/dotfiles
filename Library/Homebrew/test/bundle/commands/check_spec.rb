@@ -3,6 +3,7 @@
 require "bundle"
 require "bundle/commands/check"
 require "bundle/brew_checker"
+require "bundle/cask_checker"
 require "bundle/mac_app_store_checker"
 require "bundle/vscode_extension_checker"
 require "bundle/brew_installer"
@@ -56,11 +57,23 @@ RSpec.describe Homebrew::Bundle::Commands::Check do
   end
 
   context "when formulae are not installed" do
-    it "raises an error" do
+    let(:verbose) { true }
+
+    it "raises an error and outputs to stdout" do
       allow(Homebrew::Bundle::CaskDumper).to receive(:casks).and_return([])
       allow(Homebrew::Bundle::BrewInstaller).to receive(:upgradable_formulae).and_return([])
       allow_any_instance_of(Pathname).to receive(:read).and_return("brew 'abc'")
-      expect { do_check }.to raise_error(SystemExit)
+      expect { do_check }.to raise_error(SystemExit).and \
+        output(/brew bundle can't satisfy your Brewfile's dependencies/).to_stdout
+    end
+
+    it "partially outputs when HOMEBREW_BUNDLE_CHECK_ALREADY_OUTPUT_FORMULAE_ERRORS is set" do
+      allow(Homebrew::Bundle::CaskDumper).to receive(:casks).and_return([])
+      allow(Homebrew::Bundle::BrewInstaller).to receive(:upgradable_formulae).and_return([])
+      allow_any_instance_of(Pathname).to receive(:read).and_return("brew 'abc'")
+      ENV["HOMEBREW_BUNDLE_CHECK_ALREADY_OUTPUT_FORMULAE_ERRORS"] = "abc"
+      expect { do_check }.to raise_error(SystemExit).and \
+        output("Satisfy missing dependencies with `brew bundle install`.\n").to_stdout
     end
 
     it "does not raise error on skippable formula" do

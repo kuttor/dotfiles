@@ -260,6 +260,40 @@ RSpec.describe Homebrew::Bundle::BrewInstaller do
         end
       end
     end
+
+    context "when the version_file option is provided" do
+      before do
+        Homebrew::Bundle.reset!
+
+        allow_any_instance_of(described_class).to receive(:install_change_state!).and_return(true)
+        allow_any_instance_of(described_class).to receive(:installed?).and_return(true)
+        allow_any_instance_of(described_class).to receive(:linked?).and_return(true)
+      end
+
+      let(:version_file) { "version.txt" }
+      let(:version) { "1.0" }
+
+      context "when formula versions are changed and specified by the environment" do
+        before do
+          allow_any_instance_of(described_class).to receive(:changed?).and_return(false)
+          ENV["HOMEBREW_BUNDLE_EXEC_FORMULA_VERSION_#{formula_name.upcase}"] = version
+        end
+
+        it "writes the version to the file" do
+          expect(File).to receive(:write).with(version_file, "#{version}\n")
+          described_class.preinstall(formula_name, version_file:)
+          described_class.install(formula_name, version_file:)
+        end
+      end
+
+      context "when using the latest formula" do
+        it "writes the version to the file" do
+          expect(File).to receive(:write).with(version_file, "#{version}\n")
+          described_class.preinstall(formula_name, version_file:)
+          described_class.install(formula_name, version_file:)
+        end
+      end
+    end
   end
 
   context "when a formula isn't installed" do
