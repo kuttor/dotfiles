@@ -41,6 +41,7 @@ Style/Documentation:
     - language/java.rb
     - language/node.rb
     - language/perl.rb
+    - language/php.rb
     - language/python.rb
     - livecheck/strategy/apache.rb
     - livecheck/strategy/bitbucket.rb
