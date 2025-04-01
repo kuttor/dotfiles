@@ -72,11 +72,6 @@ module Homebrew
         description:  "Use this as the `bat` theme for syntax highlighting.",
         default_text: "`$BAT_THEME`.",
       },
-      HOMEBREW_BOOTSNAP:                         {
-        description: "If set, use Bootsnap to speed up repeated `brew` calls. " \
-                     "A no-op on Linux when not using Homebrew's vendored, relocatable Ruby.",
-        boolean:     true,
-      },
       HOMEBREW_BOTTLE_DOMAIN:                    {
         description:  "Use this URL as the download mirror for bottles. " \
                       "If bottles at that URL are temporarily unavailable, " \
