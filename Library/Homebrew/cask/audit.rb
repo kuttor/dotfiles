@@ -564,6 +564,29 @@ module Cask
       primary_container = UnpackStrategy.detect(downloaded_path, type: @cask.container&.type, merge_xattrs: true)
       return if primary_container.nil?
 
+      # If the container has any dependencies we need to install them or unpacking will fail.
+      if primary_container.dependencies.any?
+
+        install_options = {
+          show_header:             true,
+          installed_as_dependency: true,
+          installed_on_request:    false,
+          verbose:                 false,
+        }.compact
+
+        Homebrew::Install.perform_preinstall_checks_once
+        primary_container.dependencies.each do |dep|
+          fi = FormulaInstaller.new(
+            dep,
+            **install_options,
+          )
+          fi.prelude
+          fi.fetch
+          fi.install
+          fi.finish
+        end
+      end
+
       # Extract the container to the temporary directory.
       primary_container.extract_nestedly(to: @tmpdir, basename: downloaded_path.basename, verbose: false)
 
