@@ -18,12 +18,17 @@ inherit_mode:
     - Exclude
 
 AllCops:
+  # TODO: This is the default parser in Ruby >= 3.4
+  # https://github.com/rubocop/rubocop-ast/blob/6b9136235219e9448ee4f369e17cf69bcd9db621/lib/rubocop/ast/processed_source.rb#L385
+  ParserEngine: parser_prism
   TargetRubyVersion: 3.3
   NewCops: enable
   Include:
     - "**/*.rbi"
   Exclude:
     - "Homebrew/sorbet/rbi/{dsl,gems}/**/*.rbi"
+    # TODO: remove file and exclusion in Ruby 3.4
+    - "Homebrew/sorbet/rbi/parser*.rbi"
     - "Homebrew/bin/*"
     - "Homebrew/vendor/**/*"
     - "Taps/*/*/vendor/**/*"
