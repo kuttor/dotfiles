@@ -1,0 +1,113 @@
+#! /usr/bin/env zsh
+
+confirm() {
+    emulate -L zsh
+    local cmd output_flag alias_flag alias_name help_flag or_flag and_flag
+    zparseopts -D -E -- \
+        o=output_flag -output=output_flag \
+        a=alias_flag -alias=alias_flag \
+        h=help_flag -help=help_flag \
+        -or=or_flag \
+        -and=and_flag
+
+    # Show help if requested or no arguments provided
+    if [[ -n "$help_flag" || $# -eq 0 ]]; then
+        cat <<EOF
+Usage: confirm [options] command [alias_name|command...]
+
+Verify and get information about a command's existence and type.
+
+Options:
+    -o, --output     Show detailed information about the command
+    -a, --alias      Create an alias with the given alias_name
+    -h, --help       Show this help message
+    --or            Execute the following command if the check fails
+    --and           Execute the following command if the check succeeds
+
+Arguments:
+    command         The command to verify
+    alias_name      Name for the alias (required with --alias)
+    command...      Command to execute with --and or --or
+
+Examples:
+    confirm ls
+    confirm --output git
+    confirm --alias g git
+    confirm lsd --or echo "Command not found"
+    confirm git --and echo "Git is available"
+EOF
+        return 0
+    fi
+
+    cmd=$1
+    shift # Remove the first argument
+
+    # Handle conditional execution flags
+    if [[ -n "$or_flag" || -n "$and_flag" ]]; then
+        if command -v "$cmd" &>/dev/null; then
+            local exists=0
+        else
+            local exists=1
+        fi
+
+        if [[ -n "$or_flag" && $exists -eq 1 ]]; then
+            eval "$@"
+            return $?
+        elif [[ -n "$and_flag" && $exists -eq 0 ]]; then
+            eval "$@"
+            return $?
+        fi
+        return $exists
+    fi
+
+    # First check if command exists at all
+    if ! command -v "$cmd" &>/dev/null; then
+        [[ -n "$output_flag" ]] && echo "'$cmd' not found" >&2
+        return 1
+    fi
+
+    alias_name=$1 # For --alias usage
+
+    # Get command info
+    local cmd_info=$(type "$cmd" 2>/dev/null)
+    if [[ $? -ne 0 ]]; then
+        [[ -n "$output_flag" ]] && echo "Could not determine type of '$cmd'" >&2
+        return 1
+    fi
+
+    # Handle alias creation if --alias flag is present
+    if [[ -n "$alias_flag" ]]; then
+        if [[ -z "$alias_name" ]]; then
+            echo "Error: alias name is required when using --alias" >&2
+            return 1
+        fi
+        
+        local cmd_path=$(command -v "$cmd")
+        alias "$alias_name"="$cmd_path"
+        [[ -n "$output_flag" ]] && echo "Created alias '$alias_name' for '$cmd_path'"
+        return 0
+    fi
+
+    # If no output flag, just return the path
+    if [[ -z "$output_flag" ]]; then
+        command -v "$cmd"
+        return 0
+    fi
+
+    # Detailed output with --output flag
+    if [[ "$cmd_info" == *" is an alias "* ]]; then
+        echo "'$cmd' is an alias:"
+        alias "$cmd" | sed 's/^alias //'
+    elif [[ "$cmd_info" == *" is a shell function"* ]]; then
+        echo "'$cmd' is a function"
+    elif [[ "$cmd_info" == *" is a shell builtin"* ]]; then
+        echo "'$cmd' is a shell builtin"
+    elif [[ "$cmd_info" == *" is "* ]]; then
+        echo "'$cmd' is a program at $(command -v "$cmd")"
+    else
+        echo "Could not determine type of '$cmd'"
+        return 1
+    fi
+
+    return 0
+}

@@ -16,3 +16,9 @@ brew 'wget'
 brew 'curl'
 brew 'tmux'
 brew 'delta'
+brew 'zinit'
+brew 'neovim'
+brew 'thefuk'
+brew 'appcleaner'
+
+

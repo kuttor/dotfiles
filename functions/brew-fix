@@ -1,0 +1,6 @@
+#! /usr/bin/env sh
+
+brew cleanup --scrub
+brew update
+brew upgrade
+brew doctor

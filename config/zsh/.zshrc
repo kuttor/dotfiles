@@ -2,15 +2,14 @@
 
 # ~~ p10kand zinit init ------------------------------------------------------------------------------------------------
 p10k_instant_prompt
-clone-if-missing zdharma-continuum/zinit.git $ZINIT[HOME_DIR]
-source-and-autoload $ZINIT[HOME_DIR]/zinit.git/zinit.zsh _zinit
+#confirm brew --or install_homebrew
+source /opt/homebrew/opt/zinit/zinit.zsh
 (( ${+_comps} )) && _comps[zinit]=_zinit
-
-#install_homebrew
 
 # ~~ plugins -----------------------------------------------------------------------------------------------------------
 # -- annexes --
-zi id-as lucid light-mode for @zdharma-continuum/zinit-annex-{bin-gem-node,binary-symlink,patch-dl,link-man,linkman}
+zi id-as lucid light-mode for                                                                                          \
+   @zdharma-continuum/zinit-annex-{bin-gem-node,binary-symlink,patch-dl,link-man,linkman}
 
 # -- dependencies --
 zi id-as lman lucid light-mode completions for                                                                         \
@@ -28,13 +27,10 @@ zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid
    atclone'use --atclone fx'     atload'use --atload fx'     lbin'fx_*->fx'               @antonmedv/fx                \
    atclone'use --atclone nvim'                               lbin'**/nvim'                @neovim/neovim               \
    atclone'use --atclone dog'                                                             @ogham/dog                   \
-   atclone'use --atclone just'                                                            @casey/just                  \
    atclone'use --atclone fd'     atload'use --atload fd'     lbin'fd/fd'                  @sharkdp/fd                  \
    atclone'use --atclone bat'    atload'use --atload bat'    lbin'bat-*/bat'              @sharkdp/bat                 \
-                                                             lbin                         @ClementTsang/bottom         \
                                                              lbin'bin/*'                  @eth-p/bat-extras            \
    atclone'use --atclone rg'     atload'use --atload rg'     lbin'ripgrep-*/rg'           @BurntSushi/ripgrep          \
-                                                             lbin'rush/rush'              @shenwei356/rush             \
    atclone'use --atclone glow'                                                            @charmbracelet/glow          \
    atclone'use --atclone moar'                               lbin'moar-*->moar'           @walles/moar                 \
    atclone'use --atclone sd'                                                              @chmln/sd                    \
@@ -44,7 +40,6 @@ zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid
 
 # -- non-github-releases --
 zi id-as wait binary light-mode lbin lman lucid for                                                                    \
-   atload'use --atload tre'                                                              @dduan/tre                    \
    atload'use --atload fzf-tab'                                                          @Aloxaf/fzf-tab               \
    atload'use --atload fzf-tab-completion'                                               @lincheney/fzf-tab-completion \
    atload'use --atload git-ignore' pick'init.zsh' lbin'bin/git-ignore'                   @laggardkernel/git-ignore     \
@@ -53,10 +48,10 @@ zi id-as wait binary light-mode lbin lman lucid for                             
                                                   lbin'shellcheck*/shellcheck'           @koalaman/shellcheck
 
 # ~~ snippets loading --------------------------------------------------------------------------------------------------
-zi id-as wait"2" lucid is-snippet for                                                                                  \
+zi id-as wait'2' lucid is-snippet for                                                                                  \
    @$ZDOTDIR/{autoload,options,keybinds,aliases}.zsh                                                                   \
    OMZL::{key-bindings,correction,completion,compfix,git,grep}.zsh                                                     \
-   OMZP::{colorize,extract,urltools,brew,cp,grc,git,fzf}
+   OMZP::{colorize,extract,urltools,brew,cp,grc,git,fzf,thefuck}
 
 # ~~ completions -------------------------------------------------------------------------------------------------------
 zi id-as wait lucid light-mode lman lbin binary from'gh-r' for @rsteube/lazycomplete
@@ -78,4 +73,7 @@ zi wait id-as lman lucid light-mode for                                         
 # source if files exist
 [[ ! -f "$DOT_CONFIG_HOME/iterm2_shell_integration.zsh" ]] || source "$DOT_CONFIG_HOME/iterm2_shell_integration.zsh"
 [[ ! -f "$DOT_CONFIG_HOME/p10k/p10k.zsh" ]] || source "$DOT_CONFIG_HOME/p10k/p10k.zsh"
-source /Users/akuttor/.config/rust/cargo/env
+source $CARGO_HOME/env
+
+# Created by `pipx` on 2025-02-28 00:19:16
+export PATH="$PATH:/Users/akuttor/.local/bin"

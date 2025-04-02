@@ -3,17 +3,17 @@
 # -- aliases ----------------------------------------------------------------------------------------------------------
 
 # ~ ls ~
-verify lsd --alias ls
+confirm lsd --alias ls
 alias ll="lsd --long --git --human-readable --header --hyperlink=always "
 alias l="lsd --oneline --group-directories-first --header --almost-all "
 
 # ~ tree ~
-verify tre --alias tree
+confirm tre --alias tree
 
 # ~ pagers ~
-verify bat --alias cat
-verify nvim --alias vim
-verify python3 --alias python
+confirm bat --alias cat
+confirm nvim --alias vim
+confirm python3 --alias python
 
 # ~ suffix ~
 alias -s {md,markdown,rst,toml,json,conf,zsh,py,yaml,yml,sh,rb,bash}=code

@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
 
 # Check if brew command exists, if not, install Homebrew
-if ! command -v brew &> /dev/null; then
-  link_config homebrew 
-  echo "Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+link_config homebrew 
+echo "Installing Homebrew..."
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-  export HOMEBREW_PREFIX="/opt/homebrew"
-  export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
-  export HOMEBREW_CACHE="$XDG_CACHE_HOME/homebrew"
-  export HOMEBREW_BUNDLE_FILE="$DOT_CONFIG_HOME/homebrew/Brewfile"
+export HOMEBREW_PREFIX="/opt/homebrew"
+export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+export HOMEBREW_CACHE="$XDG_CACHE_HOME/homebrew"
+export HOMEBREW_BUNDLE_FILE="$DOT_CONFIG_HOME/homebrew/Brewfile"
 
-  # install brew maintained packages
-  /opt/homebrew/bin/brew install --force-bottle   \
-  rbenv rustup tree chroma curl hg coreutils gawk \
-  gnu-sed grep gsed pygments tmux wget xz go eza
+# install brew maintained package
 
-else
-  echo "Homebrew is already installed."
-fi
+/opt/homebrew/bin/brew install --force-bottle   \
+ rbenv rustup tree chroma curl hg coreutils gawk \
+ gnu-sed grep gsed pygments tmux wget xz go eza
+ 
+# install brewfile packages
+# /opt/homebrew/bin/brew bundle --file="$DOT_CONFIG_HOME/homebrew/Brewfile"
+# 
+#  fi``

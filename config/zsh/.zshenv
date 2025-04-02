@@ -12,20 +12,20 @@ export DOT_ZSH_HOME="$DOTFILES/config/zsh"
 export DOT_FUNCTIONS_HOME="$DOTFILES/functions"
 
 # -- zsh env-vars --
-export ZDOTDIR="$HOME/.dotfiles/config/zsh"
-export ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
+export ZDOTDIR="$DOT_CONFIG_HOME/zsh"
+#export ZINIT_HOME="$HOMEBREW_PREFIX/opt/zinit/zinit.git"
 
 # setup zinit env-vars
 export ZINIT
 typeset -A ZINIT=(
-  HOME_DIR                   $XDG_DATA_HOME/zinit
-  BIN_DIR                    $XDG_DATA_HOME/zinit/bin
-  PLUGINS_DIR                $XDG_DATA_HOME/zinit/plugins
-  MODULES_DIR                $XDG_DATA_HOME/zinit/modules
-  SNIPPETS_DIR               $XDG_DATA_HOME/zinit/snippets
-  COMPLETIONS_DIR            $XDG_DATA_HOME/zinit/completions
+  HOME_DIR                   /opt/homebrew/opt/zinit
+  BIN_DIR                    /opt/homebrew/opt/zinit/bin
+  PLUGINS_DIR                /opt/homebrew/opt/zinit/plugins
+  MODULES_DIR                /opt/homebrew/opt/zinit/modules
+  SNIPPETS_DIR               /opt/homebrew/opt/zinit/snippets
+  COMPLETIONS_DIR            /opt/homebrew/opt/zinit/completions
   ZCOMPDUMP_PATH             $XDG_CACHE_HOME/zcompdump-${HOST/.*/}-$ZSH_VERSION
-  OPTIMIZE_OUT_DISK_ACCESSES "1"
+  OPTIMIZE_OUT_DISK_ACCESSES true 
   COMPINIT_OPTS              " -C"
   LIST_COMMAND               "lsd --color=always --tree --icons -L3"
   LIST_SYMBOLS_DIR           "lsd --color=always --tree --icons=always --depth=3"
@@ -68,6 +68,7 @@ set_xdg "config" "MYVIMRC"                  "create path" "nvim/nvim.confs"
 set_xdg "config" "INPUTRC"                  "create path" "inputrc/inputrc"
 set_xdg "config" "WGETRC"                   "create path" "wget/wgetrc"
 set_xdg "config" "RBENV_ROOT"               "create path" "rbenv/"
+set_xdg "data"   "GOPATH"                   "create path" "go/"
 set_xdg "data"   "ANTIDOT_DIR"              "create path" "antidot/"
 set_xdg "data"   "NODE_PATH"                "create path" "node/"
 set_xdg "data"   "GEM_HOME"                 "create path" "gem/"

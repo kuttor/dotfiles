@@ -20,6 +20,7 @@
 [advice]   
   pushNonFastForward           = false
   statusHints                  = false
+	skippedCherryPicks = false
 
 [apply]
   whitespace                   = fix
@@ -32,15 +33,14 @@
   branch                       = always
   editor                       = nvim
   whitespace                   = trailing-space,space-before-tab
-  excludesfile                 = $GIT_CONFIG_GLOBAL/gitignore
-  attributesfile               = $GIT_CONFIG_GLOBAL/gitattributes
+  excludesfile                 = $GIT_CONFIG/gitignore
+  attributesfile               = $GIT_CONFIG/gitattributes
   pager                        = true
   preloadIndex                 = true
   precomposeunicode            = true
   ignorecase                   = true
   untrackedCache               = true
   trustctime                   = false
-  
 
 [columns]
   ui                           = always
@@ -51,8 +51,10 @@
   untrackedCache               = true
   commitGraph                  = true
 	symlinks                     = true
-	autocrlf                     = false
   pager                        = delta --pager='ov -F'
+  ignorecase                   = false
+  fileMode                     = false
+  eol                          = lf
 
 [credential]
   helper                       = cache
@@ -66,14 +68,14 @@
   whitespace-error-style       = 22 reverse
   true-color                   = always
   syntax-theme                 = Dracula
-  plus-style                   = syntax '#003800'
-  minus-style                  = syntax '#3f0001'
+  plus-style                   = syntax "green"
+  minus-style                  = syntax "red"
   
 [delta "unobtrusive-line-numbers"]
   line-numbers                 = true
-  line-numbers-minus-style     = "#444444"
-  line-numbers-zero-style      = "#444444"
-  line-numbers-plus-style      = "#444444"
+  line-numbers-minus-style     = "red"
+  line-numbers-zero-style      = "blue"
+  line-numbers-plus-style      = "green"
   line-numbers-left-format     = "{nm:>4}┊"
   line-numbers-right-format    = "{np:>4}│"
   line-numbers-left-style      = "blue"
@@ -86,8 +88,8 @@
   hunk-header-decoration-style = yellow box
 
 [delta "line-numbers"]
-  line-numbers-left-style      = "cyan"
-  line-numbers-right-style     = "cyan"
+  line-numbers-left-style      = cyan
+  line-numbers-right-style     = cyan
   line-numbers-minus-style     = 12
   line-numbers-plus-style      = 28
 
@@ -96,6 +98,7 @@
 
 [delta "ov-log"]
     pager                      = ov -F --section-delimiter '^commit' --section-header-num 3
+
 [diff]
   tool                         = delta
   external                     = $HOMEBREW_PREFIX/bin/delta
@@ -126,7 +129,7 @@
   diffFilter                   = delta --color-only
 
 [include]
-  path                         = $GIT_CONFIG_GLOBAL/themes.gitconfig
+  path                         = $GIT_CONFIG/themes.gitconfig
 
 [index]
   skipHaves                    = true
@@ -157,18 +160,7 @@
   eautoupdate                  = 1
 
 [user]
-  name                         = Andrew Kuttor
-  email                        = andrew.kuttor@gmail.com
+	email                        = andrew.kuttor@gmail.com
 
 [web]
-  browser                      = safari
-
-
-
-
-
-
-
-
-
-
+  browser                      = safar
