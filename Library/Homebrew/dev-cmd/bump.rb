@@ -33,7 +33,7 @@ module Homebrew
         switch "--auto",
                description: "Read the list of formulae/casks from the tap autobump list.",
                hidden:      true
-        switch "--no-auto",
+        switch "--no-autobump",
                description: "Ignore formulae/casks in autobump list (official repositories only)."
         switch "--formula", "--formulae",
                description: "Check only formulae."
@@ -72,12 +72,10 @@ module Homebrew
           eval_all = args.eval_all? || Homebrew::EnvConfig.eval_all?
 
           excluded_autobump = []
-          if args.no_auto?
-            if eval_all || args.formula?
-              excluded_autobump.concat autobumped_formulae_or_casks Tap.fetch("homebrew/core")
-            end
+          if args.no_autobump?
+            excluded_autobump.concat(autobumped_formulae_or_casks(CoreTap.instance)) if eval_all || args.formula?
             if eval_all || args.cask?
-              excluded_autobump.concat autobumped_formulae_or_casks Tap.fetch("homebrew/cask"), casks: true
+              excluded_autobump.concat(autobumped_formulae_or_casks(CoreCaskTap.instance, casks: true))
             end
           end
 
@@ -132,7 +130,7 @@ module Homebrew
             formula_or_cask.respond_to?(:token) ? formula_or_cask.token : formula_or_cask.name
           end
 
-          formulae_and_casks.delete_if { |f_or_c| excluded_autobump.include?(f_or_c) }
+          formulae_and_casks -= excluded_autobump
 
           if args.repology? && !Utils::Curl.curl_supports_tls13?
             begin
@@ -562,9 +560,11 @@ module Homebrew
         autobump_list = tap.autobump
         autobump_list.map do |name|
           qualified_name = "#{tap.name}/#{name}"
-          next Cask::CaskLoader.load(qualified_name) if casks
-
-          Formulary.factory(qualified_name)
+          if casks
+            Cask::CaskLoader.load(qualified_name)
+          else
+            Formulary.factory(qualified_name)
+          end
         end
       end
     end

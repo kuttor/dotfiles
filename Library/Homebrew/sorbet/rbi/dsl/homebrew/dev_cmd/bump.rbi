@@ -18,7 +18,7 @@ class Homebrew::DevCmd::Bump::Args < Homebrew::CLI::Args
   # didn't work for me for some reason, adding `no_auto?` flag manually.
   # If you can help me with fixing the issue or `tapioca` runs perfectly, please, override this
   sig { returns(T::Boolean) }
-  def no_auto?; end
+  def no_autobump?; end
 
   sig { returns(T::Boolean) }
   def cask?; end
