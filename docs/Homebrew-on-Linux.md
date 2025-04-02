@@ -51,9 +51,7 @@ If you're using an older distribution of Linux, installing your first package wi
 
 ## Requirements
 
-- **Linux** 3.2 or newer
-- **Glibc** 2.13 or newer
-- **64-bit x86_64** or **64-bit aarch64** (including Apple Silicon) CPU's
+See [Support Tiers](Support-Tiers.md)
 
 To install build tools, paste at a terminal prompt:
 
@@ -76,9 +74,9 @@ To install build tools, paste at a terminal prompt:
   sudo pacman -S base-devel procps-ng curl file git
   ```
 
-### ARM32 (unsupported)
+### ARM32 (Tier 3 Support)
 
-Homebrew can run on 32-bit ARM (e.g. Raspberry Pi and others), but as they lack bottles (binary packages) they are unsupported. Pull requests are welcome to improve the experience on ARM platforms.
+Homebrew can run on 32-bit ARM (e.g. Raspberry Pi and others), but as they lack bottles (binary packages) they are a [Tier 3 supported platform](https://docs.brew.sh/Support-Tiers#tier-3)
 
 You may need to install your own Ruby using your system package manager, a PPA, or `rbenv/ruby-build` as we no longer distribute a Homebrew Portable Ruby for ARM.
 
