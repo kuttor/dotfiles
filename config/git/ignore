@@ -1,6 +1,12 @@
 # Created by https://www.toptal.com/developers/gitignore/api/dotfilessh,zsh,macos,vim,nim,powershell,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=dotfilessh,zsh,macos,vim,nim,powershell,linux
 
+#vscode
+.vscode
+
+#gitignore
+.gitignore
+
 ### DotfilesSh ###
 local-patch
 patched-src
