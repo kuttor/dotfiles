@@ -6,10 +6,11 @@ plugins:
       plugin_class_name: RuboCop::Performance::Plugin
   - rubocop-rspec:
       plugin_class_name: RuboCop::RSpec::Plugin
+  - rubocop-sorbet:
+      plugin_class_name: RuboCop::Sorbet::Plugin
 
 require:
   - ./Homebrew/rubocops.rb
-  - rubocop-sorbet
 
 inherit_mode:
   merge:
