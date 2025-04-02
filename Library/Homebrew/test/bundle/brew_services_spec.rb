@@ -67,27 +67,49 @@ RSpec.describe Homebrew::Bundle::BrewServices do
     let(:foo) do
       instance_double(
         Formula,
-        name:       "fooformula",
-        version:    "1.0",
-        rack:       HOMEBREW_CELLAR/"fooformula",
-        plist_name: "homebrew.mxcl.fooformula",
+        name:         "fooformula",
+        version:      "1.0",
+        rack:         HOMEBREW_CELLAR/"fooformula",
+        plist_name:   "homebrew.mxcl.fooformula",
+        service_name: "fooformula",
       )
     end
 
-    it "returns the versioned service file" do
-      expect(Formula).to receive(:[]).with(foo.name).and_return(foo)
-      expect(Homebrew::Bundle).to receive(:formula_versions_from_env).and_return(foo.name => foo.version)
+    shared_examples "returns the versioned service file" do
+      it "returns the versioned service file" do
+        expect(Formula).to receive(:[]).with(foo.name).and_return(foo)
+        expect(Homebrew::Bundle).to receive(:formula_versions_from_env).and_return(foo.name => foo.version)
 
-      prefix = foo.rack/"1.0"
-      allow(FileTest).to receive(:directory?).and_call_original
-      expect(FileTest).to receive(:directory?).with(prefix.to_s).and_return(true)
+        prefix = foo.rack/"1.0"
+        allow(FileTest).to receive(:directory?).and_call_original
+        expect(FileTest).to receive(:directory?).with(prefix.to_s).and_return(true)
 
-      service_file = prefix/"#{foo.plist_name}.plist"
-      expect(Homebrew::Services::System).to receive(:launchctl?).and_return(true)
-      allow(FileTest).to receive(:file?).and_call_original
-      expect(FileTest).to receive(:file?).with(service_file.to_s).and_return(true)
+        service_file = prefix/service_basename
+        allow(FileTest).to receive(:file?).and_call_original
+        expect(FileTest).to receive(:file?).with(service_file.to_s).and_return(true)
 
-      expect(described_class.versioned_service_file(foo.name)).to eq(service_file)
+        expect(described_class.versioned_service_file(foo.name)).to eq(service_file)
+      end
+    end
+
+    context "with launchctl" do
+      before do
+        allow(Homebrew::Services::System).to receive(:launchctl?).and_return(true)
+      end
+
+      let(:service_basename) { "#{foo.plist_name}.plist" }
+
+      include_examples "returns the versioned service file"
+    end
+
+    context "with systemd" do
+      before do
+        allow(Homebrew::Services::System).to receive(:launchctl?).and_return(false)
+      end
+
+      let(:service_basename) { "#{foo.service_name}.service" }
+
+      include_examples "returns the versioned service file"
     end
   end
 end

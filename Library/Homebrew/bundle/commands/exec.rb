@@ -191,13 +191,22 @@ module Homebrew
             [entry, formula]
           end.to_h
 
+          conflicts = entries_formulae.to_h do |entry, formula|
+            [
+              entry,
+              (
+                formula.versioned_formulae_names +
+                  formula.conflicts.map(&:name) +
+                  Array(entry.options[:conflicts_with])
+              ).uniq,
+            ]
+          end
+
           # The formula + everything that could possible conflict with the service
           names_to_query = entries_formulae.flat_map do |entry, formula|
             [
               formula.name,
-              *formula.versioned_formulae_names,
-              *formula.conflicts.map(&:name),
-              *entry.options[:conflicts_with],
+              *conflicts.fetch(entry),
             ]
           end
 
@@ -227,7 +236,7 @@ module Homebrew
             conflicting_services = services_info.select do |candidate|
               next unless candidate["running"]
 
-              formula.versioned_formulae_names.include?(candidate["name"])
+              conflicts.fetch(entry).include?(candidate["name"])
             end
 
             raise "Failed to get service info for #{entry.name}" if info.nil?
