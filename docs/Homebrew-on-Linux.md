@@ -5,7 +5,7 @@ redirect_from:
   - /linux
   - /Linux
   - /Linuxbrew
-last_review_date: "1970-01-01"
+last_review_date: "2025-04-02"
 ---
 
 # Homebrew on Linux
@@ -78,13 +78,13 @@ To install build tools, paste at a terminal prompt:
 
 Homebrew can run on 32-bit ARM (e.g. Raspberry Pi and others), but as they lack bottles (binary packages) they are a [Tier 3 supported platform](https://docs.brew.sh/Support-Tiers#tier-3)
 
-You may need to install your own Ruby using your system package manager, a PPA, or `rbenv/ruby-build` as we no longer distribute a Homebrew Portable Ruby for ARM.
+You may need to install your own Ruby using your system package manager, a PPA, or `rbenv/ruby-build` as we don't distribute a Homebrew Portable Ruby for ARM32.
 
-### 32-bit x86 (incompatible)
+### 32-bit x86 (Unsupported)
 
 Homebrew does not run at all on 32-bit x86 platforms.
 
-### Windows Subsystem for Linux (WSL) 1
+### Windows Subsystem for Linux 1 (Tier 3 Support)
 
 Due to [known issues](https://github.com/microsoft/WSL/issues/8219) with WSL 1, you may experience issues running various executables installed by Homebrew. We recommend you switch to WSL 2 instead.
 
