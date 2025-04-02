@@ -515,6 +515,7 @@ _brew_bump() {
       --full-name
       --help
       --installed
+      --no-autobump
       --no-fork
       --no-pull-requests
       --open-pr
