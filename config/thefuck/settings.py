@@ -1,0 +1,11 @@
+rules = ['sudo', 'no_command', git, ]
+exclude_rules = ['git_push']
+require_confirmation = True
+wait_command = 5
+no_colors = False
+priority = {'sudo': 100, 'no_command': 9999}
+debug = False
+history_limit = 9999
+wait_slow_command = 20
+slow_commands = ['react-native', 'gradle']
+num_close_matches = 5
