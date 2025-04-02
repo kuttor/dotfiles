@@ -71,6 +71,12 @@ class Homebrew::Cmd::Bundle::Args < Homebrew::CLI::Args
   sig { returns(T::Boolean) }
   def upgrade?; end
 
+  sig { returns(T.nilable(String)) }
+  def upgrade_formula; end
+
+  sig { returns(T.nilable(String)) }
+  def upgrade_formulae; end
+
   sig { returns(T::Boolean) }
   def vscode?; end
 
