@@ -373,8 +373,11 @@ auto-update() {
     unset HOMEBREW_AUTO_UPDATING
     unset HOMEBREW_AUTO_UPDATE_TAP
 
-    # exec a new process to set any new environment variables.
-    exec "${HOMEBREW_BREW_FILE}" "$@"
+    if [[ $# -gt 0 ]]
+    then
+      # exec a new process to set any new environment variables.
+      exec "${HOMEBREW_BREW_FILE}" "$@"
+    fi
   fi
 
   unset AUTO_UPDATE_COMMANDS
