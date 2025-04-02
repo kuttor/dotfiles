@@ -1,20 +1,24 @@
-# This is a gitignore file - glob patterns are intentional
-# See: https://git-scm.com/docs/gitignore
+# Created by https://www.toptal.com/developers/gitignore/api/dotfilessh,zsh,macos,vim,nim,powershell,linux
+# Edit at https://www.toptal.com/developers/gitignore?templates=dotfilessh,zsh,macos,vim,nim,powershell,linux
 
-### Git ###
-# Created by git for backups. To disable backups in Git:
-# $ git config --global mergetool.keepBackup false
-*.orig
+### DotfilesSh ###
+local-patch
+patched-src
 
-# Created by git when using merge tools for conflicts
-*.BACKUP.*
-*.BASE.*
-*.LOCAL.*
-*.REMOTE.*
-*_BACKUP_*.txt
-*_BASE_*.txt
-*_LOCAL_*.txt
-*_REMOTE_*.txt
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
 
 ### macOS ###
 # General
@@ -24,6 +28,7 @@
 
 # Icon must end with two \r
 Icon
+
 
 # Thumbnails
 ._*
@@ -48,35 +53,54 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
-### VisualStudioCode ###
-.vscode/*
-! .vscode/settings.json
-! .vscode/tasks.json
-! .vscode/launch.json
-! .vscode/extensions.json
-! .vscode/*.code-snippets
+### Nim ###
+nimcache/
+nimblecache/
+htmldocs/
 
-# Built Visual Studio Code Extensions
-*.vsix
+### PowerShell ###
+# Exclude packaged modules
+*.zip
 
-### VisualStudioCode Patch ###
-# Ignore all local history of files
-.history
-.ionide
+# Exclude .NET assemblies from source
+*.dll
+
+### Vim ###
+# Swap
+[._]*.s[a-v][a-z]
+!*.svg  # comment out if you don't need vector files
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Session
+Session.vim
+Sessionx.vim
+
+# Temporary
+.netrwhist
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
 
 ### Zsh ###
+# Zsh compiled script + zrecompile backup
 *.zwc
 *.zwc.old
+
+# Zsh completion-optimization dumpfile
 *zcompdump*
 
 # Zsh history
 .zsh_history
-*history*
-*zsh_history*
+.history/*
+history.*
 
 # Zsh sessions
 .zsh_sessions
-*zsh_sessions*
+sessions.*
 
 # Zsh zcalc history
 .zcalc_history
@@ -98,4 +122,6 @@ zsdoc/data
 
 # Zunit tests' output
 /tests/_output/*
-! /tests/_output/.gitkeep
+!/tests/_output/.gitkeep
+
+# End of https://www.toptal.com/developers/gitignore/api/dotfilessh,zsh,macos,vim,nim,powershell,linux
