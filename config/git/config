@@ -33,8 +33,6 @@
   branch                       = always
   editor                       = nvim
   whitespace                   = trailing-space,space-before-tab
-  excludesfile                 = $GIT_CONFIG/gitignore
-  attributesfile               = $GIT_CONFIG/gitattributes
   pager                        = true
   preloadIndex                 = true
   precomposeunicode            = true
@@ -50,8 +48,10 @@
   fsmonitor                    = true
   untrackedCache               = true
   commitGraph                  = true
-	symlinks                     = true
+  symlinks                     = true
   pager                        = delta --pager='ov -F'
+  excludesfile                 = $XDG_CONFIG_HOME/git/ignore
+  attributesfile               = $XDG_CONFIG_HOME/git/attributes
   ignorecase                   = false
   fileMode                     = false
   eol                          = lf
@@ -129,7 +129,7 @@
   diffFilter                   = delta --color-only
 
 [include]
-  path                         = $GIT_CONFIG/themes.gitconfig
+  path                         = $XDG_CONFIG_HOME/git/themes.gitconfig
 
 [index]
   skipHaves                    = true
@@ -147,8 +147,8 @@
   log                          = delta --features ov-log
 
 [pull]
-  rebase   	                   = false
-  ff 	                         = true
+  rebase   	               = false
+  ff 	                       = true
 
 [push]
   autoSetupRemote              = true
@@ -160,7 +160,7 @@
   eautoupdate                  = 1
 
 [user]
-	email                        = andrew.kuttor@gmail.com
+  email                        = andrew.kuttor@gmail.com
 
 [web]
-  browser                      = safar
+  browser                      = safari

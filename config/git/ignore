@@ -1,3 +1,6 @@
+# This is a gitignore file - glob patterns are intentional
+# See: https://git-scm.com/docs/gitignore
+
 ### Git ###
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
@@ -47,14 +50,11 @@ Temporary Items
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
-
-# Local History for Visual Studio Code
-.history/
+! .vscode/settings.json
+! .vscode/tasks.json
+! .vscode/launch.json
+! .vscode/extensions.json
+! .vscode/*.code-snippets
 
 # Built Visual Studio Code Extensions
 *.vsix
@@ -65,18 +65,18 @@ Temporary Items
 .ionide
 
 ### Zsh ###
-# Zsh compiled script + zrecompile backup
 *.zwc
 *.zwc.old
-
-# Zsh completion-optimization dumpfile
 *zcompdump*
 
 # Zsh history
 .zsh_history
+*history*
+*zsh_history*
 
 # Zsh sessions
 .zsh_sessions
+*zsh_sessions*
 
 # Zsh zcalc history
 .zcalc_history
@@ -98,4 +98,4 @@ zsdoc/data
 
 # Zunit tests' output
 /tests/_output/*
-!/tests/_output/.gitkeep
+! /tests/_output/.gitkeep
