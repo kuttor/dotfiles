@@ -33,6 +33,8 @@ module Homebrew
         switch "--auto",
                description: "Read the list of formulae/casks from the tap autobump list.",
                hidden:      true
+        switch "--no-autobump",
+               description: "Ignore formulae/casks in autobump list (official repositories only)."
         switch "--formula", "--formulae",
                description: "Check only formulae."
         switch "--cask", "--casks",
@@ -54,6 +56,7 @@ module Homebrew
 
         conflicts "--cask", "--formula"
         conflicts "--tap=", "--installed"
+        conflicts "--tap=", "--no-auto"
         conflicts "--eval-all", "--installed"
         conflicts "--installed", "--auto"
         conflicts "--no-pull-requests", "--open-pr"
@@ -67,6 +70,14 @@ module Homebrew
 
         Homebrew.with_no_api_env do
           eval_all = args.eval_all? || Homebrew::EnvConfig.eval_all?
+
+          excluded_autobump = []
+          if args.no_autobump?
+            excluded_autobump.concat(autobumped_formulae_or_casks(CoreTap.instance)) if eval_all || args.formula?
+            if eval_all || args.cask?
+              excluded_autobump.concat(autobumped_formulae_or_casks(CoreCaskTap.instance, casks: true))
+            end
+          end
 
           formulae_and_casks = if args.auto?
             raise UsageError, "`--formula` or `--cask` must be passed with `--auto`." if !args.formula? && !args.cask?
@@ -118,6 +129,8 @@ module Homebrew
           formulae_and_casks = formulae_and_casks.sort_by do |formula_or_cask|
             formula_or_cask.respond_to?(:token) ? formula_or_cask.token : formula_or_cask.name
           end
+
+          formulae_and_casks -= excluded_autobump
 
           if args.repology? && !Utils::Curl.curl_supports_tls13?
             begin
@@ -540,6 +553,19 @@ module Homebrew
         end
 
         synced_with
+      end
+
+      sig { params(tap: Tap, casks: T::Boolean).returns(T::Array[T.any(Formula, Cask::Cask)]) }
+      def autobumped_formulae_or_casks(tap, casks: false)
+        autobump_list = tap.autobump
+        autobump_list.map do |name|
+          qualified_name = "#{tap.name}/#{name}"
+          if casks
+            Cask::CaskLoader.load(qualified_name)
+          else
+            Formulary.factory(qualified_name)
+          end
+        end
       end
     end
   end

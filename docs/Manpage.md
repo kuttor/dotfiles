@@ -2095,6 +2095,10 @@ displays whether a pull request has been opened with the URL.
 
 : Do not retrieve pull requests from GitHub.
 
+`--no-autobump`
+
+: Ignore formulae/casks in autobump list (official repositories only).
+
 `--formula`
 
 : Check only formulae.
