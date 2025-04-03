@@ -14,12 +14,6 @@ class Homebrew::DevCmd::Bump::Args < Homebrew::CLI::Args
   sig { returns(T::Boolean) }
   def auto?; end
 
-  # `/opt/homebrew/Library/Homebrew/vendor/bundle/ruby/3.3.0/bin/tapioca dsl Homebrew::DevCmd::Bump`
-  # didn't work for me for some reason, adding `no_auto?` flag manually.
-  # If you can help me with fixing the issue or `tapioca` runs perfectly, please, override this
-  sig { returns(T::Boolean) }
-  def no_autobump?; end
-
   sig { returns(T::Boolean) }
   def cask?; end
 
@@ -40,6 +34,9 @@ class Homebrew::DevCmd::Bump::Args < Homebrew::CLI::Args
 
   sig { returns(T::Boolean) }
   def installed?; end
+
+  sig { returns(T::Boolean) }
+  def no_autobump?; end
 
   sig { returns(T::Boolean) }
   def no_fork?; end
