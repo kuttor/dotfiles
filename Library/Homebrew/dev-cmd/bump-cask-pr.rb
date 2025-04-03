@@ -190,15 +190,33 @@ module Homebrew
         ).returns(T::Array[[T.any(Regexp, String), T.any(Pathname, String)]])
       }
       def replace_version_and_checksum(cask, new_hash, new_version, replacement_pairs)
-        # When blocks are absent, arch is not relevant. For consistency, we simulate the arm architecture.
+        host_os = Homebrew::SimulateSystem.current_os
+        host_is_macos = MacOSVersion::SYMBOLS.include?(host_os)
+        newest_macos = MacOSVersion::SYMBOLS.keys.first
+
+        # NOTE: We substitute the newest macOS (e.g. `:sequoia`) in place of
+        # `:macos` values (when used), as a generic `:macos` value won't apply
+        # to on_system blocks referencing macOS versions. We also omit the OS
+        # when the value aligns with the host.
         system_options = if cask.on_system_blocks_exist?
-          OnSystem::BASE_OS_OPTIONS.product(OnSystem::ARCH_OPTIONS)
+          OnSystem::BASE_OS_OPTIONS.each_with_object([]) do |os, array|
+            OnSystem::ARCH_OPTIONS.each do |arch|
+              system_hash = { arch: }
+              system_hash[:os] = os if host_is_macos && os != :macos
+              system_hash[:os] = newest_macos if !host_is_macos && os == :macos
+              array << system_hash
+            end
+          end.uniq
         else
-          [[:macos, :arm]]
+          # Architecture is only relevant if on_system blocks are present. When
+          # not present, we default to ARM for consistency.
+          system_hash = { arch: :arm }
+          system_hash[:os] = newest_macos unless host_is_macos
+          [system_hash]
         end
 
-        system_options.each do |os, arch|
-          SimulateSystem.with(os:, arch:) do
+        system_options.each do |system_args|
+          SimulateSystem.with(**system_args) do
             # Handle the cask being invalid for specific os/arch combinations
             old_cask = begin
               Cask::CaskLoader.load(cask.sourcefile_path)
@@ -207,8 +225,10 @@ module Homebrew
             end
             next if old_cask.nil?
 
-            old_version  = old_cask.version
-            bump_version = new_version.send(arch) || new_version.general
+            old_version = old_cask.version
+            next unless old_version
+
+            bump_version = new_version.send(system_args[:arch]) || new_version.general
 
             old_version_regex = old_version.latest? ? ":latest" : %Q(["']#{Regexp.escape(old_version.to_s)}["'])
             replacement_pairs << [/version\s+#{old_version_regex}/m,
