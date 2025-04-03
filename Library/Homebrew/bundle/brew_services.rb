@@ -65,7 +65,7 @@ module Homebrew
       end
 
       def self.versioned_service_file(name)
-        env_version = Bundle.formula_versions_from_env[name]
+        env_version = Bundle.formula_versions_from_env(name)
         return if env_version.nil?
 
         formula = Formula[name]

@@ -102,8 +102,8 @@ module Homebrew
         return_value
       end
 
-      sig { returns(T::Hash[String, String]) }
-      def formula_versions_from_env
+      sig { params(formula_name: String).returns(T.nilable(String)) }
+      def formula_versions_from_env(formula_name)
         @formula_versions_from_env ||= begin
           formula_versions = {}
 
@@ -113,15 +113,23 @@ module Homebrew
             match ||= key.match(/^HOMEBREW_BUNDLE_EXEC_FORMULA_VERSION_(.+)$/)
             next if match.blank?
 
-            formula_name = match[1]
-            next if formula_name.blank?
+            env_formula_name = match[1]
+            next if env_formula_name.blank?
 
             ENV.delete(key)
-            formula_versions[formula_name.downcase] = value
+            formula_versions[env_formula_name] = value
           end
 
           formula_versions
         end
+
+        # Fix up formula name for a valid environment variable name.
+        formula_env_name = formula_name.upcase
+                                       .gsub("@", "AT")
+                                       .tr("+", "X")
+                                       .tr("-", "_")
+
+        @formula_versions_from_env[formula_env_name]
       end
 
       sig { void }
