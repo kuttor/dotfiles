@@ -220,7 +220,7 @@ module Homebrew
             # Handle the cask being invalid for specific os/arch combinations
             old_cask = begin
               Cask::CaskLoader.load(cask.sourcefile_path)
-            rescue Cask::CaskInvalidError
+            rescue Cask::CaskInvalidError, Cask::CaskUnreadableError
               raise unless cask.on_system_blocks_exist?
             end
             next if old_cask.nil?
