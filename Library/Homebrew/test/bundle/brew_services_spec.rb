@@ -78,7 +78,7 @@ RSpec.describe Homebrew::Bundle::BrewServices do
     shared_examples "returns the versioned service file" do
       it "returns the versioned service file" do
         expect(Formula).to receive(:[]).with(foo.name).and_return(foo)
-        expect(Homebrew::Bundle).to receive(:formula_versions_from_env).and_return(foo.name => foo.version)
+        expect(Homebrew::Bundle).to receive(:formula_versions_from_env).with(foo.name).and_return(foo.version)
 
         prefix = foo.rack/"1.0"
         allow(FileTest).to receive(:directory?).and_call_original

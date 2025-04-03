@@ -112,7 +112,11 @@ module Homebrew
           end
 
           # Replace the formula versions from the environment variables
-          Bundle.formula_versions_from_env.each do |formula_name, formula_version|
+          ENV.deps.each do |formula|
+            formula_name = formula.name
+            formula_version = Bundle.formula_versions_from_env(formula_name)
+            next unless formula_version
+
             ENV.each do |key, value|
               opt = %r{/opt/#{formula_name}([/:$])}
               next unless value.match(opt)
