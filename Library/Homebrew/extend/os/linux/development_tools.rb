@@ -37,17 +37,25 @@ module OS
         @needs_libc_formula = !!@needs_libc_formula
       end
 
+      # Keep this method around for now to make it easier to add this functionality later.
+      # rubocop:disable Style/UselessMethodDefinition
+      sig { returns(Pathname) }
+      def host_gcc_path
+        # TODO: override this if/when we to pick the GCC based on e.g. the Ubuntu version.
+        super
+      end
+      # rubocop:enable Style/UselessMethodDefinition
+
       sig { returns(T::Boolean) }
       def needs_compiler_formula?
         return @needs_compiler_formula unless @needs_compiler_formula.nil?
 
-        gcc = "/usr/bin/gcc"
-        @needs_compiler_formula = T.let(if File.exist?(gcc)
-                                          ::DevelopmentTools.gcc_version(gcc) < OS::LINUX_GCC_CI_VERSION
-                                        else
-                                          true
-        end, T.nilable(T::Boolean))
-        !!@needs_compiler_formula
+        @needs_compiler_formula = T.let(nil, T.nilable(T::Boolean))
+        @needs_compiler_formula = if host_gcc_path.exist?
+          ::DevelopmentTools.gcc_version(host_gcc_path.to_s) < OS::LINUX_GCC_CI_VERSION
+        else
+          true
+        end
       end
 
       sig { returns(T::Hash[String, T.nilable(String)]) }

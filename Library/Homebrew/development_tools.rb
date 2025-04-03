@@ -102,6 +102,11 @@ class DevelopmentTools
       end, T.nilable(Version))
     end
 
+    sig { returns(Pathname) }
+    def host_gcc_path
+      Pathname.new("/usr/bin/gcc")
+    end
+
     # Get the GCC version.
     #
     # @api internal

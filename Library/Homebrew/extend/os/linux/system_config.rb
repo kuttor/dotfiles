@@ -19,7 +19,7 @@ module SystemConfig
     end
 
     def host_gcc_version
-      gcc = Pathname.new "/usr/bin/gcc"
+      gcc = DevelopmentTools.host_gcc_path
       return "N/A" unless gcc.executable?
 
       `#{gcc} --version 2>/dev/null`[/ (\d+\.\d+\.\d+)/, 1]
@@ -47,7 +47,7 @@ module SystemConfig
       out.puts "OS: #{OS::Linux.os_version}"
       out.puts "WSL: #{OS::Linux.wsl_version}" if OS::Linux.wsl?
       out.puts "Host glibc: #{host_glibc_version}"
-      out.puts "/usr/bin/gcc: #{host_gcc_version}"
+      out.puts "#{DevelopmentTools.host_gcc_path}: #{host_gcc_version}"
       out.puts "/usr/bin/ruby: #{host_ruby_version}" if RUBY_PATH != HOST_RUBY_PATH
       ["glibc", CompilerSelector.preferred_gcc, OS::LINUX_PREFERRED_GCC_RUNTIME_FORMULA, "xorg"].each do |f|
         out.puts "#{f}: #{formula_linked_version(f)}"
