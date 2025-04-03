@@ -194,9 +194,10 @@ class Livecheck
   end
 
   delegate url_options: :@options
-  delegate version: :@package_or_resource
   delegate arch: :@package_or_resource
-  private :version, :arch
+  delegate os: :@package_or_resource
+  delegate version: :@package_or_resource
+  private :arch, :os, :version
   # Returns a `Hash` of all instance variable values.
   # @return [Hash]
   sig { returns(T::Hash[String, T.untyped]) }
