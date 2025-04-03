@@ -247,6 +247,11 @@ flags which will help with finding keg-only dependencies like `openssl`,
 : `install` runs `brew upgrade` on outdated dependencies, even if
   `$HOMEBREW_BUNDLE_NO_UPGRADE` is set.
 
+`--upgrade-formulae`
+
+: `install` runs `brew upgrade` on any of these comma-separated formulae, even
+  if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set.
+
 `--install`
 
 : Run `install` before continuing to other operations e.g. `exec`.

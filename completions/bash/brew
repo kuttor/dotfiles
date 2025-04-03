@@ -667,6 +667,7 @@ _brew_bundle() {
       --services
       --tap
       --upgrade
+      --upgrade-formulae
       --verbose
       --vscode
       --whalebrew

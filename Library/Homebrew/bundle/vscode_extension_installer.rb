@@ -31,7 +31,7 @@ module Homebrew
         puts "Installing #{name} VSCode extension. It is not currently installed." if verbose
 
         return false unless Bundle.exchange_uid_if_needed! do
-          Bundle.system(Bundle.which_vscode, "--install-extension", name, verbose:)
+          Bundle.system(T.must(Bundle.which_vscode), "--install-extension", name, verbose:)
         end
 
         installed_extensions << name

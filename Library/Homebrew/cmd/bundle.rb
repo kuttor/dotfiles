@@ -80,7 +80,10 @@ module Homebrew
                             "This is enabled by default if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set."
         switch "--upgrade",
                description: "`install` runs `brew upgrade` on outdated dependencies, " \
-                            "even if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set. "
+                            "even if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set."
+        flag "--upgrade-formulae=", "--upgrade-formula=",
+             description: "`install` runs `brew upgrade` on any of these comma-separated formulae, " \
+                          "even if `$HOMEBREW_BUNDLE_NO_UPGRADE` is set."
         switch "--install",
                description: "Run `install` before continuing to other operations e.g. `exec`."
         switch "--services",
@@ -150,6 +153,7 @@ module Homebrew
         verbose = args.verbose?
         force = args.force?
         zap = args.zap?
+        Homebrew::Bundle.upgrade_formulae = args.upgrade_formulae
 
         no_type_args = !args.brews? && !args.casks? && !args.taps? && !args.mas? && !args.whalebrew? && !args.vscode?
 

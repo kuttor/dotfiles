@@ -48,7 +48,7 @@ module Homebrew
 
             Bundle.exchange_uid_if_needed! do
               vscode_extensions.each do |extension|
-                Kernel.system(Bundle.which_vscode, "--uninstall-extension", extension)
+                Kernel.system(T.must(Bundle.which_vscode).to_s, "--uninstall-extension", extension)
               end
             end
 

@@ -18,7 +18,7 @@ module Homebrew
         end
 
         def failure_reason(name, no_upgrade:)
-          reason = if no_upgrade
+          reason = if no_upgrade && Bundle.upgrade_formulae.exclude?(name)
             "needs to be installed."
           else
             "needs to be installed or updated."
