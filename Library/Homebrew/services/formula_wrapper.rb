@@ -235,19 +235,19 @@ module Homebrew
 
       def status_output_success_type
         @status_output_success_type ||= if System.launchctl?
-          cmd = [System.launchctl.to_s, "list", "#{System.domain_target}/#{service_name}"]
+          cmd = [System.launchctl.to_s, "print", "#{System.domain_target}/#{service_name}"]
           output = Utils.popen_read(*cmd).chomp
           if $CHILD_STATUS.present? && $CHILD_STATUS.success? && output.present?
             success = true
-            odebug cmd.join(" "), output
-            [output, success, :launchctl_list]
+            type = :launchctl_print
           else
-            cmd = [System.launchctl.to_s, "print", "#{System.domain_target}/#{service_name}"]
+            cmd = [System.launchctl.to_s, "list", service_name]
             output = Utils.popen_read(*cmd).chomp
             success = $CHILD_STATUS.present? && $CHILD_STATUS.success? && output.present?
-            odebug cmd.join(" "), output
-            [output, success, :launchctl_print]
+            type = :launchctl_list
           end
+          odebug cmd.join(" "), output
+          [output, success, type]
         elsif System.systemctl?
           cmd = ["status", service_name]
           output = System::Systemctl.popen_read(*cmd).chomp
