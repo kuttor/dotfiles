@@ -224,6 +224,11 @@ module Homebrew
             if requirements.any? { |r| r.is_a?(MacOSRequirement) && !r.version }
               puts "#{Tty.bold}#{Tty.red}#{name}#{Tty.reset}: requires macOS" if any_named_args
               next
+            elsif requirements.any? { |r| r.is_a?(ArchRequirement) && r.arch != @bottle_tag.arch }
+              if any_named_args
+                puts "#{Tty.bold}#{Tty.red}#{name}#{Tty.reset}: doesn't support #{@bottle_tag.arch} Linux"
+              end
+              next
             end
           elsif requirements.any?(LinuxRequirement)
             puts "#{Tty.bold}#{Tty.red}#{name}#{Tty.reset}: requires Linux" if any_named_args
