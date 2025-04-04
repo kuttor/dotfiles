@@ -142,6 +142,9 @@ class Cask::Cask
   def on_system_blocks_exist?(*args, &block); end
 
   sig { params(args: T.untyped, block: T.untyped).returns(T.untyped) }
+  def os(*args, &block); end
+
+  sig { params(args: T.untyped, block: T.untyped).returns(T.untyped) }
   def pkg(*args, &block); end
 
   sig { params(args: T.untyped, block: T.untyped).returns(T.untyped) }
