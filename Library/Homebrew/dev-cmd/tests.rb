@@ -134,6 +134,10 @@ module Homebrew
           end
           # rubocop:enable Homebrew/MoveToExtendOS
 
+          bundle_args << "--tag" << "~needs_arm" unless Hardware::CPU.arm?
+
+          bundle_args << "--tag" << "~needs_intel" unless Hardware::CPU.intel?
+
           bundle_args << "--tag" << "~needs_network" unless args.online?
           unless ENV["CI"]
             bundle_args << "--tag" << "~needs_ci" \

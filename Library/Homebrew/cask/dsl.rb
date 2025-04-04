@@ -80,6 +80,7 @@ module Cask
       :homepage,
       :language,
       :name,
+      :os,
       :sha256,
       :staged_path,
       :url,
