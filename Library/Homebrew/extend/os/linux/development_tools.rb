@@ -38,13 +38,13 @@ module OS
       end
 
       # Keep this method around for now to make it easier to add this functionality later.
-      # rubocop:disable Style/UselessMethodDefinition
+      # rubocop:disable Lint/UselessMethodDefinition
       sig { returns(Pathname) }
       def host_gcc_path
         # TODO: override this if/when we to pick the GCC based on e.g. the Ubuntu version.
         super
       end
-      # rubocop:enable Style/UselessMethodDefinition
+      # rubocop:enable Lint/UselessMethodDefinition
 
       sig { returns(T::Boolean) }
       def needs_compiler_formula?
