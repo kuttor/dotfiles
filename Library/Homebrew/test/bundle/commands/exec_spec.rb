@@ -185,6 +185,7 @@ RSpec.describe Homebrew::Bundle::Commands::Exec do
         allow(pkgconf).to receive(:any_version_installed?).and_return(false)
 
         allow_any_instance_of(Pathname).to receive(:file?).and_return(true)
+        allow_any_instance_of(Pathname).to receive(:realpath) { |path| path }
 
         allow(described_class).to receive(:exit!).and_return(nil)
       end
