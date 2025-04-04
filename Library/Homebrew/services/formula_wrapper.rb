@@ -188,6 +188,11 @@ module Homebrew
         Regexp.last_match(1).to_i if status_output =~ exit_code_regex(status_type)
       end
 
+      def loaded_file
+        status_output, _, status_type = status_output_success_type
+        Regexp.last_match(1) if status_output =~ loaded_file_regex(status_type)
+      end
+
       sig { returns(T::Hash[Symbol, T.anything]) }
       def to_hash
         hash = {
@@ -202,6 +207,7 @@ module Homebrew
           status:       status_symbol,
           file:         service_file_present? ? dest : service_file,
           registered:   service_file_present?,
+          loaded_file:,
         }
 
         return hash unless service?
@@ -300,6 +306,15 @@ module Homebrew
           systemctl:       /Main PID: ([0-9]*) \((?!code=)/,
         }
         @pid_regex.fetch(status_type)
+      end
+
+      def loaded_file_regex(status_type)
+        @loaded_file_regex ||= {
+          launchctl_list:  //, # not available
+          launchctl_print: /path = (.*)/,
+          systemctl:       /Loaded: .*? \((.*);/,
+        }
+        @loaded_file_regex.fetch(status_type)
       end
 
       sig { returns(T::Boolean) }
