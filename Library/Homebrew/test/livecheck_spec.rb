@@ -182,6 +182,32 @@ RSpec.describe Livecheck do
     end
   end
 
+  describe "#arch" do
+    let(:c_arch) do
+      Cask::Cask.new("c-arch") do
+        arch arm: "arm", intel: "intel"
+
+        version "0.0.1"
+
+        url "https://brew.sh/test-0.0.1.dmg"
+        name "Test"
+        desc "Test cask"
+        homepage "https://brew.sh"
+
+        livecheck do
+          url "https://brew.sh/#{arch}"
+        end
+      end
+    end
+
+    [:needs_arm, :needs_intel].each do |needs_arch|
+      arch_value = needs_arch.to_s.delete_prefix("needs_")
+      it "delegates `arch` in `livecheck` block to `package_or_resource`", needs_arch do
+        expect(c_arch.livecheck.url).to eq("https://brew.sh/#{arch_value}")
+      end
+    end
+  end
+
   describe "#os" do
     let(:c_os) do
       Cask::Cask.new("c-os") do
@@ -205,6 +231,52 @@ RSpec.describe Livecheck do
       it "delegates `os` in `livecheck` block to `package_or_resource`", needs_os do
         expect(c_os.livecheck.url).to eq("https://brew.sh/#{os_value}")
       end
+    end
+  end
+
+  describe "#version" do
+    let(:url_with_version) { "https://brew.sh/0.0.1" }
+
+    let(:f_version) do
+      formula do
+        homepage "https://brew.sh"
+        url "https://brew.sh/test-0.0.1.tgz"
+
+        livecheck do
+          url "https://brew.sh/#{version}"
+        end
+      end
+    end
+
+    let(:c_version) do
+      Cask::Cask.new("c-version") do
+        version "0.0.1"
+
+        url "https://brew.sh/test-0.0.1.dmg"
+        name "Test"
+        desc "Test cask"
+        homepage "https://brew.sh"
+
+        livecheck do
+          url "https://brew.sh/#{version}"
+        end
+      end
+    end
+
+    let(:r_version) do
+      Resource.new do
+        url "https://brew.sh/test-0.0.1.tgz"
+
+        livecheck do
+          url "https://brew.sh/#{version}"
+        end
+      end
+    end
+
+    it "delegates `version` in `livecheck` block to `package_or_resource`" do
+      expect(f_version.livecheck.url).to eq(url_with_version)
+      expect(c_version.livecheck.url).to eq(url_with_version)
+      expect(r_version.livecheck.url).to eq(url_with_version)
     end
   end
 
