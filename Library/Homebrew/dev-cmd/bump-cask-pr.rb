@@ -181,15 +181,8 @@ module Homebrew
         end
       end
 
-      sig {
-        params(
-          cask:              Cask::Cask,
-          new_hash:          T.any(NilClass, String, Symbol),
-          new_version:       BumpVersionParser,
-          replacement_pairs: T::Array[[T.any(Regexp, String), T.any(Pathname, String)]],
-        ).returns(T::Array[[T.any(Regexp, String), T.any(Pathname, String)]])
-      }
-      def replace_version_and_checksum(cask, new_hash, new_version, replacement_pairs)
+      sig { params(cask: Cask::Cask).returns(T::Array[[Symbol, Symbol]]) }
+      def generate_system_options(cask)
         host_os = Homebrew::SimulateSystem.current_os
         host_is_macos = MacOSVersion::SYMBOLS.include?(host_os)
         newest_macos = MacOSVersion::SYMBOLS.keys.first
@@ -219,7 +212,19 @@ module Homebrew
           arch_values << :arm if arch_values.empty?
         end
 
-        os_values.product(arch_values).each do |os, arch|
+        os_values.product(arch_values)
+      end
+
+      sig {
+        params(
+          cask:              Cask::Cask,
+          new_hash:          T.any(NilClass, String, Symbol),
+          new_version:       BumpVersionParser,
+          replacement_pairs: T::Array[[T.any(Regexp, String), T.any(Pathname, String)]],
+        ).returns(T::Array[[T.any(Regexp, String), T.any(Pathname, String)]])
+      }
+      def replace_version_and_checksum(cask, new_hash, new_version, replacement_pairs)
+        generate_system_options(cask).each do |os, arch|
           SimulateSystem.with(os:, arch:) do
             # Handle the cask being invalid for specific os/arch combinations
             old_cask = begin
