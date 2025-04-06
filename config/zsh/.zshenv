@@ -1,6 +1,5 @@
-#!/usr/bin/env zsh
-
-# -- xdg based variables --
+#!/usr/bin/env n
+# xdg based variables
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
@@ -11,8 +10,13 @@ export DOT_CONFIG_HOME="$DOTFILES/config"
 export DOT_ZSH_HOME="$DOTFILES/config/zsh"
 export DOT_FUNCTIONS_HOME="$DOTFILES/functions"
 
-# -- zsh env-vars --
+# zsh environment variables
 export ZDOTDIR="$DOT_CONFIG_HOME/zsh"
+export HELPDIR="/usr/share/zsh"
+export SHELL_SESSION_DIR="${XDG_CACHE_HOME}/zsh_sessions"
+export SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"
+mkdir -m 700 -p "$SHELL_SESSION_DIR"
+
 #export ZINIT_HOME="$HOMEBREW_PREFIX/opt/zinit/zinit.git"
 
 # setup zinit env-vars
@@ -25,7 +29,7 @@ typeset -A ZINIT=(
   SNIPPETS_DIR               /opt/homebrew/opt/zinit/snippets
   COMPLETIONS_DIR            /opt/homebrew/opt/zinit/completions
   ZCOMPDUMP_PATH             $XDG_CACHE_HOME/zcompdump-${HOST/.*/}-$ZSH_VERSION
-  OPTIMIZE_OUT_DISK_ACCESSES true 
+  OPTIMIZE_OUT_DISK_ACCESSES true
   COMPINIT_OPTS              " -C"
   LIST_COMMAND               "lsd --color=always --tree --icons -L3"
   LIST_SYMBOLS_DIR           "lsd --color=always --tree --icons=always --depth=3"
@@ -50,9 +54,10 @@ autoload -Uz $DOT_FUNCTIONS_HOME/*(.:t)
 
 # -- XDG based variables --------------------------------------------------------------------------
 set_xdg "config" "NPM_CONFIG_USERCONFIG"    "create path" "npm/npmrc"
+set_xdg "config" "RIPGREP_CONFIG_FILE"      "create path" "ripgrep/.ripgreprc"
 set_xdg "config" "PIP_CONFIG_FILE"          "create path" "pip/pip.conf"
-set_xdg "config" "BAT_CONFIG_PATH"          "create path" "bat/bat.conf"
-set_xdg "config" "FZF_CONFIG_PATH"          "create path" "fzf/fzf.conf"
+set_xdg "config" "BAT_CONFIG_PATH"          "create path" "bat/"
+set_xdg "config" "FZF_CONFIG_PATH"          "create path" "fzf/"
 set_xdg "config" "EDITORCONFIG_RC"          "create path" "editorconfig/editorconfigrc"
 set_xdg "config" "SHELLSCRIPT_RC"           "create path" "shellscript/shellscriptrc"
 set_xdg "config" "ZSH_TMUX_CONFIG"          "create path" "tmux/tmux.conf"
@@ -80,12 +85,9 @@ set_xdg "cache"  "HISTFILE"                               "zsh/history.zsh"
 set_xdg "cache"  "LESSHISTFILE"                           "less/history.less"
 set_xdg "cache"  "ZSH_CACHE_DIR"            "create path" "zsh/"
 
-# histzsh
+# history
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
-
-# Zsh
-export HELPDIR="/usr/share/zsh"
 
 # Terminal and environment
 export TIMEFMT="%u user %s system %p cpu %*es total"
@@ -110,25 +112,23 @@ typeset -Ugx PATH FPATH MANPATH INFOPATH path fpath manpath infopath
 path=(
   $HOMEBREW_PREFIX/{bin,sbin}
   $CARGO_HOME/bin
-  $HOMEBREW_PREFIX/{bin,sbin}
-  $XDG_DATA_HOME/zinit/plugins/git-ignore/bin
-  $XDG_CONFIG_HOME/rbenv/shims
   $ZPFX/bin
   /usr/local/bin
   /usr/{bin,sbin}
-  $HOMEBREW_PREFIX/{bin,sbin}
-  $CARGO_HOME/bin
   $path
 )
 
 fpath=(
   $DOT_FUNCTIONS_HOME
-  /usr/share/zsh/*/functions
+  /usr/share/zsh/5.9/{functions,help,scripts}
+  $HOMEBREW_PREFIX/share/zsh/site-functions
+  $HOMEBREW_PREFIX/completions
   $fpath
 )
 
 manpath=(
   /usr/share/man
+  /usr/share/zsh/5.9/help
   $HOMEBREW_PREFIX/manpages
   $HOMEBREW_PREFIX/share/man
   $manpath
