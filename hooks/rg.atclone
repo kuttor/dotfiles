@@ -1,7 +1,10 @@
 #! /usr/bin/env zsh
 
 # autocomplete
-rg --generate complete-zsh > "$ZINIT[COMPLETIONS_DIR]/_rg"
+rg --generate=complete-zsh > "$ZINIT[COMPLETIONS_DIR]/_rg"
+
+# create manpage
+rg --generate=man > "$ZINIT[MAN_DIR]/man1/rg.1"
 
 # link config
 link_config ripgrep
