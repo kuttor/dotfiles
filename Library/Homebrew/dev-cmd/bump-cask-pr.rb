@@ -183,8 +183,8 @@ module Homebrew
 
       sig { params(cask: Cask::Cask).returns(T::Array[[Symbol, Symbol]]) }
       def generate_system_options(cask)
-        host_os = Homebrew::SimulateSystem.current_os
-        host_is_macos = MacOSVersion::SYMBOLS.include?(host_os)
+        current_os = Homebrew::SimulateSystem.current_os
+        current_os_is_macos = MacOSVersion::SYMBOLS.include?(current_os)
         newest_macos = MacOSVersion::SYMBOLS.keys.first
 
         depends_on_archs = cask.depends_on.arch&.filter_map { |arch| arch[:type] }&.uniq
@@ -197,7 +197,7 @@ module Homebrew
         if cask.on_system_blocks_exist?
           OnSystem::BASE_OS_OPTIONS.each do |os|
             os_values << if os == :macos
-              (host_is_macos ? host_os : newest_macos)
+              (current_os_is_macos ? current_os : newest_macos)
             else
               os
             end
@@ -208,7 +208,7 @@ module Homebrew
           # Architecture is only relevant if on_system blocks are present or
           # the cask uses `depends_on arch`, otherwise we default to ARM for
           # consistency.
-          os_values << (host_is_macos ? host_os : newest_macos)
+          os_values << (current_os_is_macos ? current_os : newest_macos)
           arch_values << :arm if arch_values.empty?
         end
 
