@@ -23,6 +23,7 @@ alias pbc="pbcopy"
 alias pbp="pbpaste"
 
 # ~ navigation ~
+alias cls="clear"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
