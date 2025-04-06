@@ -11,11 +11,19 @@ export DOT_ZSH_HOME="$DOTFILES/config/zsh"
 export DOT_FUNCTIONS_HOME="$DOTFILES/functions"
 
 # zsh environment variables
+export ZSH_CACHE="$XDG_CACHE_HOME/zsh" && mkdir -p "$XDG_CACHE_HOME/zsh"
 export ZDOTDIR="$DOT_CONFIG_HOME/zsh"
 export HELPDIR="/usr/share/zsh"
-export SHELL_SESSION_DIR="${XDG_CACHE_HOME}/zsh_sessions"
+export HISTFILE="$ZSH_CACHE/history.zsh" 
+export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump" && compinit -d "$ZSH_COMPDUMP"
+export ZCOMPCACHE="$ZSH_CACHE/zcompcache" && compinit -C "$ZCOMPCACHE"
+export SHELL_SESSION_DIR="$ZSH_CACHE/zsh_sessions"
 export SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"
 mkdir -m 700 -p "$SHELL_SESSION_DIR"
+
+# history
+export HISTSIZE=10000
+export SAVEHIST=$HISTSIZE
 
 #export ZINIT_HOME="$HOMEBREW_PREFIX/opt/zinit/zinit.git"
 
@@ -79,15 +87,10 @@ set_xdg "data"   "NODE_PATH"                "create path" "node/"
 set_xdg "data"   "GEM_HOME"                 "create path" "gem/"
 set_xdg "cache"  "GEM_SPEC_CACHE"           "create path" "gem/"
 set_xdg "config" "TERMINFO"                 "create path" "terminfo/"
-set_xdg "data"   "TMUX_PLUGIN_MANAGER_PATH"               "tmux/plugins"
-set_xdg "cache"  "NODE_REPL_HISTORY"                      "node_repl_history"
-set_xdg "cache"  "HISTFILE"                               "zsh/history.zsh"
-set_xdg "cache"  "LESSHISTFILE"                           "less/history.less"
+set_xdg "data"   "TMUX_PLUGIN_MANAGER_PATH" "create path" "tmux/plugins"
+set_xdg "cache"  "NODE_REPL_HISTORY"        "create path" "node_repl_history"
+set_xdg "cache"  "LESSHISTFILE"             "create path" "less/history.less"
 set_xdg "cache"  "ZSH_CACHE_DIR"            "create path" "zsh/"
-
-# history
-export HISTSIZE=10000
-export SAVEHIST=$HISTSIZE
 
 # Terminal and environment
 export TIMEFMT="%u user %s system %p cpu %*es total"

@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-export ZSH_SMARTCACHE_DIR="$XDG_CACHE_HOME/zsh-smartcache" && mkdir -p "$ZSH_SMARTCACHE_DIR"
+export ZSH_SMARTCACHE_DIR="$XDG_CACHE_HOME/zsh/smartcache" && mkdir -p "$ZSH_SMARTCACHE_DIR"
 
 
 smartcache eval rbenv init -
