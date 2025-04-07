@@ -398,6 +398,54 @@ jobs:
 
       - run: brew test-bot --only-formulae --only-json-tab --test-default-formula
 
+  test-brew-bundle-services:
+    name: ${{ matrix.name }}
+    needs: syntax
+    if: github.repository_owner == 'Homebrew' && github.event_name != 'push'
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        include:
+          - name: test brew bundle and brew services (Ubuntu)
+            runs-on: ubuntu-latest
+          - name: test brew bundle and brew services (macOS)
+            runs-on: macos-15
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+        with:
+          core: true
+          cask: false
+          test-bot: false
+
+      - run: brew test-bot --only-cleanup-before
+
+      - run: brew test-bot --only-setup
+
+      - name: Run brew bundle and brew services integration tests
+        run: |
+          cat <<EOS >> Brewfile
+            brew "git"
+            brew "memcached", restart_service: true
+            brew "postgresql@15", restart_service: true
+            cask "1password"
+            cask "1password-cli"
+            cask "google-chrome"
+            # VSCode cask is not available on Linux.
+            vscode "github.copilot" if OS.mac?
+          EOS
+
+          brew bundle check && exit 1
+          brew bundle check --verbose && exit 1
+          brew bundle list
+          brew bundle --verbose
+          brew services list
+          brew bundle env | grep PATH | grep git
+          brew bundle env --install
+          brew bundle exec --services true
+          brew services list
+
   test-analytics:
     runs-on: ${{ matrix.os }}
     strategy:
