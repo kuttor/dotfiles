@@ -196,6 +196,8 @@ module Homebrew
             [entry, formula]
           end.to_h
 
+          return if entries_formulae.empty?
+
           conflicts = entries_formulae.to_h do |entry, formula|
             [
               entry,
