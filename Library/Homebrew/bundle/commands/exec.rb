@@ -179,6 +179,7 @@ module Homebrew
           params(
             entries: T::Array[Homebrew::Bundle::Dsl::Entry],
             _block:  T.proc.params(
+              entry:                Homebrew::Bundle::Dsl::Entry,
               info:                 T::Hash[String, T.anything],
               service_file:         Pathname,
               conflicting_services: T::Array[T::Hash[String, T.anything]],
@@ -245,15 +246,20 @@ module Homebrew
 
             raise "Failed to get service info for #{entry.name}" if info.nil?
 
-            yield info, service_file, conflicting_services
+            yield entry, info, service_file, conflicting_services
           end
         end
 
         sig { params(entries: T::Array[Homebrew::Bundle::Dsl::Entry], _block: T.nilable(T.proc.void)).void }
         private_class_method def self.run_services(entries, &_block)
+          entries_to_stop = []
           services_to_restart = []
 
-          map_service_info(entries) do |info, service_file, conflicting_services|
+          map_service_info(entries) do |entry, info, service_file, conflicting_services|
+            # Don't restart if already running this version
+            loaded_file = Pathname.new(info["loaded_file"].to_s)
+            next if info["running"] && loaded_file&.file? && loaded_file&.realpath == service_file.realpath
+
             if info["running"] && !Bundle::BrewServices.stop(info["name"], keep: true)
               opoo "Failed to stop #{info["name"]} service"
             end
@@ -269,6 +275,8 @@ module Homebrew
             unless Bundle::BrewServices.run(info["name"], file: service_file)
               opoo "Failed to start #{info["name"]} service"
             end
+
+            entries_to_stop << entry
           end
 
           return unless block_given?
@@ -277,7 +285,7 @@ module Homebrew
             yield
           ensure
             # Do a full re-evaluation of services instead state has changed
-            stop_services(entries)
+            stop_services(entries_to_stop)
 
             services_to_restart.each do |service|
               next if Bundle::BrewServices.run(service)
@@ -289,7 +297,7 @@ module Homebrew
 
         sig { params(entries: T::Array[Homebrew::Bundle::Dsl::Entry]).void }
         private_class_method def self.stop_services(entries)
-          map_service_info(entries) do |info, _, _|
+          map_service_info(entries) do |_, info, _, _|
             next unless info["loaded"]
 
             # Try avoid services not started by `brew bundle services`
