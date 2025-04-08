@@ -440,11 +440,17 @@ jobs:
           brew bundle check --verbose && exit 1
           brew bundle list
           brew bundle --verbose
-          brew services list
+          brew bundle --upgrade-formulae=memcached,postgresql@15
+          brew bundle upgrade
           brew bundle env | grep PATH | grep git
           brew bundle env --install
           brew bundle exec --services true
+          brew bundle dump --force --describe
           brew services list
+          brew services info memcached postgresql@15
+          brew services info --json memcached postgresql@15
+          brew services cleanup
+          brew bundle cleanup --force
 
   test-analytics:
     runs-on: ${{ matrix.os }}
