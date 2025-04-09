@@ -54,19 +54,11 @@ RSpec.describe Homebrew::Cmd::UpgradeCmd do
 
     regex = /
       Formulae\s*\(3\):\s*
-      (
-        testball|testball5|testball4
-      )
+      (testball|testball5|testball4)
       \s*,\s*
-      (?!\1)
-      (
-        testball|testball5|testball4
-      )
+      ((?!\1)testball|testball5|testball4)
       \s*,\s*
-      (?!\1|\2)
-      (
-        testball|testball5|testball4
-      )
+      ((?!\1|\2)testball|testball5|testball4)
     /x
     expect do
       brew "upgrade", "--ask"
