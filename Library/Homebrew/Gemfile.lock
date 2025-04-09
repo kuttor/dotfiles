@@ -103,7 +103,7 @@ GEM
       rubocop (~> 1.72, >= 1.72.1)
     rubocop-sorbet (0.10.0)
       rubocop (>= 1)
-    ruby-lsp (0.23.13)
+    ruby-lsp (0.23.14)
       language_server-protocol (~> 3.17.0)
       prism (>= 1.2, < 2.0)
       rbs (>= 3, < 4)
@@ -160,7 +160,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm-linux
   arm64-darwin
   x86_64-darwin
   x86_64-linux
