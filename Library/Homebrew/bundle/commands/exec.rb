@@ -1,6 +1,7 @@
 # typed: false # rubocop:todo Sorbet/TrueSigil
 # frozen_string_literal: true
 
+require "English"
 require "exceptions"
 require "extend/ENV"
 require "utils"
