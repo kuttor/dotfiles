@@ -111,15 +111,15 @@ module Homebrew
           # For commands which aren't either absolute or relative
           raise "command was not found in your PATH: #{command}" if command.exclude?("/") && which(command).nil?
 
-          # Don't need to export Homebrew internal variables that won't be used by other tools.
-          # Those Homebrew needs have already been set to global constants and/or are exported again later.
-          # Setting these globally can interfere with nested Homebrew invocations/environments.
-          ENV.delete_if { |key, _| key.start_with?("HOMEBREW_", "PORTABLE_RUBY_") }
-
           if subcommand == "env"
             ENV.sort.each do |key, value|
               # No need to export empty values.
               next if value.blank?
+
+              # Skip exporting Homebrew internal variables that won't be used by other tools.
+              # Those Homebrew needs have already been set to global constants and/or are exported again later.
+              # Setting these globally can interfere with nested Homebrew invocations/environments.
+              next if key.start_with?("HOMEBREW_", "PORTABLE_RUBY_")
 
               # Skip exporting things that were the same in the old environment.
               old_value = old_env[key]
