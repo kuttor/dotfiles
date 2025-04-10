@@ -65,12 +65,10 @@ RSpec.describe Homebrew::Bundle::Commands::Exec do
 
     context "with env command" do
       it "outputs the environment variables" do
-        ENV["HOMEBREW_PREFIX"] = "/opt/homebrew"
-        ENV["HOMEBREW_PATH"] = "/usr/bin"
         allow(OS).to receive(:linux?).and_return(true)
 
         expect { described_class.run("env", subcommand: "env") }.to \
-          output(/HOMEBREW_PREFIX="#{ENV.fetch("HOMEBREW_PREFIX")}"/).to_stdout
+          output(/export PATH=".+:\${PATH:-}"/).to_stdout
       end
     end
 
