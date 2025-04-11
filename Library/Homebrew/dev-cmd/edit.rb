@@ -64,19 +64,18 @@ module Homebrew
         exec_editor(*paths)
 
         is_formula = T.let(false, T::Boolean)
-        if paths.any? do |path|
+        show_hint = !Homebrew::EnvConfig.no_env_hints?
+        if show_hint && paths.any? do |path|
              next if path == "--project"
-
-             break if Homebrew::EnvConfig.no_install_from_api?
-             break if Homebrew::EnvConfig.no_env_hints?
 
              is_formula = core_formula_path?(path)
              is_formula || core_cask_path?(path) || core_formula_tap?(path) || core_cask_tap?(path)
            end
           from_source = " --build-from-source" if is_formula
+          no_api = "HOMEBREW_NO_INSTALL_FROM_API=1 " unless Homebrew::EnvConfig.no_install_from_api?
           puts <<~EOS
             To test your local edits, run:
-              HOMEBREW_NO_INSTALL_FROM_API=1 brew install#{from_source} --verbose --debug #{args.named.join(" ")}
+              #{no_api}brew install#{from_source} --verbose --debug #{args.named.join(" ")}
           EOS
         end
       end
