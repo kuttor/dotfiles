@@ -64,8 +64,7 @@ module Homebrew
         exec_editor(*paths)
 
         is_formula = T.let(false, T::Boolean)
-        show_hint = !Homebrew::EnvConfig.no_env_hints?
-        if show_hint && paths.any? do |path|
+        if !Homebrew::EnvConfig.no_env_hints? && paths.any? do |path|
              next if path == "--project"
 
              is_formula = core_formula_path?(path)
