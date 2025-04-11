@@ -257,9 +257,6 @@ jobs:
             test-flags: --coverage
             runs-on: ubuntu-latest
             container: ghcr.io/homebrew/ubuntu20.04:latest
-          - name: tests (macOS 13 x86_64)
-            test-flags: --coverage
-            runs-on: macos-13
           - name: tests (macOS 15 arm64)
             test-flags: --coverage
             runs-on: macos-15

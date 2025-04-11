@@ -240,8 +240,7 @@ module Homebrew
 
       sig { returns(T.nilable(String)) }
       def __gets
-        gots = $stdin.gets.chomp
-        gots.empty? ? nil : gots
+        $stdin.gets&.presence&.chomp
       end
     end
   end

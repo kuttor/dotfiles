@@ -95,7 +95,7 @@ Check out the [License Guidelines](License-Guidelines.md) for examples of comple
 ### Check the build system
 
 ```sh
-HOMEBREW_NO_INSTALL_FROM_API=1 brew install --interactive foo
+HOMEBREW_NO_INSTALL_FROM_API=1 brew install --build-from-source --interactive foo
 ```
 
 You’re now at a new prompt with the tarball extracted to a temporary sandbox.
