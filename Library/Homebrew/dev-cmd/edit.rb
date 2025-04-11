@@ -63,16 +63,18 @@ module Homebrew
 
         exec_editor(*paths)
 
-        if paths.any? do |path|
+        is_formula = T.let(false, T::Boolean)
+        if !Homebrew::EnvConfig.no_env_hints? && paths.any? do |path|
              next if path == "--project"
 
-             !Homebrew::EnvConfig.no_install_from_api? &&
-             !Homebrew::EnvConfig.no_env_hints? &&
-             (core_formula_path?(path) || core_cask_path?(path) || core_formula_tap?(path) || core_cask_tap?(path))
+             is_formula = core_formula_path?(path)
+             is_formula || core_cask_path?(path) || core_formula_tap?(path) || core_cask_tap?(path)
            end
-          opoo <<~EOS
-            `brew install` ignores locally edited casks and formulae if
-            HOMEBREW_NO_INSTALL_FROM_API is not set.
+          from_source = " --build-from-source" if is_formula
+          no_api = "HOMEBREW_NO_INSTALL_FROM_API=1 " unless Homebrew::EnvConfig.no_install_from_api?
+          puts <<~EOS
+            To test your local edits, run:
+              #{no_api}brew install#{from_source} --verbose --debug #{args.named.join(" ")}
           EOS
         end
       end
