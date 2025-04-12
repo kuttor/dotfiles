@@ -1,5 +1,5 @@
 ---
-last_review_date: "2025-03-28"
+last_review_date: "2025-04-12"
 ---
 
 # Support Tiers
@@ -11,7 +11,7 @@ These set expectations for how well Homebrew will run on a given configuration.
 
 A Tier 1 supported configuration is one in which:
 
-- you're setup to get the best experience using Homebrew
+- you'll have the best experience using Homebrew
 - we will aim to fix reproducible bugs affecting this configuration
 - we will not output warnings about running on this configuration
 - we have CI coverage for automated testing and building bottles for this configuration
