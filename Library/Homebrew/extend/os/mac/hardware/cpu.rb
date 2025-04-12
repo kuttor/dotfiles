@@ -40,7 +40,7 @@ module OS
           ::Hardware::CPU.sysctl_bool("sysctl.proc_translated")
         end
 
-        def features
+        def self.features
           @features ||= ::Hardware::CPU.sysctl_n(
             "machdep.cpu.features",
             "machdep.cpu.extfeatures",
