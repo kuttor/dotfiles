@@ -145,11 +145,13 @@ module OS
             return
           end
 
+          oclp_support_tier = Hardware::CPU.features.include?(:pclmulqdq) ? 2 : 3
+
           <<~EOS
             You have booted macOS using OpenCore Legacy Patcher.
             We do not provide support for this configuration.
 
-            #{support_tier_message(tier: 2)}
+            #{support_tier_message(tier: oclp_support_tier)}
           EOS
         end
 
