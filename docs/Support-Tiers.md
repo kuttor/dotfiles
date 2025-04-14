@@ -1,17 +1,16 @@
 ---
-last_review_date: "2025-03-28"
+last_review_date: "2025-04-12"
 ---
 
 # Support Tiers
 
-Homebrew has three support tiers.
-These set expectations for how well Homebrew will run on a given configuration.
+Homebrew has three support tiers. These tiers set expectations for how well Homebrew will run on a given configuration.
 
 ## Tier 1
 
 A Tier 1 supported configuration is one in which:
 
-- you're setup to get the best experience using Homebrew
+- you'll have the best experience using Homebrew
 - we will aim to fix reproducible bugs affecting this configuration
 - we will not output warnings about running on this configuration
 - we have CI coverage for automated testing and building bottles for this configuration
@@ -23,12 +22,12 @@ A Tier 1 supported configuration is one in which:
 For Tier 1 support, Homebrew on macOS must be all of:
 
 - running on official Apple hardware (e.g. not a "Hackintosh" or VM)
-- running a version of macOS supported by Apple on that hardware (e.g. not using OpenCore Legacy Patcher)
+- running a version of macOS supported by Apple on that hardware
 - running a version of macOS with Homebrew CI coverage (i.e. the latest stable or prerelease version, two preceding versions)
 - installed in the default prefix (i.e. `/opt/homebrew` on Apple Silicon, `/usr/local` on Intel x86_64)
 - running on a supported architecture (i.e. Apple Silicon or Intel x86_64)
 - not building official packages from source
-- installed on your Mac's built-in hard-drive (i.e. not external/removable storage)
+- installed on your Mac's built-in hard drive (i.e. not external/removable storage)
 - you have `sudo` access on your system
 - the Xcode Command Line Tools are installed and fully up-to-date
 
@@ -39,7 +38,7 @@ For Tier 1 support, Homebrew on Linux must be all of:
 - running on Ubuntu or a Homebrew-provided Docker image
 - have a system `glibc` >= 2.35
 - have a Linux kernel >= 3.2
-- if running Ubuntu, running an Ubuntu version in "standard support": <https://ubuntu.com/about/release-cycle>
+- if running Ubuntu, using an Ubuntu version in "standard support": <https://ubuntu.com/about/release-cycle>
 - installed in the default prefix (i.e. `/home/linuxbrew/.linuxbrew`)
 - running on a supported architecture (i.e. Intel x86_64)
 - not building official packages from source
@@ -59,10 +58,11 @@ A Tier 2 supported configuration is one in which any of:
 Tier 2 configurations include:
 
 - macOS prereleases before we state they are Tier 1 (e.g. in March 2025, macOS 16, whatever it ends up being called)
-- Linux versions where a system `glibc` < 2.35 (but still >= 2.13), so the Homebrew `glibc` formula is automatically installed
+- Linux versions with a system `glibc` version < 2.35 (but >= 2.13), requiring the Homebrew `glibc` formula to be installed automatically
 - using official packages that need to be built from source due to installing Homebrew outside the default prefix
   (i.e. `/opt/homebrew` on Apple Silicon, `/usr/local` on Apple Intel x86_64, `/home/linuxbrew/.linuxbrew` for Linux)
 - running on a not-yet-supported architecture (i.e. Linux ARM64/AARCH64)
+- devices using OpenCore Legacy Patcher with a Westmere or newer Intel CPU
 
 ## Tier 3
 
@@ -85,6 +85,7 @@ Tier 3 configurations include:
 - installing Homebrew outside the default prefix (i.e. `/opt/homebrew` on Apple Silicon, `/usr/local` on Apple Intel x86_64, `/home/linuxbrew/.linuxbrew` for Linux)
 - installing formulae using `--HEAD`
 - installing deprecated or disabled formulae
+- devices using OpenCore Legacy Patcher with an Intel CPU older than Westmere
 
 ## Unsupported
 
@@ -104,7 +105,7 @@ Unsupported configurations include:
 
 ## Unsupported Software
 
-Note that all packages installed from third-party taps outside of the Homebrew GitHub organisation are unsupported by default.
+All packages installed from third-party taps outside of the Homebrew GitHub organisation are unsupported by default.
 
 We may assist the maintainers/contributors/developers of such packages to fix bugs with the Homebrew formula/cask/tap system, but we are not responsible for resolving issues when using that software.
 
