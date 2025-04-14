@@ -2490,7 +2490,7 @@ end
 
 # A singleton registry of all registered classes.
 #
-# source://bindata//lib/bindata/registry.rb#133
+# source://bindata//lib/bindata/registry.rb#128
 BinData::RegisteredClasses = T.let(T.unsafe(nil), BinData::Registry)
 
 # This registry contains a register of name -> class mappings.
@@ -2516,6 +2516,8 @@ class BinData::Registry
   # source://bindata//lib/bindata/registry.rb#21
   def initialize; end
 
+  # @raise [UnRegisteredTypeError]
+  #
   # source://bindata//lib/bindata/registry.rb#38
   def lookup(name, hints = T.unsafe(nil)); end
 
@@ -2524,7 +2526,7 @@ class BinData::Registry
 
   # Convert CamelCase +name+ to underscore style.
   #
-  # source://bindata//lib/bindata/registry.rb#50
+  # source://bindata//lib/bindata/registry.rb#58
   def underscore_name(name); end
 
   # source://bindata//lib/bindata/registry.rb#34
@@ -2532,24 +2534,19 @@ class BinData::Registry
 
   private
 
-  # source://bindata//lib/bindata/registry.rb#95
+  # source://bindata//lib/bindata/registry.rb#96
   def name_with_endian(name, endian); end
 
-  # source://bindata//lib/bindata/registry.rb#86
+  # source://bindata//lib/bindata/registry.rb#87
   def name_with_prefix(name, prefix); end
 
-  # source://bindata//lib/bindata/registry.rb#63
-  def normalize_name(name, hints); end
-
-  # source://bindata//lib/bindata/registry.rb#112
+  # source://bindata//lib/bindata/registry.rb#107
   def register_dynamic_class(name); end
 
-  # @return [Boolean]
-  #
-  # source://bindata//lib/bindata/registry.rb#106
-  def registered?(name); end
+  # source://bindata//lib/bindata/registry.rb#71
+  def search_names(name, hints); end
 
-  # source://bindata//lib/bindata/registry.rb#123
+  # source://bindata//lib/bindata/registry.rb#118
   def warn_if_name_is_already_registered(name, class_to_register); end
 end
 
