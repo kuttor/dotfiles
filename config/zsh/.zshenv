@@ -12,11 +12,10 @@ export DOT_FUNCTIONS_HOME="$DOTFILES/functions"
 
 # zsh environment variables
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh" && mkdir -p "$XDG_CACHE_HOME/zsh"
-export ZDOTDIR="$DOT_CONFIG_HOME/zsh"
 export HELPDIR="/usr/share/zsh"
 export HISTFILE="$ZSH_CACHE/history.zsh" 
-export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump" && compinit -d "$ZSH_COMPDUMP"
-export ZCOMPCACHE="$ZSH_CACHE/zcompcache" && compinit -C "$ZCOMPCACHE"
+
+
 export SHELL_SESSION_DIR="$ZSH_CACHE/zsh_sessions"
 export SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"
 mkdir -m 700 -p "$SHELL_SESSION_DIR"
@@ -36,7 +35,7 @@ typeset -A ZINIT=(
   MODULES_DIR                /opt/homebrew/opt/zinit/modules
   SNIPPETS_DIR               /opt/homebrew/opt/zinit/snippets
   COMPLETIONS_DIR            /opt/homebrew/opt/zinit/completions
-  ZCOMPDUMP_PATH             $XDG_CACHE_HOME/zcompdump-${HOST/.*/}-$ZSH_VERSION
+  ZCOMPDUMP_PATH             $XDG_CACHE_HOME/zsh/zcompdump
   OPTIMIZE_OUT_DISK_ACCESSES true
   COMPINIT_OPTS              " -C"
   LIST_COMMAND               "lsd --color=always --tree --icons -L3"
@@ -79,6 +78,7 @@ set_xdg "config" "VIMDOTDIR"                "create path" "vim/"
 set_xdg "config" "LESSKEY"                  "create path" "less/lesskey"
 set_xdg "config" "MYVIMRC"                  "create path" "nvim/nvim.confs"
 set_xdg "config" "INPUTRC"                  "create path" "inputrc/inputrc"
+set_xdg "config" "ZDOTDIR"                  "create path" "zsh/"
 set_xdg "config" "WGETRC"                   "create path" "wget/wgetrc"
 set_xdg "config" "RBENV_ROOT"               "create path" "rbenv/"
 set_xdg "data"   "GOPATH"                   "create path" "go/"

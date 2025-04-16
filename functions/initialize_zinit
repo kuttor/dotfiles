@@ -4,7 +4,6 @@
 # source zsh, zinit, and dotfile env-vars
 initialize_environment
 
-
 # create zinit home dir and clone zinit repo
 [ ! -d $ZINIT_HOME ]      && mkdir -p  "$(dirname $ZINIT_HOME)"
 
@@ -13,4 +12,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
+
+export ZSH_COMPDUMP="$ZSH_CACHE/zcompdump" && compinit -d "$ZSH_COMPDUMP"
+export ZCOMPCACHE="$ZSH_CACHE/zcompcache" && compinit -C "$ZCOMPCACHE"
 

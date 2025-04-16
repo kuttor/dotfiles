@@ -48,13 +48,14 @@
   fsmonitor                    = true
   untrackedCache               = true
   commitGraph                  = true
-  symlinks                     = true
+	symlinks = true
   pager                        = delta --pager='ov -F'
   excludesfile                 = $XDG_CONFIG_HOME/git/ignore
   attributesfile               = $XDG_CONFIG_HOME/git/attributes
   ignorecase                   = false
   fileMode                     = false
   eol                          = lf
+	autocrlf = false
 
 [credential]
   helper                       = cache
@@ -164,3 +165,9 @@
 
 [web]
   browser                      = safari
+[remote "origin"]
+	url = https://github.com/Homebrew/brew
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[homebrew]
+	analyticsmessage = true
+	caskanalyticsmessage = true

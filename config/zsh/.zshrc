@@ -2,25 +2,26 @@
 
 # ~~ p10kand zinit init ------------------------------------------------------------------------------------------------
 p10k_instant_prompt
-#confirm brew --or install_homebrew
+confirm brew --or install_homebrew
 source /opt/homebrew/opt/zinit/zinit.zsh
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # ~~ plugins -----------------------------------------------------------------------------------------------------------
+
 # -- annexes --
 zi id-as lucid light-mode for                                                                                          \
    @zdharma-continuum/zinit-annex-{bin-gem-node,binary-symlink,patch-dl,link-man,linkman}
 
 # -- dependencies --
 zi id-as lman lucid light-mode completions for                                                                         \
-   depth'1' @romkatv/powerlevel10k                                                                                     \
-   wait atload'use --atload zsh-smartcache' @QuarticCat/zsh-smartcache
+  depth'1' '@romkatv/powerlevel10k'                                                                                       \
+  wait atload'use --atload zsh-smartcache' '@QuarticCat/zsh-smartcache'
 
 # -- zinit-packages --
 zi id-as wait lman lucid light-mode pack for                                                                           \
    @dircolors-material                                                                                                 \
    @ls_colors
-
+,
 # -- github-releases --
 zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid binary for                            \
                                                              lman'autocomplete/_lsd'      @lsd-rs/lsd                  \
@@ -50,7 +51,7 @@ zi id-as wait binary light-mode lbin lman lucid for                             
 # ~~ snippets loading --------------------------------------------------------------------------------------------------
 zi id-as wait'2' lucid is-snippet for                                                                                  \
    @$ZDOTDIR/{autoload,options,keybinds,aliases}.zsh                                                                   \
-   OMZL::{key-bindings,correction,completion,compfix,git,grep}.zsh                                                     \
+   OMZL::{key-bindings,correction,completion,git,grep}.zsh                                                     \
    OMZP::{colorize,extract,urltools,brew,cp,grc,git,fzf,thefuck}
 
 # ~~ completions -------------------------------------------------------------------------------------------------------
