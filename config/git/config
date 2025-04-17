@@ -20,7 +20,7 @@
 [advice]   
   pushNonFastForward           = false
   statusHints                  = false
-	skippedCherryPicks = false
+  skippedCherryPicks           = false
 
 [apply]
   whitespace                   = fix
@@ -74,13 +74,13 @@
   
 [delta "unobtrusive-line-numbers"]
   line-numbers                 = true
-  line-numbers-minus-style     = "red"
-  line-numbers-zero-style      = "blue"
-  line-numbers-plus-style      = "green"
+  line-numbers-minus-style     = red
+  line-numbers-zero-style      = blue
+  line-numbers-plus-style      = green
   line-numbers-left-format     = "{nm:>4}┊"
   line-numbers-right-format    = "{np:>4}│"
-  line-numbers-left-style      = "blue"
-  line-numbers-right-style     = "blue"
+  line-numbers-left-style      = blue
+  line-numbers-right-style     = blue
 
 [delta "decorations"]
   commit-decoration-style      = bold yellow box ul
@@ -165,9 +165,3 @@
 
 [web]
   browser                      = safari
-[remote "origin"]
-	url = https://github.com/Homebrew/brew
-	fetch = +refs/heads/*:refs/remotes/origin/*
-[homebrew]
-	analyticsmessage = true
-	caskanalyticsmessage = true

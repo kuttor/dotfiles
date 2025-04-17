@@ -2,8 +2,8 @@
 
 # ~~ p10kand zinit init ------------------------------------------------------------------------------------------------
 p10k_instant_prompt
-confirm brew --or install_homebrew
-source /opt/homebrew/opt/zinit/zinit.zsh
+export ZINIT_HOME="/opt/homebrew/opt/zinit"
+source "$ZINIT_HOME/zinit.zsh"
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # ~~ plugins -----------------------------------------------------------------------------------------------------------
@@ -14,17 +14,16 @@ zi id-as lucid light-mode for                                                   
 
 # -- dependencies --
 zi id-as lman lucid light-mode completions for                                                                         \
-  depth'1' '@romkatv/powerlevel10k'                                                                                       \
-  wait atload'use --atload zsh-smartcache' '@QuarticCat/zsh-smartcache'
+  depth'1' @romkatv/powerlevel10k                                                                                      \
+  wait atload'use --atload zsh-smartcache' @QuarticCat/zsh-smartcache
 
 # -- zinit-packages --
 zi id-as wait lman lucid light-mode pack for                                                                           \
    @dircolors-material                                                                                                 \
    @ls_colors
-,
+
 # -- github-releases --
 zi id-as wait completions from'gh-r' atpull'%atclone' light-mode lbin lman lucid binary for                            \
-                                                             lman'autocomplete/_lsd'      @lsd-rs/lsd                  \
    atclone'use --atclone fx'     atload'use --atload fx'     lbin'fx_*->fx'               @antonmedv/fx                \
    atclone'use --atclone nvim'                               lbin'**/nvim'                @neovim/neovim               \
    atclone'use --atclone dog'                                                             @ogham/dog                   \
@@ -51,7 +50,7 @@ zi id-as wait binary light-mode lbin lman lucid for                             
 # ~~ snippets loading --------------------------------------------------------------------------------------------------
 zi id-as wait'2' lucid is-snippet for                                                                                  \
    @$ZDOTDIR/{autoload,options,keybinds,aliases}.zsh                                                                   \
-   OMZL::{key-bindings,correction,completion,git,grep}.zsh                                                     \
+   OMZL::{key-bindings,correction,completion,git,grep}.zsh                                                             \
    OMZP::{colorize,extract,urltools,brew,cp,grc,git,fzf,thefuck}
 
 # ~~ completions -------------------------------------------------------------------------------------------------------
@@ -75,6 +74,3 @@ zi wait id-as lman lucid light-mode for                                         
 [[ ! -f "$DOT_CONFIG_HOME/iterm2_shell_integration.zsh" ]] || source "$DOT_CONFIG_HOME/iterm2_shell_integration.zsh"
 [[ ! -f "$DOT_CONFIG_HOME/p10k/p10k.zsh" ]] || source "$DOT_CONFIG_HOME/p10k/p10k.zsh"
 source $CARGO_HOME/env
-
-# Created by `pipx` on 2025-02-28 00:19:16
-export PATH="$PATH:/Users/akuttor/.local/bin"

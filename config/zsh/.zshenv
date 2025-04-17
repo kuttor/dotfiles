@@ -15,31 +15,35 @@ export ZSH_CACHE="$XDG_CACHE_HOME/zsh" && mkdir -p "$XDG_CACHE_HOME/zsh"
 export HELPDIR="/usr/share/zsh"
 export HISTFILE="$ZSH_CACHE/history.zsh" 
 
-
 export SHELL_SESSION_DIR="$ZSH_CACHE/zsh_sessions"
 export SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"
 mkdir -m 700 -p "$SHELL_SESSION_DIR"
+
+# homebrew
+export HOMEBREW_PREFIX="/opt/homebrew"
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+export HOMEBREW_REPOSITORY="/opt/homebrew"
 
 # history
 export HISTSIZE=10000
 export SAVEHIST=$HISTSIZE
 
-#export ZINIT_HOME="$HOMEBREW_PREFIX/opt/zinit/zinit.git"
+export ZINIT_HOME="$HOMEBREW_PREFIX/opt/zinit/zinit.git"
 
 # setup zinit env-vars
 export ZINIT
 typeset -A ZINIT=(
-  HOME_DIR                   /opt/homebrew/opt/zinit
-  BIN_DIR                    /opt/homebrew/opt/zinit/bin
-  PLUGINS_DIR                /opt/homebrew/opt/zinit/plugins
-  MODULES_DIR                /opt/homebrew/opt/zinit/modules
-  SNIPPETS_DIR               /opt/homebrew/opt/zinit/snippets
-  COMPLETIONS_DIR            /opt/homebrew/opt/zinit/completions
-  ZCOMPDUMP_PATH             $XDG_CACHE_HOME/zsh/zcompdump
-  OPTIMIZE_OUT_DISK_ACCESSES true
+  HOME_DIR                   "$HOMEBREW_PREFIX/opt/zinit"
+  BIN_DIR                    "$HOMEBREW_PREFIX/opt/zinit/bin"
+  PLUGINS_DIR                "$HOMEBREW_PREFIX/opt/zinit/plugins"
+  MODULES_DIR                "$HOMEBREW_PREFIX/opt/zinit/modules"
+  SNIPPETS_DIR               "$HOMEBREW_PREFIX/opt/zinit/snippets"
+  COMPLETIONS_DIR            "$HOMEBREW_PREFIX/opt/zinit/completions"
+  ZCOMPDUMP_PATH             "$XDG_CACHE_HOME/zsh/zcompdump"
   COMPINIT_OPTS              " -C"
   LIST_COMMAND               "lsd --color=always --tree --icons -L3"
   LIST_SYMBOLS_DIR           "lsd --color=always --tree --icons=always --depth=3"
+  OPTIMIZE_OUT_DISK_ACCESSES true
 )
 
 # core environment
@@ -50,9 +54,9 @@ export GIT_AUTHOR_NAME="Andrew Kuttor"
 export GIT_AUTHOR_EMAIL="andrew.kuttor@gmail.com"
 export GIT_COMMITTER_NAME="Andrew Kuttor"
 export GIT_COMMITTER_EMAIL="andrew.kuttor@gmail.com"
-export GIT_CONFIG_GLOBAL="$HOME/.config/git/config"
-export GIT_CONFIG_SYSTEM="$HOME/.config/git/config"
-export GIT_CONFIG="$HOME/.config/git/config"
+export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
+export GIT_CONFIG_SYSTEM="$XDG_CONFIG_HOME/git/config"
+export GIT_CONFIG="$XDG_CONFIG_HOME/git/config"
 
 # -- autoload functions ---------------------------------------------------------------------------
 setopt EXTENDED_GLOB
@@ -112,19 +116,26 @@ check nvim && alias vim=nvim
 # remove duplicate paths from the PATH, MANPATH, INFOPATH, and FPATH
 typeset -Ugx PATH FPATH MANPATH INFOPATH path fpath manpath infopath
 
+
+
+
+
 path=(
   $HOMEBREW_PREFIX/{bin,sbin}
+  $HOMEBREW_PREFIX/opt/{rustup,curl,zinit````````}/bin
   $CARGO_HOME/bin
   $ZPFX/bin
   /usr/local/bin
   /usr/{bin,sbin}
+  $HOME/.local/bin
+
   $path
 )
 
 fpath=(
   $DOT_FUNCTIONS_HOME
   /usr/share/zsh/5.9/{functions,help,scripts}
-  $HOMEBREW_PREFIX/share/zsh/site-functions
+  $HOMEBREW_PREFIX/share/zsh/si``te-functions
   $HOMEBREW_PREFIX/completions
   $fpath
 )

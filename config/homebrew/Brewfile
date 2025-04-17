@@ -2,6 +2,7 @@
 
 brew "brew-cask-completion"
 brew 'coreutils'
+brew 'zinit'
 brew 'jq'
 brew 'xz'
 brew 'hg'
@@ -16,9 +17,7 @@ brew 'wget'
 brew 'curl'
 brew 'tmux'
 brew 'delta'
-brew 'zinit'
 brew 'neovim'
-brew 'thefuk'
-brew 'appcleaner'
+brew 'thefuck'
 
 
